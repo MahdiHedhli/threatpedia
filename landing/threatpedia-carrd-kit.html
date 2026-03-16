@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Threatpedia — Carrd Implementation Kit</title>
+<style>
+  body { font-family: monospace; background: #080b10; color: #cdd5e0; padding: 40px; line-height: 1.6; }
+  h1 { color: #e8a020; font-size: 1.4rem; margin-bottom: 8px; }
+  h2 { color: #e8a020; font-size: 1rem; margin: 32px 0 12px; border-bottom: 1px solid #1e2733; padding-bottom: 8px; }
+  h3 { color: #f0f4f8; font-size: 0.85rem; margin: 20px 0 8px; }
+  p { color: #5a6a7e; font-size: 0.8rem; margin-bottom: 12px; }
+  .badge { background: #1e2733; color: #e8a020; font-size: 0.65rem; padding: 3px 10px; border-radius: 2px; letter-spacing: 0.15em; }
+  pre { background: #0d1117; border: 1px solid #1e2733; padding: 20px; overflow-x: auto; font-size: 0.78rem; white-space: pre-wrap; color: #cdd5e0; margin-bottom: 8px; }
+  .note { background: #0d1117; border-left: 3px solid #e8a020; padding: 12px 16px; font-size: 0.75rem; color: #a06a10; margin: 12px 0; }
+</style>
+</head>
+<body>
+<h1>⚡ THREATPEDIA — CARRD IMPLEMENTATION KIT</h1>
+<p>This file contains all code blocks needed to build the Threatpedia landing page in Carrd. Requires <strong>Pro Standard</strong> plan for Embed elements and custom domain support.</p>
+
+<div class="note">
+  SETUP ORDER: Create a new blank Carrd site → Add embeds in the order listed below → Connect Formspree → Publish to your domain.
+</div>
+
+<!-- ============================================================ -->
+<h2>STEP 1 — EMBED #1: HEAD (Fonts + CSS)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: Hidden → Location: <strong>Head</strong></p>
+<p>Paste the entire block below into the Code field.</p>
+
+<pre id="block-head">&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"&gt;
+
+&lt;style&gt;
+/* ===== THREATPEDIA GLOBAL STYLES ===== */
+:root {
+  --tp-bg:       #080b10;
+  --tp-surface:  #0d1117;
+  --tp-border:   #1e2733;
+  --tp-amber:    #e8a020;
+  --tp-amber-dim:#a06a10;
+  --tp-text:     #cdd5e0;
+  --tp-muted:    #5a6a7e;
+  --tp-white:    #f0f4f8;
+}
+
+/* Reset — scoped to avoid conflicting with Carrd's own styles */
+.tp-wrap, .tp-wrap * { box-sizing: border-box; }
+
+/* Body overrides */
+body {
+  background: var(--tp-bg) !important;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* Grid overlay — full-page background effect */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== NAV ===== */
+.tp-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  border-bottom: 1px solid var(--tp-border);
+  background: rgba(8,11,16,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.tp-nav-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  color: var(--tp-amber);
+  text-transform: uppercase;
+}
+.tp-nav-logo span { color: var(--tp-muted); }
+.tp-nav-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--tp-muted);
+  letter-spacing: 0.1em;
+}
+.tp-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--tp-amber);
+  animation: tp-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes tp-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
+
+/* ===== HERO ===== */
+.tp-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 140px 48px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.tp-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  color: var(--tp-amber);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: tp-fadeup 0.7s ease both;
+}
+.tp-eyebrow::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--tp-amber);
+  flex-shrink: 0;
+}
+.tp-h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3.5rem, 8.5vw, 7.5rem);
+  line-height: 0.95;
+  color: var(--tp-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  animation: tp-fadeup 0.7s 0.08s ease both;
+}
+.tp-h1 em {
+  color: var(--tp-amber);
+  font-style: italic;
+}
+.tp-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--tp-muted);
+  text-transform: uppercase;
+  margin-bottom: 44px;
+  animation: tp-fadeup 0.7s 0.16s ease both;
+}
+.tp-desc {
+  max-width: 560px;
+  font-size: 1.05rem;
+  color: var(--tp-text);
+  line-height: 1.85;
+  margin-bottom: 60px;
+  animation: tp-fadeup 0.7s 0.24s ease both;
+}
+.tp-desc strong { color: var(--tp-white); font-weight: 500; }
+
+@keyframes tp-fadeup {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== STATS BAR ===== */
+.tp-stats {
+  display: flex;
+  border: 1px solid var(--tp-border);
+  max-width: 680px;
+  animation: tp-fadeup 0.7s 0.32s ease both;
+}
+.tp-stat {
+  flex: 1;
+  padding: 20px 22px;
+  border-right: 1px solid var(--tp-border);
+}
+.tp-stat:last-child { border-right: none; }
+.tp-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  color: var(--tp-amber);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.tp-stat-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--tp-muted);
+  text-transform: uppercase;
+}
+
+/* ===== CLASSIFICATION TICKER ===== */
+.tp-ticker {
+  position: relative; z-index: 1;
+  background: var(--tp-surface);
+  border-top: 1px solid var(--tp-border);
+  border-bottom: 1px solid var(--tp-border);
+  padding: 28px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.tp-tick {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.67rem;
+  letter-spacing: 0.15em;
+  color: var(--tp-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tp-tick::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--tp-amber-dim);
+  flex-shrink: 0;
+}
+
+/* ===== PILLARS ===== */
+.tp-pillars {
+  position: relative; z-index: 1;
+  padding: 96px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.tp-section-hdr {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 52px;
+}
+.tp-section-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--tp-amber);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tp-section-line {
+  flex: 1; height: 1px;
+  background: var(--tp-border);
+}
+.tp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--tp-border);
+  border: 1px solid var(--tp-border);
+}
+.tp-card {
+  background: var(--tp-bg);
+  padding: 36px 30px;
+  transition: background 0.2s;
+}
+.tp-card:hover { background: var(--tp-surface); }
+.tp-card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--tp-amber-dim);
+  margin-bottom: 18px;
+}
+.tp-card-icon { font-size: 1.5rem; margin-bottom: 14px; }
+.tp-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--tp-white);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.tp-card p {
+  font-size: 0.85rem;
+  color: var(--tp-muted);
+  line-height: 1.8;
+}
+
+/* ===== SIGNUP SECTION ===== */
+.tp-signup {
+  position: relative; z-index: 1;
+  padding: 80px 48px;
+  background: var(--tp-surface);
+  border-top: 1px solid var(--tp-border);
+  border-bottom: 1px solid var(--tp-border);
+}
+.tp-signup-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.tp-signup-copy h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  color: var(--tp-white);
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+.tp-signup-copy p {
+  color: var(--tp-muted);
+  font-size: 0.92rem;
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+.tp-signup-copy .tp-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--tp-amber-dim);
+  line-height: 1.7;
+}
+
+/* Form elements */
+.tp-flabel {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--tp-amber);
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.tp-fgroup { margin-bottom: 18px; }
+.tp-input,
+.tp-select {
+  width: 100%;
+  background: var(--tp-bg);
+  border: 1px solid var(--tp-border);
+  color: var(--tp-white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.92rem;
+  padding: 13px 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+.tp-input::placeholder { color: var(--tp-muted); }
+.tp-input:focus,
+.tp-select:focus {
+  border-color: var(--tp-amber);
+  box-shadow: 0 0 0 1px var(--tp-amber);
+}
+.tp-select { cursor: pointer; }
+.tp-select option { background: var(--tp-surface); color: var(--tp-white); }
+.tp-btn {
+  width: 100%;
+  background: var(--tp-amber);
+  color: var(--tp-bg);
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 17px 32px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 6px;
+  border-radius: 0;
+}
+.tp-btn:hover { background: #f0b030; }
+.tp-btn:active { transform: scale(0.99); }
+.tp-disclaimer {
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: var(--tp-muted);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Success state */
+.tp-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.tp-success.tp-show { display: block; }
+.tp-success-icon { font-size: 2rem; margin-bottom: 14px; }
+.tp-success h3 {
+  color: var(--tp-amber);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.tp-success p { color: var(--tp-muted); font-size: 0.72rem; }
+
+/* ===== FOOTER ===== */
+.tp-footer {
+  position: relative; z-index: 1;
+  padding: 40px 48px;
+  border-top: 1px solid var(--tp-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.tp-footer-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  color: var(--tp-amber);
+}
+.tp-footer-domains {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tp-footer-domain {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--tp-muted);
+  padding: 4px 10px;
+  border: 1px solid var(--tp-border);
+}
+.tp-footer-copy {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--tp-muted);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+  .tp-nav { padding: 16px 24px; }
+  .tp-nav-status { display: none; }
+  .tp-hero { padding: 120px 24px 64px; }
+  .tp-stats { flex-wrap: wrap; }
+  .tp-stat { border-right: none; border-bottom: 1px solid var(--tp-border); flex-basis: 50%; }
+  .tp-stat:nth-child(even) { border-right: none; }
+  .tp-ticker { padding: 24px; gap: 16px; }
+  .tp-pillars { padding: 64px 24px; }
+  .tp-grid { grid-template-columns: 1fr; }
+  .tp-signup { padding: 64px 24px; }
+  .tp-signup-inner { grid-template-columns: 1fr; gap: 48px; }
+  .tp-footer { padding: 32px 24px; justify-content: center; text-align: center; }
+  .tp-footer-domains { justify-content: center; }
+}
+&lt;/style&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 2 — EMBED #2: NAV BAR (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+<p>Drag this embed to the very top of your site. Paste below:</p>
+
+<pre id="block-nav">&lt;div class="tp-nav"&gt;
+  &lt;div class="tp-nav-logo"&gt;Threat&lt;span&gt;pedia&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="tp-nav-status"&gt;
+    &lt;div class="tp-dot"&gt;&lt;/div&gt;
+    COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 3 — EMBED #3: HERO SECTION (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+
+<pre id="block-hero">&lt;section class="tp-hero"&gt;
+  &lt;div class="tp-eyebrow"&gt;Threat Intelligence · Historical Record · Peer Reviewed&lt;/div&gt;
+  &lt;h1 class="tp-h1"&gt;The &lt;em&gt;Definitive&lt;/em&gt;&lt;br&gt;Cyber Threat&lt;br&gt;Encyclopedia&lt;/h1&gt;
+  &lt;div class="tp-sub"&gt;Building the world's most authoritative open record of cyber history&lt;/div&gt;
+  &lt;p class="tp-desc"&gt;
+    &lt;strong&gt;Threatpedia&lt;/strong&gt; is a Wikipedia-style platform documenting every significant
+    cyber event, attack campaign, and threat actor in history — peer-reviewed by a board of
+    cyber historians, intelligence analysts, and subject matter experts, and augmented by AI.
+  &lt;/p&gt;
+  &lt;div class="tp-stats"&gt;
+    &lt;div class="tp-stat"&gt;
+      &lt;div class="tp-stat-val"&gt;∞&lt;/div&gt;
+      &lt;div class="tp-stat-lbl"&gt;Events Catalogued&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-stat"&gt;
+      &lt;div class="tp-stat-val"&gt;100+&lt;/div&gt;
+      &lt;div class="tp-stat-lbl"&gt;APT Groups Tracked&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-stat"&gt;
+      &lt;div class="tp-stat-val"&gt;20+&lt;/div&gt;
+      &lt;div class="tp-stat-lbl"&gt;Frameworks Mapped&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-stat"&gt;
+      &lt;div class="tp-stat-val"&gt;TBD&lt;/div&gt;
+      &lt;div class="tp-stat-lbl"&gt;Launch Date&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 4 — EMBED #4: CLASSIFICATION TICKER (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+
+<pre id="block-ticker">&lt;div class="tp-ticker"&gt;
+  &lt;div class="tp-tick"&gt;Peer-Reviewed Articles&lt;/div&gt;
+  &lt;div class="tp-tick"&gt;MITRE ATT&amp;CK Mapping&lt;/div&gt;
+  &lt;div class="tp-tick"&gt;APT Registry&lt;/div&gt;
+  &lt;div class="tp-tick"&gt;STIX/TAXII Support Planned&lt;/div&gt;
+  &lt;div class="tp-tick"&gt;AI-Augmented Review&lt;/div&gt;
+  &lt;div class="tp-tick"&gt;Open Research Access&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 5 — EMBED #5: PILLARS GRID (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+
+<pre id="block-pillars">&lt;section class="tp-pillars"&gt;
+  &lt;div class="tp-section-hdr"&gt;
+    &lt;span class="tp-section-tag"&gt;What We're Building&lt;/span&gt;
+    &lt;div class="tp-section-line"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="tp-grid"&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 01&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;📖&lt;/div&gt;
+      &lt;h3&gt;Incident Encyclopedia&lt;/h3&gt;
+      &lt;p&gt;Every significant cyber event documented with standardized data points — TTPs, timeline, attribution, impact, affected sectors, and source citations.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 02&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;🛡️&lt;/div&gt;
+      &lt;h3&gt;APT Registry&lt;/h3&gt;
+      &lt;p&gt;Current and historical Advanced Persistent Threat groups tracked with profiles, known campaigns, tooling, state affiliation, and activity timelines.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 03&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;🗺️&lt;/div&gt;
+      &lt;h3&gt;Framework Mapping&lt;/h3&gt;
+      &lt;p&gt;Incidents mapped to MITRE ATT&amp;CK, NIST, Cyber Kill Chain, and more — enabling cross-incident trend analysis and data-driven research.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 04&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;✅&lt;/div&gt;
+      &lt;h3&gt;Peer Review &amp; Certification&lt;/h3&gt;
+      &lt;p&gt;A board of cyber historians, reporters, and SMEs reviews submissions. Approved articles earn the Threatpedia seal — a mark of verified accuracy.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 05&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;📊&lt;/div&gt;
+      &lt;h3&gt;Trend Analytics&lt;/h3&gt;
+      &lt;p&gt;Structured data across all incidents enables trend analysis by sector, vector, actor type, geography, and time — powering original research.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="tp-card"&gt;
+      &lt;div class="tp-card-num"&gt;// 06&lt;/div&gt;
+      &lt;div class="tp-card-icon"&gt;🤖&lt;/div&gt;
+      &lt;h3&gt;AI-Augmented Workflow&lt;/h3&gt;
+      &lt;p&gt;AI assists with aggregating news sources, flagging potential incidents, pre-screening articles, and surfacing related events — accelerating human reviewers.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 6 — EMBED #6: SIGNUP FORM (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+<div class="note">
+  ⚠️ BEFORE PASTING: Replace <strong>YOUR_FORMSPREE_ID</strong> in the form action URL with your real Formspree endpoint.
+  Get one free at formspree.io — create a form and copy the endpoint ID (looks like: xpwzgkrb).
+  Your action URL will be: https://formspree.io/f/YOUR_FORMSPREE_ID
+</div>
+
+<pre id="block-form">&lt;section class="tp-signup" id="signup"&gt;
+  &lt;div class="tp-signup-inner"&gt;
+
+    &lt;div class="tp-signup-copy"&gt;
+      &lt;h2&gt;Be Part of&lt;br&gt;Cyber History&lt;/h2&gt;
+      &lt;p&gt;We're assembling the founding team — peer reviewers, SMEs, journalists, researchers, and early contributors. Register your interest and be first to know when we launch.&lt;/p&gt;
+      &lt;p class="tp-note"&gt;FOUNDING MEMBERS GET EARLY ACCESS, CONTRIBUTOR CREDITS, AND A VOICE IN SHAPING THE PLATFORM.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+      &lt;form id="tp-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST"&gt;
+        &lt;div class="tp-fgroup"&gt;
+          &lt;label class="tp-flabel" for="tp-name"&gt;Full Name&lt;/label&gt;
+          &lt;input class="tp-input" type="text" id="tp-name" name="name" placeholder="Jane Smith" required&gt;
+        &lt;/div&gt;
+        &lt;div class="tp-fgroup"&gt;
+          &lt;label class="tp-flabel" for="tp-email"&gt;Email Address&lt;/label&gt;
+          &lt;input class="tp-input" type="email" id="tp-email" name="email" placeholder="jane@organization.com" required&gt;
+        &lt;/div&gt;
+        &lt;div class="tp-fgroup"&gt;
+          &lt;label class="tp-flabel" for="tp-org"&gt;Organization&lt;/label&gt;
+          &lt;input class="tp-input" type="text" id="tp-org" name="organization" placeholder="Company / Institution"&gt;
+        &lt;/div&gt;
+        &lt;div class="tp-fgroup"&gt;
+          &lt;label class="tp-flabel" for="tp-role"&gt;I'm interested as a...&lt;/label&gt;
+          &lt;select class="tp-select" id="tp-role" name="role"&gt;
+            &lt;option value=""&gt;Select your interest&lt;/option&gt;
+            &lt;option&gt;Peer Reviewer / SME&lt;/option&gt;
+            &lt;option&gt;Cyber Historian / Researcher&lt;/option&gt;
+            &lt;option&gt;Journalist / Reporter&lt;/option&gt;
+            &lt;option&gt;Contributor / Author&lt;/option&gt;
+            &lt;option&gt;Data / API User&lt;/option&gt;
+            &lt;option selected&gt;General Interest&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+        &lt;button class="tp-btn" type="submit"&gt;Register Interest →&lt;/button&gt;
+        &lt;p class="tp-disclaimer"&gt;No spam. Updates only on launch milestones.&lt;/p&gt;
+      &lt;/form&gt;
+      &lt;div class="tp-success" id="tp-success"&gt;
+        &lt;div class="tp-success-icon"&gt;✦&lt;/div&gt;
+        &lt;h3&gt;Registration Received&lt;/h3&gt;
+        &lt;p&gt;You're on the list. We'll be in touch as Threatpedia takes shape.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 7 — EMBED #7: FOOTER (Inline)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Inline</strong></p>
+
+<pre id="block-footer">&lt;footer class="tp-footer"&gt;
+  &lt;div class="tp-footer-logo"&gt;THREATPEDIA&lt;/div&gt;
+  &lt;div class="tp-footer-domains"&gt;
+    &lt;div class="tp-footer-domain"&gt;threatpedia.net&lt;/div&gt;
+    &lt;div class="tp-footer-domain"&gt;threatopedia.net&lt;/div&gt;
+    &lt;div class="tp-footer-domain"&gt;threatpedia.wiki&lt;/div&gt;
+    &lt;div class="tp-footer-domain"&gt;threatopedia.wiki&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="tp-footer-copy"&gt;© 2026 — All Rights Reserved&lt;/div&gt;
+&lt;/footer&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>STEP 8 — EMBED #8: JAVASCRIPT (Hidden, Body End)</h2>
+<p>In Carrd: Add Element → Embed → Type: Code → Style: <strong>Hidden</strong> → Location: <strong>Body End</strong></p>
+
+<pre id="block-js">&lt;script&gt;
+(function() {
+  var form = document.getElementById('tp-form');
+  var success = document.getElementById('tp-success');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var data = new FormData(form);
+    fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(res) {
+      if (res.ok) {
+        form.style.display = 'none';
+        success.classList.add('tp-show');
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    })
+    .catch(function() {
+      alert('Network error. Please try again.');
+    });
+  });
+})();
+&lt;/script&gt;</pre>
+
+<!-- ============================================================ -->
+<h2>CARRD SETUP CHECKLIST</h2>
+<pre>
+[ ] 1. Create Carrd account — Pro Standard plan required for Embed elements
+[ ] 2. Create a new site → choose "A page" → blank template
+[ ] 3. In site settings, set background color to #080b10
+[ ] 4. Add Embed #1 (Head CSS) — Hidden → Head
+[ ] 5. Add Embed #2 (Nav) — Inline, drag to top
+[ ] 6. Add Embed #3 (Hero) — Inline
+[ ] 7. Add Embed #4 (Ticker) — Inline
+[ ] 8. Add Embed #5 (Pillars) — Inline
+[ ] 9. Add Embed #6 (Signup Form) — Inline (replace YOUR_FORMSPREE_ID first)
+[ ] 10. Add Embed #7 (Footer) — Inline
+[ ] 11. Add Embed #8 (JS) — Hidden → Body End
+[ ] 12. Create free Formspree account at formspree.io
+[ ] 13. Copy Formspree endpoint ID and replace YOUR_FORMSPREE_ID in Embed #6
+[ ] 14. In Carrd site settings → Custom Domain → connect threatpedia.wiki
+[ ] 15. Publish and test form submission
+[ ] 16. Set up Formspree to forward submissions to your email
+[ ] 17. (Optional) Connect Formspree to Mailchimp/Airtable for CRM tracking
+
+NOTES:
+- Carrd embeds do NOT preview in the builder — always publish to see results
+- Formspree free tier: 50 submissions/month. Upgrade if needed.
+- For higher volume, consider Mailchimp's embedded signup form instead of Formspree
+- The .wiki TLD is recommended as your primary domain (authority signal)
+- All other domains should redirect to threatpedia.wiki via Carrd or your registrar
+</pre>
+
+</body>
+</html>
