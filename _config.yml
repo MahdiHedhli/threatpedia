@@ -1,0 +1,17 @@
+# GitHub Pages configuration for Threatpedia
+# https://github.com/MahdiHedhli/threatpedia
+
+title: Threatpedia
+description: The Definitive Cyber Threat Encyclopedia
+url: "https://threatpedia.wiki"
+
+exclude:
+  - docs/
+  - landing/
+  - "*.md"
+  - LICENSE
+  - CONTRIBUTING.md
+  - GOVERNANCE.md
+  - README.md
+  - .gitignore
+  - node_modules/

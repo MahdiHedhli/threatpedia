@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Threatpedia</title>
+  <link rel="icon" type="image/svg+xml" href="assets/tp-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/tp-favicon-32.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #080b10; --amber: #e8a020; --muted: #5a6a7e; --border: #1e2733; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      text-align: center;
+      padding: 40px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    .code {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(6rem, 20vw, 12rem);
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 16px;
+      opacity: 0.15;
+    }
+    .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .msg {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+    a {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 12px 24px;
+      transition: background 0.2s, color 0.2s;
+    }
+    a:hover { background: var(--amber); color: var(--bg); }
+  </style>
+</head>
+<body>
+  <div class="code">404</div>
+  <div class="label">Page Not Found</div>
+  <p class="msg">This incident has not been documented.<br>Or this page doesn't exist.</p>
+  <a href="/">← Return to Threatpedia</a>
+</body>
+</html>
