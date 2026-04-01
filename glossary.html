@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Glossary - Threatpedia</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Grid overlay background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.02) 25%, rgba(232, 160, 32, 0.02) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.02) 75%, rgba(232, 160, 32, 0.02) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.02) 25%, rgba(232, 160, 32, 0.02) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.02) 75%, rgba(232, 160, 32, 0.02) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='1' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--muted); }
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .hamburger:hover { border-color: var(--amber); }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 199;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .menu-overlay.open { opacity: 1; pointer-events: auto; }
+        .menu-panel {
+            position: fixed;
+            top: 0; right: 0; bottom: 0;
+            width: 320px;
+            max-width: 85vw;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 32px 32px;
+            overflow-y: auto;
+        }
+        .menu-panel.open { transform: translateX(0); }
+        .menu-search {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 28px;
+            border-radius: 0;
+        }
+        .menu-search::placeholder { color: var(--muted); }
+        .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+        .menu-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--amber-dim);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .menu-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 28px;
+        }
+        .menu-links a {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+        .menu-links a:first-child { border-top: 1px solid var(--border); }
+        .menu-links a:hover { color: var(--amber); padding-left: 8px; }
+        .menu-links a.active { color: var(--amber); }
+        .menu-cta {
+            display: block;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bg);
+            background: var(--amber);
+            text-decoration: none;
+            padding: 15px 24px;
+            transition: background 0.2s;
+            margin-top: auto;
+        }
+        .menu-cta:hover { background: #f0b030; }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        .hero {
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            padding: 2rem 2rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: sticky;
+            top: 75px;
+            z-index: 100;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 500px;
+        }
+
+        .search-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .search-input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--amber);
+            box-shadow: 0 0 12px rgba(232, 160, 32, 0.15);
+        }
+
+        .alphabet-nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .alphabet-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-right: 0.5rem;
+        }
+
+        .alphabet-buttons {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .letter-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.4rem 0.6rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .letter-btn:hover {
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        .letter-btn.active {
+            background: var(--amber);
+            border-color: var(--amber);
+            color: var(--bg);
+        }
+
+        .content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .terms-count {
+            color: var(--muted);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .letter-section {
+            margin-bottom: 3rem;
+        }
+
+        .letter-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--amber);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            letter-spacing: -0.02em;
+        }
+
+        .terms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .term-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .term-card:hover {
+            border-color: var(--amber);
+            box-shadow: 0 8px 16px rgba(232, 160, 32, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .term-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--white);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .term-acronym {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--amber);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .term-definition {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--muted);
+        }
+
+        .no-results h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 860px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .controls {
+                padding: 1.5rem;
+                gap: 1rem;
+            }
+
+            .search-input {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .terms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .letter-header {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a class="nav-logo" href="index.html">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
+        <div class="menu-links">
+            <a href="glossary.html" class="active">Glossary</a>
+            <a href="threat-actors.html">Threat Actors</a>
+            <a href="incidents/teampcp-supply-chain-attack.html">Incidents</a>
+        </div>
+        <a class="menu-cta" href="index.html#signup">Register Interest</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <h1>Cyber Security Glossary</h1>
+            <p>Comprehensive reference guide for information security terminology, frameworks, and concepts</p>
+        </section>
+
+        <section class="controls">
+            <div class="search-container">
+                <label class="search-label">Search Terms</label>
+                <input type="text" id="searchInput" class="search-input" placeholder="Enter search term or acronym...">
+            </div>
+            <div class="alphabet-nav">
+                <span class="alphabet-label">Quick Jump</span>
+                <div class="alphabet-buttons" id="alphabetNav"></div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="terms-count">
+                <span id="termCount">0</span> terms found
+            </div>
+            <div id="termsContainer"></div>
+            <div id="noResults" class="no-results hidden">
+                <h3>No terms found</h3>
+                <p>Try adjusting your search or browse by letter</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Comprehensive glossary terms
+        const glossaryTerms = [
+            // Core Concepts
+            { letter: 'C', name: 'CIA Triad', acronym: 'CIA', definition: 'The foundational model of information security consisting of Confidentiality (preventing unauthorized access), Integrity (ensuring data accuracy and consistency), and Availability (ensuring systems are accessible when needed). These three principles form the basis of most security policies and frameworks.' },
+            { letter: 'Z', name: 'Zero Trust Architecture', acronym: 'ZTA', definition: 'A security model that assumes no user or system is inherently trustworthy and requires verification for every access request, regardless of location or previous authentication. It operates on the principle of "never trust, always verify" and implements continuous authentication and authorization.' },
+            { letter: 'D', name: 'Defense in Depth', acronym: '', definition: 'A security strategy that employs multiple layers of defensive measures to protect critical information and systems. If one layer is compromised, additional layers remain in place to prevent complete system failure or data breach.' },
+            { letter: 'L', name: 'Least Privilege', acronym: '', definition: 'A security principle that restricts user and system access rights to the minimum necessary to perform required functions. Users and applications should have only the permissions they need, reducing the attack surface and limiting potential damage from compromised accounts.' },
+            { letter: 'S', name: 'Security by Design', acronym: '', definition: 'An approach to software and system development that integrates security considerations from the beginning rather than as an afterthought. Security is built into the architecture, design, and development processes rather than patched on afterward.' },
+
+            // Attack Types
+            { letter: 'P', name: 'Phishing', acronym: '', definition: 'A social engineering attack that uses fraudulent emails, messages, or websites to trick users into divulging sensitive information or downloading malware. Attackers impersonate trusted entities to create a sense of urgency or legitimacy.' },
+            { letter: 'S', name: 'Spear Phishing', acronym: '', definition: 'A targeted phishing attack directed at specific individuals or organizations, using personalized information to increase the likelihood of success. The attacker researches the target to make the attack more convincing and relevant.' },
+            { letter: 'W', name: 'Watering Hole Attack', acronym: '', definition: 'A cyber attack that compromises legitimate websites frequently visited by a target group, infecting them with malware to compromise users who visit the site. The attacker identifies and exploits trusted resources to reach intended victims.' },
+            { letter: 'S', name: 'Supply Chain Attack', acronym: 'SCA', definition: 'An attack targeting a supply chain to compromise the primary target, affecting vendors, manufacturers, and distributors. SolarWinds and 3CX are notable examples where attackers compromised software updates to reach downstream customers.' },
+            { letter: 'D', name: 'DDoS Attack', acronym: 'DDoS', definition: 'Distributed Denial of Service attack that floods a target with traffic from multiple sources to overwhelm its capacity and make it unavailable. Common variants include volumetric attacks, protocol attacks, and application layer attacks.' },
+            { letter: 'M', name: 'Man-in-the-Middle', acronym: 'MITM', definition: 'An attack where the attacker intercepts communications between two parties to eavesdrop or modify data without their knowledge. Commonly used on unencrypted connections and in ARP spoofing or DNS hijacking scenarios.' },
+            { letter: 'S', name: 'SQL Injection', acronym: 'SQLi', definition: 'A code injection attack that inserts malicious SQL statements into input fields to manipulate database queries. Attackers can extract, modify, or delete sensitive data by exploiting vulnerable database interfaces.' },
+            { letter: 'C', name: 'Cross-Site Scripting', acronym: 'XSS', definition: 'A web application vulnerability that allows attackers to inject malicious scripts into web pages viewed by other users. The injected code executes in the victim\'s browser, potentially stealing session cookies or credentials.' },
+            { letter: 'C', name: 'Cross-Site Request Forgery', acronym: 'CSRF', definition: 'An attack that tricks authenticated users into performing unwanted actions on websites where they are logged in. The attacker crafts requests that execute with the victim\'s privileges without their knowledge.' },
+            { letter: 'B', name: 'Buffer Overflow', acronym: '', definition: 'A programming vulnerability where data written to a buffer exceeds its capacity, overwriting adjacent memory. Attackers can exploit this to inject malicious code, cause denial of service, or execute arbitrary commands with elevated privileges.' },
+            { letter: 'R', name: 'Race Condition', acronym: '', definition: 'A security vulnerability that occurs when multiple processes access shared resources concurrently, and the final result depends on the timing of execution. Attackers can exploit timing windows to bypass security checks or manipulate critical operations.' },
+            { letter: 'T', name: 'Time-of-Check to Time-of-Use', acronym: 'TOCTOU', definition: 'A race condition vulnerability where a security check is performed, but the resource is modified before it is actually used. The attacker exploits the window between verification and utilization to compromise security.' },
+            { letter: 'I', name: 'Insecure Deserialization', acronym: '', definition: 'A vulnerability that occurs when untrusted data is deserialized without proper validation, allowing attackers to execute arbitrary code. Commonly found in Java, Python, and PHP applications when handling serialized objects.' },
+            { letter: 'X', name: 'XML External Entity', acronym: 'XXE', definition: 'An attack that exploits vulnerable XML parsers by injecting malicious external entity declarations. Attackers can read local files, perform SSRF attacks, or cause denial of service.' },
+            { letter: 'S', name: 'Server-Side Template Injection', acronym: 'SSTI', definition: 'A web application vulnerability that allows attackers to inject template code into server-side templating engines. This can lead to remote code execution or information disclosure if the injected template is evaluated.' },
+            { letter: 'L', name: 'LDAP Injection', acronym: '', definition: 'An attack that exploits LDAP query construction vulnerabilities by injecting malicious LDAP syntax. Attackers can authenticate as other users or extract sensitive directory information.' },
+            { letter: 'O', name: 'OS Command Injection', acronym: '', definition: 'A vulnerability that allows attackers to execute arbitrary operating system commands through vulnerable application input. Often occurs when user input is passed unsanitized to shell commands or system calls.' },
+            { letter: 'P', name: 'Path Traversal', acronym: '', definition: 'A vulnerability that allows attackers to access files and directories outside the intended scope by using path sequences like "../" or "..\\".' },
+            { letter: 'U', name: 'Unvalidated Redirect', acronym: '', definition: 'A vulnerability where an application redirects users to attacker-controlled URLs without proper validation. Used in phishing attacks to lend credibility to malicious links.' },
+            { letter: 'B', name: 'Brute Force Attack', acronym: '', definition: 'An attack that systematically attempts all possible combinations of passwords or cryptographic keys until the correct one is found. Dictionary attacks and rainbow tables are common brute force variations.' },
+            { letter: 'C', name: 'Credential Stuffing', acronym: '', definition: 'An attack that uses previously compromised username and password pairs to gain unauthorized access to accounts. Relies on password reuse across multiple services.' },
+            { letter: 'S', name: 'Session Hijacking', acronym: '', definition: 'An attack where an attacker steals or predicts a valid session token to impersonate a legitimate user. Often combined with MITM or cookie theft techniques.' },
+            { letter: 'E', name: 'Evil Twin', acronym: '', definition: 'A rogue wireless access point that mimics a legitimate network to trick users into connecting. Used to eavesdrop on network traffic or distribute malware.' },
+            { letter: 'D', name: 'DNS Spoofing', acronym: '', definition: 'An attack that corrupts DNS cache or responses to redirect users to attacker-controlled IP addresses. Used in phishing and credential harvesting attacks.' },
+            { letter: 'A', name: 'ARP Spoofing', acronym: '', definition: 'An attack that forges ARP messages to associate the attacker\'s MAC address with a legitimate IP address, enabling MITM attacks on local networks.' },
+            { letter: 'C', name: 'Clickjacking', acronym: '', definition: 'A web application attack that tricks users into clicking hidden elements by overlaying invisible frames or buttons over legitimate content.' },
+            { letter: 'D', name: 'Drive-by Download', acronym: '', definition: 'An attack where malware is automatically downloaded and installed on a user\'s system when visiting a compromised website, often without user interaction or knowledge.' },
+            { letter: 'P', name: 'Password Spraying', acronym: '', definition: 'An attack that uses a few common passwords against many user accounts to avoid triggering account lockouts. Less detectable than traditional brute force attacks.' },
+            { letter: 'T', name: 'Typosquatting', acronym: '', definition: 'An attack that registers domain names similar to legitimate ones, exploiting users who mistype URLs to distribute malware or conduct phishing.' },
+            { letter: 'H', name: 'HTTP Response Splitting', acronym: '', definition: 'A web application vulnerability that allows attackers to inject arbitrary HTTP response headers by inserting CRLF characters into response data.' },
+            { letter: 'C', name: 'Cache Poisoning', acronym: '', definition: 'An attack that corrupts cached data to serve malicious content to multiple users. Can affect DNS caches, web caches, or application caches.' },
+            { letter: 'W', name: 'Website Defacement', acronym: '', definition: 'An attack where an attacker gains unauthorized access to a website and modifies its content. Often a precursor to more serious attacks.' },
+
+            // Malware Types
+            { letter: 'R', name: 'Ransomware', acronym: '', definition: 'Malware that encrypts a victim\'s files or locks their system, demanding payment for decryption or restoration. Notable variants include WannaCry, NotPetya, and LockBit.' },
+            { letter: 'T', name: 'Trojan', acronym: '', definition: 'Malware disguised as legitimate software that performs malicious functions when installed. Unlike worms, trojans do not self-replicate and require user action to execute.' },
+            { letter: 'W', name: 'Worm', acronym: '', definition: 'Self-replicating malware that spreads across networks and systems without user interaction. Can consume resources and propagate itself independently of user action.' },
+            { letter: 'R', name: 'Rootkit', acronym: '', definition: 'Malware that gains root or administrative access to a system and attempts to hide its presence from detection. Provides persistent backdoor access and can be extremely difficult to remove.' },
+            { letter: 'K', name: 'Keylogger', acronym: '', definition: 'Malware or hardware device that records keyboard inputs to capture passwords and sensitive information. Can be hardware-based or software-based.' },
+            { letter: 'B', name: 'Botnet', acronym: '', definition: 'A network of compromised computers controlled by an attacker through a command and control (C2) infrastructure. Used for DDoS attacks, spam distribution, and credential theft.' },
+            { letter: 'R', name: 'Remote Access Trojan', acronym: 'RAT', definition: 'Malware that provides unauthorized remote access and control of an infected system. Commonly used by threat actors for espionage, theft, and lateral movement.' },
+            { letter: 'F', name: 'Fileless Malware', acronym: '', definition: 'Malware that operates in system memory without writing files to disk, evading traditional file-based detection methods. Often leverages legitimate tools like PowerShell or WMI.' },
+            { letter: 'S', name: 'Spyware', acronym: '', definition: 'Malware designed to collect information about users and their activities without their knowledge. Can monitor browsing, capture screenshots, or exfiltrate sensitive data.' },
+            { letter: 'A', name: 'Adware', acronym: '', definition: 'Malware that displays unwanted advertisements and may track user behavior for marketing purposes. While not always malicious, can compromise privacy and system performance.' },
+            { letter: 'S', name: 'Stealware', acronym: '', definition: 'Malware that steals credentials, financial information, or personal data for unauthorized access or sale. Often uses keystroke logging, form grabbing, or screen capture.' },
+            { letter: 'B', name: 'Backdoor', acronym: '', definition: 'A hidden method of gaining unauthorized access to a system, bypassing normal authentication mechanisms. Can be installed by malware or accidentally left by developers.' },
+            { letter: 'P', name: 'Polymorphic Malware', acronym: '', definition: 'Malware that changes its code and signature while maintaining functionality, evading signature-based detection. Uses encryption or code obfuscation to hide its presence.' },
+            { letter: 'M', name: 'Metamorphic Malware', acronym: '', definition: 'Malware that rewrites its entire code structure with each iteration, creating functionally equivalent but structurally different variants. More sophisticated than polymorphic malware.' },
+            { letter: 'D', name: 'Dropper', acronym: '', definition: 'Malware designed to download and install other malware payloads on compromised systems. Often used as the initial infection vector.' },
+            { letter: 'L', name: 'Logic Bomb', acronym: '', definition: 'Malicious code that remains dormant until a specific trigger condition is met, then executes a harmful action. Often placed by insiders with system access.' },
+            { letter: 'V', name: 'Virus', acronym: '', definition: 'Self-replicating malware that requires user action to propagate and infect other files or systems. Historically common but less prevalent than other malware types.' },
+            { letter: 'M', name: 'Mobile Malware', acronym: '', definition: 'Malware specifically designed to compromise mobile devices like smartphones and tablets, often disguised as legitimate applications.' },
+            { letter: 'C', name: 'Cryptojacking', acronym: '', definition: 'Malware or code that hijacks computing resources to mine cryptocurrencies without the user\'s knowledge or consent.' },
+            { letter: 'Z', name: 'Zero-Day Exploit', acronym: '', definition: 'Malware or attack that exploits a previously unknown vulnerability before a patch is available. Highly valued in the criminal underground and among nation-state actors.' },
+
+            // Frameworks and Standards
+            { letter: 'M', name: 'MITRE ATT&CK', acronym: '', definition: 'A globally accessible knowledge base of adversary tactics and techniques derived from real-world observations. Provides a structured framework for understanding and categorizing attacker behavior.' },
+            { letter: 'N', name: 'NIST Cybersecurity Framework', acronym: 'NIST CSF', definition: 'A set of guidelines, standards, and practices for managing cybersecurity risks developed by the National Institute of Standards and Technology. Covers five functions: Identify, Protect, Detect, Respond, and Recover.' },
+            { letter: 'I', name: 'ISO/IEC 27001', acronym: '', definition: 'An international standard for establishing, implementing, and maintaining an information security management system (ISMS). Provides comprehensive security requirements and controls for organizations.' },
+            { letter: 'C', name: 'CIS Controls', acronym: '', definition: 'A set of prioritized best practices for defending against cyber attacks, developed by the Center for Internet Security. Includes 18 controls organized by implementation group.' },
+            { letter: 'O', name: 'OWASP Top 10', acronym: '', definition: 'A list of the ten most critical web application security vulnerabilities compiled by the Open Worldwide Application Security Project. Updated regularly to reflect emerging threats.' },
+            { letter: 'C', name: 'Cyber Kill Chain', acronym: '', definition: 'A framework developed by Lockheed Martin that describes the stages of a cyber attack: Reconnaissance, Weaponization, Delivery, Exploitation, Installation, Command & Control, and Actions on Objectives.' },
+            { letter: 'D', name: 'Diamond Model', acronym: '', definition: 'A threat analysis framework that examines adversary, capability, infrastructure, and victim in relation to each other. Helps identify patterns and attributes of cyber attacks.' },
+            { letter: 'P', name: 'PTES', acronym: 'Penetration Testing Execution Standard', definition: 'A comprehensive framework for conducting authorized penetration tests, covering seven phases: pre-engagement, intelligence gathering, threat modeling, vulnerability analysis, exploitation, post-exploitation, and reporting.' },
+            { letter: 'N', name: 'NIST SP 800-53', acronym: '', definition: 'A specialized publication providing recommendations for security controls for federal information systems. Includes detailed security control families and implementation guidance.' },
+            { letter: 'C', name: 'COBIT', acronym: 'Control Objectives for Information and Related Technology', definition: 'A framework for IT governance and management that helps organizations align IT with business objectives. Covers governance, strategy, risk, performance, and resource management.' },
+            { letter: 'I', name: 'IEC 62443', acronym: '', definition: 'An international standard for Industrial Control Systems (ICS) security, providing requirements and procedures for securing critical infrastructure systems.' },
+            { letter: 'N', name: 'NIST SP 800-171', acronym: '', definition: 'Security requirements for protecting controlled unclassified information (CUI) in nonfederal information systems. Commonly required for contractors handling government data.' },
+
+            // Threat Intelligence
+            { letter: 'A', name: 'Advanced Persistent Threat', acronym: 'APT', definition: 'A sophisticated, prolonged cyber attack by well-resourced adversaries, often nation-states, targeting specific organizations. Characterized by stealth, persistence, and advanced capabilities.' },
+            { letter: 'I', name: 'Indicator of Compromise', acronym: 'IOC', definition: 'Observable artifacts or evidence of a security incident, such as IP addresses, domain names, file hashes, or email addresses. Used to detect and investigate breaches.' },
+            { letter: 'T', name: 'Tactics, Techniques, and Procedures', acronym: 'TTP', definition: 'The behaviors and patterns used by threat actors to conduct attacks, including attack methods (tactics), specific actions (techniques), and detailed implementations (procedures).' },
+            { letter: 'S', name: 'STIX', acronym: 'Structured Threat Information Expression', definition: 'A standardized XML language for describing cyber threat information, enabling organizations to share threat intelligence in a structured, machine-readable format.' },
+            { letter: 'T', name: 'TAXII', acronym: 'Trusted Automated Exchange of Indicator Information', definition: 'A protocol for exchanging cyber threat intelligence in a standard, automated manner. Works in conjunction with STIX to facilitate threat information sharing.' },
+            { letter: 'T', name: 'Threat Hunting', acronym: '', definition: 'A proactive cybersecurity activity that involves searching networks and systems for evidence of ongoing attacks or indicators of compromise not detected by automated tools.' },
+            { letter: 'A', name: 'Attribution', acronym: '', definition: 'The process of identifying and confirming the source or perpetrator of a cyber attack. Often difficult and relies on technical indicators, behavioral analysis, and intelligence gathering.' },
+            { letter: 'T', name: 'Threat Intelligence Sharing', acronym: '', definition: 'The coordinated exchange of threat information between organizations, government agencies, and security vendors to improve collective defense.' },
+            { letter: 'I', name: 'Intelligence-Led Security', acronym: '', definition: 'A security approach that prioritizes actions based on threat intelligence and risk analysis rather than random or firefighting responses.' },
+            { letter: 'C', name: 'Collective Defense', acronym: '', definition: 'A collaborative security approach where organizations share threat information and defensive techniques to strengthen defense against adversaries affecting all parties.' },
+            { letter: 'O', name: 'Open-Source Intelligence', acronym: 'OSINT', definition: 'Intelligence gathered from publicly available sources such as social media, news, government records, and academic publications. Commonly used in threat analysis and reconnaissance.' },
+            { letter: 'H', name: 'Human Intelligence', acronym: 'HUMINT', definition: 'Intelligence gathered through human sources such as informants, interviews, and observations. Often combined with technical intelligence for complete threat understanding.' },
+            { letter: 'T', name: 'Technical Intelligence', acronym: 'TECHINT', definition: 'Intelligence gathered through technical means such as signals intelligence, imagery, and network analysis. Includes monitoring of attacker infrastructure and communications.' },
+
+            // Network Security
+            { letter: 'F', name: 'Firewall', acronym: '', definition: 'A network security device that monitors and controls incoming and outgoing network traffic based on predetermined security rules. Can be hardware or software-based.' },
+            { letter: 'I', name: 'Intrusion Detection System', acronym: 'IDS', definition: 'A network security device that monitors network traffic for suspicious activity and alerts administrators when potential intrusions are detected. Can be host-based or network-based.' },
+            { letter: 'I', name: 'Intrusion Prevention System', acronym: 'IPS', definition: 'Similar to IDS but capable of automatically blocking or preventing detected attacks. Actively protects the network rather than just detecting threats.' },
+            { letter: 'V', name: 'Virtual Private Network', acronym: 'VPN', definition: 'A technology that creates an encrypted tunnel through the internet to securely connect remote users or sites to a private network. Provides confidentiality and can mask true location.' },
+            { letter: 'D', name: 'Demilitarized Zone', acronym: 'DMZ', definition: 'A physical or logical network segment that contains external-facing services while protecting internal networks. Also called a screened subnet.' },
+            { letter: 'N', name: 'Network Access Control', acronym: 'NAC', definition: 'A security system that enforces policies for network device access based on device identity, compliance status, and authorization level.' },
+            { letter: 'S', name: 'Security Information and Event Management', acronym: 'SIEM', definition: 'A platform that aggregates, correlates, and analyzes security logs and events from across an organization\'s IT infrastructure. Provides real-time threat detection and investigation.' },
+            { letter: 'S', name: 'Security Orchestration, Automation, and Response', acronym: 'SOAR', definition: 'A platform that automates security incident response by orchestrating tools and playbooks to detect, investigate, and respond to threats faster.' },
+            { letter: 'E', name: 'Endpoint Detection and Response', acronym: 'EDR', definition: 'A security tool that monitors endpoints for suspicious activity and enables rapid response to detected threats. Focuses on detecting and remediating attacks at the endpoint level.' },
+            { letter: 'X', name: 'Extended Detection and Response', acronym: 'XDR', definition: 'An advanced security platform that integrates EDR with network, cloud, and application data to provide comprehensive threat detection and response across the entire attack surface.' },
+            { letter: 'N', name: 'Network Detection and Response', acronym: 'NDR', definition: 'A security tool that monitors network traffic and behavior for advanced threats, lateral movement, and data exfiltration that traditional tools may miss.' },
+            { letter: 'P', name: 'Proxy', acronym: '', definition: 'A network intermediary that stands between clients and servers, forwarding requests and responses. Used for filtering, caching, and security monitoring.' },
+            { letter: 'W', name: 'Web Application Firewall', acronym: 'WAF', definition: 'A specialized firewall that inspects HTTP/HTTPS traffic to block web application attacks such as SQL injection, XSS, and DDoS attacks.' },
+            { letter: 'N', name: 'Network Segmentation', acronym: '', definition: 'The practice of dividing a network into separate segments or subnets with controlled access between them. Limits the spread of breaches and contains lateral movement.' },
+            { letter: 'Z', name: 'Zero Trust Network Access', acronym: 'ZTNA', definition: 'A security approach that verifies every access request and provides least-privilege access to specific resources, regardless of location or network.' },
+            { letter: 'P', name: 'Private Cloud', acronym: '', definition: 'A cloud infrastructure dedicated exclusively to a single organization, providing greater control and privacy than public clouds. Can be on-premises or hosted.' },
+            { letter: 'H', name: 'Hybrid Cloud', acronym: '', definition: 'An IT environment that combines on-premises infrastructure with public cloud services, allowing data and applications to move between environments.' },
+
+            // Cryptography
+            { letter: 'A', name: 'Advanced Encryption Standard', acronym: 'AES', definition: 'A symmetric encryption algorithm approved by the U.S. National Security Agency for encrypting classified information. Uses 128, 192, or 256-bit keys and is widely used globally.' },
+            { letter: 'R', name: 'RSA', acronym: '', definition: 'An asymmetric encryption algorithm that uses a pair of public and private keys. Commonly used for digital signatures, key exchange, and public-key encryption.' },
+            { letter: 'P', name: 'Public Key Infrastructure', acronym: 'PKI', definition: 'A system for managing digital certificates and public keys. Enables secure communication, digital signatures, and authentication in public networks.' },
+            { letter: 'T', name: 'Transport Layer Security', acronym: 'TLS', definition: 'A cryptographic protocol that provides secure communication over the internet. Replaces SSL and is used for HTTPS, email encryption, and VPN connections.' },
+            { letter: 'H', name: 'Hashing', acronym: '', definition: 'A cryptographic process that converts input data into a fixed-size string of characters. Should be one-way and collision-resistant.' },
+            { letter: 'D', name: 'Digital Signature', acronym: '', definition: 'A cryptographic technique that verifies the authenticity and integrity of a message or document. Uses asymmetric encryption to prove the signer\'s identity.' },
+            { letter: 'C', name: 'Certificate Authority', acronym: 'CA', definition: 'A trusted entity that issues and manages digital certificates. Verifies the identity of certificate requestors before issuing certificates.' },
+            { letter: 'E', name: 'End-to-End Encryption', acronym: 'E2E', definition: 'An encryption method where only the sender and recipient can read messages, with encryption occurring at the endpoints rather than on intermediate servers.' },
+            { letter: 'S', name: 'SHA-256', acronym: '', definition: 'A cryptographic hash function that produces a 256-bit hash value. Commonly used for digital signatures, password hashing, and data integrity verification.' },
+            { letter: 'M', name: 'MD5', acronym: '', definition: 'A cryptographic hash function that produces a 128-bit hash value. Now considered cryptographically broken and should not be used for sensitive applications.' },
+            { letter: 'E', name: 'Elliptic Curve Cryptography', acronym: 'ECC', definition: 'An asymmetric encryption method based on elliptic curves that provides equivalent security to RSA with smaller key sizes. More efficient for mobile and embedded devices.' },
+            { letter: 'D', name: 'Diffie-Hellman', acronym: 'DH', definition: 'A cryptographic algorithm for secure key exchange over insecure channels. Allows two parties to establish a shared secret for encryption.' },
+            { letter: 'P', name: 'Perfect Forward Secrecy', acronym: 'PFS', definition: 'A cryptographic property where compromise of long-term keys does not affect the security of past sessions. Session keys are independent and temporary.' },
+            { letter: 'S', name: 'SSL Certificate', acronym: '', definition: 'A digital document that binds a public key to an entity\'s identity and is used to establish secure HTTPS connections. Issued and verified by a Certificate Authority.' },
+            { letter: 'C', name: 'Code Signing', acronym: '', definition: 'The practice of digitally signing software code to verify its authenticity and integrity. Assures users that code comes from a trusted source and has not been modified.' },
+
+            // Identity & Access
+            { letter: 'I', name: 'Identity and Access Management', acronym: 'IAM', definition: 'A security framework that manages user identities and their access to resources. Controls who can access what, when, and under what conditions.' },
+            { letter: 'M', name: 'Multi-Factor Authentication', acronym: 'MFA', definition: 'A security mechanism that requires users to provide two or more verification factors before granting access. Factors include something you know (password), have (phone), or are (biometric).' },
+            { letter: 'S', name: 'Single Sign-On', acronym: 'SSO', definition: 'An authentication system that allows users to log in once and access multiple applications without reauthentication. Common in enterprise environments.' },
+            { letter: 'R', name: 'Role-Based Access Control', acronym: 'RBAC', definition: 'An access control model that grants permissions based on user roles rather than individual identities. Simplifies access management in large organizations.' },
+            { letter: 'A', name: 'Attribute-Based Access Control', acronym: 'ABAC', definition: 'An advanced access control model that grants access based on attributes such as user properties, resource properties, and environmental conditions.' },
+            { letter: 'P', name: 'Privileged Access Management', acronym: 'PAM', definition: 'A security solution that manages and monitors access to privileged accounts and credentials. Includes password vaults, session recording, and access controls.' },
+            { letter: 'O', name: 'OAuth', acronym: '', definition: 'An open authorization framework that allows users to authorize third-party applications to access their resources without sharing passwords. Widely used for social login.' },
+            { letter: 'S', name: 'SAML', acronym: 'Security Assertion Markup Language', definition: 'A standard for exchanging authentication and authorization information between identity providers and service providers. Commonly used in enterprise SSO solutions.' },
+            { letter: 'O', name: 'OpenID Connect', acronym: 'OIDC', definition: 'An identity layer built on top of OAuth 2.0 that provides user authentication and profile information. Combines authentication with authorization capabilities.' },
+            { letter: 'J', name: 'JSON Web Token', acronym: 'JWT', definition: 'A standard for creating digitally signed tokens that assert claims about users. Used for stateless authentication in web and mobile applications.' },
+            { letter: 'B', name: 'Biometric Authentication', acronym: '', definition: 'Authentication based on unique physical or behavioral characteristics such as fingerprints, facial recognition, or iris scanning. Difficult to forge or steal.' },
+            { letter: 'P', name: 'Passwordless Authentication', acronym: '', definition: 'Authentication methods that do not rely on passwords, such as biometrics, hardware keys, or push notifications. Improves security by eliminating password-related vulnerabilities.' },
+            { letter: 'A', name: 'Account Lockout', acronym: '', definition: 'A security mechanism that temporarily or permanently disables an account after multiple failed login attempts. Prevents brute force attacks.' },
+            { letter: 'T', name: 'Two-Factor Authentication', acronym: '2FA', definition: 'A form of MFA requiring exactly two factors for authentication. Common implementations include password plus SMS code or password plus authenticator app.' },
+            { letter: 'C', name: 'Conditional Access', acronym: '', definition: 'A security model that grants access based on real-time evaluation of contextual conditions such as device health, location, and risk level.' },
+
+            // Cloud Security
+            { letter: 'C', name: 'Cloud Security Posture Management', acronym: 'CSPM', definition: 'A security solution that continuously monitors cloud configurations and identifies misconfigurations, compliance violations, and security risks in cloud environments.' },
+            { letter: 'C', name: 'Cloud Workload Protection Platform', acronym: 'CWPP', definition: 'A security solution that protects cloud workloads (VMs, containers, serverless) from vulnerabilities and threats. Provides runtime protection and compliance monitoring.' },
+            { letter: 'C', name: 'Cloud Access Security Broker', acronym: 'CASB', definition: 'A security solution that sits between users and cloud services to monitor activity, enforce policies, and prevent data exfiltration. Provides visibility into cloud usage.' },
+            { letter: 'C', name: 'Cloud-Native Application Protection Platform', acronym: 'CNAPP', definition: 'An integrated platform that provides comprehensive protection for cloud-native applications, including code scanning, runtime protection, and incident response.' },
+            { letter: 'S', name: 'Shared Responsibility Model', acronym: '', definition: 'A cloud security principle that divides security responsibilities between cloud providers and customers based on service model (IaaS, PaaS, SaaS).' },
+            { letter: 'I', name: 'Infrastructure as a Service', acronym: 'IaaS', definition: 'A cloud service model providing virtualized computing resources over the internet, including VMs, storage, and networking. Customer is responsible for OS and application security.' },
+            { letter: 'P', name: 'Platform as a Service', acronym: 'PaaS', definition: 'A cloud service model providing a platform for developing, testing, and deploying applications. Cloud provider manages infrastructure and OS security.' },
+            { letter: 'S', name: 'Software as a Service', acronym: 'SaaS', definition: 'A cloud service model delivering applications over the internet on a subscription basis. Cloud provider manages security of the application and infrastructure.' },
+            { letter: 'C', name: 'Cloud Encryption', acronym: '', definition: 'Encrypting data before uploading it to the cloud to ensure confidentiality even if the cloud provider is compromised. Includes encryption in transit and at rest.' },
+            { letter: 'K', name: 'Key Management Service', acronym: 'KMS', definition: 'A cloud service that securely generates, stores, and manages cryptographic keys used for encryption. Centralizes key lifecycle management.' },
+            { letter: 'C', name: 'Container Security', acronym: '', definition: 'The practice of securing containerized applications through image scanning, runtime protection, and orchestration security. Addresses unique threats in container environments.' },
+            { letter: 'K', name: 'Kubernetes Security', acronym: '', definition: 'Security measures for protecting Kubernetes orchestration platforms and containerized workloads. Includes RBAC, network policies, and pod security policies.' },
+            { letter: 'S', name: 'Serverless Security', acronym: '', definition: 'Security practices for protecting serverless computing environments and functions. Focuses on application security, access control, and monitoring.' },
+
+            // Compliance & Governance
+            { letter: 'S', name: 'SOC 2', acronym: 'Service Organization Control 2', definition: 'An audit standard that verifies service organizations meet security, availability, processing integrity, confidentiality, and privacy criteria. Commonly required for SaaS providers.' },
+            { letter: 'P', name: 'PCI DSS', acronym: 'Payment Card Industry Data Security Standard', definition: 'A security standard for organizations handling credit card information. Requires network security, access control, and regular testing.' },
+            { letter: 'H', name: 'HIPAA', acronym: 'Health Insurance Portability and Accountability Act', definition: 'A U.S. law requiring healthcare organizations to protect patient privacy and secure electronic protected health information (ePHI).' },
+            { letter: 'G', name: 'GDPR', acronym: 'General Data Protection Regulation', definition: 'A European Union regulation that protects personal data and privacy of EU residents. Applies to organizations worldwide that process EU resident data.' },
+            { letter: 'C', name: 'CCPA', acronym: 'California Consumer Privacy Act', definition: 'A California state law that gives consumers rights over their personal information and requires businesses to implement data protection measures.' },
+            { letter: 'F', name: 'FedRAMP', acronym: 'Federal Risk and Authorization Management Program', definition: 'A U.S. government program that provides a standardized approach to cloud service assessment, authorization, and continuous monitoring.' },
+            { letter: 'B', name: 'BYOD Policy', acronym: 'Bring Your Own Device', definition: 'An organizational policy that allows employees to use personal devices for work. Requires security controls to protect corporate data on personal devices.' },
+            { letter: 'D', name: 'Data Loss Prevention', acronym: 'DLP', definition: 'A security solution that detects and prevents unauthorized transmission or storage of sensitive data. Monitors data in motion, at rest, and in use.' },
+            { letter: 'A', name: 'Audit Log', acronym: '', definition: 'A record of system activities and security events that provides evidence of who accessed what and when. Essential for compliance and forensic investigation.' },
+            { letter: 'C', name: 'Configuration Management', acronym: '', definition: 'The process of documenting, tracking, and controlling changes to systems and software. Essential for maintaining security baselines and compliance.' },
+            { letter: 'V', name: 'Vendor Risk Management', acronym: '', definition: 'The process of assessing and managing security risks associated with third-party vendors and suppliers. Includes vendor assessments and contract review.' },
+            { letter: 'B', name: 'Business Continuity', acronym: 'BC', definition: 'A strategic and tactical capability to continue critical operations during and after a disruptive incident. Includes planning, testing, and recovery procedures.' },
+            { letter: 'D', name: 'Disaster Recovery', acronym: 'DR', definition: 'A set of policies and procedures for recovering from a major failure or disaster. Includes RTO (Recovery Time Objective) and RPO (Recovery Point Objective).' },
+
+            // Incident Response
+            { letter: 'D', name: 'Digital Forensics and Incident Response', acronym: 'DFIR', definition: 'A discipline combining digital forensics investigation with incident response procedures to detect, investigate, and remediate cyber attacks.' },
+            { letter: 'C', name: 'Chain of Custody', acronym: '', definition: 'A documented process that tracks the handling and transfer of evidence to maintain its integrity and admissibility in legal proceedings.' },
+            { letter: 'F', name: 'Forensics', acronym: '', definition: 'The process of collecting, preserving, analyzing, and presenting digital evidence to reconstruct security incidents and support legal proceedings.' },
+            { letter: 'T', name: 'Triage', acronym: '', definition: 'The initial assessment and prioritization of security incidents based on severity, impact, and urgency. Determines incident response priority and allocation of resources.' },
+            { letter: 'I', name: 'Incident Playbook', acronym: '', definition: 'A documented procedure for responding to specific types of security incidents. Includes detection, containment, eradication, and recovery steps.' },
+            { letter: 'T', name: 'Tabletop Exercise', acronym: '', definition: 'A simulated incident response exercise where team members discuss and respond to a hypothetical security scenario without actual systems.' },
+            { letter: 'I', name: 'Incident Response Plan', acronym: 'IRP', definition: 'A formal document outlining procedures for detecting, responding to, and recovering from security incidents. Includes roles, responsibilities, and contact information.' },
+            { letter: 'R', name: 'Root Cause Analysis', acronym: 'RCA', definition: 'A systematic investigation to identify the fundamental cause of a security incident rather than addressing only symptoms. Used to prevent recurrence.' },
+            { letter: 'P', name: 'Post-Incident Review', acronym: 'PIR', definition: 'A meeting held after an incident to discuss what happened, what was handled well, and what could be improved. Also called a "lessons learned" session.' },
+            { letter: 'E', name: 'Evidence Collection', acronym: '', definition: 'The process of gathering and preserving digital artifacts and logs as evidence during incident investigation. Must maintain chain of custody.' },
+            { letter: 'M', name: 'Memory Forensics', acronym: '', definition: 'Forensic analysis of a system\'s RAM to recover artifacts, running processes, and evidence of malware that may not appear on disk.' },
+            { letter: 'D', name: 'Disk Forensics', acronym: '', definition: 'Forensic analysis of storage devices to recover deleted files, unallocated space data, and evidence of system activity.' },
+
+            // Vulnerability Management
+            { letter: 'C', name: 'Common Vulnerabilities and Exposures', acronym: 'CVE', definition: 'A publicly disclosed vulnerability assigned a unique identifier. Enables tracking and discussion of security issues across tools and databases.' },
+            { letter: 'C', name: 'Common Vulnerability Scoring System', acronym: 'CVSS', definition: 'A framework for rating the severity of vulnerabilities from 0 to 10 based on factors like attack vector, complexity, and impact.' },
+            { letter: 'C', name: 'Common Weakness Enumeration', acronym: 'CWE', definition: 'A list of software and hardware weaknesses that can lead to vulnerabilities. Helps developers and security professionals understand and prevent common flaws.' },
+            { letter: 'Z', name: 'Zero-Day Vulnerability', acronym: '', definition: 'A previously unknown security vulnerability with no available patch. Highly dangerous as attackers can exploit it before vendors can create a fix.' },
+            { letter: 'P', name: 'Patch Management', acronym: '', definition: 'The process of developing, testing, and deploying security patches to fix vulnerabilities. Essential for maintaining a secure infrastructure.' },
+            { letter: 'B', name: 'Bug Bounty', acronym: '', definition: 'A program where organizations offer rewards to security researchers for responsibly disclosing vulnerabilities. Incentivizes finding and reporting bugs.' },
+            { letter: 'V', name: 'Vulnerability Disclosure', acronym: '', definition: 'The process of reporting security vulnerabilities to vendors in accordance with responsible disclosure practices. Includes coordinated release of patches.' },
+            { letter: 'V', name: 'Vulnerability Assessment', acronym: '', definition: 'A systematic examination of systems and applications to identify security vulnerabilities. Typically uses automated scanning tools and manual testing.' },
+            { letter: 'P', name: 'Penetration Test', acronym: 'Pen Test', definition: 'An authorized, controlled security test where experts simulate real attacks to identify exploitable vulnerabilities and assess security controls.' },
+            { letter: 'W', name: 'Web Application Penetration Test', acronym: '', definition: 'A focused penetration test targeting web applications to identify vulnerabilities such as injection flaws, authentication bypass, and data exposure.' },
+            { letter: 'E', name: 'Exploit', acronym: '', definition: 'A piece of code or technique used to take advantage of a vulnerability and compromise a system. Can be weaponized for attacks or used in security testing.' },
+            { letter: 'P', name: 'Proof of Concept', acronym: 'PoC', definition: 'A demonstration that a vulnerability can be exploited. Often used in bug reports and security research to show technical feasibility.' },
+
+            // DevSecOps
+            { letter: 'S', name: 'Static Application Security Testing', acronym: 'SAST', definition: 'An automated security testing approach that analyzes source code without executing it to identify vulnerabilities. Finds issues early in development.' },
+            { letter: 'D', name: 'Dynamic Application Security Testing', acronym: 'DAST', definition: 'An automated security testing approach that executes an application and analyzes its behavior to identify vulnerabilities. Tests running applications.' },
+            { letter: 'I', name: 'Interactive Application Security Testing', acronym: 'IAST', definition: 'A security testing approach that combines SAST and DAST, instrumenting applications to provide detailed insight into vulnerabilities.' },
+            { letter: 'S', name: 'Software Composition Analysis', acronym: 'SCA', definition: 'An automated approach to identifying open-source components, licenses, and vulnerabilities in software applications. Manages supply chain risks.' },
+            { letter: 'C', name: 'Container Image Scanning', acronym: '', definition: 'The process of analyzing container images for known vulnerabilities and misconfigurations before deployment. Part of container security strategy.' },
+            { letter: 'I', name: 'Infrastructure as Code Security', acronym: 'IaC Security', definition: 'Security practices for scanning and securing infrastructure-as-code templates (Terraform, CloudFormation) for misconfigurations and compliance violations.' },
+            { letter: 'S', name: 'Secrets Management', acronym: '', definition: 'The practice of securely storing, managing, and rotating sensitive credentials like API keys, passwords, and tokens. Prevents accidental exposure.' },
+            { letter: 'C', name: 'Code Review', acronym: '', definition: 'The process of examining source code for security vulnerabilities, logic errors, and coding standard violations. Part of secure development practices.' },
+            { letter: 'D', name: 'Dependency Management', acronym: '', definition: 'The process of tracking, updating, and managing third-party libraries and dependencies used in software projects. Critical for managing supply chain risk.' },
+            { letter: 'B', name: 'Build Pipeline Security', acronym: '', definition: 'Security measures integrated into continuous integration/continuous deployment (CI/CD) pipelines to detect and prevent vulnerabilities in code.' },
+
+            // Supply Chain Security
+            { letter: 'S', name: 'SBOM', acronym: 'Software Bill of Materials', definition: 'A formal inventory of software components, dependencies, and licenses used in an application. Critical for tracking and managing software supply chain risks.' },
+            { letter: 'T', name: 'Third-Party Risk Management', acronym: '', definition: 'The process of assessing and managing security risks posed by vendors, partners, and service providers. Includes vendor assessments and contract requirements.' },
+            { letter: 'S', name: 'Secure Software Development Lifecycle', acronym: 'SSDLC', definition: 'A development methodology that integrates security practices throughout all phases of software development from design to deployment.' },
+            { letter: 'S', name: 'Software Supply Chain Attack', acronym: '', definition: 'An attack targeting the supply chain to compromise software before it reaches end users. Can affect thousands of organizations through a single compromised component.' },
+            { letter: 'P', name: 'Package Repository Security', acronym: '', definition: 'Security measures for protecting software package repositories (npm, PyPI, Maven) from malicious uploads and account compromise.' },
+
+            // Emerging Concepts
+            { letter: 'A', name: 'AI Security', acronym: '', definition: 'Security practices and challenges specific to artificial intelligence and machine learning systems, including model poisoning, adversarial examples, and data privacy.' },
+            { letter: 'L', name: 'Large Language Model Security', acronym: 'LLM Security', definition: 'Security considerations for large language models including prompt injection, model extraction, and data leakage. Addresses unique threats in generative AI.' },
+            { letter: 'P', name: 'Prompt Injection', acronym: '', definition: 'An attack that manipulates LLM behavior by injecting malicious instructions into prompts. Can bypass safety measures and cause unintended outputs.' },
+            { letter: 'M', name: 'Model Poisoning', acronym: '', definition: 'An attack that introduces malicious data into training datasets to compromise ML model behavior. Results in models that behave unexpectedly or maliciously.' },
+            { letter: 'A', name: 'Adversarial Machine Learning', acronym: '', definition: 'Techniques for attacking and defending machine learning models, including adversarial examples designed to cause misclassification.' },
+            { letter: 'D', name: 'Deepfake', acronym: '', definition: 'Synthetic media created using deep learning techniques to create realistic but fake video or audio. Used for social engineering and misinformation.' },
+            { letter: 'S', name: 'Synthetic Identity Fraud', acronym: '', definition: 'A type of fraud using synthetic identities created with a mix of real and fake information to circumvent identity verification. Increasingly used in account takeover attacks.' },
+            { letter: 'I', name: 'IoT Security', acronym: '', definition: 'Security practices for Internet of Things devices and networks, addressing unique challenges of resource-constrained embedded systems.' },
+            { letter: 'Q', name: 'Quantum Computing Security', acronym: '', definition: 'Security considerations for protecting systems against future quantum computers, including post-quantum cryptography and quantum-resistant algorithms.' },
+            { letter: 'P', name: 'Post-Quantum Cryptography', acronym: 'PQC', definition: 'Cryptographic algorithms designed to resist attacks from quantum computers. Being standardized by NIST as quantum computers become more practical.' },
+
+            // Additional Core Terms
+            { letter: 'A', name: 'Authentication', acronym: '', definition: 'The process of verifying the identity of a user, device, or system. The first step in the AAA model (Authentication, Authorization, Accounting).' },
+            { letter: 'A', name: 'Authorization', acronym: '', definition: 'The process of determining what an authenticated user or system is allowed to do. Defines access rights and permissions.' },
+            { letter: 'A', name: 'Accountability', acronym: '', definition: 'The requirement to track and log user and system activities to ensure users can be held responsible for their actions.' },
+            { letter: 'E', name: 'Encryption', acronym: '', definition: 'The process of converting plaintext into ciphertext using cryptographic algorithms. Makes data unreadable to unauthorized parties.' },
+            { letter: 'D', name: 'Decryption', acronym: '', definition: 'The process of converting encrypted ciphertext back to plaintext using a decryption key. Only possible with the correct key.' },
+            { letter: 'S', name: 'Symmetric Encryption', acronym: '', definition: 'An encryption method using the same key for both encryption and decryption. Faster than asymmetric encryption but requires secure key distribution.' },
+            { letter: 'A', name: 'Asymmetric Encryption', acronym: '', definition: 'An encryption method using a pair of public and private keys. Enables secure communication without prior key exchange.' },
+            { letter: 'N', name: 'Non-Repudiation', acronym: '', definition: 'A security property ensuring that a user cannot deny having performed an action. Achieved through digital signatures and audit logs.' },
+            { letter: 'T', name: 'Threat', acronym: '', definition: 'An adversary, capability, or vulnerability that could potentially cause harm to an organization or system.' },
+            { letter: 'R', name: 'Risk', acronym: '', definition: 'The potential for loss or damage calculated as the probability of a threat being exploited multiplied by the impact of exploitation.' },
+            { letter: 'V', name: 'Vulnerability', acronym: '', definition: 'A weakness in a system or application that could be exploited by an attacker. Can be technical, process-based, or human-related.' },
+            { letter: 'E', name: 'Exposure', acronym: '', definition: 'A condition or instance where a system is susceptible to loss or damage. Similar to vulnerability but emphasizes the current state.' },
+            { letter: 'R', name: 'Risk Assessment', acronym: '', definition: 'A systematic process of identifying threats, vulnerabilities, and calculating risks to prioritize security investments.' },
+            { letter: 'R', name: 'Risk Mitigation', acronym: '', definition: 'The process of reducing risk through security controls, process improvements, or acceptance of remaining risk.' },
+            { letter: 'S', name: 'Security Baseline', acronym: '', definition: 'A documented set of minimum security requirements that systems must meet. Provides a standard security posture.' },
+            { letter: 'S', name: 'Security Policy', acronym: '', definition: 'A formal document that defines an organization\'s security objectives, principles, and requirements. Forms the foundation for security programs.' },
+            { letter: 'S', name: 'Standard Operating Procedure', acronym: 'SOP', definition: 'A detailed set of instructions for performing specific security tasks consistently and repeatably.' },
+            { letter: 'G', name: 'Governance', acronym: '', definition: 'The processes and structures for making and enforcing decisions, managing risk, and ensuring compliance with policies.' },
+            { letter: 'C', name: 'Compliance', acronym: '', definition: 'The state of adhering to security policies, standards, frameworks, and regulations applicable to an organization.' },
+            { letter: 'S', name: 'Security Awareness', acronym: '', definition: 'The process of educating users and employees about security risks, best practices, and their role in protecting the organization.' },
+            { letter: 'S', name: 'Security Culture', acronym: '', definition: 'An organizational environment where security is valued and integrated into decision-making and daily practices.' },
+            { letter: 'I', name: 'Information Security', acronym: 'InfoSec', definition: 'The practice of protecting information and systems from unauthorized access, modification, and disruption. Broader than cybersecurity.' },
+            { letter: 'C', name: 'Cyber Security', acronym: '', definition: 'The practice of protecting computer systems and networks from digital attacks. A subset of information security.' },
+            { letter: 'P', name: 'Privacy', acronym: '', definition: 'The right of individuals to control information about themselves and protection of personal data from unauthorized use.' },
+            { letter: 'D', name: 'Data Protection', acronym: '', definition: 'The process of safeguarding data from loss, theft, and corruption through various security controls and best practices.' },
+            { letter: 'C', name: 'Confidentiality', acronym: '', definition: 'A security principle ensuring that information is accessible only to authorized individuals and protected from disclosure.' },
+            { letter: 'I', name: 'Integrity', acronym: '', definition: 'A security principle ensuring that data and systems are accurate, complete, and have not been altered by unauthorized parties.' },
+            { letter: 'A', name: 'Availability', acronym: '', definition: 'A security principle ensuring that systems and data are accessible and usable by authorized users when needed.' },
+        ];
+
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const alphabetNav = document.getElementById('alphabetNav');
+        const termsContainer = document.getElementById('termsContainer');
+        const noResults = document.getElementById('noResults');
+        const termCount = document.getElementById('termCount');
+        let activeLetterBtn = null;
+
+        // Create alphabet buttons
+        function initializeAlphabet() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            letters.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'letter-btn';
+                btn.textContent = letter;
+                btn.addEventListener('click', () => filterByLetter(letter, btn));
+                alphabetNav.appendChild(btn);
+            });
+        }
+
+        // Filter by letter
+        function filterByLetter(letter, btn) {
+            searchInput.value = '';
+
+            if (activeLetterBtn) {
+                activeLetterBtn.classList.remove('active');
+            }
+
+            if (activeLetterBtn === btn) {
+                activeLetterBtn = null;
+                displayTerms(glossaryTerms);
+            } else {
+                btn.classList.add('active');
+                activeLetterBtn = btn;
+                const filtered = glossaryTerms.filter(term => term.letter === letter);
+                displayTerms(filtered);
+            }
+        }
+
+        // Filter by search
+        searchInput.addEventListener('input', (e) => {
+            if (activeLetterBtn) {
+                activeLetterBtn.classList.remove('active');
+                activeLetterBtn = null;
+            }
+
+            const query = e.target.value.toLowerCase();
+            if (query.length === 0) {
+                displayTerms(glossaryTerms);
+            } else {
+                const filtered = glossaryTerms.filter(term =>
+                    term.name.toLowerCase().includes(query) ||
+                    term.acronym.toLowerCase().includes(query) ||
+                    term.definition.toLowerCase().includes(query)
+                );
+                displayTerms(filtered);
+            }
+        });
+
+        // Display terms
+        function displayTerms(terms) {
+            termsContainer.innerHTML = '';
+            termCount.textContent = terms.length;
+
+            if (terms.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+
+            const grouped = {};
+            terms.forEach(term => {
+                if (!grouped[term.letter]) {
+                    grouped[term.letter] = [];
+                }
+                grouped[term.letter].push(term);
+            });
+
+            Object.keys(grouped).sort().forEach(letter => {
+                const section = document.createElement('div');
+                section.className = 'letter-section';
+
+                const header = document.createElement('h2');
+                header.className = 'letter-header';
+                header.textContent = letter;
+                section.appendChild(header);
+
+                const grid = document.createElement('div');
+                grid.className = 'terms-grid';
+
+                grouped[letter].forEach(term => {
+                    const card = document.createElement('div');
+                    card.className = 'term-card';
+
+                    const name = document.createElement('h3');
+                    name.className = 'term-name';
+                    name.textContent = term.name;
+                    card.appendChild(name);
+
+                    if (term.acronym) {
+                        const acronym = document.createElement('div');
+                        acronym.className = 'term-acronym';
+                        acronym.textContent = term.acronym;
+                        card.appendChild(acronym);
+                    }
+
+                    const definition = document.createElement('p');
+                    definition.className = 'term-definition';
+                    definition.textContent = term.definition;
+                    card.appendChild(definition);
+
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                termsContainer.appendChild(section);
+            });
+        }
+
+        // Initialize
+        initializeAlphabet();
+        displayTerms(glossaryTerms);
+
+        // Hamburger Menu
+        (function () {
+            var btn = document.getElementById('hamburger-btn');
+            var overlay = document.getElementById('menu-overlay');
+            var panel = document.getElementById('menu-panel');
+            var search = document.getElementById('menu-search');
+            function toggle() {
+                var isOpen = panel.classList.toggle('open');
+                overlay.classList.toggle('open');
+                btn.classList.toggle('open');
+                if (isOpen) search.focus();
+            }
+            function close() {
+                panel.classList.remove('open');
+                overlay.classList.remove('open');
+                btn.classList.remove('open');
+            }
+            btn.addEventListener('click', toggle);
+            overlay.addEventListener('click', close);
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+            search.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && search.value.trim()) {
+                    window.location.href = 'glossary.html?q=' + encodeURIComponent(search.value.trim());
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

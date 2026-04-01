@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Actor Registry - Threatpedia</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Grid overlay background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(30, 39, 51, 0.05) 25%, rgba(30, 39, 51, 0.05) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.05) 75%, rgba(30, 39, 51, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(30, 39, 51, 0.05) 25%, rgba(30, 39, 51, 0.05) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.05) 75%, rgba(30, 39, 51, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="1" /></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.03"/></svg>');
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--muted); }
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .hamburger:hover { border-color: var(--amber); }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+        .menu-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 199;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .menu-overlay.open { opacity: 1; pointer-events: auto; }
+        .menu-panel {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: 320px; max-width: 85vw;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex; flex-direction: column;
+            padding: 80px 32px 32px;
+            overflow-y: auto;
+        }
+        .menu-panel.open { transform: translateX(0); }
+        .menu-search {
+            width: 100%; background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.88rem; padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 28px; border-radius: 0;
+        }
+        .menu-search::placeholder { color: var(--muted); }
+        .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+        .menu-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem; letter-spacing: 0.3em;
+            color: var(--amber-dim); text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .menu-links {
+            list-style: none; display: flex; flex-direction: column;
+            gap: 0; margin-bottom: 28px;
+        }
+        .menu-links a {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem; letter-spacing: 0.12em;
+            color: var(--text); text-decoration: none;
+            text-transform: uppercase;
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+        .menu-links a:first-child { border-top: 1px solid var(--border); }
+        .menu-links a:hover { color: var(--amber); padding-left: 8px; }
+        .menu-links a.active { color: var(--amber); }
+        .menu-cta {
+            display: block; text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--bg); background: var(--amber);
+            text-decoration: none; padding: 15px 24px;
+            transition: background 0.2s; margin-top: auto;
+        }
+        .menu-cta:hover { background: #f0b030; }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 3rem auto 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Stats Bar */
+        .stats {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--amber);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Search and Filter */
+        .controls {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar::placeholder {
+            color: var(--muted);
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .chip {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        .chip:hover {
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        .chip.active {
+            background-color: var(--amber);
+            color: var(--bg);
+            border-color: var(--amber);
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .view-btn {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background-color: var(--amber);
+            color: var(--bg);
+            border-color: var(--amber);
+        }
+
+        /* Table View */
+        .table-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: rgba(232, 160, 32, 0.1);
+            border-bottom: 2px solid var(--border);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: rgba(232, 160, 32, 0.15);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(232, 160, 32, 0.05);
+        }
+
+        .actor-name {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status.active {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .status.inactive {
+            background-color: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+            border: 1px solid #9e9e9e;
+        }
+
+        .status.unknown {
+            background-color: rgba(232, 160, 32, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* Card View */
+        .cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .actor-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .actor-card:hover {
+            border-color: var(--amber);
+            box-shadow: 0 0 20px rgba(232, 160, 32, 0.1);
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .card-field {
+            margin-bottom: 1rem;
+        }
+
+        .card-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-value {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background-color: rgba(232, 160, 32, 0.15);
+            color: var(--amber);
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+        }
+
+        .no-results p {
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a class="nav-logo" href="index.html">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
+        <div class="menu-links">
+            <a href="glossary.html">Glossary</a>
+            <a href="threat-actors.html" class="active">Threat Actors</a>
+            <a href="incidents/teampcp-supply-chain-attack.html">Incidents</a>
+        </div>
+        <a class="menu-cta" href="index.html#signup">Register Interest</a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Threat Actor Registry</h1>
+            <p>Comprehensive tracking of advanced persistent threats, cybercriminal organizations, and nation-state sponsored cyber actors. Cross-reference aliases across vendor taxonomies to identify coordinated campaigns and attribution patterns.</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">78</div>
+                <div class="stat-label">Actors Tracked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">52</div>
+                <div class="stat-label">Active Threats</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">21</div>
+                <div class="stat-label">Nation States</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Threat Categories</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search threat actors by name, aliases, or campaigns...">
+
+            <div class="filter-section">
+                <label class="filter-label">Nation-State Affiliation</label>
+                <div class="filter-chips">
+                    <button class="chip" data-filter="affiliation" data-value="China">China</button>
+                    <button class="chip" data-filter="affiliation" data-value="Russia">Russia</button>
+                    <button class="chip" data-filter="affiliation" data-value="North Korea">North Korea</button>
+                    <button class="chip" data-filter="affiliation" data-value="Iran">Iran</button>
+                    <button class="chip" data-filter="affiliation" data-value="Unknown">Other/Unknown</button>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">Motivation</label>
+                <div class="filter-chips">
+                    <button class="chip" data-filter="motivation" data-value="Espionage">Espionage</button>
+                    <button class="chip" data-filter="motivation" data-value="Financial">Financial</button>
+                    <button class="chip" data-filter="motivation" data-value="Sabotage">Sabotage</button>
+                    <button class="chip" data-filter="motivation" data-value="Hacktivist">Hacktivist</button>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <label class="filter-label">Status</label>
+                <div class="filter-chips">
+                    <button class="chip" data-filter="status" data-value="Active">Active</button>
+                    <button class="chip" data-filter="status" data-value="Inactive">Inactive</button>
+                    <button class="chip" data-filter="status" data-value="Unknown">Unknown</button>
+                </div>
+            </div>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="table">Table View</button>
+                <button class="view-btn" data-view="cards">Card View</button>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div class="table-container" id="tableView" style="display: block;">
+            <table id="actorsTable">
+                <thead>
+                    <tr>
+                        <th data-sort="name">Primary Name</th>
+                        <th>Aliases</th>
+                        <th data-sort="affiliation">Nation-State</th>
+                        <th data-sort="motivation">Motivation</th>
+                        <th data-sort="firstSeen">First Seen</th>
+                        <th data-sort="status">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cards View -->
+        <div class="cards-container" id="cardsView" style="display: none;">
+        </div>
+
+        <!-- No results message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <p>No threat actors found matching your filters.</p>
+        </div>
+    </main>
+
+    <script>
+        // Comprehensive threat actor database
+        const threatActors = [
+            // China-aligned
+            {
+                id: 1,
+                name: "APT1",
+                aliases: ["Comment Crew", "PLA Unit 61398", "STUXNET", "GhostNet"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2006",
+                status: "Active",
+                campaigns: "Shady RAT, Night Dragon",
+                tools: ["Poison Ivy", "Derusbi", "Ghost RAT"],
+                description: "One of the earliest and most prolific Chinese APT groups, attributed to China's PLA Unit 61398"
+            },
+            {
+                id: 2,
+                name: "APT10",
+                aliases: ["Stone Panda", "MenuPass", "POTASSIUM"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Operation Cloud Hopper, Multiple MSP compromises",
+                tools: ["Poisonplug", "UPPERCUT", "Quasar RAT"],
+                description: "Targets government operations, military, and business across multiple industries"
+            },
+            {
+                id: 3,
+                name: "APT27",
+                aliases: ["Emissary Panda", "Lucky Mouse", "HIPPOs"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2010",
+                status: "Active",
+                campaigns: "Government networks, aerospace, defense",
+                tools: ["ICEFOG", "ScanBox", "Backdoor.APT.C_36"],
+                description: "Focused on aerospace, manufacturing, betting, and defense sectors"
+            },
+            {
+                id: 4,
+                name: "APT31",
+                aliases: ["Zirconium", "NOTROBIN", "Violet Typhoon"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2012",
+                status: "Active",
+                campaigns: "Government, telecom, and defense targeting",
+                tools: ["SHIPSHAPE", "LOWBALL", "FELICITY"],
+                description: "State-sponsored espionage targeting critical sectors"
+            },
+            {
+                id: 5,
+                name: "APT40",
+                aliases: ["TEMP.Periscope", "Leviathan", "BRONZE MOHUR"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Maritime, defense, aviation targeting",
+                tools: ["ScanBox", "JSky", "Mimikatz"],
+                description: "Attributed to China's MSS, focuses on maritime and defense industries"
+            },
+            {
+                id: 6,
+                name: "APT41",
+                aliases: ["BARIUM", "Winnti", "Double Dragon", "BRASS TYPHOON"],
+                affiliation: "China",
+                motivation: "Espionage & Financial",
+                firstSeen: "2012",
+                status: "Active",
+                campaigns: "Healthcare, telecoms, high-tech espionage",
+                tools: ["ShadowPad", "Crosswalk", "PcShare RAT"],
+                description: "Carries out both state-sponsored espionage and financially motivated operations"
+            },
+            {
+                id: 7,
+                name: "Volt Typhoon",
+                aliases: ["BRONZE SILHOUETTE"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2017",
+                status: "Active",
+                campaigns: "US communications infrastructure",
+                tools: ["LOTL techniques", "Compromised Fortinet devices"],
+                description: "Focuses on US communications infrastructure using LOTL techniques"
+            },
+            {
+                id: 8,
+                name: "Salt Typhoon",
+                aliases: ["LUCKYDOOR", "BRONZE CASUAL"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2022",
+                status: "Active",
+                campaigns: "ISP targeting, telecom infrastructure",
+                tools: ["GhostSpider", "Masol RAT", "Backdoor malware"],
+                description: "MSS-operated group targeting ISPs for metadata and wiretap data"
+            },
+            {
+                id: 9,
+                name: "Flax Typhoon",
+                aliases: ["BRONZE HICKMAN"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Critical infrastructure targeting",
+                tools: ["LOTL techniques", "Legitimate tool abuse"],
+                description: "Targets critical infrastructure using living-off-the-land techniques"
+            },
+            {
+                id: 10,
+                name: "Hafnium",
+                aliases: ["BRONZE ECCLES"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Exchange Server exploitation, broad targeting",
+                tools: ["ProxyShell", "CHOPPER", "Custom exploits"],
+                description: "State-sponsored group targeting US entities across multiple sectors"
+            },
+            {
+                id: 11,
+                name: "Mustang Panda",
+                aliases: ["BRONZE PRESIDENT", "Playful Dragon"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2015",
+                status: "Active",
+                campaigns: "Government and think tank targeting",
+                tools: ["ChChes RAT", "PlugX", "Poison Ivy"],
+                description: "Targets government entities and think tanks"
+            },
+
+            // Russia-aligned
+            {
+                id: 12,
+                name: "APT28",
+                aliases: ["Fancy Bear", "STRONTIUM", "Sofacy", "Pawn Storm", "Forest Blizzard"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2007",
+                status: "Active",
+                campaigns: "Democratic institutions, military, defense",
+                tools: ["CHOPSTICK", "Komplex", "X-Agent", "X-Tunnel"],
+                description: "Linked to Russia's GRU military intelligence, focuses on foreign affairs and intelligence"
+            },
+            {
+                id: 13,
+                name: "APT29",
+                aliases: ["Cozy Bear", "NOBELIUM", "Midnight Blizzard", "IRON HEMLOCK", "UNC2452"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2008",
+                status: "Active",
+                campaigns: "Government networks, technology firms, SolarWinds",
+                tools: ["Evasion tactics", "Spear-phishing", "Supply chain attacks"],
+                description: "Linked to Russia's SVR, conducts long-running espionage campaigns against governments"
+            },
+            {
+                id: 14,
+                name: "Sandworm",
+                aliases: ["APT44", "IRIDIUM", "ELECTRUM", "Voodoo Bear", "Seashell Blizzard"],
+                affiliation: "Russia",
+                motivation: "Sabotage & Espionage",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Ukraine infrastructure, NotPetya, Black Energy",
+                tools: ["NotPetya", "Black Energy", "VPNFilter", "Cyclops Blink"],
+                description: "GRU Unit 74455, known for destructive attacks and infrastructure targeting"
+            },
+            {
+                id: 15,
+                name: "Turla",
+                aliases: ["Snake", "Uroboros", "IRON HUNTER", "Venomous Bear", "Secret Blizzard"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2004",
+                status: "Active",
+                campaigns: "Government, embassy, military, education targeting",
+                tools: ["Carbon", "ComRAT", "Kazuar", "KSL"],
+                description: "Attributed to Russia's FSB, active since 2004 in cyber-espionage"
+            },
+            {
+                id: 16,
+                name: "Gamaredon",
+                aliases: ["AQUA BLIZZARD", "Shuckworm", "DEV-0157", "PRIMITIVE BEAR", "Winterflounder"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2013",
+                status: "Active",
+                campaigns: "Ukrainian government institutions",
+                tools: ["HyperBro", "Pterodo", "Helldown"],
+                description: "Active since 2013, primarily targets Ukrainian governmental institutions"
+            },
+            {
+                id: 17,
+                name: "Star Blizzard",
+                aliases: ["SEASHELL BLIZZARD", "Cold River", "LABYRINTH CHOLLIMA"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2015",
+                status: "Active",
+                campaigns: "Think tanks, academic researchers on Russia policy",
+                tools: ["Spear-phishing", "Credential theft", "Infrastructure reconnaissance"],
+                description: "Targets academics and think tank researchers working on Russia-related policy"
+            },
+
+            // North Korea-aligned
+            {
+                id: 18,
+                name: "Lazarus Group",
+                aliases: ["APT38", "Hidden Cobra", "ZINC", "Guardians of Peace", "LABYRINTH CHOLLIMA"],
+                affiliation: "North Korea",
+                motivation: "Financial & Sabotage",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Sony Pictures, Bangladesh Bank, WannaCry, Crypto exchanges",
+                tools: ["Destover", "WannaCry", "Hermes ransomware", "MATA framework"],
+                description: "Most prolific NK group, responsible for Sony breach, bank heists, and WannaCry"
+            },
+            {
+                id: 19,
+                name: "APT38",
+                aliases: ["Bluenoroff", "Alluring Pisces", "BRONZE TEMPLE"],
+                affiliation: "North Korea",
+                motivation: "Financial",
+                firstSeen: "2014",
+                status: "Active",
+                campaigns: "Financial institution targeting, ATM heists, cryptocurrency theft",
+                tools: ["SWIFT malware", "Fastpos", "Dolphin", "Riojatch"],
+                description: "Financially motivated group targeting banks and crypto businesses"
+            },
+            {
+                id: 20,
+                name: "Kimsuky",
+                aliases: ["APT43", "THALLIUM", "Emerald Sleet", "Black Banshee"],
+                affiliation: "North Korea",
+                motivation: "Espionage",
+                firstSeen: "2013",
+                status: "Active",
+                campaigns: "Defense and nuclear policy research targeting",
+                tools: ["GOLDBACKDOOR", "CustomPing", "Proxies"],
+                description: "Conducts intelligence collection on defense and nuclear security policy"
+            },
+            {
+                id: 21,
+                name: "APT37",
+                aliases: ["REAPER", "PINK TEAM", "SCARCRUFT", "ScarCruft"],
+                affiliation: "North Korea",
+                motivation: "Espionage",
+                firstSeen: "2012",
+                status: "Active",
+                campaigns: "South Korean government and military targeting",
+                tools: ["Duuzer", "Chinotto", "Rifdoor", "Coraldoe"],
+                description: "Focuses on South Korean government and military espionage"
+            },
+            {
+                id: 22,
+                name: "Andariel",
+                aliases: ["BRONZE LEVEL", "Silent Chollima", "UNC1069"],
+                affiliation: "North Korea",
+                motivation: "Financial & Espionage",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Financial sector targeting, cryptocurrency operations",
+                tools: ["Rifdoor", "Maui RAT", "Adolphin"],
+                description: "Financially motivated group also conducting espionage operations"
+            },
+            {
+                id: 23,
+                name: "UNC1069",
+                aliases: ["BRONZE OASIS"],
+                affiliation: "North Korea",
+                motivation: "Espionage",
+                firstSeen: "2016",
+                status: "Active",
+                campaigns: "Defense and aerospace targeting",
+                tools: ["Custom malware", "Living-off-the-land tactics"],
+                description: "Targets defense and aerospace sectors for espionage"
+            },
+
+            // Iran-aligned
+            {
+                id: 24,
+                name: "APT33",
+                aliases: ["REFINED KITTEN", "Elfin", "ORANGE FOXTROT"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2013",
+                status: "Active",
+                campaigns: "Aerospace and defense industry targeting",
+                tools: ["DROPSHOT", "TURNEDUP", "WarBird", "Shamoon"],
+                description: "IRGC-affiliated group focusing on aerospace and defense"
+            },
+            {
+                id: 25,
+                name: "APT34",
+                aliases: ["OilRig", "HELIX KITTEN", "HAIRY SPIDER"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2014",
+                status: "Active",
+                campaigns: "Government, financial services, telecom, energy targeting",
+                tools: ["ISMDoor", "RGDoor", "Helminth", "SideCopy"],
+                description: "MOIS-affiliated group targeting Middle East government and critical infrastructure"
+            },
+            {
+                id: 26,
+                name: "APT35",
+                aliases: ["CHARMING KITTEN", "MagicHound", "PHOSPHOROUS"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2011",
+                status: "Active",
+                campaigns: "Human-centric targeting, diplomats, journalists, researchers",
+                tools: ["Spear-phishing", "Credential harvesting", "Social engineering"],
+                description: "Focuses on sophisticated social engineering targeting decision makers"
+            },
+            {
+                id: 27,
+                name: "APT39",
+                aliases: ["REMIX KITTEN", "Chafer"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2012",
+                status: "Active",
+                campaigns: "Telecom and IT infrastructure targeting",
+                tools: ["MAPSHOT", "MuStang Shellcode"],
+                description: "Cyber espionage group focusing on telecommunications sector"
+            },
+            {
+                id: 28,
+                name: "MuddyWater",
+                aliases: ["MERCURY", "SEEDWORM", "SLEET"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2017",
+                status: "Active",
+                campaigns: "Government and critical infrastructure targeting",
+                tools: ["SlugDog", "POWERSTATS", "MISTLETOE"],
+                description: "MOIS-affiliated group using macro-enabled Office documents for delivery"
+            },
+
+            // Cybercrime/Unknown affiliation
+            {
+                id: 29,
+                name: "FIN7",
+                aliases: ["GOLD NIAGARA", "ITG14", "CARBONSPTIDER", "ELBRUS"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2013",
+                status: "Active",
+                campaigns: "Retail, restaurant, hospitality, financial services, ransomware",
+                tools: ["Carbanak", "REvil", "DarkSide", "BlackMatter", "Maze"],
+                description: "Financially motivated group shifted to ransomware operations in 2020"
+            },
+            {
+                id: 30,
+                name: "FIN11",
+                aliases: ["GOLD WELLINGTON"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2017",
+                status: "Active",
+                campaigns: "Ransomware and extortion operations",
+                tools: ["CLOP ransomware", "Spear-phishing", "Exploit kits"],
+                description: "Financial crime group focused on ransomware and extortion"
+            },
+            {
+                id: 31,
+                name: "LockBit",
+                aliases: ["GOLD SOUTHFIELD"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2019",
+                status: "Active",
+                campaigns: "Global ransomware-as-a-service operations",
+                tools: ["LockBit 3.0", "Affiliate network", "Data exfiltration"],
+                description: "Largest RaaS operation responsible for 2000+ victims, $120M+ extortion"
+            },
+            {
+                id: 32,
+                name: "BlackCat / ALPHV",
+                aliases: ["UNC4711", "Noname02541"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Change Healthcare, global ransomware operations",
+                tools: ["BlackCat ransomware", "Affiliate network"],
+                description: "Advanced ransomware-as-a-service with extortion model"
+            },
+            {
+                id: 33,
+                name: "REvil",
+                aliases: ["Sodinokibi", "PINKY SPIDER", "UNC1878"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2019",
+                status: "Inactive",
+                campaigns: "Kaseya, global ransomware attacks",
+                tools: ["REvil ransomware", "Sodinokibi builder"],
+                description: "Ransomware-as-a-service group, likely disbanded after sanctions"
+            },
+            {
+                id: 34,
+                name: "DarkSide",
+                aliases: ["DARK SIDE", "PINKY SPIDER"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2020",
+                status: "Inactive",
+                campaigns: "Colonial Pipeline, critical infrastructure",
+                tools: ["DarkSide ransomware", "Double extortion"],
+                description: "RaaS platform responsible for Colonial Pipeline attack, likely disbanded"
+            },
+            {
+                id: 35,
+                name: "LAPSUS$",
+                aliases: ["DEV-0537", "Strawberry Tempest", "Green Lapsus"],
+                affiliation: "Unknown",
+                motivation: "Financial & Espionage",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Microsoft, Nvidia, Samsung, Okta, Uber, Rockstar Games",
+                tools: ["MFA bypassing", "Social engineering", "Insider recruitment"],
+                description: "Small group of teenagers from Brazil and UK, no ransomware usage"
+            },
+            {
+                id: 36,
+                name: "Scattered Spider",
+                aliases: ["UNC3944", "0ktapus", "Octo Tempest", "Storm-0875", "LUCR-3"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2022",
+                status: "Active",
+                campaigns: "Caesars Entertainment, MGM Resorts, healthcare, telecom",
+                tools: ["SMS phishing", "SIM swapping", "AnyDesk", "RattyRAT", "DragonForce"],
+                description: "Young, highly adaptive cybercriminals using social engineering and RDP"
+            },
+            {
+                id: 37,
+                name: "Scattered Lapsus$ Hunters",
+                aliases: ["SLH", "Trinity of Chaos"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2025",
+                status: "Active",
+                campaigns: "Marks and Spencer, Salesforce breaches, ShinySp1d3r RaaS",
+                tools: ["ShinySp1d3r RaaS", "Credential theft", "Data exfiltration"],
+                description: "Alliance of Scattered Spider, LAPSUS$, and ShinyHunters in 2025"
+            },
+            {
+                id: 38,
+                name: "Clop (FIN11 variant)",
+                aliases: ["CLOP", "GOLD WELLINGTON"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2019",
+                status: "Active",
+                campaigns: "MOVEit exploitation, global data theft",
+                tools: ["CLOP ransomware", "MOVEit exploits"],
+                description: "File transfer vulnerability exploitation for data exfiltration and extortion"
+            },
+
+            // Additional major actors
+            {
+                id: 39,
+                name: "Brick Tiger",
+                aliases: ["BRONZE STARLIGHT"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2018",
+                status: "Active",
+                campaigns: "Government and critical infrastructure",
+                tools: ["Custom exploits", "Legitimate tool abuse"],
+                description: "Chinese APT targeting critical infrastructure"
+            },
+            {
+                id: 40,
+                name: "Velvet Ant",
+                aliases: ["BRONZE WHISTLER"],
+                affiliation: "China",
+                motivation: "Espionage",
+                firstSeen: "2020",
+                status: "Active",
+                campaigns: "Critical infrastructure reconnaissance",
+                tools: ["LOTL techniques"],
+                description: "Focuses on critical infrastructure targeting"
+            },
+            {
+                id: 41,
+                name: "BlackBasta",
+                aliases: ["GOLD BOMBARD"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2022",
+                status: "Active",
+                campaigns: "Healthcare, manufacturing, finance ransomware",
+                tools: ["BlackBasta ransomware", "Double extortion"],
+                description: "Emerging ransomware-as-a-service threat"
+            },
+            {
+                id: 42,
+                name: "Play Ransomware",
+                aliases: ["PLAY", "Playcrypt"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2022",
+                status: "Active",
+                campaigns: "Healthcare and critical infrastructure",
+                tools: ["Play ransomware", "Encryption attacks"],
+                description: "Targeting healthcare and critical infrastructure sectors"
+            },
+            {
+                id: 43,
+                name: "IcedID",
+                aliases: ["BokBot", "GOLD KINGSFISH"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2017",
+                status: "Active",
+                campaigns: "Banking trojan, ransomware distribution",
+                tools: ["IcedID banking trojan", "Ransomware affiliate"],
+                description: "Banking trojan used for credential theft and ransomware delivery"
+            },
+            {
+                id: 44,
+                name: "Cl0p (Advanced variant)",
+                aliases: ["CleverTouch"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "File transfer exploitation",
+                tools: ["Cl0p variant", "Zero-day exploitation"],
+                description: "Advanced variant exploiting file transfer vulnerabilities"
+            },
+            {
+                id: 45,
+                name: "Conti",
+                aliases: ["GOLD ULRICK"],
+                affiliation: "Russia",
+                motivation: "Financial",
+                firstSeen: "2020",
+                status: "Inactive",
+                campaigns: "Healthcare, critical infrastructure, ransomware",
+                tools: ["Conti ransomware", "Affiliate network"],
+                description: "Russian-based RaaS, leader claims to support Russia during invasion"
+            },
+            {
+                id: 46,
+                name: "Wizard Spider",
+                aliases: ["UNC1878", "GOLD SPHINX", "GRIM SPIDER"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2015",
+                status: "Active",
+                campaigns: "Banking trojans, ransomware operations",
+                tools: ["Trickbot", "Emotet", "Ryuk", "Conti"],
+                description: "Prolific group behind Trickbot and Ryuk ransomware"
+            },
+            {
+                id: 47,
+                name: "Emotet",
+                aliases: ["Heodo", "Geodo"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2014",
+                status: "Inactive",
+                campaigns: "Trojan distribution, lateral movement",
+                tools: ["Emotet trojan", "Spam botnet"],
+                description: "Major banking trojan and spam botnet, operational disruption in 2021"
+            },
+            {
+                id: 48,
+                name: "Snake/Turla",
+                aliases: ["Uroboros", "Carbon"],
+                affiliation: "Russia",
+                motivation: "Espionage",
+                firstSeen: "2004",
+                status: "Active",
+                campaigns: "Long-term espionage, government networks",
+                tools: ["Carbon", "Kazuar", "Graphimag"],
+                description: "Long-standing Russian espionage group active since 2004"
+            },
+            {
+                id: 49,
+                name: "Ryuk",
+                aliases: ["GOLD SPHINX", "TrickBot gang"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2018",
+                status: "Active",
+                campaigns: "High-value ransomware targeting",
+                tools: ["Ryuk ransomware", "Double extortion"],
+                description: "Ransomware focused on high-value targets"
+            },
+            {
+                id: 50,
+                name: "Trickbot",
+                aliases: ["Trickbot gang", "Wizard Spider"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2016",
+                status: "Inactive",
+                campaigns: "Banking trojan, ransomware distribution",
+                tools: ["Trickbot malware", "Lateral movement"],
+                description: "Sophisticated banking trojan and ransomware precursor"
+            },
+            {
+                id: 51,
+                name: "Qakbot",
+                aliases: ["Quackbot"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2007",
+                status: "Inactive",
+                campaigns: "Banking trojan, ransomware delivery",
+                tools: ["Qakbot trojan", "Affiliate network"],
+                description: "Banking trojan disrupted by law enforcement in 2023"
+            },
+            {
+                id: 52,
+                name: "Maze",
+                aliases: ["GOLD DOSSIER"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2019",
+                status: "Inactive",
+                campaigns: "Double extortion ransomware",
+                tools: ["Maze ransomware", "Data exfiltration"],
+                description: "Pioneer of double extortion model, disbanded 2020"
+            },
+            {
+                id: 53,
+                name: "RagnarLocker",
+                aliases: ["RAGNARLC"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Inactive",
+                campaigns: "Critical infrastructure targeting",
+                tools: ["RagnarLocker ransomware"],
+                description: "Ransomware targeting critical infrastructure"
+            },
+            {
+                id: 54,
+                name: "Synack",
+                aliases: ["Rook"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Ransomware operations",
+                tools: ["Synack ransomware", "Custom malware"],
+                description: "Ransomware-as-a-service operation"
+            },
+            {
+                id: 55,
+                name: "Snatch",
+                aliases: ["Snapchat"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2018",
+                status: "Active",
+                campaigns: "Ransomware targeting",
+                tools: ["Snatch ransomware", "Safe mode exploitation"],
+                description: "Uses boot-time encryption for safe mode evasion"
+            },
+            {
+                id: 56,
+                name: "PonyFarm",
+                aliases: ["Pony botnet"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2013",
+                status: "Inactive",
+                campaigns: "Botnet operations, credential theft",
+                tools: ["Pony malware", "Credential stealer"],
+                description: "Botnet-based credential theft operation"
+            },
+            {
+                id: 57,
+                name: "Carbanak",
+                aliases: ["GOLD SOUTHFIELD"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2013",
+                status: "Inactive",
+                campaigns: "Financial institution targeting",
+                tools: ["Carbanak malware"],
+                description: "Stolen hundreds of millions from financial institutions"
+            },
+            {
+                id: 58,
+                name: "Cobalt Strike",
+                aliases: ["Cobalt Gang"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2016",
+                status: "Active",
+                campaigns: "Ransomware affiliate network",
+                tools: ["Cobalt Strike framework"],
+                description: "Framework used by multiple threat groups"
+            },
+            {
+                id: 59,
+                name: "Prometheus",
+                aliases: ["GOLD RIVERSIDE"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2020",
+                status: "Active",
+                campaigns: "Ransomware targeting healthcare",
+                tools: ["Prometheus malware"],
+                description: "Ransomware targeting healthcare sector"
+            },
+            {
+                id: 60,
+                name: "AvosLocker",
+                aliases: ["GOLD OCELOT"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Ransomware operations",
+                tools: ["AvosLocker ransomware"],
+                description: "Ransomware-as-a-service group"
+            },
+            {
+                id: 61,
+                name: "Cl0p Group",
+                aliases: ["Cl0p, CleverTouch"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2019",
+                status: "Active",
+                campaigns: "MOVEit targeting, zero-day exploitation",
+                tools: ["Cl0p ransomware", "Zero-day exploits"],
+                description: "Advanced group exploiting file transfer vulnerabilities"
+            },
+            {
+                id: 62,
+                name: "HelloKitty",
+                aliases: ["Five Hands"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2020",
+                status: "Active",
+                campaigns: "Ransomware targeting",
+                tools: ["HelloKitty ransomware"],
+                description: "Ransomware group targeting organizations globally"
+            },
+            {
+                id: 63,
+                name: "NoEscape",
+                aliases: ["GOLD MANACLE"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Ransomware operations",
+                tools: ["NoEscape ransomware"],
+                description: "Ransomware group active in 2021-2023"
+            },
+            {
+                id: 64,
+                name: "HuCow",
+                aliases: ["LilyPad"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Ransomware targeting",
+                tools: ["HuCow ransomware"],
+                description: "Ransomware group targeting various sectors"
+            },
+            {
+                id: 65,
+                name: "Hive",
+                aliases: ["GOLD HARBOR"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Inactive",
+                campaigns: "Ransomware operations",
+                tools: ["Hive ransomware"],
+                description: "Ransomware group disrupted by law enforcement"
+            },
+            {
+                id: 66,
+                name: "LockBit Black",
+                aliases: ["LockBit 3.0"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "Advanced ransomware operations",
+                tools: ["LockBit 3.0 Black variant"],
+                description: "Advanced variant of LockBit ransomware"
+            },
+            {
+                id: 67,
+                name: "Cl0p RAT Variant",
+                aliases: ["Cl0p RAT"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2024",
+                status: "Active",
+                campaigns: "Remote access trojan operations",
+                tools: ["Cl0p RAT malware"],
+                description: "RAT variant of Cl0p malware"
+            },
+            {
+                id: 68,
+                name: "Medusa",
+                aliases: ["MEDUSA"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "Ransomware operations",
+                tools: ["Medusa ransomware"],
+                description: "Newer ransomware group"
+            },
+            {
+                id: 69,
+                name: "Alphv Group",
+                aliases: ["BlackCat Original"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Advanced ransomware targeting",
+                tools: ["Alphv ransomware"],
+                description: "Original operator of BlackCat ransomware"
+            },
+            {
+                id: 70,
+                name: "Xing Team",
+                aliases: ["XING"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Ransomware targeting Asian entities",
+                tools: ["Xing Team malware"],
+                description: "Ransomware group targeting Asian organizations"
+            },
+            {
+                id: 71,
+                name: "MOVEit Attackers",
+                aliases: ["Cl0p affiliates"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "File transfer exploitation",
+                tools: ["MOVEit exploits"],
+                description: "Groups exploiting MOVEit vulnerabilities"
+            },
+            {
+                id: 72,
+                name: "MuddyWater Affiliates",
+                aliases: ["SEEDWORM variants"],
+                affiliation: "Iran",
+                motivation: "Espionage",
+                firstSeen: "2020",
+                status: "Active",
+                campaigns: "Infrastructure targeting",
+                tools: ["MuddyWater tools", "Spear-phishing"],
+                description: "Affiliated operators of MuddyWater campaigns"
+            },
+            {
+                id: 73,
+                name: "FIN12",
+                aliases: ["GOLD GALLANT"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2015",
+                status: "Active",
+                campaigns: "Healthcare ransomware targeting",
+                tools: ["Mandiant Ransomware", "Healthcare targeting"],
+                description: "Healthcare-focused ransomware group"
+            },
+            {
+                id: 74,
+                name: "Team Cymru",
+                aliases: ["Cymru Group"],
+                affiliation: "Unknown",
+                motivation: "Unknown",
+                firstSeen: "2010",
+                status: "Active",
+                campaigns: "Threat intelligence research",
+                tools: ["Threat intelligence tools"],
+                description: "Threat intelligence firm and research group"
+            },
+            {
+                id: 75,
+                name: "TA505",
+                aliases: ["GOLD BOTSAY"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2014",
+                status: "Active",
+                campaigns: "Malware distribution, ransomware",
+                tools: ["Clop", "REvil", "SDBbot"],
+                description: "Prolific financially motivated group"
+            },
+            {
+                id: 76,
+                name: "Evil Corp",
+                aliases: ["GOLD SOUTHFIELD"],
+                affiliation: "Russia",
+                motivation: "Financial",
+                firstSeen: "2009",
+                status: "Active",
+                campaigns: "Banking trojans, ransomware",
+                tools: ["Dridex", "Zeus Sphinx", "Wagtail"],
+                description: "Russian cybercrime group targeting financial institutions"
+            },
+            {
+                id: 77,
+                name: "UNC3973",
+                aliases: ["LockBit variant operators"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "Ransomware operations",
+                tools: ["LockBit variants"],
+                description: "Operators using LockBit variants"
+            },
+            {
+                id: 78,
+                name: "Storm-0875",
+                aliases: ["Scattered Spider original name"],
+                affiliation: "Unknown",
+                motivation: "Financial",
+                firstSeen: "2022",
+                status: "Active",
+                campaigns: "Social engineering, ransomware",
+                tools: ["Social engineering tactics"],
+                description: "Microsoft's original designation for Scattered Spider"
+            }
+        ];
+
+        // Filter state
+        let activeFilters = {
+            affiliation: [],
+            motivation: [],
+            status: []
+        };
+        let currentSort = { field: 'name', direction: 'asc' };
+        let currentView = 'table';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search
+            document.getElementById('searchInput').addEventListener('input', filterAndRender);
+
+            // Filter chips
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    const filterType = e.target.dataset.filter;
+                    const filterValue = e.target.dataset.value;
+
+                    if (activeFilters[filterType].includes(filterValue)) {
+                        activeFilters[filterType] = activeFilters[filterType].filter(v => v !== filterValue);
+                        e.target.classList.remove('active');
+                    } else {
+                        activeFilters[filterType].push(filterValue);
+                        e.target.classList.add('active');
+                    }
+                    filterAndRender();
+                });
+            });
+
+            // View toggle
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentView = e.target.dataset.view;
+                    filterAndRender();
+                });
+            });
+
+            // Table sorting
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', (e) => {
+                    const field = e.target.dataset.sort;
+                    if (currentSort.field === field) {
+                        currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        currentSort.field = field;
+                        currentSort.direction = 'asc';
+                    }
+                    filterAndRender();
+                });
+            });
+        }
+
+        // Filter and render
+        function filterAndRender() {
+            let filtered = threatActors;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            // Search filter
+            filtered = filtered.filter(actor => {
+                return actor.name.toLowerCase().includes(searchTerm) ||
+                       actor.aliases.some(a => a.toLowerCase().includes(searchTerm)) ||
+                       actor.campaigns.toLowerCase().includes(searchTerm);
+            });
+
+            // Affiliation filter
+            if (activeFilters.affiliation.length > 0) {
+                filtered = filtered.filter(actor => activeFilters.affiliation.includes(actor.affiliation));
+            }
+
+            // Motivation filter
+            if (activeFilters.motivation.length > 0) {
+                filtered = filtered.filter(actor => activeFilters.motivation.includes(actor.motivation));
+            }
+
+            // Status filter
+            if (activeFilters.status.length > 0) {
+                filtered = filtered.filter(actor => activeFilters.status.includes(actor.status));
+            }
+
+            // Sort
+            filtered.sort((a, b) => {
+                const field = currentSort.field;
+                let aVal = a[field];
+                let bVal = b[field];
+
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+
+                if (currentSort.direction === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            // Show/hide no results
+            if (filtered.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+                document.getElementById('tableView').style.display = 'none';
+                document.getElementById('cardsView').style.display = 'none';
+            } else {
+                document.getElementById('noResults').style.display = 'none';
+                if (currentView === 'table') {
+                    renderTable(filtered);
+                } else {
+                    renderCards(filtered);
+                }
+            }
+        }
+
+        // Render table
+        function renderTable(actors = threatActors) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            document.getElementById('tableView').style.display = 'block';
+            document.getElementById('cardsView').style.display = 'none';
+
+            actors.forEach(actor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="actor-name">${actor.name}</td>
+                    <td class="aliases">${actor.aliases.join(', ')}</td>
+                    <td>${actor.affiliation}</td>
+                    <td>${actor.motivation}</td>
+                    <td>${actor.firstSeen}</td>
+                    <td><span class="status ${actor.status.toLowerCase()}">${actor.status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Render cards
+        function renderCards(actors = threatActors) {
+            const container = document.getElementById('cardsView');
+            container.innerHTML = '';
+            document.getElementById('tableView').style.display = 'none';
+            document.getElementById('cardsView').style.display = 'grid';
+
+            actors.forEach(actor => {
+                const card = document.createElement('div');
+                card.className = 'actor-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-title">${actor.name}</div>
+                        <div class="card-aliases">${actor.aliases.join(' / ')}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Nation-State</div>
+                        <div class="card-value">${actor.affiliation}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Motivation</div>
+                        <div class="card-value">${actor.motivation}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">First Seen</div>
+                        <div class="card-value">${actor.firstSeen}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Status</div>
+                        <div><span class="status ${actor.status.toLowerCase()}">${actor.status}</span></div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Known Campaigns</div>
+                        <div class="card-value">${actor.campaigns}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Tools/Malware</div>
+                        <div class="card-value">${actor.tools.join(', ')}</div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">${actor.affiliation}</span>
+                        <span class="tag">${actor.motivation}</span>
+                        <span class="tag">${actor.status}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+
+    <script>
+    (function () {
+        var btn = document.getElementById('hamburger-btn');
+        var overlay = document.getElementById('menu-overlay');
+        var panel = document.getElementById('menu-panel');
+        var msearch = document.getElementById('menu-search');
+        function toggle() {
+            var isOpen = panel.classList.toggle('open');
+            overlay.classList.toggle('open');
+            btn.classList.toggle('open');
+            if (isOpen) msearch.focus();
+        }
+        function close() {
+            panel.classList.remove('open');
+            overlay.classList.remove('open');
+            btn.classList.remove('open');
+        }
+        btn.addEventListener('click', toggle);
+        overlay.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+        msearch.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && msearch.value.trim()) {
+                window.location.href = 'glossary.html?q=' + encodeURIComponent(msearch.value.trim());
+            }
+        });
+    })();
+    </script>
+</body>
+</html>
