@@ -1,0 +1,20 @@
+Supply Chain Alert: Axios npm Package Compromised by UNC1069
+
+On March 31, 2026, the widely-used Axios HTTP client library — a critical dependency across virtually all modern web applications — was compromised after threat actor UNC1069 obtained the npm credentials of the project's lead maintainer.
+
+Two backdoored versions (axios@1.14.1 and axios@0.30.4) were published, deploying WAVESHAPER.V2, a sophisticated multi-stage remote access trojan targeting Windows, macOS, and Linux. The exposure window was approximately 3 hours before npm Trust & Safety intervened.
+
+Key takeaways for security teams:
+— Audit all systems for the affected versions immediately
+— Organizations without strict version pinning (lockfiles) were most at risk
+— The attack bypassed CI/CD pipelines by using manual credential-based publication
+— Google Threat Intelligence Group attributed this to UNC1069 with high confidence, linking it to North Korea-affiliated operations
+
+This incident underscores why software supply chain security — including credential hygiene, dependency pinning, and rapid detection — remains a top priority for every engineering organization.
+
+Read the full technical analysis, IOCs, and remediation guidance on Threatpedia:
+https://threatpedia.wiki/incidents/axios-unc1069-compromise.html
+
+Follow Threatpedia for authoritative coverage of the incidents shaping the global threat landscape.
+
+#CyberSecurity #SupplyChainSecurity #ThreatIntelligence #npm #InfoSec #DevSecOps

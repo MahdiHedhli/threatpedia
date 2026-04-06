@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LockBit | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="lockbitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <!-- World map background -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Global threat indicator -->
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                <!-- Padlock shape -->
+                <g fill="url(#lockbitGradient)" stroke="#e8a020" stroke-width="2">
+                    <!-- Shackle (arc) -->
+                    <path d="M 70 100 A 30 30 0 0 1 130 100" fill="none"/>
+                    <!-- Lock body -->
+                    <rect x="75" y="100" width="50" height="45" rx="5" fill="url(#lockbitGradient)"/>
+                    <!-- Keyhole -->
+                    <circle cx="100" cy="117" r="5" fill="#0d1117"/>
+                    <!-- Keyhole stem -->
+                    <rect x="99" y="122" width="2" height="10" fill="#0d1117"/>
+                </g>
+                <!-- Encryption indicator -->
+                <circle cx="100" cy="100" r="70" fill="none" stroke="#e8a020" stroke-width="1" opacity="0.3" stroke-dasharray="5,5"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>LockBit</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                GOLD SOUTHFIELD, LockBit 3.0, LockBit Black, Lockbit Leaks, REvil Successor
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>LockBit</strong> is a sophisticated ransomware-as-a-service (RaaS) criminal operation responsible for the most prolific global ransomware campaign in history. Believed to originate from Russian-speaking operators, LockBit has evolved from its initial launch in 2019 to become the dominant force in the ransomware ecosystem, with LockBit 3.0 (launched 2022) representing the most advanced variant. The group operates a managed affiliate program, managing hundreds of criminal affiliates who deploy LockBit ransomware against target organizations worldwide in exchange for a percentage of extortion proceeds.</p>
+
+                    <p>LockBit's impact is staggering: documented attacks on over 2,000 organizations globally, with collective extortion demands exceeding $120 million USD. The group has targeted every major industry vertical and geographic region, demonstrating a non-discriminatory approach to victim selection focused primarily on extortion profit. LockBit combines sophisticated encryption, data exfiltration, double-extortion tactics, and aggressive victim shaming campaigns on publicly accessible leak sites to coerce payment. The group operates with minimal operational constraints, advertising services openly on criminal forums and maintaining 24/7 customer support infrastructure.</p>
+
+                    <p>LockBit represents a watershed moment in cybercriminal professionalism, operating with business-like efficiency including marketing campaigns, affiliate recruitment, customer support, negotiation services, and technical innovation. The group has demonstrated ability to rapidly develop encryption weaknesses remediation when exploited, suggests access to sophisticated mathematics and cryptography expertise. As of 2025, LockBit remains the leading ransomware threat despite law enforcement disruption efforts in late 2024.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.001: Phishing - Spearphishing Attachment</span>
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
+                                <span class="ttp-technique">T1547: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution - Registry Run Keys</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1562.001: Impair Defenses - Disable or Modify Tools</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1021.002: Remote Services - SSH</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact</span>
+                                <span class="ttp-technique">T1565.001: Data Destruction - Stored Data Manipulation</span>
+                                <span class="ttp-technique">T1561: Disk Wipe</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Exploit Public-Facing Applications:</strong> Targeting of vulnerable web applications, VPNs, and remote access services to establish initial network access.</li>
+                            <li><strong>Spear-Phishing Campaigns:</strong> Targeted phishing emails with weaponized attachments or links to infect target organizations with initial payload.</li>
+                            <li><strong>Affiliate Network Distribution:</strong> Managed affiliate network of hundreds of criminal operators conducting initial access operations on LockBit's behalf, then deploying ransomware payload.</li>
+                            <li><strong>Credential Theft & Brute Force:</strong> Large-scale credential harvesting and password spraying attacks against weak credentials in remote access services.</li>
+                            <li><strong>Supply Chain Compromise:</strong> Targeting of managed service providers (MSPs) and IT contractors to gain access to multiple customer environments simultaneously.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>LockBit 3.0 Ransomware:</strong> Advanced ransomware with multi-threaded encryption, optional data wiper, memory-only payloads, and sophisticated anti-recovery mechanisms.</li>
+                            <li><strong>LockBit Locker:</strong> Lightweight encryption tool deployed for quick ransom deployment.</li>
+                            <li><strong>StealBit Exfiltration Tool:</strong> Custom data exfiltration utility designed for rapid mass data theft before encryption deployment.</li>
+                            <li><strong>Legitimate Tool Abuse:</strong> Extensive use of legitimate system administration tools (PsExec, WinRM, RDP) for lateral movement and command execution.</li>
+                            <li><strong>Cobalt Strike:</strong> Commercial penetration testing tool widely abused for post-exploitation activities and lateral movement.</li>
+                            <li><strong>Metasploit Framework:</strong> Use of open-source exploitation framework for initial access and payload delivery.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Leak Site Operations:</strong> Publicly accessible dark web leak sites where LockBit publishes stolen data from non-paying victims to facilitate extortion.</li>
+                            <li><strong>Cryptocurrency Infrastructure:</strong> Integration with cryptocurrency exchanges and mixers for anonymous ransom payment collection and money laundering.</li>
+                            <li><strong>Multiple C2 Infrastructure:</strong> Distributed command-and-control infrastructure using compromised hosting providers, bulletproof hosting, and residential proxies.</li>
+                            <li><strong>Customer Support Channels:</strong> Professional support infrastructure including helpdesk portals and encrypted messaging for victim negotiations.</li>
+                            <li><strong>Ransom Negotiation Platform:</strong> Managed negotiation portal with chat functionality for ransom discussions and payment coordination with victims.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>LockBit targets all industries without discrimination, but focuses on organizations with demonstrated ability to pay ransom:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Victims & Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Healthcare & Hospitals</td>
+                                <td>Major hospital networks globally, impacting patient care, diagnostic systems, and emergency response capabilities.</td>
+                            </tr>
+                            <tr>
+                                <td>Manufacturing & Industrial</td>
+                                <td>Large manufacturing operations, automotive suppliers, industrial equipment companies. High-profile targets like John Deere equipment.</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Services</td>
+                                <td>Banks, credit unions, financial service providers, insurance companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Government & Law Enforcement</td>
+                                <td>Municipal governments, federal agencies, police departments, courts.</td>
+                            </tr>
+                            <tr>
+                                <td>Technology & Software</td>
+                                <td>Software companies, IT service providers, managed service providers (MSPs), cloud providers.</td>
+                            </tr>
+                            <tr>
+                                <td>Education</td>
+                                <td>Universities, school districts, research institutions.</td>
+                            </tr>
+                            <tr>
+                                <td>Critical Infrastructure</td>
+                                <td>Energy utilities, water treatment, transportation, telecommunications systems.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Scope:</strong> Global targeting across all regions and countries. Documented operations in North America, Europe, Asia, Middle East, Africa, and Oceania with equal-opportunity approach.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Sep 2019</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>LockBit v1 Launch</div>
+                                <div class="timeline-event-detail">LockBit ransomware first appears in criminal forums. Initial version operates with basic functionality but demonstrates sophisticated encryption and multi-threaded capabilities unavailable in contemporary ransomware.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2020-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>LockBit v2 & Affiliate Network Launch</div>
+                                <div class="timeline-event-detail">LockBit operators launch managed affiliate program, recruiting hundreds of criminal operators for initial access operations. Introduction of double-extortion tactics combining encryption with data theft and leak site publication.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun 2022</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>LockBit 3.0 Release - LockBit Black</div>
+                                <div class="timeline-event-detail">Launch of LockBit 3.0 (marketed as "LockBit Black"), representing significant technical advancement with memory-only execution, improved encryption, bug bounty programs, and aggressive marketing campaigns. Becomes dominant ransomware variant globally.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Peak LockBit Operations</div>
+                                <div class="timeline-event-detail">LockBit documented as responsible for record number of attacks. Leak site publishes data from hundreds of victims. Ransom demands reach historic highs with individual payments exceeding $10+ million. Group openly advertises services and conducts marketing campaigns.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">May 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Law Enforcement Operation</div>
+                                <div class="timeline-event-detail">FBI, UK National Crime Agency, and international law enforcement conduct coordinated takedown operation against LockBit infrastructure. Multiple servers seized, encryption keys recovered, leak site taken offline. LockBit leadership claims continued operations despite disruption.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun-Dec 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Post-Disruption Resurgence</div>
+                                <div class="timeline-event-detail">LockBit rapidly rebuilds operations following law enforcement takedown. New leak site launched, affiliate recruitment continues, attacks resume within weeks. Demonstrates resilience and redundancy of RaaS infrastructure.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025-Present</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Global RaaS Operations</div>
+                                <div class="timeline-event-detail">LockBit remains most active and prolific ransomware variant. Documented continued operations against Fortune 500 companies, government institutions, and critical infrastructure globally. Estimated $500M+ in total cumulative losses.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>LockBit affiliates have demonstrated rapid exploitation of critical vulnerabilities:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21674" class="cve-link" target="_blank">CVE-2023-21674</a></td>
+                                <td>Windows SmartScreen Security Feature Bypass</td>
+                                <td>Microsoft Windows</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
+                                <td>Remote Code Execution in GE Digital SRTP Webserver</td>
+                                <td>GE Industrial Equipment</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21899" class="cve-link" target="_blank">CVE-2024-21899</a></td>
+                                <td>Windows Privilege Escalation</td>
+                                <td>Microsoft Windows</td>
+                                <td>8.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-3824" class="cve-link" target="_blank">CVE-2023-3824</a></td>
+                                <td>ConnectWise ScreenConnect Authentication Bypass</td>
+                                <td>ConnectWise Control</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
+                                <td>Log4Shell Remote Code Execution</td>
+                                <td>Apache Log4j</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-41080" class="cve-link" target="_blank">CVE-2022-41080</a></td>
+                                <td>Exchange Server Remote Code Execution</td>
+                                <td>Microsoft Exchange Server</td>
+                                <td>10.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>LockBit is tracked by security vendors and law enforcement:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>GOLD SOUTHFIELD</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>UNC2452, Lockbit Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>ALPHV, LockBit</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>UNC2985, Lockbit</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Kaspersky</td>
+                                <td>LockBit, LockBit Black</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">FBI / CISA</td>
+                                <td>LockBit Ransomware</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">UK National Crime Agency</td>
+                                <td>LockBit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>BlackCat / ALPHV:</strong> Competing ransomware-as-a-service operation with similar business model. Both operate affiliate networks and maintain public leak sites.</li>
+                        <li><strong>Cl0p (FIN11):</strong> Financial-motivated group with ransomware operations. Focuses on supply chain exploitation similar to LockBit tactics.</li>
+                        <li><strong>Scattered Spider (UNC3944):</strong> Social engineering and credential theft focused group frequently enabling initial access for ransomware deployment.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>FBI Alert:</strong> "LockBit Ransomware Operations"
+                            <a href="https://www.fbi.gov/investigate/cyber" target="_blank">FBI Cyber Division</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>CISA Alert:</strong> "LockBit Ransomware Campaign"
+                            <a href="https://www.cisa.gov/alerts" target="_blank">CISA Alerts & Advisories</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>CrowdStrike Intelligence Report:</strong> "GOLD SOUTHFIELD - The LockBit Threat"
+                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Global Threat Report</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>UK National Crime Agency:</strong> "Operation Cronos - LockBit Takedown"
+                            <a href="https://www.nationalcrimeagency.gov.uk" target="_blank">NCA Press Release</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <strong>Mandiant Research:</strong> "LockBit RaaS Operations & Affiliate Network"
+                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence Reports</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🏴</span>
+                        Unknown (Russian-speaking)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">No, Criminal Enterprise</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial Extortion</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">Sep 2019</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">GOLD SOUTHFIELD, Multiple Affiliates</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">Active</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

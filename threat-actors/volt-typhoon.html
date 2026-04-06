@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volt Typhoon | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="voltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <!-- China map background -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Stylized China with accent -->
+                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
+                <!-- Voltage symbol / Lightning bolt -->
+                <path d="M 95 50 L 110 85 L 100 85 L 115 140 L 85 100 L 95 100 Z" fill="url(#voltGradient)" stroke="#e8a020" stroke-width="2"/>
+                <!-- Power indicator -->
+                <circle cx="100" cy="100" r="30" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.4"/>
+                <circle cx="100" cy="100" r="45" fill="none" stroke="#e8a020" stroke-width="1" opacity="0.2" stroke-dasharray="3,3"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Volt Typhoon</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                BRONZE SILHOUETTE, Volt Typhoon
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Volt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to the People's Republic of China's Ministry of State Security (MSS). The group has been operational since at least 2017 and represents one of the most significant threats to US critical infrastructure. Volt Typhoon specializes in establishing persistent footholds in critical infrastructure networks with the strategic goal of enabling potential disruptive or destructive attacks during geopolitical crises.</p>
+
+                    <p>The group operates with extreme patience and operational security discipline, focusing on long-term reconnaissance and network positioning rather than immediate exploitation. Volt Typhoon's activities demonstrate sophisticated understanding of industrial control systems (ICS) and critical infrastructure operations, with targeting encompassing communications, energy, water, transportation, and other essential services across the United States. The CISA has characterized Volt Typhoon's approach as a "pre-positioning" strategy designed to establish command and control access before launching destructive attacks.</p>
+
+                    <p>Volt Typhoon employs living-off-the-land techniques, leveraging legitimate system administration tools and avoiding deployment of custom malware when possible. This approach provides exceptional stealth, as their activities blend with normal administrative traffic. The group has demonstrated willingness to exploit known vulnerabilities in networking equipment, particularly Fortinet FortiGate firewalls and other edge devices, to establish initial access to critical infrastructure networks.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1200: Hardware Additions</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1098.001: Account Manipulation - Additional Cloud Credentials</span>
+                                <span class="ttp-technique">T1098.002: Account Manipulation - Exchange Email Delegate Permissions</span>
+                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1078: Valid Accounts</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1110.002: Brute Force - Password Guessing</span>
+                                <span class="ttp-technique">T1187: Forced Authentication</span>
+                                <span class="ttp-technique">T1556: Modify Authentication Process</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1550.001: Use Alternate Authentication Material - Application Access Token</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Exploitation of Edge Devices:</strong> Systematic exploitation of Fortinet FortiGate firewall vulnerabilities (CVE-2022-42991, CVE-2023-27997) to establish initial network access. These devices provide gateway access to critical infrastructure networks.</li>
+                            <li><strong>Living-off-the-Land Techniques:</strong> Extensive use of legitimate utilities including SSH, PuTTY, WinSCP, and legitimate remote administration tools to avoid deployment of custom malware and detection by antivirus systems.</li>
+                            <li><strong>Credential Harvesting:</strong> Use of credential harvesting tools to capture authentication material from compromised systems, enabling lateral movement through networks without suspicious network traffic patterns.</li>
+                            <li><strong>HVAC/IT Equipment Access:</strong> Reported cases of physical access to HVAC (heating, ventilation, air conditioning) systems and IT equipment closets in critical infrastructure facilities, potentially enabling installation of network access devices.</li>
+                            <li><strong>Supply Chain Compromise:</strong> Targeting of managed service providers (MSPs) and IT contractors to gain access to multiple critical infrastructure customers through trusted vendor relationships.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>Legitimate Administration Tools:</strong> PuTTY, WinSCP, SSH clients, PSExec, TeamViewer, and AnyDesk for remote administration and command execution.</li>
+                            <li><strong>Living-off-the-Land Utilities:</strong> Windows PowerShell, WMI, Task Scheduler, Windows Registry modifications for persistence and lateral movement without custom malware.</li>
+                            <li><strong>Credential Harvesting:</strong> Mimikatz and similar post-exploitation frameworks for extracting cached credentials and session tokens from compromised systems.</li>
+                            <li><strong>Passive Reconnaissance Tools:</strong> Network mapping utilities including ping, ipconfig, nslookup, and tracert for network topology discovery.</li>
+                            <li><strong>VPN Exploitation:</strong> Cisco VPN client exploitation and configuration modification for persistent remote access.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Legitimate Cloud Services:</strong> Abuse of Microsoft Teams for command-and-control communications and data exfiltration through normal business channels.</li>
+                            <li><strong>SSH and Legitimate Protocols:</strong> Use of standard SSH and VPN protocols for command execution, making detection difficult without behavioral analysis.</li>
+                            <li><strong>DNS Tunneling:</strong> Suspected use of DNS tunneling techniques to exfiltrate data and receive commands through DNS queries and responses.</li>
+                            <li><strong>Compromised Legitimate Networks:</strong> Use of compromised hosting providers and legitimate cloud infrastructure for staging and intermediate command-and-control.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>Volt Typhoon's targeting is strategically focused on US critical infrastructure sectors with potential impact during geopolitical crises:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Communications</td>
+                                <td>Telecommunications infrastructure, wireless communications providers, backbone networks. Critical for emergency response coordination.</td>
+                            </tr>
+                            <tr>
+                                <td>Energy</td>
+                                <td>Electric utilities, power generation facilities, power transmission networks, oil and gas infrastructure.</td>
+                            </tr>
+                            <tr>
+                                <td>Water and Wastewater</td>
+                                <td>Water treatment facilities, water distribution networks, wastewater systems. Particularly vulnerable due to legacy ICS systems.</td>
+                            </tr>
+                            <tr>
+                                <td>Transportation</td>
+                                <td>Port operations, rail systems, pipeline control systems, aviation infrastructure.</td>
+                            </tr>
+                            <tr>
+                                <td>Government & Defense</td>
+                                <td>Federal civilian agencies, defense industrial base, military contractor networks, research institutions.</td>
+                            </tr>
+                            <tr>
+                                <td>Healthcare</td>
+                                <td>Healthcare facilities, hospital networks, pharmaceutical research institutions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Focus:</strong> Volt Typhoon primarily targets organizations within the United States, with particular concentration in major metropolitan areas and regions with critical infrastructure hubs.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2017-2019</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial US Communications Targeting</div>
+                                <div class="timeline-event-detail">Volt Typhoon begins systematic compromise of US communications infrastructure organizations, establishing initial network footholds through exploitation of edge devices and contractor access.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2019-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Multiple Critical Infrastructure Sectors</div>
+                                <div class="timeline-event-detail">Group expands operations beyond communications to target water treatment, electric utilities, and transportation infrastructure. Demonstrates understanding of OT network architecture and operational constraints.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Early 2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FortiGate Firewall Campaign</div>
+                                <div class="timeline-event-detail">Volt Typhoon exploits CVE-2022-42991 (pre-disclosure) in Fortinet FortiGate firewalls to gain access to critical infrastructure networks. Hundreds of organizations compromised through this vector.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Oct 2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>CISA Public Advisory</div>
+                                <div class="timeline-event-detail">CISA and NSA release joint advisory on Volt Typhoon activities, describing group's approach to critical infrastructure compromise and pre-positioning tactics. Attribution to Chinese MSS provided.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Nov 2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Communications Infrastructure Deep Dive</div>
+                                <div class="timeline-event-detail">Investigations reveal Volt Typhoon has established persistent access to major US telecommunications providers, with potential to disrupt emergency communications during crisis scenarios.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024-2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Lateral Movement and Reconnaissance</div>
+                                <div class="timeline-event-detail">Ongoing operations observed in critical infrastructure networks, with focus on network mapping, credential harvesting, and establishing additional persistence mechanisms. Group patience indicates preparation for future disruption operations.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>Volt Typhoon has demonstrated rapid exploitation of critical infrastructure equipment vulnerabilities:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-42991" class="cve-link" target="_blank">CVE-2022-42991</a></td>
+                                <td>Improper Input Validation in FortiGate</td>
+                                <td>Fortinet FortiGate Firewall</td>
+                                <td>9.6</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-27997" class="cve-link" target="_blank">CVE-2023-27997</a></td>
+                                <td>Authentication Bypass in FortiGate</td>
+                                <td>Fortinet FortiGate Firewall</td>
+                                <td>9.6</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
+                                <td>Remote Code Execution in Cisco IOS XE</td>
+                                <td>Cisco IOS XE Software</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
+                                <td>Log4Shell Remote Code Execution</td>
+                                <td>Apache Log4j 2.0-2.14.1</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-26855" class="cve-link" target="_blank">CVE-2021-26855</a></td>
+                                <td>SSRF in Exchange Server</td>
+                                <td>Microsoft Exchange Server</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
+                                <td>Remote Code Execution in GE Devices</td>
+                                <td>GE Industrial Equipment</td>
+                                <td>9.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>Volt Typhoon is tracked by multiple security organizations and government agencies:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">CISA / NSA</td>
+                                <td>Volt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>Volt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>Volt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>BRONZE SILHOUETTE</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>Volt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Splunk Threat Intelligence</td>
+                                <td>Volt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>Chinese Ministry of State Security</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>Salt Typhoon:</strong> Fellow Chinese state-sponsored actor with similar targeting of US communications infrastructure. Different operational approach and toolsets suggest separate organizational units.</li>
+                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS-affiliated group with targeting of maritime and defense sectors. Similar strategic focus on critical infrastructure compromise.</li>
+                        <li><strong>APT41:</strong> Chinese group conducting both espionage and financially-motivated operations. Different motivation set but shares targeting overlap in critical sectors.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>CISA & NSA Advisory:</strong> "People's Republic of China State-Sponsored Cyber Actor Living off the Land to Evade Detection, Strategically Compromises U.S. and Allied Critical Infrastructure"
+                            <a href="https://www.cisa.gov/news-events/alerts/2023/10/25/cisa-nsa-and-fbi-alert-volt-typhoon" target="_blank">CISA Alert</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>Microsoft Threat Intelligence:</strong> "Volt Typhoon targeting critical infrastructure"
+                            <a href="https://learn.microsoft.com/en-us/security/operations/volttyphoon" target="_blank">Microsoft Documentation</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>Mandiant Research:</strong> "Volt Typhoon: Deep Dive on Infrastructure Pre-positioning Tactics"
+                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>NSA Cybersecurity Advisory:</strong> "Volt Typhoon Targeting US Infrastructure"
+                            <a href="https://www.nsa.gov/press-releases/2023/cisa-nsa-and-fbi-alert-volt-typhoon" target="_blank">NSA Press Release</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE SILHOUETTE Operations Against Critical Infrastructure"
+                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🇨🇳</span>
+                        China
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Espionage, Strategic Pre-positioning</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2017</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">BRONZE SILHOUETTE</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">Active</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

@@ -25,10 +25,15 @@
   var css = document.createElement('style');
   css.textContent = '' +
     '/* ── Nav ── */' +
-    'nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid var(--border);background:rgba(8,11,16,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}' +
-    '.nav-logo{font-family:"IBM Plex Mono",monospace;font-size:0.85rem;letter-spacing:0.22em;color:var(--amber);text-transform:uppercase;text-decoration:none}' +
-    '.nav-logo span{color:var(--muted)}' +
-    '.nav-status{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em}' +
+    'nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(8,11,16,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}' +
+    '@media(min-width:768px){nav{padding:20px 48px}}' +
+    '.nav-logo{display:flex;align-items:center;text-decoration:none;gap:10px;flex-shrink:0}' +
+    '.nav-logo-icon{width:32px;height:32px;border-radius:4px;flex-shrink:0}' +
+    '.nav-logo-text{font-family:"IBM Plex Mono",monospace;font-size:0.85rem;letter-spacing:0.22em;color:var(--amber);text-transform:uppercase}' +
+    '.nav-logo-text span{color:var(--muted)}' +
+    '@media(max-width:767px){.nav-logo-text{display:none}}' +
+    '.nav-status{display:none;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em}' +
+    '@media(min-width:768px){.nav-status{display:flex}}' +
     '.status-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2s ease-in-out infinite;flex-shrink:0}' +
     '@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}' +
 
@@ -70,7 +75,16 @@
   if (headerEl) {
     headerEl.innerHTML =
       '<nav>' +
-        '<a class="nav-logo" href="' + base + 'index.html">Threat<span>pedia</span></a>' +
+        '<a class="nav-logo" href="' + base + 'index.html">' +
+        '<svg class="nav-logo-icon" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">' +
+          '<rect width="120" height="120" rx="6" fill="#0a0a0a"/>' +
+          '<rect x="2" y="2" width="116" height="116" rx="5" fill="none" stroke="#1e2733" stroke-width="2"/>' +
+          '<line x1="96" y1="4" x2="96" y2="116" stroke="#e8a020" stroke-width="2" opacity="0.6"/>' +
+          '<text x="18" y="92" font-family="Georgia,serif" font-size="82" font-weight="700" fill="#e8a020">T</text>' +
+          '<text x="62" y="92" font-family="Georgia,serif" font-size="82" font-weight="700" fill="#5a6a7e">P</text>' +
+        '</svg>' +
+        '<span class="nav-logo-text">Threat<span>pedia</span></span>' +
+      '</a>' +
         '<div class="nav-status">' +
           '<div class="status-dot"></div>' +
           'COMING SOON \u2014 FOUNDING MEMBER REGISTRATION OPEN' +

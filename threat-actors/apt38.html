@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APT38 (Lazarus - Financial) | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="nkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#c60c30;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#003478;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- North Korea map -->
+                <path d="M 85 75 L 110 75 L 115 105 L 105 125 L 80 120 L 75 100 Z" fill="url(#nkGradient)" opacity="0.6"/>
+                <!-- Money/financial symbol -->
+                <circle cx="100" cy="105" r="12" fill="none" stroke="#c60c30" stroke-width="2" opacity="0.7"/>
+                <text x="100" y="112" font-size="12" font-weight="bold" fill="#c60c30" text-anchor="middle" opacity="0.8">$</text>
+                <circle cx="100" cy="100" r="4" fill="#c60c30"/>
+                <circle cx="100" cy="100" r="7" fill="none" stroke="#c60c30" stroke-width="1.5" opacity="0.6"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>APT38</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Bluenoroff, Alluring Pisces, BRONZE TEMPLE, Stardust Chollima, Hidden Cobra
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>APT38</strong> (Bluenoroff) is a financially-motivated North Korean threat actor attributed to the Reconnaissance General Bureau (RGB), North Korea's primary intelligence service. Identified as operating since at least 2014, APT38 specializes in targeting financial institutions, cryptocurrency exchanges, and banking infrastructure for direct monetary theft. The group is responsible for some of the largest financial cybercrimes in history, stealing billions of dollars in currency, cryptocurrency, and other assets.</p>
+
+                    <p>APT38 represents a unique threat actor in that the group's primary motivation is financial gain rather than espionage, with the stolen funds supporting North Korea's regime and sanctions evasion. The group maintains sophisticated banking malware, exploits, and infrastructure to target SWIFT networks, ATM systems, and cryptocurrency exchanges. APT38 demonstrates deep knowledge of banking systems, financial protocols, and operational security measures implemented by financial institutions.</p>
+
+                    <p>As of 2025, APT38 continues active financial theft operations with renewed focus on cryptocurrency theft, DeFi platform exploitation, and emerging financial technologies. The group maintains multiple operational teams targeting different financial verticals and demonstrates rapid adaptation to security controls and anti-fraud measures. Their operations remain a significant threat to global financial infrastructure and cryptocurrency ecosystems.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                                <span class="ttp-technique">T1200: Hardware Additions</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059: Command and Scripting Interpreter</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                                <span class="ttp-technique">T1072: Software Deployment Tools</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1547: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1547.001: Registry Run Keys</span>
+                                <span class="ttp-technique">T1137: Office Application Startup</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1056: Input Capture</span>
+                                <span class="ttp-technique">T1110: Brute Force</span>
+                                <span class="ttp-technique">T1056.001: Input Capture - Keylogging</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Discovery:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1087: Account Discovery</span>
+                                <span class="ttp-technique">T1010: Application Window Discovery</span>
+                                <span class="ttp-technique">T1120: Peripheral Device Discovery</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1491: Defacement</span>
+                                <span class="ttp-technique">T1561: Disk Wipe</span>
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>SWIFT Network Exploitation:</strong> Direct targeting of SWIFT interfaces and banking protocols to execute unauthorized transfers from high-value accounts.</li>
+                            <li><strong>ATM Malware Deployment:</strong> Custom malware targeting ATM operating systems to enable unlimited cash extraction and transaction manipulation.</li>
+                            <li><strong>Cryptocurrency Exchange Targeting:</strong> Focused operations against digital currency exchanges, hot wallets, and cryptocurrency trading platforms.</li>
+                            <li><strong>Spear-phishing & Social Engineering:</strong> Highly targeted phishing campaigns against banking employees and cryptocurrency service providers.</li>
+                            <li><strong>Vulnerability Exploitation:</strong> Rapid exploitation of zero-day and known vulnerabilities in banking systems, exchanges, and financial services.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>SWIFT Malware:</strong> Custom tools designed to interact with SWIFT systems, enabling unauthorized fund transfers while evading detection.</li>
+                            <li><strong>Fastpos:</strong> POS malware targeting point-of-sale systems in retail and hospitality sectors for payment card theft.</li>
+                            <li><strong>Dolphin:</strong> Custom backdoor for banking network reconnaissance and credential harvesting.</li>
+                            <li><strong>Riojatch:</strong> Loader malware used in early stages of compromise to stage additional tools and implants.</li>
+                            <li><strong>Destover:</strong> Advanced RAT used for post-compromise network reconnaissance and lateral movement.</li>
+                            <li><strong>Custom Cryptocurrency Stealers:</strong> Specialized malware targeting cryptocurrency wallets, exchanges, and DeFi platforms.</li>
+                            <li><strong>ATM Withdrawal Tools:</strong> Custom utilities for ATM network access and cash extraction authorization.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Compromised Banking Networks:</strong> Operators maintain persistent access in compromised banking systems and use them as staging points.</li>
+                            <li><strong>International Command-and-Control:</strong> Distributed C2 infrastructure across multiple countries to evade attribution and tracking.</li>
+                            <li><strong>Cryptocurrency Mixing Services:</strong> Use of cryptocurrency tumblers and mixing services to launder stolen digital assets.</li>
+                            <li><strong>Underground Banking Channels:</strong> Exploitation of underground banking networks and informal value transfer systems (hawala, etc.).</li>
+                            <li><strong>Tor and VPN Infrastructure:</strong> Heavy use of anonymization services to mask communications and malware C2.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Banking & Financial Services</td>
+                                <td>Commercial banks, investment banks, central banks, SWIFT participants, ATM operators</td>
+                            </tr>
+                            <tr>
+                                <td>Cryptocurrency & Digital Assets</td>
+                                <td>Cryptocurrency exchanges, crypto trading platforms, DeFi protocols, digital wallet providers</td>
+                            </tr>
+                            <tr>
+                                <td>Payment Processing</td>
+                                <td>Payment processors, POS system providers, payment gateway operators, card networks</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Technology</td>
+                                <td>Fintech startups, mobile banking apps, investment platforms, robo-advisors</td>
+                            </tr>
+                            <tr>
+                                <td>Money Services</td>
+                                <td>Money remittance services, currency exchange, international wire services</td>
+                            </tr>
+                            <tr>
+                                <td>Cryptocurrency Services</td>
+                                <td>Mining operations, staking providers, NFT marketplaces, blockchain platforms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2014-2015</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Early Banking Operations</div>
+                                <div class="timeline-event-detail">APT38 begins targeted operations against financial institutions in Asia-Pacific region using custom banking malware.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Bangladesh Bank SWIFT Heist</div>
+                                <div class="timeline-event-detail">Historic theft of $81 million from Bangladesh Bank central bank via SWIFT network manipulation, largest bank heist in history at the time.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2016-2017</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Global Bank Targeting Campaign</div>
+                                <div class="timeline-event-detail">Expansion to target financial institutions across multiple continents using similar SWIFT attack techniques.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2018-2019</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Cryptocurrency Exchange Targeting</div>
+                                <div class="timeline-event-detail">Shift toward cryptocurrency exchanges and digital asset theft with multiple high-value heists from major exchanges.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2020-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>DeFi Platform Focus</div>
+                                <div class="timeline-event-detail">Operations targeting decentralized finance platforms, stealing tens of millions in cryptocurrency through exploit and theft.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022-2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Bridge Exploit Campaigns</div>
+                                <div class="timeline-event-detail">Operations targeting cross-chain bridge protocols, extracting hundreds of millions in cryptocurrency.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024-2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Financial Targeting</div>
+                            <div class="timeline-event-detail">Ongoing operations against financial institutions and cryptocurrency platforms with updated malware toolkits.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE ID</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-4806" class="cve-link">CVE-2013-4806</a></td>
+                                <td>Internet Explorer Use-After-Free</td>
+                                <td>Microsoft Internet Explorer</td>
+                                <td>2013</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2015-0566" class="cve-link">CVE-2015-0566</a></td>
+                                <td>Adobe Flash Remote Code Execution</td>
+                                <td>Adobe Flash Player</td>
+                                <td>2015</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2016-3714" class="cve-link">CVE-2016-3714</a></td>
+                                <td>ImageMagick Remote Code Execution</td>
+                                <td>ImageMagick</td>
+                                <td>2016</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0290" class="cve-link">CVE-2017-0290</a></td>
+                                <td>Windows OLE Remote Code Execution</td>
+                                <td>Microsoft Windows</td>
+                                <td>2017</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-21222" class="cve-link">CVE-2021-21222</a></td>
+                                <td>Telegram Bot API RCE</td>
+                                <td>Telegram Platform</td>
+                                <td>2021</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Attribution Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="vendor-name">Mandiant</span></td>
+                                <td>APT38</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">CrowdStrike</span></td>
+                                <td>STARDUST CHOLLIMA</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Kaspersky</span></td>
+                                <td>Bluenoroff</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Recorded Future</span></td>
+                                <td>BRONZE TEMPLE</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Symantec</span></td>
+                                <td>Alluring Pisces</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">US-CERT</span></td>
+                                <td>Hidden Cobra</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <p>APT38 operates within the broader North Korean state-sponsored ecosystem. Related groups include:</p>
+                    <ul>
+                        <li><span class="actor-link">Lazarus Group</span> (APT38 parent) - Broader NK threat actor group</li>
+                        <li><span class="actor-link">APT37</span> (REAPER) - North Korean espionage group</li>
+                        <li><span class="actor-link">Kimsuky</span> (APT43) - North Korean defense research targeting</li>
+                        <li><span class="actor-link">Andariel</span> - North Korean dual-purpose group</li>
+                        <li><span class="actor-link">Lazarus</span> - Broader North Korean operations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item"><span class="reference-number">[1]</span> US FBI/Treasury Report: "APT38 Financial Theft Operations" (2024)</div>
+                        <div class="reference-item"><span class="reference-number">[2]</span> Mandiant Intelligence Report: "APT38 - North Korean Financial Cybercrime Operations" (2023)</div>
+                        <div class="reference-item"><span class="reference-number">[3]</span> Kaspersky Securelist: "Bluenoroff - Banking Malware Attribution Report" (2022)</div>
+                        <div class="reference-item"><span class="reference-number">[4]</span> Recorded Future: "BRONZE TEMPLE Cryptocurrency Theft Campaign" (2021)</div>
+                        <div class="reference-item"><span class="reference-number">[5]</span> CrowdStrike Adversary Report: "STARDUST CHOLLIMA Banking Heists" (2020)</div>
+                        <div class="reference-item"><span class="reference-number">[6]</span> CISA Alert: "North Korean APT38 Targeting Financial Institutions" (2019)</div>
+                        <div class="reference-item"><span class="reference-number">[7]</span> Symantec Threat Report: "Alluring Pisces - Bangladesh Bank Heist Analysis" (2016)</div>
+                        <div class="reference-item"><span class="reference-number">[8]</span> Federal Reserve and BIS Report: "SWIFT Attack Methodologies and Attribution to APT38" (2017)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🇰🇵</div>
+                        North Korea (RGB)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes - RGB Intelligence</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial Theft</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2014</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">North Korean RGB</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value" style="color: #44aa44;">ACTIVE</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

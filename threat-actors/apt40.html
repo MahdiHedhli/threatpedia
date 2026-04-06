@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APT40 (Leviathan) | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="chinaGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#de2910;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#8b1a00;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Wave pattern for maritime theme -->
+                <path d="M 60 120 Q 80 110 100 120 T 140 120 L 140 140 Q 100 150 60 140 Z" fill="url(#chinaGradient2)" opacity="0.6"/>
+                <!-- Water wave -->
+                <path d="M 50 130 Q 75 120 100 130 T 150 130" stroke="url(#chinaGradient2)" stroke-width="3" fill="none" opacity="0.5"/>
+                <text x="100" y="95" font-family="Playfair Display, serif" font-size="60" font-weight="bold" fill="url(#chinaGradient2)" text-anchor="middle">40</text>
+                <circle cx="100" cy="100" r="4" fill="#de2910"/>
+                <circle cx="100" cy="100" r="7" fill="none" stroke="#de2910" stroke-width="1.5" opacity="0.6"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>APT40</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Leviathan, TEMP.Periscope, BRONZE MOHUR, Periscope, Mudcarp
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>APT40</strong> (Leviathan) is a Chinese state-sponsored threat actor linked to the Ministry of State Security (MSS) with a primary focus on maritime and naval intelligence collection. Identified as operating since at least 2009, APT40 conducts espionage operations targeting maritime industries, defense contractors, naval research institutions, and engineering firms across the United States, Asia-Pacific, and Europe.</p>
+
+                    <p>The group is highly specialized in targeting industries directly related to Chinese strategic interests in naval power projection, advanced submarine technology, port infrastructure, and marine engineering. APT40 maintains sophisticated command-and-control infrastructure, uses custom malware, and demonstrates deep knowledge of their target industries. The group's operational security and technical sophistication have enabled them to maintain long-term presence within victim networks.</p>
+
+                    <p>As of 2025, APT40 continues to conduct active espionage operations with renewed focus on emerging maritime technologies, unmanned underwater vehicles, and naval defense systems. The group combines targeted malware deployment with credential theft and infrastructure-level reconnaissance to establish persistent access for long-term intelligence collection.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.001: Phishing - Spearphishing Attachment</span>
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1195.002: Supply Chain Compromise - Compromise Software Supply Chain</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: Command and Scripting Interpreter - PowerShell</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                                <span class="ttp-technique">T1204.002: User Execution - Malicious File</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1036: Masquerading</span>
+                                <span class="ttp-technique">T1574.001: Hijack Execution Flow - DLL Search Order Hijacking</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1110: Brute Force</span>
+                                <span class="ttp-technique">T1056: Input Capture</span>
+                                <span class="ttp-technique">T1056.001: Input Capture - Keylogging</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Discovery:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1087: Account Discovery</span>
+                                <span class="ttp-technique">T1010: Application Window Discovery</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Targeted Spear-phishing:</strong> Highly specific phishing emails impersonating engineering firms, industry partners, and government agencies, often containing custom malware attachments.</li>
+                            <li><strong>Watering Hole Attacks:</strong> Compromise of maritime and defense industry websites to deliver malware to target organizations.</li>
+                            <li><strong>Exploitation of Public Vulnerabilities:</strong> Rapid exploitation of zero-day and known vulnerabilities in software commonly used in target industries.</li>
+                            <li><strong>Credential Harvesting:</strong> Use of keyloggers and form-grabbing techniques to capture credentials from victim systems.</li>
+                            <li><strong>Naval and Engineering Industry Targeting:</strong> Specialized focus on organizations involved in submarine technology, naval engineering, and maritime defense systems.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>ScanBox:</strong> Reconnaissance framework used to gather information about target networks and employees before engagement.</li>
+                            <li><strong>JSky:</strong> Custom implant for remote command execution and data exfiltration.</li>
+                            <li><strong>Mimikatz:</strong> Legitimate credential dumping tool used for lateral movement within compromised networks.</li>
+                            <li><strong>Custom Backdoors:</strong> Multiple proprietary backdoor families deployed for persistent access and command execution.</li>
+                            <li><strong>Keyloggers:</strong> Custom and modified keylogging tools for credential capture.</li>
+                            <li><strong>Living-off-the-Land Utilities:</strong> Extensive use of PowerShell, WMI, and Windows native tools for post-compromise activities.</li>
+                            <li><strong>Webshells:</strong> Custom webshells for maintaining access to compromised web servers.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Dedicated Command-and-Control Servers:</strong> Operators maintain infrastructure hosted in China and compromised servers globally.</li>
+                            <li><strong>Fast Flux DNS:</strong> Rapid rotation of DNS records and IP addresses to evade detection.</li>
+                            <li><strong>Compromised Legitimate Infrastructure:</strong> Use of compromised web servers and legitimate hosting providers for command-and-control.</li>
+                            <li><strong>Port Reuse:</strong> C2 communication on common ports (80, 443) to blend with legitimate traffic.</li>
+                            <li><strong>Domain Generation Algorithms:</strong> Use of DGA for dynamic C2 domain generation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Maritime & Shipping</td>
+                                <td>Port authorities, shipping companies, maritime infrastructure operators, vessel management systems</td>
+                            </tr>
+                            <tr>
+                                <td>Naval & Defense</td>
+                                <td>Navy research institutions, defense contractors, submarine technology firms, naval engineering companies</td>
+                            </tr>
+                            <tr>
+                                <td>Aerospace & Aviation</td>
+                                <td>Aircraft manufacturers, aviation research, flight control systems, aerospace engineering</td>
+                            </tr>
+                            <tr>
+                                <td>Engineering & Manufacturing</td>
+                                <td>Naval shipbuilders, marine engineering firms, advanced manufacturing companies</td>
+                            </tr>
+                            <tr>
+                                <td>Government & Military</td>
+                                <td>Naval agencies, defense departments, military research organizations</td>
+                            </tr>
+                            <tr>
+                                <td>Oil & Gas</td>
+                                <td>Offshore drilling operators, platform operators, subsea engineering firms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2009-2010</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Early Maritime Industry Targeting</div>
+                                <div class="timeline-event-detail">APT40 begins operations targeting maritime and shipping organizations across Asia-Pacific region.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2011-2012</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Naval Defense Sector Focus</div>
+                                <div class="timeline-event-detail">Operations expand to target naval defense contractors and submarine technology firms.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2013-2014</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>US Navy Contractor Campaigns</div>
+                                <div class="timeline-event-detail">Targeted campaigns against US naval contractors and defense research organizations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2015-2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Global Maritime Infrastructure Targeting</div>
+                                <div class="timeline-event-detail">Operations span multiple continents targeting port authorities and maritime infrastructure globally.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2017-2018</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Advanced Submarine Technology Operations</div>
+                                <div class="timeline-event-detail">Specialized campaigns targeting advanced submarine and underwater vehicle research programs.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2019-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Offshore Engineering Focus</div>
+                                <div class="timeline-event-detail">Expanded targeting of offshore oil and gas engineering firms for platform design intelligence.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022-2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Autonomous Maritime Systems</div>
+                                <div class="timeline-event-detail">Operations targeting unmanned maritime vehicles, autonomous systems, and naval AI research.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024-2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Maritime Intelligence Operations</div>
+                                <div class="timeline-event-detail">Ongoing sophisticated campaigns with updated toolsets targeting emerging maritime technologies.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE ID</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2010-2883" class="cve-link">CVE-2010-2883</a></td>
+                                <td>Adobe PDF Remote Code Execution</td>
+                                <td>Adobe Reader</td>
+                                <td>2010</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2012-0158" class="cve-link">CVE-2012-0158</a></td>
+                                <td>Windows ListBox Remote Code Execution</td>
+                                <td>Microsoft Windows</td>
+                                <td>2012</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2014-3153" class="cve-link">CVE-2014-3153</a></td>
+                                <td>Linux Kernel Privilege Escalation</td>
+                                <td>Linux Kernel</td>
+                                <td>2014</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0143" class="cve-link">CVE-2017-0143</a></td>
+                                <td>Windows SMB Remote Code Execution (EternalBlue)</td>
+                                <td>Microsoft Windows</td>
+                                <td>2017</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-2725" class="cve-link">CVE-2019-2725</a></td>
+                                <td>Oracle WebLogic Remote Code Execution</td>
+                                <td>Oracle WebLogic Server</td>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Attribution Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="vendor-name">Mandiant</span></td>
+                                <td>APT40</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">CrowdStrike</span></td>
+                                <td>MUDCARP</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Recorded Future</span></td>
+                                <td>Leviathan</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">FireEye</span></td>
+                                <td>TEMP.Periscope</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Symantec</span></td>
+                                <td>BRONZE MOHUR</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Kaspersky</span></td>
+                                <td>Periscope</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <p>APT40 operates within the broader Chinese state-sponsored ecosystem. Related groups include:</p>
+                    <ul>
+                        <li><span class="actor-link">APT1</span> (Comment Crew) - Chinese PLA Unit 61398</li>
+                        <li><span class="actor-link">APT10</span> (MenuPass) - Chinese contractor-based group</li>
+                        <li><span class="actor-link">APT27</span> (Emissary Panda) - Chinese espionage group</li>
+                        <li><span class="actor-link">APT31</span> (Zirconium) - Chinese government espionage</li>
+                        <li><span class="actor-link">APT41</span> (BARIUM) - Chinese dual-purpose group</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item"><span class="reference-number">[1]</span> Mandiant Intelligence Report: "APT40 - Leviathan Espionage Campaign Analysis" (2024)</div>
+                        <div class="reference-item"><span class="reference-number">[2]</span> CrowdStrike Adversary Report: "MUDCARP: Deep Dive into Maritime Industry Targeting" (2023)</div>
+                        <div class="reference-item"><span class="reference-number">[3]</span> FireEye Report: "TEMP.Periscope Operations Targeting US Defense Contractors" (2022)</div>
+                        <div class="reference-item"><span class="reference-number">[4]</span> Recorded Future: "Leviathan Naval Espionage Campaign Report" (2021)</div>
+                        <div class="reference-item"><span class="reference-number">[5]</span> Symantec Threat Report: "BRONZE MOHUR Maritime Targeting Analysis" (2020)</div>
+                        <div class="reference-item"><span class="reference-number">[6]</span> CISA Alert: "APT40 Targeting Naval and Maritime Industries" (2019)</div>
+                        <div class="reference-item"><span class="reference-number">[7]</span> Kaspersky Securelist: "Periscope - Advanced Maritime Espionage" (2018)</div>
+                        <div class="reference-item"><span class="reference-number">[8]</span> Palo Alto Unit 42: "APT40 ScanBox Reconnaissance Framework Analysis" (2017)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🇨🇳</div>
+                        China (MSS)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes - Chinese Government</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Maritime Espionage</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2009</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">Chinese MSS</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value" style="color: #44aa44;">ACTIVE</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+🚨 Axios npm package compromised by North Korea-linked UNC1069 — WAVESHAPER.V2 RAT deployed across Windows, macOS & Linux in 3-hour window.
+
+Full incident analysis on Threatpedia:
+https://threatpedia.wiki/incidents/axios-unc1069-compromise.html
+
+#CyberSecurity #SupplyChainAttack #ThreatIntel

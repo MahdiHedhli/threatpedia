@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APT10 | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="apt10Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <!-- Background circle -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Cloud shape (representing Cloud Hopper campaign) -->
+                <path d="M 70 100 Q 70 80 90 80 Q 100 60 115 70 Q 130 65 130 85 Q 145 90 140 105 Q 130 120 110 120 Q 90 125 70 115 Z" fill="#e8a020" opacity="0.7"/>
+                <!-- Hopper/grasshopper silhouette inside cloud -->
+                <g opacity="0.4" fill="#a06a10">
+                    <circle cx="95" cy="100" r="5"/>
+                    <circle cx="92" cy="96" r="3"/>
+                    <circle cx="98" cy="96" r="3"/>
+                    <path d="M 85 102 Q 80 105 75 100" stroke="#a06a10" stroke-width="2" fill="none"/>
+                    <path d="M 105 102 Q 110 105 115 100" stroke="#a06a10" stroke-width="2" fill="none"/>
+                </g>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>APT10</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Stone Panda, MenuPass, POTASSIUM, Passerby, Cloud Hopper
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>APT10</strong> (also known as Stone Panda, MenuPass, or POTASSIUM) is a Chinese state-sponsored advanced persistent threat group attributed to China's Ministry of State Security (MSS). Operating since at least 2009, APT10 is one of the most prolific and active Chinese APT groups, conducting widespread espionage campaigns targeting government agencies, managed service providers (MSPs), technology companies, and multinational corporations across global markets. The group gained significant notoriety through the "Cloud Hopper" campaign, which compromised managed service providers to gain indirect access to hundreds of downstream client organizations.</p>
+
+                    <p>APT10 is distinguished by their operational scale, targeting breadth, and strategic focus on supply chain compromise and managed service provider exploitation. The group demonstrates sophisticated technical capabilities, including custom malware development, command-and-control infrastructure sophistication, and ability to maintain persistence across complex network environments. APT10's campaigns have affected government organizations in dozens of countries and Fortune 500 companies across energy, aerospace, technology, finance, and healthcare sectors.</p>
+
+                    <p>As of 2025, APT10 continues active espionage operations with refined tactical approaches and expanded targeting against cloud service providers and modern IT infrastructure. The group's operational focus has evolved to include cloud-native targeting, SaaS platform compromise, and supply chain leverage for large-scale intelligence collection supporting Chinese state interests.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1195.002: Supply Chain Compromise</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution & Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Windows Command Shell</span>
+                                <span class="ttp-technique">T1547.001: Registry Run Keys</span>
+                                <span class="ttp-technique">T1547.008: LSASS Driver</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement & Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1021: Remote Services</span>
+                                <span class="ttp-technique">T1036: Masquerading</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Managed Service Provider (MSP) Targeting:</strong> Compromise of MSP infrastructure and admin credentials to pivot to hundreds of downstream client organizations (Cloud Hopper campaign model).</li>
+                            <li><strong>Spear-Phishing with Weaponized Attachments:</strong> Highly targeted spear-phishing emails to technical staff at organizations, with attachments containing exploit code or malware.</li>
+                            <li><strong>Web Application Exploitation:</strong> Exploitation of known and zero-day vulnerabilities in web applications, remote access services, and infrastructure management tools.</li>
+                            <li><strong>Credential Harvesting:</strong> Collection of credentials through phishing, credential stuffing, and password spraying to gain initial access and facilitate lateral movement.</li>
+                            <li><strong>Living-off-the-Land Techniques:</strong> Extensive use of legitimate administrative tools (PowerShell, RDP, PsExec, WMI) to minimize malware footprint and avoid detection.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>POISONPLUG Malware:</strong> Custom backdoor used for remote command execution and system access in victim environments.</li>
+                            <li><strong>UPPERCUT Backdoor:</strong> Advanced multi-stage backdoor providing persistent access and lateral movement capabilities.</li>
+                            <li><strong>Quasar RAT:</strong> Open-source remote access trojan modified and deployed by APT10 for command execution and data exfiltration.</li>
+                            <li><strong>Cobalt Strike:</strong> Legitimate penetration testing framework weaponized for command execution and lateral movement post-compromise.</li>
+                            <li><strong>Custom Encoding Tools:</strong> Proprietary tools for encoding/obfuscating communications and evading network-based detection systems.</li>
+                            <li><strong>Droppers & Loaders:</strong> Multi-stage delivery mechanisms designed to bypass endpoint security controls and deploy second-stage payloads.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Compromised Infrastructure Reuse:</strong> Leveraging of previously compromised servers and hosting accounts for command-and-control communications.</li>
+                            <li><strong>Domain Hosting via China-based Registrars:</strong> Registration of C2 domains through Chinese registrars with minimal abuse response requirements.</li>
+                            <li><strong>Bulletproof Hosting:</strong> Use of bulletproof hosting providers to maintain infrastructure resilience and evade takedown efforts.</li>
+                            <li><strong>Dynamic DNS & Fast Flux:</strong> Rapid IP rotation and dynamic DNS to evade network-based blocking and signature detection.</li>
+                            <li><strong>Legitimate Service Abuse:</strong> Abuse of legitimate cloud services and content delivery networks (CDNs) for C2 communications.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>APT10 targets a diverse range of global organizations with strategic focus on supply chain and MSP leverage:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Managed Service Providers (MSPs)</td>
+                                <td>Cloud Hopper campaign targeting major MSPs and IT service providers worldwide. Downstream impact affecting 100+ client organizations per MSP.</td>
+                            </tr>
+                            <tr>
+                                <td>Government & Defense</td>
+                                <td>US federal agencies, Department of Defense contractors, military research institutions, allied government organizations</td>
+                            </tr>
+                            <tr>
+                                <td>Aerospace & Energy</td>
+                                <td>Aerospace contractors, energy companies, infrastructure operators, nuclear facility operators</td>
+                            </tr>
+                            <tr>
+                                <td>Technology</td>
+                                <td>Software vendors, semiconductor companies, cloud service providers, IT infrastructure vendors</td>
+                            </tr>
+                            <tr>
+                                <td>Finance & Banking</td>
+                                <td>Financial institutions, investment firms, banking infrastructure operators</td>
+                            </tr>
+                            <tr>
+                                <td>Healthcare & Pharmaceuticals</td>
+                                <td>Healthcare providers, pharmaceutical manufacturers, medical research institutions</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Scope:</strong> Global with particular focus on USA, Europe, Japan, South Korea, India, and Australia. Targets multinational organizations with presence across multiple continents for diversified intelligence collection.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2009-2012</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Early Operations - Infrastructure Targeting</div>
+                                <div class="timeline-event-detail">APT10 (Stone Panda/MenuPass) initiates espionage operations targeting Japanese and US organizations. Focuses on government and aerospace sectors with custom malware deployment.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2013-2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Global Expansion & MSP Targeting</div>
+                                <div class="timeline-event-detail">APT10 expands operations globally, beginning targeted compromise of managed service providers. Identifies MSP supply chain model as effective leverage for multi-organization access.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Oct 2017 - Mar 2018</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Operation Cloud Hopper - MSP Mega Breach</div>
+                                <div class="timeline-event-detail">APT10 launches "Operation Cloud Hopper" - coordinated compromise of multiple global managed service providers. Affects 100+ MSP client organizations in 41 countries. Targets include government agencies, Fortune 500 companies, technology firms. Estimated impact on thousands of downstream organizations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2018-2019</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Post-Attribution Adaptation</div>
+                            <div class="timeline-event-detail">Following public Cloud Hopper attribution, APT10 refines tactics and infrastructure. Operations continue with evolved malware families and enhanced operational security practices.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2019-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Cloud-Native & SaaS Targeting</div>
+                                <div class="timeline-event-detail">APT10 pivots to target cloud-native applications and SaaS platforms. Expands focus to include Office 365, Azure, and other cloud infrastructure commonly used by target organizations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2021-2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Zero-Day Exploitation & Advanced Persistence</div>
+                                <div class="timeline-event-detail">APT10 exploits multiple zero-days in enterprise applications and develops advanced persistence mechanisms. Shifts to exploiting supply chain vulnerabilities in software development tools.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2023-2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Modern Cloud Infrastructure Campaigns</div>
+                            <div class="timeline-event-detail">APT10 continues active espionage against government and enterprise targets with focus on cloud infrastructure, identity and access management systems, and modern DevOps environments.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>APT10 has exploited numerous known and zero-day vulnerabilities across enterprise platforms:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-9822" class="cve-link" target="_blank">CVE-2017-9822</a></td>
+                                <td>Remote Code Execution - Jira</td>
+                                <td>Atlassian Jira (versions 6.4-7.6)</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-15473" class="cve-link" target="_blank">CVE-2018-15473</a></td>
+                                <td>OpenSSH User Enumeration</td>
+                                <td>OpenSSH (7.4p1 through 7.8p1)</td>
+                                <td>5.3</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-10271" class="cve-link" target="_blank">CVE-2017-10271</a></td>
+                                <td>Remote Code Execution - Oracle WebLogic</td>
+                                <td>Oracle WebLogic Server (multiple versions)</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-2725" class="cve-link" target="_blank">CVE-2019-2725</a></td>
+                                <td>Remote Code Execution - Oracle WebLogic</td>
+                                <td>Oracle WebLogic Server 10.3.6 - 12.2.1</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-1732" class="cve-link" target="_blank">CVE-2021-1732</a></td>
+                                <td>Privilege Escalation - Windows Win32k</td>
+                                <td>Microsoft Windows (multiple versions)</td>
+                                <td>7.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-28476" class="cve-link" target="_blank">CVE-2021-28476</a></td>
+                                <td>Authentication Bypass - Fortinet FortiOS</td>
+                                <td>Fortinet FortiGate Firewall</td>
+                                <td>9.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>APT10 is tracked under multiple designations across the threat intelligence community:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>APT10</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>Stone Panda</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>MenuPass</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft</td>
+                                <td>POTASSIUM</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Symantec</td>
+                                <td>Passerby</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">MITRE ATT&CK</td>
+                                <td>Group G0045</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">FireEye</td>
+                                <td>APT10 / Cloud Hopper</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>APT10 / Stone Panda</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>APT1 (Comment Crew):</strong> Fellow Chinese-attributed APT group operating with similar strategic objectives targeting defense industrial base and government sectors, though with distinct operational patterns and tool preferences.</li>
+                        <li><strong>APT27 (Emissary Panda):</strong> Chinese-attributed APT group conducting parallel espionage operations. Some tactical overlap in targeting but different organizational focus and specialization areas.</li>
+                        <li><strong>APT41:</strong> Chinese-attributed group conducting both state-sponsored espionage and financially motivated operations. May coordinate with APT10 on select campaigns.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <a href="https://www.fireeye.com/blog/threat-research/2018/04/apt10-cloud-hopper.html" target="_blank">FireEye: APT10 (Cloud Hopper) Campaign Analysis</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <a href="https://www.mandiant.com/resources/apt10-operations-targeting-cloud-infrastructure" target="_blank">Mandiant: APT10 Operations Targeting Cloud Infrastructure</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <a href="https://attack.mitre.org/groups/G0045/" target="_blank">MITRE ATT&CK: APT10 (Group G0045)</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <a href="https://www.crowdstrike.com/blog/stone-panda-espionage-msp/" target="_blank">CrowdStrike: Stone Panda MSP Targeting Analysis</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <a href="https://www.recordedfuture.com/menupass-apt10-operations" target="_blank">Recorded Future: MenuPass (APT10) Ongoing Operations</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[6]</span>
+                            <a href="https://www.ncsc.gov.uk/alerts/foreign-espionage-joint-statement" target="_blank">NCSC/NSA Joint Alert: APT10 Cloud Hopper Campaign</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[7]</span>
+                            <a href="https://www.microsoft.com/en-us/security/blog/potassium-apt10-operations/" target="_blank">Microsoft Security Blog: POTASSIUM (APT10) Campaign Deep Dive</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[8]</span>
+                            <a href="https://www.symantec.com/blogs/threat-intelligence/passerby-cloud-hopper" target="_blank">Symantec: Passerby (APT10) Threat Intelligence Report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🇨🇳</div>
+                        <span>China (MSS)</span>
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Espionage</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2009</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025 (Active)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">China MSS</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

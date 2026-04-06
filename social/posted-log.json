@@ -1,0 +1,21 @@
+{
+  "lastRun": "2026-04-06T22:00:00Z",
+  "posts": [
+    {
+      "slug": "axios-unc1069-compromise",
+      "type": "incident",
+      "postedAt": "2026-04-06T22:00:00Z",
+      "platforms": ["x-draft", "linkedin-draft"],
+      "xPostId": null,
+      "linkedinPostId": null
+    },
+    {
+      "slug": "drift-protocol-dprk-exploit-2026",
+      "type": "incident",
+      "postedAt": "2026-04-06T22:00:00Z",
+      "platforms": ["x-draft", "linkedin-draft"],
+      "xPostId": null,
+      "linkedinPostId": null
+    }
+  ]
+}
