@@ -615,6 +615,7 @@
     </style>
 </head>
 <body>
+    <!-- UPDATED 2026-04-06 by daily-incident-updater -->
     <!-- Navigation -->
     <nav>
         <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
@@ -1040,13 +1041,19 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                         <p><strong>Google Threat Intelligence Group (GTIG) has formally attributed this attack to UNC1069</strong> with high confidence through multiple independent indicators:</p>
 
                         <div class="subsection">
+                            <h3 class="subsection-title">Formal Attribution & Attack Details</h3>
+                            <p>On April 2, 2026, Google Cloud and GTIG formally attributed the axios npm supply chain attack to UNC1069, a North Korea-nexus threat actor with financial motivations active since 2018. The attack was executed via highly-targeted social engineering, with the attacker posing as the founder of a well-known company to compromise the axios maintainer's credentials. The malware deployed was identified as WAVESHAPER.V2, an evolved variant of the WAVESHAPER remote access trojan.</p>
+                        </div>
+
+                        <div class="subsection">
                             <h3 class="subsection-title">Technical Attribution Vectors</h3>
                             <ul>
-                                <li><strong>WAVESHAPER Lineage:</strong> The Linux payload represents a clear evolution of WAVESHAPER, a RAT exclusively attributed to UNC1069 in previous operations dating to 2023.</li>
+                                <li><strong>WAVESHAPER.V2 Malware:</strong> The deployed payload is WAVESHAPER.V2, a sophisticated RAT exclusively attributed to UNC1069 representing a clear evolution of WAVESHAPER variants documented in previous operations dating to 2023.</li>
                                 <li><strong>C2 Infrastructure Links:</strong> Domain sfrclak[.]com and IP 142.11.206.73 directly correlate with known UNC1069 infrastructure based on WHOIS data, SSL certificate chains, and passive DNS records.</li>
                                 <li><strong>VPN Node Reuse:</strong> Attacker egress through AstrillVPN nodes previously identified in UNC1069 campaigns (Lazarus Group VPN provider of choice for DPRK threat actors).</li>
                                 <li><strong>Payload Architecture:</strong> Three-stage infection chain, platform-specific payloads, and obfuscation techniques match UNC1069's established patterns.</li>
                                 <li><strong>Operational Security:</strong> Time zone indicators (UTC timing, 00:21 initial publication) align with known UNC1069 operational windows.</li>
+                                <li><strong>Social Engineering Methodology:</strong> Sophisticated credential compromise via targeted social engineering posing as corporate founder aligns with UNC1069's advanced operational tactics.</li>
                             </ul>
                         </div>
 
@@ -1059,7 +1066,7 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                                 <li><strong>Specialization:</strong> Supply chain attacks, software infrastructure targeting, cryptocurrency exchange operations</li>
                                 <li><strong>Notable Operations:</strong> Previous npm package compromises, PyPI attacks, enterprise software supply chain infiltration</li>
                                 <li><strong>Infrastructure Preference:</strong> Premium VPN services, bulletproof hosters, decentralized C2 patterns</li>
-                                <li><strong>Operational Sophistication:</strong> High (custom tools, evasion techniques, rapid iteration)</li>
+                                <li><strong>Operational Sophistication:</strong> High (custom tools, evasion techniques, rapid iteration, targeted social engineering)</li>
                             </ul>
                         </div>
 
@@ -1139,7 +1146,31 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                 <section class="section references">
                     <h2 class="section-title">References & Further Reading</h2>
                     <div class="reference-item">
-                        <a href="https://blog.google/threat-intelligence/unc1069-axios-npm-supply-chain/" class="reference-link">Google Cloud Blog: UNC1069 npm Supply Chain Attack</a>
+                        <a href="https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package" class="reference-link">Google Cloud Blog: North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package</a>
+                        <span class="reference-source">Google Cloud Threat Intelligence, April 2, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/" class="reference-link">Microsoft Security Blog: Mitigating the Axios npm supply chain compromise</a>
+                        <span class="reference-source">Microsoft Security Response Center, April 1, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.elastic.co/security-labs/axios-one-rat-to-rule-them-all" class="reference-link">Elastic Security Labs: Inside the Axios supply chain compromise</a>
+                        <span class="reference-source">Elastic Security Research, April 3, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/" class="reference-link">Snyk Blog: Axios npm Package Compromised</a>
+                        <span class="reference-source">Snyk Security Research, April 2, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.huntress.com/blog/supply-chain-compromise-axios-npm-package" class="reference-link">Huntress: Supply Chain Compromise of axios npm Package</a>
+                        <span class="reference-source">Huntress Labs, April 1, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.tenable.com/blog/faq-about-the-axios-npm-supply-chain-attack-by-north-korea-nexus-threat-actor-unc1069" class="reference-link">Tenable FAQ: Axios npm Supply Chain Attack FAQ</a>
+                        <span class="reference-source">Tenable Security Research, April 4, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://blog.google/threat-intelligence/unc1069-axios-npm-supply-chain/" class="reference-link">Google Cloud Blog: UNC1069 npm Supply Chain Attack (Original)</a>
                         <span class="reference-source">Google Threat Intelligence Group, March 31, 2026</span>
                     </div>
                     <div class="reference-item">
@@ -1238,6 +1269,7 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                     <div class="sidebar-title">Related Reading</div>
                     <div class="sidebar-content">
                         <a href="teampcp-supply-chain-attack.html" class="sidebar-link">TeamPCP Campaign</a>
+                        <a href="european-commission-trivy-breach-2026.html" class="sidebar-link">European Commission Trivy Breach</a>
                         <a href="../glossary.html?term=supply-chain-attack" class="sidebar-link">Supply Chain Attack (Glossary)</a>
                         <a href="../glossary.html?term=rat" class="sidebar-link">RAT - Remote Access Trojan</a>
                         <a href="../glossary.html?term=c2" class="sidebar-link">C2 Infrastructure</a>

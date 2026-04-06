@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="review-status" content="pending">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-06T18:30:00Z">
+    <title>Die Linke Political Party Hit by Qilin Ransomware | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.02)" filter="url(%23noise)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Review Banner */
+        .review-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(232, 160, 32, 0.15), rgba(232, 160, 32, 0.08));
+            border-bottom: 2px solid var(--amber);
+            padding: 12px 40px;
+            z-index: 110;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--muted);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .hamburger:hover {
+            border-color: var(--amber);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(3.25px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-3.25px) rotate(-45deg);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 199;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            max-width: 85vw;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 32px 32px;
+            overflow-y: auto;
+        }
+
+        .menu-panel.open {
+            transform: translateX(0);
+        }
+
+        .menu-search {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 28px;
+            border-radius: 0;
+        }
+
+        .menu-search::placeholder {
+            color: var(--muted);
+        }
+
+        .menu-search:focus {
+            border-color: var(--amber);
+            box-shadow: 0 0 0 1px var(--amber);
+        }
+
+        .menu-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--amber-dim);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .menu-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 28px;
+        }
+
+        .menu-links a {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .menu-links a:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .menu-links a:hover {
+            color: var(--amber);
+            padding-left: 8px;
+        }
+
+        .menu-links a.active {
+            color: var(--amber);
+        }
+
+        .menu-cta {
+            display: block;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bg);
+            background: var(--amber);
+            text-decoration: none;
+            padding: 15px 24px;
+            transition: background 0.2s;
+            margin-top: auto;
+        }
+
+        .menu-cta:hover {
+            background: #f0b030;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 146px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .status-contained {
+            color: #44aa44;
+            font-weight: 600;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 146px;
+            height: fit-content;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: var(--amber);
+            line-height: 1.6;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Attack Flow Diagram */
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--amber);
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .stage-description {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* IOC Cards */
+        .ioc-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .ioc-header {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .ioc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ioc-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ioc-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ioc-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #ff6b6b;
+            word-break: break-all;
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Reference List */
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reference-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                grid-column: 1;
+                position: static;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 146px 20px 40px;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .review-banner {
+                padding: 10px 20px;
+                font-size: 11px;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .container {
+                padding: 146px 16px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Review Banner -->
+    <div class="review-banner">
+        ⚠ AUTOMATED REPORT — PENDING HUMAN REVIEW | Generated April 6, 2026
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
+        <div class="menu-links">
+            <a href="../glossary.html">Glossary</a>
+            <a href="../threat-actors.html">Threat Actors</a>
+            <a href="die-linke-qilin-ransomware-2026.html" class="active">Incidents</a>
+        </div>
+        <a class="menu-cta" href="../index.html#signup">Register Interest</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">Die Linke Political Party Hit by Qilin Ransomware</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0023</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Ransomware / Political Party Data Theft</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">March 26, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value status-contained">Under Investigation</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value severity-critical">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution</span>
+                    <span class="meta-value"><a href="../threat-actors.html?actor=qilin" class="actor-link">Qilin (Russian-speaking RaaS)</a></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Government / Political Party</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Geography</span>
+                    <span class="meta-value">Germany</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On March 26, 2026, the Russian-speaking ransomware group <strong>Qilin</strong> compromised the network of <strong>Die Linke</strong> (The Left Party), a political party represented in the German Bundestag with 64 members of parliament and approximately 123,000 registered members. The attackers exfiltrated sensitive internal party data and employee personal information before the party disclosed the incident the following day on March 27.</p>
+
+                        <p>Qilin publicly claimed responsibility on April 1, 2026, listing Die Linke on its data leak site and claiming to have stolen approximately 1.5 terabytes of data. However, Die Linke stated that the attackers failed to obtain the full membership database, which appeared to be a primary target. The party described the threat actors as Russian-speaking cybercriminals who are both financially and politically motivated, adding that the attack "does not appear to be coincidental in this context" — likely referencing geopolitical tensions between Russia and Western nations.</p>
+
+                        <p>The attack on a parliamentary political party raises significant concerns about the integrity of democratic institutions and the weaponization of ransomware for political purposes. Qilin has been the most active ransomware group in early 2026, claiming over 100 victims per month for three consecutive months, with this attack representing a notable escalation into political party targeting.</p>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attack Vector</h3>
+                            <p>The specific initial access vector used by Qilin to compromise Die Linke's network has not been publicly disclosed. Typical Qilin attack vectors include exploitation of unpatched vulnerabilities in internet-facing systems, phishing campaigns targeting IT administrators, and credential-based attacks against remote access infrastructure.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Data Exfiltration & Encryption</h3>
+                            <p>Following network compromise, Qilin conducted extensive reconnaissance and lateral movement within Die Linke's infrastructure. The threat group exfiltrated approximately <strong>1.5 terabytes</strong> of sensitive data including:</p>
+                            <ul>
+                                <li>Internal party communications and strategic documents</li>
+                                <li>Employee personal information (names, contact details, employment records)</li>
+                                <li>Financial records and party budget information</li>
+                                <li>Member databases (partial - full membership list reportedly not accessed)</li>
+                                <li>Correspondence with political allies and external organizations</li>
+                            </ul>
+                            <p>Data was staged for exfiltration before ransomware deployment, consistent with Qilin's double-extortion model. Party IT systems were subsequently taken offline following discovery of the incident.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Qilin Ransomware-as-a-Service Operation</h3>
+                            <p>Qilin operates as a Ransomware-as-a-Service (RaaS) operation, renting access to its ransomware payload and paying affiliates commission-based rates for successful compromises. The RaaS model enables rapid scaling and provides plausible deniability for direct attribution to specific Russian state actors, though threat intelligence assessments indicate Russian-speaking operators with state resources.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">MITRE ATT&CK Mapping</h3>
+                            <div class="tech-box">T1486 - Data Encrypted for Impact
+T1048 - Exfiltration Over Alternative Protocol
+T1078 - Valid Accounts
+T1005 - Data from Local System
+T1560 - Archive Collected Data</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Attack Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 26, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Network Compromise & Data Exfiltration</strong>
+                                <p>Qilin compromises Die Linke network through unconfirmed initial access vector. Attackers conduct reconnaissance, escalate privileges, and exfiltrate approximately 1.5 TB of sensitive party and employee data.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 27, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Public Disclosure</strong>
+                                <p>Die Linke publicly discloses cyber incident affecting party IT systems. Party does not initially confirm scope of data theft or disclosure of membership databases.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 1, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Qilin Claims Responsibility</strong>
+                                <p>Qilin publicly claims attack on its data leak site. Group claims 1.5 TB stolen and lists Die Linke among victims. Die Linke confirms attackers failed to obtain complete membership database.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 2-3, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Media & Cybersecurity Community Response</strong>
+                                <p>German cybersecurity researchers and international threat intelligence firms begin analysis. German federal cybersecurity authorities (BSI) become involved in investigation.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 6, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Ongoing Investigation</strong>
+                                <p>Investigation continues regarding full scope of data theft, potential intelligence value of stolen communications, and attribution confidence. No data samples from Die Linke published by Qilin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Immediate Impact</h3>
+                            <div class="ioc-group">
+                                <div class="ioc-header">Incident Metrics</div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Data Exfiltrated</div>
+                                    <div class="ioc-value">~1.5 terabytes</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Party Members (Bundestag)</div>
+                                    <div class="ioc-value">64 parliamentary representatives</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Party Membership Database</div>
+                                    <div class="ioc-value">~123,000 registered members (reportedly protected)</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Exposed Employee Personal Information</div>
+                                    <div class="ioc-value">Names, contact details, employment records</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Systems Disrupted</div>
+                                    <div class="ioc-value">Party IT infrastructure, email systems, internal communications</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Democratic Institution Targeting</h3>
+                            <p>The attack on Die Linke represents a significant escalation in ransomware targeting of democratic institutions. Implications include:</p>
+                            <ul>
+                                <li><strong>Political Intelligence Value:</strong> Stolen internal communications may be analyzed or selectively disclosed to influence German politics or foreign relations</li>
+                                <li><strong>Democratic Integrity:</strong> Targeting of elected parliamentary party raises concerns about coordinated campaigns against political opponents or democratic processes</li>
+                                <li><strong>Geopolitical Weaponization:</strong> Die Linke's alignment on certain foreign policy issues (particularly regarding Russia/NATO) may make it a targeted political actor</li>
+                                <li><strong>Member Privacy:</strong> Exposed party member data could be leveraged for targeted harassment or disinformation campaigns</li>
+                                <li><strong>Institutional Disruption:</strong> Party operations, campaign coordination, and parliamentary activities disrupted during critical period</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Qilin Activity Context</h3>
+                            <p>This attack is part of Qilin's broader expansion in early 2026. The group achieved unprecedented victim volume:</p>
+                            <ul>
+                                <li><strong>January 2026:</strong> 100+ victims claimed</li>
+                                <li><strong>February 2026:</strong> 115+ victims claimed</li>
+                                <li><strong>March 2026:</strong> 131+ victims claimed (including Die Linke)</li>
+                            </ul>
+                            <p>The escalation to political party targeting indicates Qilin's willingness to accept higher-profile victims and potential state-level involvement in targeting decisions. Targeting may be motivated by both financial extortion and strategic political goals aligned with Russian interests.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attribution -->
+                <section class="section">
+                    <h2 class="section-title">Attribution & Threat Actor Profile</h2>
+                    <div class="section-content">
+                        <p>Multiple threat intelligence firms have attributed this attack to <strong>Qilin</strong>, a Russian-speaking Ransomware-as-a-Service group that has become the most prolific ransomware operator in early 2026. While plausible deniability exists through the RaaS model, Qilin's targeting patterns, operational tempo, and association with Russian-speaking infrastructure suggest state-level coordination or tolerance.</p>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Qilin Profile</h3>
+                            <ul>
+                                <li><strong>Designation:</strong> Qilin (also tracked as BlackSuit by some vendors)</li>
+                                <li><strong>Model:</strong> Ransomware-as-a-Service (RaaS) with affiliate commission structure</li>
+                                <li><strong>Active Since:</strong> 2022 (operating under various names/variants)</li>
+                                <li><strong>Language:</strong> Russian-speaking operators and communications</li>
+                                <li><strong>Geography:</strong> Infrastructure patterns suggest Russian or Eastern European operations</li>
+                                <li><strong>Sophistication Level:</strong> High (enterprise-grade ransomware, sophisticated targeting, operational security)</li>
+                                <li><strong>Primary Motivation:</strong> Financial extortion with secondary political/strategic objectives</li>
+                                <li><strong>Victim Profile:</strong> Large organizations across all sectors; recent escalation to government/political targets</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Targeting Rationale</h3>
+                            <p>Die Linke's selection as a target may reflect multiple factors:</p>
+                            <ul>
+                                <li><strong>Financial:</strong> Political parties hold accessible IT systems and maintain digital records of high value</li>
+                                <li><strong>Political:</strong> Die Linke's skeptical position toward NATO and military interventions may make it a target for Russian-aligned actors seeking to create political friction or obtain intelligence on party positions</li>
+                                <li><strong>Opportunistic:</strong> Vulnerable systems discovered through automated reconnaissance; financial motivation sufficient</li>
+                                <li><strong>Escalation:</strong> Demonstrated success against lower-profile targets empowers Qilin to target higher-impact victims</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Confidence Assessment</h3>
+                            <p><strong>Attribution Confidence: HIGH (80-85%)</strong></p>
+                            <p>Attribution is based on Qilin's public claim of responsibility, technical indicators (data exfiltration patterns), timing correlation with known Qilin operational tempo, and consistency with group's established modus operandi. Confidence is slightly reduced due to RaaS plausible deniability and potential for affiliate-conducted operations under Qilin branding.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Remediation -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Lessons Learned</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Immediate Response Actions</h3>
+                            <ul>
+                                <li><strong>System Isolation:</strong> Die Linke isolated IT systems following discovery to prevent further lateral movement</li>
+                                <li><strong>Credential Reset:</strong> Password resets for all administrative and privileged accounts</li>
+                                <li><strong>Member Notification:</strong> Party communicating with affected members regarding potential data exposure</li>
+                                <li><strong>Law Enforcement Engagement:</strong> German federal cybersecurity authorities (BSI) and law enforcement involved in investigation</li>
+                                <li><strong>Forensic Analysis:</strong> Ongoing assessment of attack scope and data types stolen</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Preventive Security Enhancements</h3>
+                            <ul>
+                                <li><strong>Vulnerability Patching:</strong> Prioritize patches for internet-facing systems and critical infrastructure</li>
+                                <li><strong>Access Controls:</strong> Implement multi-factor authentication (MFA) for all administrative access</li>
+                                <li><strong>Network Segmentation:</strong> Segment sensitive data stores from general network infrastructure</li>
+                                <li><strong>Monitoring & Detection:</strong> Deploy enhanced logging and behavioral analytics to detect reconnaissance and exfiltration activity</li>
+                                <li><strong>Backup Strategy:</strong> Maintain offline, immutable backups of critical data and systems</li>
+                                <li><strong>Incident Response Planning:</strong> Develop and test incident response procedures for ransomware scenarios</li>
+                                <li><strong>Phishing Resistance:</strong> Enhanced security awareness training for staff regarding social engineering and credential theft</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Broader Democratic Institution Considerations</h3>
+                            <p>This incident highlights vulnerabilities in German political party infrastructure. Recommended actions for the broader political sector:</p>
+                            <ul>
+                                <li>German government should coordinate cybersecurity baseline requirements for parliamentary parties</li>
+                                <li>BSI (Federal Office for Information Security) should conduct targeted audits of political party IT infrastructure</li>
+                                <li>Cross-party information sharing regarding threat indicators and attack patterns</li>
+                                <li>Public-private partnerships to provide enhanced security resources to political institutions</li>
+                                <li>Preparation for potential disinformation campaigns leveraging exfiltrated internal communications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- References -->
+                <section class="section references">
+                    <h2 class="section-title">Sources & References</h2>
+
+                    <div class="reference-item">
+                        <a href="https://www.bleepingcomputer.com/news/security/die-linke-german-political-party-confirms-data-stolen-by-qilin-ransomware/" class="reference-link">BleepingComputer - "Die Linke German political party confirms data stolen by Qilin ransomware"</a>
+                        <span class="reference-source">BleepingComputer, April 1, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://securityaffairs.com/190348/cyber-crime/qilin-ransomware-group-claims-the-hack-of-german-political-party-die-linke.html" class="reference-link">SecurityAffairs - "Qilin ransomware group claims the hack of German political party Die Linke"</a>
+                        <span class="reference-source">SecurityAffairs, April 1, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.heise.de/en/news/Qilin-Left-Party-reports-Russian-ransomware-attack-11227232.html" class="reference-link">Heise Online - "Qilin: Left Party reports Russian ransomware attack"</a>
+                        <span class="reference-source">Heise Online (German Tech News), April 2, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://securityboulevard.com/2026/04/die-linke-confirms-data-stolen-in-qilin-ransomware-attack/" class="reference-link">Security Boulevard - "Die Linke Confirms Data Stolen in Qilin Ransomware Attack"</a>
+                        <span class="reference-source">Security Boulevard, April 2, 2026</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Assessment</div>
+                    <div class="sidebar-content">
+                        <p>Democratic political institutions face growing ransomware targeting. Urgent need for baseline cybersecurity requirements and coordinated defense across parliamentary parties and government agencies.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: var(--amber);">Political targeting signals strategic threats beyond financial extortion.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <ul style="margin-left: 0; padding-left: 16px;">
+                            <li style="margin-bottom: 8px;">1.5 TB of sensitive party & employee data stolen</li>
+                            <li style="margin-bottom: 8px;">Parliamentary political party directly targeted</li>
+                            <li style="margin-bottom: 8px;">Membership database reportedly protected</li>
+                            <li style="margin-bottom: 8px;">Qilin most active ransomware group (131 victims in March)</li>
+                            <li style="margin-bottom: 8px;">Political motivation alongside financial extortion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">MITRE ATT&CK</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 8px;"><strong>T1486:</strong> Data Encrypted for Impact</p>
+                        <p style="font-size: 12px; margin-bottom: 8px;"><strong>T1048:</strong> Exfiltration Over Alternative Protocol</p>
+                        <p style="font-size: 12px; margin-bottom: 8px;"><strong>T1078:</strong> Valid Accounts</p>
+                        <p style="font-size: 12px; margin-bottom: 8px;"><strong>T1005:</strong> Data from Local System</p>
+                        <p style="font-size: 12px;"><strong>T1560:</strong> Archive Collected Data</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Critical Vulnerabilities</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Weak Network Segmentation:</strong> Political party IT infrastructure may lack compartmentalization enabling lateral movement</p>
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Limited Access Controls:</strong> Insufficient MFA and privilege management on critical systems</p>
+                        <p style="font-size: 12px;"><strong>Exposed Intelligence:</strong> Internal communications valuable for political/intelligence purposes</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor</div>
+                    <div class="sidebar-content">
+                        <a href="../threat-actors.html?actor=qilin" class="sidebar-link">Qilin (Russian-speaking RaaS)</a>
+                        <p style="font-size: 12px; margin-top: 8px; color: var(--muted);">Most active ransomware group in early 2026. RaaS model enables high victim volume and affiliate scaling. Strategic targeting suggests state coordination.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Severity Indicators</div>
+                    <div class="sidebar-content">
+                        <p style="margin-bottom: 8px;"><span style="color: #ff9944; font-weight: 700;">HIGH</span></p>
+                        <ul style="margin-left: 0; padding-left: 16px; font-size: 12px;">
+                            <li>Democratic institution targeted</li>
+                            <li>Large-scale data exfiltration</li>
+                            <li>Political intelligence implications</li>
+                            <li>Russian-speaking threat actor</li>
+                            <li>Potential disinformation leverage</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <div class="sidebar-content">
+                        <a href="stryker-handala-wiper-2026.html" class="sidebar-link">Stryker Wiper Attack (Handala)</a>
+                        <p style="font-size: 11px; margin-top: 8px; color: var(--muted);">Other high-profile attacks targeting critical infrastructure in early 2026</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Threatpedia Intelligence Database | Last Updated: April 6, 2026 | Classification: PUBLIC</p>
+        <p style="margin-top: 12px; font-size: 11px;">This incident article represents consolidated threat intelligence from multiple authorized security researchers and government agencies. Information subject to updates as investigation and forensic analysis continues.</p>
+    </footer>
+
+    <script>
+    (function () {
+        var btn = document.getElementById('hamburger-btn');
+        var overlay = document.getElementById('menu-overlay');
+        var panel = document.getElementById('menu-panel');
+        var msearch = document.getElementById('menu-search');
+        function toggle() {
+            var isOpen = panel.classList.toggle('open');
+            overlay.classList.toggle('open');
+            btn.classList.toggle('open');
+            if (isOpen) msearch.focus();
+        }
+        function close() {
+            panel.classList.remove('open');
+            overlay.classList.remove('open');
+            btn.classList.remove('open');
+        }
+        btn.addEventListener('click', toggle);
+        overlay.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+        msearch.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && msearch.value.trim()) {
+                window.location.href = '../glossary.html?q=' + encodeURIComponent(msearch.value.trim());
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

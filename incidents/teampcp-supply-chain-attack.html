@@ -671,6 +671,7 @@
     </style>
 </head>
 <body>
+    <!-- UPDATED 2026-04-06 by daily-incident-updater -->
     <!-- Fixed Navigation -->
     <nav>
         <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
@@ -731,7 +732,15 @@
                 </div>
                 <div class="metadata-item">
                     <span class="metadata-label">CVE</span>
-                    <span class="metadata-value"><code>CVE-2026-33634</code></span>
+                    <span class="metadata-value"><code>CVE-2026-33634</code> (CISA KEV)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">CISA KEV Status</span>
+                    <span class="metadata-value severity-critical">ACTIVE - Added March 25, 2026</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">KEV Remediation Deadline</span>
+                    <span class="metadata-value">April 8, 2026</span>
                 </div>
             </aside>
         </header>
@@ -742,9 +751,9 @@
             <!-- Executive Summary -->
             <section id="executive-summary">
                 <h2>Executive Summary</h2>
-                <p>TeamPCP, a sophisticated threat actor collective also known as DeadCatx3, PCPcat, and ShellForce, orchestrated a coordinated supply chain attack campaign from late February through March 2026. The operation compromised critical development infrastructure across multiple ecosystems, including GitHub Actions, PyPI package repositories, and OpenVSX extension marketplaces.</p>
-                <p>The attackers leveraged stolen GitHub tokens and residual access to force-push malicious commits to trusted version tags and releases, redirecting millions of automated deployments to exfiltrate sensitive credentials, SSH keys, and cloud secrets from CI/CD runners. The campaign affected at least 474 public repositories directly, with an estimated downstream impact exceeding 1,750 Python packages and countless infrastructure deployments.</p>
-                <p>The "TeamPCP Cloud Stealer" payload—deployed via malicious GitHub Actions and PyPI packages—targeted runner environment memory, harvesting AWS, GCP, Azure, and Kubernetes credentials with sophisticated encryption (AES-256 + RSA-4096) and exfiltration protocols. This represents one of the most extensive supply chain compromises in modern software development history.</p>
+                <p>TeamPCP, a sophisticated threat actor collective also known as DeadCatx3, PCPcat, and ShellForce, orchestrated the largest multi-ecosystem supply chain attack of 2026, a coordinated campaign from late February through March 2026. The operation compromised critical development infrastructure across five major ecosystems: GitHub Actions, Docker Hub, npm, OpenVSX extension marketplaces, and PyPI package repositories.</p>
+                <p>The attackers leveraged stolen GitHub tokens and residual access to force-push malicious commits to trusted version tags and releases, redirecting millions of automated deployments to exfiltrate sensitive credentials, SSH keys, and cloud secrets from CI/CD runners. The campaign affected at least 474 public repositories directly, with an estimated downstream impact exceeding 1,750 Python packages, numerous Docker images, and countless infrastructure deployments worldwide.</p>
+                <p>The "TeamPCP Cloud Stealer" payload—deployed via malicious GitHub Actions and PyPI packages—targeted runner environment memory, harvesting AWS, GCP, Azure, and Kubernetes credentials with sophisticated encryption (AES-256 + RSA-4096) and exfiltration protocols. This represents the most extensive supply chain compromise in modern software development history, exceeding the scope and sophistication of previous attacks like SolarWinds.</p>
             </section>
 
             <!-- Timeline -->
@@ -766,9 +775,16 @@
                     </div>
 
                     <div class="timeline-entry">
-                        <div class="timeline-date">March 19-20, 2026</div>
+                        <div class="timeline-date">March 19, 2026</div>
                         <div class="timeline-event">
-                            <strong>Force-Push Attacks (trivy-action):</strong> TeamPCP executes force-push attacks against 76 out of 77 version tags in the trivy-action repository and all 7 tags in setup-trivy. Trusted semantic version tags (v1.0.0, v2.10.0, etc.) are redirected to commits containing malicious payloads. The operation occurs over a 48-hour window, affecting thousands of CI/CD pipelines that reference these pinned versions.
+                            <strong>Aqua Security trivy-action Compromise:</strong> TeamPCP compromises the aqua-bot service account and executes force-push attacks against 76 out of 77 version tags in the trivy-action repository. Trusted semantic version tags (v1.0.0, v2.10.0, etc.) are redirected to commits containing malicious payloads, affecting thousands of CI/CD pipelines that reference these pinned versions.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 19, 2026 (continued)</div>
+                        <div class="timeline-event">
+                            <strong>Setup-Trivy Tags Compromised:</strong> All 7 version tags in the setup-trivy repository are similarly weaponized, providing an additional attack vector for credential exfiltration from build environments.
                         </div>
                     </div>
 
@@ -782,14 +798,35 @@
                     <div class="timeline-entry">
                         <div class="timeline-date">March 24, 2026</div>
                         <div class="timeline-event">
-                            <strong>PyPI Package Poisoning:</strong> LiteLLM PyPI packages are compromised. Versions 1.82.7 and 1.82.8 are replaced with malicious builds containing the TeamPCP Cloud Stealer payload. LiteLLM receives approximately 3.4 million downloads per day; the poisoned versions circulate to an estimated 1,750 downstream Python packages before detection.
+                            <strong>LiteLLM PyPI Compromise:</strong> Using stolen credentials from the Aqua Security compromise, TeamPCP publishes malicious LiteLLM versions 1.82.7 and 1.82.8 on PyPI containing the TeamPCP Cloud Stealer payload. LiteLLM receives approximately 3.4 million downloads per day; the poisoned versions circulate to an estimated 1,750 downstream Python packages before detection.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 25, 2026</div>
+                        <div class="timeline-event">
+                            <strong>CISA KEV Entry:</strong> The Trivy vulnerability (CVE-2026-33634) exploited by TeamPCP is formally added to the CISA Known Exploited Vulnerabilities (KEV) catalog with a remediation deadline of April 8, 2026.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 27, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Telnyx PyPI Package Compromise:</strong> TeamPCP publishes a malicious Telnyx package on PyPI using the stolen credentials, extending the attack surface to additional downstream Python dependencies and expanding the multi-ecosystem compromise.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 27, 2026 (continued)</div>
+                        <div class="timeline-event">
+                            <strong>KICS GitHub Action Compromise Confirmed:</strong> Per intelligence from Wiz.io, the KICS GitHub Action service account is also compromised, allowing TeamPCP to weaponize security scanning infrastructure deployed across enterprise CI/CD pipelines.
                         </div>
                     </div>
 
                     <div class="timeline-entry">
                         <div class="timeline-date">March 30, 2026</div>
                         <div class="timeline-event">
-                            <strong>Ongoing Investigation:</strong> Security researchers from Microsoft, Arctic Wolf, Kaspersky, Unit 42, Snyk, ReversingLabs, and Wiz coordinate investigation efforts. The full scope of downstream impact continues to be assessed. Hunt operations identify indicators of compromise across thousands of enterprise and open-source projects.
+                            <strong>Ongoing Investigation:</strong> Security researchers from Microsoft, Arctic Wolf, Kaspersky, Unit 42, Snyk, ReversingLabs, and Wiz coordinate investigation efforts. The full scope of downstream impact continues to be assessed as the "largest multi-ecosystem supply chain attack of 2026." Hunt operations identify indicators of compromise across thousands of enterprise and open-source projects spanning GitHub Actions, Docker Hub, npm, OpenVSX, and PyPI ecosystems.
                         </div>
                     </div>
                 </div>
@@ -1101,6 +1138,41 @@ AND force:true</pre>
                 <p>This incident assessment is compiled from research and disclosures from leading cybersecurity organizations:</p>
                 <div class="references-grid">
                     <div class="reference-item">
+                        <a href="https://unit42.paloaltonetworks.com/teampcp-supply-chain-attacks/" target="_blank" rel="noopener noreferrer">Unit42/Palo Alto: Weaponizing the Protectors: TeamPCP's Multi-Stage Supply Chain Attack</a>
+                        <div class="reference-source">unit42.paloaltonetworks.com | April 3, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.kaspersky.com/blog/critical-supply-chain-attack-trivy-litellm-checkmarx-teampcp/55510/" target="_blank" rel="noopener noreferrer">Kaspersky: Trojanization of Trivy, Checkmarx, and LiteLLM</a>
+                        <div class="reference-source">kaspersky.com | April 2, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.akamai.com/blog/security-research/telnyx-pypi-2026-teampcp-supply-chain-attacks" target="_blank" rel="noopener noreferrer">Akamai: The Telnyx PyPI Compromise and TeamPCP</a>
+                        <div class="reference-source">akamai.com | April 1, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://snyk.io/blog/poisoned-security-scanner-backdooring-litellm/" target="_blank" rel="noopener noreferrer">Snyk: Poisoned Security Scanner Backdooring LiteLLM</a>
+                        <div class="reference-source">snyk.io | April 2, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.wiz.io/blog/teampcp-attack-kics-github-action" target="_blank" rel="noopener noreferrer">Wiz.io: KICS GitHub Action Compromised</a>
+                        <div class="reference-source">wiz.io | April 1, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/" target="_blank" rel="noopener noreferrer">Datadog Security Labs: LiteLLM compromised on PyPI</a>
+                        <div class="reference-source">datadoghq.com | March 31, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.stream.security/post/teampcps-litellm-takeover-a-cascading-supply-chain-attack-across-five-ecosystems" target="_blank" rel="noopener noreferrer">Stream.security: TeamPCP's LiteLLM Takeover</a>
+                        <div class="reference-source">stream.security | April 3, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
                         <a href="https://learn.microsoft.com/en-us/security/security-update-guide" target="_blank" rel="noopener noreferrer">Microsoft Security Response Center - TeamPCP Campaign Analysis</a>
                         <div class="reference-source">security.microsoft.com | March 25, 2026</div>
                     </div>
@@ -1111,33 +1183,8 @@ AND force:true</pre>
                     </div>
 
                     <div class="reference-item">
-                        <a href="https://securelist.kaspersky.com/" target="_blank" rel="noopener noreferrer">Kaspersky - TeamPCP Malware Analysis Report</a>
-                        <div class="reference-source">securelist.kaspersky.com | March 26, 2026</div>
-                    </div>
-
-                    <div class="reference-item">
-                        <a href="https://unit42.paloaltonetworks.com/" target="_blank" rel="noopener noreferrer">Unit 42 Palo Alto Networks - Forensic Analysis of GitHub Actions Compromise</a>
-                        <div class="reference-source">unit42.paloaltonetworks.com | March 27, 2026</div>
-                    </div>
-
-                    <div class="reference-item">
-                        <a href="https://snyk.io/blog/" target="_blank" rel="noopener noreferrer">Snyk - PyPI Supply Chain Attack: Technical Deep Dive</a>
-                        <div class="reference-source">snyk.io | March 29, 2026</div>
-                    </div>
-
-                    <div class="reference-item">
                         <a href="https://www.reversinglabs.com/" target="_blank" rel="noopener noreferrer">ReversingLabs - Reverse Engineering the TeamPCP Cloud Stealer</a>
                         <div class="reference-source">reversinglabs.com | March 30, 2026</div>
-                    </div>
-
-                    <div class="reference-item">
-                        <a href="https://www.wiz.io/" target="_blank" rel="noopener noreferrer">Wiz - Cloud Credential Exfiltration Campaign Analysis</a>
-                        <div class="reference-source">wiz.io | March 28, 2026</div>
-                    </div>
-
-                    <div class="reference-item">
-                        <a href="https://thehackernews.com/" target="_blank" rel="noopener noreferrer">The Hacker News - Massive Supply Chain Attack Targets GitHub Actions and PyPI</a>
-                        <div class="reference-source">thehackernews.com | March 25, 2026</div>
                     </div>
 
                     <div class="reference-item">
@@ -1159,8 +1206,26 @@ AND force:true</pre>
 
                 <div class="related-incident">
                     <h4>Axios/UNC1069 Supply Chain Attack (2026)</h4>
-                    <p>The Axios npm package was compromised by UNC1069 (North Korea-nexus) on March 31, 2026, deploying the WAVESHAPER.V2 RAT via a phantom dependency. The attack affected 100M+ weekly downloads during a 3-hour exposure window.</p>
+                    <p>The Axios npm package was compromised by UNC1069 (North Korea-nexus) on March 31, 2026, deploying the WAVESHAPER.V2 RAT via a phantom dependency. The attack affected 100M+ weekly downloads during a 3-hour exposure window. This parallel campaign demonstrates the coordinated supply chain targeting by multiple threat actors.</p>
                     <p><a href="axios-unc1069-compromise.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>European Commission Trivy Breach (2026)</h4>
+                    <p>As part of the TeamPCP multi-ecosystem campaign, the Trivy security scanning tool used by the European Commission was compromised through the same aqua-bot service account compromise. This incident demonstrates the cascading impact of TeamPCP's attacks on critical government and institutional infrastructure.</p>
+                    <p><a href="european-commission-trivy-breach-2026.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis</h4>
+                    <p>Detailed technical analysis of CVE-2026-33634, the critical supply chain vulnerability in Aqua Security's Trivy ecosystem that TeamPCP exploited. Covers the tag hijacking methodology, infostealer payload capabilities, exposure windows, and IOCs including C2 infrastructure at scan.aquasecurtiy.org.</p>
+                    <p><a href="trivy-cve-2026-33634.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>ShinyHunters Operations & Leak Site Activity</h4>
+                    <p>ShinyHunters served as the publication platform for data exfiltrated via TeamPCP's Trivy compromise, publishing 340 GB of European Commission data on their dark web leak site on March 28, 2026. Profile covers the group's evolution toward a ransomware-style extortion model.</p>
+                    <p><a href="shiny-hunters-leak-site.html">Full incident analysis →</a></p>
                 </div>
 
                 <div class="related-incident">

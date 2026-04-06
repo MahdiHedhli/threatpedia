@@ -673,6 +673,7 @@
     <div class="review-banner">
         <span class="review-banner-icon">⚠</span>AUTOMATED REPORT — PENDING HUMAN REVIEW — Generated April 6, 2026
     </div>
+    <!-- UPDATED 2026-04-06 by daily-incident-updater -->
 
     <!-- Main Content -->
     <div class="container">
@@ -717,6 +718,13 @@
                     <span class="meta-value">EU (Brussels & Multi-State)</span>
                 </div>
             </div>
+            <div style="margin-top: 24px; padding: 20px; background: rgba(232, 160, 32, 0.15); border: 2px solid #e8a020; border-radius: 6px; display: flex; align-items: center; gap: 16px;">
+                <div style="font-size: 28px;">⚠</div>
+                <div>
+                    <div style="color: #e8a020; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;">CISA KEV - ACTIVE EXPLOITATION</div>
+                    <div style="color: #cdd5e0; font-size: 14px; font-weight: 500;">CVE-2026-33634 added to CISA Known Exploited Vulnerabilities catalog on March 25, 2026. Remediation deadline: April 8, 2026. Organizations must verify Trivy versions and upgrade immediately.</div>
+                </div>
+            </div>
         </div>
 
         <div class="content-grid">
@@ -746,15 +754,15 @@
                         <div class="timeline-item">
                             <div class="timeline-date">March 19, 2026<br>~14:30 UTC</div>
                             <div class="timeline-event">
-                                <strong>Initial access to Europa platform</strong>
-                                <p>European Commission's AWS infrastructure running compromised Trivy in container scanning pipeline becomes infected with credential-stealing malware. TeamPCP gains access to AWS credentials and begins reconnaissance.</p>
+                                <strong>Initial access via compromised Trivy supply chain</strong>
+                                <p>European Commission's AWS infrastructure running compromised Trivy in container scanning pipeline becomes infected with credential-stealing malware. AWS API key stolen. TeamPCP gains access to AWS credentials and begins reconnaissance.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
                             <div class="timeline-date">March 19–24, 2026</div>
                             <div class="timeline-event">
-                                <strong>Data exfiltration phase</strong>
-                                <p>Attacker exfiltrates 340 GB of data (91.7 GB compressed) from EC AWS account, including 52,000 email files representing 2.22 GB of outbound communications. 5-day detection gap allows extensive data collection.</p>
+                                <strong>Data exfiltration phase using TruffleHog scanning</strong>
+                                <p>Attacker exfiltrates 340 GB (uncompressed) of data from EC AWS account, including 52,000 email files representing 2.22 GB of outbound communications from 71 EU clients (42 EC departments + 29 other entities). Data includes names, emails, and usernames from EC websites. Attacker used TruffleHog to scan for additional secrets. 5-day detection gap allows extensive data collection.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
@@ -767,14 +775,21 @@
                         <div class="timeline-item">
                             <div class="timeline-date">March 25, 2026</div>
                             <div class="timeline-event">
-                                <strong>CERT-EU notification and forensics</strong>
-                                <p>CERT-EU is notified and begins detailed forensic analysis. Root cause traced to CVE-2026-33634 in Trivy supply chain. Incident response efforts escalate to EU intelligence coordination.</p>
+                                <strong>CERT-EU notified and CVE added to CISA KEV</strong>
+                                <p>CERT-EU is notified and begins detailed forensic analysis. Root cause traced to CVE-2026-33634 in Trivy supply chain. CVE-2026-33634 added to CISA Known Exploited Vulnerabilities (KEV) catalog with remediation deadline April 8, 2026. Incident response efforts escalate to EU intelligence coordination.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 27, 2026</div>
+                            <div class="timeline-event">
+                                <strong>European Commission public disclosure via press release</strong>
+                                <p>European Commission issues official press release disclosing the breach and alerting EU institutions and international partners of the supply chain compromise.</p>
                             </div>
                         </div>
                         <div class="timeline-item">
                             <div class="timeline-date">March 28, 2026</div>
                             <div class="timeline-event">
-                                <strong>ShinyHunters publishes stolen data</strong>
+                                <strong>ShinyHunters adds stolen data to Tor leak site</strong>
                                 <p>The dark web leak site ShinyHunters publishes 340 GB of exfiltrated data from EC breach, making sensitive inter-departmental and inter-institutional communications irrecoverably public.</p>
                             </div>
                         </div>
@@ -1014,24 +1029,24 @@
                 <section class="references">
                     <h2 class="section-title">References</h2>
                     <div class="reference-item">
-                        <a href="https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain" class="reference-link">CERT-EU - European Commission cloud breach: a supply-chain compromise</a>
-                        <span class="reference-source">CERT-EU official disclosure, April 2, 2026</span>
+                        <a href="https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain" class="reference-link">CERT-EU - European Commission cloud breach</a>
+                        <span class="reference-source">https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain</span>
                     </div>
                     <div class="reference-item">
-                        <a href="https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html" class="reference-link">CSO Online - CERT-EU blames Trivy supply chain attack for Europa.eu data breach</a>
-                        <span class="reference-source">CSO Online, April 2, 2026</span>
+                        <a href="https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/" class="reference-link">Help Net Security - Trivy supply chain attack enabled EC breach</a>
+                        <span class="reference-source">https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/</span>
                     </div>
                     <div class="reference-item">
-                        <a href="https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/" class="reference-link">SecurityWeek - European Commission Confirms Data Breach Linked to Trivy Supply Chain Attack</a>
-                        <span class="reference-source">SecurityWeek, April 2, 2026</span>
+                        <a href="https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/" class="reference-link">SecurityWeek - EC Confirms Data Breach Linked to Trivy</a>
+                        <span class="reference-source">https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/</span>
                     </div>
                     <div class="reference-item">
-                        <a href="https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/" class="reference-link">Help Net Security - Trivy supply chain attack enabled European Commission cloud breach</a>
-                        <span class="reference-source">Help Net Security, April 3, 2026</span>
+                        <a href="https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html" class="reference-link">CSO Online - CERT-EU blames Trivy supply chain attack</a>
+                        <span class="reference-source">https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html</span>
                     </div>
                     <div class="reference-item">
-                        <a href="https://isc.sans.edu/diary/32864" class="reference-link">SANS ISC - TeamPCP Supply Chain Campaign: Update 006</a>
-                        <span class="reference-source">SANS Internet Storm Center, April 3, 2026</span>
+                        <a href="https://cybersecuritynews.com/european-commission-breach-trivy/" class="reference-link">CyberSecurity News - CERT-EU Confirms Trivy Supply Chain Attack</a>
+                        <span class="reference-source">https://cybersecuritynews.com/european-commission-breach-trivy/</span>
                     </div>
                 </section>
             </div>
@@ -1045,6 +1060,7 @@
                         <a href="teampcp-supply-chain-attack.html" class="sidebar-link">TeamPCP Supply Chain Campaign</a>
                         <a href="trivy-cve-2026-33634.html" class="sidebar-link">CVE-2026-33634 Analysis</a>
                         <a href="shiny-hunters-leak-site.html" class="sidebar-link">ShinyHunters Operations</a>
+                        <a href="axios-unc1069-compromise.html" class="sidebar-link">Axios Supply Chain Incident</a>
                     </div>
                 </div>
 
