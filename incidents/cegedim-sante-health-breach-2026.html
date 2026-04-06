@@ -11,9 +11,7 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="review-status" content="pending">
-    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generated-by" content="new-threat-intel-automation">
     <meta name="generated-date" content="2026-04-06T12:00:00Z">
     <title>Cegedim Santé Healthcare Data Breach — Threatpedia</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -174,17 +172,7 @@
             margin-top: 80px;
         }
 
-        /* Review banner */
-        .review-banner {
-            background-color: rgba(232, 160, 32, 0.1);
-            border-top: 2px solid var(--amber);
-            border-bottom: 2px solid var(--amber);
-            padding: 1rem 2rem;
-            color: var(--amber);
-            font-size: 0.95rem;
-            text-align: center;
-            font-family: 'IBM Plex Mono', monospace;
-        }
+        
 
         /* Hero section */
         .hero {
@@ -546,11 +534,6 @@
         </div>
     </nav>
 
-    <!-- Review Banner -->
-    <div class="review-banner">
-        ⚠ AUTOMATED REPORT — PENDING HUMAN REVIEW | Generated: 2026-04-06 12:00:00 UTC
-    </div>
-
     <main>
         <!-- UPDATED 2026-04-06 by daily-incident-updater -->
         <!-- Hero Section -->
@@ -891,9 +874,13 @@
                             <span class="sidebar-label">Data Types</span>
                             <div class="sidebar-value">PII, SSN, Health Data</div>
                         </div>
-                        <div>
+                        <div style="margin-bottom: 1rem;">
                             <span class="sidebar-label">Attribution</span>
                             <div class="sidebar-value">Unknown</div>
+                        </div>
+                        <div>
+                            <span class="sidebar-label">Review Status</span>
+                            <div class="sidebar-value" style="color: #e8a020;">⚠ Pending Human Review</div>
                         </div>
                     </div>
                 </div>
@@ -972,5 +959,6 @@
         </p>
     </footer>
     <script src="../assets/universal-search.js"></script>
+    <script src="../assets/incident-ticker.js"></script>
 </body>
 </html>

@@ -479,26 +479,32 @@
       return;
     }
 
-    // Create results container — positioned below the nav bar
+    // Create results container
     resultsContainer = document.createElement('div');
     resultsContainer.id = 'search-results-container';
     resultsContainer.style.cssText = `
-      position: fixed;
-      top: 68px;
-      left: 48px;
-      right: 48px;
-      max-width: 700px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
       background-color: #0d1117;
       border: 1px solid #1e2733;
-      max-height: 70vh;
+      border-top: none;
+      max-height: 400px;
       overflow-y: auto;
       z-index: 1000;
       display: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      margin-top: -1px;
     `;
 
-    // Append results container to body so it's not constrained by nav overflow
-    document.body.appendChild(resultsContainer);
+    // Wrap search input + results in a relative container so the absolute
+    // dropdown positions correctly WITHOUT setting position on the menu-panel
+    // (which would break its position:fixed).
+    var wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    searchInput.parentNode.insertBefore(wrapper, searchInput);
+    wrapper.appendChild(searchInput);
+    wrapper.appendChild(resultsContainer);
 
     // Event listeners
     searchInput.addEventListener('input', handleSearch);

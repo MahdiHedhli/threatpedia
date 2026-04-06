@@ -125,97 +125,23 @@
             50% { opacity: 0.25; }
         }
 
-        /* ── Nav right controls ─────────────────────────────────────────────── */
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
+        
 
-        /* ── Search toggle ────────────────────────────────────────────────────── */
-        .search-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            background: none;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: border-color 0.2s;
-            flex-shrink: 0;
-        }
+        
 
-        .search-toggle:hover { border-color: var(--amber); }
+        
 
-        .search-toggle svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--amber);
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+        
 
-        .nav-search-bar {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            align-items: center;
-            padding: 0 48px;
-            background: rgba(8,11,16,0.96);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 101;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
+        
 
-        .nav-search-bar.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        
 
-        .nav-search-bar input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--white);
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 0.02em;
-            padding: 0;
-        }
+        
 
-        .nav-search-bar input::placeholder { color: var(--muted); }
+        
 
-        .search-close {
-            background: none;
-            border: 1px solid var(--border);
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: border-color 0.2s;
-            flex-shrink: 0;
-            margin-left: 16px;
-        }
-
-        .search-close:hover { border-color: var(--amber); }
-
-        .search-close svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--amber);
-            fill: none;
-            stroke-width: 2;
-        }
+        
 
         .hamburger {
             display: flex; flex-direction: column; justify-content: center;
@@ -825,45 +751,27 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <a href="../../index.html" class="nav-logo">Threat<span>pedia</span></a>
+        <a href="../index.html" class="nav-logo">Threat<span>pedia</span></a>
         <div class="nav-status">
-            <span class="status-dot"></span>
-            <span>THREAT INTEL</span>
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
         </div>
-        <div class="nav-controls">
-            <button class="search-toggle" id="search-toggle-btn" aria-label="Search">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
-            <button class="hamburger" id="menuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-        <div class="nav-search-bar" id="nav-search-bar">
-            <input type="text" placeholder="Search glossary, threat actors, incidents..." id="menu-search" autocomplete="off" />
-            <button class="search-close" id="search-close-btn" aria-label="Close search">
-                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
 
-    <!-- Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-    <!-- Menu Panel -->
-    <div class="menu-panel" id="menuPanel">
-        <div class="menu-close">
-            <span style="font-family: 'Playfair Display', serif; font-size: 18px; color: var(--white);">Menu</span>
-            <button id="menuClose" style="background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer;">&times;</button>
-        </div>
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
         <div class="menu-links">
-            <a href="../../index.html">Home</a>
+            <a href="../glossary.html">Glossary</a>
             <a href="../threat-actors.html">Threat Actors</a>
             <a href="../incidents/index.html">Incidents</a>
-            <a href="../glossary.html">Glossary</a>
-            <a href="../data/">Data & Resources</a>
         </div>
+        <a class="menu-cta" href="../index.html#signup">Register Interest</a>
     </div>
 
     <!-- Header Section -->
@@ -1374,57 +1282,34 @@
     </footer>
 
     <!-- Universal Search -->
-    <script src="../../assets/universal-search.js"></script>
-
-    <!-- Menu Toggle Script -->
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const menuPanel = document.getElementById('menuPanel');
-        const menuClose = document.getElementById('menuClose');
+    /* ── Hamburger menu ─────────────────────────────────────────────────── */
+    (function () {
+      var btn     = document.getElementById('hamburger-btn');
+      var overlay = document.getElementById('menu-overlay');
+      var panel   = document.getElementById('menu-panel');
+      var search  = document.getElementById('menu-search');
 
-        function openMenu() {
-            menuPanel.classList.add('open');
-            menuOverlay.classList.add('open');
-        }
+      function toggle() {
+        var isOpen = panel.classList.toggle('open');
+        overlay.classList.toggle('open');
+        btn.classList.toggle('open');
+        if (isOpen) search.focus();
+      }
 
-        function closeMenu() {
-            menuPanel.classList.remove('open');
-            menuOverlay.classList.remove('open');
-        }
+      function close() {
+        panel.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.classList.remove('open');
+      }
 
-        menuToggle.addEventListener('click', openMenu);
-        menuClose.addEventListener('click', closeMenu);
-        menuOverlay.addEventListener('click', closeMenu);
-
-        // Close menu on link click
-        document.querySelectorAll('.menu-links a').forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        /* ── Search bar toggle ─────────────────────────────────────────────── */
-        const toggleBtn  = document.getElementById('search-toggle-btn');
-        const closeBtn   = document.getElementById('search-close-btn');
-        const searchBar  = document.getElementById('nav-search-bar');
-        const searchInput = document.getElementById('menu-search');
-
-        function openSearch() {
-            searchBar.classList.add('open');
-            searchInput.focus();
-        }
-
-        function closeSearch() {
-            searchBar.classList.remove('open');
-            searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input'));
-        }
-
-        toggleBtn.addEventListener('click', openSearch);
-        closeBtn.addEventListener('click', closeSearch);
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && searchBar.classList.contains('open')) closeSearch();
-        });
+      btn.addEventListener('click', toggle);
+      overlay.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
     </script>
+    <script src="../assets/universal-search.js"></script>
+    <script src="../assets/incident-ticker.js"></script>
 </body>
 
 </html>
