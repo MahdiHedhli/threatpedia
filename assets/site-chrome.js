@@ -88,6 +88,7 @@
           '<a href="' + base + 'glossary.html">Glossary</a>' +
           '<a href="' + base + 'threat-actors.html">Threat Actors</a>' +
           '<a href="' + base + 'incidents/index.html">Incidents</a>' +
+          '<a href="' + base + 'roadmap.html">Roadmap</a>' +
         '</div>' +
         '<a class="menu-cta" href="' + base + 'index.html#signup">Register Interest</a>' +
       '</div>';

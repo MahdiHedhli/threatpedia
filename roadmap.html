@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="assets/analytics.js"></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap — Threatpedia</title>
+  <meta name="description" content="Threatpedia public roadmap. Track our progress building the definitive cyber threat encyclopedia — from glossary to threat actors, incidents, and beyond." />
+  <meta name="theme-color" content="#080b10" />
+
+  <meta property="og:title" content="Roadmap — Threatpedia" />
+  <meta property="og:description" content="Track our progress building the definitive cyber threat encyclopedia." />
+  <meta property="og:url" content="https://threatpedia.wiki/roadmap.html" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/svg+xml" href="tp-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="tp-favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="tp-favicon-180.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #080b10;
+      --surface:   #0d1117;
+      --border:    #1e2733;
+      --amber:     #e8a020;
+      --amber-dim: #a06a10;
+      --text:      #cdd5e0;
+      --muted:     #5a6a7e;
+      --white:     #f0f4f8;
+      --green:     #22c55e;
+      --blue:      #3b82f6;
+      --purple:    #a855f7;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 48px 80px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    /* ── Progress Summary ── */
+    .progress-bar-wrap {
+      margin-bottom: 56px;
+    }
+
+    .progress-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber), var(--amber-dim));
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    /* ── Phase Sections ── */
+    .phase {
+      margin-bottom: 64px;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .phase-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 2px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .phase-badge.live {
+      background: rgba(34,197,94,0.15);
+      color: var(--green);
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+
+    .phase-badge.building {
+      background: rgba(232,160,32,0.15);
+      color: var(--amber);
+      border: 1px solid rgba(232,160,32,0.3);
+    }
+
+    .phase-badge.planned {
+      background: rgba(59,130,246,0.15);
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+
+    .phase-badge.future {
+      background: rgba(168,85,247,0.15);
+      color: var(--purple);
+      border: 1px solid rgba(168,85,247,0.3);
+    }
+
+    .phase-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .phase-eta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-left: auto;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Items ── */
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(30,39,51,0.5);
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item-status {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    .item-status.done { color: var(--green); }
+    .item-status.wip { color: var(--amber); }
+    .item-status.todo { color: var(--muted); }
+
+    .item-body {
+      flex: 1;
+    }
+
+    .item-title {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .item-meta {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .item-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Last Updated ── */
+    .last-updated {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .page { padding: 100px 24px 60px; }
+      .phase-header { flex-wrap: wrap; }
+      .phase-eta { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <div class="page">
+    <div class="hero-eyebrow">Public Roadmap</div>
+    <h1>Where We Are &amp;<br>Where We're Going</h1>
+    <p class="subtitle">
+      Threatpedia is being built in the open. This roadmap tracks our progress from
+      foundational content to a full-scale, peer-reviewed cyber threat encyclopedia.
+    </p>
+
+    <!-- Progress Summary -->
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Overall Progress</span>
+        <span>Phase 1 &mdash; 35%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width: 35%"></div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <span style="color: var(--green);">&#10003;</span> Complete
+      </div>
+      <div class="legend-item">
+        <span style="color: var(--amber);">&#9673;</span> In Progress
+      </div>
+      <div class="legend-item">
+        <span style="color: var(--muted);">&#9675;</span> Planned
+      </div>
+    </div>
+
+    <!-- ═══ PHASE 1: FOUNDATION ═══ -->
+    <div class="phase">
+      <div class="phase-header">
+        <span class="phase-badge live">Live</span>
+        <span class="phase-title">Phase 1 &mdash; Foundation</span>
+        <span class="phase-eta">Q1 2026</span>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Cybersecurity Glossary</div>
+          <div class="item-desc">718 terms with definitions, cross-references, and framework mappings. Searchable and browsable.</div>
+          <div class="item-meta">
+            <span class="item-tag">718 terms</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Threat Actor Registry</div>
+          <div class="item-desc">224 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history.</div>
+          <div class="item-meta">
+            <span class="item-tag">224 actors</span>
+            <span class="item-tag">filterable</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Incident Report Archive</div>
+          <div class="item-desc">Documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis.</div>
+          <div class="item-meta">
+            <span class="item-tag">11 reports</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Universal Site Search</div>
+          <div class="item-desc">Cross-index search across glossary, threat actors, and incidents with keyboard navigation and categorized results.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Live Incident Ticker</div>
+          <div class="item-desc">Scrolling marquee in the nav bar showing the latest incidents with severity-coded badges.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Centralized Site Framework</div>
+          <div class="item-desc">Unified header, footer, nav, and analytics injection via site-chrome.js. One-file changes propagate to all pages.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PHASE 2: SCALE ═══ -->
+    <div class="phase">
+      <div class="phase-header">
+        <span class="phase-badge building">Building</span>
+        <span class="phase-title">Phase 2 &mdash; Scale &amp; Automation</span>
+        <span class="phase-eta">Q2 2026</span>
+      </div>
+
+      <div class="item">
+        <div class="item-status wip">&#9673;</div>
+        <div class="item-body">
+          <div class="item-title">Threat Actor Detail Pages</div>
+          <div class="item-desc">Individual deep-dive pages for each of the 224 tracked threat actors. APT29 is live as the template; batch generation underway.</div>
+          <div class="item-meta">
+            <span class="item-tag">1 / 224 complete</span>
+            <span class="item-tag">batch generation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status wip">&#9673;</div>
+        <div class="item-body">
+          <div class="item-title">Automated Incident Ingestion</div>
+          <div class="item-desc">Scheduled scrapers and threat intel feeds running 2x daily, automatically generating and updating incident reports from multiple sources.</div>
+          <div class="item-meta">
+            <span class="item-tag">scheduled agents</span>
+            <span class="item-tag">2x daily</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status wip">&#9673;</div>
+        <div class="item-body">
+          <div class="item-title">External Data Source Integration</div>
+          <div class="item-desc">Staged ingestion of CISSM Cyber Events Database (16,500+ historical records) and other authoritative sources for enrichment.</div>
+          <div class="item-meta">
+            <span class="item-tag">CISSM 16.5K records</span>
+            <span class="item-tag">incremental</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Glossary-to-Report Linking</div>
+          <div class="item-desc">Automatic cross-linking between glossary terms and incident reports. Client-side matching with hover previews.</div>
+          <div class="item-meta">
+            <span class="item-tag">client-side</span>
+            <span class="item-tag">hover previews</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Source Expansion Pipeline</div>
+          <div class="item-desc">Monthly automated discovery and evaluation of new data sources, feeds, and databases for continuous coverage growth.</div>
+          <div class="item-meta">
+            <span class="item-tag">monthly</span>
+            <span class="item-tag">automated</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PHASE 3: VISUALIZATION ═══ -->
+    <div class="phase">
+      <div class="phase-header">
+        <span class="phase-badge planned">Planned</span>
+        <span class="phase-title">Phase 3 &mdash; Visualization &amp; Intelligence</span>
+        <span class="phase-eta">Q3 2026</span>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Global Threat Map</div>
+          <div class="item-desc">Interactive world map showing threat actor origins, targets, and active campaigns. Real-time incident overlay with drill-down.</div>
+          <div class="item-meta">
+            <span class="item-tag">interactive</span>
+            <span class="item-tag">real-time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">MITRE ATT&amp;CK Navigator Integration</div>
+          <div class="item-desc">Visual technique heatmaps per threat actor and per incident, overlaid on the ATT&amp;CK framework matrix.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Trend Analytics Dashboard</div>
+          <div class="item-desc">Time-series analysis of attack types, sectors targeted, geographies, and threat actor activity. Exportable charts and reports.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Social Media Intelligence Feed</div>
+          <div class="item-desc">Automated monitoring and aggregation of threat intelligence from X/Twitter, RSS, and cybersecurity community channels.</div>
+          <div class="item-meta">
+            <span class="item-tag">X/Twitter</span>
+            <span class="item-tag">RSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PHASE 4: COMMUNITY ═══ -->
+    <div class="phase">
+      <div class="phase-header">
+        <span class="phase-badge future">Future</span>
+        <span class="phase-title">Phase 4 &mdash; Community &amp; Peer Review</span>
+        <span class="phase-eta">Q4 2026 +</span>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Founding Member Program</div>
+          <div class="item-desc">Early access for cybersecurity professionals, researchers, and analysts. Contributor roles, editorial board, and recognition system.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Peer Review Workflow</div>
+          <div class="item-desc">Structured review and approval pipeline for incident reports. Multi-reviewer sign-off with audit trail and version history.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Contributor Portal</div>
+          <div class="item-desc">Submission interface for new incidents, corrections, and enrichments. Role-based access with the 10-role taxonomy system.</div>
+          <div class="item-meta">
+            <span class="item-tag">10-role taxonomy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">API &amp; Data Exports</div>
+          <div class="item-desc">Public REST API for programmatic access to threat intelligence data. Structured exports in STIX, CSV, and JSON formats.</div>
+          <div class="item-meta">
+            <span class="item-tag">REST API</span>
+            <span class="item-tag">STIX</span>
+            <span class="item-tag">JSON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="last-updated">
+      Last updated: April 6, 2026 &mdash; This roadmap is a living document and subject to change.
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/site-chrome.js"></script>
+  <script src="assets/universal-search.js"></script>
+  <script src="assets/incident-ticker.js"></script>
+</body>
+</html>
