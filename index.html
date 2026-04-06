@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-YTB9GQKXLH');
-  </script>
+  <script src="assets/analytics.js"></script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -81,185 +74,6 @@
       pointer-events: none;
       z-index: 0;
     }
-
-    /* ── Nav ───────────────────────────────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 48px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(8,11,16,0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .nav-logo {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.22em;
-      color: var(--amber);
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--muted); }
-
-    .nav-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-    }
-
-    .status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--amber);
-      animation: pulse 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.25; }
-    }
-
-    /* ── Hamburger button ──────────────────────────────────────────────────── */
-    .hamburger {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 28px;
-      height: 28px;
-      background: none;
-      border: 1px solid var(--border);
-      padding: 5px;
-      cursor: pointer;
-      transition: border-color 0.2s;
-      flex-shrink: 0;
-    }
-
-    .hamburger:hover { border-color: var(--amber); }
-
-    .hamburger span {
-      display: block;
-      width: 100%;
-      height: 1.5px;
-      background: var(--amber);
-      transition: transform 0.3s, opacity 0.3s;
-    }
-
-    .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
-
-    /* ── Slide-out menu ────────────────────────────────────────────────────── */
-    .menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 199;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-
-    .menu-overlay.open { opacity: 1; pointer-events: auto; }
-
-    .menu-panel {
-      position: fixed !important;
-      top: 0; right: 0; bottom: 0;
-      width: 320px;
-      max-width: 85vw;
-      background: var(--surface);
-      border-left: 1px solid var(--border);
-      z-index: 200;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      padding: 80px 32px 32px;
-      overflow-y: auto;
-    }
-
-    .menu-panel.open { transform: translateX(0); }
-
-    .menu-search {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--white);
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 0.88rem;
-      padding: 12px 16px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      margin-bottom: 28px;
-      border-radius: 0;
-    }
-
-    .menu-search::placeholder { color: var(--muted); }
-    .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
-
-    .menu-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      color: var(--amber-dim);
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .menu-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-bottom: 28px;
-    }
-
-    .menu-links a {
-      display: block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      color: var(--text);
-      text-decoration: none;
-      text-transform: uppercase;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.2s, padding-left 0.2s;
-    }
-
-    .menu-links a:first-child { border-top: 1px solid var(--border); }
-    .menu-links a:hover { color: var(--amber); padding-left: 8px; }
-    .menu-links a.active { color: var(--amber); }
-
-    .menu-cta {
-      display: block;
-      text-align: center;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--amber);
-      text-decoration: none;
-      padding: 15px 24px;
-      transition: background 0.2s;
-      margin-top: auto;
-    }
-
-    .menu-cta:hover { background: #f0b030; }
 
     /* ── Hero ──────────────────────────────────────────────────────────────── */
     .hero {
@@ -705,51 +519,8 @@
 
     .success p { color: var(--muted); font-size: 0.72rem; }
 
-    /* ── Footer ────────────────────────────────────────────────────────────── */
-    footer {
-      position: relative; z-index: 1;
-      padding: 40px 48px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-logo {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
-      color: var(--amber);
-    }
-
-    .footer-domains {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .footer-domain {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      padding: 4px 10px;
-      border: 1px solid var(--border);
-    }
-
-    .footer-copy {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-    }
-
     /* ── Responsive ────────────────────────────────────────────────────────── */
     @media (max-width: 860px) {
-      nav     { padding: 16px 24px; }
-      .nav-status { display: none; }
       .hero   { padding: 120px 24px 64px; }
       .stats-bar { flex-wrap: wrap; }
       .stat   { border-right: none; border-bottom: 1px solid var(--border); flex-basis: 50%; }
@@ -759,32 +530,14 @@
       .pillars-grid { grid-template-columns: 1fr; }
       .signup { padding: 64px 24px; }
       .signup-inner { grid-template-columns: 1fr; gap: 48px; }
-      footer  { padding: 32px 24px; justify-content: center; text-align: center; }
-      .footer-domains { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── NAV ─────────────────────────────────────────────────────────────── -->
-  <nav>
-    <a class="nav-logo" href="index.html">Threat<span>pedia</span></a>
-    <div class="nav-status">
-      <div class="status-dot"></div>
-      COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
-    </div>
-    <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+  <div id="site-header"></div>
 
-  <!-- ── SLIDE-OUT MENU ─────────────────────────────────────────────────── -->
-  <div class="menu-overlay" id="menu-overlay"></div>
-  <div class="menu-panel" id="menu-panel">
-    <div class="menu-label">Search</div>
-    <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
-    <div class="menu-label">Navigate</div>
-    <div class="menu-links">
+<div class="menu-links">
       <a href="glossary.html">Glossary</a>
       <a href="threat-actors.html">Threat Actors</a>
       <a href="incidents/index.html">Incidents</a>
@@ -1065,47 +818,9 @@
     </div>
   </section>
 
-  <!-- ── FOOTER ──────────────────────────────────────────────────────────── -->
-  <footer>
-    <div class="footer-logo">THREATPEDIA</div>
-    <div class="footer-domains">
-      <div class="footer-domain">threatpedia.wiki</div>
-      <div class="footer-domain">threatpedia.net</div>
-      <div class="footer-domain">threatopedia.wiki</div>
-      <div class="footer-domain">threatopedia.net</div>
-    </div>
-    <div class="footer-copy">© 2026 — All Rights Reserved</div>
-  </footer>
+  <div id="site-footer"></div>
 
   <script>
-    /* ── Hamburger menu ─────────────────────────────────────────────────── */
-    (function () {
-      var btn     = document.getElementById('hamburger-btn');
-      var overlay = document.getElementById('menu-overlay');
-      var panel   = document.getElementById('menu-panel');
-      var search  = document.getElementById('menu-search');
-
-      function toggle() {
-        var isOpen = panel.classList.toggle('open');
-        overlay.classList.toggle('open');
-        btn.classList.toggle('open');
-        if (isOpen) search.focus();
-      }
-
-      function close() {
-        panel.classList.remove('open');
-        overlay.classList.remove('open');
-        btn.classList.remove('open');
-      }
-
-      btn.addEventListener('click', toggle);
-      overlay.addEventListener('click', close);
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-
-      /* Menu search — redirect to glossary with query */
-
-    })();
-
     /* ── Form handler ───────────────────────────────────────────────────── */
     (function () {
       var form    = document.getElementById('tp-form');
@@ -1142,7 +857,8 @@
     })();
   </script>
 
-    <script src="assets/universal-search.js"></script>
-    <script src="assets/incident-ticker.js"></script>
+  <script src="assets/site-chrome.js"></script>
+  <script src="assets/universal-search.js"></script>
+  <script src="assets/incident-ticker.js"></script>
 </body>
 </html>

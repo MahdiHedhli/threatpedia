@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-YTB9GQKXLH');
-    </script>
+  <script src="../assets/analytics.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generated-by" content="incident-crosslink-gapfill">
@@ -75,214 +68,6 @@
             z-index: 0;
         }
 
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background-color: var(--surface);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            background-color: rgba(13, 17, 23, 0.95);
-        }
-
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--white);
-            text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-logo span {
-            color: var(--amber);
-        }
-
-        .nav-status {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--amber);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--amber);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        .hamburger {
-            width: 32px;
-            height: 32px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            z-index: 1001;
-        }
-
-        .hamburger span {
-            width: 24px;
-            height: 2px;
-            background-color: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 900;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .menu-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .menu-panel {
-            position: fixed !important;
-            top: 0;
-            right: 0;
-            width: 320px;
-            height: 100%;
-            background-color: var(--surface);
-            border-left: 1px solid var(--border);
-            padding: 80px 24px 24px;
-            z-index: 950;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .menu-panel.open {
-            transform: translateX(0);
-        }
-
-        .menu-search {
-            width: 100%;
-            padding: 10px 12px;
-            background-color: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text);
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-
-        .menu-search::placeholder {
-            color: var(--muted);
-        }
-
-        .menu-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .menu-nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-            padding: 8px 0;
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .menu-nav a:hover {
-            color: var(--amber);
-            border-bottom-color: var(--amber);
-        }
-
-        .menu-cta {
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-        }
-
-        .menu-cta-button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--amber);
-            color: var(--bg);
-            text-align: center;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .menu-cta-button:hover {
-            background-color: #f0b040;
-        }
-
-        
 
         .container {
             position: relative;
@@ -637,15 +422,6 @@
             margin-right: 4px;
         }
 
-        footer {
-            margin-top: 64px;
-            padding: 48px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
         footer p {
             margin: 4px 0;
         }
@@ -669,9 +445,6 @@
         }
 
         @media (max-width: 640px) {
-            nav {
-                padding: 0 16px;
-            }
 
             .incident-title {
                 font-size: 28px;
@@ -689,10 +462,6 @@
                 padding: 0 16px;
             }
 
-            .menu-panel {
-                width: 100%;
-            }
-
             .section-title {
                 font-size: 20px;
             }
@@ -704,26 +473,9 @@
     </style>
 </head>
 <body>
-    <nav>
-        <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
-        <div class="nav-status"><div class="status-dot"></div>COMING SOON — FOUNDING MEMBER REGISTRATION OPEN</div>
-        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-            <span></span><span></span><span></span>
-        </button>
 
-        </nav>
+  <div id="site-header"></div>
 
-    <div class="menu-overlay" id="menu-overlay"></div>
-    <div class="menu-panel" id="menu-panel">
-        <div class="menu-nav">
-            <a href="../glossary.html">Glossary</a>
-            <a href="../threat-actors.html">Threat Actors</a>
-            <a href="../incidents.html">Incidents</a>
-        </div>
-        <div class="menu-cta">
-            <button class="menu-cta-button">Join as Founding Member</button>
-        </div>
-    </div><div class="container">
         <article class="article-header">
             <h1 class="incident-title">ShinyHunters Operations & Leak Site Activity</h1>
 
@@ -1076,29 +828,10 @@
         </div>
     </div>
 
-    <footer>
-        <p>Threatpedia Incident Intelligence Platform — Automated Report</p>
-        <p>This report is generated for intelligence sharing purposes. Content is subject to human review and verification.</p>
-    </footer>
+  <div id="site-footer"></div>
 
-    <script>
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const menuOverlay = document.getElementById('menu-overlay');
-        const menuPanel = document.getElementById('menu-panel');
-
-        hamburgerBtn.addEventListener('click', () => {
-            hamburgerBtn.classList.toggle('open');
-            menuOverlay.classList.toggle('open');
-            menuPanel.classList.toggle('open');
-        });
-
-        menuOverlay.addEventListener('click', () => {
-            hamburgerBtn.classList.remove('open');
-            menuOverlay.classList.remove('open');
-            menuPanel.classList.remove('open');
-        });
-    </script>
-    <script src="../assets/universal-search.js"></script>
-    <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
 </body>
 </html>

@@ -51,7 +51,9 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 - Handling of classified or sensitive details
 
 ### Meeting 3 — Framework Mapping Standards
-- Which frameworks to map: MITRE ATT&CK, NIST CSF, Cyber Kill Chain, OWASP, Diamond Model, etc.
+- Which frameworks to map: MITRE ATT&CK, MITRE ATLAS, NIST CSF, Cyber Kill Chain, OWASP, Diamond Model, etc.
+- ATLAS conditional mapping criteria: when does an incident require ATLAS mapping vs. ATT&CK only vs. both?
+- ATLAS mapping methodology — tactic/technique ID capture, confidence scoring, handling of novel AI attack patterns not yet catalogued in ATLAS
 - Mapping methodology and confidence scoring
 - Handling partial or contested mappings
 - API / data export format (STIX/TAXII, JSON, CSV)
@@ -86,6 +88,7 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 | Field | Description |
 |---|---|
 | MITRE ATT&CK Techniques | Mapped TTPs with confidence level |
+| MITRE ATLAS Techniques | Mapped AI/ML adversarial techniques — required when AI system is target, tool, or bypassed control |
 | Kill Chain Stage(s) | Mapped to Lockheed Martin Kill Chain |
 | NIST Function(s) | Identify / Protect / Detect / Respond / Recover |
 | Diamond Model | Completed diamond for the event |
@@ -125,8 +128,18 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 
 ### Frameworks to Support (Phase 1)
 - **MITRE ATT&CK** — Techniques, Tactics, Procedures (highest priority)
+- **MITRE ATLAS** — Adversarial Threat Landscape for AI Systems; applied conditionally where an AI/ML system is a target, tool, or enabler of the incident (see Mapping Conditions below)
 - **Lockheed Martin Cyber Kill Chain** — Stage mapping
 - **NIST Cybersecurity Framework** — Function mapping
+
+### ATLAS Mapping Conditions
+ATLAS applies conditionally — not to every incident. An article requires ATLAS mapping when any of the following are true:
+- An AI/ML system is the **primary target** of the attack (e.g., model poisoning, evasion attacks, model extraction)
+- An AI/ML tool is **used by the attacker** as part of the attack chain (e.g., AI-generated phishing, AI-assisted vulnerability discovery)
+- An AI/ML system **failed or was bypassed** as a security control (e.g., AI-based detection defeated by adversarial inputs)
+- The incident involves **supply chain compromise of ML components** (training data, model weights, ML pipelines)
+
+Where ATLAS applies, the incident record should capture: ATLAS Tactic, ATLAS Technique ID, and mapping confidence level. ATT&CK and ATLAS mappings are additive — an incident may require both.
 
 ### Frameworks to Support (Phase 2)
 - **Diamond Model of Intrusion Analysis** — Full diamond per event
@@ -149,7 +162,8 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 - **News Aggregation** — Continuous monitoring of news outlets, blogs, government advisories to surface potential new events
 - **Pre-Screening** — AI pre-reviews submissions for completeness, source quality, and potential duplicates before human review queue
 - **Draft Generation** — AI generates first-draft article from aggregated sources; human editors refine and certify
-- **Framework Auto-Mapping** — AI suggests ATT&CK techniques from incident narratives; human SME confirms
+- **Framework Auto-Mapping** — AI suggests ATT&CK techniques and ATLAS techniques (where applicable) from incident narratives; human SME confirms
+- **ATLAS Trigger Detection** — AI flags whether an incident narrative contains signals requiring ATLAS mapping (AI system as target, tool, or bypassed control)
 - **Duplicate Detection** — Identify when two submissions describe the same event
 - **Trend Surfacing** — AI identifies emerging patterns across the corpus (e.g., rising use of a specific TTP)
 - **Source Verification** — AI checks if citations are primary sources, have been retracted, or are low-credibility
@@ -238,7 +252,7 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 |---|---|
 | **0 — Now** | Domain secured, landing page live, founding interest list building |
 | **1 — Founding** | Board formation, schema finalization, governance documents, founding team hiring |
-| **2 — Alpha** | Platform build, seed content (100 landmark events), reviewer onboarding |
+| **2 — Alpha** | Platform build, seed content (100 landmark events), reviewer onboarding; ATLAS case studies from MITRE's public library as structured seed content |
 | **3 — Beta** | Public beta, community submissions open, peer review workflow live |
 | **4 — Launch** | Full launch, API v1, APT registry complete, first annual report |
 | **5 — Scale** | Framework expansion, STIX/TAXII feed, academic partnerships, international content |

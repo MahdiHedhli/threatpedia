@@ -33,7 +33,9 @@
   // ── Inject ticker CSS ─────────────────────────────────────────────
   var style = document.createElement('style');
   style.textContent =
-    '.nav-status{position:relative;overflow:hidden;flex:1;margin:0 24px;height:20px}' +
+    '.nav-status{position:relative;overflow:hidden;flex:1;margin:0 24px;height:20px;pointer-events:none}' +
+    '.nav-status a,.nav-status .ticker-item{pointer-events:auto}' +
+    '.hamburger{position:relative;z-index:102}' +
     '.ticker-coming-soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1),opacity 0.6s}' +
     '.ticker-coming-soon.slide-up{transform:translateY(-100%);opacity:0}' +
     '.ticker-marquee-wrap{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;transform:translateY(100%);opacity:0;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1),opacity 0.6s}' +

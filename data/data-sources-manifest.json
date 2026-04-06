@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Tracks external data sources staged for ingestion into Threatpedia. Used by the data-ingestion task to perform incremental syncs without reprocessing already-ingested records.",
+  "lastUpdated": "2026-04-06",
+  "sources": [
+    {
+      "id": "cissm-cyber-events",
+      "name": "CISSM Cyber Events Database",
+      "provider": "University of Maryland — Center for International and Security Studies (CISSM)",
+      "url": "https://cybereventsdatabase.org/dashboard",
+      "description": "Comprehensive database of global cyber events including state-sponsored attacks, criminal campaigns, hacktivism, and espionage operations. Each record includes actor attribution, industry targeting, geopolitical alliance flags, and event classification.",
+      "license": "Academic / Public Research",
+      "localPath": "data/cissm/cyber_events_2026-04-06.csv",
+      "format": "csv",
+      "columns": 44,
+      "keyColumns": ["slug", "event_date", "actor", "actor_type", "organization", "industry", "motive", "event_type", "event_subtype", "country", "actor_country"],
+      "stats": {
+        "totalRecords": 16532,
+        "dateRange": {
+          "earliest": "2014-01-01",
+          "latest": "2026-02-28"
+        }
+      },
+      "staged": {
+        "date": "2026-04-06",
+        "ingested": false,
+        "lastIngestedRecord": null,
+        "recordsIngested": 0
+      },
+      "ingestionStrategy": {
+        "method": "incremental-by-date",
+        "dedup": "Match on slug field — each CISSM event has a unique slug",
+        "mapping": "Map CISSM event_type/event_subtype → Threatpedia incident categories; actor → threat-actor-index.json lookup; country → geolocation enrichment",
+        "batchSize": 200,
+        "notes": "Awaiting web stack and database — CSV staged for future bulk + incremental ingestion. On each sync, fetch new records from cybereventsdatabase.org API (if available) or re-download CSV and diff against lastIngestedRecord date."
+      }
+    }
+  ]
+}
