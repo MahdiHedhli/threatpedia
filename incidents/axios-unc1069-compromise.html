@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YTB9GQKXLH');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Axios npm Package Compromise by UNC1069 | Threatpedia</title>
@@ -1206,7 +1215,7 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                         <span class="reference-source">U.S. Cybersecurity & Infrastructure Security Agency, April 1, 2026</span>
                     </div>
                     <div class="reference-item">
-                        <a href="teampcp-supply-chain-attack.html" class="reference-link">Related Incident: TeamPCP Cryptocurrency Theft Campaign</a>
+                        <a href="index.html" class="reference-link">Related Incident: TeamPCP Cryptocurrency Theft Campaign</a>
                         <span class="reference-source">Threatpedia Incident Database</span>
                     </div>
                 </section>
@@ -1268,7 +1277,7 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
                 <div class="sidebar-box">
                     <div class="sidebar-title">Related Reading</div>
                     <div class="sidebar-content">
-                        <a href="teampcp-supply-chain-attack.html" class="sidebar-link">TeamPCP Campaign</a>
+                        <a href="index.html" class="sidebar-link">TeamPCP Campaign</a>
                         <a href="european-commission-trivy-breach-2026.html" class="sidebar-link">European Commission Trivy Breach</a>
                         <a href="../glossary.html?term=supply-chain-attack" class="sidebar-link">Supply Chain Attack (Glossary)</a>
                         <a href="../glossary.html?term=rat" class="sidebar-link">RAT - Remote Access Trojan</a>
@@ -1304,12 +1313,9 @@ Protocol: HTTP with Base64-encoded JSON payloads</div>
     btn.addEventListener('click', toggle);
     overlay.addEventListener('click', close);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-    msearch.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && msearch.value.trim()) {
-            window.location.href = '../glossary.html?q=' + encodeURIComponent(msearch.value.trim());
-        }
-    });
+    
 })();
 </script>
+    <script src="../assets/universal-search.js"></script>
 </body>
 </html>

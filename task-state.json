@@ -53,6 +53,21 @@
       "purpose": "Research and catalogue new breach/threat data sources",
       "writesTo": ["research/new-sources-*.md", "research/MASTER-LOG.md"],
       "readsFrom": ["research/MASTER-LOG.md"]
+    },
+    "dataIngestion": {
+      "taskId": "threatpedia-data-ingestion",
+      "frequency": "Future — pending web stack and database",
+      "purpose": "Ingest records from staged external databases (tracked in data/data-sources-manifest.json) into Threatpedia, using incremental sync to avoid redundant processing",
+      "writesTo": ["incidents/*.html", "incidents/manifest.json", "data/data-sources-manifest.json"],
+      "readsFrom": ["data/data-sources-manifest.json", "data/**/*.csv", "incidents/manifest.json"],
+      "status": "planned"
+    },
+    "threatActorUpdater": {
+      "taskId": "threat-actor-updater",
+      "frequency": "Tue/Thu at 3 PM",
+      "purpose": "Process threat-actor-queue.json worklist — create new actor entries, update existing ones with new incident linkages, ensure bidirectional linking between actors and reports",
+      "writesTo": ["threat-actors.html", "threat-actor-index.json", "threat-actor-queue.json", "incidents/manifest.json"],
+      "readsFrom": ["threat-actor-queue.json", "threat-actor-index.json", "incidents/manifest.json", "task-state.json"]
     }
   },
 
@@ -99,7 +114,32 @@
         "glossary-candidates.json": "Terms found in reports but missing from glossary, queued for weekly updater"
       }
     },
-    "lastIncidentScan": "2026-04-06T12:00:00Z"
+    "threatActorPipeline": {
+      "flow": "new-threat-intel / daily-incident-updater / incident-crosslink-gapfill → threat-actor-queue.json → threat-actor-updater processes queue → threat-actors.html + threat-actor-index.json updated → bidirectional links verified",
+      "files": {
+        "threat-actors.html": "The Threat Actor Registry page with 78 actors (JS array, searchable/filterable)",
+        "threat-actor-index.json": "Lightweight actor lookup index (78 actors, 224 alias keys) for quick queue-or-skip decisions by incident tasks",
+        "threat-actor-queue.json": "Worklist — incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
+      },
+      "currentActorCount": 78,
+      "queueSize": 0
+    },
+    "lastIncidentScan": "2026-04-06T12:00:00Z",
+    "dataIngestion": {
+      "manifestPath": "data/data-sources-manifest.json",
+      "stagedSources": 1,
+      "ingestedSources": 0,
+      "totalStagedRecords": 16532,
+      "status": "awaiting-web-stack",
+      "sources": {
+        "cissm-cyber-events": {
+          "records": 16532,
+          "dateRange": "2014-01-01 to 2026-02-28",
+          "stagedDate": "2026-04-06",
+          "ingested": false
+        }
+      }
+    }
   },
 
   "activeLocks": {
@@ -128,7 +168,7 @@
       "dailyIncidentUpdater": "Only updates EXISTING reports. Does NOT create new reports. Handles broken links, image generation, and enrichment.",
       "incidentCrosslinkGapfill": "Only creates reports for items in manifest referencedButMissing[]. Does NOT discover new incidents from news. Handles cross-link graph."
     },
-    "gitConflictPrevention": "Tasks that push to git should check for upstream changes first (git pull --rebase before push). If push fails, retry once after pull.",
+    "gitConflictPrevention": "ALL tasks use the standardized Git Safety Protocol (see .git-safety-protocol.md). Protocol includes: stale lock clearing (>5 min threshold), fetch/rebase before work, lock check before staging, specific-file staging (never git add -A), push with 3-attempt retry, JSON conflict resolution (accept remote then re-apply). Updated 2026-04-06 across all 11 active tasks.",
     "taskLocking": {
       "protocol": "Before writing to incidents/ or manifest.json, a task MUST: (1) read task-state.json and check activeLocks for any other task with locked:true and lockedAt < 30 minutes ago, (2) if blocked, SKIP the run and report it, (3) if clear, set your own lock in activeLocks with locked:true and current UTC timestamp, (4) ALWAYS release your lock (locked:false) when done, even on error.",
       "staleLockTimeout": "30 minutes — any lock older than 30 minutes is treated as stale from a crashed task and can be ignored.",

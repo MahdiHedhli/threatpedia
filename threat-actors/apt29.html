@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YTB9GQKXLH');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APT29 (Cozy Bear) - Midnight Blizzard | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.02)" filter="url(%23noise)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: var(--muted); }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        .hamburger {
+            display: flex; flex-direction: column; justify-content: center;
+            gap: 5px; width: 28px; height: 28px;
+            background: none; border: 1px solid var(--border);
+            padding: 5px; cursor: pointer;
+            transition: border-color 0.2s; flex-shrink: 0;
+        }
+
+        .hamburger:hover { border-color: var(--amber); }
+
+        .hamburger span {
+            display: block; width: 100%; height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+
+        .menu-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 199;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+
+        .menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .menu-panel {
+            position: fixed; top: 0; right: 0;
+            width: 320px; height: 100vh;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            overflow-y: auto;
+        }
+
+        .menu-panel.open { transform: translateX(0); }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        .menu-links {
+            display: flex; flex-direction: column;
+            padding: 0;
+        }
+
+        .menu-links a {
+            padding: 16px 24px;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s;
+        }
+
+        .menu-links a:hover {
+            color: var(--amber);
+            background: rgba(232, 160, 32, 0.05);
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: 80px;
+            padding: 40px 48px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+
+            footer {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../../index.html" class="nav-logo">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span>THREAT INTEL</span>
+        </div>
+        <button class="hamburger" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Menu Panel -->
+    <div class="menu-panel" id="menuPanel">
+        <div class="menu-close">
+            <span style="font-family: 'Playfair Display', serif; font-size: 18px; color: var(--white);">Menu</span>
+            <button id="menuClose" style="background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer;">&times;</button>
+        </div>
+        <div class="menu-links">
+            <a href="../../index.html">Home</a>
+            <a href="../threat-actors.html">Threat Actors</a>
+            <a href="../incidents/index.html">Incidents</a>
+            <a href="../glossary.html">Glossary</a>
+            <a href="../data/">Data & Resources</a>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Stylized bear silhouette with origin point indicator -->
+                <defs>
+                    <linearGradient id="bearGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <!-- Map background -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Stylized Russia/Eastern Europe -->
+                <path d="M 80 60 Q 110 50 120 70 L 130 100 Q 120 110 100 115 Q 80 110 70 90 Z" fill="#e8a020" opacity="0.6"/>
+                <!-- Bear head -->
+                <circle cx="95" cy="85" r="20" fill="url(#bearGradient)"/>
+                <!-- Bear ears -->
+                <circle cx="85" cy="70" r="8" fill="url(#bearGradient)"/>
+                <circle cx="105" cy="70" r="8" fill="url(#bearGradient)"/>
+                <!-- Origin point indicator -->
+                <circle cx="95" cy="85" r="4" fill="#ff4444"/>
+                <circle cx="95" cy="85" r="7" fill="none" stroke="#ff4444" stroke-width="1.5" opacity="0.6"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>APT29</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Cozy Bear, Midnight Blizzard, The Dukes, Dark Halo, NOBELIUM, IRON RITUAL, Iron Hemlock, UNC2452, YTTRIUM, CozyDuke, SolarStorm, Blue Kitsune, UNC3524, Group G0016
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>APT29</strong> is a sophisticated threat actor attributed to Russia's Foreign Intelligence Service (SVR) and has been operational since at least 2008. The group is known for targeting high-profile organizations across government, diplomatic, research, defense, and technology sectors, primarily in Europe and North America. APT29 is widely recognized for their advanced tradecraft, persistent engagement, and ability to remain undetected in victim environments for extended periods.</p>
+
+                    <p>The group operates with a strategic focus on espionage objectives, conducting long-term intelligence collection campaigns against NATO member states, European governments, diplomatic missions, think tanks, and research institutions. APT29 is particularly notable for their involvement in several major incidents, including the 2020 SolarWinds supply chain compromise (via the SUNBURST malware) and ongoing phishing campaigns targeting European diplomacy and cloud infrastructure.</p>
+
+                    <p>APT29's operational approach combines spear-phishing with weaponized attachments, supply chain compromises, cloud exploitation, and credential theft. The group is known for rapid adaptation of tactics, particularly in response to public disclosures of their tools and techniques. As of 2024-2025, APT29 continues to conduct high-volume phishing campaigns against European governments, with new malware families such as GRAPELOADER and WINELOADER emerging as part of their ongoing arsenal.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1566.001: Phishing - Spearphishing Attachment</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                                <span class="ttp-technique">T1078.004: Valid Accounts - Cloud Accounts</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: Command and Scripting Interpreter - PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Command and Scripting Interpreter - Windows Command Shell</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1550: Use Alternate Authentication Material</span>
+                                <span class="ttp-technique">T1656: Impersonation</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1110.004: Brute Force - Credential Stuffing</span>
+                                <span class="ttp-technique">T1556: Modify Authentication Process</span>
+                                <span class="ttp-technique">T1187: Forced Authentication</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Spear-phishing Campaigns:</strong> Highly targeted phishing emails impersonating government entities, diplomatic services, or trusted partners. Email attachments often contain weaponized documents (Office, PDF, WinRAR) or links to malicious infrastructure.</li>
+                            <li><strong>Password Spraying & Credential Compromise:</strong> Large-scale password spray attacks against cloud environments (Azure, Office 365) to identify valid credentials and weak passwords, often combined with MFA bypass techniques.</li>
+                            <li><strong>Supply Chain Exploitation:</strong> Compromise of software development pipelines and legitimate software vendors to distribute malware at scale (e.g., SolarWinds SUNBURST).</li>
+                            <li><strong>Cloud Infrastructure Targeting:</strong> Exploitation of cloud tenant enumeration, device enrollment, federation services (ADFS), and token abuse to gain access to cloud environments.</li>
+                            <li><strong>Exploitation of Public Vulnerabilities:</strong> Rapid exploitation of zero-days and publicly disclosed CVEs (ProxyLogon, ProxyShell, Exchange RCEs, WinRAR CVE-2023-38831).</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>SUNBURST:</strong> Sophisticated backdoor deployed via SolarWinds Orion updates. Designed for stealthy command-and-control communication and lateral movement.</li>
+                            <li><strong>SUNSHELL/CORESHELL:</strong> Second-stage payloads deployed post-SUNBURST compromise for deeper access and data exfiltration.</li>
+                            <li><strong>GRAPELOADER:</strong> New backdoor family identified in 2025 phishing campaigns targeting European diplomats. Delivered via weaponized attachments.</li>
+                            <li><strong>WINELOADER:</strong> Infostealer malware used in recent campaigns to harvest credentials and system information.</li>
+                            <li><strong>FOGGYWEB:</strong> Custom ADFS-focused malware for federation exploitation and token theft.</li>
+                            <li><strong>MAGICWEB:</strong> Malware targeting Microsoft ADFS infrastructure to intercept and manipulate authentication tokens.</li>
+                            <li><strong>Custom C# Backdoors:</strong> Lightweight, custom-compiled backdoors for command execution and lateral movement.</li>
+                            <li><strong>Living-off-the-Land Tools:</strong> Extensive use of PowerShell, WMI, PsExec, and native Windows utilities for post-compromise activities.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Residential Proxies:</strong> Use of residential proxy infrastructure to obfuscate command-and-control communications and make attribution more difficult.</li>
+                            <li><strong>Legitimate Cloud Services:</strong> Abuse of Microsoft Teams, SharePoint, and other cloud collaboration platforms for C2 communications.</li>
+                            <li><strong>Domain Fronting:</strong> Leveraging legitimate web services and CDNs to hide malicious traffic.</li>
+                            <li><strong>Email-based C2:</strong> Use of compromised email accounts and OAuth application permissions for command-and-control.</li>
+                            <li><strong>Fast Flux Networks:</strong> Rapid rotation of DNS records and IP addresses to evade network-based detection.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>APT29 targets a broad range of sectors aligned with Russian strategic intelligence interests:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Geographic Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Government & Diplomacy</td>
+                                <td>European foreign ministries, NATO member states, US federal agencies, diplomatic missions. Heavy targeting of EU and NATO countries.</td>
+                            </tr>
+                            <tr>
+                                <td>Research & Academia</td>
+                                <td>Think tanks, universities, research institutions (particularly policy research focused on Russia, energy security, defense).</td>
+                            </tr>
+                            <tr>
+                                <td>Defense & Aerospace</td>
+                                <td>Defense contractors, military research institutions, aerospace companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Energy</td>
+                                <td>Utilities, energy research organizations, strategic infrastructure.</td>
+                            </tr>
+                            <tr>
+                                <td>Technology & Cloud</td>
+                                <td>Cloud service providers, software vendors, SaaS platforms (Salesforce, Snowflake), open-source ecosystems.</td>
+                            </tr>
+                            <tr>
+                                <td>Healthcare</td>
+                                <td>Limited targeting; primarily during COVID-19 pandemic for intelligence on vaccine research.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Preference:</strong> Primary targeting of NATO members and EU states (particularly Germany, Poland, Czech Republic), as well as North American government and research institutions.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Dec 2013</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>US State Department Network Breach</div>
+                                <div class="timeline-event-detail">APT29 compromised US State Department networks, maintaining access for months. Significant espionage operation targeting diplomatic communications.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2015-2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Democratic National Committee (DNC) Compromise</div>
+                                <div class="timeline-event-detail">APT29 breached DNC networks alongside APT28. Conducted targeted espionage of Democratic Party communications and opposition research.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2019-2020</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>COVID-19 Vaccine Research Targeting</div>
+                                <div class="timeline-event-detail">NCSC, CISA, and FBI confirmed APT29 targeted US and UK vaccine research institutions and health organizations during pandemic response.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mar 2020</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>SolarWinds Supply Chain Compromise (SUNBURST)</div>
+                                <div class="timeline-event-detail">APT29 compromised SolarWinds software development pipeline, embedding SUNBURST backdoor in Orion updates. Affected 18,000+ customers including US government, Fortune 500 companies, and critical infrastructure. Described as "most sophisticated attack the world has ever seen."</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Oct 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>RDP Configuration Distribution Campaign</div>
+                                <div class="timeline-event-detail">Microsoft reported APT29 distributed signed Remote Desktop Protocol (RDP) configuration files to thousands of individuals across 100+ organizations in government, academia, defense, and NGOs.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jan-Mar 2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>GRAPELOADER / WINELOADER Phishing Campaign</div>
+                                <div class="timeline-event-detail">Check Point Research identified new wave of targeted phishing attacks against European governments and diplomatic entities. Attackers impersonated major EU foreign ministry wine tasting invitations, leading to deployment of GRAPELOADER backdoor and WINELOADER infostealer.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2025 - Present</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator suspected"></span>European Government Cloud Infrastructure Targeting <span class="badge-suspected">Suspected - Not Confirmed</span></div>
+                                <div class="timeline-event-detail">Based on tactics alignment and targeting patterns, APT29 is suspected of conducting ongoing campaigns to compromise European government cloud environments via token theft, MFA bypass, and federation exploitation techniques. Attribution pending official confirmation.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>APT29 has demonstrated rapid exploitation of both zero-days and publicly disclosed vulnerabilities:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-26855" class="cve-link" target="_blank">CVE-2021-26855</a></td>
+                                <td>Server-Side Request Forgery (SSRF) in Exchange Server</td>
+                                <td>Microsoft Exchange Server 2010-2019</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-27065" class="cve-link" target="_blank">CVE-2021-27065</a></td>
+                                <td>Remote Code Execution via Exchange Server</td>
+                                <td>Microsoft Exchange Server 2010-2019</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-34473" class="cve-link" target="_blank">CVE-2021-34473</a></td>
+                                <td>ProxyShell: Remote Code Execution via Exchange</td>
+                                <td>Microsoft Exchange Server 2010-2019</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-34523" class="cve-link" target="_blank">CVE-2021-34523</a></td>
+                                <td>ProxyShell: Elevation of Privilege in Exchange</td>
+                                <td>Microsoft Exchange Server 2010-2019</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-31207" class="cve-link" target="_blank">CVE-2021-31207</a></td>
+                                <td>ProxyShell: RCE via Exchange Unauth</td>
+                                <td>Microsoft Exchange Server 2010-2019</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-38831" class="cve-link" target="_blank">CVE-2023-38831</a></td>
+                                <td>Arbitrary Code Execution in WinRAR</td>
+                                <td>WinRAR (all versions before 6.23)</td>
+                                <td>8.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-0640" class="cve-link" target="_blank">CVE-2023-0640</a></td>
+                                <td>Remote Code Execution in Adobe Reader/Acrobat</td>
+                                <td>Adobe Acrobat Reader / Acrobat</td>
+                                <td>8.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42793" class="cve-link" target="_blank">CVE-2023-42793</a></td>
+                                <td>Authentication Bypass in JetBrains TeamCity</td>
+                                <td>JetBrains TeamCity</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-36934" class="cve-link" target="_blank">CVE-2021-36934</a></td>
+                                <td>Elevation of Privilege in Windows SAM</td>
+                                <td>Microsoft Windows</td>
+                                <td>7.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>APT29 is tracked by numerous threat intelligence vendors and government agencies under various designations:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">MITRE ATT&CK</td>
+                                <td>Group G0016</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>COZY BEAR</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft</td>
+                                <td>Midnight Blizzard, YTTRIUM</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>APT29, Dark Halo</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Kaspersky</td>
+                                <td>The Dukes</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Symantec</td>
+                                <td>IRON RITUAL, IRON HEMLOCK</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">F-Secure</td>
+                                <td>NobleBaron</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>UNC2452, NOBELIUM</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>UNC3524</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Cybereason</td>
+                                <td>Blue Kitsune</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">US Government (CISA/NSA)</td>
+                                <td>NOBELIUM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>APT28 (Fancy Bear):</strong> Fellow Russian-attributed APT group. While operationally distinct, both groups have targeted overlapping victim sets (e.g., DNC in 2016). Different operational patterns and capabilities suggest separate organizational structures within Russian intelligence.</li>
+                        <li><strong>Turla/Snake:</strong> Another Russian-attributed APT with similar strategic focus on government and research sectors. Less direct overlap in recent operations but comparable target profiles.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <a href="https://attack.mitre.org/groups/G0016/" target="_blank">MITRE ATT&CK: APT29 (Group G0016)</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <a href="https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack/" target="_blank">Microsoft Security Blog: Midnight Blizzard (APT29) Guidance</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-057a" target="_blank">CISA Advisory: SVR Cyber Actors Adapt Tactics for Initial Cloud Access</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <a href="https://blog.checkpoint.com/research/unmasking-apt29-the-sophisticated-phishing-campaign-targeting-european-diplomacy/" target="_blank">Check Point Research: APT29 Phishing Campaign Targeting European Diplomacy</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <a href="https://research.checkpoint.com/2025/apt29-phishing-campaign/" target="_blank">Check Point Research: Renewed APT29 Phishing Campaign (2025)</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[6]</span>
+                            <a href="https://www.huntress.com/threat-library/threat-actors/cozy-bear-apt29" target="_blank">Huntress: Cozy Bear (APT29) Threat Actor Profile</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[7]</span>
+                            <a href="https://www.picussecurity.com/resource/blog/apt29-cozy-bear-evolution-techniques" target="_blank">Picus Security: APT29 Evolution, Techniques, and Cyber Attacks</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[8]</span>
+                            <a href="https://www.darkrelay.com/post/apt29-midnight-blizzard-operations-iocs-detection-strategies" target="_blank">Dark Relay: APT29 Operations, IOCs, and Detection Strategies</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[9]</span>
+                            <a href="https://malpedia.caad.fkie.fraunhofer.de/actor/apt29" target="_blank">Malpedia: APT29 Threat Actor Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🇷🇺</div>
+                        <span>Russia (SVR)</span>
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Espionage</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2008</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025 (Active)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">NOBELIUM (Recorded Future)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">ACTIVE</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-title">About This Page</div>
+                <p style="font-size: 13px; color: var(--muted); line-height: 1.6;">
+                    This threat actor profile is based on open-source intelligence (OSINT), public threat reports, government advisories (CISA, NSA, NCSC), and vendor-published threat intelligence. Information is current as of April 2025 and subject to change as new intelligence emerges.
+                </p>
+            </div>
+            <div class="footer-section">
+                <div class="footer-title">Disclaimer</div>
+                <p style="font-size: 13px; color: var(--muted); line-height: 1.6;">
+                    Threatpedia provides threat intelligence for informational and defensive purposes. Attribution of cyberattacks remains an ongoing process in cybersecurity, and some attributions may be subject to debate or change as additional evidence emerges. This profile reflects consensus assessment by government agencies and leading threat intelligence vendors.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Search -->
+    <script src="../../assets/universal-search.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuPanel = document.getElementById('menuPanel');
+        const menuClose = document.getElementById('menuClose');
+
+        function openMenu() {
+            menuPanel.classList.add('open');
+            menuOverlay.classList.add('open');
+        }
+
+        function closeMenu() {
+            menuPanel.classList.remove('open');
+            menuOverlay.classList.remove('open');
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // Close menu on link click
+        document.querySelectorAll('.menu-links a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+    </script>
+</body>
+
+</html>

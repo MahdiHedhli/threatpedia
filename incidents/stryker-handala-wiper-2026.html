@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YTB9GQKXLH');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="review-status" content="pending">
@@ -1316,12 +1325,9 @@ T1072 - Software Deployment Tools (Microsoft Intune abuse)</div>
         btn.addEventListener('click', toggle);
         overlay.addEventListener('click', close);
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-        msearch.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && msearch.value.trim()) {
-                window.location.href = '../glossary.html?q=' + encodeURIComponent(msearch.value.trim());
-            }
-        });
+        
     })();
     </script>
+    <script src="../assets/universal-search.js"></script>
 </body>
 </html>

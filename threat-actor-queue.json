@@ -1,0 +1,24 @@
+{
+  "lastUpdated": "2026-04-06T21:00:00Z",
+  "schemaVersion": "1.0",
+  "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
+
+  "queue": [],
+
+  "queueRules": {
+    "actions": {
+      "create": "Threat actor not found in threat-actor-index.json — needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
+      "update-links": "Threat actor exists but a new incident report references them — update their campaigns/description and ensure bidirectional linking",
+      "enrich": "Threat actor exists but has thin data — research and expand their entry"
+    },
+    "priority": {
+      "critical": "Actor tied to active/ongoing campaign affecting critical infrastructure",
+      "high": "Actor tied to multiple recent incidents in the manifest",
+      "normal": "Standard queue processing order",
+      "low": "Historical actor with no recent activity, fill when capacity allows"
+    },
+    "dedup": "Before adding to queue, check if an item with the same actorName and action already exists. If so, merge referencedFrom arrays instead of adding a duplicate.",
+    "maxQueueSize": 50,
+    "itemsPerRun": 8
+  }
+}

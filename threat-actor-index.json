@@ -1,0 +1,1377 @@
+{
+  "generatedAt": "2026-04-06T21:00:00Z",
+  "actorCount": 78,
+  "actors": {
+    "apt1": {
+      "name": "APT1",
+      "aliases": [
+        "Comment Crew",
+        "PLA Unit 61398",
+        "STUXNET",
+        "GhostNet"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "comment crew": {
+      "canonicalName": "APT1",
+      "isAlias": true
+    },
+    "pla unit 61398": {
+      "canonicalName": "APT1",
+      "isAlias": true
+    },
+    "stuxnet": {
+      "canonicalName": "APT1",
+      "isAlias": true
+    },
+    "ghostnet": {
+      "canonicalName": "APT1",
+      "isAlias": true
+    },
+    "apt10": {
+      "name": "APT10",
+      "aliases": [
+        "Stone Panda",
+        "MenuPass",
+        "POTASSIUM"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "stone panda": {
+      "canonicalName": "APT10",
+      "isAlias": true
+    },
+    "menupass": {
+      "canonicalName": "APT10",
+      "isAlias": true
+    },
+    "potassium": {
+      "canonicalName": "APT10",
+      "isAlias": true
+    },
+    "apt27": {
+      "name": "APT27",
+      "aliases": [
+        "Emissary Panda",
+        "Lucky Mouse",
+        "HIPPOs"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "emissary panda": {
+      "canonicalName": "APT27",
+      "isAlias": true
+    },
+    "lucky mouse": {
+      "canonicalName": "APT27",
+      "isAlias": true
+    },
+    "hippos": {
+      "canonicalName": "APT27",
+      "isAlias": true
+    },
+    "apt31": {
+      "name": "APT31",
+      "aliases": [
+        "Zirconium",
+        "NOTROBIN",
+        "Violet Typhoon"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "zirconium": {
+      "canonicalName": "APT31",
+      "isAlias": true
+    },
+    "notrobin": {
+      "canonicalName": "APT31",
+      "isAlias": true
+    },
+    "violet typhoon": {
+      "canonicalName": "APT31",
+      "isAlias": true
+    },
+    "apt40": {
+      "name": "APT40",
+      "aliases": [
+        "TEMP.Periscope",
+        "Leviathan",
+        "BRONZE MOHUR"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "temp.periscope": {
+      "canonicalName": "APT40",
+      "isAlias": true
+    },
+    "leviathan": {
+      "canonicalName": "APT40",
+      "isAlias": true
+    },
+    "bronze mohur": {
+      "canonicalName": "APT40",
+      "isAlias": true
+    },
+    "apt41": {
+      "name": "APT41",
+      "aliases": [
+        "BARIUM",
+        "Winnti",
+        "Double Dragon",
+        "BRASS TYPHOON"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage & Financial",
+      "status": "Active"
+    },
+    "barium": {
+      "canonicalName": "APT41",
+      "isAlias": true
+    },
+    "winnti": {
+      "canonicalName": "APT41",
+      "isAlias": true
+    },
+    "double dragon": {
+      "canonicalName": "APT41",
+      "isAlias": true
+    },
+    "brass typhoon": {
+      "canonicalName": "APT41",
+      "isAlias": true
+    },
+    "volt typhoon": {
+      "name": "Volt Typhoon",
+      "aliases": [
+        "BRONZE SILHOUETTE"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze silhouette": {
+      "canonicalName": "Volt Typhoon",
+      "isAlias": true
+    },
+    "salt typhoon": {
+      "name": "Salt Typhoon",
+      "aliases": [
+        "LUCKYDOOR",
+        "BRONZE CASUAL"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "luckydoor": {
+      "canonicalName": "Salt Typhoon",
+      "isAlias": true
+    },
+    "bronze casual": {
+      "canonicalName": "Salt Typhoon",
+      "isAlias": true
+    },
+    "flax typhoon": {
+      "name": "Flax Typhoon",
+      "aliases": [
+        "BRONZE HICKMAN"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze hickman": {
+      "canonicalName": "Flax Typhoon",
+      "isAlias": true
+    },
+    "hafnium": {
+      "name": "Hafnium",
+      "aliases": [
+        "BRONZE ECCLES"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze eccles": {
+      "canonicalName": "Hafnium",
+      "isAlias": true
+    },
+    "mustang panda": {
+      "name": "Mustang Panda",
+      "aliases": [
+        "BRONZE PRESIDENT",
+        "Playful Dragon"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze president": {
+      "canonicalName": "Mustang Panda",
+      "isAlias": true
+    },
+    "playful dragon": {
+      "canonicalName": "Mustang Panda",
+      "isAlias": true
+    },
+    "apt28": {
+      "name": "APT28",
+      "aliases": [
+        "Fancy Bear",
+        "STRONTIUM",
+        "Sofacy",
+        "Pawn Storm",
+        "Forest Blizzard"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "fancy bear": {
+      "canonicalName": "APT28",
+      "isAlias": true
+    },
+    "strontium": {
+      "canonicalName": "APT28",
+      "isAlias": true
+    },
+    "sofacy": {
+      "canonicalName": "APT28",
+      "isAlias": true
+    },
+    "pawn storm": {
+      "canonicalName": "APT28",
+      "isAlias": true
+    },
+    "forest blizzard": {
+      "canonicalName": "APT28",
+      "isAlias": true
+    },
+    "apt29": {
+      "name": "APT29",
+      "aliases": [
+        "Cozy Bear",
+        "NOBELIUM",
+        "Midnight Blizzard",
+        "IRON HEMLOCK",
+        "UNC2452"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "cozy bear": {
+      "canonicalName": "APT29",
+      "isAlias": true
+    },
+    "nobelium": {
+      "canonicalName": "APT29",
+      "isAlias": true
+    },
+    "midnight blizzard": {
+      "canonicalName": "APT29",
+      "isAlias": true
+    },
+    "iron hemlock": {
+      "canonicalName": "APT29",
+      "isAlias": true
+    },
+    "unc2452": {
+      "canonicalName": "APT29",
+      "isAlias": true
+    },
+    "sandworm": {
+      "name": "Sandworm",
+      "aliases": [
+        "APT44",
+        "IRIDIUM",
+        "ELECTRUM",
+        "Voodoo Bear",
+        "Seashell Blizzard"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Sabotage & Espionage",
+      "status": "Active"
+    },
+    "apt44": {
+      "canonicalName": "Sandworm",
+      "isAlias": true
+    },
+    "iridium": {
+      "canonicalName": "Sandworm",
+      "isAlias": true
+    },
+    "electrum": {
+      "canonicalName": "Sandworm",
+      "isAlias": true
+    },
+    "voodoo bear": {
+      "canonicalName": "Sandworm",
+      "isAlias": true
+    },
+    "seashell blizzard": {
+      "canonicalName": "Sandworm",
+      "isAlias": true
+    },
+    "turla": {
+      "name": "Turla",
+      "aliases": [
+        "Snake",
+        "Uroboros",
+        "IRON HUNTER",
+        "Venomous Bear",
+        "Secret Blizzard"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "snake": {
+      "canonicalName": "Turla",
+      "isAlias": true
+    },
+    "uroboros": {
+      "canonicalName": "Turla",
+      "isAlias": true
+    },
+    "iron hunter": {
+      "canonicalName": "Turla",
+      "isAlias": true
+    },
+    "venomous bear": {
+      "canonicalName": "Turla",
+      "isAlias": true
+    },
+    "secret blizzard": {
+      "canonicalName": "Turla",
+      "isAlias": true
+    },
+    "gamaredon": {
+      "name": "Gamaredon",
+      "aliases": [
+        "AQUA BLIZZARD",
+        "Shuckworm",
+        "DEV-0157",
+        "PRIMITIVE BEAR",
+        "Winterflounder"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "aqua blizzard": {
+      "canonicalName": "Gamaredon",
+      "isAlias": true
+    },
+    "shuckworm": {
+      "canonicalName": "Gamaredon",
+      "isAlias": true
+    },
+    "dev-0157": {
+      "canonicalName": "Gamaredon",
+      "isAlias": true
+    },
+    "primitive bear": {
+      "canonicalName": "Gamaredon",
+      "isAlias": true
+    },
+    "winterflounder": {
+      "canonicalName": "Gamaredon",
+      "isAlias": true
+    },
+    "star blizzard": {
+      "name": "Star Blizzard",
+      "aliases": [
+        "SEASHELL BLIZZARD",
+        "Cold River",
+        "LABYRINTH CHOLLIMA"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "cold river": {
+      "canonicalName": "Star Blizzard",
+      "isAlias": true
+    },
+    "labyrinth chollima": {
+      "canonicalName": "Star Blizzard",
+      "isAlias": true
+    },
+    "lazarus group": {
+      "name": "Lazarus Group",
+      "aliases": [
+        "APT38",
+        "Hidden Cobra",
+        "ZINC",
+        "Guardians of Peace",
+        "LABYRINTH CHOLLIMA"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Financial & Sabotage",
+      "status": "Active"
+    },
+    "apt38": {
+      "name": "APT38",
+      "aliases": [
+        "Bluenoroff",
+        "Alluring Pisces",
+        "BRONZE TEMPLE"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "hidden cobra": {
+      "canonicalName": "Lazarus Group",
+      "isAlias": true
+    },
+    "zinc": {
+      "canonicalName": "Lazarus Group",
+      "isAlias": true
+    },
+    "guardians of peace": {
+      "canonicalName": "Lazarus Group",
+      "isAlias": true
+    },
+    "bluenoroff": {
+      "canonicalName": "APT38",
+      "isAlias": true
+    },
+    "alluring pisces": {
+      "canonicalName": "APT38",
+      "isAlias": true
+    },
+    "bronze temple": {
+      "canonicalName": "APT38",
+      "isAlias": true
+    },
+    "kimsuky": {
+      "name": "Kimsuky",
+      "aliases": [
+        "APT43",
+        "THALLIUM",
+        "Emerald Sleet",
+        "Black Banshee"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "apt43": {
+      "canonicalName": "Kimsuky",
+      "isAlias": true
+    },
+    "thallium": {
+      "canonicalName": "Kimsuky",
+      "isAlias": true
+    },
+    "emerald sleet": {
+      "canonicalName": "Kimsuky",
+      "isAlias": true
+    },
+    "black banshee": {
+      "canonicalName": "Kimsuky",
+      "isAlias": true
+    },
+    "apt37": {
+      "name": "APT37",
+      "aliases": [
+        "REAPER",
+        "PINK TEAM",
+        "SCARCRUFT",
+        "ScarCruft"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "reaper": {
+      "canonicalName": "APT37",
+      "isAlias": true
+    },
+    "pink team": {
+      "canonicalName": "APT37",
+      "isAlias": true
+    },
+    "scarcruft": {
+      "canonicalName": "APT37",
+      "isAlias": true
+    },
+    "andariel": {
+      "name": "Andariel",
+      "aliases": [
+        "BRONZE LEVEL",
+        "Silent Chollima",
+        "UNC1069"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Financial & Espionage",
+      "status": "Active"
+    },
+    "bronze level": {
+      "canonicalName": "Andariel",
+      "isAlias": true
+    },
+    "silent chollima": {
+      "canonicalName": "Andariel",
+      "isAlias": true
+    },
+    "unc1069": {
+      "name": "UNC1069",
+      "aliases": [
+        "BRONZE OASIS"
+      ],
+      "affiliation": "North Korea",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze oasis": {
+      "canonicalName": "UNC1069",
+      "isAlias": true
+    },
+    "apt33": {
+      "name": "APT33",
+      "aliases": [
+        "REFINED KITTEN",
+        "Elfin",
+        "ORANGE FOXTROT"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "refined kitten": {
+      "canonicalName": "APT33",
+      "isAlias": true
+    },
+    "elfin": {
+      "canonicalName": "APT33",
+      "isAlias": true
+    },
+    "orange foxtrot": {
+      "canonicalName": "APT33",
+      "isAlias": true
+    },
+    "apt34": {
+      "name": "APT34",
+      "aliases": [
+        "OilRig",
+        "HELIX KITTEN",
+        "HAIRY SPIDER"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "oilrig": {
+      "canonicalName": "APT34",
+      "isAlias": true
+    },
+    "helix kitten": {
+      "canonicalName": "APT34",
+      "isAlias": true
+    },
+    "hairy spider": {
+      "canonicalName": "APT34",
+      "isAlias": true
+    },
+    "apt35": {
+      "name": "APT35",
+      "aliases": [
+        "CHARMING KITTEN",
+        "MagicHound",
+        "PHOSPHOROUS"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "charming kitten": {
+      "canonicalName": "APT35",
+      "isAlias": true
+    },
+    "magichound": {
+      "canonicalName": "APT35",
+      "isAlias": true
+    },
+    "phosphorous": {
+      "canonicalName": "APT35",
+      "isAlias": true
+    },
+    "apt39": {
+      "name": "APT39",
+      "aliases": [
+        "REMIX KITTEN",
+        "Chafer"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "remix kitten": {
+      "canonicalName": "APT39",
+      "isAlias": true
+    },
+    "chafer": {
+      "canonicalName": "APT39",
+      "isAlias": true
+    },
+    "muddywater": {
+      "name": "MuddyWater",
+      "aliases": [
+        "MERCURY",
+        "SEEDWORM",
+        "SLEET"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "mercury": {
+      "canonicalName": "MuddyWater",
+      "isAlias": true
+    },
+    "seedworm": {
+      "canonicalName": "MuddyWater",
+      "isAlias": true
+    },
+    "sleet": {
+      "canonicalName": "MuddyWater",
+      "isAlias": true
+    },
+    "fin7": {
+      "name": "FIN7",
+      "aliases": [
+        "GOLD NIAGARA",
+        "ITG14",
+        "CARBONSPTIDER",
+        "ELBRUS"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold niagara": {
+      "canonicalName": "FIN7",
+      "isAlias": true
+    },
+    "itg14": {
+      "canonicalName": "FIN7",
+      "isAlias": true
+    },
+    "carbonsptider": {
+      "canonicalName": "FIN7",
+      "isAlias": true
+    },
+    "elbrus": {
+      "canonicalName": "FIN7",
+      "isAlias": true
+    },
+    "fin11": {
+      "name": "FIN11",
+      "aliases": [
+        "GOLD WELLINGTON"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold wellington": {
+      "canonicalName": "FIN11",
+      "isAlias": true
+    },
+    "lockbit": {
+      "name": "LockBit",
+      "aliases": [
+        "GOLD SOUTHFIELD"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold southfield": {
+      "canonicalName": "LockBit",
+      "isAlias": true
+    },
+    "blackcat / alphv": {
+      "name": "BlackCat / ALPHV",
+      "aliases": [
+        "UNC4711",
+        "Noname02541"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "unc4711": {
+      "canonicalName": "BlackCat / ALPHV",
+      "isAlias": true
+    },
+    "noname02541": {
+      "canonicalName": "BlackCat / ALPHV",
+      "isAlias": true
+    },
+    "revil": {
+      "name": "REvil",
+      "aliases": [
+        "Sodinokibi",
+        "PINKY SPIDER",
+        "UNC1878"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "sodinokibi": {
+      "canonicalName": "REvil",
+      "isAlias": true
+    },
+    "pinky spider": {
+      "canonicalName": "REvil",
+      "isAlias": true
+    },
+    "unc1878": {
+      "canonicalName": "REvil",
+      "isAlias": true
+    },
+    "darkside": {
+      "name": "DarkSide",
+      "aliases": [
+        "DARK SIDE",
+        "PINKY SPIDER"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "dark side": {
+      "canonicalName": "DarkSide",
+      "isAlias": true
+    },
+    "lapsus$": {
+      "name": "LAPSUS$",
+      "aliases": [
+        "DEV-0537",
+        "Strawberry Tempest",
+        "Green Lapsus"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial & Espionage",
+      "status": "Active"
+    },
+    "dev-0537": {
+      "canonicalName": "LAPSUS$",
+      "isAlias": true
+    },
+    "strawberry tempest": {
+      "canonicalName": "LAPSUS$",
+      "isAlias": true
+    },
+    "green lapsus": {
+      "canonicalName": "LAPSUS$",
+      "isAlias": true
+    },
+    "scattered spider": {
+      "name": "Scattered Spider",
+      "aliases": [
+        "UNC3944",
+        "0ktapus",
+        "Octo Tempest",
+        "Storm-0875",
+        "LUCR-3"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "unc3944": {
+      "canonicalName": "Scattered Spider",
+      "isAlias": true
+    },
+    "0ktapus": {
+      "canonicalName": "Scattered Spider",
+      "isAlias": true
+    },
+    "octo tempest": {
+      "canonicalName": "Scattered Spider",
+      "isAlias": true
+    },
+    "storm-0875": {
+      "name": "Storm-0875",
+      "aliases": [
+        "Scattered Spider original name"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "lucr-3": {
+      "canonicalName": "Scattered Spider",
+      "isAlias": true
+    },
+    "scattered lapsus$ hunters": {
+      "name": "Scattered Lapsus$ Hunters",
+      "aliases": [
+        "SLH",
+        "Trinity of Chaos"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "slh": {
+      "canonicalName": "Scattered Lapsus$ Hunters",
+      "isAlias": true
+    },
+    "trinity of chaos": {
+      "canonicalName": "Scattered Lapsus$ Hunters",
+      "isAlias": true
+    },
+    "clop (fin11 variant)": {
+      "name": "Clop (FIN11 variant)",
+      "aliases": [
+        "CLOP",
+        "GOLD WELLINGTON"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "clop": {
+      "canonicalName": "Clop (FIN11 variant)",
+      "isAlias": true
+    },
+    "brick tiger": {
+      "name": "Brick Tiger",
+      "aliases": [
+        "BRONZE STARLIGHT"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze starlight": {
+      "canonicalName": "Brick Tiger",
+      "isAlias": true
+    },
+    "velvet ant": {
+      "name": "Velvet Ant",
+      "aliases": [
+        "BRONZE WHISTLER"
+      ],
+      "affiliation": "China",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "bronze whistler": {
+      "canonicalName": "Velvet Ant",
+      "isAlias": true
+    },
+    "blackbasta": {
+      "name": "BlackBasta",
+      "aliases": [
+        "GOLD BOMBARD"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold bombard": {
+      "canonicalName": "BlackBasta",
+      "isAlias": true
+    },
+    "play ransomware": {
+      "name": "Play Ransomware",
+      "aliases": [
+        "PLAY",
+        "Playcrypt"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "play": {
+      "canonicalName": "Play Ransomware",
+      "isAlias": true
+    },
+    "playcrypt": {
+      "canonicalName": "Play Ransomware",
+      "isAlias": true
+    },
+    "icedid": {
+      "name": "IcedID",
+      "aliases": [
+        "BokBot",
+        "GOLD KINGSFISH"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "bokbot": {
+      "canonicalName": "IcedID",
+      "isAlias": true
+    },
+    "gold kingsfish": {
+      "canonicalName": "IcedID",
+      "isAlias": true
+    },
+    "cl0p (advanced variant)": {
+      "name": "Cl0p (Advanced variant)",
+      "aliases": [
+        "CleverTouch"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "clevertouch": {
+      "canonicalName": "Cl0p (Advanced variant)",
+      "isAlias": true
+    },
+    "conti": {
+      "name": "Conti",
+      "aliases": [
+        "GOLD ULRICK"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "gold ulrick": {
+      "canonicalName": "Conti",
+      "isAlias": true
+    },
+    "wizard spider": {
+      "name": "Wizard Spider",
+      "aliases": [
+        "UNC1878",
+        "GOLD SPHINX",
+        "GRIM SPIDER"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold sphinx": {
+      "canonicalName": "Wizard Spider",
+      "isAlias": true
+    },
+    "grim spider": {
+      "canonicalName": "Wizard Spider",
+      "isAlias": true
+    },
+    "emotet": {
+      "name": "Emotet",
+      "aliases": [
+        "Heodo",
+        "Geodo"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "heodo": {
+      "canonicalName": "Emotet",
+      "isAlias": true
+    },
+    "geodo": {
+      "canonicalName": "Emotet",
+      "isAlias": true
+    },
+    "snake/turla": {
+      "name": "Snake/Turla",
+      "aliases": [
+        "Uroboros",
+        "Carbon"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "carbon": {
+      "canonicalName": "Snake/Turla",
+      "isAlias": true
+    },
+    "ryuk": {
+      "name": "Ryuk",
+      "aliases": [
+        "GOLD SPHINX",
+        "TrickBot gang"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "trickbot gang": {
+      "canonicalName": "Ryuk",
+      "isAlias": true
+    },
+    "trickbot": {
+      "name": "Trickbot",
+      "aliases": [
+        "Trickbot gang",
+        "Wizard Spider"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "qakbot": {
+      "name": "Qakbot",
+      "aliases": [
+        "Quackbot"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "quackbot": {
+      "canonicalName": "Qakbot",
+      "isAlias": true
+    },
+    "maze": {
+      "name": "Maze",
+      "aliases": [
+        "GOLD DOSSIER"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "gold dossier": {
+      "canonicalName": "Maze",
+      "isAlias": true
+    },
+    "ragnarlocker": {
+      "name": "RagnarLocker",
+      "aliases": [
+        "RAGNARLC"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "ragnarlc": {
+      "canonicalName": "RagnarLocker",
+      "isAlias": true
+    },
+    "synack": {
+      "name": "Synack",
+      "aliases": [
+        "Rook"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "rook": {
+      "canonicalName": "Synack",
+      "isAlias": true
+    },
+    "snatch": {
+      "name": "Snatch",
+      "aliases": [
+        "Snapchat"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "snapchat": {
+      "canonicalName": "Snatch",
+      "isAlias": true
+    },
+    "ponyfarm": {
+      "name": "PonyFarm",
+      "aliases": [
+        "Pony botnet"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "pony botnet": {
+      "canonicalName": "PonyFarm",
+      "isAlias": true
+    },
+    "carbanak": {
+      "name": "Carbanak",
+      "aliases": [
+        "GOLD SOUTHFIELD"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "cobalt strike": {
+      "name": "Cobalt Strike",
+      "aliases": [
+        "Cobalt Gang"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "cobalt gang": {
+      "canonicalName": "Cobalt Strike",
+      "isAlias": true
+    },
+    "prometheus": {
+      "name": "Prometheus",
+      "aliases": [
+        "GOLD RIVERSIDE"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold riverside": {
+      "canonicalName": "Prometheus",
+      "isAlias": true
+    },
+    "avoslocker": {
+      "name": "AvosLocker",
+      "aliases": [
+        "GOLD OCELOT"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold ocelot": {
+      "canonicalName": "AvosLocker",
+      "isAlias": true
+    },
+    "cl0p group": {
+      "name": "Cl0p Group",
+      "aliases": [
+        "Cl0p",
+        "CleverTouch"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "cl0p": {
+      "canonicalName": "Cl0p Group",
+      "isAlias": true
+    },
+    "hellokitty": {
+      "name": "HelloKitty",
+      "aliases": [
+        "Five Hands"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "five hands": {
+      "canonicalName": "HelloKitty",
+      "isAlias": true
+    },
+    "noescape": {
+      "name": "NoEscape",
+      "aliases": [
+        "GOLD MANACLE"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold manacle": {
+      "canonicalName": "NoEscape",
+      "isAlias": true
+    },
+    "hucow": {
+      "name": "HuCow",
+      "aliases": [
+        "LilyPad"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "lilypad": {
+      "canonicalName": "HuCow",
+      "isAlias": true
+    },
+    "hive": {
+      "name": "Hive",
+      "aliases": [
+        "GOLD HARBOR"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Inactive"
+    },
+    "gold harbor": {
+      "canonicalName": "Hive",
+      "isAlias": true
+    },
+    "lockbit black": {
+      "name": "LockBit Black",
+      "aliases": [
+        "LockBit 3.0"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "lockbit 3.0": {
+      "canonicalName": "LockBit Black",
+      "isAlias": true
+    },
+    "cl0p rat variant": {
+      "name": "Cl0p RAT Variant",
+      "aliases": [
+        "Cl0p RAT"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "cl0p rat": {
+      "canonicalName": "Cl0p RAT Variant",
+      "isAlias": true
+    },
+    "medusa": {
+      "name": "Medusa",
+      "aliases": [
+        "MEDUSA"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "alphv group": {
+      "name": "Alphv Group",
+      "aliases": [
+        "BlackCat Original"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "blackcat original": {
+      "canonicalName": "Alphv Group",
+      "isAlias": true
+    },
+    "xing team": {
+      "name": "Xing Team",
+      "aliases": [
+        "XING"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "xing": {
+      "canonicalName": "Xing Team",
+      "isAlias": true
+    },
+    "moveit attackers": {
+      "name": "MOVEit Attackers",
+      "aliases": [
+        "Cl0p affiliates"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "cl0p affiliates": {
+      "canonicalName": "MOVEit Attackers",
+      "isAlias": true
+    },
+    "muddywater affiliates": {
+      "name": "MuddyWater Affiliates",
+      "aliases": [
+        "SEEDWORM variants"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Espionage",
+      "status": "Active"
+    },
+    "seedworm variants": {
+      "canonicalName": "MuddyWater Affiliates",
+      "isAlias": true
+    },
+    "fin12": {
+      "name": "FIN12",
+      "aliases": [
+        "GOLD GALLANT"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold gallant": {
+      "canonicalName": "FIN12",
+      "isAlias": true
+    },
+    "team cymru": {
+      "name": "Team Cymru",
+      "aliases": [
+        "Cymru Group"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Unknown",
+      "status": "Active"
+    },
+    "cymru group": {
+      "canonicalName": "Team Cymru",
+      "isAlias": true
+    },
+    "ta505": {
+      "name": "TA505",
+      "aliases": [
+        "GOLD BOTSAY"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "gold botsay": {
+      "canonicalName": "TA505",
+      "isAlias": true
+    },
+    "evil corp": {
+      "name": "Evil Corp",
+      "aliases": [
+        "GOLD SOUTHFIELD"
+      ],
+      "affiliation": "Russia",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "unc3973": {
+      "name": "UNC3973",
+      "aliases": [
+        "LockBit variant operators"
+      ],
+      "affiliation": "Unknown",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "lockbit variant operators": {
+      "canonicalName": "UNC3973",
+      "isAlias": true
+    },
+    "scattered spider original name": {
+      "canonicalName": "Storm-0875",
+      "isAlias": true
+    }
+  }
+}

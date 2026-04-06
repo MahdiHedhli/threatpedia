@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTB9GQKXLH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YTB9GQKXLH');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Threat Actor Registry - Threatpedia</title>
@@ -578,7 +587,7 @@
         <div class="menu-links">
             <a href="glossary.html">Glossary</a>
             <a href="threat-actors.html" class="active">Threat Actors</a>
-            <a href="incidents/teampcp-supply-chain-attack.html">Incidents</a>
+            <a href="incidents/index.html">Incidents</a>
         </div>
         <a class="menu-cta" href="index.html#signup">Register Interest</a>
     </div>
@@ -660,6 +669,7 @@
                         <th data-sort="affiliation">Nation-State</th>
                         <th data-sort="motivation">Motivation</th>
                         <th data-sort="firstSeen">First Seen</th>
+                        <th data-sort="lastSeen">Last Seen</th>
                         <th data-sort="status">Status</th>
                     </tr>
                 </thead>
@@ -692,6 +702,7 @@
                 status: "Active",
                 campaigns: "Shady RAT, Night Dragon",
                 tools: ["Poison Ivy", "Derusbi", "Ghost RAT"],
+                lastSeen: "2026-03",
                 description: "One of the earliest and most prolific Chinese APT groups, attributed to China's PLA Unit 61398"
             },
             {
@@ -704,6 +715,7 @@
                 status: "Active",
                 campaigns: "Operation Cloud Hopper, Multiple MSP compromises",
                 tools: ["Poisonplug", "UPPERCUT", "Quasar RAT"],
+                lastSeen: "2026-03",
                 description: "Targets government operations, military, and business across multiple industries"
             },
             {
@@ -716,6 +728,7 @@
                 status: "Active",
                 campaigns: "Government networks, aerospace, defense",
                 tools: ["ICEFOG", "ScanBox", "Backdoor.APT.C_36"],
+                lastSeen: "2026-03",
                 description: "Focused on aerospace, manufacturing, betting, and defense sectors"
             },
             {
@@ -728,6 +741,7 @@
                 status: "Active",
                 campaigns: "Government, telecom, and defense targeting",
                 tools: ["SHIPSHAPE", "LOWBALL", "FELICITY"],
+                lastSeen: "2026-03",
                 description: "State-sponsored espionage targeting critical sectors"
             },
             {
@@ -740,6 +754,7 @@
                 status: "Active",
                 campaigns: "Maritime, defense, aviation targeting",
                 tools: ["ScanBox", "JSky", "Mimikatz"],
+                lastSeen: "2026-03",
                 description: "Attributed to China's MSS, focuses on maritime and defense industries"
             },
             {
@@ -752,6 +767,7 @@
                 status: "Active",
                 campaigns: "Healthcare, telecoms, high-tech espionage",
                 tools: ["ShadowPad", "Crosswalk", "PcShare RAT"],
+                lastSeen: "2026-03",
                 description: "Carries out both state-sponsored espionage and financially motivated operations"
             },
             {
@@ -764,6 +780,7 @@
                 status: "Active",
                 campaigns: "US communications infrastructure",
                 tools: ["LOTL techniques", "Compromised Fortinet devices"],
+                lastSeen: "2026-Q1",
                 description: "Focuses on US communications infrastructure using LOTL techniques"
             },
             {
@@ -776,6 +793,7 @@
                 status: "Active",
                 campaigns: "ISP targeting, telecom infrastructure",
                 tools: ["GhostSpider", "Masol RAT", "Backdoor malware"],
+                lastSeen: "2026-Q1",
                 description: "MSS-operated group targeting ISPs for metadata and wiretap data"
             },
             {
@@ -788,6 +806,7 @@
                 status: "Active",
                 campaigns: "Critical infrastructure targeting",
                 tools: ["LOTL techniques", "Legitimate tool abuse"],
+                lastSeen: "2024",
                 description: "Targets critical infrastructure using living-off-the-land techniques"
             },
             {
@@ -800,6 +819,7 @@
                 status: "Active",
                 campaigns: "Exchange Server exploitation, broad targeting",
                 tools: ["ProxyShell", "CHOPPER", "Custom exploits"],
+                lastSeen: "2024",
                 description: "State-sponsored group targeting US entities across multiple sectors"
             },
             {
@@ -812,6 +832,7 @@
                 status: "Active",
                 campaigns: "Government and think tank targeting",
                 tools: ["ChChes RAT", "PlugX", "Poison Ivy"],
+                lastSeen: "2024",
                 description: "Targets government entities and think tanks"
             },
 
@@ -826,6 +847,7 @@
                 status: "Active",
                 campaigns: "Democratic institutions, military, defense",
                 tools: ["CHOPSTICK", "Komplex", "X-Agent", "X-Tunnel"],
+                lastSeen: "2025",
                 description: "Linked to Russia's GRU military intelligence, focuses on foreign affairs and intelligence"
             },
             {
@@ -838,6 +860,7 @@
                 status: "Active",
                 campaigns: "Government networks, technology firms, SolarWinds",
                 tools: ["Evasion tactics", "Spear-phishing", "Supply chain attacks"],
+                lastSeen: "2026-03",
                 description: "Linked to Russia's SVR, conducts long-running espionage campaigns against governments"
             },
             {
@@ -850,6 +873,7 @@
                 status: "Active",
                 campaigns: "Ukraine infrastructure, NotPetya, Black Energy",
                 tools: ["NotPetya", "Black Energy", "VPNFilter", "Cyclops Blink"],
+                lastSeen: "2026-03",
                 description: "GRU Unit 74455, known for destructive attacks and infrastructure targeting"
             },
             {
@@ -862,6 +886,7 @@
                 status: "Active",
                 campaigns: "Government, embassy, military, education targeting",
                 tools: ["Carbon", "ComRAT", "Kazuar", "KSL"],
+                lastSeen: "2024",
                 description: "Attributed to Russia's FSB, active since 2004 in cyber-espionage"
             },
             {
@@ -874,6 +899,7 @@
                 status: "Active",
                 campaigns: "Ukrainian government institutions",
                 tools: ["HyperBro", "Pterodo", "Helldown"],
+                lastSeen: "2024",
                 description: "Active since 2013, primarily targets Ukrainian governmental institutions"
             },
             {
@@ -886,6 +912,7 @@
                 status: "Active",
                 campaigns: "Think tanks, academic researchers on Russia policy",
                 tools: ["Spear-phishing", "Credential theft", "Infrastructure reconnaissance"],
+                lastSeen: "2024",
                 description: "Targets academics and think tank researchers working on Russia-related policy"
             },
 
@@ -900,6 +927,7 @@
                 status: "Active",
                 campaigns: "Sony Pictures, Bangladesh Bank, WannaCry, Crypto exchanges",
                 tools: ["Destover", "WannaCry", "Hermes ransomware", "MATA framework"],
+                lastSeen: "2026-Q1",
                 description: "Most prolific NK group, responsible for Sony breach, bank heists, and WannaCry"
             },
             {
@@ -912,6 +940,7 @@
                 status: "Active",
                 campaigns: "Financial institution targeting, ATM heists, cryptocurrency theft",
                 tools: ["SWIFT malware", "Fastpos", "Dolphin", "Riojatch"],
+                lastSeen: "2026-03",
                 description: "Financially motivated group targeting banks and crypto businesses"
             },
             {
@@ -924,6 +953,7 @@
                 status: "Active",
                 campaigns: "Defense and nuclear policy research targeting",
                 tools: ["GOLDBACKDOOR", "CustomPing", "Proxies"],
+                lastSeen: "2026-03",
                 description: "Conducts intelligence collection on defense and nuclear security policy"
             },
             {
@@ -936,6 +966,7 @@
                 status: "Active",
                 campaigns: "South Korean government and military targeting",
                 tools: ["Duuzer", "Chinotto", "Rifdoor", "Coraldoe"],
+                lastSeen: "2026-03",
                 description: "Focuses on South Korean government and military espionage"
             },
             {
@@ -948,6 +979,7 @@
                 status: "Active",
                 campaigns: "Financial sector targeting, cryptocurrency operations",
                 tools: ["Rifdoor", "Maui RAT", "Adolphin"],
+                lastSeen: "2026-03",
                 description: "Financially motivated group also conducting espionage operations"
             },
             {
@@ -960,6 +992,7 @@
                 status: "Active",
                 campaigns: "Defense and aerospace targeting",
                 tools: ["Custom malware", "Living-off-the-land tactics"],
+                lastSeen: "2025",
                 description: "Targets defense and aerospace sectors for espionage"
             },
 
@@ -974,6 +1007,7 @@
                 status: "Active",
                 campaigns: "Aerospace and defense industry targeting",
                 tools: ["DROPSHOT", "TURNEDUP", "WarBird", "Shamoon"],
+                lastSeen: "2025",
                 description: "IRGC-affiliated group focusing on aerospace and defense"
             },
             {
@@ -986,6 +1020,7 @@
                 status: "Active",
                 campaigns: "Government, financial services, telecom, energy targeting",
                 tools: ["ISMDoor", "RGDoor", "Helminth", "SideCopy"],
+                lastSeen: "2025",
                 description: "MOIS-affiliated group targeting Middle East government and critical infrastructure"
             },
             {
@@ -998,6 +1033,7 @@
                 status: "Active",
                 campaigns: "Human-centric targeting, diplomats, journalists, researchers",
                 tools: ["Spear-phishing", "Credential harvesting", "Social engineering"],
+                lastSeen: "2025",
                 description: "Focuses on sophisticated social engineering targeting decision makers"
             },
             {
@@ -1010,6 +1046,7 @@
                 status: "Active",
                 campaigns: "Telecom and IT infrastructure targeting",
                 tools: ["MAPSHOT", "MuStang Shellcode"],
+                lastSeen: "2025",
                 description: "Cyber espionage group focusing on telecommunications sector"
             },
             {
@@ -1022,6 +1059,7 @@
                 status: "Active",
                 campaigns: "Government and critical infrastructure targeting",
                 tools: ["SlugDog", "POWERSTATS", "MISTLETOE"],
+                lastSeen: "2026-03",
                 description: "MOIS-affiliated group using macro-enabled Office documents for delivery"
             },
 
@@ -1036,6 +1074,7 @@
                 status: "Active",
                 campaigns: "Retail, restaurant, hospitality, financial services, ransomware",
                 tools: ["Carbanak", "REvil", "DarkSide", "BlackMatter", "Maze"],
+                lastSeen: "2026-03",
                 description: "Financially motivated group shifted to ransomware operations in 2020"
             },
             {
@@ -1048,6 +1087,7 @@
                 status: "Active",
                 campaigns: "Ransomware and extortion operations",
                 tools: ["CLOP ransomware", "Spear-phishing", "Exploit kits"],
+                lastSeen: "2025",
                 description: "Financial crime group focused on ransomware and extortion"
             },
             {
@@ -1060,6 +1100,7 @@
                 status: "Active",
                 campaigns: "Global ransomware-as-a-service operations",
                 tools: ["LockBit 3.0", "Affiliate network", "Data exfiltration"],
+                lastSeen: "2026-Q1",
                 description: "Largest RaaS operation responsible for 2000+ victims, $120M+ extortion"
             },
             {
@@ -1072,6 +1113,7 @@
                 status: "Active",
                 campaigns: "Change Healthcare, global ransomware operations",
                 tools: ["BlackCat ransomware", "Affiliate network"],
+                lastSeen: "2026-Q1",
                 description: "Advanced ransomware-as-a-service with extortion model"
             },
             {
@@ -1084,6 +1126,7 @@
                 status: "Inactive",
                 campaigns: "Kaseya, global ransomware attacks",
                 tools: ["REvil ransomware", "Sodinokibi builder"],
+                lastSeen: "2021",
                 description: "Ransomware-as-a-service group, likely disbanded after sanctions"
             },
             {
@@ -1096,6 +1139,7 @@
                 status: "Inactive",
                 campaigns: "Colonial Pipeline, critical infrastructure",
                 tools: ["DarkSide ransomware", "Double extortion"],
+                lastSeen: "2021",
                 description: "RaaS platform responsible for Colonial Pipeline attack, likely disbanded"
             },
             {
@@ -1108,6 +1152,7 @@
                 status: "Active",
                 campaigns: "Microsoft, Nvidia, Samsung, Okta, Uber, Rockstar Games",
                 tools: ["MFA bypassing", "Social engineering", "Insider recruitment"],
+                lastSeen: "2023",
                 description: "Small group of teenagers from Brazil and UK, no ransomware usage"
             },
             {
@@ -1120,6 +1165,7 @@
                 status: "Active",
                 campaigns: "Caesars Entertainment, MGM Resorts, healthcare, telecom",
                 tools: ["SMS phishing", "SIM swapping", "AnyDesk", "RattyRAT", "DragonForce"],
+                lastSeen: "2026-Q1",
                 description: "Young, highly adaptive cybercriminals using social engineering and RDP"
             },
             {
@@ -1132,6 +1178,7 @@
                 status: "Active",
                 campaigns: "Marks and Spencer, Salesforce breaches, ShinySp1d3r RaaS",
                 tools: ["ShinySp1d3r RaaS", "Credential theft", "Data exfiltration"],
+                lastSeen: "2025",
                 description: "Alliance of Scattered Spider, LAPSUS$, and ShinyHunters in 2025"
             },
             {
@@ -1144,6 +1191,7 @@
                 status: "Active",
                 campaigns: "MOVEit exploitation, global data theft",
                 tools: ["CLOP ransomware", "MOVEit exploits"],
+                lastSeen: "2026-Q1",
                 description: "File transfer vulnerability exploitation for data exfiltration and extortion"
             },
 
@@ -1158,6 +1206,7 @@
                 status: "Active",
                 campaigns: "Government and critical infrastructure",
                 tools: ["Custom exploits", "Legitimate tool abuse"],
+                lastSeen: "2025",
                 description: "Chinese APT targeting critical infrastructure"
             },
             {
@@ -1170,6 +1219,7 @@
                 status: "Active",
                 campaigns: "Critical infrastructure reconnaissance",
                 tools: ["LOTL techniques"],
+                lastSeen: "2025",
                 description: "Focuses on critical infrastructure targeting"
             },
             {
@@ -1182,6 +1232,7 @@
                 status: "Active",
                 campaigns: "Healthcare, manufacturing, finance ransomware",
                 tools: ["BlackBasta ransomware", "Double extortion"],
+                lastSeen: "2025",
                 description: "Emerging ransomware-as-a-service threat"
             },
             {
@@ -1194,6 +1245,7 @@
                 status: "Active",
                 campaigns: "Healthcare and critical infrastructure",
                 tools: ["Play ransomware", "Encryption attacks"],
+                lastSeen: "2026-03",
                 description: "Targeting healthcare and critical infrastructure sectors"
             },
             {
@@ -1206,6 +1258,7 @@
                 status: "Active",
                 campaigns: "Banking trojan, ransomware distribution",
                 tools: ["IcedID banking trojan", "Ransomware affiliate"],
+                lastSeen: "2025",
                 description: "Banking trojan used for credential theft and ransomware delivery"
             },
             {
@@ -1218,6 +1271,7 @@
                 status: "Active",
                 campaigns: "File transfer exploitation",
                 tools: ["Cl0p variant", "Zero-day exploitation"],
+                lastSeen: "2026-03",
                 description: "Advanced variant exploiting file transfer vulnerabilities"
             },
             {
@@ -1230,6 +1284,7 @@
                 status: "Inactive",
                 campaigns: "Healthcare, critical infrastructure, ransomware",
                 tools: ["Conti ransomware", "Affiliate network"],
+                lastSeen: "2022",
                 description: "Russian-based RaaS, leader claims to support Russia during invasion"
             },
             {
@@ -1242,6 +1297,7 @@
                 status: "Active",
                 campaigns: "Banking trojans, ransomware operations",
                 tools: ["Trickbot", "Emotet", "Ryuk", "Conti"],
+                lastSeen: "2026-03",
                 description: "Prolific group behind Trickbot and Ryuk ransomware"
             },
             {
@@ -1254,6 +1310,7 @@
                 status: "Inactive",
                 campaigns: "Trojan distribution, lateral movement",
                 tools: ["Emotet trojan", "Spam botnet"],
+                lastSeen: "2021",
                 description: "Major banking trojan and spam botnet, operational disruption in 2021"
             },
             {
@@ -1266,6 +1323,7 @@
                 status: "Active",
                 campaigns: "Long-term espionage, government networks",
                 tools: ["Carbon", "Kazuar", "Graphimag"],
+                lastSeen: "2026-03",
                 description: "Long-standing Russian espionage group active since 2004"
             },
             {
@@ -1278,6 +1336,7 @@
                 status: "Active",
                 campaigns: "High-value ransomware targeting",
                 tools: ["Ryuk ransomware", "Double extortion"],
+                lastSeen: "2026-03",
                 description: "Ransomware focused on high-value targets"
             },
             {
@@ -1290,6 +1349,7 @@
                 status: "Inactive",
                 campaigns: "Banking trojan, ransomware distribution",
                 tools: ["Trickbot malware", "Lateral movement"],
+                lastSeen: "2022",
                 description: "Sophisticated banking trojan and ransomware precursor"
             },
             {
@@ -1302,6 +1362,7 @@
                 status: "Inactive",
                 campaigns: "Banking trojan, ransomware delivery",
                 tools: ["Qakbot trojan", "Affiliate network"],
+                lastSeen: "2023",
                 description: "Banking trojan disrupted by law enforcement in 2023"
             },
             {
@@ -1314,6 +1375,7 @@
                 status: "Inactive",
                 campaigns: "Double extortion ransomware",
                 tools: ["Maze ransomware", "Data exfiltration"],
+                lastSeen: "2020",
                 description: "Pioneer of double extortion model, disbanded 2020"
             },
             {
@@ -1326,6 +1388,7 @@
                 status: "Inactive",
                 campaigns: "Critical infrastructure targeting",
                 tools: ["RagnarLocker ransomware"],
+                lastSeen: "2022",
                 description: "Ransomware targeting critical infrastructure"
             },
             {
@@ -1338,6 +1401,7 @@
                 status: "Active",
                 campaigns: "Ransomware operations",
                 tools: ["Synack ransomware", "Custom malware"],
+                lastSeen: "2024",
                 description: "Ransomware-as-a-service operation"
             },
             {
@@ -1350,6 +1414,7 @@
                 status: "Active",
                 campaigns: "Ransomware targeting",
                 tools: ["Snatch ransomware", "Safe mode exploitation"],
+                lastSeen: "2025",
                 description: "Uses boot-time encryption for safe mode evasion"
             },
             {
@@ -1362,6 +1427,7 @@
                 status: "Inactive",
                 campaigns: "Botnet operations, credential theft",
                 tools: ["Pony malware", "Credential stealer"],
+                lastSeen: "2018",
                 description: "Botnet-based credential theft operation"
             },
             {
@@ -1374,6 +1440,7 @@
                 status: "Inactive",
                 campaigns: "Financial institution targeting",
                 tools: ["Carbanak malware"],
+                lastSeen: "2018",
                 description: "Stolen hundreds of millions from financial institutions"
             },
             {
@@ -1386,6 +1453,7 @@
                 status: "Active",
                 campaigns: "Ransomware affiliate network",
                 tools: ["Cobalt Strike framework"],
+                lastSeen: "2026-03",
                 description: "Framework used by multiple threat groups"
             },
             {
@@ -1398,6 +1466,7 @@
                 status: "Active",
                 campaigns: "Ransomware targeting healthcare",
                 tools: ["Prometheus malware"],
+                lastSeen: "2024",
                 description: "Ransomware targeting healthcare sector"
             },
             {
@@ -1410,6 +1479,7 @@
                 status: "Active",
                 campaigns: "Ransomware operations",
                 tools: ["AvosLocker ransomware"],
+                lastSeen: "2024",
                 description: "Ransomware-as-a-service group"
             },
             {
@@ -1422,6 +1492,7 @@
                 status: "Active",
                 campaigns: "MOVEit targeting, zero-day exploitation",
                 tools: ["Cl0p ransomware", "Zero-day exploits"],
+                lastSeen: "2026-Q1",
                 description: "Advanced group exploiting file transfer vulnerabilities"
             },
             {
@@ -1434,6 +1505,7 @@
                 status: "Active",
                 campaigns: "Ransomware targeting",
                 tools: ["HelloKitty ransomware"],
+                lastSeen: "2025",
                 description: "Ransomware group targeting organizations globally"
             },
             {
@@ -1446,6 +1518,7 @@
                 status: "Active",
                 campaigns: "Ransomware operations",
                 tools: ["NoEscape ransomware"],
+                lastSeen: "2023",
                 description: "Ransomware group active in 2021-2023"
             },
             {
@@ -1458,6 +1531,7 @@
                 status: "Active",
                 campaigns: "Ransomware targeting",
                 tools: ["HuCow ransomware"],
+                lastSeen: "2024",
                 description: "Ransomware group targeting various sectors"
             },
             {
@@ -1470,6 +1544,7 @@
                 status: "Inactive",
                 campaigns: "Ransomware operations",
                 tools: ["Hive ransomware"],
+                lastSeen: "2023",
                 description: "Ransomware group disrupted by law enforcement"
             },
             {
@@ -1482,6 +1557,7 @@
                 status: "Active",
                 campaigns: "Advanced ransomware operations",
                 tools: ["LockBit 3.0 Black variant"],
+                lastSeen: "2026-Q1",
                 description: "Advanced variant of LockBit ransomware"
             },
             {
@@ -1494,6 +1570,7 @@
                 status: "Active",
                 campaigns: "Remote access trojan operations",
                 tools: ["Cl0p RAT malware"],
+                lastSeen: "2025",
                 description: "RAT variant of Cl0p malware"
             },
             {
@@ -1506,6 +1583,7 @@
                 status: "Active",
                 campaigns: "Ransomware operations",
                 tools: ["Medusa ransomware"],
+                lastSeen: "2025",
                 description: "Newer ransomware group"
             },
             {
@@ -1518,6 +1596,7 @@
                 status: "Active",
                 campaigns: "Advanced ransomware targeting",
                 tools: ["Alphv ransomware"],
+                lastSeen: "2026-Q1",
                 description: "Original operator of BlackCat ransomware"
             },
             {
@@ -1530,6 +1609,7 @@
                 status: "Active",
                 campaigns: "Ransomware targeting Asian entities",
                 tools: ["Xing Team malware"],
+                lastSeen: "2025",
                 description: "Ransomware group targeting Asian organizations"
             },
             {
@@ -1542,6 +1622,7 @@
                 status: "Active",
                 campaigns: "File transfer exploitation",
                 tools: ["MOVEit exploits"],
+                lastSeen: "2026-03",
                 description: "Groups exploiting MOVEit vulnerabilities"
             },
             {
@@ -1554,6 +1635,7 @@
                 status: "Active",
                 campaigns: "Infrastructure targeting",
                 tools: ["MuddyWater tools", "Spear-phishing"],
+                lastSeen: "2026-03",
                 description: "Affiliated operators of MuddyWater campaigns"
             },
             {
@@ -1566,6 +1648,7 @@
                 status: "Active",
                 campaigns: "Healthcare ransomware targeting",
                 tools: ["Mandiant Ransomware", "Healthcare targeting"],
+                lastSeen: "2026-03",
                 description: "Healthcare-focused ransomware group"
             },
             {
@@ -1578,6 +1661,7 @@
                 status: "Active",
                 campaigns: "Threat intelligence research",
                 tools: ["Threat intelligence tools"],
+                lastSeen: "2023",
                 description: "Threat intelligence firm and research group"
             },
             {
@@ -1590,6 +1674,7 @@
                 status: "Active",
                 campaigns: "Malware distribution, ransomware",
                 tools: ["Clop", "REvil", "SDBbot"],
+                lastSeen: "2025",
                 description: "Prolific financially motivated group"
             },
             {
@@ -1602,6 +1687,7 @@
                 status: "Active",
                 campaigns: "Banking trojans, ransomware",
                 tools: ["Dridex", "Zeus Sphinx", "Wagtail"],
+                lastSeen: "2026-03",
                 description: "Russian cybercrime group targeting financial institutions"
             },
             {
@@ -1614,6 +1700,7 @@
                 status: "Active",
                 campaigns: "Ransomware operations",
                 tools: ["LockBit variants"],
+                lastSeen: "2025",
                 description: "Operators using LockBit variants"
             },
             {
@@ -1626,6 +1713,7 @@
                 status: "Active",
                 campaigns: "Social engineering, ransomware",
                 tools: ["Social engineering tactics"],
+                lastSeen: "2026-03",
                 description: "Microsoft's original designation for Scattered Spider"
             }
         ];
@@ -1636,7 +1724,7 @@
             motivation: [],
             status: []
         };
-        let currentSort = { field: 'name', direction: 'asc' };
+        let currentSort = { field: 'lastSeen', direction: 'desc' };
         let currentView = 'table';
 
         // Initialize
@@ -1725,6 +1813,20 @@
                 let aVal = a[field];
                 let bVal = b[field];
 
+                // Handle date-based sorting for firstSeen and lastSeen
+                if ((field === 'firstSeen' || field === 'lastSeen') && typeof aVal === 'string' && typeof bVal === 'string') {
+                    // Convert date strings to comparable format
+                    const dateOrder = { '2026-Q1': 9, '2026-03': 9, '2026-02': 8.9, '2026-01': 8.8, '2025': 8, '2024': 7, '2024-Q4': 7, '2023': 6, '2023-Q4': 6, '2022': 5, '2021': 4, '2020': 3, '2019': 2, '2018': 1.5, '2017': 1.3, '2016': 1.2, '2015': 1.1, '2014': 1.05, '2013': 1.03, '2012': 1.02, '2011': 1.01, '2010': 1, '2009': 0.9, '2008': 0.8, '2007': 0.7, '2006': 0.6, '2004': 0.5 };
+                    let aNum = dateOrder[aVal] || parseFloat(aVal) || 0;
+                    let bNum = dateOrder[bVal] || parseFloat(bVal) || 0;
+
+                    if (currentSort.direction === 'asc') {
+                        return aNum - bNum;
+                    } else {
+                        return bNum - aNum;
+                    }
+                }
+
                 if (typeof aVal === 'string') {
                     aVal = aVal.toLowerCase();
                     bVal = bVal.toLowerCase();
@@ -1767,6 +1869,7 @@
                     <td>${actor.affiliation}</td>
                     <td>${actor.motivation}</td>
                     <td>${actor.firstSeen}</td>
+                    <td style="font-family: 'IBM Plex Mono', monospace; color: var(--amber-dim);">${actor.lastSeen || 'Unknown'}</td>
                     <td><span class="status ${actor.status.toLowerCase()}">${actor.status}</span></td>
                 `;
                 tbody.appendChild(row);
@@ -1799,6 +1902,10 @@
                     <div class="card-field">
                         <div class="card-label">First Seen</div>
                         <div class="card-value">${actor.firstSeen}</div>
+                    </div>
+                    <div class="card-field">
+                        <div class="card-label">Last Seen</div>
+                        <div class="card-value" style="font-family: 'IBM Plex Mono', monospace; color: var(--amber-dim);">${actor.lastSeen || 'Unknown'}</div>
                     </div>
                     <div class="card-field">
                         <div class="card-label">Status</div>
@@ -1843,12 +1950,9 @@
         btn.addEventListener('click', toggle);
         overlay.addEventListener('click', close);
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-        msearch.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && msearch.value.trim()) {
-                window.location.href = 'glossary.html?q=' + encodeURIComponent(msearch.value.trim());
-            }
-        });
+        
     })();
     </script>
+    <script src="assets/universal-search.js"></script>
 </body>
 </html>
