@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>European Commission Cloud Breach via Trivy Supply Chain | Threatpedia</title>
+
+    <!-- Meta Tags -->
+    <meta name="review-status" content="pending">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-06T12:00:00Z">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.02)" filter="url(%23noise)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--muted); }
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+        .hamburger {
+            display: flex; flex-direction: column; justify-content: center;
+            gap: 5px; width: 28px; height: 28px;
+            background: none; border: 1px solid var(--border);
+            padding: 5px; cursor: pointer;
+            transition: border-color 0.2s; flex-shrink: 0;
+        }
+        .hamburger:hover { border-color: var(--amber); }
+        .hamburger span {
+            display: block; width: 100%; height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+        .menu-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 199;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .menu-overlay.open { opacity: 1; pointer-events: auto; }
+        .menu-panel {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: 320px; max-width: 85vw;
+            background: var(--surface); border-left: 1px solid var(--border);
+            z-index: 200; transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex; flex-direction: column;
+            padding: 80px 32px 32px; overflow-y: auto;
+        }
+        .menu-panel.open { transform: translateX(0); }
+        .menu-search {
+            width: 100%; background: var(--bg);
+            border: 1px solid var(--border); color: var(--white);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.88rem; padding: 12px 16px;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 28px; border-radius: 0;
+        }
+        .menu-search::placeholder { color: var(--muted); }
+        .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+        .menu-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem; letter-spacing: 0.3em;
+            color: var(--amber-dim); text-transform: uppercase; margin-bottom: 14px;
+        }
+        .menu-links {
+            list-style: none; display: flex; flex-direction: column;
+            gap: 0; margin-bottom: 28px;
+        }
+        .menu-links a {
+            display: block; font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem; letter-spacing: 0.12em;
+            color: var(--text); text-decoration: none; text-transform: uppercase;
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+        .menu-links a:first-child { border-top: 1px solid var(--border); }
+        .menu-links a:hover { color: var(--amber); padding-left: 8px; }
+        .menu-links a.active { color: var(--amber); }
+        .menu-cta {
+            display: block; text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--bg); background: var(--amber);
+            text-decoration: none; padding: 15px 24px;
+            transition: background 0.2s; margin-top: auto;
+        }
+        .menu-cta:hover { background: #f0b030; }
+
+        /* Review Banner */
+        .review-banner {
+            background: rgba(232, 160, 32, 0.15);
+            border: 1px solid var(--amber);
+            border-top: none;
+            padding: 16px 48px;
+            text-align: center;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 2;
+            margin-top: 61px;
+        }
+        .review-banner-icon {
+            margin-right: 8px;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 96px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .status-contained {
+            color: #44aa44;
+            font-weight: 600;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Attack Flow Diagram */
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--amber);
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .stage-description {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* IOC Cards */
+        .ioc-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .ioc-header {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .ioc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ioc-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ioc-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ioc-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #ff6b6b;
+            word-break: break-all;
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Reference List */
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reference-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                grid-column: 1;
+                position: static;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 96px 20px 40px;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+
+            .review-banner {
+                padding: 16px 20px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-status { display: none; }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .review-banner {
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
+        <div class="menu-links">
+            <a href="../glossary.html">Glossary</a>
+            <a href="../threat-actors.html">Threat Actors</a>
+            <a href="european-commission-trivy-breach-2026.html" class="active">Incidents</a>
+        </div>
+        <a class="menu-cta" href="../index.html#signup">Register Interest</a>
+    </div>
+
+    <!-- Review Banner -->
+    <div class="review-banner">
+        <span class="review-banner-icon">⚠</span>AUTOMATED REPORT — PENDING HUMAN REVIEW — Generated April 6, 2026
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">European Commission Cloud Breach via Trivy Supply Chain Compromise</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0020</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Supply Chain Attack / Cloud Breach</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">March 19–24, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Disclosed</span>
+                    <span class="meta-value">April 2, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value status-contained">Contained</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value severity-critical">CRITICAL</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution</span>
+                    <span class="meta-value"><a href="../threat-actors.html?actor=teampcp" class="actor-link">TeamPCP</a> via CVE-2026-33634</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Government / International</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Geography</span>
+                    <span class="meta-value">EU (Brussels & Multi-State)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On April 2, 2026, CERT-EU publicly disclosed that the European Commission's Europa web hosting platform on AWS had been breached through the Trivy supply chain compromise (CVE-2026-33634), making it the highest-profile governmental victim of the TeamPCP campaign. The attack, which gained initial access on March 19 and was detected on March 24, resulted in the exfiltration of 340 GB of data including approximately 52,000 email-related files affecting 71 clients: 42 internal European Commission departments plus 29 other EU entities.</p>
+                        <p>TeamPCP exploited a misconfiguration in Trivy's GitHub Actions environment to implant credential-stealing malware via manipulated version tags, forcing CI/CD pipelines to automatically pull compromised code. The stolen data, including 2.22 GB of outbound communications, was published by ShinyHunters on their dark web leak site on March 28—before the official public disclosure.</p>
+                        <p>Mandiant estimates the broader Trivy/TeamPCP campaign affected over 1,000 SaaS environments, with other confirmed victims including Cisco, Checkmarx, LiteLLM, and Sportradar AG. This incident represents one of the most consequential supply chain attacks targeting governmental infrastructure in recent years.</p>
+                    </div>
+                </section>
+
+                <!-- Attack Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Attack Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">February 2026</div>
+                            <div class="timeline-event">
+                                <strong>CVE-2026-33634 exploitation begins</strong>
+                                <p>TeamPCP begins exploiting misconfiguration in Trivy GitHub Actions environment. Attacker gains ability to manipulate version tags and inject malicious code into release pipelines.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19, 2026<br>~14:30 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Initial access to Europa platform</strong>
+                                <p>European Commission's AWS infrastructure running compromised Trivy in container scanning pipeline becomes infected with credential-stealing malware. TeamPCP gains access to AWS credentials and begins reconnaissance.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19–24, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Data exfiltration phase</strong>
+                                <p>Attacker exfiltrates 340 GB of data (91.7 GB compressed) from EC AWS account, including 52,000 email files representing 2.22 GB of outbound communications. 5-day detection gap allows extensive data collection.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 24, 2026<br>~09:15 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Security Operations Center detects intrusion</strong>
+                                <p>EC SOC fires critical alerts related to unusual AWS credential usage and large data exfiltration events. Incident response is activated and attacker access is revoked.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 25, 2026</div>
+                            <div class="timeline-event">
+                                <strong>CERT-EU notification and forensics</strong>
+                                <p>CERT-EU is notified and begins detailed forensic analysis. Root cause traced to CVE-2026-33634 in Trivy supply chain. Incident response efforts escalate to EU intelligence coordination.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 28, 2026</div>
+                            <div class="timeline-event">
+                                <strong>ShinyHunters publishes stolen data</strong>
+                                <p>The dark web leak site ShinyHunters publishes 340 GB of exfiltrated data from EC breach, making sensitive inter-departmental and inter-institutional communications irrecoverably public.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 2, 2026</div>
+                            <div class="timeline-event">
+                                <strong>CERT-EU public disclosure</strong>
+                                <p>CERT-EU publicly discloses the breach and attributes attack to TeamPCP via Trivy CVE-2026-33634. Incident details, scope, and recommendations shared with government partners and international organizations.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 3, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Campaign scope quantified</strong>
+                                <p>Mandiant publishes analysis quantifying broader TeamPCP/Trivy campaign at 1,000+ SaaS environments compromised globally. Additional victims identified in technology, defense, and financial sectors.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <p>The attack exploited CVE-2026-33634, a critical misconfiguration in Trivy's GitHub Actions environment that allowed unauthorized manipulation of release artifacts and version tags.</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Vulnerability Details</h3>
+                        <p>CVE-2026-33634 stemmed from insufficient access controls on Trivy's GitHub Actions runner environment:</p>
+                        <ul>
+                            <li>Release CI/CD pipeline used overly permissive IAM policies granting broad repository access</li>
+                            <li>GitHub Actions secrets not properly rotated or scoped to specific workflow requirements</li>
+                            <li>Lack of code signing verification for version tags and release artifacts</li>
+                            <li>No runtime integrity checks for published container images</li>
+                            <li>Insufficient audit logging of version tag modifications and release operations</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Malware Implantation Mechanism</h3>
+                        <p>TeamPCP exploited the misconfiguration to inject credential-stealing malware into Trivy's release pipeline:</p>
+                        <ul>
+                            <li><strong>Version Tag Manipulation:</strong> Attacker created or modified version tags (e.g., v0.41.0, v0.42.0) pointing to repositories containing malicious code</li>
+                            <li><strong>Automated CI/CD Pull:</strong> Organizations using Trivy in container scanning pipelines configured to pull latest versions automatically received compromised code</li>
+                            <li><strong>Postinstall Execution:</strong> Malicious Trivy versions executed credential-harvesting scripts during initialization</li>
+                            <li><strong>Cloud Credential Theft:</strong> Malware specifically targeted AWS credentials, GCP service accounts, and cloud environment variables</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Impact on Europa Platform</h3>
+                        <p>The European Commission's AWS infrastructure running Trivy in its container scanning pipeline became compromised with the following sequence:</p>
+                        <ul>
+                            <li><strong>Automated Update:</strong> Europa's CI/CD configuration pulled latest Trivy version (compromised) on March 19</li>
+                            <li><strong>Credential Exfiltration:</strong> Malware harvested AWS access keys, session tokens, and IAM role credentials from EC infrastructure</li>
+                            <li><strong>Lateral Movement:</strong> Attacker used stolen credentials to enumerate and access EC AWS account resources</li>
+                            <li><strong>Data Exfiltration:</strong> Large-scale download of 340 GB from S3 buckets containing department communications and cross-institutional data</li>
+                            <li><strong>Minimal Detection:</strong> Attack evaded initial detection for 5 days due to legitimate-appearing credential usage patterns</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Affected Data Categories</h3>
+                        <p>Analysis of the 340 GB exfiltrated from EC infrastructure:</p>
+                        <ul>
+                            <li>52,000 email-related files totaling 2.22 GB of outbound communications</li>
+                            <li>Internal departmental correspondence and meeting notes (42 EC departments)</li>
+                            <li>Inter-institutional communications with 29 other EU entities and agencies</li>
+                            <li>Sensitive policy documents and draft legislative materials</li>
+                            <li>Personnel records and administrative documentation</li>
+                            <li>Budget and resource allocation planning documents</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Attack Flow -->
+                <section class="section">
+                    <h2 class="section-title">Attack Flow & Compromise Chain</h2>
+                    <div class="attack-flow">
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 1</div>
+                            <div class="stage-title">Supply Chain Manipulation</div>
+                            <div class="stage-description">
+                                TeamPCP exploits CVE-2026-33634 in Trivy GitHub Actions to manipulate version tags and inject malicious code into release pipeline. Attacker gains ability to publish compromised versions that appear legitimate.
+                            </div>
+                        </div>
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 2</div>
+                            <div class="stage-title">Automated Distribution</div>
+                            <div class="stage-description">
+                                Organizations worldwide with automated Trivy updates in CI/CD pipelines pull compromised versions. European Commission's Europa platform automatically integrates malicious Trivy version on March 19.
+                            </div>
+                        </div>
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 3</div>
+                            <div class="stage-title">Credential Harvesting</div>
+                            <div class="stage-description">
+                                Malicious Trivy version executes postinstall scripts that harvest cloud credentials. AWS access keys, session tokens, and IAM role credentials from EC infrastructure are exfiltrated to attacker-controlled servers.
+                            </div>
+                        </div>
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 4</div>
+                            <div class="stage-title">Cloud Infrastructure Access</div>
+                            <div class="stage-description">
+                                Using stolen credentials, attacker gains direct access to European Commission AWS account. Infrastructure reconnaissance and enumeration of S3 buckets, EC2 instances, and other resources begins.
+                            </div>
+                        </div>
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 5</div>
+                            <div class="stage-title">Data Exfiltration</div>
+                            <div class="stage-description">
+                                Attacker downloads 340 GB of sensitive data from EC AWS infrastructure over 5-day period. Includes 52,000 email files, policy documents, and inter-institutional communications from 71 EU clients.
+                            </div>
+                        </div>
+                        <div class="attack-stage">
+                            <div class="stage-number">Stage 6</div>
+                            <div class="stage-title">Public Leak</div>
+                            <div class="stage-description">
+                                ShinyHunters publishes exfiltrated data on dark web leak site on March 28, before official disclosure. Data becomes irrecoverably public and available to threat actors and foreign intelligence services.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <p>The Trivy supply chain compromise represents one of the most consequential attacks on governmental infrastructure in recent years, with cascading impacts across multiple dimensions:</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Direct Institutional Impact</h3>
+                        <ul>
+                            <li><strong>340 GB Data Exfiltrated:</strong> Largest known breach of EU institutional data</li>
+                            <li><strong>71 EU Entity Clients:</strong> 42 European Commission departments + 29 other EU organizations compromised</li>
+                            <li><strong>52,000 Email Files:</strong> 2.22 GB of sensitive internal and inter-institutional communications exposed</li>
+                            <li><strong>Policy Exposure:</strong> Draft legislative materials and strategic policy documents exposed to threat actors</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Global Campaign Scale</h3>
+                        <ul>
+                            <li><strong>1,000+ SaaS Environments:</strong> Mandiant estimates broader campaign affected over 1,000 organizations</li>
+                            <li><strong>Multiple Victim Categories:</strong> Technology, defense, financial services, and government sectors</li>
+                            <li><strong>Confirmed Additional Victims:</strong> Cisco (source code breach), Checkmarx, Sportradar AG, LiteLLM</li>
+                            <li><strong>Ongoing Compromise Risk:</strong> Unknown number of environments may still be running compromised Trivy versions</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Diplomatic & National Security Implications</h3>
+                        <ul>
+                            <li><strong>Intelligence Value:</strong> Stolen inter-institutional communications provide strategic intelligence on EU decision-making processes</li>
+                            <li><strong>Negotiation Leverage:</strong> Compromised policy documents and draft materials could be exploited in international negotiations</li>
+                            <li><strong>Espionage Exposure:</strong> Intelligence liaison communications and sensitive coordination details exposed</li>
+                            <li><strong>Personnel Risk:</strong> Administrative data exposure creates vulnerabilities for coercion and insider recruitment</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Data Irretrievability</h3>
+                        <ul>
+                            <li>ShinyHunters publication on March 28 made data irrecoverably public</li>
+                            <li>Data available to threat actors, foreign intelligence services, and criminal organizations</li>
+                            <li>No containment possible after dark web publication</li>
+                            <li>Reputational and operational damage permanent and irreversible</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">MITRE ATT&CK Techniques</h3>
+                        <ul>
+                            <li><strong>T1195.002:</strong> Compromise Software Supply Chain — CVE-2026-33634 exploitation</li>
+                            <li><strong>T1078:</strong> Valid Accounts — Use of stolen AWS credentials</li>
+                            <li><strong>T1530:</strong> Data from Cloud Storage — S3 bucket enumeration and exfiltration</li>
+                            <li><strong>T1567:</strong> Exfiltration Over Web Service — Data transfer to attacker-controlled infrastructure</li>
+                            <li><strong>T1588.004:</strong> Obtain Capabilities: Digital Certificates — Credential harvesting and collection</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Remediation & Lessons Learned -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Lessons Learned</h2>
+                    <div class="section-content">
+                        <p>The European Commission breach and broader Trivy campaign reveal critical gaps in supply chain security practices and cloud infrastructure hardening. Organizations must implement comprehensive remediation across multiple domains:</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">CI/CD Pipeline Hardening</h3>
+                        <ul>
+                            <li><strong>Pin All Tool Versions:</strong> Replace mutable "latest" tags with specific verified digests and cryptographic hashes</li>
+                            <li><strong>Code Signing Verification:</strong> Implement mandatory verification of digital signatures on all CI/CD tools and dependencies</li>
+                            <li><strong>SBOM Tracking:</strong> Maintain Software Bill of Materials (SBOM) for all pipeline tools with version tracking</li>
+                            <li><strong>Artifact Attestation:</strong> Use tools like Sigstore and in-toto to cryptographically attest to build provenance</li>
+                            <li><strong>Pipeline Segmentation:</strong> Isolate security scanning tools in separate, restricted pipeline environments</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Cloud Credential Management</h3>
+                        <ul>
+                            <li><strong>Workload Identity:</strong> Replace long-lived cloud credentials with time-limited workload identity tokens</li>
+                            <li><strong>IAM Least Privilege:</strong> Apply strict least-privilege policies to all CI/CD tool access; avoid broad account-level permissions</li>
+                            <li><strong>Credential Rotation:</strong> Implement automatic rotation of cloud credentials with 24-48 hour lifetime limits</li>
+                            <li><strong>Session Isolation:</strong> Use distinct AWS accounts or resource groups for CI/CD pipelines to limit blast radius</li>
+                            <li><strong>Credential Monitoring:</strong> Monitor for unexpected credential usage patterns and large-scale data transfers</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Detection & Response Capabilities</h3>
+                        <ul>
+                            <li><strong>Version Change Monitoring:</strong> Alert on unexpected version changes in security scanning tools and critical dependencies</li>
+                            <li><strong>Behavioral Analytics:</strong> Detect credential exfiltration patterns and unusual cloud API call sequences</li>
+                            <li><strong>Data Transfer Baselining:</strong> Alert on abnormal data volumes being exfiltrated from cloud infrastructure</li>
+                            <li><strong>Log Analysis:</strong> Implement centralized logging and analysis of CI/CD pipeline activities with 30+ day retention</li>
+                            <li><strong>Rapid Response Playbooks:</strong> Pre-develop incident response procedures for supply chain compromises affecting critical tools</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Supply Chain Risk Management</h3>
+                        <ul>
+                            <li><strong>Vendor Assessment:</strong> Evaluate security posture of all CI/CD tool vendors and open-source project maintainers</li>
+                            <li><strong>Threat Intelligence Sharing:</strong> Participate in industry-wide threat intelligence coordination on supply chain attacks</li>
+                            <li><strong>Dependency Audits:</strong> Conduct quarterly audits of all tools and dependencies in use across organization</li>
+                            <li><strong>Incident Coordination:</strong> Establish pre-agreed disclosure timelines and information sharing agreements with intelligence partners</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- References -->
+                <section class="references">
+                    <h2 class="section-title">References</h2>
+                    <div class="reference-item">
+                        <a href="https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain" class="reference-link">CERT-EU - European Commission cloud breach: a supply-chain compromise</a>
+                        <span class="reference-source">CERT-EU official disclosure, April 2, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html" class="reference-link">CSO Online - CERT-EU blames Trivy supply chain attack for Europa.eu data breach</a>
+                        <span class="reference-source">CSO Online, April 2, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/" class="reference-link">SecurityWeek - European Commission Confirms Data Breach Linked to Trivy Supply Chain Attack</a>
+                        <span class="reference-source">SecurityWeek, April 2, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/" class="reference-link">Help Net Security - Trivy supply chain attack enabled European Commission cloud breach</a>
+                        <span class="reference-source">Help Net Security, April 3, 2026</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://isc.sans.edu/diary/32864" class="reference-link">SANS ISC - TeamPCP Supply Chain Campaign: Update 006</a>
+                        <span class="reference-source">SANS Internet Storm Center, April 3, 2026</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Related Incidents -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <div class="sidebar-content">
+                        <a href="teampcp-supply-chain-attack.html" class="sidebar-link">TeamPCP Supply Chain Campaign</a>
+                        <a href="trivy-cve-2026-33634.html" class="sidebar-link">CVE-2026-33634 Analysis</a>
+                        <a href="shiny-hunters-leak-site.html" class="sidebar-link">ShinyHunters Operations</a>
+                    </div>
+                </div>
+
+                <!-- Threat Actor Profile -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor</div>
+                    <div class="sidebar-content">
+                        <strong>TeamPCP</strong><br>
+                        <p style="margin-top: 8px; font-size: 12px;">Supply chain attack group with focus on CI/CD pipeline compromise and cloud credential harvesting. Estimated 1,000+ SaaS environment victims globally.</p>
+                        <a href="../threat-actors.html?actor=teampcp" class="sidebar-link" style="margin-top: 12px;">Full Profile</a>
+                    </div>
+                </div>
+
+                <!-- Detection Guidance -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Detection Guidance</div>
+                    <div class="sidebar-content">
+                        <strong>Cloud Credential Theft:</strong><br>
+                        <p style="margin-top: 8px; font-size: 12px;">Monitor CloudTrail for API calls using non-standard user agents, unusual credential patterns, and large S3 ListBucket/GetObject operations.</p>
+                        <strong style="display: block; margin-top: 12px;">Tool Version Anomalies:</strong><br>
+                        <p style="margin-top: 8px; font-size: 12px;">Alert on CI/CD pipeline execution of Trivy versions outside expected version tags or from non-official registries.</p>
+                    </div>
+                </div>
+
+                <!-- Affected Versions -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Affected Versions</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 12px;">The following Trivy versions contain CVE-2026-33634 malicious code:</p>
+                        <div class="tech-box" style="background: rgba(255, 68, 68, 0.1); border-left-color: #ff4444; padding: 12px; margin: 0;">
+v0.40.0 — v0.44.2 (affected range)
+                        </div>
+                        <p style="font-size: 12px; margin-top: 12px;">Organizations must audit CI/CD pipelines for these versions and upgrade to 0.45.0+ which includes vulnerability patches.</p>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Statistics</div>
+                    <div class="sidebar-content">
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">340 GB</div>
+                                <div style="color: var(--muted); font-size: 12px;">Data Exfiltrated</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">52,000</div>
+                                <div style="color: var(--muted); font-size: 12px;">Email Files Stolen</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">71</div>
+                                <div style="color: var(--muted); font-size: 12px;">EU Entities Affected</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">1,000+</div>
+                                <div style="color: var(--muted); font-size: 12px;">Global SaaS Victims</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">5 Days</div>
+                                <div style="color: var(--muted); font-size: 12px;">Detection Gap</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Threatpedia Incident Intelligence Platform — Automated Report for EU Institutional Use</p>
+        <p style="margin-top: 12px; font-size: 12px;">This report is generated for intelligence sharing purposes and subject to EU confidentiality protocols. Coordinate disclosure with CERT-EU and relevant national cybersecurity authorities.</p>
+    </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuPanel = document.getElementById('menu-panel');
+
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('open');
+            menuOverlay.classList.toggle('open');
+            menuPanel.classList.toggle('open');
+        });
+
+        menuOverlay.addEventListener('click', () => {
+            hamburgerBtn.classList.remove('open');
+            menuOverlay.classList.remove('open');
+            menuPanel.classList.remove('open');
+        });
+
+        // Search functionality
+        const menuSearch = document.getElementById('menu-search');
+        menuSearch.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                // Placeholder search implementation
+                console.log('Search:', menuSearch.value);
+            }
+        });
+    </script>
+</body>
+</html>

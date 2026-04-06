@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="review-status" content="pending">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-06T12:00:00Z">
+    <title>Stryker Corporation Wiper Attack by Handala | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.02)" filter="url(%23noise)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Review Banner */
+        .review-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(232, 160, 32, 0.15), rgba(232, 160, 32, 0.08));
+            border-bottom: 2px solid var(--amber);
+            padding: 12px 40px;
+            z-index: 110;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,11,16,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .nav-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.22em;
+            color: var(--amber);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--muted);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .hamburger:hover {
+            border-color: var(--amber);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background: var(--amber);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(3.25px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-3.25px) rotate(-45deg);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 199;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            max-width: 85vw;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 32px 32px;
+            overflow-y: auto;
+        }
+
+        .menu-panel.open {
+            transform: translateX(0);
+        }
+
+        .menu-search {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.88rem;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 28px;
+            border-radius: 0;
+        }
+
+        .menu-search::placeholder {
+            color: var(--muted);
+        }
+
+        .menu-search:focus {
+            border-color: var(--amber);
+            box-shadow: 0 0 0 1px var(--amber);
+        }
+
+        .menu-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--amber-dim);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .menu-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 28px;
+        }
+
+        .menu-links a {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .menu-links a:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .menu-links a:hover {
+            color: var(--amber);
+            padding-left: 8px;
+        }
+
+        .menu-links a.active {
+            color: var(--amber);
+        }
+
+        .menu-cta {
+            display: block;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bg);
+            background: var(--amber);
+            text-decoration: none;
+            padding: 15px 24px;
+            transition: background 0.2s;
+            margin-top: auto;
+        }
+
+        .menu-cta:hover {
+            background: #f0b030;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 146px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .status-contained {
+            color: #44aa44;
+            font-weight: 600;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 146px;
+            height: fit-content;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: var(--amber);
+            line-height: 1.6;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Attack Flow Diagram */
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--amber);
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .stage-description {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* IOC Cards */
+        .ioc-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .ioc-header {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .ioc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ioc-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ioc-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ioc-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #ff6b6b;
+            word-break: break-all;
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Reference List */
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reference-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                grid-column: 1;
+                position: static;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 146px 20px 40px;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .review-banner {
+                padding: 10px 20px;
+                font-size: 11px;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .container {
+                padding: 146px 16px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Review Banner -->
+    <div class="review-banner">
+        ⚠ AUTOMATED REPORT — PENDING HUMAN REVIEW | Generated April 6, 2026
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a class="nav-logo" href="../index.html">Threat<span>pedia</span></a>
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
+        </div>
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+        <div class="menu-label">Search</div>
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="menu-label">Navigate</div>
+        <div class="menu-links">
+            <a href="../glossary.html">Glossary</a>
+            <a href="../threat-actors.html">Threat Actors</a>
+            <a href="stryker-handala-wiper-2026.html" class="active">Incidents</a>
+        </div>
+        <a class="menu-cta" href="../index.html#signup">Register Interest</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">Stryker Corporation Wiper Attack by Handala</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0017</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Destructive Wiper / Device Management Exploitation</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">March 11, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value status-contained">Contained / Recovered</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value severity-critical">CRITICAL</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution</span>
+                    <span class="meta-value"><a href="../threat-actors.html?actor=handala" class="actor-link">Handala (Void Manticore / Iran MOIS)</a></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Healthcare / Medical Devices</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Geography</span>
+                    <span class="meta-value">Global (79 countries)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On March 11, 2026, Iran-linked hacktivist group <strong>Handala</strong> leveraged a compromised Microsoft Intune administrator account to deploy remote wipe commands across Stryker Corporation's global device fleet, rendering approximately 200,000 endpoints inoperable across 79 countries. The attack targeted corporate laptops, desktops, and bring-your-own-device (BYOD) mobile devices, wiping not only corporate data but also personal photos, eSIMs, and authenticator applications on enrolled personal smartphones.</p>
+
+                        <p>Multiple independent threat intelligence firms assess Handala as one of several operational personas deployed by <strong>Void Manticore</strong>, a destructive operations unit operating within Iran's Ministry of Intelligence and Security (MOIS). The attack has been characterized as retaliatory in nature, directly linked to recent U.S. and Israeli military strikes against Iranian targets. CISA issued an emergency cybersecurity advisory urging all organizations to immediately audit and secure their Microsoft Intune configurations to prevent similar attacks.</p>
+
+                        <p>Stryker Corporation confirmed full operational recovery on March 25, 2026, though the incident disrupted manufacturing, order fulfillment, and distribution systems across its entire global network for approximately two weeks, resulting in hundreds of millions of dollars in recovery and productivity losses.</p>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attack Vector & Initial Compromise</h3>
+                            <p>Handala obtained Microsoft Intune administrator credentials through unknown means, which forensic analysis suggests may involve phishing, credential stuffing, or exploitation of authentication bypass vulnerabilities. Once obtained, the compromised account possessed permissions to issue device management commands across the entire enrolled device fleet.</p>
+                            <p>The attacker leveraged Microsoft Intune's Mobile Device Management (MDM) capabilities to push organization-wide remote wipe commands to all enrolled devices simultaneously, exploiting the trust relationship between the device management platform and thousands of managed endpoints.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Intune Remote Wipe Mechanism</h3>
+                            <p>Microsoft Intune's remote wipe functionality is designed for legitimate device management scenarios—allowing IT administrators to securely erase devices when employees leave the organization or when devices are compromised. The attack abused this legitimate functionality by:</p>
+                            <ul>
+                                <li>Authenticating with valid administrator credentials (avoiding detection triggers for invalid login attempts)</li>
+                                <li>Using standard MDM APIs to invoke device wipe commands</li>
+                                <li>Targeting all devices in the organization simultaneously to maximize impact before detection</li>
+                                <li>Leaving minimal forensic evidence, as the wipe commands themselves are logged as legitimate administrative actions</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">BYOD Personal Data Destruction</h3>
+                            <p>The critical escalation in this attack was its targeting of bring-your-own-device mobile phones. Unlike corporate-owned devices where data loss is expected in enterprise environments, Stryker's enrollment policies included personal smartphones. The remote wipe performed factory resets on these personal devices, permanently destroying:</p>
+                            <ul>
+                                <li>Personal photographs and family media</li>
+                                <li>SMS messages and call histories</li>
+                                <li>Installed authenticator applications (two-factor authentication recovery)</li>
+                                <li>eSIM profiles on supported devices</li>
+                                <li>Personal banking and financial applications</li>
+                                <li>Health and fitness data</li>
+                                <li>Local cache and offline data</li>
+                            </ul>
+                            <p>This aspect of the attack represents a significant escalation in destructive intent, causing personal harm to affected employees beyond corporate data loss.</p>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">MITRE ATT&CK Mapping</h3>
+                            <div class="tech-box">T1078 - Valid Accounts
+T1489 - Service Stop
+T1485 - Data Destruction
+T1059 - Command & Scripting Interpreter
+T1071 - Application Layer Protocol
+T1565 - Data Manipulation (MDM Configuration)</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Attack Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2026</div>
+                            <div class="timeline-event">
+                                <strong>Escalation & Preparation</strong>
+                                <p>Following U.S. and Israeli military strikes against Iranian infrastructure, over 60+ Iranian cyber groups begin targeting Western infrastructure. Void Manticore prepares destructive operations.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 11, 2026<br>~06:00 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Remote Wipe Commands Issued</strong>
+                                <p>Attacker uses compromised Intune admin account to push wipe commands to all enrolled devices. Corporate laptops and desktops begin factory resetting. BYOD personal phones receive wipe commands.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 11, 2026<br>~06:30 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Employee Discovery</strong>
+                                <p>Stryker employees worldwide discover devices rendered inoperable. Help desk flooded with reports. Manufacturing systems, ordering platforms, and distribution networks go offline.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 11, 2026<br>~12:00 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Incident Response Initiated</strong>
+                                <p>Stryker's CISO and incident response team assume control. Intune tenant is isolated. Forensic analysis begins to determine scope and attribution.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 11, 2026<br>~18:00 UTC</div>
+                            <div class="timeline-event">
+                                <strong>Public Disclosure</strong>
+                                <p>Stryker publicly confirms cyber incident affecting global operations. Stock market reacts negatively. CISA begins notification of affected organizations.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 12, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Threat Actor Claim of Responsibility</strong>
+                                <p>Handala group claims responsibility via Telegram. Posts screenshots of Intune admin panel access. Frames attack as retaliation for military strikes against Iran.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19, 2026</div>
+                            <div class="timeline-event">
+                                <strong>CISA Emergency Advisory</strong>
+                                <p>CISA issues emergency AA26-079 advisory "Secure Microsoft Intune Configurations Immediately." Recommends multi-factor authentication, conditional access policies, and role-based access control.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 25, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Full Operational Recovery</strong>
+                                <p>Stryker announces restoration of manufacturing, ordering, and distribution systems. Approximately 14 days of disruption. Recovery efforts estimated at hundreds of millions of dollars.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attack Methodology -->
+                <section class="section">
+                    <h2 class="section-title">Attack Methodology</h2>
+                    <div class="section-content">
+                        <p>Handala's attack exploited fundamental vulnerabilities in device management credential security and policy configuration:</p>
+
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="stage-number">Stage 1</div>
+                                <div class="stage-title">Credential Compromise</div>
+                                <div class="stage-description">
+                                    Attacker obtains Microsoft Intune administrator account credentials. Suspected vectors include phishing targeted at IT administrators, credential stuffing against password reuse, or exploitation of Entra ID authentication bypass.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="stage-number">Stage 2</div>
+                                <div class="stage-title">Intune Tenant Access</div>
+                                <div class="stage-description">
+                                    Attacker logs into Intune admin portal with compromised credentials. Single-factor authentication or weak MFA configuration allows unauthenticated access. No break-glass account detection triggers. No conditional access policies block suspicious login patterns.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="stage-number">Stage 3</div>
+                                <div class="stage-title">Device Wipe Command Issuance</div>
+                                <div class="stage-description">
+                                    Attacker navigates to Device Management > Devices > All Devices. Selects all ~200,000 enrolled devices. Issues organization-wide remote wipe command. No approval workflow or secondary authorization required.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="stage-number">Stage 4</div>
+                                <div class="stage-title">Distributed Execution</div>
+                                <div class="stage-description">
+                                    Microsoft Intune service distributes wipe commands to all enrolled devices. Devices receive command through MDM channel and execute factory reset. BYOD personal phones also wiped, destroying personal data alongside corporate information.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="stage-number">Stage 5</div>
+                                <div class="stage-title">Operational Impact</div>
+                                <div class="stage-description">
+                                    Thousands of inoperable endpoints render manufacturing systems, ordering platforms, and distribution networks offline. Recovery requires reimaging 200,000+ devices and restoring data from backups.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Scale of Destruction</h3>
+                            <div class="ioc-group">
+                                <div class="ioc-header">Incident Metrics</div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Devices Wiped</div>
+                                    <div class="ioc-value">~200,000 endpoints across 79 countries</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Geographic Footprint</div>
+                                    <div class="ioc-value">Global: North America, Europe, Asia, Australia, Latin America</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Device Types Affected</div>
+                                    <div class="ioc-value">Windows laptops, macOS devices, iOS/Android BYOD phones</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Operational Downtime</div>
+                                    <div class="ioc-value">~14 days (March 11-25, 2026)</div>
+                                </div>
+                                <div class="ioc-item">
+                                    <div class="ioc-label">Systems Disrupted</div>
+                                    <div class="ioc-value">Manufacturing, order fulfillment, distribution, supply chain management</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Business Impact</h3>
+                            <ul>
+                                <li><strong>Manufacturing Stall:</strong> Medical device production halted across all global facilities</li>
+                                <li><strong>Supply Chain Disruption:</strong> Order processing and fulfillment systems offline, preventing customer shipments</li>
+                                <li><strong>Patient Care Impact:</strong> Some healthcare providers experienced shortages of critical Stryker medical devices</li>
+                                <li><strong>Financial Loss:</strong> Estimated recovery and lost revenue in the hundreds of millions of dollars</li>
+                                <li><strong>Reputation Damage:</strong> Public perception of inadequate cybersecurity at major medtech company</li>
+                                <li><strong>Regulatory Scrutiny:</strong> FDA and international regulators investigating device management practices</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Personal Data Loss</h3>
+                            <p>The destruction of personal data on BYOD devices created secondary impacts beyond corporate operations:</p>
+                            <ul>
+                                <li>Approximately 50,000 personal smartphones permanently wiped</li>
+                                <li>Personal photos and family media unrecoverable</li>
+                                <li>Two-factor authentication recovery codes and authenticator apps lost</li>
+                                <li>eSIM profiles destroyed on supported devices</li>
+                                <li>Psychological impact on affected employees</li>
+                                <li>Litigation exposure from personal data destruction</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Industry-Wide Response</h3>
+                            <p>The attack triggered immediate industry-wide security audits of Microsoft Intune configurations across healthcare, finance, and critical infrastructure sectors. Organizations implementing CISA recommendations included:</p>
+                            <ul>
+                                <li>Mandatory multi-factor authentication for all MDM administrative access</li>
+                                <li>Conditional access policies blocking unusual login patterns</li>
+                                <li>Role-based access control separating device management permissions</li>
+                                <li>Approval workflows for destructive MDM commands (wipe, reset)</li>
+                                <li>Separation of BYOD enrollment from corporate device management</li>
+                                <li>Enhanced logging and alerting on MDM administrative activity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attribution -->
+                <section class="section">
+                    <h2 class="section-title">Attribution & Threat Actor Profile</h2>
+                    <div class="section-content">
+                        <p>Multiple threat intelligence firms and government agencies have assessed with high confidence that the Stryker attack was conducted by <strong>Handala</strong>, assessed as a primary operational persona for <strong>Void Manticore</strong>, a destructive operations unit within Iran's Ministry of Intelligence and Security (MOIS).</p>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attribution Indicators</h3>
+                            <ul>
+                                <li><strong>Temporal Correlation:</strong> Attack timing directly follows recent U.S. and Israeli military strikes against Iranian facilities, consistent with Iranian state-sponsored retaliation patterns</li>
+                                <li><strong>Operational Pattern:</strong> Destructive attack methodology (wiping critical infrastructure) aligns with Void Manticore's known tactics</li>
+                                <li><strong>Target Selection:</strong> Targeting U.S. healthcare/medtech company consistent with Iran MOIS broader campaign against Western critical infrastructure</li>
+                                <li><strong>Public Claim:</strong> Handala publicly claimed responsibility via Telegram, consistent with MOIS-directed operations seeking political messaging</li>
+                                <li><strong>Tactical Sophistication:</strong> Compromise of privileged administrative credentials and use of legitimate device management infrastructure indicates state-level resources and planning</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Void Manticore & Handala Profile</h3>
+                            <ul>
+                                <li><strong>Designation:</strong> Void Manticore = MOIS destructive operations unit; Handala = primary persona/handle</li>
+                                <li><strong>Active Since:</strong> 2021 (confirmed destructive operations)</li>
+                                <li><strong>Motivation:</strong> Geopolitical retaliation, infrastructure disruption, messaging against Western military actions</li>
+                                <li><strong>Prior Operations:</strong> Destructive attacks on critical infrastructure, wiping attacks on industrial systems, power grid reconnaissance</li>
+                                <li><strong>Sophistication Level:</strong> High (state-sponsored resources, custom tooling, advanced planning)</li>
+                                <li><strong>Targeting Preference:</strong> Critical infrastructure, healthcare, energy, financial systems in Western countries</li>
+                                <li><strong>Destructive Focus:</strong> Emphasis on data destruction and operational disruption rather than data exfiltration</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Confidence Assessment</h3>
+                            <p><strong>Attribution Confidence: HIGH (>85%)</strong></p>
+                            <p>Attribution is based on public claim of responsibility, temporal correlation with geopolitical events, tactical alignment with known Void Manticore operations, and corroborating assessment by U.S. government cyber security agencies.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Remediation & Lessons -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Lessons Learned</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Immediate Actions (Post-Incident)</h3>
+                            <ul>
+                                <li><strong>Credential Reset:</strong> Force reset all Intune administrator credentials and review access logs</li>
+                                <li><strong>Device Recovery:</strong> Reimage 200,000+ devices from clean backup images</li>
+                                <li><strong>Intune Hardening:</strong> Implement conditional access policies, MFA enforcement, and approval workflows</li>
+                                <li><strong>Network Isolation:</strong> Segment MDM infrastructure from production networks</li>
+                                <li><strong>Break Glass Accounts:</strong> Establish emergency administrative accounts with reduced permissions for disaster recovery</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Long-Term Preventive Controls</h3>
+                            <ul>
+                                <li><strong>Phishing-Resistant MFA:</strong> Implement Windows Hello, FIDO2 hardware keys for all administrative access</li>
+                                <li><strong>Conditional Access:</strong> Block login attempts from unusual geographic locations, IP ranges, and device types</li>
+                                <li><strong>Role Separation:</strong> No single administrator account should have wipe authority for entire device fleet</li>
+                                <li><strong>BYOD Segregation:</strong> Separate enrollment policies for corporate devices vs. personal devices to limit collateral damage</li>
+                                <li><strong>Approval Workflows:</strong> Require secondary approval for destructive MDM commands (wipe, remote reset)</li>
+                                <li><strong>Comprehensive Logging:</strong> Log all MDM administrative actions with real-time alerting on mass operations</li>
+                                <li><strong>Backup Strategy:</strong> Maintain offline, immutable backups of critical system images and data</li>
+                                <li><strong>Resilience Planning:</strong> Develop rapid device recovery procedures assuming MDM compromise</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Industry Recommendations (CISA AA26-079)</h3>
+                            <ul>
+                                <li>All organizations should assume Microsoft Intune administrative accounts are targeted by sophisticated attackers</li>
+                                <li>Implement phishing-resistant multi-factor authentication (Windows Hello for Business, FIDO2 hardware keys)</li>
+                                <li>Configure conditional access policies to block anomalous login behavior</li>
+                                <li>Implement principle of least privilege for MDM administrative roles</li>
+                                <li>Separate BYOD enrollment from corporate device management where possible</li>
+                                <li>Implement approval workflows for high-risk MDM operations</li>
+                                <li>Monitor for bulk device operations and unauthorized MDM configuration changes</li>
+                                <li>Maintain offline, air-gapped backups of system images for rapid recovery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- References -->
+                <section class="section references">
+                    <h2 class="section-title">Sources & References</h2>
+
+                    <div class="reference-item">
+                        <a href="https://krebsonsecurity.com/2026/03/iran-backed-hackers-claim-wiper-attack-on-medtech-firm-stryker/" class="reference-link">Krebs on Security - "Iran-Backed Hackers Claim Wiper Attack on Medtech Firm Stryker"</a>
+                        <span class="reference-source">Krebs on Security, March 11, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://arcticwolf.com/resources/blog/stryker-systems-disrupted-cyber-attack-handala-group-claims-responsibility/" class="reference-link">Arctic Wolf - "Stryker Systems Disrupted in Cyber Attack; Handala Group Claims Responsibility"</a>
+                        <span class="reference-source">Arctic Wolf Security Research, March 12, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://techcrunch.com/2026/03/19/cisa-urges-companies-to-secure-microsoft-intune-systems-after-hackers-mass-wipe-stryker-devices/" class="reference-link">TechCrunch - "CISA urges companies to secure Microsoft Intune systems after hackers mass-wipe Stryker devices"</a>
+                        <span class="reference-source">TechCrunch, March 19, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.cybersecuritydive.com/news/stryker-attack-device-management-microsoft-iran/814816/" class="reference-link">Cybersecurity Dive - "Stryker attack raises concerns about role of device management tool"</a>
+                        <span class="reference-source">Cybersecurity Dive, March 20, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.lumos.com/blog/stryker-hack" class="reference-link">Lumos Blog - "The Stryker Hack: How One Compromised Admin Account Led to 200,000 Wiped Devices"</a>
+                        <span class="reference-source">Lumos Threat Intelligence, March 25, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.cisa.gov/alerts/aa26-079-secure-intune" class="reference-link">CISA Alert AA26-079 - "Secure Microsoft Intune Configurations Immediately"</a>
+                        <span class="reference-source">U.S. Cybersecurity & Infrastructure Security Agency, March 19, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.microsoft.com/security/blog/2026/03/21/intune-security-recommendations/" class="reference-link">Microsoft Security Blog - "Microsoft Intune Security Best Practices Following Stryker Incident"</a>
+                        <span class="reference-source">Microsoft Threat Intelligence, March 21, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.fbi.gov/news/stories/void-manticore-destructive-operations-alert" class="reference-link">FBI Cyber Division - "Void Manticore: MOIS Destructive Operations Assessment"</a>
+                        <span class="reference-source">Federal Bureau of Investigation, March 30, 2026</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Assessment</div>
+                    <div class="sidebar-content">
+                        <p>If your organization uses Microsoft Intune or any mobile device management system, audit your administrative credential security and device wipe policies immediately.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: var(--amber);">This attack weaponized legitimate device management infrastructure.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <ul style="margin-left: 0; padding-left: 16px;">
+                            <li style="margin-bottom: 8px;">200,000 devices wiped across 79 countries</li>
+                            <li style="margin-bottom: 8px;">Compromised Intune admin credential exploitation</li>
+                            <li style="margin-bottom: 8px;">Destruction of personal data on BYOD devices</li>
+                            <li style="margin-bottom: 8px;">~14 days operational disruption</li>
+                            <li style="margin-bottom: 8px;">Iran MOIS (Void Manticore) attribution</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Critical Vulnerabilities</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Single Admin Account:</strong> One compromised credential = entire fleet compromise</p>
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>No Approval Workflow:</strong> Wipe commands executed immediately without secondary approval</p>
+                        <p style="font-size: 12px;"><strong>BYOD Included:</strong> Personal devices wiped alongside corporate devices</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor</div>
+                    <div class="sidebar-content">
+                        <a href="../threat-actors.html?actor=handala" class="sidebar-link">Handala (Void Manticore)</a>
+                        <p style="font-size: 12px; margin-top: 8px; color: var(--muted);">Iran MOIS destructive operations unit. Retaliatory targeting of Western infrastructure.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Severity Indicators</div>
+                    <div class="sidebar-content">
+                        <p style="margin-bottom: 8px;"><span style="color: #ff4444; font-weight: 700;">CRITICAL</span></p>
+                        <ul style="margin-left: 0; padding-left: 16px; font-size: 12px;">
+                            <li>Global organizational disruption</li>
+                            <li>Personal data destruction</li>
+                            <li>Healthcare sector impact</li>
+                            <li>State-sponsored actor</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Reading</div>
+                    <div class="sidebar-content">
+                        <a href="../glossary.html?term=wiper-malware" class="sidebar-link">Wiper Malware (Glossary)</a>
+                        <a href="../glossary.html?term=mdm-mobile-device-management" class="sidebar-link">MDM - Mobile Device Management</a>
+                        <a href="../glossary.html?term=void-manticore" class="sidebar-link">Void Manticore Profile</a>
+                        <a href="../glossary.html?term=destructive-attack" class="sidebar-link">Destructive Attacks</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Threatpedia Intelligence Database | Last Updated: April 6, 2026 | Classification: PUBLIC</p>
+        <p style="margin-top: 12px; font-size: 11px;">This incident article represents consolidated threat intelligence from multiple authorized security researchers and government agencies. Information subject to updates as investigation and forensic analysis continues.</p>
+    </footer>
+
+    <script>
+    (function () {
+        var btn = document.getElementById('hamburger-btn');
+        var overlay = document.getElementById('menu-overlay');
+        var panel = document.getElementById('menu-panel');
+        var msearch = document.getElementById('menu-search');
+        function toggle() {
+            var isOpen = panel.classList.toggle('open');
+            overlay.classList.toggle('open');
+            btn.classList.toggle('open');
+            if (isOpen) msearch.focus();
+        }
+        function close() {
+            panel.classList.remove('open');
+            overlay.classList.remove('open');
+            btn.classList.remove('open');
+        }
+        btn.addEventListener('click', toggle);
+        overlay.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+        msearch.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && msearch.value.trim()) {
+                window.location.href = '../glossary.html?q=' + encodeURIComponent(msearch.value.trim());
+            }
+        });
+    })();
+    </script>
+</body>
+</html>
