@@ -501,13 +501,14 @@
       margin-top: -1px;
     `;
 
-    // Insert after search input
-    searchInput.parentNode.insertBefore(resultsContainer, searchInput.nextSibling);
-
-    // Make search input relative positioned for absolute positioning of results
-    if (searchInput.parentNode.style.position === '') {
-      searchInput.parentNode.style.position = 'relative';
-    }
+    // Wrap search input + results in a relative container so the absolute
+    // dropdown positions correctly WITHOUT setting position on the menu-panel
+    // (which would break its position:fixed).
+    var wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    searchInput.parentNode.insertBefore(wrapper, searchInput);
+    wrapper.appendChild(searchInput);
+    wrapper.appendChild(resultsContainer);
 
     // Event listeners
     searchInput.addEventListener('input', handleSearch);
