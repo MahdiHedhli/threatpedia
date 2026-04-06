@@ -131,6 +131,98 @@
       50%       { opacity: 0.25; }
     }
 
+    /* ── Nav right controls ─────────────────────────────────────────────── */
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── Search toggle ────────────────────────────────────────────────────── */
+    .search-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .search-toggle:hover { border-color: var(--amber); }
+
+    .search-toggle svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--amber);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-search-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+      background: rgba(8,11,16,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-search-bar.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-search-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      padding: 0;
+    }
+
+    .nav-search-bar input::placeholder { color: var(--muted); }
+
+    .search-close {
+      background: none;
+      border: 1px solid var(--border);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .search-close:hover { border-color: var(--amber); }
+
+    .search-close svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--amber);
+      fill: none;
+      stroke-width: 2;
+    }
+
     /* ── Hamburger button ──────────────────────────────────────────────────── */
     .hamburger {
       display: flex;
@@ -773,16 +865,25 @@
       <div class="status-dot"></div>
       COMING SOON — FOUNDING MEMBER REGISTRATION OPEN
     </div>
-    <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-controls">
+      <button class="search-toggle" id="search-toggle-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-search-bar" id="nav-search-bar">
+      <input type="text" placeholder="Search glossary, threat actors, incidents..." id="menu-search" autocomplete="off" />
+      <button class="search-close" id="search-close-btn" aria-label="Close search">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
   </nav>
 
   <!-- ── SLIDE-OUT MENU ─────────────────────────────────────────────────── -->
   <div class="menu-overlay" id="menu-overlay"></div>
   <div class="menu-panel" id="menu-panel">
-    <div class="menu-label">Search</div>
-    <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
     <div class="menu-label">Navigate</div>
     <div class="menu-links">
       <a href="glossary.html">Glossary</a>
@@ -981,23 +1082,6 @@
           <span class="incident-card-tag">TeamPCP</span>
         </div>
       </a>
-      <a href="incidents/shiny-hunters-leak-site.html" class="incident-card">
-        <div class="incident-card-header">
-          <div class="incident-card-date">Active Since 2020</div>
-          <div class="incident-card-badges">
-            <span class="badge badge-new">New</span>
-            <span class="badge badge-review">Pending Review</span>
-            <span class="badge badge-high">High</span>
-          </div>
-        </div>
-        <h3>ShinyHunters Operations & Leak Site Activity</h3>
-        <p>Threat actor profile covering ShinyHunters (UNC5537), a prolific data extortion group claiming ~400 breached organizations. Launched a branded dark web leak site in January 2026 and served as the publication platform for the European Commission stolen data.</p>
-        <div class="incident-card-meta">
-          <span class="incident-card-tag">Threat Actor</span>
-          <span class="incident-card-tag">Data Extortion</span>
-          <span class="incident-card-tag">ShinyHunters</span>
-        </div>
-      </a>
       <a href="incidents/european-commission-trivy-breach-2026.html" class="incident-card">
         <div class="incident-card-header">
           <div class="incident-card-date">April 2, 2026</div>
@@ -1012,72 +1096,6 @@
         <div class="incident-card-meta">
           <span class="incident-card-tag">Supply Chain</span>
           <span class="incident-card-tag">Government</span>
-          <span class="incident-card-tag">TeamPCP</span>
-        </div>
-      </a>
-      <a href="incidents/stryker-handala-wiper-2026.html" class="incident-card">
-        <div class="incident-card-header">
-          <div class="incident-card-date">March 11, 2026</div>
-          <div class="incident-card-badges">
-            <span class="badge badge-new">New</span>
-            <span class="badge badge-review">Pending Review</span>
-            <span class="badge badge-critical">Critical</span>
-          </div>
-        </div>
-        <h3>Stryker Corporation Wiper Attack by Handala</h3>
-        <p>Iran-linked Handala group weaponized Microsoft Intune to remotely wipe 200,000 devices across 79 countries. CISA issued emergency advisory on MDM security.</p>
-        <div class="incident-card-meta">
-          <span class="incident-card-tag">Wiper</span>
-          <span class="incident-card-tag">Healthcare</span>
-          <span class="incident-card-tag">Iran / MOIS</span>
-        </div>
-      </a>
-      <a href="incidents/vivaticket-ransomhouse-2026.html" class="incident-card">
-        <div class="incident-card-header">
-          <div class="incident-card-date">March 2, 2026</div>
-          <div class="incident-card-badges">
-            <span class="badge badge-new">New</span>
-            <span class="badge badge-review">Pending Review</span>
-            <span class="badge badge-high">High</span>
-          </div>
-        </div>
-        <h3>Vivaticket Ransomware Disrupts European Cultural Institutions</h3>
-        <p>RansomHouse ransomware hit Vivaticket via French subsidiary Irec SAS, disrupting ticketing for 3,500 venues including the Louvre, Eiffel Tower, and Notre-Dame.</p>
-        <div class="incident-card-meta">
-          <span class="incident-card-tag">Ransomware</span>
-          <span class="incident-card-tag">Cultural Heritage</span>
-          <span class="incident-card-tag">RansomHouse</span>
-        </div>
-      </a>
-      <a href="incidents/cegedim-sante-health-breach-2026.html" class="incident-card">
-        <div class="incident-card-header">
-          <div class="incident-card-date">March 3, 2026</div>
-          <div class="incident-card-badges">
-            <span class="badge badge-new">New</span>
-            <span class="badge badge-review">Pending Review</span>
-            <span class="badge badge-critical">Critical</span>
-          </div>
-        </div>
-        <h3>Cegedim Santé Healthcare Breach — 15.8M Patient Records</h3>
-        <p>15.8 million French patient records stolen from MonLogicielMedical platform, including 165,000 files with HIV status, psychiatric diagnoses, and political figures' data.</p>
-        <div class="incident-card-meta">
-          <span class="incident-card-tag">Data Breach</span>
-          <span class="incident-card-tag">Healthcare</span>
-          <span class="incident-card-tag">France / GDPR</span>
-        </div>
-      </a>
-      <a href="incidents/index.html" class="incident-card">
-        <div class="incident-card-header">
-          <div class="incident-card-date">March 2026</div>
-          <div class="incident-card-badges">
-            <span class="badge badge-critical">Critical</span>
-          </div>
-        </div>
-        <h3>TeamPCP Supply Chain Attack Campaign</h3>
-        <p>Coordinated supply chain campaign compromising Trivy, KICS, LiteLLM, and Telnyx. 1,000+ SaaS environments affected with cascading credential theft across the software ecosystem.</p>
-        <div class="incident-card-meta">
-          <span class="incident-card-tag">Supply Chain</span>
-          <span class="incident-card-tag">CI/CD</span>
           <span class="incident-card-tag">TeamPCP</span>
         </div>
       </a>
@@ -1096,6 +1114,9 @@
           <span class="incident-card-tag">DPRK</span>
         </div>
       </a>
+    </div>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="incidents/index.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); text-decoration: none; border: 1px solid var(--border); padding: 12px 32px; transition: border-color 0.2s, background 0.2s;">View All Incidents →</a>
     </div>
   </section>
 
@@ -1163,27 +1184,47 @@
       var btn     = document.getElementById('hamburger-btn');
       var overlay = document.getElementById('menu-overlay');
       var panel   = document.getElementById('menu-panel');
-      var search  = document.getElementById('menu-search');
 
-      function toggle() {
+      function toggleMenu() {
         var isOpen = panel.classList.toggle('open');
         overlay.classList.toggle('open');
         btn.classList.toggle('open');
-        if (isOpen) search.focus();
       }
 
-      function close() {
+      function closeMenu() {
         panel.classList.remove('open');
         overlay.classList.remove('open');
         btn.classList.remove('open');
       }
 
-      btn.addEventListener('click', toggle);
-      overlay.addEventListener('click', close);
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      btn.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+    })();
 
-      /* Menu search — redirect to glossary with query */
-      
+    /* ── Search bar toggle ─────────────────────────────────────────────── */
+    (function () {
+      var toggleBtn  = document.getElementById('search-toggle-btn');
+      var closeBtn   = document.getElementById('search-close-btn');
+      var searchBar  = document.getElementById('nav-search-bar');
+      var searchInput = document.getElementById('menu-search');
+
+      function openSearch() {
+        searchBar.classList.add('open');
+        searchInput.focus();
+      }
+
+      function closeSearch() {
+        searchBar.classList.remove('open');
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+      }
+
+      toggleBtn.addEventListener('click', openSearch);
+      closeBtn.addEventListener('click', closeSearch);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && searchBar.classList.contains('open')) closeSearch();
+      });
     })();
 
     /* ── Form handler ───────────────────────────────────────────────────── */

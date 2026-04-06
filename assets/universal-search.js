@@ -392,11 +392,7 @@
   function handleKeyboard(event) {
     if (!resultsContainer || resultsContainer.style.display === 'none' || allResults.length === 0) {
       if (event.key === 'Enter') {
-        // Fallback to glossary search
-        const query = searchInput.value.trim();
-        if (query) {
-          navigateToGlossary(query);
-        }
+        event.preventDefault(); // Don't redirect anywhere — results will appear via debounce
       }
       return;
     }
@@ -483,32 +479,26 @@
       return;
     }
 
-    // Create results container
+    // Create results container — positioned below the nav bar
     resultsContainer = document.createElement('div');
     resultsContainer.id = 'search-results-container';
     resultsContainer.style.cssText = `
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
+      position: fixed;
+      top: 68px;
+      left: 48px;
+      right: 48px;
+      max-width: 700px;
       background-color: #0d1117;
       border: 1px solid #1e2733;
-      border-top: none;
-      max-height: 400px;
+      max-height: 70vh;
       overflow-y: auto;
       z-index: 1000;
       display: none;
-      margin-top: -1px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     `;
 
-    // Wrap search input + results in a relative container so the absolute
-    // dropdown positions correctly WITHOUT setting position on the menu-panel
-    // (which would break its position:fixed).
-    var wrapper = document.createElement('div');
-    wrapper.style.position = 'relative';
-    searchInput.parentNode.insertBefore(wrapper, searchInput);
-    wrapper.appendChild(searchInput);
-    wrapper.appendChild(resultsContainer);
+    // Append results container to body so it's not constrained by nav overflow
+    document.body.appendChild(resultsContainer);
 
     // Event listeners
     searchInput.addEventListener('input', handleSearch);

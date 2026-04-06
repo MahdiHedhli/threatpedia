@@ -140,6 +140,98 @@
       50%       { opacity: 0.25; }
     }
 
+    /* ── Nav right controls ─────────────────────────────────────────────── */
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── Search toggle ────────────────────────────────────────────────────── */
+    .search-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .search-toggle:hover { border-color: var(--amber); }
+
+    .search-toggle svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--amber);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-search-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+      background: rgba(8,11,16,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-search-bar.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-search-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      padding: 0;
+    }
+
+    .nav-search-bar input::placeholder { color: var(--muted); }
+
+    .search-close {
+      background: none;
+      border: 1px solid var(--border);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .search-close:hover { border-color: var(--amber); }
+
+    .search-close svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--amber);
+      fill: none;
+      stroke-width: 2;
+    }
+
     /* ── Hamburger button ──────────────────────────────────────────────────── */
     .hamburger {
       display: flex;
@@ -674,18 +766,27 @@
       <span class="status-dot"></span>
       COMING SOON
     </div>
-    <button class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <div class="nav-controls">
+      <button class="search-toggle" id="search-toggle-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-search-bar" id="nav-search-bar">
+      <input type="text" placeholder="Search glossary, threat actors, incidents..." id="menu-search" autocomplete="off" />
+      <button class="search-close" id="search-close-btn" aria-label="Close search">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
   </nav>
 
   <!-- Slide-out menu -->
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="menu-panel" id="menuPanel">
-    <input type="text" class="menu-search" placeholder="Search..." id="menuSearch">
-
     <div class="menu-label">Navigation</div>
     <nav class="menu-links">
       <a href="../index.html">Home</a>
@@ -1093,6 +1194,29 @@
       hamburger.classList.remove('open');
       menuPanel.classList.remove('open');
       menuOverlay.classList.remove('open');
+    });
+
+    // Search bar toggle functionality
+    const toggleBtn = document.getElementById('search-toggle-btn');
+    const closeBtn = document.getElementById('search-close-btn');
+    const searchBar = document.getElementById('nav-search-bar');
+    const searchInput = document.getElementById('menu-search');
+
+    function openSearch() {
+      searchBar.classList.add('open');
+      searchInput.focus();
+    }
+
+    function closeSearch() {
+      searchBar.classList.remove('open');
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+    }
+
+    toggleBtn.addEventListener('click', openSearch);
+    closeBtn.addEventListener('click', closeSearch);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && searchBar.classList.contains('open')) closeSearch();
     });
 
     // Search input event
