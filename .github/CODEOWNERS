@@ -1,0 +1,30 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  Threatpedia CODEOWNERS — Defines review requirements           ║
+# ╚══════════════════════════════════════════════════════════════════╝
+#
+# When a PR modifies files matching these patterns, the listed
+# owners are automatically requested as reviewers.
+#
+# Branch protection rule on `main` enforces at least 1 approval
+# from a CODEOWNERS-listed reviewer before merge.
+
+# ── New Incident Reports ──────────────────────────────────────────
+# All new or modified incident report HTML files require review
+incidents/*.html                        @MahdiHedhli
+
+# ── Threat Actor Pages ────────────────────────────────────────────
+# New or modified threat actor deep-dive pages require review
+threat-actors/*.html                    @MahdiHedhli
+
+# ── Governance & Configuration ────────────────────────────────────
+# Changes to site governance, contribution guidelines, or CI/CD
+GOVERNANCE.md                           @MahdiHedhli
+CONTRIBUTING.md                         @MahdiHedhli
+.github/                                @MahdiHedhli
+_config.yml                             @MahdiHedhli
+
+# ── Data Files ────────────────────────────────────────────────────
+# Manifest and index changes (these affect the entire site)
+incidents/manifest.json                 @MahdiHedhli
+threat-actor-index.json                 @MahdiHedhli
+task-state.json                         @MahdiHedhli

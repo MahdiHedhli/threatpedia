@@ -1,0 +1,166 @@
+# Auto-label and validate PRs containing incident reports or threat actor pages
+name: Incident Review Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+    paths:
+      - 'incidents/**'
+      - 'threat-actors/**'
+      - 'incidents/manifest.json'
+      - 'threat-actor-index.json'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect content type and auto-label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const labels = new Set();
+            let newIncidents = [];
+            let updatedIncidents = [];
+            let newActors = [];
+            let updatedActors = [];
+
+            for (const file of files) {
+              // New incident reports
+              if (file.filename.match(/^incidents\/.*\.html$/) && !file.filename.includes('index.html')) {
+                if (file.status === 'added') {
+                  labels.add('new-incident');
+                  labels.add('needs-review');
+                  newIncidents.push(file.filename);
+                } else if (file.status === 'modified') {
+                  labels.add('incident-update');
+                  updatedIncidents.push(file.filename);
+                }
+              }
+
+              // Threat actor pages
+              if (file.filename.match(/^threat-actors\/.*\.html$/) && !file.filename.includes('TEMPLATE')) {
+                if (file.status === 'added') {
+                  labels.add('new-threat-actor');
+                  labels.add('needs-review');
+                  newActors.push(file.filename);
+                } else if (file.status === 'modified') {
+                  labels.add('actor-update');
+                  updatedActors.push(file.filename);
+                }
+              }
+
+              // Manifest changes
+              if (file.filename === 'incidents/manifest.json') {
+                labels.add('manifest-change');
+              }
+
+              // Index changes
+              if (file.filename === 'threat-actor-index.json') {
+                labels.add('index-change');
+              }
+            }
+
+            // Check if auto-generated
+            const prBody = context.payload.pull_request.body || '';
+            if (prBody.includes('new-threat-intel') || prBody.includes('auto-generated')) {
+              labels.add('auto-generated');
+            }
+
+            // Apply labels
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: [...labels],
+              });
+            }
+
+            // Post summary comment
+            let summary = '## Incident Review Summary\n\n';
+            if (newIncidents.length > 0) {
+              summary += `### New Incident Reports (${newIncidents.length})\n`;
+              newIncidents.forEach(f => summary += `- \`${f}\`\n`);
+              summary += '\n';
+            }
+            if (updatedIncidents.length > 0) {
+              summary += `### Updated Incidents (${updatedIncidents.length})\n`;
+              updatedIncidents.forEach(f => summary += `- \`${f}\`\n`);
+              summary += '\n';
+            }
+            if (newActors.length > 0) {
+              summary += `### New Threat Actor Pages (${newActors.length})\n`;
+              newActors.forEach(f => summary += `- \`${f}\`\n`);
+              summary += '\n';
+            }
+            if (updatedActors.length > 0) {
+              summary += `### Updated Actors (${updatedActors.length})\n`;
+              updatedActors.forEach(f => summary += `- \`${f}\`\n`);
+              summary += '\n';
+            }
+
+            if (newIncidents.length > 0 || newActors.length > 0) {
+              summary += '> **Review required** — New content needs human approval before going live.\n';
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: summary,
+            });
+
+      - name: Validate incident report structure
+        if: contains(github.event.pull_request.labels.*.name, 'new-incident') || contains(github.event.pull_request.labels.*.name, 'incident-update')
+        run: |
+          echo "Validating incident report structure..."
+
+          # Check manifest.json is valid JSON
+          if [ -f incidents/manifest.json ]; then
+            python3 -c "import json; json.load(open('incidents/manifest.json'))" || {
+              echo "::error::incidents/manifest.json is not valid JSON"
+              exit 1
+            }
+            echo "✓ manifest.json is valid JSON"
+          fi
+
+          # Check threat-actor-index.json is valid JSON
+          if [ -f threat-actor-index.json ]; then
+            python3 -c "import json; json.load(open('threat-actor-index.json'))" || {
+              echo "::error::threat-actor-index.json is not valid JSON"
+              exit 1
+            }
+            echo "✓ threat-actor-index.json is valid JSON"
+          fi
+
+          # Check new incident HTML files have required meta tags
+          for file in $(git diff --name-only --diff-filter=A HEAD~1 -- 'incidents/*.html' | grep -v index.html); do
+            echo "Checking $file..."
+
+            if ! grep -q 'meta name="review-status"' "$file" 2>/dev/null; then
+              echo "::warning file=$file::Missing review-status meta tag"
+            fi
+
+            if ! grep -q 'incident-report.css' "$file" 2>/dev/null; then
+              echo "::warning file=$file::Not using shared incident-report.css"
+            fi
+
+            echo "✓ $file basic checks passed"
+          done
+
+          echo "Validation complete."
