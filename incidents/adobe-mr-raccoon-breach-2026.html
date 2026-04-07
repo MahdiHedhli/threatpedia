@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="review-status" content="pending">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-07T12:00:00Z">
+    <title>Adobe Customer Support Data Breach — Mr. Raccoon — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
+        }
+
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .meta-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .meta-value.threat-high {
+            color: #ffa500;
+        }
+
+        .meta-value.status-active {
+            color: #51cf66;
+        }
+
+        .severity-high {
+            color: #ffa500;
+            font-weight: 700;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.3px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-content p {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
+            color: var(--white);
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            background-color: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 32px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .attack-stage-title {
+            font-weight: 600;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-stage-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .attack-stage-content li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+        <article class="article-header">
+            <div class="container">
+            <h1 class="incident-title">Adobe Customer Support Data Breach — Mr. Raccoon</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0027</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Data Breach / Supply Chain Attack</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date Detected</span>
+                    <span class="meta-value">April 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value">Unconfirmed</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value severity-high">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution</span>
+                    <span class="meta-value">Mr. Raccoon</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Technology / Software</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+            </div>
+        </article>
+
+        <div class="container">
+        <div class="content-grid">
+            <main class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>In April 2026, a threat actor operating under the handle "Mr. Raccoon" published claims of a significant data breach affecting Adobe through a compromised Business Process Outsourcing (BPO) provider in India. The claim alleges access to approximately 13 million customer support tickets containing personally identifiable information (PII), approximately 15,000 Adobe employee records, complete HackerOne bug bounty submission archives, and internal corporate documents.</p>
+
+                        <p>The attack vector leveraged a Remote Access Trojan (RAT) deployed via spear-phishing email to a BPO employee, followed by lateral movement and privilege escalation to compromise the employee's manager. The attacker reportedly exploited an access control misconfiguration in Adobe's helpdesk infrastructure that permitted bulk export of all customer support tickets through a single API request using an agent account. Adobe has neither confirmed nor denied the breach as of April 7, 2026.</p>
+
+                        <p>vx-underground researchers examined samples and assessed the breach as appearing legitimate but potentially limited in scope to the helpdesk environment, with unclear scope regarding production systems and customer data repositories. The incident highlights supply chain risk in third-party customer support operations and the critical importance of access control segmentation in legacy helpdesk infrastructure.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">BPO Supply Chain Attack</h3>
+                        <p>Mr. Raccoon gained initial access through an Indian Business Process Outsourcing (BPO) firm contracted for Adobe's customer support operations. The attack began with a carefully crafted phishing email containing a malicious attachment that deployed a Remote Access Trojan (RAT) to the targeted BPO employee's workstation. Once the RAT was established, the attacker conducted reconnaissance and identified the victim's manager as a higher-value target with elevated helpdesk permissions.</p>
+
+                        <p>The attacker then executed spear-phishing attacks specifically targeting the BPO manager, successfully capturing credentials and Multi-Factor Authentication codes. This supply chain compromise is notable for exploiting the trust relationship between Adobe and its third-party support provider, a common vector in enterprise breaches where external vendors maintain significant access to sensitive infrastructure.</p>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Access Control Misconfiguration</h3>
+                        <p>Once authenticated as a manager account in the helpdesk system, the attacker discovered a critical access control flaw: the ability to export all customer support tickets in a single bulk request. This represents a significant failure in principle of least privilege — support agent accounts should be restricted to accessing only tickets assigned to them or their team, with bulk export functionality reserved for administrative roles subject to additional access controls and audit logging.</p>
+
+                        <p>The configuration error allowed the attacker to retrieve approximately 13 million support tickets via a single API call, each potentially containing sensitive PII including customer names, email addresses, phone numbers, and support interaction details that may reference security-sensitive issues or account information.</p>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Data Exfiltration</h3>
+                        <p>After successful bulk export of support tickets, the attacker leveraged the compromised account to access additional systems within the helpdesk environment, obtaining approximately 15,000 employee records, complete archives of HackerOne bug bounty submissions (potentially including vulnerability details and remediation timelines), and internal corporate documents. The data was exfiltrated over HTTPS connections, blending with legitimate support platform traffic and evading detection.</p>
+
+                        <div class="tech-box">
+                            <strong>Data Exfiltration Method:</strong> Standard HTTPS connections to cloud storage; likely stored initially in temporary staging areas before bulk download and transfer to attacker-controlled infrastructure. No evidence of advanced evasion techniques reported.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">MITRE ATT&CK Framework Mapping</h2>
+                    <div class="section-content">
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">T1566.001 — Phishing: Spearphishing Attachment</div>
+                                <div class="attack-stage-content">
+                                    Initial RAT deployment via malicious email attachment targeting BPO support employee. Subsequent spear-phishing attacks targeting BPO manager with credential harvesting intent.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">T1219 — Remote Access Tools</div>
+                                <div class="attack-stage-content">
+                                    Remote Access Trojan deployed to BPO employee workstation, providing persistent interactive access and enabling reconnaissance and lateral movement activities.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">T1078 — Valid Accounts</div>
+                                <div class="attack-stage-content">
+                                    Compromised BPO manager account credentials used to authenticate to helpdesk system with elevated permissions, enabling unauthorized data access and bulk export operations.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">T1530 — Data from Cloud Storage</div>
+                                <div class="attack-stage-content">
+                                    Bulk retrieval and exfiltration of customer support tickets, employee records, and internal documents from cloud-hosted helpdesk infrastructure. Represents unauthorized access to cloud-stored data assets.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">T1567 — Exfiltration Over Web Service</div>
+                                <div class="attack-stage-content">
+                                    Data transferred from Adobe helpdesk system to attacker-controlled infrastructure via HTTPS connections, disguised as legitimate support platform traffic.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Customer PII Exposure:</strong> Approximately 13 million customer support tickets potentially exposed, containing names, email addresses, phone numbers, and contextual information about customer issues. Represents significant identity theft risk and potential for social engineering attacks against exposed customers.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Employee Records:</strong> ~15,000 Adobe employee records compromised, including personnel information that enables targeted social engineering and credential harvesting campaigns against current and former staff.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>HackerOne Bug Bounty Archive:</strong> Complete submission history including vulnerability descriptions, remediation details, and exploitation potential information. May reveal security issues already known to Adobe but not yet disclosed or patched.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Internal Documents:</strong> Corporate communications, strategy documents, and operational details that may inform future targeted attacks against Adobe or its customers. Competitive intelligence value to threat actors and rival organizations.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Supply Chain Risk:</strong> Incident demonstrates vulnerability of third-party support providers and the importance of zero-trust security models in managing external vendor access. Organizations relying on this BPO firm may be at elevated risk.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Regulatory Exposure:</strong> GDPR, CCPA, and other privacy regulations may apply to exposed customer records. Adobe likely faces notification obligations and regulatory inquiry regardless of breach confirmation status.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Attack Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown (Weeks Prior)</div>
+                                <div class="timeline-title">Initial Reconnaissance</div>
+                                <div class="timeline-description">Threat actor conducts targeting and reconnaissance on Adobe BPO support operations, identifies personnel structure and access controls.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown Date</div>
+                                <div class="timeline-title">Malicious Email to BPO Employee</div>
+                                <div class="timeline-description">Spear-phishing email containing Remote Access Trojan (RAT) attachment sent to targeted BPO support employee. Employee opens attachment, RAT executed on workstation.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown Date</div>
+                                <div class="timeline-title">Lateral Movement & Privilege Escalation</div>
+                                <div class="timeline-description">Attacker conducts reconnaissance on compromised BPO network, identifies BPO manager account with elevated helpdesk permissions as escalation target.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown Date</div>
+                                <div class="timeline-title">Manager Credential Compromise</div>
+                                <div class="timeline-description">Spear-phishing attack targeting BPO manager yields credentials and MFA codes; attacker authenticates to helpdesk system as privileged user.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown Date</div>
+                                <div class="timeline-title">Bulk Ticket Export</div>
+                                <div class="timeline-description">Attacker discovers access control misconfiguration permitting bulk export of all customer support tickets via single API request. ~13 million tickets exported.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown Date</div>
+                                <div class="timeline-title">Additional Data Collection</div>
+                                <div class="timeline-description">Employee records (~15,000 records), HackerOne submission archives, and internal documents accessed and exfiltrated to attacker-controlled infrastructure.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 2026</div>
+                                <div class="timeline-title">Public Breach Announcement</div>
+                                <div class="timeline-description">Threat actor "Mr. Raccoon" publicly announces Adobe breach, publishes sample data and breach details. Media coverage and security researcher analysis begins.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 7, 2026</div>
+                                <div class="timeline-title">Status: Unconfirmed</div>
+                                <div class="timeline-description">Adobe has not confirmed or denied the breach. vx-underground researchers assess breach as potentially legitimate but possibly limited to helpdesk environment.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Remediation & Lessons Learned</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Principle of Least Privilege:</strong> Support agent accounts must be restricted to accessing only assigned tickets or team-level data. Bulk export functionality should require administrative approval, multi-factor authentication, and comprehensive audit logging. Access control review should be prioritized in all third-party support environments.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Third-Party Risk Management:</strong> BPO and external support providers require the same security posture as internal teams. Regular penetration testing, phishing simulations, and endpoint security assessments should be contractual requirements. Zero-trust architectures should be implemented for third-party access.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Endpoint Protection:</strong> RAT delivery via phishing email should be blocked through advanced email filtering, sandboxing, and endpoint detection and response (EDR) solutions. BPO environments in particular require robust EDR and behavior monitoring.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>MFA Hardening:</strong> BPO employee credentials were compromised and MFA codes obtained through phishing. Organizations should implement FIDO2 authentication or push-based MFA that cannot be trivially harvested through social engineering.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Data Minimization:</strong> Historical support ticket retention policies should reflect regulatory and business requirements, not default indefinite retention. Older tickets with expired personal data should be purged to minimize blast radius of future breaches.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Audit Logging & Detection:</strong> Bulk data export operations should trigger immediate security alerts. API call patterns, export volumes, and unusual access patterns require real-time monitoring and incident response procedures.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Threat Intelligence:</strong> Monitor for Mr. Raccoon listings on dark web marketplaces and underground forums. Engage law enforcement and industry ISACs for coordinated response. Prepare customer notification and regulatory filing strategies.
+                        </div>
+                    </div>
+                </section>
+
+                <div class="references">
+                    <h3 class="references-title">Sources & References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <a href="https://thecybersecguru.com/news/adobe-data-breach-2026/">The Cybersec Guru — Adobe Data Breach 2026: Mr. Raccoon Claims Breach via BPO Provider</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <a href="https://securityonline.info/adobe-data-breach-mr-raccoon-bpo-supply-chain-leak/">Security Online — Adobe Data Breach: Mr. Raccoon BPO Supply Chain Leak</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <a href="https://cybersecuritynews.com/adobe-breach/">Cybersecurity News — Adobe Customer Support Breach Investigation</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <a href="https://cybernews.com/security/threat-actor-claims-adobe-data-theft/">Cybernews — Threat Actor Claims Adobe Data Theft in Supply Chain Attack</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="shiny-hunters-leak-site.html" class="sidebar-link">ShinyHunters Data Extortion Operations</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <div style="padding: 8px 0;">Unconfirmed breach affecting 13M+ customer support records with PII</div>
+                        <div style="padding: 8px 0;">Supply chain compromise through Indian BPO support provider</div>
+                        <div style="padding: 8px 0;">Critical access control misconfiguration enabled bulk data export</div>
+                        <div style="padding: 8px 0;">RAT deployment + spear-phishing for credential compromise</div>
+                        <div style="padding: 8px 0;">HackerOne bug bounty archive and employee records exposed</div>
+                        <div style="padding: 8px 0;">Adobe has not confirmed or denied breach status as of April 7, 2026</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+</html>
