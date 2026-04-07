@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0a0a0a"/>
+  <!-- Left border (grey) -->
+  <polyline points="256,504 8,504 8,8 256,8" fill="none" stroke="#5a697e" stroke-width="4" stroke-miterlimit="10"/>
+  <!-- Right border (amber) -->
+  <polyline points="256,8 504,8 504,504 256,504" fill="none" stroke="#e8a021" stroke-width="4" stroke-miterlimit="10"/>
+  <!-- T letterform (amber) -->
+  <path d="M153.93,136.42v281.25h-37.8V136.42l-94.92-.02-.05-32.79h227.58v32.66l-94.81.15Z" fill="#e8a021"/>
+  <!-- P letterform (grey) — outer shape -->
+  <path d="M253,103.61 L400,103.61 C442,103.61 468,136 468,188 C468,240 442,272 400,272 L290.8,272 L290.8,417.67 L253,417.67 Z M290.8,136.4 L392,136.4 C422,136.4 434,156 434,188 C434,220 422,239.6 392,239.6 L290.8,239.6 Z" fill="#5a697e" fill-rule="evenodd"/>
+</svg>

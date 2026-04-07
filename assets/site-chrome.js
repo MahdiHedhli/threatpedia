@@ -76,13 +76,7 @@
     headerEl.innerHTML =
       '<nav>' +
         '<a class="nav-logo" href="' + base + 'index.html">' +
-        '<svg class="nav-logo-icon" viewBox="0 0 120 120" width="32" height="32" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect width="120" height="120" rx="8" fill="#0a0a0a"/>' +
-          '<rect x="2.5" y="2.5" width="115" height="115" rx="6" fill="none" stroke="#1e2733" stroke-width="2"/>' +
-          '<line x1="94" y1="3" x2="94" y2="117" stroke="#e8a020" stroke-width="2.5" opacity="0.5"/>' +
-          '<path d="M16,24 L56,24 L56,34 L41,34 L41,96 L31,96 L31,34 L16,34 Z" fill="#e8a020"/>' +
-          '<path d="M58,24 L82,24 Q100,24 100,44 Q100,62 82,62 L68,62 L68,96 L58,96 Z M68,34 L68,52 L80,52 Q88,52 88,43 Q88,34 80,34 Z" fill="#5a6a7e"/>' +
-        '</svg>' +
+        '<img class="nav-logo-icon" src="' + base + 'assets/tp-logo.svg" alt="TP" width="32" height="32">' +
         '<span class="nav-logo-text">Threat<span>pedia</span></span>' +
       '</a>' +
         '<div class="nav-status">' +
