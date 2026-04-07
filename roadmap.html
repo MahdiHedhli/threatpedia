@@ -330,10 +330,10 @@
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 1 &mdash; 35%</span>
+        <span>Phase 1 &mdash; 45%</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" style="width: 35%"></div>
+        <div class="progress-fill" style="width: 45%"></div>
       </div>
     </div>
 
@@ -362,9 +362,9 @@
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Cybersecurity Glossary</div>
-          <div class="item-desc">718 terms with definitions, cross-references, and framework mappings. Searchable and browsable.</div>
+          <div class="item-desc">1,006 terms with definitions, cross-references, and framework mappings. Searchable and browsable with 10-role taxonomy filters.</div>
           <div class="item-meta">
-            <span class="item-tag">718 terms</span>
+            <span class="item-tag">1,006 terms</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -374,9 +374,10 @@
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Threat Actor Registry</div>
-          <div class="item-desc">224 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history.</div>
+          <div class="item-desc">78 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. 224 alias keys for cross-referencing.</div>
           <div class="item-meta">
-            <span class="item-tag">224 actors</span>
+            <span class="item-tag">78 actors</span>
+            <span class="item-tag">224 aliases</span>
             <span class="item-tag">filterable</span>
             <span class="item-tag">live</span>
           </div>
@@ -387,9 +388,9 @@
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">Documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis.</div>
+          <div class="item-desc">16 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 2 approved, 14 pending review.</div>
           <div class="item-meta">
-            <span class="item-tag">11 reports</span>
+            <span class="item-tag">16 reports</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -432,9 +433,9 @@
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Threat Actor Detail Pages</div>
-          <div class="item-desc">Individual deep-dive pages for each of the 224 tracked threat actors. APT29 is live as the template; batch generation underway.</div>
+          <div class="item-desc">Individual deep-dive pages for each of the 78 tracked threat actors. 16 detail pages live; batch generation underway.</div>
           <div class="item-meta">
-            <span class="item-tag">1 / 224 complete</span>
+            <span class="item-tag">16 / 78 complete</span>
             <span class="item-tag">batch generation</span>
           </div>
         </div>
@@ -444,10 +445,10 @@
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Automated Incident Ingestion</div>
-          <div class="item-desc">Scheduled scrapers and threat intel feeds running 2x daily, automatically generating and updating incident reports from multiple sources.</div>
+          <div class="item-desc">6 scrapers built (CISA KEV, HIBP, VCDB, NIST NVD, CVE MITRE, MISP). Threat intel feeds running 2x daily; scrapers on daily weekday schedule. 3 more specs ready to build.</div>
           <div class="item-meta">
-            <span class="item-tag">scheduled agents</span>
-            <span class="item-tag">2x daily</span>
+            <span class="item-tag">6 scrapers live</span>
+            <span class="item-tag">2x daily intel</span>
           </div>
         </div>
       </div>
@@ -456,19 +457,19 @@
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">External Data Source Integration</div>
-          <div class="item-desc">Staged ingestion of CISSM Cyber Events Database (16,500+ historical records) and other authoritative sources for enrichment.</div>
+          <div class="item-desc">CISSM Cyber Events Database staged (16,532 records, 2014–2026). 233 sources catalogued across 16 categories. Awaiting web stack for full ingestion.</div>
           <div class="item-meta">
-            <span class="item-tag">CISSM 16.5K records</span>
-            <span class="item-tag">incremental</span>
+            <span class="item-tag">CISSM 16.5K staged</span>
+            <span class="item-tag">233 sources catalogued</span>
           </div>
         </div>
       </div>
 
       <div class="item">
-        <div class="item-status todo">&#9675;</div>
+        <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Glossary-to-Report Linking</div>
-          <div class="item-desc">Automatic cross-linking between glossary terms and incident reports. Client-side matching with hover previews.</div>
+          <div class="item-desc">Pipeline active: incident reports feed glossary-candidates.json → glossary updater processes terms → glossary-tooltips.js renders in reports. Tooltip module pending deployment.</div>
           <div class="item-meta">
             <span class="item-tag">client-side</span>
             <span class="item-tag">hover previews</span>
@@ -477,10 +478,10 @@
       </div>
 
       <div class="item">
-        <div class="item-status todo">&#9675;</div>
+        <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Source Expansion Pipeline</div>
-          <div class="item-desc">Monthly automated discovery and evaluation of new data sources, feeds, and databases for continuous coverage growth.</div>
+          <div class="item-desc">Running monthly. 233 sources catalogued across 16 categories. 9 / 34 deep-dive specs completed (Phase 1 done, Phase 2 in progress).</div>
           <div class="item-meta">
             <span class="item-tag">monthly</span>
             <span class="item-tag">automated</span>
@@ -588,7 +589,7 @@
     </div>
 
     <div class="last-updated">
-      Last updated: April 6, 2026 &mdash; This roadmap is a living document and subject to change.
+      Last updated: April 7, 2026 &mdash; This roadmap is a living document and subject to change.
     </div>
   </div>
 
