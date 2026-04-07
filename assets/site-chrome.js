@@ -28,7 +28,7 @@
     'nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(8,11,16,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}' +
     '@media(min-width:768px){nav{padding:20px 48px}}' +
     '.nav-logo{display:flex;align-items:center;text-decoration:none;gap:10px;flex-shrink:0}' +
-    '.nav-logo-icon{width:32px;height:32px;border-radius:4px;flex-shrink:0}' +
+    '.nav-logo-icon{width:32px;height:32px;max-width:32px;max-height:32px;flex-shrink:0;display:block}' +
     '.nav-logo-text{font-family:"IBM Plex Mono",monospace;font-size:0.85rem;letter-spacing:0.22em;color:var(--amber);text-transform:uppercase}' +
     '.nav-logo-text span{color:var(--muted)}' +
     '@media(max-width:767px){.nav-logo-text{display:none}}' +
@@ -76,7 +76,7 @@
     headerEl.innerHTML =
       '<nav>' +
         '<a class="nav-logo" href="' + base + 'index.html">' +
-        '<img class="nav-logo-icon" src="' + base + 'assets/tp-logo.svg" alt="TP" width="32" height="32">' +
+        '<img class="nav-logo-icon" src="' + base + 'assets/tp-logo.svg" alt="TP" width="32" height="32" style="width:32px;height:32px;max-width:32px;max-height:32px">' +
         '<span class="nav-logo-text">Threat<span>pedia</span></span>' +
       '</a>' +
         '<div class="nav-status">' +
