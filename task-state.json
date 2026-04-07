@@ -87,9 +87,9 @@
       "phasesInProgress": ["Phase 2 (2/9)"]
     },
     "buildScrapers": {
-      "scrapersBuilt": ["nist-nvd"],
-      "specsReadyToBuild": ["cisa-kev", "hibp", "vcdb", "cve-mitre", "misp", "mitre-attack", "hhs-ocr", "eu-gdpr-enforcement-tracker"],
-      "lastRunDate": "2026-04-05",
+      "scrapersBuilt": ["cisa-kev", "hibp", "vcdb", "nist-nvd", "cve-mitre", "misp"],
+      "specsReadyToBuild": ["mitre-attack", "hhs-ocr", "eu-gdpr-enforcement-tracker"],
+      "lastRunDate": "2026-04-07",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
@@ -100,11 +100,13 @@
       "lastNewReportDate": "2026-04-06"
     },
     "glossary": {
-      "totalTerms": 246,
+      "totalTerms": 1006,
       "rolesTaxonomy": ["ciso", "soc", "threat-hunter", "ir-forensics", "pentest-red", "grc", "cloud-sec", "appsec-devsecops", "threat-intel", "network-infra"],
       "lastRunDate": "2026-04-06",
-      "pendingBulkAggregation": true,
-      "pendingTooltipModule": true
+      "pendingBulkAggregation": false,
+      "pendingTooltipModule": true,
+      "bulkAggregationCompleted": "2026-04-06",
+      "sources": ["NICCS/CISA", "SANS", "Allot", "Huntress", "Threatpedia"]
     },
     "glossaryPipeline": {
       "flow": "daily-incident-updater discovers candidates → glossary-candidates.json → glossary-term-updater processes and adds to glossary → glossary-index.json → glossary-tooltips.js renders in reports",
@@ -146,7 +148,7 @@
     "daily-incident-updater": {
       "locked": false,
       "lockedAt": null,
-      "lastCompleted": "2026-04-06T12:30:00Z"
+      "lastCompleted": "2026-04-07T13:00:00Z"
     },
     "new-threat-intel": {
       "locked": false,
