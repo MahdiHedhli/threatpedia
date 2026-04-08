@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-07T20:00:00Z",
+  "lastUpdated": "2026-04-08T09:00:00Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
   "incidents": [
@@ -17,8 +17,18 @@
       "cves": [],
       "reviewStatus": "approved",
       "generatedBy": null,
-      "relatedSlugs": ["teampcp-supply-chain-attack", "european-commission-trivy-breach-2026", "trivy-cve-2026-33634"],
-      "tags": ["npm", "north-korea", "open-source", "rat", "supply-chain"]
+      "relatedSlugs": [
+        "teampcp-supply-chain-attack",
+        "european-commission-trivy-breach-2026",
+        "trivy-cve-2026-33634"
+      ],
+      "tags": [
+        "npm",
+        "north-korea",
+        "open-source",
+        "rat",
+        "supply-chain"
+      ]
     },
     {
       "slug": "teampcp-supply-chain-attack",
@@ -31,11 +41,31 @@
       "geography": "Global",
       "date": "2026-02-28",
       "severity": "Critical",
-      "cves": ["CVE-2026-33634"],
+      "cves": [
+        "CVE-2026-33634"
+      ],
       "reviewStatus": "approved",
       "generatedBy": null,
-      "relatedSlugs": ["axios-unc1069-compromise", "european-commission-trivy-breach-2026", "trivy-cve-2026-33634", "shiny-hunters-leak-site"],
-      "tags": ["github-actions", "pypi", "supply-chain", "cicd", "credential-theft", "litellm", "telnyx", "kics", "docker-hub", "openvsx", "canisterworm", "cisa-kev"]
+      "relatedSlugs": [
+        "axios-unc1069-compromise",
+        "european-commission-trivy-breach-2026",
+        "trivy-cve-2026-33634",
+        "shiny-hunters-leak-site"
+      ],
+      "tags": [
+        "github-actions",
+        "pypi",
+        "supply-chain",
+        "cicd",
+        "credential-theft",
+        "litellm",
+        "telnyx",
+        "kics",
+        "docker-hub",
+        "openvsx",
+        "canisterworm",
+        "cisa-kev"
+      ]
     },
     {
       "slug": "european-commission-trivy-breach-2026",
@@ -48,11 +78,25 @@
       "geography": "EU (Brussels & Multi-State)",
       "date": "2026-03-19",
       "severity": "Critical",
-      "cves": ["CVE-2026-33634"],
+      "cves": [
+        "CVE-2026-33634"
+      ],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["teampcp-supply-chain-attack", "axios-unc1069-compromise", "trivy-cve-2026-33634", "shiny-hunters-leak-site"],
-      "tags": ["trivy", "cloud", "government", "eu", "data-exfiltration", "shinyhunters"]
+      "relatedSlugs": [
+        "teampcp-supply-chain-attack",
+        "axios-unc1069-compromise",
+        "trivy-cve-2026-33634",
+        "shiny-hunters-leak-site"
+      ],
+      "tags": [
+        "trivy",
+        "cloud",
+        "government",
+        "eu",
+        "data-exfiltration",
+        "shinyhunters"
+      ]
     },
     {
       "slug": "vivaticket-ransomhouse-2026",
@@ -68,14 +112,23 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["cegedim-sante-health-breach-2026"],
-      "tags": ["ransomware", "ransomhouse", "ticketing", "europe", "louvre", "anssi"]
+      "relatedSlugs": [
+        "cegedim-sante-health-breach-2026"
+      ],
+      "tags": [
+        "ransomware",
+        "ransomhouse",
+        "ticketing",
+        "europe",
+        "louvre",
+        "anssi"
+      ]
     },
     {
       "slug": "cegedim-sante-health-breach-2026",
       "incidentId": null,
-      "title": "Cegedim Santé Healthcare Data Breach",
-      "org": "Cegedim Santé",
+      "title": "Cegedim Sant\u00e9 Healthcare Data Breach",
+      "org": "Cegedim Sant\u00e9",
       "attackType": "data-breach",
       "threatActor": "Unknown",
       "sector": "Healthcare",
@@ -85,8 +138,17 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["vivaticket-ransomhouse-2026", "stryker-handala-wiper-2026"],
-      "tags": ["healthcare", "pii", "france", "social-security", "medical-records"]
+      "relatedSlugs": [
+        "vivaticket-ransomhouse-2026",
+        "stryker-handala-wiper-2026"
+      ],
+      "tags": [
+        "healthcare",
+        "pii",
+        "france",
+        "social-security",
+        "medical-records"
+      ]
     },
     {
       "slug": "stryker-handala-wiper-2026",
@@ -102,8 +164,18 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["cegedim-sante-health-breach-2026"],
-      "tags": ["wiper", "iran", "medical-devices", "destructive", "mdm", "handala", "intune"]
+      "relatedSlugs": [
+        "cegedim-sante-health-breach-2026"
+      ],
+      "tags": [
+        "wiper",
+        "iran",
+        "medical-devices",
+        "destructive",
+        "mdm",
+        "handala",
+        "intune"
+      ]
     },
     {
       "slug": "drift-protocol-dprk-exploit-2026",
@@ -119,8 +191,21 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["axios-unc1069-compromise", "teampcp-supply-chain-attack"],
-      "tags": ["defi", "crypto", "north-korea", "oracle-manipulation", "solana", "lazarus", "unc4736", "durable-nonce", "social-engineering"]
+      "relatedSlugs": [
+        "axios-unc1069-compromise",
+        "teampcp-supply-chain-attack"
+      ],
+      "tags": [
+        "defi",
+        "crypto",
+        "north-korea",
+        "oracle-manipulation",
+        "solana",
+        "lazarus",
+        "unc4736",
+        "durable-nonce",
+        "social-engineering"
+      ]
     },
     {
       "slug": "foster-city-ransomware-2026",
@@ -137,7 +222,13 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [],
-      "tags": ["ransomware", "municipal", "government", "state-of-emergency", "california"]
+      "tags": [
+        "ransomware",
+        "municipal",
+        "government",
+        "state-of-emergency",
+        "california"
+      ]
     },
     {
       "slug": "die-linke-qilin-ransomware-2026",
@@ -154,12 +245,18 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [],
-      "tags": ["ransomware", "qilin", "political-party", "germany", "data-exfiltration"]
+      "tags": [
+        "ransomware",
+        "qilin",
+        "political-party",
+        "germany",
+        "data-exfiltration"
+      ]
     },
     {
       "slug": "trivy-cve-2026-33634",
       "incidentId": "TP-2026-0024",
-      "title": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
+      "title": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
       "org": "Aqua Security (Trivy)",
       "attackType": "supply-chain",
       "threatActor": "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
@@ -167,11 +264,25 @@
       "geography": "Global",
       "date": "2026-03-19",
       "severity": "Critical",
-      "cves": ["CVE-2026-33634"],
+      "cves": [
+        "CVE-2026-33634"
+      ],
       "reviewStatus": "pending",
       "generatedBy": "incident-crosslink-gapfill",
-      "relatedSlugs": ["european-commission-trivy-breach-2026", "teampcp-supply-chain-attack", "axios-unc1069-compromise"],
-      "tags": ["trivy", "github-actions", "supply-chain", "cve", "infostealer", "cicd", "cisa-kev"]
+      "relatedSlugs": [
+        "european-commission-trivy-breach-2026",
+        "teampcp-supply-chain-attack",
+        "axios-unc1069-compromise"
+      ],
+      "tags": [
+        "trivy",
+        "github-actions",
+        "supply-chain",
+        "cve",
+        "infostealer",
+        "cicd",
+        "cisa-kev"
+      ]
     },
     {
       "slug": "shiny-hunters-leak-site",
@@ -187,8 +298,19 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "incident-crosslink-gapfill",
-      "relatedSlugs": ["european-commission-trivy-breach-2026", "trivy-cve-2026-33634"],
-      "tags": ["shinyhunters", "data-leak-site", "extortion", "vishing", "saas", "salesforce", "snowflake"]
+      "relatedSlugs": [
+        "european-commission-trivy-breach-2026",
+        "trivy-cve-2026-33634"
+      ],
+      "tags": [
+        "shinyhunters",
+        "data-leak-site",
+        "extortion",
+        "vishing",
+        "saas",
+        "salesforce",
+        "snowflake"
+      ]
     },
     {
       "slug": "fbi-dcsnet-salt-typhoon-2026",
@@ -204,8 +326,20 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["axios-unc1069-compromise"],
-      "tags": ["espionage", "china", "salt-typhoon", "surveillance", "fisma", "dcsnet", "wiretap", "supply-chain", "law-enforcement"]
+      "relatedSlugs": [
+        "axios-unc1069-compromise"
+      ],
+      "tags": [
+        "espionage",
+        "china",
+        "salt-typhoon",
+        "surveillance",
+        "fisma",
+        "dcsnet",
+        "wiretap",
+        "supply-chain",
+        "law-enforcement"
+      ]
     },
     {
       "slug": "lexisnexis-react2shell-breach-2026",
@@ -222,7 +356,16 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [],
-      "tags": ["cloud", "aws", "react2shell", "data-breach", "legal", "government", "secrets-exposure", "fulcrumsec"]
+      "tags": [
+        "cloud",
+        "aws",
+        "react2shell",
+        "data-breach",
+        "legal",
+        "government",
+        "secrets-exposure",
+        "fulcrumsec"
+      ]
     },
     {
       "slug": "adobe-mr-raccoon-breach-2026",
@@ -238,8 +381,19 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["shiny-hunters-leak-site"],
-      "tags": ["data-breach", "bpo", "supply-chain", "rat", "spearphishing", "hackerone", "support-tickets", "adobe"]
+      "relatedSlugs": [
+        "shiny-hunters-leak-site"
+      ],
+      "tags": [
+        "data-breach",
+        "bpo",
+        "supply-chain",
+        "rat",
+        "spearphishing",
+        "hackerone",
+        "support-tickets",
+        "adobe"
+      ]
     },
     {
       "slug": "conduent-data-breach-2026",
@@ -256,7 +410,17 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [],
-      "tags": ["data-breach", "healthcare", "government-services", "bpo", "ssn", "medical-data", "texas", "oregon", "largest-breach"]
+      "tags": [
+        "data-breach",
+        "healthcare",
+        "government-services",
+        "bpo",
+        "ssn",
+        "medical-data",
+        "texas",
+        "oregon",
+        "largest-breach"
+      ]
     },
     {
       "slug": "hims-hers-shinyhunters-breach-2026",
@@ -272,8 +436,18 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": ["shiny-hunters-leak-site"],
-      "tags": ["data-breach", "telehealth", "zendesk", "okta", "shinyhunters", "support-tickets", "healthcare"]
+      "relatedSlugs": [
+        "shiny-hunters-leak-site"
+      ],
+      "tags": [
+        "data-breach",
+        "telehealth",
+        "zendesk",
+        "okta",
+        "shinyhunters",
+        "support-tickets",
+        "healthcare"
+      ]
     },
     {
       "slug": "forticlient-ems-cve-2026-35616",
@@ -286,11 +460,24 @@
       "geography": "Global",
       "date": "2026-04-05",
       "severity": "Critical",
-      "cves": ["CVE-2026-35616"],
+      "cves": [
+        "CVE-2026-35616"
+      ],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
-      "relatedSlugs": ["chrome-cve-2026-5281-zero-day"],
-      "tags": ["zero-day", "fortinet", "forticlient-ems", "rce", "cisa-kev", "pre-auth", "api-bypass", "cwe-284"]
+      "relatedSlugs": [
+        "chrome-cve-2026-5281-zero-day"
+      ],
+      "tags": [
+        "zero-day",
+        "fortinet",
+        "forticlient-ems",
+        "rce",
+        "cisa-kev",
+        "pre-auth",
+        "api-bypass",
+        "cwe-284"
+      ]
     },
     {
       "slug": "m365-oauth-device-code-phishing-2026",
@@ -307,7 +494,18 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
       "relatedSlugs": [],
-      "tags": ["phishing", "oauth", "device-code", "mfa-bypass", "token-theft", "microsoft-365", "phaas", "credential-theft", "railway", "cloudflare-workers"]
+      "tags": [
+        "phishing",
+        "oauth",
+        "device-code",
+        "mfa-bypass",
+        "token-theft",
+        "microsoft-365",
+        "phaas",
+        "credential-theft",
+        "railway",
+        "cloudflare-workers"
+      ]
     },
     {
       "slug": "carecloud-healthcare-breach-2026",
@@ -323,8 +521,17 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
-      "relatedSlugs": ["cegedim-sante-health-breach-2026"],
-      "tags": ["healthcare", "ehr", "data-breach", "patient-records", "hipaa", "sec-disclosure"]
+      "relatedSlugs": [
+        "cegedim-sante-health-breach-2026"
+      ],
+      "tags": [
+        "healthcare",
+        "ehr",
+        "data-breach",
+        "patient-records",
+        "hipaa",
+        "sec-disclosure"
+      ]
     },
     {
       "slug": "passaic-county-medusa-ransomware-2026",
@@ -340,13 +547,24 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
-      "relatedSlugs": ["foster-city-ransomware-2026", "die-linke-qilin-ransomware-2026"],
-      "tags": ["ransomware", "medusa", "government", "municipal", "double-extortion", "new-jersey", "zero-day"]
+      "relatedSlugs": [
+        "foster-city-ransomware-2026",
+        "die-linke-qilin-ransomware-2026"
+      ],
+      "tags": [
+        "ransomware",
+        "medusa",
+        "government",
+        "municipal",
+        "double-extortion",
+        "new-jersey",
+        "zero-day"
+      ]
     },
     {
       "slug": "chrome-cve-2026-5281-zero-day",
       "incidentId": "TP-2026-0034",
-      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) — Fourth Actively Exploited in 2026",
+      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) \u2014 Fourth Actively Exploited in 2026",
       "org": "Google (Chrome)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
@@ -354,11 +572,24 @@
       "geography": "Global",
       "date": "2026-04-01",
       "severity": "High",
-      "cves": ["CVE-2026-5281"],
+      "cves": [
+        "CVE-2026-5281"
+      ],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
-      "relatedSlugs": ["forticlient-ems-cve-2026-35616"],
-      "tags": ["zero-day", "chrome", "webgpu", "use-after-free", "cisa-kev", "browser", "dawn", "drive-by"]
+      "relatedSlugs": [
+        "forticlient-ems-cve-2026-35616"
+      ],
+      "tags": [
+        "zero-day",
+        "chrome",
+        "webgpu",
+        "use-after-free",
+        "cisa-kev",
+        "browser",
+        "dawn",
+        "drive-by"
+      ]
     },
     {
       "slug": "frostarmada-soho-dns-hijacking-2026",
@@ -371,18 +602,60 @@
       "geography": "Global (120 countries)",
       "date": "2026-04-07",
       "severity": "High",
-      "cves": ["CVE-2023-50224"],
+      "cves": [
+        "CVE-2023-50224"
+      ],
       "reviewStatus": "pending",
       "generatedBy": "manual-intel-extraction",
-      "relatedSlugs": ["fbi-dcsnet-salt-typhoon-2026", "m365-oauth-device-code-phishing-2026"],
-      "tags": ["dns-hijacking", "aitm", "soho-router", "apt28", "forest-blizzard", "gru", "russia", "credential-theft", "oauth-token-theft", "tp-link", "mikrotik", "nation-state", "fbi-takedown"]
-    }
-  ],
-  "referencedButMissing": [
+      "relatedSlugs": [
+        "fbi-dcsnet-salt-typhoon-2026",
+        "m365-oauth-device-code-phishing-2026"
+      ],
+      "tags": [
+        "dns-hijacking",
+        "aitm",
+        "soho-router",
+        "apt28",
+        "forest-blizzard",
+        "gru",
+        "russia",
+        "credential-theft",
+        "oauth-token-theft",
+        "tp-link",
+        "mikrotik",
+        "nation-state",
+        "fbi-takedown"
+      ]
+    },
     {
       "slug": "ransomhouse-operations",
-      "referencedFrom": ["vivaticket-ransomhouse-2026"],
-      "suggestedTitle": "RansomHouse Ransomware Group — Operations & Campaigns"
+      "incidentId": "TP-TA-0009",
+      "title": "RansomHouse Ransomware Group \u2014 Operations & Campaigns",
+      "org": "RansomHouse (Threat Actor Profile)",
+      "attackType": "data-extortion",
+      "threatActor": "RansomHouse / Jolly Scorpius",
+      "sector": "Multi-Sector",
+      "geography": "Global",
+      "date": "2021-12-01",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "incident-crosslink-gapfill",
+      "relatedSlugs": [
+        "vivaticket-ransomhouse-2026",
+        "cegedim-sante-health-breach-2026"
+      ],
+      "tags": [
+        "ransomhouse",
+        "data-extortion",
+        "raas",
+        "mariolocker",
+        "mragent",
+        "double-extortion",
+        "esxi",
+        "jolly-scorpius"
+      ]
     }
-  ]
+  ],
+  "referencedButMissing": []
 }
