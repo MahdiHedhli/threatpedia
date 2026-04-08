@@ -40,4 +40,4 @@ When contribution guidelines are formalized, they will cover:
 
 To discuss involvement or ask questions about the project, reach out via [threatpedia.wiki](https://threatpedia.wiki).
 
-*Last updated: March 2026*
+*Last updated: April 2026*
