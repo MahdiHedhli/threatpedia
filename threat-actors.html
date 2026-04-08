@@ -1740,7 +1740,12 @@
                     <td style="font-family: 'IBM Plex Mono', monospace; color: var(--amber-dim);">${actor.lastSeen || 'Unknown'}</td>
                     <td><span class="status ${actor.status.toLowerCase()}">${actor.status}</span></td>
                 `;
-                if (pageUrl) row.style.cursor = 'pointer';
+                if (pageUrl) {
+                    row.style.cursor = 'pointer';
+                    row.addEventListener('click', (e) => {
+                        if (e.target.tagName !== 'A') window.location.href = pageUrl;
+                    });
+                }
                 tbody.appendChild(row);
             });
         }
