@@ -326,7 +326,7 @@ class MITREAttackConnector(ThreatpediaConnector):
     def lookup(self, attack_id: str) -> Optional[dict]:
         """Look up an object by ATT&CK ID (e.g., T1566, G0016, S0154).
 
-        Searches the loaded index first, falls back to TAXII if not loaded.
+        Searches the loaded index first.
         Returns a normalized enrichment dict.
         """
         # Search loaded index
@@ -335,7 +335,7 @@ class MITREAttackConnector(ThreatpediaConnector):
                 return self._normalize_enrichment(obj)
 
         self.logger.info(
-            "ATT&CK ID %s not in local index; attempting TAXII lookup...", attack_id
+            "ATT&CK ID not found in local index. TAXII lookup by ATT&CK ID is not currently supported."
         )
         # Can't do a TAXII lookup by ATT&CK ID directly — would need full collection
         # Return None if not found in local index
@@ -394,7 +394,7 @@ class MITREAttackConnector(ThreatpediaConnector):
             "stix_id": obj.get("id"),
             "stix_type": obj_type,
             "name": obj.get("name"),
-            "description": (obj.get("description") or "")[:500],  # truncate for storage
+            "description": obj.get("description") or "",
             "created": obj.get("created"),
             "modified": obj.get("modified"),
             "revoked": obj.get("revoked", False),
@@ -424,7 +424,7 @@ class MITREAttackConnector(ThreatpediaConnector):
                 ],
                 "platforms": obj.get("x_mitre_platforms", []),
                 "is_subtechnique": obj.get("x_mitre_is_subtechnique", False),
-                "detection": (obj.get("x_mitre_detection") or "")[:300],
+                "detection": obj.get("x_mitre_detection") or "",
                 "data_sources": obj.get("x_mitre_data_sources", []),
                 "cves": extract_cves(obj),
                 "mitre_version": obj.get("x_mitre_version"),
@@ -747,7 +747,7 @@ def main() -> None:
     # --- Lookup mode ---
     if args.mode == "lookup" and args.lookup_id:
         # Need to load data first for lookup
-        connector.run(mode="full")
+        connector.fetch_all()
         result = connector.lookup(args.lookup_id)
         if result:
             print(json.dumps(result, indent=2, default=str))
@@ -758,7 +758,7 @@ def main() -> None:
 
     # --- Group techniques query ---
     if args.group_techniques:
-        connector.run(mode="full")
+        connector.fetch_all()
         techniques = connector.get_group_techniques(args.group_techniques)
         print(f"\nTechniques used by {args.group_techniques}:")
         print(f"{'=' * 60}")
@@ -769,7 +769,7 @@ def main() -> None:
 
     # --- Technique groups query ---
     if args.technique_groups:
-        connector.run(mode="full")
+        connector.fetch_all()
         groups = connector.get_technique_groups(args.technique_groups)
         print(f"\nGroups using {args.technique_groups}:")
         print(f"{'=' * 60}")
