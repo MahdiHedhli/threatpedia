@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BlueHammer: Unpatched Windows Defender LPE zero-day (TP-EXP-0001). TOCTOU + Path Confusion chain escalates low-privileged users to SYSTEM on fully patched Windows 10/11.">
+    <meta name="keywords" content="BlueHammer, Windows LPE, TOCTOU, VSS Abuse, Windows Defender, Zero-Day, Public PoC, Unpatched">
+    <meta name="review-status" content="approved">
+    <meta name="generated-by" content="manual-zero-day-ingestion">
+    <meta name="generated-date" content="2026-04-08T12:00:00Z">
+    <title>BlueHammer: Windows Defender LPE Zero-Day (TP-EXP-0001) - Threatpedia</title>
+    <script src="../assets/analytics.js"></script>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+            --red: #ff4d4d;
+            --red-dim: #3d1515;
+            --green: #3fb950;
+            --blue: #58a6ff;
+            --blue-dim: #0d1f3d;
+            --amber-dim: #2d2000;
+            --base-spacing: 1rem;
+            --border-radius: 4px;
+            --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition);
+        }
+
+        a:hover {
+            border-bottom-color: var(--blue);
+        }
+
+        code, pre {
+            font-family: 'IBM Plex Mono', monospace;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: 0.25rem 0.5rem;
+        }
+
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            margin: var(--base-spacing) 0;
+        }
+
+        /* Layout */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #site-header {
+            flex-shrink: 0;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem var(--base-spacing);
+        }
+
+        #site-footer {
+            flex-shrink: 0;
+        }
+
+        /* Page title & breadcrumb */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb a {
+            color: var(--blue);
+        }
+
+        .page-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            max-width: 70%;
+        }
+
+        .exploit-id {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: var(--border-radius);
+            border: 1px solid;
+            letter-spacing: 1px;
+        }
+
+        .status-badge.critical {
+            background-color: var(--red-dim);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .status-badge.warning {
+            background-color: var(--amber-dim);
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        .status-badge.success {
+            background-color: rgba(63, 185, 80, 0.1);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* Severity bar */
+        .severity-container {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .severity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .severity-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .severity-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        .severity-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .severity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
+            border-radius: 2px;
+        }
+
+        .severity-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Content panels */
+        .panel {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-icon {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 18px;
+            color: var(--amber);
+        }
+
+        .panel h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Summary section */
+        .summary-text {
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .summary-text em {
+            color: var(--amber);
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* Metadata grid */
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .metadata-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        .metadata-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--white);
+            word-break: break-word;
+        }
+
+        .metadata-value.inactive {
+            color: var(--muted);
+        }
+
+        /* Chain steps */
+        .chain-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chain-step {
+            background-color: rgba(88, 166, 255, 0.05);
+            border: 1px solid var(--blue-dim);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 1rem;
+        }
+
+        .step-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            background-color: var(--blue-dim);
+            border-radius: var(--border-radius);
+        }
+
+        .step-content h3 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-description {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .step-api {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            padding: 0.75rem;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+        }
+
+        /* Detection guidance */
+        .detection-item {
+            padding: 1rem;
+            background-color: rgba(255, 77, 77, 0.05);
+            border: 1px solid var(--red-dim);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .detection-item.high {
+            border-color: var(--red);
+            background-color: rgba(255, 77, 77, 0.1);
+        }
+
+        .detection-item.medium {
+            border-color: var(--amber);
+            background-color: rgba(232, 160, 32, 0.1);
+        }
+
+        .detection-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .detection-label.high {
+            color: var(--red);
+        }
+
+        .detection-label.medium {
+            color: var(--amber);
+        }
+
+        .detection-description {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* IOCs */
+        .ioc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .ioc-table thead {
+            border-bottom: 2px solid var(--border);
+        }
+
+        .ioc-table th {
+            text-align: left;
+            padding: 0.75rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .ioc-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ioc-table td:first-child {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .ioc-severity {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .ioc-severity.critical {
+            background-color: var(--red-dim);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        .ioc-severity.medium {
+            background-color: var(--amber-dim);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        .ioc-severity.info {
+            background-color: var(--blue-dim);
+            color: var(--blue);
+            border: 1px solid var(--blue);
+        }
+
+        /* Mitigations */
+        .mitigation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mitigation-item {
+            padding: 1rem;
+            background-color: rgba(63, 185, 80, 0.05);
+            border: 1px solid var(--green);
+            border-radius: var(--border-radius);
+        }
+
+        .mitigation-item h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .mitigation-item p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 0.5rem);
+            background-color: var(--border);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -2.25rem;
+            top: 0.25rem;
+            width: 8px;
+            height: 8px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-event {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* Sources & tags */
+        .sources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .source-item {
+            padding: 0.75rem;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 13px;
+        }
+
+        .source-type {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .source-type.primary {
+            color: var(--red);
+        }
+
+        .source-type.analysis {
+            color: var(--blue);
+        }
+
+        .source-type.coverage {
+            color: var(--amber);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.5rem 0.75rem;
+            background-color: var(--blue-dim);
+            border: 1px solid var(--blue);
+            color: var(--blue);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            border-radius: var(--border-radius);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+                max-width: 100%;
+            }
+
+            .page-title-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .severity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metadata-grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 1rem var(--base-spacing);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main>
+        <div class="page-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Threatpedia</a>
+                <span>/</span>
+                <a href="../exploits.html">Exploits</a>
+                <span>/</span>
+                <span>BlueHammer</span>
+            </div>
+
+            <div class="page-title-section">
+                <div>
+                    <div class="exploit-id">TP-EXP-0001</div>
+                    <h1>BlueHammer</h1>
+                    <p style="font-size: 14px; color: var(--muted); margin-top: 0.5rem;">
+                        Unpatched Windows Defender LPE Zero-Day
+                    </p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; flex-shrink: 0;">
+                    <span class="status-badge critical">Active Exploitation</span>
+                    <span class="status-badge warning">Zero-Day</span>
+                </div>
+            </div>
+
+            <div class="severity-container">
+                <div class="severity-grid">
+                    <div class="severity-item">
+                        <span class="severity-label">Exploitability</span>
+                        <div class="severity-bar">
+                            <div class="severity-fill" style="width: 78%;"></div>
+                        </div>
+                        <span class="severity-value">7.8 / 10</span>
+                    </div>
+                    <div class="severity-item">
+                        <span class="severity-label">Impact (SYSTEM)</span>
+                        <div class="severity-bar">
+                            <div class="severity-fill" style="width: 95%;"></div>
+                        </div>
+                        <span class="severity-value">9.5 / 10</span>
+                    </div>
+                    <div class="severity-item">
+                        <span class="severity-label">Weaponization Risk</span>
+                        <div class="severity-bar">
+                            <div class="severity-fill" style="width: 85%;"></div>
+                        </div>
+                        <span class="severity-value">8.5 / 10</span>
+                    </div>
+                    <div class="severity-item">
+                        <span class="severity-label">Patch Urgency</span>
+                        <div class="severity-bar">
+                            <div class="severity-fill" style="width: 92%;"></div>
+                        </div>
+                        <span class="severity-value">9.2 / 10</span>
+                    </div>
+                    <div class="severity-item">
+                        <span class="severity-label">Detection Coverage</span>
+                        <div class="severity-bar">
+                            <div class="severity-fill" style="width: 25%;"></div>
+                        </div>
+                        <span class="severity-value">2.5 / 10</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">⚡</span>
+                <h2>Executive Summary</h2>
+            </div>
+            <div class="summary-text">
+                <p>
+                    BlueHammer is an <em>unpatched Windows zero-day</em> that allows a low-privileged local user to escalate to <code>NT AUTHORITY\SYSTEM</code> on fully updated Windows 10 and 11. The exploit chains Microsoft Defender's signature update workflow, Volume Shadow Copy Service, the Cloud Files API, and opportunistic locks to freeze Defender at exactly the wrong moment, then reads the SAM registry hive from the snapshot Defender itself created.
+                </p>
+                <br>
+                <p>
+                    <strong>No kernel exploit. No memory corruption. No code execution inside Defender.</strong> Exploitation verified end-to-end by Cyderes Howler Cell in under 60 seconds on patched systems. Defender's static signature detects the original binary; the underlying technique does not.
+                </p>
+            </div>
+        </div>
+
+        <!-- Technical Metadata -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🔍</span>
+                <h2>Technical Metadata</h2>
+            </div>
+            <div class="metadata-grid">
+                <div class="metadata-item">
+                    <span class="metadata-label">Exploit Type</span>
+                    <span class="metadata-value">Local Privilege Escalation (LPE)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">CVE Identifier</span>
+                    <span class="metadata-value inactive">UNASSIGNED</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">CISA KEV Listed</span>
+                    <span class="metadata-value inactive">No</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Exploit Primitive</span>
+                    <span class="metadata-value">TOCTOU + Path Confusion</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Public Disclosure</span>
+                    <span class="metadata-value">2026-04-03</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Patch Status</span>
+                    <span class="metadata-value" style="color: var(--red);">NONE (Unpatched)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Researcher / Team</span>
+                    <span class="metadata-value">Chaotic Eclipse / Nightmare-Eclipse</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Confirmed By</span>
+                    <span class="metadata-value">Will Dormann (Tharros)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Affected Systems</span>
+                    <span class="metadata-value">Windows 10 / 11 (fully patched)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">PoC Status</span>
+                    <span class="metadata-value" style="color: var(--red);">Public / Active Iteration</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Weaponization</span>
+                    <span class="metadata-value" style="color: var(--red);">Moderate-to-High Risk</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Initial Report Date</span>
+                    <span class="metadata-value">2026-03-26 (blog)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exploit Chain -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">⛓️</span>
+                <h2>7-Step Exploit Chain</h2>
+            </div>
+            <div class="chain-steps">
+                <div class="chain-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Gate: Check for Pending Defender Signature Update</h3>
+                        <div class="step-description">
+                            Queries Windows Update COM interfaces for "Microsoft Defender Antivirus" + "Definition Updates." Chain halts if no pending update.
+                        </div>
+                        <div class="step-api">
+                            API: IUpdateSearcher → IUpdateSession → IUpdateCollection
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Download & Stage the Real Update Package</h3>
+                        <div class="step-description">
+                            Fetches legitimate Defender update PE from Microsoft CDN, extracts CAB from .rsrc, unpacks in memory, stages for spoofed RPC via NTFS junctions.
+                        </div>
+                        <div class="step-api">
+                            API: go.microsoft.com/fwlink/?LinkID=121721&arch=x64 → FDICopy
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Trigger Defender Scan via EICAR + Oplock Tripwire</h3>
+                        <div class="step-description">
+                            Drops EICAR test file (foo.exe), places batch oplock on RstrtMgr.dll. When Defender accesses it during remediation, oplock breaks — confirming VSS creation.
+                        </div>
+                        <div class="step-api">
+                            API: BatchOplock on RstrtMgr.dll · NtQueryDirectoryObject watching HarddiskVolumeShadowCopy*
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Register Cloud Files Sync Root + Set Timing Trap</h3>
+                        <div class="step-description">
+                            Registers working directory as Cloud Files sync root, drops .lock placeholder. When Defender enumerates it, CfCallbackFetchPlaceholders fires, confirms WinDefend PID, acquires batch oplock and holds it.
+                        </div>
+                        <div class="step-api">
+                            API: CfRegisterSyncRoot · CfConnectSyncRoot · CfCallbackFetchPlaceholders · GetOverlappedResult (blocks indefinitely)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Read SAM / SYSTEM / SECURITY From Mounted Snapshot</h3>
+                        <div class="step-description">
+                            With Defender frozen and VSS snapshot mounted, reads registry hives directly from shadow copy path.
+                        </div>
+                        <div class="step-api">
+                            API: \Device\HarddiskVolumeShadowCopy[N]\Windows\System32\Config\{SAM,SYSTEM,SECURITY}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Reconstruct Boot Key + Decrypt NTLM Hashes</h3>
+                        <div class="step-description">
+                            Reads JD, Skew1, GBG, Data from Control\Lsa for 16-byte boot key. Decrypts LSA secret key, extracts Password Encryption Key, AES+DES decrypts NTLM hashes.
+                        </div>
+                        <div class="step-api">
+                            API: Impacket-style extraction · offreg.h offline registry library
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h3>Pivot to SYSTEM + Self-Cleaning Shell Spawn</h3>
+                        <div class="step-description">
+                            SamiChangePasswordUser resets local Admin to $PWNed666!!!WDFAIL. LogonUserEx authenticates. Token duplicated + SYSTEM integrity. CreateService spawns cmd.exe as SYSTEM. Then restores original hash.
+                        </div>
+                        <div class="step-api">
+                            API: SamiChangePasswordUser · LogonUserEx · CreateService · DuplicateToken → SYSTEM integrity
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detection Guidance -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🎯</span>
+                <h2>Detection Guidance</h2>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="detection-item high">
+                    <div class="detection-label high">HIGH CONFIDENCE</div>
+                    <strong>VSS ENUMERATION</strong>
+                    <div class="detection-description">
+                        Monitor for <code>NtQueryDirectoryObject</code> targeting <code>HarddiskVolumeShadowCopy*</code> from non-system processes. This is highly specific to BlueHammer's timing confirmation mechanism.
+                    </div>
+                </div>
+
+                <div class="detection-item high">
+                    <div class="detection-label high">HIGH CONFIDENCE</div>
+                    <strong>CLOUD FILES REGISTRATION</strong>
+                    <div class="detection-description">
+                        Alert on <code>CfRegisterSyncRoot</code> called by non-sync software (non-OneDrive, non-SharePoint Sync), especially with empty or .lock placeholders.
+                    </div>
+                </div>
+
+                <div class="detection-item high">
+                    <div class="detection-label high">HIGH CONFIDENCE</div>
+                    <strong>SERVICE CREATION FROM LOW-PRIVILEGE CONTEXT</strong>
+                    <div class="detection-description">
+                        Flag <code>CreateService</code> or acquisition of SYSTEM token from standard user context. BlueHammer's final stage spawns cmd.exe as a service.
+                    </div>
+                </div>
+
+                <div class="detection-item medium">
+                    <div class="detection-label medium">MEDIUM CONFIDENCE</div>
+                    <strong>PASSWORD CYCLE ANOMALY</strong>
+                    <div class="detection-description">
+                        Monitor Event ID 4723 + 4724 on the same local Admin account in rapid succession (&lt;60 seconds). BlueHammer resets and restores the Admin password to pivot.
+                    </div>
+                </div>
+
+                <div class="detection-item medium">
+                    <div class="detection-label medium">MEDIUM CONFIDENCE</div>
+                    <strong>STATIC SIGNATURE (BINARY ONLY)</strong>
+                    <div class="detection-description">
+                        <code>Exploit:Win32/DfndrPEBluHmr.BB</code> detects the compiled original PoC. Bypassed by recompile. Recommended only as temporal hedge; build behavioral detection as priority.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IOCs -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🔎</span>
+                <h2>Indicators of Compromise</h2>
+            </div>
+            <table class="ioc-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Severity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>String</td>
+                        <td><code>$PWNed666!!!WDFAIL</code></td>
+                        <td><span class="ioc-severity critical">Critical</span></td>
+                        <td>Hardcoded pivot password in PoC</td>
+                    </tr>
+                    <tr>
+                        <td>String</td>
+                        <td><code>IHATEMICROSOFT</code></td>
+                        <td><span class="ioc-severity critical">Critical</span></td>
+                        <td>Cloud Files provider name in PoC</td>
+                    </tr>
+                    <tr>
+                        <td>RPC UUID</td>
+                        <td><code>c503f532-443a-4c69-8300-ccd1fbdb3839</code></td>
+                        <td><span class="ioc-severity medium">Medium</span></td>
+                        <td>IMpService RPC interface GUID</td>
+                    </tr>
+                    <tr>
+                        <td>LRPC Endpoint</td>
+                        <td><code>IMpService77BDAF73-B396-481F-9042-AD358843EC24</code></td>
+                        <td><span class="ioc-severity medium">Medium</span></td>
+                        <td>RPC endpoint name spoofed in Chain Step 2</td>
+                    </tr>
+                    <tr>
+                        <td>RPC Method</td>
+                        <td><code>Proc42_ServerMpUpdateEngineSignature</code></td>
+                        <td><span class="ioc-severity medium">Medium</span></td>
+                        <td>Hooked RPC method for signature injection</td>
+                    </tr>
+                    <tr>
+                        <td>URL</td>
+                        <td><code>go.microsoft.com/fwlink/?LinkID=121721&arch=x64</code></td>
+                        <td><span class="ioc-severity info">Info</span></td>
+                        <td>Legitimate Defender update CDN (used for staging)</td>
+                    </tr>
+                    <tr>
+                        <td>Defender Sig</td>
+                        <td><code>Exploit:Win32/DfndrPEBluHmr.BB</code></td>
+                        <td><span class="ioc-severity info">Info</span></td>
+                        <td>Static signature; binary detection only</td>
+                    </tr>
+                    <tr>
+                        <td>Filename</td>
+                        <td><code>FunnyApp.cpp / FunnyApp.exe</code></td>
+                        <td><span class="ioc-severity info">Info</span></td>
+                        <td>PoC source and compiled binary</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mitigations -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🛡️</span>
+                <h2>Mitigations & Defenses</h2>
+            </div>
+            <div class="mitigation-list">
+                <div class="mitigation-item">
+                    <h4>1. Audit Local Administrator Accounts</h4>
+                    <p>
+                        BlueHammer requires at least one enabled local admin with recoverable hash. Identify and document all local admins; disable unused accounts and enforce strong password policies.
+                    </p>
+                </div>
+                <div class="mitigation-item">
+                    <h4>2. Enforce Least Privilege</h4>
+                    <p>
+                        Exploit begins from standard user context. Implement role-based access control (RBAC), remove users from local admin groups unless functionally required, and audit group membership quarterly.
+                    </p>
+                </div>
+                <div class="mitigation-item">
+                    <h4>3. Deploy Behavioral EDR Coverage</h4>
+                    <p>
+                        Static detection won't hold once PoC is modified. Prioritize EDR agents with VSS enumeration monitoring, oplock tracking, and Cloud Files API introspection. Require AMSI + script block logging for PowerShell.
+                    </p>
+                </div>
+                <div class="mitigation-item">
+                    <h4>4. Enable Event IDs 4723 / 4724</h4>
+                    <p>
+                        Monitor for two password changes in quick succession on the same local Admin account. This is a high-confidence indicator of BlueHammer's pivot-and-restore phase.
+                    </p>
+                </div>
+                <div class="mitigation-item">
+                    <h4>5. Keep Defender Signatures Updated</h4>
+                    <p>
+                        Current static signature (<code>Exploit:Win32/DfndrPEBluHmr.BB</code>) detects the unmodified PoC binary. Enforce automatic updates and monitor signature age across the fleet.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">📅</span>
+                <h2>Disclosure Timeline</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-03-26</div>
+                    <div class="timeline-event">
+                        <strong>First blog post by Chaotic Eclipse</strong> — Researcher publicly teases BlueHammer, announces PGP key forthcoming.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-02</div>
+                    <div class="timeline-event">
+                        <strong>PGP key published</strong> — Chaotic Eclipse releases public key; full disclosure imminent.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-03</div>
+                    <div class="timeline-event">
+                        <strong>Full drop — BlueHammer PoC published to GitHub</strong> — Complete exploit source code, documentation, and build instructions released to github.com/Nightmare-Eclipse/BlueHammer.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-04</div>
+                    <div class="timeline-event">
+                        <strong>Community validation begins</strong> — Researchers from vx-underground, Will Dormann (Tharros), and others independently verify end-to-end exploitation on patched systems.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-06</div>
+                    <div class="timeline-event">
+                        <strong>Wide media coverage</strong> — BleepingComputer, Security Affairs, CyberSecurityNews, SecurityOnline publish analysis and threat assessments.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-07</div>
+                    <div class="timeline-event">
+                        <strong>Microsoft Defender signature released</strong> — Exploit:Win32/DfndrPEBluHmr.BB static detection deployed. Cyderes Howler Cell publishes technical breakdown. First SNEK fork appears on GitHub.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-08 (TODAY)</div>
+                    <div class="timeline-event">
+                        <strong>Status: UNPATCHED. No CVE. Active researcher iteration ongoing.</strong> — Exploit remains viable on all patched Windows 10/11 systems. No patch released; CVE not assigned. Researcher community continues variant development.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sources -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">📚</span>
+                <h2>Sources & References</h2>
+            </div>
+            <div class="sources-list">
+                <div class="source-item">
+                    <div class="source-type primary">PRIMARY</div>
+                    <strong>github.com/Nightmare-Eclipse/BlueHammer</strong><br>
+                    <a href="https://github.com/Nightmare-Eclipse/BlueHammer" target="_blank">Original PoC source code and documentation</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type primary">PRIMARY</div>
+                    <strong>deadeclipse666.blogspot.com</strong><br>
+                    <a href="https://deadeclipse666.blogspot.com" target="_blank">Researcher disclosure blog and technical writeup</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type analysis">ANALYSIS</div>
+                    <strong>cyderes.com/howler-cell/windows-zero-day-bluehammer</strong><br>
+                    <a href="https://cyderes.com/howler-cell/windows-zero-day-bluehammer" target="_blank">Cyderes Howler Cell technical breakdown and verification</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type analysis">ANALYSIS</div>
+                    <strong>bleepingcomputer.com</strong><br>
+                    <a href="https://bleepingcomputer.com" target="_blank">Will Dormann (Tharros) interview and threat context</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>securityaffairs.com</strong><br>
+                    <a href="https://securityaffairs.com" target="_blank">General coverage and threat assessment</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>securityonline.info</strong><br>
+                    <a href="https://securityonline.info" target="_blank">Community perspective and industry reaction</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>cybersecuritynews.com</strong><br>
+                    <a href="https://cybersecuritynews.com" target="_blank">Incident timeline and background</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type">SECONDARY</div>
+                    <strong>github.com/atroubledsnake/SNEK_Blue-War-Hammer</strong><br>
+                    <a href="https://github.com/atroubledsnake/SNEK_Blue-War-Hammer" target="_blank">Community fork and variant implementations</a>
+                </div>
+            </div>
+
+            <div class="tags-container">
+                <span class="tag">BlueHammer</span>
+                <span class="tag">Windows LPE</span>
+                <span class="tag">TOCTOU</span>
+                <span class="tag">VSS Abuse</span>
+                <span class="tag">Windows Defender</span>
+                <span class="tag">Cloud Files API</span>
+                <span class="tag">SAM Dump</span>
+                <span class="tag">NTLM Hash</span>
+                <span class="tag">Zero-Day</span>
+                <span class="tag">Public PoC</span>
+                <span class="tag">Unpatched</span>
+                <span class="tag">IMpService RPC</span>
+                <span class="tag">Opportunistic Lock</span>
+                <span class="tag">Race Condition</span>
+                <span class="tag">Windows 11</span>
+                <span class="tag">Full Disclosure</span>
+                <span class="tag">MSRC</span>
+                <span class="tag">Chaotic Eclipse</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+    <script src="../assets/js/glossary-tooltips.js" defer></script>
+    <script src="../assets/site-chrome.js"></script>
+    <script src="../assets/universal-search.js"></script>
+    <script src="../assets/incident-ticker.js"></script>
+</body>
+</html>

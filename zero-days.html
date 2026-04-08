@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploit & Zero-Day Registry - Threatpedia</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="tp-favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="tp-favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="tp-favicon-180.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Grid overlay background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(30, 39, 51, 0.05) 25%, rgba(30, 39, 51, 0.05) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.05) 75%, rgba(30, 39, 51, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(30, 39, 51, 0.05) 25%, rgba(30, 39, 51, 0.05) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.05) 75%, rgba(30, 39, 51, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="1" /></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.03"/></svg>');
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 70px;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 3rem auto 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Stats Bar */
+        .stats {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--amber);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Container */
+        .section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1.8rem;
+            background-color: var(--amber);
+            border-radius: 2px;
+        }
+
+        /* Taxonomy Section */
+        .taxonomy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-badge {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .status-badge:hover {
+            border-color: var(--amber);
+            box-shadow: 0 0 15px rgba(232, 160, 32, 0.1);
+        }
+
+        .status-badge-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .status-badge-description {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        /* Flow Arrows */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .flow-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .flow-arrow {
+            color: var(--amber);
+            font-weight: bold;
+            padding: 0 0.5rem;
+        }
+
+        /* Registry Table */
+        .table-container {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: rgba(232, 160, 32, 0.1);
+            border-bottom: 2px solid var(--border);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(232, 160, 32, 0.05);
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .status-indicator.poc {
+            background-color: #9e9e9e;
+        }
+
+        .status-indicator.weaponized {
+            background-color: #ff9800;
+        }
+
+        .status-indicator.active {
+            background-color: #f44336;
+        }
+
+        .status-indicator.patched {
+            background-color: #4caf50;
+        }
+
+        .status-indicator.mitigated {
+            background-color: #2196f3;
+        }
+
+        .status-indicator.historical {
+            background-color: #757575;
+        }
+
+        /* Empty State */
+        .empty-state {
+            background-color: var(--surface);
+            border: 1px dashed var(--border);
+            padding: 3rem 2rem;
+            border-radius: 6px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Link */
+        .cta-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--amber);
+            color: var(--bg);
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .cta-link:hover {
+            background-color: var(--amber-dim);
+            box-shadow: 0 0 15px rgba(232, 160, 32, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .taxonomy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+
+            .flow-container {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .flow-arrow {
+                display: block;
+                transform: rotate(90deg);
+                padding: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Exploit & Zero-Day Registry</h1>
+            <p>Comprehensive tracking of vulnerabilities, exploits, and zero-days from initial discovery through patch and mitigation. Monitor the full lifecycle of security vulnerabilities and their exploitation in the wild.</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-number" id="totalExploits">0</div>
+                <div class="stat-label">Total Exploits Tracked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeZeroDays">0</div>
+                <div class="stat-label">Active Zero-Days</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgDaysInWild">0</div>
+                <div class="stat-label">Average Days-in-Wild</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="cisaKevListed">0</div>
+                <div class="stat-label">CISA KEV Listed</div>
+            </div>
+        </div>
+
+        <!-- Exploitation Status Taxonomy Section -->
+        <div class="section">
+            <h2 class="section-title">Exploitation Status Taxonomy</h2>
+            <p style="color: var(--muted); margin-bottom: 1.5rem;">The vulnerability lifecycle progress from initial research disclosure through complete remediation across industry.</p>
+
+            <div class="flow-container">
+                <span class="flow-item">PoC Only</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">Weaponized</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">Active Exploitation</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">Patched</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">Mitigated</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">Historical</span>
+            </div>
+
+            <div class="taxonomy-grid">
+                <div class="status-badge">
+                    <div class="status-badge-title">PoC Only</div>
+                    <div class="status-badge-description">Proof of concept published, not weaponized for broad attacks</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-badge-title">Weaponized</div>
+                    <div class="status-badge-description">Incorporated into malware/exploitation frameworks</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-badge-title">Active Exploitation</div>
+                    <div class="status-badge-description">Actively exploited in the wild against targets</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-badge-title">Patched</div>
+                    <div class="status-badge-description">Security patch released by vendor</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-badge-title">Mitigated</div>
+                    <div class="status-badge-description">Majority of systems patched/hardened</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-badge-title">Historical</div>
+                    <div class="status-badge-description">Legacy vulnerability, minimal current threat</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Exploits Section -->
+        <div class="section">
+            <h2 class="section-title">Recent Exploits & Zero-Days</h2>
+
+            <div class="table-container">
+                <table id="exploitsTable">
+                    <thead>
+                        <tr>
+                            <th>CVE / Identifier</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Affected Product</th>
+                            <th>Days In Wild</th>
+                            <th>CISA KEV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exploitsTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">🔍</div>
+                <h3>Registry Launching</h3>
+                <p>The Exploit & Zero-Day Registry is being populated. First entries coming soon.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--muted);">Check back shortly for comprehensive vulnerability tracking.</p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="section" style="text-align: center; margin-bottom: 4rem;">
+            <p style="color: var(--text); margin-bottom: 1.5rem; font-size: 1.05rem;">For the complete registry with detailed vulnerability timelines, CVE data, and remediation guidance:</p>
+            <a href="zero-days/index.html" class="cta-link">Access Full Registry →</a>
+        </div>
+    </main>
+
+  <div id="site-footer"></div>
+
+    <script>
+        // Fetch and parse manifest data
+        async function loadManifestData() {
+            try {
+                const response = await fetch('zero-days/manifest.json');
+                const manifest = await response.json();
+
+                // Calculate stats
+                const exploits = manifest.exploits || [];
+
+                if (exploits.length === 0) {
+                    // Show empty state
+                    document.getElementById('emptyState').style.display = 'block';
+                    document.getElementById('exploitsTable').style.display = 'none';
+
+                    // Show placeholder stats
+                    document.getElementById('totalExploits').textContent = '0';
+                    document.getElementById('activeZeroDays').textContent = '0';
+                    document.getElementById('avgDaysInWild').textContent = '0';
+                    document.getElementById('cisaKevListed').textContent = '0';
+                    return;
+                }
+
+                // Hide empty state if we have data
+                document.getElementById('emptyState').style.display = 'none';
+                document.getElementById('exploitsTable').style.display = 'table';
+
+                // Calculate statistics
+                const totalExploits = exploits.length;
+                const activeZeroDays = exploits.filter(e =>
+                    e.status === 'Active Exploitation' || e.status === 'Weaponized'
+                ).length;
+
+                const cisaKevListed = exploits.filter(e => e.cisaKEV === true).length;
+
+                // Calculate average days in wild
+                let totalDays = 0;
+                let daysCount = 0;
+                exploits.forEach(e => {
+                    if (e.daysInWild) {
+                        totalDays += parseInt(e.daysInWild) || 0;
+                        daysCount++;
+                    }
+                });
+                const avgDaysInWild = daysCount > 0 ? Math.round(totalDays / daysCount) : 0;
+
+                // Update stats
+                document.getElementById('totalExploits').textContent = totalExploits;
+                document.getElementById('activeZeroDays').textContent = activeZeroDays;
+                document.getElementById('avgDaysInWild').textContent = avgDaysInWild;
+                document.getElementById('cisaKevListed').textContent = cisaKevListed;
+
+                // Render table with most recent exploits (limit to 10)
+                const recentExploits = exploits.slice(0, 10);
+                const tbody = document.getElementById('exploitsTableBody');
+                tbody.innerHTML = '';
+
+                recentExploits.forEach(exploit => {
+                    const row = document.createElement('tr');
+                    const statusClass = exploit.status
+                        .toLowerCase()
+                        .replace(/\s+/g, '')
+                        .replace('exploitation', 'active');
+
+                    const statusIndicatorClass = exploit.status === 'PoC Only' ? 'poc' :
+                        exploit.status === 'Weaponized' ? 'weaponized' :
+                        exploit.status === 'Active Exploitation' ? 'active' :
+                        exploit.status === 'Patched' ? 'patched' :
+                        exploit.status === 'Mitigated' ? 'mitigated' :
+                        'historical';
+
+                    row.innerHTML = `
+                        <td style="font-family: 'IBM Plex Mono', monospace; color: var(--amber);">${exploit.cve || exploit.id || 'N/A'}</td>
+                        <td>${exploit.title || 'Untitled'}</td>
+                        <td><span class="status-indicator ${statusIndicatorClass}"></span>${exploit.status || 'Unknown'}</td>
+                        <td>${exploit.affectedProduct || 'N/A'}</td>
+                        <td style="text-align: center;">${exploit.daysInWild || '—'}</td>
+                        <td style="text-align: center;">${exploit.cisaKEV ? '✓' : '—'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error('Error loading manifest:', error);
+                // Show empty state on error
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('exploitsTable').style.display = 'none';
+            }
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadManifestData);
+    </script>
+
+  <script src="assets/site-chrome.js"></script>
+  <script src="assets/universal-search.js"></script>
+  <script src="assets/incident-ticker.js"></script>
+</body>
+</html>
