@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="report-id" content="TP-2026-0033">
+    <meta name="review-status" content="PENDING HUMAN REVIEW">
+    <meta name="severity" content="High">
+    <meta name="generated-by" content="new-threat-intel">
+    <meta name="generated-date" content="2026-04-07">
+    <title>Passaic County Ransomware Attack | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' fill='rgba(255,255,255,0.02)' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 146px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .severity-high {
+            color: #ff8844;
+            font-weight: 700;
+        }
+
+        .status-recovery {
+            color: #ffa500;
+            font-weight: 600;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 146px;
+            height: fit-content;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: var(--amber);
+            line-height: 1.6;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Reference List */
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reference-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                grid-column: 1;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 146px 24px 40px;
+            }
+            .incident-title {
+                font-size: 36px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+<!-- Main Content -->
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">Passaic County Ransomware Attack by Medusa Group</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Incident ID</div>
+                    <div class="meta-value">TP-2026-0033</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Classification</div>
+                    <div class="meta-value">Ransomware / Data Exfiltration</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Date</div>
+                    <div class="meta-value">March 4, 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value"><span class="status-recovery">Investigation Ongoing</span></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Severity</div>
+                    <div class="meta-value"><span class="severity-high">HIGH</span></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Attribution</div>
+                    <div class="meta-value">Medusa Ransomware Group (Likely)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Sector</div>
+                    <div class="meta-value">Government / Municipal Services</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Geography</div>
+                    <div class="meta-value">Passaic County, New Jersey, USA</div>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On March 4, 2026, Passaic County, New Jersey — a government entity serving nearly 600,000 residents — disclosed a ransomware attack that disrupted county IT systems and telephone infrastructure. The attack caused significant service disruptions affecting county operations and citizen services. Mid-March 2026, the Medusa ransomware group posted Passaic County on their data leak site, claiming responsibility and demanding an $800,000 ransom by end of March, along with posting sample documents as proof of data exfiltration.</p>
+
+                        <p>Medusa is a known ransomware-as-a-service (RaaS) group that employs double extortion tactics: encrypting victim systems while simultaneously exfiltrating sensitive data. The group is known for transitioning from initial access to full deployment within 24 hours and has been documented by Microsoft exploiting zero-day vulnerabilities. Passaic County has not publicly confirmed Medusa's claim, and details regarding the initial access vector, data compromise scope, and ransom payment status remain undisclosed.</p>
+
+                        <p>This incident reflects the critical vulnerability of mid-to-large municipal government infrastructure to sophisticated ransomware operators. Unlike smaller municipalities, Passaic County's scale — serving nearly 600,000 residents across hundreds of municipal systems — amplifies both the operational impact and the data exposure risk. The incident underscores the increasing targeting of government agencies as high-value victims for double extortion ransomware campaigns.</p>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attack Overview</h3>
+                            <ul>
+                                <li><strong>Threat Actor:</strong> Medusa Ransomware Group (RaaS operation)</li>
+                                <li><strong>Announcement Date:</strong> March 4, 2026 (public disclosure of systems compromise)</li>
+                                <li><strong>Leak Site Posting:</strong> Mid-March 2026 with sample files and $800K ransom demand</li>
+                                <li><strong>Initial Access:</strong> Unknown — suspected exploitation of public-facing application or vulnerable service</li>
+                                <li><strong>Time to Deployment:</strong> Medusa typically achieves full encryption + exfiltration within 24 hours of initial access</li>
+                                <li><strong>Double Extortion:</strong> Systems encrypted AND sensitive data exfiltrated to leak site</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Medusa Group Capabilities</h3>
+                            <p>Medusa is documented as a sophisticated ransomware group with the following technical characteristics:</p>
+                            <ul>
+                                <li><strong>Zero-Day Exploitation:</strong> Microsoft published analysis detailing Medusa actors' use of zero-day vulnerabilities for initial access</li>
+                                <li><strong>Rapid Lateral Movement:</strong> Deploys encryption and exfiltration within 24 hours of initial compromise</li>
+                                <li><strong>Data Theft:</strong> Specialized in exfiltrating large volumes of sensitive data before encryption</li>
+                                <li><strong>Double Extortion:</strong> Combines file encryption with leak site publication and ransom demands</li>
+                                <li><strong>RaaS Model:</strong> Operates as ransomware-as-a-service, likely using affiliate partners for initial access</li>
+                                <li><strong>Leak Site Operations:</strong> Maintains active leak site for publishing victim documents and negotiation</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Infrastructure Impact</h3>
+                            <p>Passaic County's confirmed impacts include:</p>
+                            <ul>
+                                <li>IT systems encryption and operational disruption</li>
+                                <li>Telephone infrastructure affected — phones unavailable county-wide</li>
+                                <li>Administrative staff unable to access systems or conduct business</li>
+                                <li>Potential disruption to public-facing services (permit processing, licensing, fee collection)</li>
+                                <li>Unknown scope of data exfiltration from county databases and file systems</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Unknown Technical Details</h3>
+                            <p>As of April 2026, the following details remain undisclosed:</p>
+                            <ul>
+                                <li>Specific initial access vector (vulnerability exploited, compromised credentials, phishing)</li>
+                                <li>Whether ransomware variant deployed for encryption is known or novel</li>
+                                <li>Full scope of systems encrypted across county infrastructure</li>
+                                <li>What data was exfiltrated (resident PII, employee records, financial data, infrastructure details)</li>
+                                <li>Whether ransom demand was paid</li>
+                                <li>Timeline of initial compromise vs. detection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MITRE ATT&CK -->
+                <section class="section">
+                    <h2 class="section-title">MITRE ATT&CK Framework</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+T1190 – Exploit Public-Facing Application<br>
+T1486 – Data Encrypted for Impact<br>
+T1021 – Remote Services (Lateral Movement)<br>
+T1048 – Exfiltration Over Alternative Protocol<br>
+T1489 – Service Stop<br>
+T1529 – System Shutdown/Reboot
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Techniques mapped based on known Medusa operational patterns and documented characteristics. Initial access vector (T1190) is suspected but not confirmed. Specific techniques will be refined as forensic details become available.</p>
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Incident Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 4, 2026</div>
+                            <div class="timeline-event">Passaic County announces malware attack affecting IT systems and phone infrastructure</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 2026 (Mid-Month)</div>
+                            <div class="timeline-event">Medusa ransomware group posts Passaic County on leak site with sample documents; demands $800K ransom by end of March</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 2026</div>
+                            <div class="timeline-event">County initiates incident response and recovery operations; investigation launched</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 2026 (Late)</div>
+                            <div class="timeline-event">Microsoft publishes analysis detailing Medusa group's zero-day exploitation capabilities and techniques</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 2026</div>
+                            <div class="timeline-event">Passaic County status unknown — attribution not confirmed by county; ransom payment status undisclosed; investigation ongoing</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Service Disruption</h3>
+                            <ul>
+                                <li><strong>Population Affected:</strong> Nearly 600,000 county residents</li>
+                                <li><strong>Systems Down:</strong> IT systems and telephone infrastructure disrupted</li>
+                                <li><strong>Administrative Impact:</strong> County employees unable to perform normal functions</li>
+                                <li><strong>Public Services Impact:</strong> Potential disruption to licensing, permitting, tax assessment, and other citizen-facing services</li>
+                                <li><strong>Recovery Status:</strong> Ongoing as of April 2026; full restoration timeline unknown</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Data Exposure & Privacy Risk</h3>
+                            <ul>
+                                <li><strong>Scope Unknown:</strong> Medusa posted sample documents on leak site; full data compromise scope not publicly disclosed</li>
+                                <li><strong>Potential Data at Risk:</strong> County databases likely contain resident personal information, financial records, employee data, property records, assessment data, and potentially sensitive infrastructure information</li>
+                                <li><strong>Residents Served:</strong> Nearly 600,000 residents potentially affected by data exposure</li>
+                                <li><strong>Regulatory Implications:</strong> Potential data breach notification requirements under New Jersey privacy laws</li>
+                                <li><strong>Investigation Status:</strong> Data compromise assessment ongoing</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Financial & Operational Costs</h3>
+                            <ul>
+                                <li>Ransomware recovery and system restoration costs (undisclosed)</li>
+                                <li>Forensic investigation and incident response services</li>
+                                <li>Potential ransom payment (status unknown; Medusa demanded $800K)</li>
+                                <li>Data breach notification costs if personal information exposed</li>
+                                <li>Legal and compliance expenses related to data breach investigation</li>
+                                <li>Lost productivity from IT systems downtime affecting hundreds of county employees</li>
+                                <li>Reputational damage and reduced public confidence in county services</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Threat Actor Motivation</h3>
+                            <ul>
+                                <li>County government targets are high-value for ransomware operators — large databases, financial systems, and service disruption impact</li>
+                                <li>Municipal entities often lack sophisticated cybersecurity defenses relative to private sector</li>
+                                <li>Data exfiltration creates dual pressure: ransom threat + data leak threat</li>
+                                <li>Public sector entities face political pressure to resolve service disruptions quickly, potentially motivating ransom payment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Remediation -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Recovery</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Immediate Response (In Progress)</h3>
+                            <ul>
+                                <li><strong>Incident Containment:</strong> Isolation of affected systems to prevent further encryption/exfiltration</li>
+                                <li><strong>System Recovery:</strong> Restoration from clean backups (if available and not encrypted)</li>
+                                <li><strong>Forensic Investigation:</strong> Analysis of attack vector, lateral movement, and data exfiltration scope</li>
+                                <li><strong>Communication & Notification:</strong> Potential data breach notifications to affected residents (if required by law)</li>
+                                <li><strong>Law Enforcement Engagement:</strong> FBI and New Jersey authorities likely involved in investigation</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Long-Term Security Improvements</h3>
+                            <ul>
+                                <li>Comprehensive cybersecurity assessment of county IT infrastructure</li>
+                                <li>Vulnerability scanning and patch management program</li>
+                                <li>Multi-factor authentication (MFA) deployment for all administrative access</li>
+                                <li>Network segmentation to isolate critical systems (finance, emergency services)</li>
+                                <li>Enhanced backup and disaster recovery procedures with offline, immutable backups</li>
+                                <li>Endpoint detection and response (EDR) deployment</li>
+                                <li>Security awareness training for county employees</li>
+                                <li>Incident response plan development and tabletop exercises</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Public Sector Recommendations</h3>
+                            <ul>
+                                <li>Government entities should assume ransomware as an inevitable threat and plan accordingly</li>
+                                <li>Maintain offline, immutable backup systems that cannot be encrypted or accessed by attackers</li>
+                                <li>Develop contingency plans for operations without IT systems (manual processes, emergency communications)</li>
+                                <li>Establish relationships with state and federal cybersecurity agencies for rapid incident response support</li>
+                                <li>Implement zero-trust security principles, especially for remote access and administrative functions</li>
+                                <li>Conduct regular security audits and penetration testing of public-facing applications</li>
+                                <li>Establish cyber insurance coverage for ransomware and data breach incidents</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sources -->
+                <section class="section references">
+                    <h2 class="section-title">Sources & References</h2>
+
+                    <div class="reference-item">
+                        <a href="https://www.comparitech.com/news/cybercriminals-say-they-hacked-passaic-county-nj-and-demand-ransom/" class="reference-link">Comparitech — "Cybercriminals say they hacked Passaic County NJ and demand ransom"</a>
+                        <span class="reference-source">Comparitech Cybersecurity Blog, March 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://therecord.media/medusa-ransomware-mississippi-cyber" class="reference-link">The Record — "Medusa ransomware hits Mississippi hospital, New Jersey county"</a>
+                        <span class="reference-source">Recorded Future News, March 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.scworld.com/brief/medusa-ransomware-purportedly-hits-university-of-mississippi-medical-center-new-jersey-county" class="reference-link">SC Media — "Medusa ransomware purportedly hits University of Mississippi Medical Center, New Jersey county"</a>
+                        <span class="reference-source">SC Media, March 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://therecord.media/medusa-ransomware-group-zero-days-microsoft" class="reference-link">The Record — "Medusa ransomware group using zero-days"</a>
+                        <span class="reference-source">Recorded Future News, March 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.blackfog.com/the-state-of-ransomware-march-2026/" class="reference-link">BlackFog — "State of Ransomware March 2026"</a>
+                        <span class="reference-source">BlackFog Cyber Defense Research, March 2026</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Assessment</div>
+                    <div class="sidebar-content">
+                        <p>Passaic County is a mid-to-large municipal government serving nearly 600,000 residents. The Medusa ransomware group's double extortion attack demonstrates why government agencies are high-value targets: critical infrastructure, large data repositories, and political pressure to resolve service disruptions quickly.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: var(--amber);">Assume ransomware is inevitable; maintain offline, immutable backups.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <ul style="margin-left: 0; padding-left: 16px;">
+                            <li style="margin-bottom: 8px;">Medusa claimed responsibility on leak site mid-March</li>
+                            <li style="margin-bottom: 8px;">$800K ransom demand with end-of-March deadline</li>
+                            <li style="margin-bottom: 8px;">Sample documents posted as proof of data theft</li>
+                            <li style="margin-bottom: 8px;">County has not confirmed Medusa attribution</li>
+                            <li style="margin-bottom: 8px;">Initial access vector and data scope unknown</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor Profile</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Medusa Group:</strong> Sophisticated RaaS operation</p>
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Tactics:</strong> Zero-day exploitation, rapid lateral movement (24 hours), double extortion</p>
+                        <p style="font-size: 12px;"><strong>Attribution Confidence:</strong> Likely (claimed on leak site, not confirmed by county)</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Incident Classification</div>
+                    <div class="sidebar-content">
+                        <p style="margin-bottom: 8px;"><span style="color: #ff8844; font-weight: 700;">HIGH</span></p>
+                        <ul style="margin-left: 0; padding-left: 16px; font-size: 12px;">
+                            <li>County IT systems disrupted</li>
+                            <li>Phone infrastructure affected</li>
+                            <li>600K residents impacted</li>
+                            <li>Double extortion (encryption + data leak)</li>
+                            <li>Unknown ransom payment status</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <div class="sidebar-content">
+                        <a href="./foster-city-ransomware-2026.html" class="sidebar-link">Foster City Ransomware (2026)</a>
+                        <a href="./die-linke-qilin-ransomware-2026.html" class="sidebar-link">Die Linke Qilin Ransomware (2026)</a>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Resources</div>
+                    <div class="sidebar-content">
+                        <a href="../glossary.html?term=ransomware" class="sidebar-link">Ransomware (Glossary)</a>
+                        <a href="../glossary.html?term=double-extortion" class="sidebar-link">Double Extortion</a>
+                        <a href="../glossary.html?term=government-infrastructure" class="sidebar-link">Government Infrastructure</a>
+                        <a href="../glossary.html?term=incident-response" class="sidebar-link">Incident Response</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>
