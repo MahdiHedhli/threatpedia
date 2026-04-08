@@ -1562,6 +1562,35 @@
         let currentSort = { field: 'lastSeen', direction: 'desc' };
         let currentView = 'table';
 
+        // Known actor pages — slug-to-filename map for actors with dedicated pages.
+        // Slugify: lowercase, replace spaces/slashes with hyphens, strip parens & special chars.
+        function actorSlug(name) {
+            return name.toLowerCase()
+                .replace(/[()]/g, '')
+                .replace(/[\s\/]+/g, '-')
+                .replace(/[^a-z0-9-]/g, '')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        // These are the actors that have dedicated HTML pages in /threat-actors/
+        const actorPages = new Set([
+            'apt1', 'apt10', 'apt27', 'apt29', 'apt31', 'apt38', 'apt40', 'apt41',
+            'blackcat-alphv', 'cl0p-group', 'lazarus-group', 'lockbit',
+            'salt-typhoon', 'sandworm', 'scattered-spider', 'volt-typhoon'
+        ]);
+
+        // Check if an actor has a dedicated page (checks name and all aliases)
+        function getActorPageUrl(actor) {
+            const nameSlug = actorSlug(actor.name);
+            if (actorPages.has(nameSlug)) return 'threat-actors/' + nameSlug + '.html';
+            for (const alias of (actor.aliases || [])) {
+                const aliasSlug = actorSlug(alias);
+                if (actorPages.has(aliasSlug)) return 'threat-actors/' + aliasSlug + '.html';
+            }
+            return null;
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             setupEventListeners();
@@ -1698,8 +1727,12 @@
 
             actors.forEach(actor => {
                 const row = document.createElement('tr');
+                const pageUrl = getActorPageUrl(actor);
+                const nameCell = pageUrl
+                    ? `<a href="${pageUrl}" style="color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim);">${actor.name}</a>`
+                    : actor.name;
                 row.innerHTML = `
-                    <td class="actor-name">${actor.name}</td>
+                    <td class="actor-name">${nameCell}</td>
                     <td class="aliases">${actor.aliases.join(', ')}</td>
                     <td>${actor.affiliation}</td>
                     <td>${actor.motivation}</td>
@@ -1707,6 +1740,12 @@
                     <td style="font-family: 'IBM Plex Mono', monospace; color: var(--amber-dim);">${actor.lastSeen || 'Unknown'}</td>
                     <td><span class="status ${actor.status.toLowerCase()}">${actor.status}</span></td>
                 `;
+                if (pageUrl) {
+                    row.style.cursor = 'pointer';
+                    row.addEventListener('click', (e) => {
+                        if (e.target.tagName !== 'A') window.location.href = pageUrl;
+                    });
+                }
                 tbody.appendChild(row);
             });
         }
@@ -1721,9 +1760,19 @@
             actors.forEach(actor => {
                 const card = document.createElement('div');
                 card.className = 'actor-card';
+                const pageUrl = getActorPageUrl(actor);
+                const titleHtml = pageUrl
+                    ? `<a href="${pageUrl}" style="color: var(--amber); text-decoration: none;">${actor.name}</a>`
+                    : actor.name;
+                if (pageUrl) {
+                    card.style.cursor = 'pointer';
+                    card.addEventListener('click', (e) => {
+                        if (e.target.tagName !== 'A') window.location.href = pageUrl;
+                    });
+                }
                 card.innerHTML = `
                     <div class="card-header">
-                        <div class="card-title">${actor.name}</div>
+                        <div class="card-title">${titleHtml}</div>
                         <div class="card-aliases">${actor.aliases.join(' / ')}</div>
                     </div>
                     <div class="card-field">
