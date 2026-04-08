@@ -1,0 +1,181 @@
+{
+  "lastUpdated": "2026-04-06T19:30:00Z",
+  "schemaVersion": "1.0",
+  "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
+
+  "schedules": {
+    "newThreatIntel": {
+      "taskIds": ["new-threat-intel-weekday-morning", "new-threat-intel-weekday-evening", "new-threat-intel-weekend"],
+      "disabledTaskIds": ["new-threat-intel-weekday-afternoon"],
+      "frequency": "2x weekday (5 AM + 8 PM) + 1x weekend (noon Sat/Sun)",
+      "purpose": "Discover and publish new incident reports from the past 14 days",
+      "writesTo": ["incidents/*.html", "incidents/manifest.json", "index.html"],
+      "readsFrom": ["incidents/manifest.json"]
+    },
+    "dailyIncidentUpdater": {
+      "taskId": "daily-incident-updater",
+      "frequency": "Daily at 11 AM",
+      "purpose": "Enrich existing reports (90-day window) with new intel, fix broken links, generate images, update cross-links, discover glossary candidates",
+      "writesTo": ["incidents/*.html", "incidents/manifest.json", "glossary-candidates.json"],
+      "readsFrom": ["incidents/manifest.json", "glossary-index.json", "task-state.json"]
+    },
+    "incidentCrosslinkGapfill": {
+      "taskId": "incident-crosslink-gapfill",
+      "frequency": "Weekly Wednesday 9 AM",
+      "purpose": "Create up to 4-5 gap-fill reports for referenced-but-missing incidents, discover and apply bidirectional cross-links",
+      "writesTo": ["incidents/*.html", "incidents/manifest.json", "index.html"],
+      "readsFrom": ["incidents/manifest.json"]
+    },
+    "glossaryTermUpdater": {
+      "taskId": "glossary-term-updater",
+      "frequency": "Weekly Monday 9 AM (role rotation: week % 10)",
+      "purpose": "Role-rotated search for new cybersecurity terminology, update glossary and index, process candidate queue",
+      "writesTo": ["glossary.html", "glossary-index.json", "glossary-candidates.json"],
+      "readsFrom": ["glossary.html", "glossary-index.json", "glossary-candidates.json", "incidents/manifest.json"]
+    },
+    "sourceDeepDive": {
+      "taskId": "threatpedia-source-deep-dive",
+      "frequency": "Mon/Wed/Fri at 6 PM",
+      "purpose": "Create detailed connector specifications for the next unspecced data source",
+      "writesTo": ["connectors/*.md", "connectors/PROGRESS.md"],
+      "readsFrom": ["connectors/PROGRESS.md"]
+    },
+    "buildScrapers": {
+      "taskId": "threatpedia-build-scrapers",
+      "frequency": "Daily weekdays at 10 AM",
+      "purpose": "Implement Python scraper/connector from the next completed spec",
+      "writesTo": ["scrapers/*.py", "connectors/PROGRESS.md"],
+      "readsFrom": ["connectors/PROGRESS.md", "connectors/*.md"]
+    },
+    "expandSources": {
+      "taskId": "threatpedia-expand-sources",
+      "frequency": "Monthly (1st of month at 10 PM)",
+      "purpose": "Research and catalogue new breach/threat data sources",
+      "writesTo": ["research/new-sources-*.md", "research/MASTER-LOG.md"],
+      "readsFrom": ["research/MASTER-LOG.md"]
+    },
+    "dataIngestion": {
+      "taskId": "threatpedia-data-ingestion",
+      "frequency": "Future — pending web stack and database",
+      "purpose": "Ingest records from staged external databases (tracked in data/data-sources-manifest.json) into Threatpedia, using incremental sync to avoid redundant processing",
+      "writesTo": ["incidents/*.html", "incidents/manifest.json", "data/data-sources-manifest.json"],
+      "readsFrom": ["data/data-sources-manifest.json", "data/**/*.csv", "incidents/manifest.json"],
+      "status": "planned"
+    },
+    "threatActorUpdater": {
+      "taskId": "threat-actor-updater",
+      "frequency": "Tue/Thu at 3 PM",
+      "purpose": "Process threat-actor-queue.json worklist — create new actor entries, update existing ones with new incident linkages, ensure bidirectional linking between actors and reports",
+      "writesTo": ["threat-actors.html", "threat-actor-index.json", "threat-actor-queue.json", "incidents/manifest.json"],
+      "readsFrom": ["threat-actor-queue.json", "threat-actor-index.json", "incidents/manifest.json", "task-state.json"]
+    }
+  },
+
+  "taskState": {
+    "expandSources": {
+      "totalCatalogued": 233,
+      "categoriesTracked": 16,
+      "lastRunDate": "2026-04-03",
+      "status": "scaled-to-monthly"
+    },
+    "sourceDeepDive": {
+      "specsCompleted": 9,
+      "specsTotal": 34,
+      "currentQueue": "australian-oaic",
+      "lastRunDate": "2026-04-03",
+      "phasesComplete": ["Phase 1 (7/7)"],
+      "phasesInProgress": ["Phase 2 (2/9)"]
+    },
+    "buildScrapers": {
+      "scrapersBuilt": ["cisa-kev", "hibp", "vcdb", "nist-nvd", "cve-mitre", "misp"],
+      "specsReadyToBuild": ["mitre-attack", "hhs-ocr", "eu-gdpr-enforcement-tracker"],
+      "lastRunDate": "2026-04-07",
+      "status": "accelerated-daily-weekdays"
+    },
+    "incidentReports": {
+      "totalReports": 9,
+      "pendingReview": 7,
+      "approved": 2,
+      "referencedButMissing": 2,
+      "lastNewReportDate": "2026-04-06"
+    },
+    "glossary": {
+      "totalTerms": 1006,
+      "rolesTaxonomy": ["ciso", "soc", "threat-hunter", "ir-forensics", "pentest-red", "grc", "cloud-sec", "appsec-devsecops", "threat-intel", "network-infra"],
+      "lastRunDate": "2026-04-06",
+      "pendingBulkAggregation": false,
+      "pendingTooltipModule": true,
+      "bulkAggregationCompleted": "2026-04-06",
+      "sources": ["NICCS/CISA", "SANS", "Allot", "Huntress", "Threatpedia"]
+    },
+    "glossaryPipeline": {
+      "flow": "daily-incident-updater discovers candidates → glossary-candidates.json → glossary-term-updater processes and adds to glossary → glossary-index.json → glossary-tooltips.js renders in reports",
+      "files": {
+        "glossary.html": "The glossary page with role filter UI",
+        "glossary-index.json": "Lightweight term index for client-side tooltip consumption",
+        "glossary-candidates.json": "Terms found in reports but missing from glossary, queued for weekly updater"
+      }
+    },
+    "threatActorPipeline": {
+      "flow": "new-threat-intel / daily-incident-updater / incident-crosslink-gapfill → threat-actor-queue.json → threat-actor-updater processes queue → threat-actors.html + threat-actor-index.json updated → bidirectional links verified",
+      "files": {
+        "threat-actors.html": "The Threat Actor Registry page with 78 actors (JS array, searchable/filterable)",
+        "threat-actor-index.json": "Lightweight actor lookup index (78 actors, 224 alias keys) for quick queue-or-skip decisions by incident tasks",
+        "threat-actor-queue.json": "Worklist — incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
+      },
+      "currentActorCount": 78,
+      "queueSize": 0
+    },
+    "lastIncidentScan": "2026-04-06T12:00:00Z",
+    "dataIngestion": {
+      "manifestPath": "data/data-sources-manifest.json",
+      "stagedSources": 1,
+      "ingestedSources": 0,
+      "totalStagedRecords": 16532,
+      "status": "awaiting-web-stack",
+      "sources": {
+        "cissm-cyber-events": {
+          "records": 16532,
+          "dateRange": "2014-01-01 to 2026-02-28",
+          "stagedDate": "2026-04-06",
+          "ingested": false
+        }
+      }
+    }
+  },
+
+  "activeLocks": {
+    "daily-incident-updater": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-07T13:00:00Z"
+    },
+    "new-threat-intel": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": null
+    },
+    "incident-crosslink-gapfill": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": null
+    }
+  },
+
+  "coordinationRules": {
+    "manifestFirst": "All incident-related tasks MUST read incidents/manifest.json as their first step",
+    "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports",
+    "noOverlap": {
+      "newThreatIntel": "Only creates reports for brand-new incidents from news. Does NOT create gap-fill reports or update existing reports.",
+      "dailyIncidentUpdater": "Only updates EXISTING reports. Does NOT create new reports. Handles broken links, image generation, and enrichment.",
+      "incidentCrosslinkGapfill": "Only creates reports for items in manifest referencedButMissing[]. Does NOT discover new incidents from news. Handles cross-link graph."
+    },
+    "gitConflictPrevention": "ALL tasks use the standardized Git Safety Protocol (see .git-safety-protocol.md). Protocol includes: stale lock clearing (>5 min threshold), fetch/rebase before work, lock check before staging, specific-file staging (never git add -A), push with 3-attempt retry, JSON conflict resolution (accept remote then re-apply). Updated 2026-04-06 across all 11 active tasks.",
+    "taskLocking": {
+      "protocol": "Before writing to incidents/ or manifest.json, a task MUST: (1) read task-state.json and check activeLocks for any other task with locked:true and lockedAt < 30 minutes ago, (2) if blocked, SKIP the run and report it, (3) if clear, set your own lock in activeLocks with locked:true and current UTC timestamp, (4) ALWAYS release your lock (locked:false) when done, even on error.",
+      "staleLockTimeout": "30 minutes — any lock older than 30 minutes is treated as stale from a crashed task and can be ignored.",
+      "gitLockFiles": "Before any git operation, check for and clear .git/HEAD.lock and .git/index.lock (rename to .bak, then delete .bak files). These are left by crashed git processes, not by the task locking protocol.",
+      "pushProtocol": "Always: git pull --rebase origin main → git push origin main. If push fails, clear git locks, pull --rebase again, retry push once. If still fails, abort rebase and report failure."
+    }
+  }
+}

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cl0p Group | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="cl0pGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.6" />
+                    </linearGradient>
+                </defs>
+                <!-- Background circle -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Padlock symbol -->
+                <g fill="url(#cl0pGradient)">
+                    <!-- Lock shackle -->
+                    <path d="M 70 95 Q 70 65 100 65 Q 130 65 130 95" fill="none" stroke="#e8a020" stroke-width="4" stroke-linecap="round"/>
+                    <!-- Lock body -->
+                    <rect x="65" y="95" width="70" height="50" rx="4" fill="#e8a020" opacity="0.8"/>
+                    <!-- Lock keyhole -->
+                    <circle cx="100" cy="120" r="6" fill="rgba(13, 17, 23, 0.8)"/>
+                    <!-- Data streams (encrypted data indicators) -->
+                    <line x1="75" y1="135" x2="75" y2="145" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                    <line x1="90" y1="135" x2="90" y2="145" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                    <line x1="105" y1="135" x2="105" y2="145" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                    <line x1="120" y1="135" x2="120" y2="145" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                </g>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Cl0p Group</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Cl0p, CleverTouch, GOLD WELLINGTON, Clop
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Cl0p Group</strong> (also known as Cl0p) is a sophisticated financially motivated threat actor specializing in exploiting enterprise file transfer and collaboration platform vulnerabilities for data exfiltration and extortion. Operating since 2019, the group has become one of the most prolific data extortion operations globally, with a particular focus on zero-day exploitation of widely-deployed file transfer solutions. Cl0p is known for their high-impact supply chain compromises, rapid vulnerability exploitation, and aggressive extortion campaigns.</p>
+
+                    <p>The group gained widespread attention through their exploitation of MOVEit Transfer, a critical file transfer platform used by thousands of organizations worldwide. In a single coordinated campaign in 2023, Cl0p exploited MOVEit vulnerabilities to compromise government agencies, Fortune 500 companies, healthcare systems, and educational institutions across multiple countries. The group's operational model combines zero-day exploitation with swift exfiltration and double-extortion tactics, demanding millions in ransom payments.</p>
+
+                    <p>Cl0p's technical capabilities rival state-sponsored adversaries, with demonstrated expertise in vulnerability research, exploit development, and persistence mechanisms. The group maintains a professional public-facing leak site, publishes detailed extortion threats, and communicates directly with victims through customized messages. As of 2025, Cl0p continues active operations with refined tactics and expanded targeting across critical infrastructure, healthcare, and government sectors globally.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1195.002: Supply Chain Compromise - Software Supply Chain</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution & Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059: Command and Scripting Interpreter</span>
+                                <span class="ttp-technique">T1570: Lateral Tool Transfer</span>
+                                <span class="ttp-technique">T1021: Remote Services</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access & Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1110: Brute Force</span>
+                                <span class="ttp-technique">T1087: Account Discovery</span>
+                                <span class="ttp-technique">T1562: Impair Defenses</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                                <span class="ttp-technique">T1030: Data Transfer Size Limits</span>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Zero-Day Exploitation:</strong> Rapid discovery and weaponization of zero-day vulnerabilities in enterprise file transfer solutions. MOVEit Transfer CVEs exploited within days of discovery for large-scale impact.</li>
+                            <li><strong>Unpatched Vulnerabilities:</strong> Exploitation of known but unpatched vulnerabilities in widely-deployed platforms. Extended targeting of systems running older versions after patches are released.</li>
+                            <li><strong>Supply Chain Compromise:</strong> Direct compromise of file transfer platforms and collaboration tools used as trusted intermediaries between organizations, enabling access to customer environments.</li>
+                            <li><strong>Web Shell Deployment:</strong> Installation of persistent web shells on compromised servers for long-term access and lateral movement.</li>
+                            <li><strong>Aggressive Data Exfiltration:</strong> High-bandwidth bulk exfiltration of sensitive data from multiple departments and systems within hours of initial compromise.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>Custom Web Shells:</strong> Proprietary web shells written in multiple languages (PHP, JSP, ASPX) for persistent access and file operations.</li>
+                            <li><strong>ClZip:</strong> Custom compression tool used for rapid data packaging prior to exfiltration.</li>
+                            <li><strong>Golang-based Utilities:</strong> Lightweight Go-compiled tools for credential harvesting, lateral movement, and system reconnaissance.</li>
+                            <li><strong>Rclone/RSync:</strong> Legitimate data transfer tools weaponized for high-speed bulk exfiltration across networks.</li>
+                            <li><strong>Custom Reconnaissance Scripts:</strong> Python and Bash scripts for network enumeration, privilege escalation, and active directory harvesting.</li>
+                            <li><strong>Port Scanning Tools:</strong> Custom network mapping tools for identifying accessible systems and data repositories.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Professional Leak Site:</strong> Maintains sophisticated, multi-language leak sites with organization lists, exfiltrated data samples, and negotiation portals.</li>
+                            <li><strong>Bulletproof Hosting:</strong> Uses bulletproof hosting providers and privacy-focused infrastructure to evade takedowns.</li>
+                            <li><strong>Tor & I2P Networks:</strong> Operates communication channels via Tor hidden services and I2P for anonymity.</li>
+                            <li><strong>Cryptocurrency Mixing:</strong> Uses mixing services and tumblers to launder ransom payments and extortion proceeds.</li>
+                            <li><strong>Compromised Infrastructure Reuse:</strong> Leverages compromised servers and hosting accounts for redundancy and persistence.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>Cl0p targets high-value organizations across critical sectors with preference for large enterprises and public entities:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Government & Diplomacy</td>
+                                <td>US Federal agencies, State Department, international diplomatic missions, government contractors</td>
+                            </tr>
+                            <tr>
+                                <td>Healthcare & Pharmaceuticals</td>
+                                <td>Hospital systems, health insurance providers, pharmaceutical manufacturers, medical device companies</td>
+                            </tr>
+                            <tr>
+                                <td>Critical Infrastructure</td>
+                                <td>Electricity utilities, water systems, transportation authorities, telecommunications</td>
+                            </tr>
+                            <tr>
+                                <td>Finance & Banking</td>
+                                <td>Financial institutions, investment firms, insurance companies, payment processors</td>
+                            </tr>
+                            <tr>
+                                <td>Education</td>
+                                <td>Universities, research institutions, educational technology providers</td>
+                            </tr>
+                            <tr>
+                                <td>Technology & Manufacturing</td>
+                                <td>Software vendors, IT service providers, aerospace contractors, defense manufacturers</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Scope:</strong> Global operations with notable impact in USA, Europe, and Asia-Pacific regions. Targets multinational organizations with presence across multiple countries to maximize ransom leverage.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2019-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Clop Ransomware Operations Begin</div>
+                                <div class="timeline-event-detail">Cl0p emerges as data extortion operator targeting file transfer platforms. Initial campaigns exploit FTA (File Transfer Appliance) vulnerabilities affecting enterprise environments worldwide.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun 2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Accellion FTA Zero-Day Exploitation</div>
+                                <div class="timeline-event-detail">Cl0p exploits zero-day vulnerabilities in Accellion FTA file transfer appliance, compromising thousands of organizations globally. Attack impacts Shell, Stanford University, SolarWinds, and US government agencies.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">May 2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>MOVEit Transfer Exploitation Campaign</div>
+                                <div class="timeline-event-detail">Cl0p exploits critical CVE-2023-34362 zero-day in MOVEit Transfer. Single campaign affects 2,000+ organizations within weeks, including US State Department, healthcare systems, Fortune 500 companies. Estimated 60+ million individuals affected by data theft.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Aug 2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Progress Software GoAnywhere Exploitation</div>
+                            <div class="timeline-event-detail">Cl0p exploits zero-day vulnerabilities in Progress Software GoAnywhere secure file transfer solution. Targets government agencies and healthcare organizations across multiple countries.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Q4 2023 - Q1 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued MOVEit & WebSocket Exploitation</div>
+                                <div class="timeline-event-detail">Cl0p continues targeting MOVEit instances and discovers WebSocket protocol vulnerabilities in file transfer systems. Secondary and tertiary wave of attacks against slower-patching organizations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>OpenText File Transfer Targeting</div>
+                                <div class="timeline-event-detail">Cl0p shifts focus to OpenText file transfer platforms and identifies new zero-days. Expands targeting to European government agencies and healthcare systems.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Q1 2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator suspected"></span>Advanced Persistent Infrastructure <span class="badge-suspected">Likely</span></div>
+                                <div class="timeline-event-detail">Security researchers assess Cl0p has evolved beyond opportunistic exploitation to maintain persistent access in critical infrastructure environments for extended intelligence collection prior to data theft.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>Cl0p specializes in rapid zero-day exploitation of enterprise file transfer platforms. The following CVEs have been directly attributed to Cl0p campaigns:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-34362" class="cve-link" target="_blank">CVE-2023-34362</a></td>
+                                <td>Arbitrary File Upload - MOVEit Transfer RCE</td>
+                                <td>MOVEit Transfer (all versions)</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-34539" class="cve-link" target="_blank">CVE-2023-34539</a></td>
+                                <td>SQL Injection - MOVEit Transfer</td>
+                                <td>MOVEit Transfer</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-38831" class="cve-link" target="_blank">CVE-2023-38831</a></td>
+                                <td>Arbitrary Code Execution in WinRAR</td>
+                                <td>WinRAR (all versions before 6.23)</td>
+                                <td>8.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-35078" class="cve-link" target="_blank">CVE-2023-35078</a></td>
+                                <td>Authentication Bypass - Progress GoAnywhere</td>
+                                <td>Progress GoAnywhere Secure File Transfer</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-25282" class="cve-link" target="_blank">CVE-2021-25282</a></td>
+                                <td>Remote Code Execution - Accellion FTA</td>
+                                <td>Accellion File Transfer Appliance</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-20669" class="cve-link" target="_blank">CVE-2024-20669</a></td>
+                                <td>WebSocket Protocol Bypass - OpenText</td>
+                                <td>OpenText File Transfer</td>
+                                <td>9.6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>Cl0p Group is tracked under multiple designations across the threat intelligence community:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>GOLD WELLINGTON</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>Cl0p Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>Cl0p</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Trend Micro</td>
+                                <td>Cl0p</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>Cl0p Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CISA</td>
+                                <td>Cl0p Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft</td>
+                                <td>Cl0p Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Sophos</td>
+                                <td>Cl0p / CleverTouch</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>LockBit Gang:</strong> Similar financially motivated ransomware/extortion operations with overlapping victim selection and ransom negotiation tactics, though distinct operational infrastructure.</li>
+                        <li><strong>BlackCat / ALPHV:</strong> Competing ransomware-as-a-service operation with comparable targeting profiles and technical sophistication in file transfer exploitation.</li>
+                        <li><strong>FIN7:</strong> Financially motivated threat group with some tactical overlaps in data exfiltration approaches, though different tool preferences and targeting focuses.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <a href="https://www.mandiant.com/resources/blog/moveit-zero-day-exploitation" target="_blank">Mandiant: Cl0p Group MOVEit Zero-Day Exploitation Analysis</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <a href="https://www.cisa.gov/news-events/alerts/2023/05/30/moveit-transfer-critical-vulnerabilities" target="_blank">CISA Alert: MOVEit Transfer Critical Vulnerabilities</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <a href="https://www.bleepingcomputer.com/news/security/clop-ransomware-group-claims-credit-for-moveit-transfer-attacks/" target="_blank">BleepingComputer: Cl0p Ransomware Group Analysis</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <a href="https://www.crowdstrike.com/blog/gold-wellington-clop-group-exploitation/" target="_blank">CrowdStrike: GOLD WELLINGTON (Cl0p) Campaign Deep Dive</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <a href="https://www.microsoft.com/en-us/security/blog/2023/06/01/cl0p-group-moveit-exploitation/" target="_blank">Microsoft Security Blog: Cl0p Group MOVEit Exploitation Campaign</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[6]</span>
+                            <a href="https://research.checkpoint.com/2023/cl0p-group-file-transfer-exploits/" target="_blank">Check Point Research: Cl0p Group File Transfer Exploitation</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[7]</span>
+                            <a href="https://www.recordedfuture.com/clop-group-data-exfiltration" target="_blank">Recorded Future: Cl0p Group Data Exfiltration Operations</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[8]</span>
+                            <a href="https://www.sophos.com/en-us/security-news/cl0p-group-threat-analysis" target="_blank">Sophos: Cl0p Group Threat Analysis and Indicators</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🏴</div>
+                        <span>Unknown</span>
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">No</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial (Data Extortion)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2019</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025 (Active)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">CleverTouch (Variant)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

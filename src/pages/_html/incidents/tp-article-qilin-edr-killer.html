@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qilin EDR Killer Campaign — Threatpedia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #080b10;
+      --surface:   #0d1117;
+      --surface2:  #111820;
+      --border:    #1e2733;
+      --amber:     #e8a020;
+      --amber-dim: #a06a10;
+      --text:      #cdd5e0;
+      --muted:     #5a6a7e;
+      --white:     #f0f4f8;
+      --red:       #c0392b;
+      --red-dim:   #7a1f1f;
+      --green:     #1e7a4a;
+      --green-dim: #0e4a2a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,11,16,0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; letter-spacing: 0.22em; color: var(--amber); text-transform: uppercase; }
+    .nav-logo span { color: var(--muted); }
+    .nav-crumb { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+    .nav-crumb a { color: var(--muted); text-decoration: none; }
+    .nav-crumb a:hover { color: var(--amber); }
+    .nav-crumb .sep { color: var(--border); }
+    .nav-badge {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em;
+      background: var(--red-dim); color: #e07070; border: 1px solid var(--red-dim);
+      padding: 4px 10px; text-transform: uppercase;
+    }
+
+    /* LAYOUT */
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: 110px 48px 80px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ARTICLE HEADER */
+    .article-header { margin-bottom: 48px; }
+    .article-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 0.25em; color: var(--amber); text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .article-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--amber); flex-shrink: 0; }
+    .article-title {
+      font-family: 'Playfair Display', serif; font-weight: 900;
+      font-size: clamp(2.2rem, 4.5vw, 3.6rem); line-height: 1.05;
+      color: var(--white); letter-spacing: -0.02em; margin-bottom: 14px;
+      animation: fadeUp 0.6s 0.06s ease both;
+    }
+    .article-title em { color: var(--amber); font-style: italic; }
+    .article-sub {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s 0.12s ease both;
+    }
+    .article-meta {
+      display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+      padding: 18px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.6s 0.18s ease both;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--amber-dim); text-transform: uppercase; }
+    .meta-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--text); letter-spacing: 0.05em; }
+    .meta-val.critical { color: #e07070; }
+    .meta-val.high { color: #e09040; }
+    .meta-val.draft { color: var(--muted); }
+
+    /* ARTICLE BODY */
+    .article-body { animation: fadeUp 0.6s 0.22s ease both; }
+    .section-divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 40px 0 22px;
+    }
+    .section-divider-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.28em; color: var(--amber); text-transform: uppercase; white-space: nowrap;
+    }
+    .section-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .section-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; color: var(--amber-dim); letter-spacing: 0.2em; }
+
+    .body-text { font-size: 0.95rem; color: var(--text); line-height: 1.9; margin-bottom: 18px; }
+    .body-text strong { color: var(--white); font-weight: 500; }
+    .body-text code {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1px 6px; color: var(--amber);
+    }
+
+    /* TECHNIQUE TAGS */
+    .ttp-block { margin: 24px 0; }
+    .ttp-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ttp-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 0.1em; color: var(--amber-dim);
+      border: 1px solid var(--border); padding: 5px 12px;
+      background: var(--surface);
+      transition: border-color 0.2s, color 0.2s;
+      cursor: default;
+    }
+    .ttp-tag:hover { border-color: var(--amber-dim); color: var(--amber); }
+    .ttp-tag .tid { color: var(--muted); margin-right: 6px; font-size: 0.58rem; }
+
+    /* KILL CHAIN */
+    .killchain { margin: 24px 0; display: flex; gap: 0; }
+    .kc-stage {
+      flex: 1; padding: 10px 8px; text-align: center;
+      border: 1px solid var(--border); border-right: none;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); background: var(--surface);
+      line-height: 1.4;
+    }
+    .kc-stage:last-child { border-right: 1px solid var(--border); }
+    .kc-stage.active { background: var(--amber-dim); color: var(--white); border-color: var(--amber-dim); }
+    .kc-stage.active + .kc-stage { border-left-color: var(--amber-dim); }
+
+    /* TECHNICAL BLOCK */
+    .tech-block {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--amber-dim);
+      padding: 20px 24px; margin: 20px 0;
+    }
+    .tech-block-title {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .tech-item { margin-bottom: 10px; display: flex; gap: 12px; }
+    .tech-item-marker {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+      color: var(--amber-dim); flex-shrink: 0; margin-top: 2px;
+      letter-spacing: 0.1em;
+    }
+    .tech-item-text { font-size: 0.87rem; color: var(--text); line-height: 1.75; }
+    .tech-item-text strong { color: var(--white); font-weight: 500; }
+    .tech-item-text code { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--amber); background: var(--bg); border: 1px solid var(--border); padding: 1px 5px; }
+
+    /* ALERT BOX */
+    .alert-box {
+      border: 1px solid var(--red-dim); background: rgba(120,31,31,0.12);
+      padding: 18px 22px; margin: 24px 0; display: flex; gap: 16px;
+    }
+    .alert-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .alert-body { font-size: 0.88rem; color: var(--text); line-height: 1.8; }
+    .alert-body strong { color: #e07070; font-weight: 500; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; letter-spacing: 0.1em; }
+
+    /* SOURCES */
+    .sources-list { list-style: none; margin-top: 12px; }
+    .sources-list li {
+      display: flex; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .src-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--amber-dim); flex-shrink: 0; min-width: 28px; margin-top: 2px; }
+    .src-detail { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+    .src-detail strong { color: var(--text); font-weight: 400; display: block; margin-bottom: 2px; }
+    .src-detail a { color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.05em; }
+    .src-detail a:hover { color: var(--amber); }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 110px; animation: fadeUp 0.6s 0.3s ease both; }
+    .sidebar-card {
+      background: var(--surface); border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .sidebar-card-hdr {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.22em; color: var(--amber); text-transform: uppercase;
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .sidebar-fields { padding: 0; }
+    .sf-row {
+      display: flex; flex-direction: column; gap: 3px;
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+    }
+    .sf-row:last-child { border-bottom: none; }
+    .sf-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--amber-dim); text-transform: uppercase; }
+    .sf-value { font-size: 0.83rem; color: var(--text); line-height: 1.5; }
+    .sf-value.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.73rem; }
+    .sf-value.red { color: #e07070; }
+    .sf-value.amber { color: var(--amber); }
+    .sf-value.muted { color: var(--muted); font-style: italic; }
+    .sf-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+    .sf-tag {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.08em; color: var(--muted);
+      border: 1px solid var(--border); padding: 2px 7px; background: var(--bg);
+    }
+
+    /* STATUS BADGE */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 4px 10px; border: 1px solid;
+    }
+    .status-pill.draft { color: var(--muted); border-color: var(--border); background: var(--bg); }
+    .status-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* CERT BLOCK */
+    .cert-block {
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 16px 18px; margin: 12px 18px 18px;
+    }
+    .cert-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .cert-item:last-child { margin-bottom: 0; }
+    .cert-icon { font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
+    .cert-text { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+    .cert-text.done { color: var(--text); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .page-wrap { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+      nav { padding: 16px 24px; }
+      .sidebar { position: static; }
+      .killchain { flex-wrap: wrap; }
+      .kc-stage { flex-basis: calc(25% - 4px); border-right: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Threat<span>pedia</span></div>
+    <div class="nav-crumb">
+      <a href="#">Encyclopedia</a>
+      <span class="sep">/</span>
+      <a href="#">Campaigns</a>
+      <span class="sep">/</span>
+      <span style="color: var(--text);">Qilin EDR Killer</span>
+    </div>
+    <div class="nav-badge">⚠ Draft — Not Yet Certified</div>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- ── MAIN ARTICLE ─────────────────────────────────── -->
+    <main>
+
+      <div class="article-header">
+        <div class="article-eyebrow">Campaign · Ransomware · Active</div>
+        <h1 class="article-title">Qilin <em>EDR Killer</em><br>Campaign</h1>
+        <div class="article-sub">Advanced EDR neutralization enabling full-blind ransomware deployment</div>
+        <div class="article-meta">
+          <div class="meta-item">
+            <span class="meta-lbl">Event ID</span>
+            <span class="meta-val mono">TP-2026-DRAFT</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">Discovered</span>
+            <span class="meta-val">April 2026</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">Severity</span>
+            <span class="meta-val critical">CRITICAL</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">Status</span>
+            <span class="meta-val high">Active</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">Review Status</span>
+            <span class="meta-val draft">Draft</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="section-divider">
+        <span class="section-num">// 01</span>
+        <span class="section-divider-tag">Overview</span>
+        <div class="section-divider-line"></div>
+      </div>
+
+      <div class="article-body">
+        <p class="body-text">
+          The Qilin ransomware group — also tracked as <strong>Agenda</strong>, <strong>Gold Feather</strong>, and <strong>Water Galura</strong> — has deployed a sophisticated, multi-stage attack chain capable of disabling endpoint detection and response (EDR) tools from virtually every major security vendor before executing its ransomware payload. The technique, documented by Cisco Talos in April 2026, represents a significant escalation in the group's operational tradecraft.
+        </p>
+        <p class="body-text">
+          At the core of the campaign is a malicious <code>msimg32.dll</code> that is sideloaded via legitimate applications such as <code>FoxitPDFReader.exe</code>. This DLL serves as the entry point for a four-stage, memory-resident loader chain that ultimately delivers a kernel-level EDR killer capable of unregistering monitoring callbacks across more than <strong>300 EDR driver names</strong> — effectively blinding the entire defensive layer before ransomware is ever dropped.
+        </p>
+        <p class="body-text">
+          Qilin has reported over <strong>40 victims per month</strong> as one of the most active ransomware-as-a-service (RaaS) operations currently in operation. This campaign demonstrates a deliberate shift toward neutralizing the defense layer as a primary phase of the attack — not an afterthought.
+        </p>
+
+        <div class="alert-box">
+          <div class="alert-icon">⚠</div>
+          <div class="alert-body">
+            <strong>ANALYST NOTE</strong><br>
+            The geo-fencing behavior — terminating execution if the system locale matches a post-Soviet country — mirrors patterns documented in other Russian-affiliated ransomware operations (REvil, LockBit, DarkSide). Attribution confidence to a Russian-nexus actor is assessed as <strong>Medium</strong> pending additional corroboration.
+          </div>
+        </div>
+
+        <!-- INITIAL ACCESS -->
+        <div class="section-divider">
+          <span class="section-num">// 02</span>
+          <span class="section-divider-tag">Attack Chain</span>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <p class="body-text">The attack unfolds in four distinct stages, each designed to advance deeper into kernel space while avoiding detection:</p>
+
+        <div class="tech-block">
+          <div class="tech-block-title">Stage 1 — DLL Sideloading &amp; Entry</div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text">A legitimate application (e.g., <code>FoxitPDFReader.exe</code>) loads a malicious <code>msimg32.dll</code> from its local directory instead of the genuine Windows system library. The rogue DLL forwards all expected API calls to the real <code>C:\Windows\System32\msimg32.dll</code>, preserving normal application behavior while executing malicious logic from <code>DllMain</code>.</div>
+          </div>
+        </div>
+
+        <div class="tech-block">
+          <div class="tech-block-title">Stages 2–3 — Anti-Detection Loader Chain</div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>SEH/VEH Abuse:</strong> Structured and Vectored Exception Handling mechanisms are weaponized to conceal API invocation patterns and covertly transfer execution between loader stages.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>ETW Suppression:</strong> Event Tracing for Windows is neutralized at runtime, depriving defenders of the behavioral telemetry needed for detection.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>Halo's Gate Syscall Bypass:</strong> The loader scans <code>ntdll.dll</code> both forward and backward to locate clean, unhooked neighboring syscall stubs, then repurposes those stubs to invoke system calls — bypassing EDR-hooked APIs without modifying hooked code.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>Kernel Object Manipulation:</strong> The <code>.mrdata</code> section of <code>ntdll.dll</code> — which holds the exception dispatcher callback pointer — is overwritten to redirect exception handling to the loader's own routine.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>Anti-Debugging:</strong> Checks for breakpoints on <code>KiUserExceptionDispatcher</code>; deliberately crashes the process if one is detected. Geo-fencing also terminates execution on post-Soviet system locales.</div>
+          </div>
+        </div>
+
+        <div class="tech-block">
+          <div class="tech-block-title">Stage 4 — Kernel-Level EDR Killer</div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>rwdrv.sys:</strong> A renamed version of <code>ThrottleStop.sys</code>, legitimately signed by TechPowerUp LLC. Exposes IOCTLs for physical memory read/write and MSR access — exploited here to directly manipulate kernel structures bypassing protected virtual memory.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text"><strong>hlpdrv.sys:</strong> Used exclusively to terminate protected EDR processes via IOCTL code <code>0x2222008</code>, bypassing Windows process protection mechanisms.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text">Iterates through a hardcoded list of <strong>300+ EDR driver names</strong>, using physical memory writes via <code>rwdrv.sys</code> to unregister process creation, thread creation, and image load monitoring callbacks — disabling EDR visibility at the kernel level across virtually all major vendors.</div>
+          </div>
+          <div class="tech-item">
+            <span class="tech-item-marker">→</span>
+            <div class="tech-item-text">Temporarily overwrites the <code>CiValidateImageHeader</code> callback to bypass Code Integrity enforcement, then restores it afterward to reduce forensic traces.</div>
+          </div>
+        </div>
+
+        <!-- KILL CHAIN -->
+        <div class="section-divider">
+          <span class="section-num">// 03</span>
+          <span class="section-divider-tag">Cyber Kill Chain Mapping</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div class="killchain">
+          <div class="kc-stage">Reconnaissance</div>
+          <div class="kc-stage active">Weaponization</div>
+          <div class="kc-stage active">Delivery</div>
+          <div class="kc-stage active">Exploitation</div>
+          <div class="kc-stage active">Installation</div>
+          <div class="kc-stage active">C2</div>
+          <div class="kc-stage active">Actions on Objectives</div>
+        </div>
+        <p class="body-text" style="margin-top: 14px; font-size: 0.82rem; color: var(--muted);">
+          Stages 2 through 7 are confirmed active in documented incidents. Reconnaissance tradecraft has not yet been publicly documented.
+        </p>
+
+        <!-- MITRE ATT&CK -->
+        <div class="section-divider">
+          <span class="section-num">// 04</span>
+          <span class="section-divider-tag">MITRE ATT&amp;CK Techniques</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div class="ttp-block">
+          <div class="ttp-grid">
+            <div class="ttp-tag"><span class="tid">T1574.002</span>DLL Side-Loading</div>
+            <div class="ttp-tag"><span class="tid">T1562.001</span>Disable/Modify Security Tools</div>
+            <div class="ttp-tag"><span class="tid">T1055</span>Process Injection</div>
+            <div class="ttp-tag"><span class="tid">T1562.006</span>Disable ETW</div>
+            <div class="ttp-tag"><span class="tid">T1014</span>Rootkit</div>
+            <div class="ttp-tag"><span class="tid">T1543.003</span>Windows Service (Driver)</div>
+            <div class="ttp-tag"><span class="tid">T1497.001</span>System Checks (Anti-Debug)</div>
+            <div class="ttp-tag"><span class="tid">T1620</span>Reflective Code Loading</div>
+            <div class="ttp-tag"><span class="tid">T1486</span>Data Encrypted for Impact</div>
+            <div class="ttp-tag"><span class="tid">T1036.005</span>Match Legitimate Name/Location</div>
+          </div>
+        </div>
+
+        <!-- DETECTION -->
+        <div class="section-divider">
+          <span class="section-num">// 05</span>
+          <span class="section-divider-tag">Detection &amp; Mitigation Guidance</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <p class="body-text">Cisco Talos notes that while the individual techniques are not entirely novel, they remain highly effective against single-layer defense stacks. Organizations are advised to:</p>
+
+        <div class="tech-block">
+          <div class="tech-block-title">Detection Indicators</div>
+          <div class="tech-item"><span class="tech-item-marker">→</span><div class="tech-item-text">Monitor for <code>rwdrv.sys</code> and <code>hlpdrv.sys</code> driver installation events — neither should appear in a legitimate production environment.</div></div>
+          <div class="tech-item"><span class="tech-item-marker">→</span><div class="tech-item-text">Alert on any user-mode process attempting physical memory writes — this behavior is a strong indicator of kernel manipulation.</div></div>
+          <div class="tech-item"><span class="tech-item-marker">→</span><div class="tech-item-text">Monitor <code>FoxitPDFReader.exe</code> (and similar LOLBin candidates) loading <code>msimg32.dll</code> from non-system directories.</div></div>
+          <div class="tech-item"><span class="tech-item-marker">→</span><div class="tech-item-text">Monitor for ETW suppression and unexpected changes to <code>ntdll.dll</code> sections in memory.</div></div>
+          <div class="tech-item"><span class="tech-item-marker">→</span><div class="tech-item-text">Alert on modifications to <code>CiValidateImageHeader</code> or Code Integrity callbacks.</div></div>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="section-divider">
+          <span class="section-num">// 06</span>
+          <span class="section-divider-tag">Source Citations</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <ul class="sources-list">
+          <li>
+            <span class="src-num">[1]</span>
+            <div class="src-detail">
+              <strong>Cisco Talos Intelligence — Primary Technical Analysis</strong>
+              "Qilin EDR Killer" — Talos Intelligence Blog, April 2026
+              <a href="https://blog.talosintelligence.com/qilin-edr-killer/">blog.talosintelligence.com/qilin-edr-killer/</a>
+            </div>
+          </li>
+          <li>
+            <span class="src-num">[2]</span>
+            <div class="src-detail">
+              <strong>CyberSecurityNews — Secondary Coverage</strong>
+              "Qilin Ransomware Uses Malicious DLL to Kill Almost Every Vendor's EDR Solutions" — April 2, 2026
+              <a href="https://cybersecuritynews.com/qilin-ransomware-kill-edr/">cybersecuritynews.com/qilin-ransomware-kill-edr/</a>
+            </div>
+          </li>
+          <li>
+            <span class="src-num">[3]</span>
+            <div class="src-detail" style="color: #5a6a7e; font-style: italic;">
+              <strong style="color: var(--muted); font-weight: 400;">Additional corroborating source required for Threatpedia Certification</strong>
+              Minimum 3 independent sources required per editorial standard.
+            </div>
+          </li>
+        </ul>
+
+      </div><!-- /article-body -->
+
+    </main>
+
+    <!-- ── SIDEBAR ────────────────────────────────────────── -->
+    <aside class="sidebar">
+
+      <!-- CERTIFICATION STATUS -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-hdr">Certification Status</div>
+        <div style="padding: 16px 18px 6px;">
+          <div class="status-pill draft"><div class="status-pill-dot"></div>Draft — Pending Review</div>
+        </div>
+        <div class="cert-block">
+          <div class="cert-item">
+            <span class="cert-icon">⬜</span>
+            <span class="cert-text">Core facts verified (date, actor, TTPs)</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-icon">⬜</span>
+            <span class="cert-text">3+ independent corroborating sources</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-icon">⬜</span>
+            <span class="cert-text">MITRE ATT&amp;CK mapping confirmed by SME</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-icon">⬜</span>
+            <span class="cert-text">Reviewed by ≥2 qualified reviewers</span>
+          </div>
+          <div class="cert-item">
+            <span class="cert-icon">⬜</span>
+            <span class="cert-text">No major unresolved attribution disputes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK FACTS -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-hdr">Incident Record</div>
+        <div class="sidebar-fields">
+          <div class="sf-row">
+            <span class="sf-label">Event ID</span>
+            <span class="sf-value mono">TP-2026-DRAFT</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Common Name</span>
+            <span class="sf-value">Qilin EDR Killer Campaign</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Classification</span>
+            <div class="sf-tags">
+              <span class="sf-tag">Ransomware</span>
+              <span class="sf-tag">RaaS</span>
+              <span class="sf-tag">Defense Evasion</span>
+            </div>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Date Discovered</span>
+            <span class="sf-value">April 2026</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Status</span>
+            <span class="sf-value red">Active</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Attribution</span>
+            <span class="sf-value">Qilin (aka Agenda, Gold Feather, Water Galura)</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">State Affiliation</span>
+            <span class="sf-value muted">Suspected Russia-nexus — Medium Confidence</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Initial Vector</span>
+            <span class="sf-value">DLL Sideloading (msimg32.dll)</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Targets</span>
+            <span class="sf-value">Multi-sector — global; excludes post-Soviet locales</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Impact</span>
+            <span class="sf-value red">Full EDR blind — 300+ vendor drivers targeted; ransomware deployment post-kill</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Malware / Tools</span>
+            <div class="sf-tags">
+              <span class="sf-tag">msimg32.dll</span>
+              <span class="sf-tag">rwdrv.sys</span>
+              <span class="sf-tag">hlpdrv.sys</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRAMEWORK MAPPING -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-hdr">Framework Mapping</div>
+        <div class="sidebar-fields">
+          <div class="sf-row">
+            <span class="sf-label">MITRE ATT&amp;CK</span>
+            <span class="sf-value" style="font-size: 0.78rem;">10 techniques mapped — SME review pending</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Kill Chain Stages</span>
+            <span class="sf-value" style="font-size: 0.78rem;">Weaponization → Actions on Objectives (6 of 7)</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">NIST Functions</span>
+            <div class="sf-tags">
+              <span class="sf-tag">Detect</span>
+              <span class="sf-tag">Respond</span>
+              <span class="sf-tag">Protect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-hdr">Related Records</div>
+        <div class="sidebar-fields">
+          <div class="sf-row">
+            <span class="sf-label">APT Profile</span>
+            <span class="sf-value muted">Qilin / Agenda — Registry entry pending</span>
+          </div>
+          <div class="sf-row">
+            <span class="sf-label">Related Techniques</span>
+            <span class="sf-value muted">BYOVD (Bring Your Own Vulnerable Driver) pattern — see related campaigns</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div><!-- /page-wrap -->
+
+  <footer style="position: relative; z-index: 1; padding: 32px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--amber);">THREATPEDIA</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted);">DRAFT ARTICLE · NOT CERTIFIED · FOR EDITORIAL REVIEW ONLY</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted);">© 2026 Threatpedia</div>
+  </footer>
+
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

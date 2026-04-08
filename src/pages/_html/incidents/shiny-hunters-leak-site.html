@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generated-by" content="incident-crosslink-gapfill">
+    <meta name="generated-date" content="2026-04-06T12:00:00Z">
+    <title>ShinyHunters Operations & Leak Site Activity — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
+        }
+
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .meta-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .meta-value.threat-high {
+            color: #ff6b6b;
+        }
+
+        .meta-value.status-active {
+            color: #51cf66;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.3px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-content p {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
+            color: var(--white);
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            background-color: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 32px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .attack-stage-title {
+            font-weight: 600;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-stage-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .attack-stage-content li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+        <article class="article-header">
+            <h1 class="incident-title">ShinyHunters Operations & Leak Site Activity</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Profile ID</span>
+                    <span class="meta-value">TP-TA-0008</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Threat Actor Profile / Data Extortion</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Active Since</span>
+                    <span class="meta-value">2020</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Last Activity</span>
+                    <span class="meta-value">March 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value status-active">Active</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Threat Level</span>
+                    <span class="meta-value threat-high">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution</span>
+                    <span class="meta-value">ShinyHunters (UNC5537)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Multi-Sector Global</span>
+                </div>
+                            <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+        </article>
+
+        <div class="content-grid">
+            <main class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>ShinyHunters is a notorious black-hat criminal hacking and extortion group believed to have formed around 2020. The group has built a strong reputation as a "pay or leak" operation, systematically compromising organizations, exfiltrating sensitive data, and publishing stolen records on their dark web data leak site (DLS) when ransom demands go unmet. By March 2026, the group claimed data from approximately 400 organizations, making them one of the most prolific data theft and extortion operators globally.</p>
+
+                        <p>In late January 2026, a new ShinyHunters-branded data leak site emerged, marking a strategic shift toward a traditional ransomware-style extortion model. The portal, hosted as a TOR hidden service, lists alleged victims with countdown timers and sample data. This evolution from pure data brokerage to structured extortion represents a maturation of their operational model. ShinyHunters served as the publication platform for the European Commission breach data exfiltrated via the TeamPCP/Trivy supply chain compromise (CVE-2026-33634), publishing 340 GB of sensitive EU institutional data on March 28, 2026.</p>
+
+                        <p>The group's attack methodology primarily leverages sophisticated voice phishing (vishing) and victim-branded credential harvesting sites to gain initial access by obtaining SSO credentials and MFA codes. Once inside, they target cloud-based SaaS applications — particularly Salesforce, Snowflake, and similar platforms — to exfiltrate sensitive data for extortion. Key member Sébastien Raoult was arrested and convicted in 2024, but the group has continued operations uninterrupted.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis — Attack Techniques</h2>
+                    <div class="section-content">
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Initial Access</div>
+                                <div class="attack-stage-content">
+                                    <ul>
+                                        <li>Voice phishing (vishing) campaigns impersonating IT support</li>
+                                        <li>SSO credential harvesting via victim-branded phishing sites</li>
+                                        <li>Exploitation of misconfigured SaaS guest user permissions (particularly Salesforce Experience Cloud)</li>
+                                        <li>Purchase of stolen credentials from initial access brokers</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Persistence & Collection</div>
+                                <div class="attack-stage-content">
+                                    <ul>
+                                        <li>Abuse of cloud SaaS APIs for bulk data extraction</li>
+                                        <li>Targeting of Snowflake, Salesforce, Okta environments</li>
+                                        <li>Systematic scanning for misconfigured guest permissions</li>
+                                        <li>Telegram-based coordination for operational comms</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Exfiltration & Extortion</div>
+                                <div class="attack-stage-content">
+                                    <ul>
+                                        <li>Dark web data leak site (DLS) with countdown timers</li>
+                                        <li>Direct extortion demands before publication</li>
+                                        <li>Sale of stolen data on underground forums (formerly BreachForums)</li>
+                                        <li>Publication of sample data as pressure tactic</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Notable Breaches & Operations</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Snowflake Campaign (2024-2025):</strong> Compromised 165+ customer environments via stolen credentials. Attackers gained access to Snowflake instances and systematically extracted sensitive customer data before publishing claims on underground forums.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Salesforce Campaign (Sept 2025 - March 2026):</strong> Targeted 300-400 organizations via misconfigured guest permissions. Leveraged Salesforce Experience Cloud configurations that inadvertently exposed sensitive business records to guest users.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>SoundCloud (December 2025):</strong> 29.8 million user accounts exposed. Data included usernames, email addresses, and partially hashed passwords. ShinyHunters published samples on their DLS before selling full database to other threat actors.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Mixpanel (November 2025):</strong> Third-party analytics breach affecting multiple companies. ShinyHunters accessed Mixpanel's internal infrastructure and exfiltrated customer data from dozens of organizations using the platform.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Canada Goose:</strong> 600,000 customer records via third-party payment processor compromise. Payment card data and personal information accessed through supply chain vulnerability.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>European Commission (March 2026):</strong> Published 340 GB of sensitive EU institutional data stolen via TeamPCP/Trivy compromise (CVE-2026-33634). This marked first major nation-state level data publication by ShinyHunters.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Additional Notable Claims:</strong> Cisco source code breach, AMD, Sony, Okta, and LastPass data claims. BreachForums operated by ShinyHunters administrators with threats to leak user data.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">MITRE ATT&CK Techniques</h2>
+                    <div class="section-content">
+                        <div class="ioc-group">
+                            <div class="ioc-group-title">Enterprise Attack Framework</div>
+                            <div class="ioc-list">
+                                <div class="ioc-item"><span class="code-inline">T1566.004</span> — Phishing: Spearphishing Voice (Vishing)</div>
+                                <div class="ioc-item"><span class="code-inline">T1078</span> — Valid Accounts</div>
+                                <div class="ioc-item"><span class="code-inline">T1078.004</span> — Valid Accounts: Cloud Accounts</div>
+                                <div class="ioc-item"><span class="code-inline">T1213</span> — Data from Information Repositories</div>
+                                <div class="ioc-item"><span class="code-inline">T1530</span> — Data from Cloud Storage</div>
+                                <div class="ioc-item"><span class="code-inline">T1567</span> — Exfiltration Over Web Service</div>
+                                <div class="ioc-item"><span class="code-inline">T1657</span> — Financial Theft (Extortion)</div>
+                                <div class="ioc-item"><span class="code-inline">T1539</span> — Steal Web Session Cookie</div>
+                                <div class="ioc-item"><span class="code-inline">T1528</span> — Steal Application Access Token</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Law Enforcement Actions</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Sébastien Raoult (French National):</strong> Arrested in Morocco in May 2022, extradited to the United States, and pleaded guilty in January 2024 to conspiracy and aggravated identity theft. Sentenced to 3 years in federal prison and ordered to pay $5 million in restitution to victims. Despite his incarceration, ShinyHunters group operations continued and expanded, suggesting distributed command structure and multiple independent cells.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2020</div>
+                                <div class="timeline-title">Group Formation</div>
+                                <div class="timeline-description">ShinyHunters group emerges, begins data broker operations targeting mid-market and enterprise organizations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2020–2023</div>
+                                <div class="timeline-title">Early Operations</div>
+                                <div class="timeline-description">Series of high-profile breaches across technology sector, establishing reputation as persistent data extortion group.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">May 2022</div>
+                                <div class="timeline-title">Sébastien Raoult Arrested</div>
+                                <div class="timeline-description">Key ShinyHunters member Sébastien Raoult arrested in Morocco following international law enforcement investigation.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">January 2024</div>
+                                <div class="timeline-title">Raoult Guilty Plea</div>
+                                <div class="timeline-description">Raoult pleads guilty to conspiracy and aggravated identity theft charges in federal court. Sentenced to 3 years imprisonment.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2024–2025</div>
+                                <div class="timeline-title">Snowflake Campaign</div>
+                                <div class="timeline-description">Large-scale campaign targeting Snowflake data warehouses via stolen credentials compromises 165+ customer environments.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">September 2025</div>
+                                <div class="timeline-title">Salesforce Scanning Campaign</div>
+                                <div class="timeline-description">Organized scanning campaign targeting Salesforce instances with misconfigured guest user permissions begins.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">November 2025</div>
+                                <div class="timeline-title">Mixpanel Breach</div>
+                                <div class="timeline-description">ShinyHunters accesses Mixpanel infrastructure, exfiltrates customer data affecting multiple organizations using the platform.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">December 2025</div>
+                                <div class="timeline-title">SoundCloud Compromise</div>
+                                <div class="timeline-description">29.8 million SoundCloud user accounts exposed; data published on ShinyHunters data leak site with ransom demands.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Late January 2026</div>
+                                <div class="timeline-title">DLS Launch</div>
+                                <div class="timeline-description">New branded ShinyHunters data leak site launched on TOR network, marking shift to formalized extortion operations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 2026</div>
+                                <div class="timeline-title">Salesforce Campaign Peak</div>
+                                <div class="timeline-description">Salesforce campaign reaches peak activity with 300-400 total victim organizations compromised across enterprise segment.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 28, 2026</div>
+                                <div class="timeline-title">EC Data Publication</div>
+                                <div class="timeline-description">ShinyHunters publishes 340 GB of sensitive European Commission institutional data on their DLS, exfiltrated via CVE-2026-33634.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Group Profile Summary</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Geography & Attribution:</strong> French and English-speaking operators believed operating from Eastern Europe. Mandiant tracks as UNC5537. Also known as ShinyCorp in some underground communities.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Operational Model:</strong> Hybrid data broker and extortion group. Data exfiltration followed by ransom demands with public DLS publication of samples and victim shaming. Recent evolution toward structured ransomware-style operations with countdown timers and public pressure tactics.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Infrastructure:</strong> TOR-hosted data leak site, underground forum accounts (BreachForums, other markets), Telegram channels for victim coordination, victim-branded credential harvesting infrastructure.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Approximate Victim Count:</strong> 400+ organizations by March 2026, spanning technology, finance, healthcare, government, manufacturing, and retail sectors globally.
+                        </div>
+                    </div>
+                </section>
+
+                <div class="references">
+                    <h3 class="references-title">References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <strong>Google Cloud / Mandiant</strong> — <em>Tracking the Expansion of ShinyHunters-Branded SaaS Data Theft</em>
+                            <a href="https://cloud.google.com/blog/topics/threat-intelligence/expansion-shinyhunters-saas-data-theft">https://cloud.google.com/blog/topics/threat-intelligence/expansion-shinyhunters-saas-data-theft</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <strong>EclecticIQ</strong> — <em>ShinyHunters Calling: Financially Motivated Data Extortion Group Targeting Enterprise Cloud Applications</em>
+                            <a href="https://blog.eclecticiq.com/shinyhunters-calling-financially-motivated-data-extortion-group-targeting-enterprise-cloud-applications">https://blog.eclecticiq.com/shinyhunters-calling-financially-motivated-data-extortion-group-targeting-enterprise-cloud-applications</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <strong>Resecurity</strong> — <em>ShinyHunters Launches Data Leak Site: Trinity of Chaos Announces New Ransomware Victims</em>
+                            <a href="https://www.resecurity.com/blog/article/shinyhunters-launches-data-leak-site-trinity-of-chaos-announces-new-ransomware-victims">https://www.resecurity.com/blog/article/shinyhunters-launches-data-leak-site-trinity-of-chaos-announces-new-ransomware-victims</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <strong>ZeroFox</strong> — <em>Flash Report: Possible ShinyHunter SSO Phishing Campaign</em>
+                            <a href="https://www.zerofox.com/intelligence/flash-report-shinyhunters-sso-phishing-campaign/">https://www.zerofox.com/intelligence/flash-report-shinyhunters-sso-phishing-campaign/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">5.</span>
+                            <strong>Wikipedia</strong> — <em>ShinyHunters</em>
+                            <a href="https://en.wikipedia.org/wiki/ShinyHunters">https://en.wikipedia.org/wiki/ShinyHunters</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="european-commission-trivy-breach-2026.html" class="sidebar-link">European Commission Cloud Breach</a>
+                    <a href="trivy-cve-2026-33634.html" class="sidebar-link">CVE-2026-33634 Analysis</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Associated Aliases</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;">ShinyHunters</div>
+                        <div style="padding: 6px 0;">UNC5537 (Mandiant)</div>
+                        <div style="padding: 6px 0;">ShinyCorp</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Primary Targets</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;">Technology</div>
+                        <div style="padding: 6px 0;">Finance</div>
+                        <div style="padding: 6px 0;">Healthcare</div>
+                        <div style="padding: 6px 0;">Government</div>
+                        <div style="padding: 6px 0;">Manufacturing</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

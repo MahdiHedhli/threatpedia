@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazarus Group | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="lazarusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <!-- North Korea map -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Korean Peninsula -->
+                <path d="M 95 50 Q 105 55 108 75 L 110 130 Q 100 140 92 135 Q 88 125 87 95 Z" fill="#e8a020" opacity="0.5"/>
+                <!-- Stylized Lazarus symbol - Rising/Resurrection -->
+                <g fill="url(#lazarusGradient)" stroke="#e8a020" stroke-width="1.5">
+                    <!-- Rising figure -->
+                    <circle cx="100" cy="80" r="12" fill="url(#lazarusGradient)"/>
+                    <!-- Upward arms -->
+                    <path d="M 88 92 L 75 70" stroke="#e8a020" stroke-width="3" fill="none"/>
+                    <path d="M 112 92 L 125 70" stroke="#e8a020" stroke-width="3" fill="none"/>
+                    <!-- Body/torso -->
+                    <path d="M 100 92 L 100 120" stroke="#e8a020" stroke-width="2" fill="none"/>
+                </g>
+                <!-- Financial target symbol -->
+                <circle cx="100" cy="100" r="35" fill="none" stroke="#e8a020" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Lazarus Group</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                APT38, Hidden Cobra, ZINC, Guardians of Peace, LABYRINTH CHOLLIMA, Whiskeybravo, Whiskeyalfa, Guardians of Peace, Bureau 121
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Lazarus Group</strong> is the most prolific and dangerous threat actor attributed to North Korea's primary intelligence agency, the Reconnaissance General Bureau (RGB). Operating since at least 2009, Lazarus Group has perpetrated some of the most impactful and widely publicized cyber attacks globally, including the 2014 Sony Pictures Entertainment breach, the 2016 Bangladesh Bank heist (stealing $81 million), the WannaCry ransomware campaign (2017), and numerous attacks on cryptocurrency exchanges. The group operates with a primary motivation of generating revenue for the isolated North Korean regime while simultaneously conducting sophisticated espionage and sabotage operations.</p>
+
+                    <p>Lazarus Group's capabilities span the full spectrum of cyber warfare, from destructive attacks and financial theft to sophisticated supply chain compromises and espionage. The group demonstrates advanced programming expertise, rapid exploitation of zero-day vulnerabilities, and sophisticated anti-forensic and operational security practices. Lazarus maintains an extensive infrastructure of front companies, cryptocurrency exchanges, and shell organizations to launder stolen funds and evade international sanctions. Recent operations demonstrate the group's evolution toward more sophisticated persistent access techniques and supply chain compromise strategies.</p>
+
+                    <p>As of 2025, Lazarus Group remains highly active with documented ongoing operations targeting financial institutions, cryptocurrency exchanges, defense contractors, and technology companies worldwide. The group's attacks have directly resulted in billions of dollars in losses globally, making them arguably the most financially damaging threat actor to economic security. The group operates with minimal operational constraints due to North Korea's lack of extradition treaties and historical isolation from international cybersecurity enforcement mechanisms.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.001: Phishing - Spearphishing Attachment</span>
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: Command and Scripting Interpreter - PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Command and Scripting Interpreter - Windows Command Shell</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1036: Masquerading</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1561: Disk Wipe</span>
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact</span>
+                                <span class="ttp-technique">T1485: Data Destruction</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1005: Data Staged</span>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Spear-Phishing Campaigns:</strong> Highly targeted phishing emails with weaponized attachments (Office documents, archives) impersonating government agencies, financial institutions, or cryptocurrency exchanges.</li>
+                            <li><strong>Zero-Day Exploitation:</strong> Rapid exploitation of previously unknown vulnerabilities in operating systems and applications, often within days or weeks of public disclosure.</li>
+                            <li><strong>Watering Hole Attacks:</strong> Compromise of legitimate websites and software repositories frequented by target organizations to distribute malware.</li>
+                            <li><strong>Supply Chain Compromise:</strong> Targeting of software developers and distribution platforms to compromise software before release (e.g., blockchain platforms, cryptocurrency exchange software).</li>
+                            <li><strong>Financial Institution Targeting:</strong> Direct attacks on banking infrastructure, SWIFT systems, and ATM networks to steal funds directly from financial institutions.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>WannaCry/WannaCrypt:</strong> Destructive ransomware leveraging EternalBlue exploit, deployed globally in May 2017. Infected hundreds of thousands of systems across 150+ countries.</li>
+                            <li><strong>Destover:</strong> Custom malware used in Sony Pictures attack. Provides remote access, data destruction, and anti-forensic capabilities.</li>
+                            <li><strong>MATA Framework:</strong> Sophisticated modular malware framework with multiple payload capabilities including espionage, destruction, and lateral movement.</li>
+                            <li><strong>Hermes Ransomware:</strong> Ransomware variant used against financial institutions and cryptocurrency exchanges.</li>
+                            <li><strong>Silent Chollima / Labyrinth Chollima:</strong> Advanced backdoor families used for persistent access and command execution.</li>
+                            <li><strong>AppleJeus / Codenotary Backdoor:</strong> Supply chain attack malware targeting macOS systems and cryptocurrency developers.</li>
+                            <li><strong>Malwarebytes Loader:</strong> Custom malware loader for initial access and persistence.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Cryptocurrency Laundering:</strong> Extensive use of cryptocurrency exchanges and mixers to launder stolen funds. Operators often attempt to convert stolen funds to Bitcoin/Monero immediately.</li>
+                            <li><strong>Compromised Infrastructure:</strong> Use of hacked servers and legitimate hosting providers to host malware and command-and-control infrastructure.</li>
+                            <li><span class="ttp-technique">Proxy Networks:</span> Use of residential proxies and VPN services to obfuscate command-and-control communications and activity origins.</li>
+                            <li><strong>Domain Registration Patterns:</strong> Use of legitimate registrars with privacy protection to register domains mimicking financial institutions and software companies.</li>
+                            <li><strong>Front Company Networks:</strong> Extensive use of shell companies and fronts to operate cryptocurrency exchanges, exchange APIs, and trading platforms.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>Lazarus Group targets a broad range of sectors aligned with revenue generation and strategic intelligence objectives:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Financial Services & Banking</td>
+                                <td>Central banks, commercial banks, payment processors. Bangladesh Bank ($81M theft), multiple other heists totaling billions.</td>
+                            </tr>
+                            <tr>
+                                <td>Cryptocurrency & Exchanges</td>
+                                <td>Cryptocurrency exchanges, blockchain platforms, DeFi protocols. Multiple exchange compromises, billions in crypto theft.</td>
+                            </tr>
+                            <tr>
+                                <td>Entertainment & Media</td>
+                                <td>Sony Pictures Entertainment (major destructive attack in 2014). Targeting of media production studios.</td>
+                            </tr>
+                            <tr>
+                                <td>Defense & Aerospace</td>
+                                <td>Defense contractors, military research institutions, aerospace companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Technology & Software</td>
+                                <td>Software developers, blockchain platforms, open-source repositories, cryptocurrency wallets.</td>
+                            </tr>
+                            <tr>
+                                <td>Government Institutions</td>
+                                <td>US government agencies, international financial organizations, research institutions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Scope:</strong> Global targeting with particular focus on US, European, and Asian financial institutions and cryptocurrency exchanges. Recent activity shows expanding targeting of Ukraine, South Korea, and Japan.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2009</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Group Formation</div>
+                                <div class="timeline-event-detail">Lazarus Group begins operational activities, attributed to North Korea's Reconnaissance General Bureau (RGB). Early operations target South Korean government and military infrastructure.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Nov 2014</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Sony Pictures Entertainment Breach</div>
+                                <div class="timeline-event-detail">Lazarus Group compromises Sony Pictures Entertainment through spear-phishing and exploit kit. Deploys Destover malware, destroys data, leaks unreleased films and executive communications. Widely attributed to North Korea as retaliation for "The Interview" film.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Bangladesh Bank Heist</div>
+                                <div class="timeline-event-detail">Lazarus Group steals $81 million from Bangladesh Bank's account at US Federal Reserve. Uses legitimate SWIFT credentials and knowledge of banking infrastructure. One of largest bank heists in history, demonstrating group's financial motivations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">May 2017</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>WannaCry Global Ransomware Campaign</div>
+                                <div class="timeline-event-detail">Lazarus Group deploys WannaCry ransomware globally using EternalBlue SMB exploit. Infects 200,000+ computers across 150+ countries. Causes billions in damages, affects hospitals, transportation, and critical infrastructure. Represents watershed moment in global cyber attacks.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2018-2019</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Cryptocurrency Exchange Hacks</div>
+                                <div class="timeline-event-detail">Lazarus Group targets multiple cryptocurrency exchanges including Bithumb and others, stealing millions in cryptocurrency assets. Demonstrates shift toward cryptocurrency-specific operations for sanctions evasion.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2020-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Supply Chain Compromise Campaign</div>
+                            <div class="timeline-event-detail">Lazarus Group conducts AppleJeus campaign targeting cryptocurrency developers and blockchain platforms through supply chain compromise. Distributes malware-laden software updates and development tools.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022-2025</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Financial & Espionage Operations</div>
+                                <div class="timeline-event-detail">Lazarus Group maintains active operations targeting financial institutions globally, with documented theft of billions from cryptocurrency exchanges and continued espionage against technology and defense sectors. Group demonstrates evolution toward more sophisticated persistent access techniques.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>Lazarus Group has demonstrated sophisticated zero-day exploitation capabilities and rapid adoption of public exploits:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144" class="cve-link" target="_blank">CVE-2017-0144</a></td>
+                                <td>EternalBlue SMB Remote Code Execution</td>
+                                <td>Microsoft Windows SMB</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-4878" class="cve-link" target="_blank">CVE-2018-4878</a></td>
+                                <td>Use-After-Free in Adobe Flash</td>
+                                <td>Adobe Flash Player</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-0601" class="cve-link" target="_blank">CVE-2020-0601</a></td>
+                                <td>Spoofing in Windows CryptoAPI</td>
+                                <td>Microsoft Windows</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-34527" class="cve-link" target="_blank">CVE-2021-34527</a></td>
+                                <td>Print Spooler RCE</td>
+                                <td>Microsoft Windows Print Spooler</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-26855" class="cve-link" target="_blank">CVE-2021-26855</a></td>
+                                <td>Exchange Server SSRF</td>
+                                <td>Microsoft Exchange Server</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-21894" class="cve-link" target="_blank">CVE-2022-21894</a></td>
+                                <td>Windows ALPC Privilege Escalation</td>
+                                <td>Microsoft Windows</td>
+                                <td>8.4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>Lazarus Group is tracked under numerous designations by security vendors and government agencies:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">MITRE ATT&CK</td>
+                                <td>APT38, Group G0039</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>ZINC</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">US Government (FBI/CISA)</td>
+                                <td>Hidden Cobra</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>Lazarus Group, APT38</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Kaspersky</td>
+                                <td>Guardians of Peace</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Symantec</td>
+                                <td>Lazarus Group</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>Labyrinth Chollima</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>Whiskeybravo, Whiskeyalfa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>APT37 (ScarCruft):</strong> Fellow North Korean-attributed group with focus on South Korean government and defense targeting. Different operational patterns and targets suggest separate RGB operational divisions.</li>
+                        <li><strong>Andariel:</strong> North Korean group with financial and espionage motivations. Suspected to be sub-unit or affiliated with Lazarus Group operations.</li>
+                        <li><strong>Kimsuky:</strong> North Korean APT43 group focusing on government and research institution espionage. Different operational focus but similar national origin.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>FBI Alert:</strong> "Lazarus Group / Hidden Cobra Activities"
+                            <a href="https://www.fbi.gov/investigate/cyber" target="_blank">FBI Cyber Division</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>Mandiant APT Report:</strong> "Lazarus Group: Tracking the World's Most Prolific Threat Actor"
+                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence Reports</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>CrowdStrike Intelligence:</strong> "ZINC: The North Korean Threat Actor"
+                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Global Threat Report</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>Kaspersky Lab Research:</strong> "Lazarus Group: The Guardians of Peace"
+                            <a href="https://www.kaspersky.com" target="_blank">Kaspersky Securelist</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <strong>CISA Alert:</strong> "WannaCry Ransomware Campaign Attribution"
+                            <a href="https://www.cisa.gov" target="_blank">CISA Alerts & Advisories</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🇰🇵</span>
+                        North Korea
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes, RGB (Reconnaissance General Bureau)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial Theft, Espionage, Sabotage</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2009</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">APT38, ZINC, Hidden Cobra</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">Active</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

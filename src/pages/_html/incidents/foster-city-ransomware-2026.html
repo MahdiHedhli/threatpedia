@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-06T18:30:00Z">
+    <title>Foster City Ransomware Attack | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.02)" filter="url(%23noise)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 146px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .severity-high {
+            color: #ff8844;
+            font-weight: 700;
+        }
+
+        .status-recovery {
+            color: #ffa500;
+            font-weight: 600;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 146px;
+            height: fit-content;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: var(--amber);
+            line-height: 1.6;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Reference List */
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reference-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                grid-column: 1;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 146px 24px 40px;
+            }
+            .incident-title {
+                font-size: 36px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+<!-- Menu Panel -->
+<!-- Main Content -->
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">Foster City Ransomware Attack Forces State of Emergency</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Incident ID</div>
+                    <div class="meta-value">TP-2026-0022</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Classification</div>
+                    <div class="meta-value">Ransomware / Municipal Infrastructure</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Date</div>
+                    <div class="meta-value">March 19, 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value"><span class="status-recovery">Recovery / Investigation</span></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Severity</div>
+                    <div class="meta-value"><span class="severity-high">HIGH</span></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Attribution</div>
+                    <div class="meta-value">Unknown (Under Investigation)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Sector</div>
+                    <div class="meta-value">Government / Municipal</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Geography</div>
+                    <div class="meta-value">Foster City, California, USA</div>
+                </div>
+            
+                <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On March 19, 2026, Foster City, California — a San Mateo County municipality of approximately 35,000 residents — discovered ransomware on its city network systems. The attack disabled virtually all municipal services except emergency 911 dispatch and police services. City staff were unable to make or receive phone calls, respond to emails, or access any networked systems for over a week, effectively paralyzing the city's ability to conduct government business and provide services to residents.</p>
+
+                        <p>The city council approved a state of emergency declaration during a special meeting on March 24, 2026 — notably held without Zoom or online access as the network remained offline. The emergency declaration enables the city to receive supplementary financial support from San Mateo County and the California Governor's Office of Emergency Services. Officials acknowledged that public information may have been accessed during the breach, though the full scope of data exposure remains under investigation.</p>
+
+                        <p>The incident highlights the growing vulnerability of small and mid-sized municipal governments to ransomware attacks, which often lack the cybersecurity budgets and dedicated security staff of larger organizations. Foster City joins a growing list of U.S. municipalities that have declared emergencies following cyberattacks in 2025-2026.</p>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attack Vector & Methodology</h3>
+                            <ul>
+                                <li><strong>Initial Vector:</strong> Ransomware deployed on city network (specific variant not disclosed pending investigation)</li>
+                                <li><strong>Discovery:</strong> IT staff discovered the breach early morning March 19, 2026</li>
+                                <li><strong>Scope of Compromise:</strong> All networked services disabled — phones, email, file systems, web applications</li>
+                                <li><strong>Data Encryption:</strong> Indicators suggest aggressive encryption of municipal databases and file shares</li>
+                                <li><strong>System Isolation:</strong> Emergency services (911, police dispatch) were not affected, likely operating on separate, air-gapped systems</li>
+                                <li><strong>Attack Progression:</strong> Initial compromise to full encryption estimated at 6-12 hours</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Infrastructure Impact</h3>
+                            <p>The attack rendered inoperable:</p>
+                            <ul>
+                                <li>All municipal office phones and communication systems</li>
+                                <li>Email infrastructure and messaging systems</li>
+                                <li>Permit and licensing management systems</li>
+                                <li>Public payment processing systems</li>
+                                <li>Financial and accounting systems</li>
+                                <li>HR and payroll management systems</li>
+                                <li>Building permit tracking and review systems</li>
+                                <li>Code enforcement and violation tracking</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Attribution Status</h3>
+                            <p>No threat actor has publicly claimed responsibility for the attack as of early April 2026. Investigation ongoing with support from:</p>
+                            <ul>
+                                <li>San Mateo County Cybersecurity Task Force</li>
+                                <li>California Governor's Office of Emergency Services (CAL OES)</li>
+                                <li>Federal law enforcement (FBI, potentially CISA)</li>
+                                <li>Third-party cybersecurity firms engaged for forensic analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MITRE ATT&CK -->
+                <section class="section">
+                    <h2 class="section-title">MITRE ATT&CK Framework</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+T1486 – Data Encrypted for Impact<br>
+T1490 – Inhibit System Recovery<br>
+T1059 – Command and Scripting Interpreter<br>
+T1078 – Valid Accounts<br>
+T1021 – Remote Services
+                        </div>
+                        <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Techniques categorized under Impact, Defense Evasion, and Lateral Movement tactics. Specific techniques will be refined as forensic investigation progresses and threat actor toolkit is analyzed.</p>
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Incident Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19 (Early AM)</div>
+                            <div class="timeline-event">IT staff discover ransomware on city network during morning system checks</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19 (Morning)</div>
+                            <div class="timeline-event">All non-emergency city services suspended; network isolation procedures initiated</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 19-24</div>
+                            <div class="timeline-event">City operates without phones, email, or networked systems; emergency services function on separate systems</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 24 (Afternoon)</div>
+                            <div class="timeline-event">City council holds special in-person meeting, declares state of emergency</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">March 24 (Evening)</div>
+                            <div class="timeline-event">San Mateo County and California Governor's Office of Emergency Services notified and activated</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Late March 2026</div>
+                            <div class="timeline-event">Gradual service restoration begins with enhanced security measures and isolated testing environments</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 2026</div>
+                            <div class="timeline-event">Investigation into data exposure and threat attribution ongoing; core services partially restored</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Municipal Service Disruption</h3>
+                            <ul>
+                                <li><strong>Duration:</strong> All municipal services except 911/police dispatch offline for minimum 1+ week</li>
+                                <li><strong>City Staff Impact:</strong> Approximately 250-300 city employees unable to perform job functions</li>
+                                <li><strong>Communication Breakdown:</strong> Staff unable to communicate via phone or email, forcing manual, in-person coordination</li>
+                                <li><strong>Public Services:</strong> Residents unable to access permit applications, pay bills, or request city services</li>
+                                <li><strong>Business Operations:</strong> City unable to conduct normal governmental functions, approvals, or transactions</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Data Exposure & Privacy Concerns</h3>
+                            <ul>
+                                <li>Potential exposure of resident personal information (names, addresses, phone numbers)</li>
+                                <li>Possible exposure of financial data from municipal accounts and payment systems</li>
+                                <li>Staff personal information potentially compromised (SSNs, tax documents)</li>
+                                <li>Permit and licensing records containing sensitive property information</li>
+                                <li>Code enforcement records with personal violation data</li>
+                                <li>Full scope of data exposure remains under investigation as of April 2026</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Governance & Emergency Response</h3>
+                            <ul>
+                                <li>State of emergency declaration — significant step for municipalities, typically rare for cyberattacks</li>
+                                <li>Requires in-person coordination and decision-making without digital infrastructure</li>
+                                <li>Enables access to county and state financial support and emergency resources</li>
+                                <li>Demonstrates escalation in threat level and operational paralysis severity</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Financial & Operational Costs</h3>
+                            <ul>
+                                <li>Emergency response and recovery operations costs not yet publicly disclosed</li>
+                                <li>Third-party cybersecurity firms and forensic investigation ongoing expenses</li>
+                                <li>Infrastructure restoration and potential system rebuilds</li>
+                                <li>Potential ransom demands (status unknown as of April 6, 2026)</li>
+                                <li>Lost productivity from 250+ city staff for 1+ week</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Remediation -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Recovery</h2>
+                    <div class="section-content">
+                        <div class="subsection">
+                            <h3 class="subsection-title">Immediate Response (In Progress)</h3>
+                            <ul>
+                                <li><strong>Network Isolation:</strong> Infected systems isolated from clean infrastructure</li>
+                                <li><strong>Forensic Investigation:</strong> Third-party cybersecurity firms analyzing attack methodology and extent</li>
+                                <li><strong>Backup Recovery:</strong> Restoration from clean backup systems (status dependent on backup hygiene and encryption)</li>
+                                <li><strong>Service Prioritization:</strong> Phased restoration of critical systems (phones, email, permits)</li>
+                                <li><strong>State/County Support:</strong> Leveraging emergency declaration for resource access and technical support</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Long-Term Security Improvements</h3>
+                            <ul>
+                                <li>Comprehensive cybersecurity audit of municipal IT infrastructure</li>
+                                <li>Implementation of multi-factor authentication (MFA) for all administrative access</li>
+                                <li>Deployment of advanced threat detection and endpoint protection</li>
+                                <li>Enhanced backup and disaster recovery procedures with offline, immutable backups</li>
+                                <li>Network segmentation to isolate critical systems (911, police, emergency services)</li>
+                                <li>Regular security awareness training for municipal staff</li>
+                                <li>Establishment of incident response procedures and regular tabletop exercises</li>
+                                <li>Potential budget increases for cybersecurity staffing and tools</li>
+                            </ul>
+                        </div>
+
+                        <div class="subsection">
+                            <h3 class="subsection-title">Future Resilience Recommendations</h3>
+                            <ul>
+                                <li>Small and mid-sized municipalities should assume they are attractive targets for ransomware operators</li>
+                                <li>Develop redundant communication systems independent of primary network infrastructure</li>
+                                <li>Establish mutual aid agreements with adjacent municipalities for emergency communications during network outages</li>
+                                <li>Implement cloud-based or geographically distributed backup systems</li>
+                                <li>Create detailed contingency plans for operations without networked systems (manual processes)</li>
+                                <li>Establish relationships with state and federal cybersecurity agencies for rapid response support</li>
+                                <li>Engage insurance and legal counsel regarding cyber liability and data breach notification requirements</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sources -->
+                <section class="section references">
+                    <h2 class="section-title">Sources & References</h2>
+
+                    <div class="reference-item">
+                        <a href="https://www.cbsnews.com/sanfrancisco/news/foster-city-cybersecurity-breach-plans-state-of-emergency/" class="reference-link">CBS San Francisco — "Foster City hit by ransomware attack, plans to declare state of emergency"</a>
+                        <span class="reference-source">CBS Bay Area News, March 24, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.cbsnews.com/sanfrancisco/news/foster-city-california-ransomware-cyberattack-state-of-emergency/" class="reference-link">CBS San Francisco — "Foster City declares state of emergency following ransomware attack"</a>
+                        <span class="reference-source">CBS Bay Area News, March 24, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.nbcbayarea.com/news/local/foster-city-state-emergency-cyber-attack/4057400/" class="reference-link">NBC Bay Area — "Foster City declares State of Emergency following cyber attack"</a>
+                        <span class="reference-source">NBC Bay Area News, March 24, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://insider.govtech.com/california/news/ransomware-breach-halts-most-foster-city-services" class="reference-link">GovTech — "Ransomware Breach Halts Most Foster City Services"</a>
+                        <span class="reference-source">GovTech Insider, March 25, 2026</span>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://therecord.media/california-city-reports-ransomware-attack-la-metro" class="reference-link">The Record — "California city reports ransomware attack as LA transit agency finds 'unauthorized activity'"</a>
+                        <span class="reference-source">Recorded Future News, March 26, 2026</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Assessment</div>
+                    <div class="sidebar-content">
+                        <p>Municipal governments operate with limited cybersecurity budgets and specialized IT staff. Foster City's attack demonstrates that cities of any size are attractive targets for ransomware operators seeking maximum disruption with minimal technical sophistication.</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: var(--amber);">Segregate emergency services on independent systems.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <ul style="margin-left: 0; padding-left: 16px;">
+                            <li style="margin-bottom: 8px;">All municipal services offline for 1+ week</li>
+                            <li style="margin-bottom: 8px;">City staff unable to communicate via phone/email</li>
+                            <li style="margin-bottom: 8px;">State of emergency declared (rare for cyberattacks)</li>
+                            <li style="margin-bottom: 8px;">Data exposure under investigation</li>
+                            <li style="margin-bottom: 8px;">Unknown threat actor (attribution pending)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Sector Vulnerability</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Limited Budgets:</strong> Municipal IT departments operate with minimal cybersecurity funding</p>
+                        <p style="font-size: 12px; margin-bottom: 10px;"><strong>Legacy Systems:</strong> Aging infrastructure with inconsistent patch management</p>
+                        <p style="font-size: 12px;"><strong>Critical Services:</strong> Attacks directly impact resident services and government operations</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Attribution</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 12px;">Unknown — Under Investigation</p>
+                        <p style="font-size: 12px; margin-top: 8px; color: var(--muted);">No public claim of responsibility. Investigation ongoing by local, state, and federal agencies.</p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Incident Classification</div>
+                    <div class="sidebar-content">
+                        <p style="margin-bottom: 8px;"><span style="color: #ff8844; font-weight: 700;">HIGH</span></p>
+                        <ul style="margin-left: 0; padding-left: 16px; font-size: 12px;">
+                            <li>Complete municipal services disruption</li>
+                            <li>1+ week operational impact</li>
+                            <li>State of emergency declaration</li>
+                            <li>Potential resident data exposure</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <div class="sidebar-content">
+                        <a href="./springfield-ransomware-2025.html" class="sidebar-link">Springfield Municipal Ransomware (2025)</a>
+                        <a href="./new-orleans-healthcare-2026.html" class="sidebar-link">New Orleans Health System Attack (2026)</a>
+                        <a href="./baltimore-ransomware-2025.html" class="sidebar-link">Baltimore Municipal Ransomware (2025)</a>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Resources</div>
+                    <div class="sidebar-content">
+                        <a href="../glossary.html?term=ransomware" class="sidebar-link">Ransomware (Glossary)</a>
+                        <a href="../glossary.html?term=municipal-infrastructure" class="sidebar-link">Municipal Infrastructure</a>
+                        <a href="../glossary.html?term=state-of-emergency" class="sidebar-link">State of Emergency Procedures</a>
+                        <a href="../glossary.html?term=disaster-recovery" class="sidebar-link">Disaster Recovery Planning</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

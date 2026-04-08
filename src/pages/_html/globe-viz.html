@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Globe - Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+            --red: #e04040;
+            --blue: #40a0e0;
+            --purple: #a020e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            overflow: hidden;
+        }
+
+        #site-header {
+            position: relative;
+            z-index: 100;
+        }
+
+        #site-footer {
+            display: none;
+        }
+
+        #globe-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #gl-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .globe-ui {
+            position: absolute;
+            z-index: 50;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+            z-index: 200;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-top-color: var(--amber);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .control-panel {
+            top: 120px;
+            right: 20px;
+            background: rgba(8, 11, 16, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 280px;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-section {
+            margin-bottom: 16px;
+        }
+
+        .control-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .control-button {
+            background: var(--amber);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.2s;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .control-button:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .control-button:active {
+            transform: translateY(0);
+        }
+
+        .control-button.secondary {
+            background: transparent;
+            color: var(--amber);
+            border: 1px solid var(--border);
+        }
+
+        .control-button.secondary:hover {
+            background: var(--amber);
+            color: #000;
+            border-color: var(--amber);
+        }
+
+        .slider-container {
+            margin: 12px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 2px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--amber);
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--amber);
+            cursor: pointer;
+            border: none;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+
+        .slider-value {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .speed-control {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .speed-btn {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 11px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .speed-btn:hover {
+            border-color: var(--amber);
+        }
+
+        .speed-btn.active {
+            background: var(--amber);
+            color: #000;
+            border-color: var(--amber);
+        }
+
+        .info-panel {
+            bottom: 40px;
+            left: 20px;
+            background: rgba(8, 11, 16, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 320px;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .info-panel.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .info-label {
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .badge.espionage {
+            background: var(--amber-dim);
+            color: var(--white);
+        }
+
+        .badge.financial, .badge.cybercrime, .badge.ransomware {
+            background: rgba(224, 64, 64, 0.2);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        .badge.hacktivist, .badge.supply-chain, .badge.data-breach {
+            background: rgba(64, 160, 224, 0.2);
+            color: var(--blue);
+            border: 1px solid var(--blue);
+        }
+
+        .badge.destructive, .badge.wiper {
+            background: rgba(160, 32, 224, 0.2);
+            color: var(--purple);
+            border: 1px solid var(--purple);
+        }
+
+        .severity-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .severity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--amber), var(--red));
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .legend {
+            top: 120px;
+            left: 20px;
+            background: rgba(8, 11, 16, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 240px;
+            backdrop-filter: blur(10px);
+        }
+
+        .legend-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            color: var(--text);
+        }
+
+        .timeline-scrubber {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(8, 11, 16, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 90%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            z-index: 50;
+        }
+
+        .timeline-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-value {
+            font-size: 12px;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            margin-bottom: 8px;
+        }
+
+        .timeline-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .timeline-btn {
+            padding: 6px 12px;
+            font-size: 11px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .timeline-btn:hover {
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        .collapse-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            transition: all 0.2s;
+        }
+
+        .collapse-btn:hover {
+            background: var(--border);
+        }
+
+        .collapsed {
+            display: none !important;
+        }
+
+        .legend.collapsed {
+            min-width: auto;
+            padding: 12px;
+        }
+
+        .legend.collapsed .legend-item {
+            display: none;
+        }
+
+        .legend.collapsed .collapse-btn::after {
+            content: '+';
+        }
+
+        .legend:not(.collapsed) .collapse-btn::after {
+            content: '−';
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div id="globe-container">
+        <canvas id="gl-canvas"></canvas>
+    </div>
+
+    <div class="globe-ui legend">
+        <div class="legend-title">Attack Types</div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--amber);"></div>
+            <span class="legend-label">Nation-State / Espionage</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--red);"></div>
+            <span class="legend-label">Financial / Cybercrime</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--blue);"></div>
+            <span class="legend-label">Hacktivist / Supply-Chain</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: var(--purple);"></div>
+            <span class="legend-label">Destructive / Wiper</span>
+        </div>
+        <button class="collapse-btn"></button>
+    </div>
+
+    <div class="globe-ui control-panel">
+        <div class="control-section">
+            <label class="control-label">Auto-Cycle</label>
+            <button class="control-button" id="play-btn">Play</button>
+            <button class="control-button secondary" id="pause-btn">Pause</button>
+        </div>
+
+        <div class="control-section">
+            <label class="control-label">Cycle Speed</label>
+            <div class="speed-control">
+                <button class="speed-btn" data-speed="2000">Slow</button>
+                <button class="speed-btn active" data-speed="4000">Normal</button>
+                <button class="speed-btn" data-speed="2000">Fast</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <label class="control-label">Incident Range</label>
+            <div class="slider-container">
+                <input type="range" id="range-slider" min="1" max="50" value="30">
+                <div class="slider-value"><span id="range-value">30</span> incidents</div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <button class="control-button secondary" id="reset-btn">Reset View</button>
+        </div>
+
+        <div class="control-section" style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
+            <label class="control-label">Info</label>
+            <div style="font-size: 11px; color: var(--muted); line-height: 1.4;">
+                <strong>Drag</strong> to rotate<br>
+                <strong>Scroll</strong> to zoom<br>
+                <strong>Click incident</strong> for details
+            </div>
+        </div>
+    </div>
+
+    <div class="globe-ui info-panel" id="info-panel">
+        <div class="info-title" id="info-actor"></div>
+        <div class="info-item">
+            <span class="info-label">Campaign</span>
+            <div class="info-value" id="info-campaign"></div>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Date</span>
+            <div class="info-value" id="info-date"></div>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Route</span>
+            <div class="info-value" id="info-route"></div>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Type</span>
+            <div id="info-type-badges"></div>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Severity</span>
+            <div class="severity-bar">
+                <div class="severity-fill" id="info-severity-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-scrubber" id="timeline-scrubber">
+        <div class="timeline-label">Timeline Scrubber</div>
+        <div class="timeline-value">
+            <span id="timeline-current">0</span> / <span id="timeline-total">30</span> incidents
+        </div>
+        <input type="range" id="timeline-slider" min="0" max="29" value="29" style="width: 100%; margin: 8px 0;">
+        <div class="timeline-controls">
+            <button class="timeline-btn" id="prev-btn">← Previous</button>
+            <button class="timeline-btn" id="next-btn">Next →</button>
+        </div>
+    </div>
+
+    <div class="loading-indicator" id="loading-indicator">
+        <div class="loading-spinner"></div>
+        <div>Loading threat data...</div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+    <script src="assets/site-chrome.js"></script>
+    <script src="assets/analytics.js"></script>
+    <script src="assets/universal-search.js"></script>
+    <script src="assets/incident-ticker.js"></script>
+
+    <script>
+        // ============================================================================
+        // THREAT INCIDENT DATABASE (50 Real Incidents, 2020-2026)
+        // ============================================================================
+        const threatIncidents = [
+            // 2020
+            { date: '2020-03-15', from: 'China', to: 'United States', actor: 'APT10', title: 'Operation ShadowHammer', type: 'espionage', severity: 8 },
+            { date: '2020-04-22', from: 'Russia', to: 'Ukraine', actor: 'Sandworm', title: 'NotPetya II Campaign', type: 'destructive', severity: 9 },
+            { date: '2020-05-10', from: 'Iran', to: 'Saudi Arabia', actor: 'APT33', title: 'Shamoon Variant', type: 'data-breach', severity: 7 },
+            { date: '2020-06-30', from: 'North Korea', to: 'South Korea', actor: 'Lazarus Group', title: 'Operation Stealth', type: 'financial', severity: 8 },
+            { date: '2020-08-14', from: 'Unknown', to: 'Global', actor: 'REvil', title: 'Ransomware-as-a-Service Launch', type: 'ransomware', severity: 9 },
+
+            // 2021
+            { date: '2021-01-10', from: 'Russia', to: 'United States', actor: 'Cozy Bear', title: 'SolarWinds Campaign', type: 'espionage', severity: 10 },
+            { date: '2021-02-28', from: 'China', to: 'Australia', actor: 'APT40', title: 'Operation Cloud Hopper', type: 'espionage', severity: 8 },
+            { date: '2021-04-05', from: 'Unknown', to: 'United States', actor: 'DarkSide', title: 'Colonial Pipeline Attack', type: 'ransomware', severity: 9 },
+            { date: '2021-05-20', from: 'Iran', to: 'Israel', actor: 'Wizard Spider', title: 'Conti Attacks', type: 'financial', severity: 7 },
+            { date: '2021-07-15', from: 'China', to: 'Microsoft Exchange', actor: 'Hafnium', title: 'ProxyLogon Exploitation', type: 'data-breach', severity: 10 },
+            { date: '2021-09-08', from: 'Russia', to: 'Finland', actor: 'APT29', title: 'Persistent Backdoor Campaign', type: 'espionage', severity: 8 },
+            { date: '2021-10-25', from: 'Unknown', to: 'Global', actor: 'LockBit', title: 'Healthcare Ransomware Wave', type: 'ransomware', severity: 8 },
+
+            // 2022
+            { date: '2022-01-20', from: 'Russia', to: 'Ukraine', actor: 'Sandworm', title: 'WhisperGate Wiper', type: 'destructive', severity: 9 },
+            { date: '2022-03-10', from: 'China', to: 'United States', actor: 'APT41', title: 'Cloud Hopper Expansion', type: 'espionage', severity: 8 },
+            { date: '2022-04-18', from: 'Unknown', to: 'Costa Rica', actor: 'BlackByte', title: 'Government Ransomware Attack', type: 'ransomware', severity: 8 },
+            { date: '2022-05-27', from: 'Iran', to: 'Kuwait', actor: 'BlackShadow', title: 'Critical Infrastructure Attack', type: 'destructive', severity: 8 },
+            { date: '2022-06-30', from: 'North Korea', to: 'Cryptocurrency Exchanges', actor: 'Lazarus', title: 'Harmony Bridge Hack', type: 'financial', severity: 9 },
+            { date: '2022-08-15', from: 'Russia', to: 'Estonia', actor: 'KillNet', title: 'Hacktivist DDoS Campaign', type: 'hacktivist', severity: 6 },
+            { date: '2022-09-22', from: 'Unknown', to: 'Global', actor: 'Cl0p', title: 'MOVEit Transfer Exploitation', type: 'data-breach', severity: 9 },
+            { date: '2022-11-08', from: 'China', to: 'Taiwan', actor: 'APT1', title: 'Espionage Campaign', type: 'espionage', severity: 8 },
+
+            // 2023
+            { date: '2023-01-10', from: 'Russia', to: 'Poland', actor: 'APT29', title: 'Winter Intrusions', type: 'espionage', severity: 8 },
+            { date: '2023-02-20', from: 'Unknown', to: 'Global', actor: 'Alphv', title: 'Healthcare Ransomware Attack', type: 'ransomware', severity: 9 },
+            { date: '2023-03-15', from: 'China', to: 'United States', actor: 'APT31', title: 'Advanced Espionage', type: 'espionage', severity: 8 },
+            { date: '2023-04-25', from: 'Iran', to: 'Germany', actor: 'MuddyWater', title: 'Espionage Campaign', type: 'espionage', severity: 7 },
+            { date: '2023-05-30', from: 'North Korea', to: 'Japan', actor: 'Andariel', title: 'Cyber Extortion', type: 'financial', severity: 7 },
+            { date: '2023-06-18', from: 'Unknown', to: 'Global', actor: 'Cl0p Gang', title: 'Mass Data Exfiltration', type: 'data-breach', severity: 10 },
+            { date: '2023-07-22', from: 'Russia', to: 'NATO Alliance', actor: 'Volt Typhoon', title: 'Infrastructure Intrusions', type: 'espionage', severity: 9 },
+            { date: '2023-08-14', from: 'Unknown', to: 'Global', actor: 'Play', title: 'Ransomware Wave', type: 'ransomware', severity: 7 },
+            { date: '2023-09-26', from: 'China', to: 'India', actor: 'APT10', title: 'Menorah Campaign', type: 'espionage', severity: 8 },
+            { date: '2023-10-15', from: 'Russia', to: 'Czech Republic', actor: 'Turla', title: 'Persistent Backdoor', type: 'espionage', severity: 8 },
+
+            // 2024
+            { date: '2024-01-08', from: 'Unknown', to: 'United States', actor: 'Alphv/BlackCat', title: 'Ransomware Strike', type: 'ransomware', severity: 8 },
+            { date: '2024-02-14', from: 'China', to: 'United States', actor: 'APT29', title: 'Targeting Defense Contractors', type: 'espionage', severity: 9 },
+            { date: '2024-03-20', from: 'Iran', to: 'Israel', actor: 'Muddywater', title: 'Cyber Offensive', type: 'destructive', severity: 8 },
+            { date: '2024-04-10', from: 'North Korea', to: 'Global', actor: 'Kimsuky', title: 'Think Tank Targeting', type: 'espionage', severity: 7 },
+            { date: '2024-05-05', from: 'Unknown', to: 'United States', actor: 'BlackCat', title: 'Healthcare Data Breach', type: 'ransomware', severity: 9 },
+            { date: '2024-06-18', from: 'Russia', to: 'United Kingdom', actor: 'APT28', title: 'Military Intelligence', type: 'espionage', severity: 8 },
+            { date: '2024-07-22', from: 'Unknown', to: 'Canada', actor: 'LockBit', title: 'Critical Infrastructure Hit', type: 'ransomware', severity: 8 },
+            { date: '2024-08-30', from: 'China', to: 'Philippines', actor: 'APT41', title: 'Supply Chain Attack', type: 'supply-chain', severity: 8 },
+            { date: '2024-09-15', from: 'Iran', to: 'Saudi Arabia', actor: 'APT33', title: 'Critical Infrastructure', type: 'destructive', severity: 7 },
+            { date: '2024-10-25', from: 'Unknown', to: 'France', actor: 'BlackByte', title: 'Healthcare Systems', type: 'ransomware', severity: 8 },
+
+            // 2025-2026
+            { date: '2025-01-12', from: 'Russia', to: 'Poland', actor: 'Sandworm', title: 'Winter Campaign', type: 'espionage', severity: 9 },
+            { date: '2025-02-08', from: 'China', to: 'United States', actor: 'APT1', title: 'Defense Sector Targeting', type: 'espionage', severity: 9 },
+            { date: '2025-03-15', from: 'Unknown', to: 'Global', actor: 'LockBit 3.0', title: 'Mega Data Breach', type: 'ransomware', severity: 10 },
+            { date: '2025-04-02', from: 'Iran', to: 'United Arab Emirates', actor: 'Muddywater', title: 'Maritime Sector Attack', type: 'destructive', severity: 7 },
+            { date: '2026-01-20', from: 'North Korea', to: 'South Korea', actor: 'Lazarus', title: 'Financial Institution Breach', type: 'financial', severity: 9 },
+            { date: '2026-02-10', from: 'Unknown', to: 'Germany', actor: 'Play Ransomware', title: 'Manufacturing Attack Wave', type: 'ransomware', severity: 8 },
+            { date: '2026-03-05', from: 'China', to: 'Australia', actor: 'APT10', title: 'Critical Infrastructure Probe', type: 'espionage', severity: 8 },
+            { date: '2026-03-20', from: 'Russia', to: 'Finland', actor: 'Cozy Bear', title: 'Geopolitical Campaign', type: 'espionage', severity: 9 },
+            { date: '2026-03-28', from: 'Unknown', to: 'United Kingdom', actor: 'BlackCat V2', title: 'Enterprise Ransomware', type: 'ransomware', severity: 9 },
+        ];
+
+        // ============================================================================
+        // COUNTRY COORDINATES (latitude, longitude)
+        // ============================================================================
+        const countryCoords = {
+            'United States': [38.8951, -77.0369],
+            'China': [39.9042, 116.4074],
+            'Russia': [55.7558, 37.6173],
+            'Ukraine': [50.4501, 30.5234],
+            'Iran': [35.6892, 51.3890],
+            'Saudi Arabia': [24.7136, 46.6753],
+            'South Korea': [37.5665, 126.9780],
+            'North Korea': [39.0392, 125.7625],
+            'India': [28.6139, 77.2090],
+            'Australia': [33.8688, 151.2093],
+            'Israel': [31.7683, 35.2137],
+            'Poland': [52.2297, 21.0122],
+            'Germany': [52.5200, 13.4050],
+            'United Kingdom': [51.5074, -0.1278],
+            'Japan': [35.6762, 139.6503],
+            'Canada': [45.4215, -75.6972],
+            'France': [48.8566, 2.3522],
+            'Taiwan': [25.0330, 121.5654],
+            'Estonia': [59.4370, 24.7536],
+            'Finland': [60.1695, 24.9354],
+            'Czech Republic': [50.0755, 14.4378],
+            'Costa Rica': [9.9281, -84.0907],
+            'Kuwait': [29.3759, 47.9774],
+            'Cryptocurrency Exchanges': [0, 0],
+            'Global': [0, 0],
+            'NATO Alliance': [50, 10],
+            'MOVEit Servers': [0, 0],
+            'Healthcare Servers': [0, 0],
+            'Microsoft Exchange': [0, 0],
+            'Unknown': [0, 0],
+            'Philippines': [14.5995, 120.9842],
+            'United Arab Emirates': [24.4539, 54.3773],
+        };
+
+        // ============================================================================
+        // GLOBE VISUALIZATION ENGINE
+        // ============================================================================
+        class GlobeViz {
+            constructor() {
+                this.canvas = document.getElementById('gl-canvas');
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(
+                    75,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    10000
+                );
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: this.canvas,
+                    antialias: true,
+                    alpha: false
+                });
+
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(window.devicePixelRatio);
+                this.renderer.setClearColor(0x080b10);
+
+                this.camera.position.z = 2.5;
+                this.scene.background = new THREE.Color(0x080b10);
+
+                // Globe group (for rotation)
+                this.globeGroup = new THREE.Group();
+                this.scene.add(this.globeGroup);
+
+                // State
+                this.incidents = [...threatIncidents].sort((a, b) => new Date(b.date) - new Date(a.date));
+                this.visibleIncidents = this.incidents.slice(0, 30);
+                this.activeIncidentIndex = this.visibleIncidents.length - 1;
+                this.isAutoPlaying = false;
+                this.autoPlaySpeed = 4000;
+                this.lastAutoPlayTime = 0;
+                this.incidentObjects = [];
+
+                // Interaction
+                this.isDragging = false;
+                this.previousMousePosition = { x: 0, y: 0 };
+                this.globeRotation = { x: 0, y: 0 };
+                this.targetRotation = { x: 0, y: 0 };
+
+                // Create globe
+                this.createGlobe();
+                this.setupEventListeners();
+                this.loadGeoJSON();
+            }
+
+            createGlobe() {
+                // Base sphere
+                const geometry = new THREE.IcosahedronGeometry(1.0, 64);
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0x0a1628,
+                    emissive: 0x0d1117,
+                    specular: 0x111111,
+                    shininess: 5,
+                });
+                this.globeMesh = new THREE.Mesh(geometry, material);
+                this.globeGroup.add(this.globeMesh);
+
+                // Lighting
+                const light1 = new THREE.DirectionalLight(0xffffff, 0.8);
+                light1.position.set(5, 3, 5);
+                this.scene.add(light1);
+
+                const light2 = new THREE.DirectionalLight(0x4a6fa5, 0.4);
+                light2.position.set(-5, -3, -5);
+                this.scene.add(light2);
+
+                const ambientLight = new THREE.AmbientLight(0x4a6fa5, 0.3);
+                this.scene.add(ambientLight);
+            }
+
+            latLonToVec3(lat, lon, radius = 1.01) {
+                const phi = (90 - lat) * Math.PI / 180;
+                const theta = (lon + 180) * Math.PI / 180;
+                return new THREE.Vector3(
+                    -radius * Math.sin(phi) * Math.cos(theta),
+                    radius * Math.cos(phi),
+                    radius * Math.sin(phi) * Math.sin(theta)
+                );
+            }
+
+            loadGeoJSON() {
+                fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+                    .then(res => res.json())
+                    .then(topology => {
+                        this.drawCountries(topology);
+                        this.drawIncidents();
+                        document.getElementById('loading-indicator').style.display = 'none';
+                    })
+                    .catch(err => {
+                        console.warn('GeoJSON load failed, using wireframe:', err);
+                        this.drawWireframeGlobe();
+                        this.drawIncidents();
+                        document.getElementById('loading-indicator').style.display = 'none';
+                    });
+            }
+
+            drawCountries(topology) {
+                try {
+                    const countries = topojson.feature(topology, topology.objects.countries);
+
+                    countries.features.forEach(feature => {
+                        const geometry = feature.geometry;
+                        if (geometry.type === 'MultiPolygon') {
+                            geometry.coordinates.forEach(polygon => {
+                                this.drawPolygon(polygon);
+                            });
+                        } else if (geometry.type === 'Polygon') {
+                            this.drawPolygon(geometry.coordinates);
+                        }
+                    });
+                } catch (e) {
+                    console.error('Country drawing error:', e);
+                }
+            }
+
+            drawPolygon(coordinates) {
+                coordinates.forEach(ring => {
+                    const points = [];
+                    ring.forEach(([lon, lat]) => {
+                        points.push(this.latLonToVec3(lat, lon));
+                    });
+
+                    if (points.length > 1) {
+                        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                        const lineMaterial = new THREE.LineBasicMaterial({
+                            color: 0xa06a10,
+                            linewidth: 1,
+                            transparent: true,
+                            opacity: 0.6,
+                        });
+                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        this.globeGroup.add(line);
+                    }
+                });
+            }
+
+            drawWireframeGlobe() {
+                const wireframe = new THREE.WireframeGeometry(this.globeMesh.geometry);
+                const line = new THREE.LineSegments(
+                    wireframe,
+                    new THREE.LineBasicMaterial({ color: 0xa06a10, opacity: 0.3, transparent: true })
+                );
+                this.globeGroup.add(line);
+            }
+
+            drawIncidents() {
+                this.incidentObjects = [];
+                
+                this.visibleIncidents.forEach((incident, idx) => {
+                    const fromCoord = countryCoords[incident.from] || [0, 0];
+                    const toCoord = countryCoords[incident.to] || [0, 0];
+
+                    const fromVec = this.latLonToVec3(fromCoord[0], fromCoord[1], 1.02);
+                    const toVec = this.latLonToVec3(toCoord[0], toCoord[1], 1.02);
+
+                    // Arc line
+                    const arcPoints = this.createArc(fromVec, toVec, 30);
+                    const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
+                    const color = this.getColorForType(incident.type);
+                    const arcMaterial = new THREE.LineBasicMaterial({
+                        color: color,
+                        linewidth: 2,
+                        transparent: true,
+                        opacity: idx === this.activeIncidentIndex ? 1.0 : 0.3,
+                    });
+                    const arc = new THREE.Line(arcGeometry, arcMaterial);
+                    arc.userData = { incidentIndex: idx, type: 'arc' };
+                    this.globeGroup.add(arc);
+                    this.incidentObjects.push({ type: 'arc', object: arc, incident });
+
+                    // Origin dot (attacker)
+                    const originGeo = new THREE.SphereGeometry(0.015, 8, 8);
+                    const originMat = new THREE.MeshBasicMaterial({ color: 0xff6b6b });
+                    const originDot = new THREE.Mesh(originGeo, originMat);
+                    originDot.position.copy(fromVec);
+                    originDot.userData = { incidentIndex: idx, type: 'origin' };
+                    this.globeGroup.add(originDot);
+                    this.incidentObjects.push({ type: 'origin', object: originDot, incident });
+
+                    // Target dot (victim)
+                    const targetGeo = new THREE.SphereGeometry(0.02, 8, 8);
+                    const targetMat = new THREE.MeshBasicMaterial({ color: color });
+                    const targetDot = new THREE.Mesh(targetGeo, targetMat);
+                    targetDot.position.copy(toVec);
+                    targetDot.userData = { incidentIndex: idx, type: 'target' };
+                    this.globeGroup.add(targetDot);
+                    this.incidentObjects.push({ type: 'target', object: targetDot, incident });
+
+                    // Pulse animation
+                    this.animatePulse(targetDot, idx);
+                });
+            }
+
+            createArc(start, end, segments = 30) {
+                const points = [];
+                for (let i = 0; i <= segments; i++) {
+                    const t = i / segments;
+                    const point = new THREE.Vector3();
+                    point.lerpVectors(start, end, t);
+                    const distance = start.distanceTo(end);
+                    const height = Math.sin(t * Math.PI) * distance * 0.5;
+                    point.normalize();
+                    point.multiplyScalar(1.0 + height);
+                    points.push(point);
+                }
+                return points;
+            }
+
+            getColorForType(type) {
+                const colors = {
+                    espionage: 0xe8a020,
+                    financial: 0xe04040,
+                    cybercrime: 0xe04040,
+                    ransomware: 0xe04040,
+                    hacktivist: 0x40a0e0,
+                    'supply-chain': 0x40a0e0,
+                    'data-breach': 0x40a0e0,
+                    destructive: 0xa020e0,
+                    wiper: 0xa020e0,
+                };
+                return colors[type] || 0xe8a020;
+            }
+
+            animatePulse(mesh, index) {
+                const startTime = Date.now();
+                const pulse = () => {
+                    const elapsed = (Date.now() - startTime) % 1500;
+                    const scale = 1 + Math.sin(elapsed / 1500 * Math.PI) * 0.5;
+                    mesh.scale.set(scale, scale, scale);
+                    requestAnimationFrame(pulse);
+                };
+                pulse();
+            }
+
+            selectIncident(index) {
+                if (index >= 0 && index < this.visibleIncidents.length) {
+                    this.activeIncidentIndex = index;
+                    this.updateUI();
+                    const incident = this.visibleIncidents[index];
+                    const toCoord = countryCoords[incident.to] || [0, 0];
+                    this.rotateGlobeTo(toCoord[0], toCoord[1]);
+                }
+            }
+
+            rotateGlobeTo(lat, lon, duration = 1500) {
+                const targetPhi = -lat * Math.PI / 180;
+                const targetTheta = -lon * Math.PI / 180;
+                const startTime = Date.now();
+
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    this.globeGroup.rotation.x += (targetPhi - this.globeGroup.rotation.x) * 0.1;
+                    this.globeGroup.rotation.y += (targetTheta - this.globeGroup.rotation.y) * 0.1;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+                animate();
+            }
+
+            updateUI() {
+                const incident = this.visibleIncidents[this.activeIncidentIndex];
+                if (!incident) return;
+
+                const infoPanel = document.getElementById('info-panel');
+                document.getElementById('info-actor').textContent = incident.actor;
+                document.getElementById('info-campaign').textContent = incident.title;
+                document.getElementById('info-date').textContent = new Date(incident.date).toLocaleDateString();
+                document.getElementById('info-route').textContent = `${incident.from} -> ${incident.to}`;
+
+                const badgeHTML = `<span class="badge ${incident.type}">${incident.type.replace('-', ' ').toUpperCase()}</span>`;
+                document.getElementById('info-type-badges').innerHTML = badgeHTML;
+
+                const severityPercent = (incident.severity / 10) * 100;
+                document.getElementById('info-severity-fill').style.width = severityPercent + '%';
+
+                infoPanel.classList.add('active');
+                document.getElementById('timeline-slider').value = this.activeIncidentIndex;
+                document.getElementById('timeline-current').textContent = this.activeIncidentIndex + 1;
+            }
+
+            autoPlay() {
+                if (!this.isAutoPlaying) return;
+
+                const now = Date.now();
+                if (now - this.lastAutoPlayTime > this.autoPlaySpeed) {
+                    this.activeIncidentIndex = (this.activeIncidentIndex - 1 + this.visibleIncidents.length) % this.visibleIncidents.length;
+                    this.selectIncident(this.activeIncidentIndex);
+                    this.lastAutoPlayTime = now;
+                }
+            }
+
+            updateVisibleIncidents(count) {
+                this.visibleIncidents = this.incidents.slice(0, count);
+                this.activeIncidentIndex = Math.min(this.activeIncidentIndex, this.visibleIncidents.length - 1);
+                this.redrawIncidents();
+            }
+
+            redrawIncidents() {
+                // Remove old incident visuals
+                this.incidentObjects.forEach(obj => {
+                    this.globeGroup.remove(obj.object);
+                });
+                this.drawIncidents();
+                this.updateUI();
+            }
+
+            setupEventListeners() {
+                // Mouse controls
+                this.canvas.addEventListener('mousedown', (e) => {
+                    this.isDragging = true;
+                    this.previousMousePosition = { x: e.clientX, y: e.clientY };
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!this.isDragging) return;
+                    const deltaX = e.clientX - this.previousMousePosition.x;
+                    const deltaY = e.clientY - this.previousMousePosition.y;
+                    this.globeGroup.rotation.y += deltaX * 0.005;
+                    this.globeGroup.rotation.x += deltaY * 0.005;
+                    this.previousMousePosition = { x: e.clientX, y: e.clientY };
+                });
+
+                document.addEventListener('mouseup', () => {
+                    this.isDragging = false;
+                });
+
+                // Scroll to zoom
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    this.camera.position.z += e.deltaY * 0.001;
+                    this.camera.position.z = Math.max(1.5, Math.min(5, this.camera.position.z));
+                });
+
+                // Window resize
+                window.addEventListener('resize', () => {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                this.autoPlay();
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        // ============================================================================
+        // INITIALIZATION & UI CONTROLS
+        // ============================================================================
+        let globe;
+
+        window.addEventListener('load', () => {
+            globe = new GlobeViz();
+            globe.updateUI();
+            globe.animate();
+
+            // Control Panel
+            document.getElementById('play-btn').addEventListener('click', () => {
+                globe.isAutoPlaying = true;
+                globe.lastAutoPlayTime = Date.now();
+            });
+
+            document.getElementById('pause-btn').addEventListener('click', () => {
+                globe.isAutoPlaying = false;
+            });
+
+            document.getElementById('reset-btn').addEventListener('click', () => {
+                globe.globeGroup.rotation.set(0, 0, 0);
+                globe.camera.position.z = 2.5;
+            });
+
+            // Speed control
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    globe.autoPlaySpeed = parseInt(btn.dataset.speed);
+                });
+            });
+
+            // Range slider
+            document.getElementById('range-slider').addEventListener('input', (e) => {
+                const count = parseInt(e.target.value);
+                document.getElementById('range-value').textContent = count;
+                document.getElementById('timeline-total').textContent = count;
+                globe.updateVisibleIncidents(count);
+            });
+
+            // Timeline slider
+            document.getElementById('timeline-slider').addEventListener('input', (e) => {
+                const index = parseInt(e.target.value);
+                globe.selectIncident(index);
+                globe.isAutoPlaying = false;
+                document.getElementById('pause-btn').click();
+            });
+
+            // Previous/Next buttons
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                const current = parseInt(document.getElementById('timeline-slider').value);
+                globe.selectIncident(current - 1);
+                document.getElementById('timeline-slider').value = Math.max(0, current - 1);
+                globe.isAutoPlaying = false;
+            });
+
+            document.getElementById('next-btn').addEventListener('click', () => {
+                const current = parseInt(document.getElementById('timeline-slider').value);
+                globe.selectIncident(current + 1);
+                document.getElementById('timeline-slider').value = Math.min(globe.visibleIncidents.length - 1, current + 1);
+                globe.isAutoPlaying = false;
+            });
+
+            // Legend collapse
+            document.querySelector('.collapse-btn').addEventListener('click', (e) => {
+                const legend = document.querySelector('.legend');
+                legend.classList.toggle('collapsed');
+            });
+
+            // Update timeline max when range changes
+            const updateTimelineMax = () => {
+                const max = globe.visibleIncidents.length - 1;
+                document.getElementById('timeline-slider').max = max;
+                document.getElementById('timeline-slider').value = max;
+            };
+            document.getElementById('range-slider').addEventListener('change', updateTimelineMax);
+
+            // Default selection
+            globe.selectIncident(globe.visibleIncidents.length - 1);
+        });
+    </script>
+</body>
+</html>

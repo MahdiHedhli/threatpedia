@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salt Typhoon | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <!-- China map background -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Stylized China -->
+                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
+                <!-- Salt crystal pattern -->
+                <g fill="url(#saltGradient)">
+                    <polygon points="95,60 100,75 90,75"/>
+                    <polygon points="110,80 118,95 102,95"/>
+                    <polygon points="85,95 95,115 75,110"/>
+                    <polygon points="115,100 128,120 110,125"/>
+                </g>
+                <!-- Telecom tower concept -->
+                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Salt Typhoon</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+
+                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+
+                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
+                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1078: Valid Accounts</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
+                                <span class="ttp-technique">T1040: Network Sniffing</span>
+                                <span class="ttp-technique">T1123: Audio Capture</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
+                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
+                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
+                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
+                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
+                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
+                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
+                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
+                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
+                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
+                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
+                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
+                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
+                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Telecommunications</td>
+                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
+                            </tr>
+                            <tr>
+                                <td>Internet Service Providers</td>
+                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Equipment Vendors</td>
+                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
+                            </tr>
+                            <tr>
+                                <td>Government Communications</td>
+                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
+                            </tr>
+                            <tr>
+                                <td>Defense Industrial Base</td>
+                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Services</td>
+                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
+                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022-2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
+                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
+                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Oct 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
+                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Nov-Dec 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
+                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025-Present</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
+                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
+                                <td>Authentication Bypass in Ivanti Connect Secure</td>
+                                <td>Ivanti Connect Secure VPN</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
+                                <td>Remote Code Execution in Log4j</td>
+                                <td>Apache Log4j 2.0-2.14.1</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
+                                <td>Remote Code Execution in GE Devices</td>
+                                <td>GE Industrial Equipment</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
+                                <td>SQL Injection in Telecom Management Systems</td>
+                                <td>Multiple Telecom Vendors</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
+                                <td>Remote Code Execution in Cisco IOS XE</td>
+                                <td>Cisco IOS XE Software</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
+                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
+                                <td>Cisco Catalyst 9100 Series</td>
+                                <td>8.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">CISA / US Government</td>
+                                <td>Salt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>Salt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>BRONZE CASUAL</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>Salt Typhoon</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>LUCKYDOOR</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Recorded Future</td>
+                                <td>Chinese Ministry of State Security</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">FBI / NSA</td>
+                                <td>Salt Typhoon</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
+                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
+                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
+                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
+                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
+                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
+                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
+                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🇨🇳</span>
+                        China
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2022</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">Active</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

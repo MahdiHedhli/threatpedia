@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="assets/analytics.js"></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Threatpedia — The Definitive Cyber Threat Encyclopedia</title>
+  <meta name="description" content="A Wikipedia-style, peer-reviewed encyclopedia of cyber history. Every significant incident, APT, and attack campaign — documented, sourced, and framework-mapped." />
+  <meta name="theme-color" content="#080b10" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Threatpedia — The Definitive Cyber Threat Encyclopedia" />
+  <meta property="og:description" content="A Wikipedia-style, peer-reviewed encyclopedia of cyber history. Every significant incident, APT, and attack campaign — documented, sourced, and framework-mapped." />
+  <meta property="og:url" content="https://threatpedia.wiki" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="tp-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="tp-favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="tp-favicon-180.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ─────────────────────────────────────────────────────────── */
+    :root {
+      --bg:        #080b10;
+      --surface:   #0d1117;
+      --border:    #1e2733;
+      --amber:     #e8a020;
+      --amber-dim: #a06a10;
+      --text:      #cdd5e0;
+      --muted:     #5a6a7e;
+      --white:     #f0f4f8;
+    }
+
+    /* ── Reset ─────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid overlay ──────────────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Noise texture ─────────────────────────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Hero ──────────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 8.5vw, 7.5rem);
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      animation: fadeUp 0.7s 0.08s ease both;
+    }
+
+    .hero-title em {
+      color: var(--amber);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 44px;
+      animation: fadeUp 0.7s 0.16s ease both;
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 60px;
+      animation: fadeUp 0.7s 0.24s ease both;
+    }
+
+    .hero-desc strong { color: var(--white); font-weight: 500; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Stats bar ─────────────────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      border: 1px solid var(--border);
+      max-width: 680px;
+      animation: fadeUp 0.7s 0.32s ease both;
+    }
+
+    .stat {
+      flex: 1;
+      padding: 20px 22px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── Ticker banner ─────────────────────────────────────────────────────── */
+    .ticker {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ticker-item::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--amber-dim);
+      flex-shrink: 0;
+    }
+
+    /* ── Pillars ───────────────────────────────────────────────────────────── */
+    .pillars {
+      position: relative; z-index: 1;
+      padding: 96px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-hdr {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 52px;
+    }
+
+    .section-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .section-line {
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .pillar {
+      background: var(--bg);
+      padding: 36px 30px;
+      transition: background 0.2s;
+    }
+
+    .pillar:hover { background: var(--surface); }
+
+    .pillar-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: var(--amber-dim);
+      margin-bottom: 18px;
+    }
+
+    .pillar-icon { font-size: 1.5rem; margin-bottom: 14px; }
+
+    .pillar h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .pillar p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── Recent Incidents ──────────────────────────────────────────────────── */
+    .recent-incidents {
+      position: relative; z-index: 1;
+      padding: 96px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .incidents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .incident-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .incident-card:hover {
+      background: rgba(232, 160, 32, 0.04);
+      border-color: var(--amber-dim);
+    }
+
+    .incident-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .incident-card-badges {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .badge-new {
+      color: #e8a020;
+      border-color: #e8a020;
+      background: rgba(232, 160, 32, 0.1);
+    }
+
+    .badge-review {
+      color: #ff8c00;
+      border-color: #ff8c00;
+      background: rgba(255, 140, 0, 0.08);
+    }
+
+    .badge-critical { color: #ff4444; border-color: #ff4444; }
+    .badge-high { color: #ff8c00; border-color: #ff8c00; }
+
+    .incident-card-date {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: var(--amber-dim);
+    }
+
+    .incident-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .incident-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .incident-card-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .incident-card-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .incidents-grid { grid-template-columns: 1fr; }
+      .recent-incidents { padding: 64px 24px; }
+    }
+
+    /* ── Signup ────────────────────────────────────────────────────────────── */
+    .signup {
+      position: relative; z-index: 1;
+      padding: 80px 48px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .signup-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .signup-copy h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .signup-copy p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .signup-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--amber-dim);
+      line-height: 1.7;
+    }
+
+    /* Form */
+    .f-label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .f-group { margin-bottom: 18px; }
+
+    .f-input, .f-select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.92rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .f-input::placeholder { color: var(--muted); }
+
+    .f-input:focus, .f-select:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 1px var(--amber);
+    }
+
+    .f-select { cursor: pointer; }
+    .f-select option { background: var(--surface); color: var(--white); }
+
+    .f-btn {
+      width: 100%;
+      background: var(--amber);
+      color: var(--bg);
+      border: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 17px 32px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 6px;
+      border-radius: 0;
+    }
+
+    .f-btn:hover  { background: #f0b030; }
+    .f-btn:active { transform: scale(0.99); }
+
+    .f-disclaimer {
+      margin-top: 12px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Success */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .success.show { display: block; }
+    .success-icon { font-size: 2rem; margin-bottom: 14px; }
+
+    .success h3 {
+      color: var(--amber);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 8px;
+    }
+
+    .success p { color: var(--muted); font-size: 0.72rem; }
+
+    /* ── Responsive ────────────────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero   { padding: 120px 24px 64px; }
+      .stats-bar { flex-wrap: wrap; }
+      .stat   { border-right: none; border-bottom: 1px solid var(--border); flex-basis: 50%; }
+      .stat:nth-child(even) { border-right: none; }
+      .ticker { padding: 24px; gap: 16px; }
+      .pillars { padding: 64px 24px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .signup { padding: 64px 24px; }
+      .signup-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <!-- ── HERO ────────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-eyebrow">Threat Intelligence · Historical Record · Peer Reviewed</div>
+    <h1 class="hero-title">The <em>Definitive</em><br>Cyber Threat<br>Encyclopedia</h1>
+    <div class="hero-sub">Building the world's most authoritative open record of cyber history</div>
+    <p class="hero-desc">
+      <strong>Threatpedia</strong> is a Wikipedia-style platform documenting every significant
+      cyber event, attack campaign, and threat actor in history — peer-reviewed by a board of
+      cyber historians, intelligence analysts, and subject matter experts, and augmented by AI.
+    </p>
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Events Catalogued</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">100+</div>
+        <div class="stat-label">APT Groups Tracked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">20+</div>
+        <div class="stat-label">Frameworks Mapped</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">TBD</div>
+        <div class="stat-label">Launch Date</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TICKER ──────────────────────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-item">Peer-Reviewed Articles</div>
+    <div class="ticker-item">MITRE ATT&amp;CK Mapping</div>
+    <div class="ticker-item">APT Registry</div>
+    <div class="ticker-item">STIX/TAXII Support Planned</div>
+    <div class="ticker-item">AI-Augmented Review</div>
+    <div class="ticker-item">Open Research Access</div>
+  </div>
+
+  <!-- ── PILLARS ─────────────────────────────────────────────────────────── -->
+  <section class="pillars">
+    <div class="section-hdr">
+      <span class="section-tag">What We're Building</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-num">// 01</div>
+        <div class="pillar-icon">📖</div>
+        <h3>Incident Encyclopedia</h3>
+        <p>Every significant cyber event documented with standardized data points — TTPs, timeline, attribution, impact, affected sectors, and source citations.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 02</div>
+        <div class="pillar-icon">🛡️</div>
+        <h3>APT Registry</h3>
+        <p>Current and historical Advanced Persistent Threat groups tracked with profiles, known campaigns, tooling, state affiliation, and activity timelines.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 03</div>
+        <div class="pillar-icon">🗺️</div>
+        <h3>Framework Mapping</h3>
+        <p>Incidents mapped to MITRE ATT&amp;CK, NIST, Cyber Kill Chain, and more — enabling cross-incident trend analysis and data-driven research.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 04</div>
+        <div class="pillar-icon">✅</div>
+        <h3>Peer Review &amp; Certification</h3>
+        <p>A board of cyber historians, reporters, and SMEs reviews submissions. Approved articles earn the Threatpedia seal — a mark of verified accuracy.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 05</div>
+        <div class="pillar-icon">📊</div>
+        <h3>Trend Analytics</h3>
+        <p>Structured data across all incidents enables trend analysis by sector, vector, actor type, geography, and time — powering original research.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 06</div>
+        <div class="pillar-icon">🤖</div>
+        <h3>AI-Augmented Workflow</h3>
+        <p>AI assists with aggregating news sources, flagging potential incidents, pre-screening articles, and surfacing related events — accelerating human reviewers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIVE RESOURCES ───────────────────────────────────────────────────── -->
+  <section class="pillars" style="padding-top:0;">
+    <div class="section-hdr">
+      <span class="section-tag">Live Resources — Available Now</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="pillars-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <a href="glossary.html" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <div class="pillar-icon">📚</div>
+        <h3>Cyber Security Glossary</h3>
+        <p>220+ searchable InfoSec terms, acronyms, and definitions — from APT to Zero Trust. A living reference that grows every week.</p>
+      </a>
+      <a href="threat-actors.html" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <div class="pillar-icon">🎯</div>
+        <h3>Threat Actor Registry</h3>
+        <p>78 tracked APT groups with cross-vendor naming, nation-state attribution, known campaigns, and associated tooling. Filterable and searchable.</p>
+      </a>
+      <a href="incidents/index.html" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <div class="pillar-icon">🔥</div>
+        <h3>Incident Reports</h3>
+        <p>In-depth intelligence dossiers on major cyber incidents — from supply chain attacks to nation-state operations. Full IOCs, timelines, and remediation guidance.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── RECENT INCIDENTS ────────────────────────────────────────────────── -->
+  <section class="recent-incidents">
+    <div class="section-hdr">
+      <span class="section-tag">Recent Incident Reports</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="incidents-grid">
+      <a href="incidents/drift-protocol-dprk-exploit-2026.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">April 1, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-new">New</span>
+            <span class="badge badge-review">Pending Review</span>
+            <span class="badge badge-critical">Critical</span>
+          </div>
+        </div>
+        <h3>Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors</h3>
+        <p>Largest crypto exploit of 2026. Attacker fabricated CarbonVote Token as collateral, exploited oracle pricing and governance controls via durable nonces, draining $285M from Solana's largest perpetual futures DEX in 12 minutes. Attributed to DPRK-linked actors.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">DeFi Exploit</span>
+          <span class="incident-card-tag">Crypto</span>
+          <span class="incident-card-tag">DPRK</span>
+        </div>
+      </a>
+      <a href="incidents/die-linke-qilin-ransomware-2026.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">March 26, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-new">New</span>
+            <span class="badge badge-review">Pending Review</span>
+            <span class="badge badge-high">High</span>
+          </div>
+        </div>
+        <h3>Die Linke Political Party Hit by Qilin Ransomware</h3>
+        <p>Russian-speaking Qilin ransomware group compromised the German Bundestag political party Die Linke, claiming 1.5 TB of stolen data. The attack on a parliamentary party raises concerns about democratic institution targeting and politically motivated ransomware.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">Ransomware</span>
+          <span class="incident-card-tag">Political Party</span>
+          <span class="incident-card-tag">Qilin</span>
+        </div>
+      </a>
+      <a href="incidents/foster-city-ransomware-2026.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">March 19, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-new">New</span>
+            <span class="badge badge-review">Pending Review</span>
+            <span class="badge badge-high">High</span>
+          </div>
+        </div>
+        <h3>Foster City Ransomware Attack Forces State of Emergency</h3>
+        <p>Ransomware attack paralyzed all non-emergency municipal services in Foster City, California for over a week. City council declared a state of emergency — one of few US municipalities to take this step for a cyberattack. Potential resident data exposure under investigation.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">Ransomware</span>
+          <span class="incident-card-tag">Municipal Gov</span>
+          <span class="incident-card-tag">State of Emergency</span>
+        </div>
+      </a>
+      <a href="incidents/trivy-cve-2026-33634.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">March 19, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-new">New</span>
+            <span class="badge badge-review">Pending Review</span>
+            <span class="badge badge-critical">Critical</span>
+          </div>
+        </div>
+        <h3>CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis</h3>
+        <p>Critical supply chain vulnerability (CVSS 9.4) in Aqua Security's Trivy ecosystem. TeamPCP hijacked 76/77 trivy-action tags and all setup-trivy tags to deploy infostealers targeting cloud credentials. Over 10,000 GitHub workflows affected. Root cause of the European Commission breach.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">Supply Chain</span>
+          <span class="incident-card-tag">CVE Analysis</span>
+          <span class="incident-card-tag">TeamPCP</span>
+        </div>
+      </a>
+      <a href="incidents/european-commission-trivy-breach-2026.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">April 2, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-new">New</span>
+            <span class="badge badge-review">Pending Review</span>
+            <span class="badge badge-critical">Critical</span>
+          </div>
+        </div>
+        <h3>European Commission Cloud Breach via Trivy Supply Chain</h3>
+        <p>CERT-EU confirms 340 GB exfiltrated from Europa AWS infrastructure via TeamPCP's Trivy compromise (CVE-2026-33634). 71 EU institutional clients affected. Highest-profile governmental victim of the campaign.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">Supply Chain</span>
+          <span class="incident-card-tag">Government</span>
+          <span class="incident-card-tag">TeamPCP</span>
+        </div>
+      </a>
+      <a href="incidents/axios-unc1069-compromise.html" class="incident-card">
+        <div class="incident-card-header">
+          <div class="incident-card-date">March 31, 2026</div>
+          <div class="incident-card-badges">
+            <span class="badge badge-critical">Critical</span>
+          </div>
+        </div>
+        <h3>Axios npm Package Compromise by UNC1069</h3>
+        <p>North Korea-nexus UNC1069 compromised npm credentials to publish backdoored axios versions with WAVESHAPER.V2 RAT. 100M+ weekly downloads exposed during 3-hour window.</p>
+        <div class="incident-card-meta">
+          <span class="incident-card-tag">Supply Chain</span>
+          <span class="incident-card-tag">npm</span>
+          <span class="incident-card-tag">DPRK</span>
+        </div>
+      </a>
+    </div>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="incidents/index.html" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); text-decoration: none; border: 1px solid var(--border); padding: 12px 32px; transition: border-color 0.2s, background 0.2s;">View All Incidents →</a>
+    </div>
+  </section>
+
+  <!-- ── SIGNUP ──────────────────────────────────────────────────────────── -->
+  <section class="signup" id="signup">
+    <div class="signup-inner">
+      <div class="signup-copy">
+        <h2>Be Part of<br>Cyber History</h2>
+        <p>We're assembling the founding team — peer reviewers, SMEs, journalists, researchers, and early contributors. Register your interest and be first to know when we launch.</p>
+        <p class="signup-note">FOUNDING MEMBERS GET EARLY ACCESS, CONTRIBUTOR CREDITS, AND A VOICE IN SHAPING THE PLATFORM.</p>
+      </div>
+      <div>
+        <form id="tp-form" action="https://formspree.io/f/meerrlwo" method="POST">
+          <div class="f-group">
+            <label class="f-label" for="tp-name">Full Name</label>
+            <input class="f-input" type="text" id="tp-name" name="name" placeholder="Jane Smith" required />
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="tp-email">Email Address</label>
+            <input class="f-input" type="email" id="tp-email" name="email" placeholder="jane@organization.com" required />
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="tp-org">Organization</label>
+            <input class="f-input" type="text" id="tp-org" name="organization" placeholder="Company / Institution" />
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="tp-role">I'm interested as a...</label>
+            <select class="f-select" id="tp-role" name="role">
+              <option value="">Select your interest</option>
+              <option>Peer Reviewer / SME</option>
+              <option>Cyber Historian / Researcher</option>
+              <option>Journalist / Reporter</option>
+              <option>Contributor / Author</option>
+              <option>Data / API User</option>
+              <option selected>General Interest</option>
+            </select>
+          </div>
+          <button class="f-btn" type="submit">Register Interest →</button>
+          <p class="f-disclaimer">No spam. Updates only on launch milestones.</p>
+        </form>
+        <div class="success" id="tp-success">
+          <div class="success-icon">✦</div>
+          <h3>Registration Received</h3>
+          <p>You're on the list. We'll be in touch as Threatpedia takes shape.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script>
+    /* ── Form handler ───────────────────────────────────────────────────── */
+    (function () {
+      var form    = document.getElementById('tp-form');
+      var success = document.getElementById('tp-success');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = form.querySelector('.f-btn');
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+
+        fetch(form.action, {
+          method:  'POST',
+          body:    new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function (res) {
+          if (res.ok) {
+            form.style.display = 'none';
+            success.classList.add('show');
+          } else {
+            btn.textContent = 'Register Interest →';
+            btn.disabled = false;
+            alert('Something went wrong. Please try again.');
+          }
+        })
+        .catch(function () {
+          btn.textContent = 'Register Interest →';
+          btn.disabled = false;
+          alert('Network error. Please try again.');
+        });
+      });
+    })();
+  </script>
+
+  <script src="assets/site-chrome.js"></script>
+  <script src="assets/universal-search.js"></script>
+  <script src="assets/incident-ticker.js"></script>
+</body>
+</html>

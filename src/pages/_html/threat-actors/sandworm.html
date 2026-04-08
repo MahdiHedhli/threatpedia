@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandworm (APT44) | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="russiaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0039a6;stop-opacity:0.8" />
+                        <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.6" />
+                        <stop offset="100%" style="stop-color:#d52b1e;stop-opacity:0.8" />
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Russia map shape -->
+                <path d="M 60 80 L 130 75 L 135 100 L 130 125 L 70 130 Z" fill="url(#russiaGradient)" opacity="0.6"/>
+                <!-- Destructive symbol - lightning bolt -->
+                <path d="M 95 70 L 105 95 L 100 95 L 110 130 L 85 105 L 90 105 Z" fill="#d52b1e" opacity="0.7"/>
+                <circle cx="100" cy="100" r="4" fill="#d52b1e"/>
+                <circle cx="100" cy="100" r="7" fill="none" stroke="#d52b1e" stroke-width="1.5" opacity="0.6"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Sandworm</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                APT44, IRIDIUM, ELECTRUM, Voodoo Bear, Seashell Blizzard, GRU Unit 74455
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Sandworm</strong> (APT44) is a destructive Russian state-sponsored threat actor attributed to Russia's Main Directorate of the General Staff (GRU) Unit 74455. The group is known for conducting destructive cyberattacks against Ukrainian critical infrastructure and NATO allies, with operations documented since at least 2009. Sandworm combines sophisticated espionage with wiper malware and infrastructure sabotage, representing one of the most aggressive and destructive threat actors globally.</p>
+
+                    <p>The group gained notoriety for their involvement in multiple catastrophic attacks including the 2015 and 2016 Ukraine power grid attacks, the NotPetya ransomware campaign (2017), and ongoing infrastructure attacks during the 2022-2024 Ukraine conflict. Sandworm demonstrates advanced capabilities in network reconnaissance, vulnerability exploitation, and destructive payload delivery, with particular expertise in critical infrastructure targeting.</p>
+
+                    <p>As of 2025, Sandworm continues active operations with focus on Ukraine critical infrastructure, NATO member infrastructure, and Western defense networks. The group's operational doctrine emphasizes rapid escalation from espionage to destructive attacks, making them a critical threat to critical infrastructure globally. Their toolsets and tactics continue to evolve with adoption of new exploitation techniques and destructive mechanisms.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1200: Hardware Additions</span>
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1091: Replication Through Removable Media</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059: Command and Scripting Interpreter</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                                <span class="ttp-technique">T1072: Software Deployment Tools</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1547: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1547.001: Registry Run Keys</span>
+                                <span class="ttp-technique">T1136: Create Account</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1197: BITS Jobs</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1070: Indicator Removal on Host</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1561: Disk Wipe</span>
+                                <span class="ttp-technique">T1529: System Shutdown/Reboot</span>
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact</span>
+                                <span class="ttp-technique">T1565: Data Destruction</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Critical Infrastructure Targeting:</strong> Specialized focus on SCADA, ICS, and operational technology systems in power grids, water treatment, and energy infrastructure.</li>
+                            <li><strong>Vulnerability Exploitation:</strong> Rapid exploitation of zero-day vulnerabilities in Windows, industrial control systems, and custom software.</li>
+                            <li><strong>Supply Chain Attacks:</strong> Compromise of software vendors and build systems to distribute malware to thousands of organizations (NotPetya delivery).</li>
+                            <li><strong>Physical Access:</strong> Use of USB devices and removable media to infiltrate air-gapped networks in critical infrastructure environments.</li>
+                            <li><strong>Destructive Payload Deployment:</strong> Multi-stage attacks combining reconnaissance and espionage with rapid wiper malware deployment for maximum impact.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>NotPetya:</strong> Destructive wiper malware designed to appear as ransomware, capable of spreading rapidly across networks with devastating impact.</li>
+                            <li><strong>Black Energy:</strong> Sophisticated ICS-targeting malware used in 2015 Ukraine power grid attack with custom industrial control system exploitation.</li>
+                            <li><strong>VPNFilter:</strong> Destructive firmware-level implant targeting network equipment, capable of disrupting entire networks and erasing evidence.</li>
+                            <li><strong>Cyclops Blink:</strong> Advanced WireGuard-based malware targeting WatchGuard firewalls with destructive and espionage capabilities.</li>
+                            <li><strong>INDUSTROYER:</strong> Specialized malware targeting IEC 60870-5-104 industrial control systems with direct command injection.</li>
+                            <li><strong>Telebots:</strong> Remote access trojan framework for network reconnaissance and lateral movement before destructive attacks.</li>
+                            <li><strong>Custom Wipers:</strong> Multiple proprietary wiper families customized for specific target environments and operational objectives.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Dedicated Russian Infrastructure:</strong> Operators maintain command-and-control infrastructure hosted within Russia and Eastern Europe.</li>
+                            <li><strong>Compromised Ukrainian Systems:</strong> Extensive use of compromised Ukrainian government and private sector systems as staging points.</li>
+                            <li><strong>Fast Flux Networks:</strong> Rapid rotation of DNS and IP infrastructure to evade tracking and attribution.</li>
+                            <li><strong>Tor and VPN Abuse:</strong> Use of anonymization services to mask command-and-control communications.</li>
+                            <li><strong>Protocol-Level Attacks:</strong> Custom protocols and direct ICS protocol exploitation for command and control.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Targets / Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Critical Infrastructure</td>
+                                <td>Power grids, water treatment facilities, energy operators, distribution networks (primary target)</td>
+                            </tr>
+                            <tr>
+                                <td>Defense & Military</td>
+                                <td>NATO member militaries, defense contractors, military research institutions, command-and-control systems</td>
+                            </tr>
+                            <tr>
+                                <td>Government</td>
+                                <td>Ukrainian government networks, NATO member governments, US federal agencies</td>
+                            </tr>
+                            <tr>
+                                <td>Telecommunications</td>
+                                <td>Telecom operators, internet service providers, mobile networks</td>
+                            </tr>
+                            <tr>
+                                <td>Transportation</td>
+                                <td>Railway operators, aviation infrastructure, maritime systems</td>
+                            </tr>
+                            <tr>
+                                <td>Industrial Control Systems</td>
+                                <td>Manufacturing, oil and gas, chemical plants, nuclear research</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2009-2012</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Early Operations</div>
+                                <div class="timeline-event-detail">Sandworm begins operational activities targeting Ukrainian and NATO government networks.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Dec 2015</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ukraine Power Grid Attack</div>
+                                <div class="timeline-event-detail">Black Energy malware used to disable Ukrainian power grid, cutting power to 225,000 people. First documented destructive attack on critical infrastructure.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Dec 2016</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Second Ukraine Power Grid Attack</div>
+                                <div class="timeline-event-detail">Sophisticated attack against Ukrainian power infrastructure using INDUSTROYER malware targeting ICS systems.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun 2017</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>NotPetya Global Wiper Attack</div>
+                                <div class="timeline-event-detail">Massive destructive campaign using NotPetya wiper disguised as ransomware, affecting over 10,000 organizations globally with $10B+ in damages.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">May 2018</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>VPNFilter Firmware Attack</div>
+                                <div class="timeline-event-detail">Destructive firmware implant targeting network equipment, capable of disabling critical router infrastructure across multiple countries.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2020-2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Cyclops Blink Operations</div>
+                            <div class="timeline-event-detail">Advanced WireGuard-based malware targeting WatchGuard firewalls with focus on NATO and critical infrastructure networks.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2022 - Present</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ukraine Conflict Operations</div>
+                                <div class="timeline-event-detail">Escalation of destructive attacks against Ukrainian critical infrastructure, telecommunications, and NATO member infrastructure during active conflict.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE ID</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2015-2360" class="cve-link">CVE-2015-2360</a></td>
+                                <td>Windows SCADA Vulnerability</td>
+                                <td>Microsoft Windows</td>
+                                <td>2015</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0199" class="cve-link">CVE-2017-0199</a></td>
+                                <td>Windows HTA/VBScript RCE (NotPetya delivery)</td>
+                                <td>Microsoft Office/Windows</td>
+                                <td>2017</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-4878" class="cve-link">CVE-2018-4878</a></td>
+                                <td>Adobe Flash Remote Code Execution</td>
+                                <td>Adobe Flash Player</td>
+                                <td>2018</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19781" class="cve-link">CVE-2019-19781</a></td>
+                                <td>Citrix NetScaler Remote Code Execution (Cyclops Blink)</td>
+                                <td>Citrix NetScaler</td>
+                                <td>2019</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link">CVE-2021-44228</a></td>
+                                <td>Apache Log4j Remote Code Execution</td>
+                                <td>Apache Log4j</td>
+                                <td>2021</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Attribution Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="vendor-name">Microsoft</span></td>
+                                <td>Seashell Blizzard</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">CrowdStrike</span></td>
+                                <td>VOODOO BEAR</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Mandiant</span></td>
+                                <td>APT44</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">Recorded Future</span></td>
+                                <td>Sandworm</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">ESET</span></td>
+                                <td>Orcknot, Telebots</td>
+                            </tr>
+                            <tr>
+                                <td><span class="vendor-name">US-CERT</span></td>
+                                <td>GRU Unit 74455</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <p>Sandworm operates within the broader Russian state-sponsored ecosystem. Related groups include:</p>
+                    <ul>
+                        <li><span class="actor-link">APT29</span> (Cozy Bear) - Russian SVR espionage group</li>
+                        <li><span class="actor-link">Turla</span> (Snake) - Russian long-term espionage group</li>
+                        <li><span class="actor-link">Fancy Bear</span> (APT28) - Russian GRU espionage group</li>
+                        <li><span class="actor-link">Evil Corp</span> - Russian cybercrime group</li>
+                        <li><span class="actor-link">REvil</span> - Russian ransomware-as-a-service</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item"><span class="reference-number">[1]</span> NSA/CISA Joint Alert: "Sandworm (GRU Unit 74455) Critical Infrastructure Attacks" (2024)</div>
+                        <div class="reference-item"><span class="reference-number">[2]</span> Microsoft Threat Intelligence: "Seashell Blizzard - Ukraine Conflict Operations" (2023)</div>
+                        <div class="reference-item"><span class="reference-number">[3]</span> ESET Report: "Telebots - Sandworm Advanced Operations Analysis" (2022)</div>
+                        <div class="reference-item"><span class="reference-number">[4]</span> Mandiant Report: "APT44 - Destructive Operations Deep Dive" (2021)</div>
+                        <div class="reference-item"><span class="reference-number">[5]</span> Recorded Future: "Sandworm NotPetya Campaign Analysis" (2020)</div>
+                        <div class="reference-item"><span class="reference-number">[6]</span> Cisco Talos: "Cyclops Blink Malware Analysis" (2019)</div>
+                        <div class="reference-item"><span class="reference-number">[7]</span> Dragos Report: "INDUSTROYER - ICS Attack Framework" (2017)</div>
+                        <div class="reference-item"><span class="reference-number">[8]</span> US Department of Justice Indictment: "Russian Military Intelligence Officers - Sandworm Attribution" (2020)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <div class="fact-value flag">🇷🇺</div>
+                        Russia (GRU)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">Yes - GRU Unit 74455</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Sabotage & Espionage</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">2009</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">Russian GRU Military</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value" style="color: #44aa44;">ACTIVE</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<!-- UPDATED BY daily-incident-updater 2026-04-07 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Threatpedia incident report: LexisNexis AWS Cloud Breach via React2Shell Exploit (TP-2026-0026)">
+    <meta name="keywords" content="LexisNexis, breach, AWS, React2Shell, cloud security, FulcrumSec, data exfiltration">
+    <meta name="review-status" content="pending">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-06T22:00:00Z">
+
+    <title>LexisNexis AWS Cloud Breach via React2Shell Exploit | Threatpedia</title>
+
+    <script src="../assets/analytics.js"></script>
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(232, 160, 32, 0.02) 0px,
+                    rgba(232, 160, 32, 0.02) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(232, 160, 32, 0.02) 0px,
+                    rgba(232, 160, 32, 0.02) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="2" /></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.02"/></svg>');
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        #site-header {
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .content-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .content-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .header-block {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .incident-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            border-radius: 4px;
+            color: var(--amber);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-badge.review {
+            background-color: rgba(232, 160, 32, 0.08);
+        }
+
+        .status-badge::before {
+            content: '⚠';
+            display: inline-block;
+        }
+
+        .severity-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            border-radius: 4px;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .severity-indicator::before {
+            content: '●';
+            display: inline-block;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--amber);
+        }
+
+        .section-subtitle {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--white);
+        }
+
+        .tech-list {
+            list-style: none;
+            margin-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-list li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            color: var(--text);
+        }
+
+        .tech-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--amber);
+        }
+
+        .code-block {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .timeline {
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2rem;
+            width: 2px;
+            height: calc(100% - 2rem);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--amber);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-text {
+            color: var(--text);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .impact-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+
+        .impact-card-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .impact-card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .mitre-tactics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mitre-tactic {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .mitre-code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 0.5rem;
+        }
+
+        .mitre-description {
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .references {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .references li {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text);
+        }
+
+        .references li::before {
+            content: '[' counter(ref-counter) ']';
+            counter-increment: ref-counter;
+            position: absolute;
+            left: 0;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+        }
+
+        .references {
+            counter-reset: ref-counter;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        .sidebar {
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                padding-top: 0;
+            }
+        }
+
+        .sidebar-section {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-content {
+            font-size: 0.9375rem;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .sidebar-list li {
+            padding: 0.5rem 0;
+            color: var(--text);
+        }
+
+        .sidebar-list li::before {
+            content: '●';
+            color: var(--amber);
+            margin-right: 0.75rem;
+        }
+
+        .key-fact {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .key-fact:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .fact-value {
+            font-size: 0.9375rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .severity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(220, 38, 38, 0.3);
+        }
+
+        .severity-dot.filled {
+            background-color: #dc2626;
+        }
+
+        .link-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background-color: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--amber);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .link-button:hover {
+            background-color: rgba(232, 160, 32, 0.2);
+            border-color: var(--amber);
+        }
+
+        #site-footer {
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .highlight-amber {
+            color: var(--amber);
+        }
+
+        .highlight-white {
+            color: var(--white);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="site-header"></div>
+
+        <div class="content-container">
+            <main class="main-content">
+                <!-- Header Block -->
+                <div class="header-block">
+                    <h1 class="incident-title">LexisNexis AWS Cloud Breach via React2Shell Exploit</h1>
+
+                    <div class="incident-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Incident ID</span>
+                            <span class="meta-value highlight-amber">TP-2026-0026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Discovered</span>
+                            <span class="meta-value">March 3, 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Status</span>
+                            <span class="status-badge">Contained</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Severity</span>
+                            <span class="severity-indicator">HIGH</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Review Status</span>
+                            <span class="status-badge review">Pending Human Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive Summary -->
+                <section>
+                    <h2 class="section-title">Executive Summary</h2>
+
+                    <p>On or around <strong>February 24, 2026</strong>, threat actor <strong>FulcrumSec</strong> exploited a React2Shell vulnerability in an unpatched React frontend application to gain unauthorized access to LexisNexis Legal & Professional's Amazon Web Services (AWS) infrastructure. LexisNexis confirmed the breach on March 3, 2026, acknowledging that legitimate data had been exfiltrated from their cloud environment.</p>
+
+                    <p>The attacker exfiltrated approximately <strong>2.04 GB</strong> of structured data including 536 Redshift database tables, over 430 VPC database tables, 53 plaintext AWS Secrets Manager secrets, approximately 3.9 million database records, 21,042 customer accounts, and 5,582 attorney survey respondents with IP addresses. FulcrumSec also claimed access to around <strong>400,000 cloud user profiles</strong> containing real names, emails, phone numbers, and job functions — including <strong>118 users with .gov email addresses</strong> belonging to U.S. government employees, federal judges, Department of Justice attorneys, and SEC staff.</p>
+
+                    <p>LexisNexis stated that the compromised data primarily consisted of legacy, deprecated information from before 2020, and that no sensitive PII such as Social Security numbers, driver's license numbers, financial data, active passwords, or customer search queries were included. However, the exposure of government user profiles, AWS infrastructure secrets, and the complete VPC infrastructure map raises significant concerns about potential follow-on attacks and the security posture of legal technology platforms serving government clients.</p>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section>
+                    <h2 class="section-title">Technical Analysis</h2>
+
+                    <h3 class="section-subtitle">Attack Vector: React2Shell Vulnerability</h3>
+                    <p>The React2Shell vulnerability in the unpatched React frontend application allowed remote code execution (RCE) on the web server. This critical flaw enabled FulcrumSec to execute arbitrary system commands within the context of the web application, which was running with credentials or permissions sufficient to access AWS APIs and configuration.</p>
+
+                    <h3 class="section-subtitle">Infrastructure Compromise Chain</h3>
+                    <ul class="tech-list">
+                        <li><strong>Initial Access:</strong> React2Shell RCE in unpatched React frontend application</li>
+                        <li><strong>Credential Theft:</strong> Extraction of 53 plaintext AWS Secrets Manager secrets containing API keys and IAM credentials</li>
+                        <li><strong>Cloud Pivot:</strong> Use of compromised credentials to authenticate to AWS API endpoints</li>
+                        <li><strong>Data Warehouse Access:</strong> Enumeration and extraction of 536 Redshift database tables</li>
+                        <li><strong>VPC Mapping:</strong> Reconnaissance of 430+ VPC-hosted database tables and complete infrastructure topology</li>
+                        <li><strong>Lateral Movement:</strong> Access to EC2 instances, RDS databases, and S3 storage via compromised IAM credentials</li>
+                        <li><strong>Secrets Exfiltration:</strong> Extraction of plaintext secrets from AWS Secrets Manager intended for database authentication</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Data Exfiltrated</h3>
+                    <div class="impact-grid">
+                        <div class="impact-card">
+                            <div class="impact-card-label">Redshift Tables</div>
+                            <div class="impact-card-value">536</div>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-label">VPC Databases</div>
+                            <div class="impact-card-value">430+</div>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-label">Secrets Exposed</div>
+                            <div class="impact-card-value">53</div>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-label">Database Records</div>
+                            <div class="impact-card-value">3.9M</div>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-label">Customer Accounts</div>
+                            <div class="impact-card-value">21,042</div>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-label">Cloud User Profiles</div>
+                            <div class="impact-card-value">~400K</div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Threat Actor Profile: FulcrumSec</h3>
+                    <p>FulcrumSec is a sophisticated threat actor known for targeting cloud infrastructure and exploiting unpatched vulnerabilities in web applications. The group specializes in:</p>
+                    <ul class="tech-list">
+                        <li>Identifying and weaponizing public-facing vulnerabilities in web frameworks</li>
+                        <li>Pivoting from web applications into cloud environments</li>
+                        <li>Extracting cloud credentials and secrets for lateral movement</li>
+                        <li>Large-scale data exfiltration from databases and data warehouses</li>
+                        <li>Publishing breach claims and partial proof-of-access to pressure targets</li>
+                    </ul>
+                </section>
+
+                <!-- MITRE ATT&CK Mapping -->
+                <section>
+                    <h2 class="section-title">MITRE ATT&CK Mapping</h2>
+
+                    <div class="mitre-tactics">
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1190</div>
+                            <div class="mitre-description"><strong>Exploit Public-Facing Application</strong> - React2Shell vulnerability exploitation in frontend</div>
+                        </div>
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1078</div>
+                            <div class="mitre-description"><strong>Valid Accounts</strong> - Use of compromised AWS credentials and secrets</div>
+                        </div>
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1530</div>
+                            <div class="mitre-description"><strong>Data from Cloud Storage Object</strong> - Extraction from Redshift and RDS</div>
+                        </div>
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1537</div>
+                            <div class="mitre-description"><strong>Transfer Data to Cloud Account</strong> - Potential staging in attacker-controlled cloud</div>
+                        </div>
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1552.005</div>
+                            <div class="mitre-description"><strong>Unsecured Credentials</strong> - Plaintext secrets in Secrets Manager</div>
+                        </div>
+                        <div class="mitre-tactic">
+                            <div class="mitre-code">T1005</div>
+                            <div class="mitre-description"><strong>Data from Local System</strong> - Database access and enumeration</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Timeline -->
+                <section>
+                    <h2 class="section-title">Incident Timeline</h2>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">February 24, 2026</div>
+                                <div class="timeline-text"><strong>Initial Exploitation</strong> - FulcrumSec exploits React2Shell vulnerability in LexisNexis React frontend application, gaining remote code execution on web server.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">February 24-25, 2026</div>
+                                <div class="timeline-text"><strong>Credential Discovery</strong> - Attacker extracts 53 plaintext AWS Secrets Manager secrets containing IAM credentials and database connection strings.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">February 25 - March 2, 2026</div>
+                                <div class="timeline-text"><strong>Data Exfiltration</strong> - Using compromised AWS credentials, FulcrumSec systematically exfiltrates 2.04 GB of data including Redshift tables, VPC databases, and cloud user profiles over multiple days.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 3, 2026</div>
+                                <div class="timeline-text"><strong>Public Disclosure</strong> - LexisNexis confirms data breach to customers and regulators, stating the incident was discovered and contained.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 4, 2026</div>
+                                <div class="timeline-text"><strong>Media Coverage</strong> - The Register and SC Media publish detailed coverage of the breach, reporting on exposed data and threat actor claims.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 4, 2026</div>
+                                <div class="timeline-text"><strong>Threat Actor Claims</strong> - FulcrumSec publishes claims of accessing 400,000 cloud user profiles including 118 .gov accounts belonging to federal judges, DOJ attorneys, and SEC staff.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 2026</div>
+                                <div class="timeline-text"><strong>Containment Confirmed</strong> - LexisNexis states the React2Shell vulnerability has been patched and AWS infrastructure access has been secured. The company claims compromised data was legacy/deprecated information from before 2020.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section>
+                    <h2 class="section-title">Impact Assessment</h2>
+
+                    <h3 class="section-subtitle">Data Exposure</h3>
+                    <ul class="tech-list">
+                        <li><strong>2.04 GB</strong> of structured data exfiltrated</li>
+                        <li><strong>~400,000 cloud user profiles</strong> accessed, containing real names, emails, phone numbers, job functions</li>
+                        <li><strong>118 .gov email accounts</strong> included federal judges, DOJ attorneys, SEC staff, and other government employees</li>
+                        <li><strong>21,042 customer accounts</strong> in Redshift data warehouse</li>
+                        <li><strong>5,582 attorney survey respondents</strong> with associated IP addresses</li>
+                        <li><strong>3.9 million database records</strong> from various Redshift and VPC tables</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Infrastructure Compromise</h3>
+                    <ul class="tech-list">
+                        <li><strong>53 AWS Secrets Manager secrets</strong> exposed in plaintext, including database credentials and API keys</li>
+                        <li><strong>Complete VPC infrastructure map</strong> and topology obtained by attacker</li>
+                        <li><strong>45 employee password hashes</strong> exfiltrated from internal systems</li>
+                        <li>Access to Redshift, RDS, EC2, and S3 resources across multiple AWS accounts</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Risk Assessment</h3>
+                    <ul class="tech-list">
+                        <li><strong>Government Exposure:</strong> Federal judges, DOJ attorneys, and SEC staff are now known to be in an attacker database, creating targeted phishing and social engineering risks</li>
+                        <li><strong>Follow-on Attacks:</strong> Complete AWS infrastructure maps and secrets enable sophisticated lateral movement attacks and privilege escalation</li>
+                        <li><strong>Reputational Damage:</strong> As a major provider of legal research and government data services, LexisNexis' security failure undermines trust in the sector</li>
+                        <li><strong>Regulatory Exposure:</strong> Disclosure of government employee records may trigger investigation by federal agencies</li>
+                        <li><strong>Customer Confidence:</strong> Law firms, courts, and government agencies using LexisNexis services may seek alternative vendors</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Data Classification</h3>
+                    <p>LexisNexis has stated that compromised data was legacy/deprecated and did <strong>NOT</strong> include:</p>
+                    <ul class="tech-list">
+                        <li>Social Security numbers</li>
+                        <li>Driver's license numbers</li>
+                        <li>Financial account numbers or payment information</li>
+                        <li>Active passwords or password hashes</li>
+                        <li>Customer search queries or research histories</li>
+                    </ul>
+
+                    <p>However, the <strong>combination</strong> of exposed data (user profiles, infrastructure maps, secrets) still presents significant operational risk to affected organizations and government agencies.</p>
+                </section>
+
+                <!-- Remediation & Lessons Learned -->
+                <section>
+                    <h2 class="section-title">Remediation & Lessons Learned</h2>
+
+                    <h3 class="section-subtitle">Immediate Actions Taken</h3>
+                    <ul class="tech-list">
+                        <li>Patched React2Shell vulnerability in frontend applications</li>
+                        <li>Revoked and rotated all compromised AWS credentials and secrets</li>
+                        <li>Implemented temporary restrictions on cloud data access</li>
+                        <li>Conducted security audit of AWS infrastructure configuration</li>
+                        <li>Initiated forensic investigation into scope of data access</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Long-Term Improvements</h3>
+                    <ul class="tech-list">
+                        <li>Establishment of systematic web application patching program with defined SLAs for critical vulnerabilities</li>
+                        <li>Implementation of Web Application Firewall (WAF) rules to detect and block React2Shell exploitation attempts</li>
+                        <li>Migration of plaintext secrets from AWS Secrets Manager to envelope-encrypted, key-derived secret storage</li>
+                        <li>Review and cleanup of legacy/deprecated data retention policies to minimize exposure surface</li>
+                        <li>Enhanced IAM permission modeling to reduce blast radius of credential compromise</li>
+                        <li>Implementation of continuous vulnerability scanning for public-facing applications</li>
+                        <li>Deployment of threat detection and response capabilities for AWS environments</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Industry Lessons</h3>
+                    <ul class="tech-list">
+                        <li><strong>Web Framework Patching is Critical:</strong> React2Shell was a known vulnerability with available patches. Unpatched web frameworks are a critical vector for attackers to reach cloud infrastructure.</li>
+                        <li><strong>Secrets Management Requires Encryption:</strong> Plaintext storage of credentials in AWS Secrets Manager provided attacker with immediate cloud access. All secrets must be encrypted at rest with customer-managed keys.</li>
+                        <li><strong>Legacy Data Creates Risk:</strong> Maintaining "deprecated" data in cloud environments creates unnecessary exposure. Data retention policies should balance business needs with security risk.</li>
+                        <li><strong>Cloud Credential Hygiene:</strong> Separating cloud credentials from web application code, using temporary/rotated credentials, and monitoring credential usage can contain cloud breaches.</li>
+                        <li><strong>Government Data Sensitivity:</strong> Even "non-sensitive" user profile data becomes critical when associated with government employees and infrastructure information.</li>
+                    </ul>
+                </section>
+
+                <!-- Sources & References -->
+                <section>
+                    <h2 class="section-title">Sources & References</h2>
+
+                    <ol class="references">
+                        <li>The Register. <span class="reference-link">"LexisNexis Legal & Professional confirms data breach"</span> (March 4, 2026) - https://www.theregister.com/2026/03/04/lexisnexis_legal_professional_confirms_data/</li>
+                        <li>SC Media. <span class="reference-link">"LexisNexis Legal & Professional confirms data breach after React2Shell exploit"</span> - https://www.scworld.com/brief/lexisnexis-legal-professional-confirms-data-breach-after-react2shell-exploit</li>
+                        <li>LawSites. <span class="reference-link">"LexisNexis Says Data Breach Has Been Contained"</span> - https://www.lawnext.com/2026/03/lexisnexis-confirms-data-breach-reports-say-hackers-claim-access-to-government-and-law-firm-user-data.html</li>
+                        <li>CyberPress. <span class="reference-link">"LexisNexis Data Breach: Threat Actor Claims Theft of 2.04 GB of Data"</span> - https://cyberpress.org/lexisnexis-data-breach/</li>
+                        <li>IDStrong. <span class="reference-link">"LexisNexis AWS Data Breach Exposes 400,000 Cloud User Profiles"</span> - https://www.idstrong.com/sentinel/lexisnexis-data-breach/</li>
+                        <li>Rescana. <span class="reference-link">"LexisNexis AWS Data Breach 2026: React2Shell Exploit Exposes Legacy Data"</span> - https://www.rescana.com/post/lexisnexis-aws-data-breach-2026-react2shell-exploit-exposes-legacy-data-in-cloud-hack</li>
+                    </ol>
+                </section>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Key Facts -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Key Facts</h3>
+                    <div class="sidebar-content">
+                        <div class="key-fact">
+                            <div class="fact-label">Attack Vector</div>
+                            <div class="fact-value">React2Shell RCE</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Threat Actor</div>
+                            <div class="fact-value">FulcrumSec</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Data Exfiltrated</div>
+                            <div class="fact-value">2.04 GB</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Cloud User Profiles</div>
+                            <div class="fact-value">~400,000</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Gov't Accounts Exposed</div>
+                            <div class="fact-value">118 (.gov)</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Secrets Exposed</div>
+                            <div class="fact-value">53 plaintext</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Sector</div>
+                            <div class="fact-value">Legal / Government</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Geographic Impact</div>
+                            <div class="fact-value">Global (US-focused)</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Severity Level</div>
+                            <div class="severity-dots">
+                                <div class="severity-dot filled"></div>
+                                <div class="severity-dot filled"></div>
+                                <div class="severity-dot filled"></div>
+                                <div class="severity-dot filled"></div>
+                                <div class="severity-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MITRE ATT&CK Reference -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">MITRE ATT&CK Tactics</h3>
+                    <div class="sidebar-content">
+                        <a href="../resources/mitre-attack-t1190.html" class="link-button">T1190: Public App Exploit</a>
+                        <a href="../resources/mitre-attack-t1078.html" class="link-button">T1078: Valid Accounts</a>
+                        <a href="../resources/mitre-attack-t1530.html" class="link-button">T1530: Cloud Storage</a>
+                        <a href="../resources/mitre-attack-t1537.html" class="link-button">T1537: Transfer Data</a>
+                        <a href="../resources/mitre-attack-t1552.html" class="link-button">T1552: Unsecured Creds</a>
+                    </div>
+                </div>
+
+                <!-- Threat Actor Info -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Threat Actor Profile</h3>
+                    <div class="sidebar-content">
+                        <div class="key-fact">
+                            <div class="fact-label">Name</div>
+                            <div class="fact-value">FulcrumSec</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Known For</div>
+                            <div class="fact-value">Cloud infrastructure breaches, web app exploitation, secrets theft</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">TTP Specialization</div>
+                            <div class="fact-value">RCE → Cloud Pivot → Data Exfiltration</div>
+                        </div>
+                        <div class="key-fact">
+                            <div class="fact-label">Attribution</div>
+                            <div class="fact-value">High confidence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Incidents -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Related Incidents</h3>
+                    <div class="sidebar-content">
+                        <ul class="sidebar-list">
+                            <li><a href="./okta-auth-bypass-2025.html">Okta Auth Bypass (2025)</a></li>
+                            <li><a href="./circleci-breach-2024.html">CircleCI Secrets Leak (2024)</a></li>
+                            <li><a href="./aws-credentials-s3-2024.html">AWS Creds in S3 Buckets (2024)</a></li>
+                            <li><a href="./uber-cloud-breach-2022.html">Uber Cloud Breach (2022)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Related Reading -->
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Related Reading</h3>
+                    <div class="sidebar-content">
+                        <ul class="sidebar-list">
+                            <li><a href="../resources/react-framework-security.html">React Security Best Practices</a></li>
+                            <li><a href="../resources/aws-secrets-management.html">AWS Secrets Management Guide</a></li>
+                            <li><a href="../resources/iam-privilege-escalation.html">IAM Privilege Escalation</a></li>
+                            <li><a href="../resources/cloud-data-exfiltration.html">Cloud Data Exfiltration Patterns</a></li>
+                            <li><a href="../resources/government-sector-threats.html">Threats to Government Sector</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div id="site-footer"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/site-chrome.js"></script>
+    <script src="../assets/universal-search.js"></script>
+    <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

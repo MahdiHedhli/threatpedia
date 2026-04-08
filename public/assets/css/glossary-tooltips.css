@@ -1,0 +1,92 @@
+/* Threatpedia Glossary Tooltip Styles */
+
+.glossary-tooltip-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1.5px dotted var(--amber, #e8a020);
+  cursor: help;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.glossary-tooltip-link:hover,
+.glossary-tooltip-link:focus {
+  color: var(--amber, #e8a020);
+  border-bottom-color: var(--amber, #e8a020);
+  border-bottom-style: solid;
+  outline: none;
+}
+
+.glossary-tooltip {
+  position: absolute;
+  z-index: 9999;
+  max-width: 380px;
+  min-width: 260px;
+  padding: 16px;
+  background: var(--surface, #0d1117);
+  border: 1px solid var(--border, #1e2733);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,160,32,0.08);
+  pointer-events: auto;
+  font-family: 'IBM Plex Sans', sans-serif;
+  line-height: 1.5;
+}
+.glossary-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: var(--surface, #0d1117);
+  border-left: 1px solid var(--border, #1e2733);
+  border-top: 1px solid var(--border, #1e2733);
+}
+
+.glossary-tooltip-term {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--amber, #e8a020);
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+.glossary-tooltip-def {
+  font-size: 13px;
+  color: var(--text, #cdd5e0);
+  margin-bottom: 10px;
+  line-height: 1.55;
+}
+.glossary-tooltip-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.glossary-tooltip-role {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(232,160,32,0.1);
+  color: var(--amber-dim, #a06a10);
+  border: 1px solid rgba(232,160,32,0.15);
+  white-space: nowrap;
+}
+.glossary-tooltip-footer {
+  border-top: 1px solid var(--border, #1e2733);
+  padding-top: 8px;
+}
+.glossary-tooltip-goto {
+  font-size: 12px;
+  color: var(--amber, #e8a020);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+.glossary-tooltip-goto:hover {
+  opacity: 1;
+  text-decoration: underline;
+}

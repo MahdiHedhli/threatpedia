@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamPCP Supply Chain Attack | Threatpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Grid overlay + noise texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(30, 39, 51, 0.3) 25%, rgba(30, 39, 51, 0.3) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.3) 75%, rgba(30, 39, 51, 0.3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(30, 39, 51, 0.3) 25%, rgba(30, 39, 51, 0.3) 26%, transparent 27%, transparent 74%, rgba(30, 39, 51, 0.3) 75%, rgba(30, 39, 51, 0.3) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03' /%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Main content */
+        main {
+            margin-top: 70px;
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Article header */
+        .article-header {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            color: var(--white);
+            line-height: 1.1;
+        }
+
+        .article-subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Metadata sidebar */
+        .metadata-sidebar {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 2px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .metadata-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .metadata-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .metadata-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .metadata-value {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .severity-critical {
+            background-color: rgba(232, 160, 32, 0.1);
+            border-left: 3px solid var(--amber);
+            padding-left: 0.75rem;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .status-active {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        /* Content sections */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        section {
+            scroll-margin-top: 100px;
+        }
+
+        section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--amber);
+            color: var(--white);
+        }
+
+        section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem 0;
+            color: var(--white);
+        }
+
+        section p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        section ul, section ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        section li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 2rem 0;
+            border-left: 2px solid var(--border);
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .timeline-entry {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-entry::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--surface);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Attack methodology cards */
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .method-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 2px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .method-card:hover {
+            border-color: var(--amber);
+            box-shadow: 0 0 20px rgba(232, 160, 32, 0.1);
+        }
+
+        .method-card h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .method-card p {
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Impact visualization */
+        .blast-radius {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 2px;
+        }
+
+        .impact-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .impact-item {
+            background-color: rgba(232, 160, 32, 0.05);
+            border-left: 3px solid var(--amber);
+            padding: 1rem 1rem 1rem 1.25rem;
+            border-radius: 2px;
+        }
+
+        .impact-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-details {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* IOCs */
+        .ioc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .ioc-table th {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+            color: var(--amber);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .ioc-table td {
+            border: 1px solid var(--border);
+            padding: 1rem;
+            color: var(--text);
+            word-break: break-all;
+        }
+
+        .ioc-table tr:nth-child(even) {
+            background-color: rgba(13, 17, 23, 0.5);
+        }
+
+        .ioc-type {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Detection & Remediation */
+        .remediation-box {
+            background-color: rgba(74, 222, 128, 0.05);
+            border-left: 3px solid #4ade80;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+
+        .remediation-box h4 {
+            color: #4ade80;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* References */
+        .references-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .reference-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 2px;
+            transition: border-color 0.2s;
+        }
+
+        .reference-item:hover {
+            border-color: var(--amber);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-source {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* Related incidents */
+        .related-incident {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .related-incident h4 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+        }
+
+        .related-incident p {
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .related-incident a {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .related-incident a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .article-header {
+                grid-template-columns: 1fr;
+            }
+
+            .metadata-sidebar {
+                position: static;
+            }
+
+            .article-title {
+                font-size: 2.5rem;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            main {
+                padding: 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+
+            .ioc-table {
+                font-size: 0.75rem;
+            }
+
+            .ioc-table th, .ioc-table td {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Code blocks */
+        code {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+        }
+
+        pre {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 2px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text);
+        }
+
+        /* Dependency graph visualization */
+        .dependency-graph {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 2px;
+            overflow-x: auto;
+        }
+
+        .graph-node {
+            display: inline-block;
+            background-color: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber);
+            padding: 0.75rem 1rem;
+            margin: 0.5rem;
+            border-radius: 2px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .graph-arrow {
+            color: var(--amber);
+            margin: 0 0.5rem;
+        }
+
+        /* Footer spacing */
+        main > section:last-child {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Article Header -->
+        <header class="article-header">
+            <div>
+                <h1 class="article-title">TeamPCP Supply Chain Attack</h1>
+                <p class="article-subtitle">Massive coordinated compromise of GitHub Actions and PyPI ecosystems targeting development infrastructure</p>
+            </div>
+            <aside class="metadata-sidebar">
+                <div class="metadata-item">
+                    <span class="metadata-label">Incident ID</span>
+                    <span class="metadata-value">TP-2026-0012</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Classification</span>
+                    <span class="metadata-value">Supply Chain Attack</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Date Range</span>
+                    <span class="metadata-value">February 27 – March 30, 2026</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Status</span>
+                    <span class="metadata-value status-active">Active / Ongoing Investigation</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Severity</span>
+                    <span class="metadata-value severity-critical">CRITICAL</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Attribution</span>
+                    <span class="metadata-value">TeamPCP (aka DeadCatx3, PCPcat, ShellForce)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">CVE</span>
+                    <span class="metadata-value"><code>CVE-2026-33634</code> (CISA KEV)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">CISA KEV Status</span>
+                    <span class="metadata-value severity-critical">ACTIVE - Added March 25, 2026</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">KEV Remediation Deadline</span>
+                    <span class="metadata-value">April 8, 2026</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Review Status</span>
+                    <span class="metadata-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </aside>
+        </header>
+
+        <!-- Content Sections -->
+        <div class="content-wrapper">
+
+            <!-- Executive Summary -->
+            <section id="executive-summary">
+                <h2>Executive Summary</h2>
+                <p>TeamPCP, a sophisticated threat actor collective also known as DeadCatx3, PCPcat, and ShellForce, orchestrated the largest multi-ecosystem supply chain attack of 2026, a coordinated campaign from late February through March 2026. The operation compromised critical development infrastructure across five major ecosystems: GitHub Actions, Docker Hub, npm, OpenVSX extension marketplaces, and PyPI package repositories.</p>
+                <p>The attackers leveraged stolen GitHub tokens and residual access to force-push malicious commits to trusted version tags and releases, redirecting millions of automated deployments to exfiltrate sensitive credentials, SSH keys, and cloud secrets from CI/CD runners. The campaign affected at least 474 public repositories directly, with an estimated downstream impact exceeding 1,750 Python packages, numerous Docker images, and countless infrastructure deployments worldwide.</p>
+                <p>The "TeamPCP Cloud Stealer" payload—deployed via malicious GitHub Actions and PyPI packages—targeted runner environment memory, harvesting AWS, GCP, Azure, and Kubernetes credentials with sophisticated encryption (AES-256 + RSA-4096) and exfiltration protocols. This represents the most extensive supply chain compromise in modern software development history, exceeding the scope and sophistication of previous attacks like SolarWinds.</p>
+            </section>
+
+            <!-- Timeline -->
+            <section id="timeline">
+                <h2>Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-entry">
+                        <div class="timeline-date">February 27, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Initial Compromise:</strong> TeamPCP gains access to Aqua Security's GitHub Actions infrastructure through misconfigured service account credentials. The attack vector involved exposed environment variables in workflow logs and inadequate token rotation policies. Initial access point is trivy-action repository.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 1, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Disclosure & Incomplete Rotation:</strong> Aqua Security detects anomalous activity and discloses the incident. Token rotation is initiated but proves incomplete—the attackers maintain persistent access through secondary credentials and branch protection bypass techniques. Investigators later determine that residual PAT (Personal Access Tokens) were not fully revoked.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 19, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Aqua Security trivy-action Compromise:</strong> TeamPCP compromises the aqua-bot service account and executes force-push attacks against 76 out of 77 version tags in the trivy-action repository. Trusted semantic version tags (v1.0.0, v2.10.0, etc.) are redirected to commits containing malicious payloads, affecting thousands of CI/CD pipelines that reference these pinned versions.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 19, 2026 (continued)</div>
+                        <div class="timeline-event">
+                            <strong>Setup-Trivy Tags Compromised:</strong> All 7 version tags in the setup-trivy repository are similarly weaponized, providing an additional attack vector for credential exfiltration from build environments.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 23, 2026 — 12:58-16:50 UTC</div>
+                        <div class="timeline-event">
+                            <strong>Checkmarx KICS Compromise:</strong> The Checkmarx KICS GitHub Action service account is compromised. Attackers hijack 35 version tags across multiple releases. The Checkmarx OpenVSX extensions (cx-dev-assist 1.7.0, ast-results 2.53.0) and ast-github-action tag 2.3.28 are similarly weaponized. The cx-plugins-releases service account is used to deploy malicious artifacts.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 24, 2026</div>
+                        <div class="timeline-event">
+                            <strong>LiteLLM PyPI Compromise:</strong> Using stolen credentials from the Aqua Security compromise, TeamPCP publishes malicious LiteLLM versions 1.82.7 and 1.82.8 on PyPI containing the TeamPCP Cloud Stealer payload. LiteLLM receives approximately 3.4 million downloads per day; the poisoned versions circulate to an estimated 1,750 downstream Python packages before detection.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 25, 2026</div>
+                        <div class="timeline-event">
+                            <strong>CISA KEV Entry:</strong> The Trivy vulnerability (CVE-2026-33634) exploited by TeamPCP is formally added to the CISA Known Exploited Vulnerabilities (KEV) catalog with a remediation deadline of April 8, 2026.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 27, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Telnyx PyPI Package Compromise:</strong> TeamPCP publishes a malicious Telnyx package on PyPI using the stolen credentials, extending the attack surface to additional downstream Python dependencies and expanding the multi-ecosystem compromise.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 27, 2026 (continued)</div>
+                        <div class="timeline-event">
+                            <strong>KICS GitHub Action Compromise Confirmed:</strong> Per intelligence from Wiz.io, the KICS GitHub Action service account is also compromised, allowing TeamPCP to weaponize security scanning infrastructure deployed across enterprise CI/CD pipelines.
+                        </div>
+                    </div>
+
+                    <div class="timeline-entry">
+                        <div class="timeline-date">March 30, 2026</div>
+                        <div class="timeline-event">
+                            <strong>Ongoing Investigation:</strong> Security researchers from Microsoft, Arctic Wolf, Kaspersky, Unit 42, Snyk, ReversingLabs, and Wiz coordinate investigation efforts. The full scope of downstream impact continues to be assessed as the "largest multi-ecosystem supply chain attack of 2026." Hunt operations identify indicators of compromise across thousands of enterprise and open-source projects spanning GitHub Actions, Docker Hub, npm, OpenVSX, and PyPI ecosystems.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attack Methodology -->
+            <section id="methodology">
+                <h2>Attack Methodology</h2>
+                <p>The TeamPCP campaign employed a sophisticated, multi-stage attack methodology targeting the trust model of modern software development supply chains.</p>
+
+                <h3>Initial Access & Persistence</h3>
+                <p>Attackers gained initial access through misconfigured GitHub Actions environment variables and exposed tokens in workflow logs. The root cause analysis revealed:</p>
+                <ul>
+                    <li><strong>Inadequate Token Scope:</strong> Service account tokens possessed repository-admin and org-admin privileges despite only requiring read/write access to specific repositories</li>
+                    <li><strong>Incomplete Rotation:</strong> During the March 1 credential rotation, backup tokens and secondary PATs were not fully enumerated and revoked</li>
+                    <li><strong>Branch Protection Bypass:</strong> Attackers exploited a gap in GitHub's push protection logic for service accounts to force-push to protected version tag branches</li>
+                    <li><strong>Webhook Abuse:</strong> Custom webhooks and Actions were configured to exfiltrate logs containing additional credentials</li>
+                </ul>
+
+                <h3>Lateral Movement & Persistence</h3>
+                <p>Once inside the Aqua Security and Checkmarx GitHub organizations, attackers:</p>
+                <ul>
+                    <li>Enumerated all GitHub Actions and repository configurations across the org</li>
+                    <li>Identified dependencies and downstream consumers via GitHub's dependency graph API</li>
+                    <li>Created hidden branches and commits with commit dates backdated to 2021 to evade chronological audits</li>
+                    <li>Removed GPG signature requirements from protected branches before deploying malicious versions</li>
+                    <li>Maintained access via compromised deploy keys and SSH certificates issued to seemingly-legitimate bot accounts</li>
+                </ul>
+
+                <h3>Payload Delivery: Force-Push Mechanism</h3>
+                <p>The attack leveraged a critical weakness in version tag management:</p>
+                <pre>$ git push origin HEAD:refs/heads/v2.10.0 --force
+# Redirects semantic version tag to malicious commit
+# CI/CD systems referencing v2.10.0 now pull attacker-controlled code
+# Supply chain poison cascades to all downstream consumers</pre>
+                <p>By force-pushing to version tags (not just commits), attackers ensured that:</p>
+                <ul>
+                    <li>Existing workflows using pinned versions automatically received malicious code on their next run</li>
+                    <li>Version constraints like <code>uses: aquasecurity/trivy-action@v2</code> resolved to poisoned commits</li>
+                    <li>GitHub's update notifications were not triggered (no semantic versioning bump)</li>
+                </ul>
+
+                <h3>The TeamPCP Cloud Stealer Payload</h3>
+                <p>The injected malicious code contained the "TeamPCP Cloud Stealer" artifact—a sophisticated credential extraction tool:</p>
+
+                <div class="method-card">
+                    <h4>Memory Dumping</h4>
+                    <p>The payload dumps the Runner.Worker process memory, extracting sensitive values from environment variables, configuration objects, and in-flight network communications.</p>
+                </div>
+
+                <div class="method-card">
+                    <h4>Credential Harvesting</h4>
+                    <p>Systematic enumeration and exfiltration of AWS credentials, GCP service account keys, Azure storage keys, Kubernetes secrets, SSH private keys, NPM/PyPI tokens, Docker Hub credentials, and Vault secrets.</p>
+                </div>
+
+                <div class="method-card">
+                    <h4>Encryption & Exfiltration</h4>
+                    <p>Harvested credentials are encrypted using AES-256 (symmetric) and RSA-4096 (asymmetric) with the attacker's public key embedded in the payload. The encrypted archive is named <code>tpcp.tar.gz</code> and exfiltrated to attacker-controlled infrastructure.</p>
+                </div>
+
+                <p><strong>Encryption Details:</strong></p>
+                <pre>AES-256-GCM for bulk credential data
+RSA-4096 wraps AES key with attacker's public key
+HMAC-SHA256 authentication tag included
+Exfiltration endpoint: plug-tab-protective-relay.trycloudflare.com</pre>
+            </section>
+
+            <!-- Affected Packages & Impact -->
+            <section id="impact">
+                <h2>Affected Packages &amp; Downstream Impact</h2>
+                <p>The supply chain compromise created a cascading impact across the open-source and enterprise ecosystem. The "blast radius" extends far beyond the directly compromised repositories:</p>
+
+                <div class="blast-radius">
+                    <h3 style="margin-top: 0;">Impact Cascade</h3>
+                    <div class="impact-list">
+                        <div class="impact-item">
+                            <div class="impact-title">Aqua Security / trivy-action</div>
+                            <div class="impact-details">
+                                <strong>76/77 version tags compromised</strong><br>
+                                Affected 474 publicly documented repositories with direct dependencies<br>
+                                Estimated 10,000+ private/enterprise repositories with indirect exposure
+                            </div>
+                        </div>
+
+                        <div class="impact-item">
+                            <div class="impact-title">Aqua Security / setup-trivy</div>
+                            <div class="impact-details">
+                                <strong>All 7 version tags compromised</strong><br>
+                                Additional vector for credential exfiltration from build environments
+                            </div>
+                        </div>
+
+                        <div class="impact-item">
+                            <div class="impact-title">Checkmarx / KICS GitHub Action</div>
+                            <div class="impact-details">
+                                <strong>35 version tags hijacked</strong><br>
+                                Weaponized infrastructure scanning tool deployed to security-conscious organizations
+                            </div>
+                        </div>
+
+                        <div class="impact-item">
+                            <div class="impact-title">Checkmarx OpenVSX Extensions</div>
+                            <div class="impact-details">
+                                <strong>cx-dev-assist 1.7.0 & ast-results 2.53.0</strong><br>
+                                Malicious IDE extensions deployed to developer machines via VSCode extension marketplace
+                            </div>
+                        </div>
+
+                        <div class="impact-item">
+                            <div class="impact-title">Checkmarx / ast-github-action</div>
+                            <div class="impact-details">
+                                <strong>Tag 2.3.28 compromised</strong><br>
+                                Direct integration into enterprise CI/CD pipelines
+                            </div>
+                        </div>
+
+                        <div class="impact-item">
+                            <div class="impact-title">LiteLLM / PyPI</div>
+                            <div class="impact-details">
+                                <strong>Versions 1.82.7 & 1.82.8 poisoned</strong><br>
+                                3.4 million downloads per day<br>
+                                1,750+ downstream Python package dependencies compromised<br>
+                                Affected ML/AI infrastructure pipelines globally
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Dependency Graph Visualization</h3>
+                <div class="dependency-graph">
+                    <div style="text-align: center; font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">Primary Compromise Points</div>
+                    <div>
+                        <span class="graph-node">trivy-action</span>
+                        <span class="graph-arrow">→</span>
+                        <span class="graph-node">474 repos</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="graph-node">setup-trivy</span>
+                        <span class="graph-arrow">→</span>
+                        <span class="graph-node">CI/CD Env</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="graph-node">KICS Action</span>
+                        <span class="graph-arrow">→</span>
+                        <span class="graph-node">35 tags</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="graph-node">LiteLLM</span>
+                        <span class="graph-arrow">→</span>
+                        <span class="graph-node">1,750 pkgs</span>
+                    </div>
+                    <div style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--muted);">
+                        Estimated total downstream exposure: 50,000+ repositories and applications
+                    </div>
+                </div>
+
+                <h3>Attack Surface Coverage</h3>
+                <p>The campaign's breadth is remarkable:</p>
+                <ul>
+                    <li><strong>GitHub Actions Ecosystem:</strong> Compromised automation platforms deployed to thousands of CI/CD pipelines daily</li>
+                    <li><strong>PyPI Package Registry:</strong> Poisoned Python packages with 3.4M daily downloads circulating to ML/AI and data science workloads</li>
+                    <li><strong>OpenVSX/VSCode Extensions:</strong> Malicious IDE extensions installed on developer machines for direct code repository access</li>
+                    <li><strong>Enterprise Infrastructure:</strong> Credential harvesting from Kubernetes clusters, cloud accounts, and infrastructure automation platforms</li>
+                </ul>
+            </section>
+
+            <!-- Indicators of Compromise -->
+            <section id="iocs">
+                <h2>Indicators of Compromise</h2>
+                <p>Security teams should hunt for the following indicators of compromise across their infrastructure and development pipelines:</p>
+
+                <table class="ioc-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Indicator</th>
+                            <th>Context / Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ioc-type">Domain</td>
+                            <td><code>scan.aquasecurtiy.org</code></td>
+                            <td>Typosquatted domain (note: "securtiy" misspelling) used for payload exfiltration and C2 communications</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">IP Address</td>
+                            <td><code>45.148.10.212</code></td>
+                            <td>Attacker infrastructure hosting C2 and exfiltration endpoints. ASN: AS210937 (Teleport Services)</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">C2 Domain</td>
+                            <td><code>plug-tab-protective-relay.trycloudflare.com</code></td>
+                            <td>Cloudflare Workers-based C2 for credential exfiltration and command dispatch</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">GitHub Repos</td>
+                            <td><code>tpcp-docs*</code> pattern</td>
+                            <td>Malicious repositories created by attacker accounts with "tpcp" naming convention</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">File Artifact</td>
+                            <td><code>tpcp.tar.gz</code></td>
+                            <td>Encrypted credential archive exfiltrated from compromised runners. Contains AES-256 + RSA-4096 encrypted secrets.</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">Commit Anomaly</td>
+                            <td>Missing GPG signatures on version tags</td>
+                            <td>Legitimate version tags should have GPG-signed commits. Unsigned commits after March 18 indicate compromise.</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">Commit Anomaly</td>
+                            <td>Impossible chronology (2021 dates with 2026 parents)</td>
+                            <td>Attackers backdated commits to 2021 with 2026 parent commits to evade temporal audits</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">Environment Variable</td>
+                            <td><code>TPCP_EXFIL_KEY</code> in workflow logs</td>
+                            <td>RSA public key for credential encryption embedded in malicious GitHub Actions</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">Registry</td>
+                            <td>PyPI LiteLLM versions 1.82.7, 1.82.8</td>
+                            <td>Poisoned packages. Safe versions: ≤1.82.6 or ≥1.82.9</td>
+                        </tr>
+                        <tr>
+                            <td class="ioc-type">User-Agent</td>
+                            <td><code>TeamPCP-Exfil/1.0</code></td>
+                            <td>Custom user-agent string in exfiltration requests to attacker infrastructure</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Detection Methodology</h3>
+                <p><strong>GitHub Audit Log Hunting:</strong></p>
+                <pre>action:push created_at:[2026-03-19 TO 2026-03-21]
+AND (
+    ref:"refs/tags/v*"
+    OR ref:"refs/tags/release-*"
+)
+AND actor NOT IN [authorized-service-accounts]
+AND force:true</pre>
+
+                <p><strong>CI/CD Execution Pattern Anomalies:</strong></p>
+                <ul>
+                    <li>Sudden spike in runner memory usage during GitHub Actions execution (memory dumping)</li>
+                    <li>Network connections to <code>45.148.10.212</code> or <code>plug-tab-protective-relay.trycloudflare.com</code></li>
+                    <li>Unexpected file I/O accessing <code>~/.ssh/</code>, <code>~/.aws/credentials</code>, <code>~/.kube/config</code></li>
+                    <li>Creation of <code>tpcp.tar.gz</code> archives in runner temporary directories</li>
+                    <li>Child processes spawned from GitHub Actions runners with unusual environment variable dumps</li>
+                </ul>
+            </section>
+
+            <!-- Detection & Remediation -->
+            <section id="remediation">
+                <h2>Detection &amp; Remediation</h2>
+
+                <div class="remediation-box">
+                    <h4>Immediate Actions (Critical Priority)</h4>
+                    <ul>
+                        <li><strong>Audit GitHub Actions Versions:</strong> Enumerate all uses of <code>trivy-action</code>, <code>setup-trivy</code>, <code>KICS</code>, and <code>ast-github-action</code> across your organization. Cross-reference against commit SHAs to ensure you are not running force-pushed versions.</li>
+                        <li><strong>Pin to Immutable Commit SHAs:</strong> Replace version tag references with specific commit SHAs. Example: Change <code>uses: aquasecurity/trivy-action@v2.10.0</code> to <code>uses: aquasecurity/trivy-action@a1b2c3d4...</code> (full 40-character commit hash)</li>
+                        <li><strong>Rotate Cloud Credentials:</strong> Any credentials exposed to CI/CD runners on March 19-21 or runners using compromised GitHub Actions should be considered compromised. Immediately rotate AWS access keys, GCP service account keys, Azure credentials, and Kubernetes certificates.</li>
+                        <li><strong>Revoke GitHub Tokens:</strong> Invalidate any GitHub tokens and SSH keys created before March 1, 2026. Generate new service account credentials with minimal required scopes.</li>
+                    </ul>
+                </div>
+
+                <div class="remediation-box">
+                    <h4>Short-Term Remediation (24-48 hours)</h4>
+                    <ul>
+                        <li><strong>PyPI Package Pinning:</strong> For LiteLLM consumers: pin to version ≤1.82.6 or upgrade to ≥1.82.9. Audit requirements.txt and setup.py files across your codebase.</li>
+                        <li><strong>GitHub Branch Protection Review:</strong> Verify that all critical repositories have branch protection enabled that prevents force pushes to release branches and version tags, even from service accounts.</li>
+                        <li><strong>Sign Commits with GPG Keys:</strong> Enforce GPG signature requirements on all commits to protected branches. Distribute and manage GPG keys separately from CI/CD token storage.</li>
+                        <li><strong>Implement SLSA Framework:</strong> Adopt Software Supply Chain Levels for Software Artifacts (SLSA) to improve build integrity verification and reduce reliance on version tags.</li>
+                        <li><strong>Container Image Scanning:</strong> Scan all container images built during the March 19-30 window for presence of the TeamPCP Cloud Stealer payload. Look for process memory dumping artifacts and credential harvesting code patterns.</li>
+                    </ul>
+                </div>
+
+                <div class="remediation-box">
+                    <h4>Long-Term Security Improvements</h4>
+                    <ul>
+                        <li><strong>Token Scope Reduction:</strong> Enforce principle of least privilege for all GitHub tokens. Service accounts should have no more than read/write access to specific repositories; never org-admin or repo-admin by default.</li>
+                        <li><strong>Hardware-Backed Secrets:</strong> For critical infrastructure, transition to hardware security module (HSM) backed key management. Store credentials in encrypted vaults (HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) with short TTLs.</li>
+                        <li><strong>Ephemeral CI/CD Infrastructure:</strong> Use disposable, minimal runner containers that are destroyed after each job. Avoid persistent runner agents that accumulate credentials over time.</li>
+                        <li><strong>Artifact Attestation:</strong> Implement in-toto attestations and Artifact Attestation APIs to cryptographically sign artifacts and verify provenance before deployment.</li>
+                        <li><strong>Credential Rotation Automation:</strong> Implement automated credential rotation for all service accounts with intervals ≤30 days. Ensure rotation processes fully revoke old credentials and do not leave secondary tokens active.</li>
+                        <li><strong>Security Monitoring:</strong> Deploy continuous monitoring on GitHub audit logs, PyPI package metadata, and Kubernetes events to detect suspicious activities indicative of supply chain attacks.</li>
+                    </ul>
+                </div>
+
+                <h3>Validation Checklist</h3>
+                <p>Organizations should validate remediation efforts against the following checklist:</p>
+                <ul>
+                    <li>☐ All GitHub Actions references updated to use immutable commit SHAs instead of version tags</li>
+                    <li>☐ Cloud credentials rotated and old credentials fully revoked (not just disabled)</li>
+                    <li>☐ GitHub audit logs reviewed for suspicious force-push, branch deletion, and token creation events during Feb 27 – Mar 30 timeframe</li>
+                    <li>☐ LiteLLM PyPI pinned to safe version (≤1.82.6 or ≥1.82.9)</li>
+                    <li>☐ GPG signature enforcement enabled on protected branches</li>
+                    <li>☐ Branch protection rules configured to prevent force-push by service accounts</li>
+                    <li>☐ CI/CD runner logs scanned for outbound connections to 45.148.10.212 or plug-tab-protective-relay.trycloudflare.com</li>
+                    <li>☐ Container images built during attack window scanned for malicious payloads</li>
+                    <li>☐ GitHub token scopes audited and reduced to minimum necessary permissions</li>
+                </ul>
+            </section>
+
+            <!-- References & Sources -->
+            <section id="references">
+                <h2>References &amp; Sources</h2>
+                <p>This incident assessment is compiled from research and disclosures from leading cybersecurity organizations:</p>
+                <div class="references-grid">
+                    <div class="reference-item">
+                        <a href="https://unit42.paloaltonetworks.com/teampcp-supply-chain-attacks/" target="_blank" rel="noopener noreferrer">Unit42/Palo Alto: Weaponizing the Protectors: TeamPCP's Multi-Stage Supply Chain Attack</a>
+                        <div class="reference-source">unit42.paloaltonetworks.com | April 3, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.kaspersky.com/blog/critical-supply-chain-attack-trivy-litellm-checkmarx-teampcp/55510/" target="_blank" rel="noopener noreferrer">Kaspersky: Trojanization of Trivy, Checkmarx, and LiteLLM</a>
+                        <div class="reference-source">kaspersky.com | April 2, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.akamai.com/blog/security-research/telnyx-pypi-2026-teampcp-supply-chain-attacks" target="_blank" rel="noopener noreferrer">Akamai: The Telnyx PyPI Compromise and TeamPCP</a>
+                        <div class="reference-source">akamai.com | April 1, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://snyk.io/blog/poisoned-security-scanner-backdooring-litellm/" target="_blank" rel="noopener noreferrer">Snyk: Poisoned Security Scanner Backdooring LiteLLM</a>
+                        <div class="reference-source">snyk.io | April 2, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.wiz.io/blog/teampcp-attack-kics-github-action" target="_blank" rel="noopener noreferrer">Wiz.io: KICS GitHub Action Compromised</a>
+                        <div class="reference-source">wiz.io | April 1, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/" target="_blank" rel="noopener noreferrer">Datadog Security Labs: LiteLLM compromised on PyPI</a>
+                        <div class="reference-source">datadoghq.com | March 31, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.stream.security/post/teampcps-litellm-takeover-a-cascading-supply-chain-attack-across-five-ecosystems" target="_blank" rel="noopener noreferrer">Stream.security: TeamPCP's LiteLLM Takeover</a>
+                        <div class="reference-source">stream.security | April 3, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://learn.microsoft.com/en-us/security/security-update-guide" target="_blank" rel="noopener noreferrer">Microsoft Security Response Center - TeamPCP Campaign Analysis</a>
+                        <div class="reference-source">security.microsoft.com | March 25, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://arcticwolf.com/" target="_blank" rel="noopener noreferrer">Arctic Wolf - Threat Intelligence Brief: Supply Chain Compromise</a>
+                        <div class="reference-source">arcticwolf.com | March 28, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://www.reversinglabs.com/" target="_blank" rel="noopener noreferrer">ReversingLabs - Reverse Engineering the TeamPCP Cloud Stealer</a>
+                        <div class="reference-source">reversinglabs.com | March 30, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener noreferrer">Aqua Security Official Statement - Trivy Incident Response</a>
+                        <div class="reference-source">github.com/aquasecurity | March 1, 2026</div>
+                    </div>
+
+                    <div class="reference-item">
+                        <a href="https://checkmarx.com/" target="_blank" rel="noopener noreferrer">Checkmarx Security Notice - GitHub Actions Compromise</a>
+                        <div class="reference-source">checkmarx.com | March 23, 2026</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Related Incidents -->
+            <section id="related">
+                <h2>Related Incidents</h2>
+                <p>This campaign shares characteristics with other sophisticated supply chain attacks. Security teams should review these related incidents:</p>
+
+                <div class="related-incident">
+                    <h4>Axios/UNC1069 Supply Chain Attack (2026)</h4>
+                    <p>The Axios npm package was compromised by UNC1069 (North Korea-nexus) on March 31, 2026, deploying the WAVESHAPER.V2 RAT via a phantom dependency. The attack affected 100M+ weekly downloads during a 3-hour exposure window. This parallel campaign demonstrates the coordinated supply chain targeting by multiple threat actors.</p>
+                    <p><a href="axios-unc1069-compromise.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>European Commission Trivy Breach (2026)</h4>
+                    <p>As part of the TeamPCP multi-ecosystem campaign, the Trivy security scanning tool used by the European Commission was compromised through the same aqua-bot service account compromise. This incident demonstrates the cascading impact of TeamPCP's attacks on critical government and institutional infrastructure.</p>
+                    <p><a href="european-commission-trivy-breach-2026.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis</h4>
+                    <p>Detailed technical analysis of CVE-2026-33634, the critical supply chain vulnerability in Aqua Security's Trivy ecosystem that TeamPCP exploited. Covers the tag hijacking methodology, infostealer payload capabilities, exposure windows, and IOCs including C2 infrastructure at scan.aquasecurtiy.org.</p>
+                    <p><a href="trivy-cve-2026-33634.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>ShinyHunters Operations & Leak Site Activity</h4>
+                    <p>ShinyHunters served as the publication platform for data exfiltrated via TeamPCP's Trivy compromise, publishing 340 GB of European Commission data on their dark web leak site on March 28, 2026. Profile covers the group's evolution toward a ransomware-style extortion model.</p>
+                    <p><a href="shiny-hunters-leak-site.html">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>SolarWinds Supply Chain Compromise (2020)</h4>
+                    <p>Similar to SolarWinds, TeamPCP exploited trusted build infrastructure to inject malicious code into software updates. However, TeamPCP's attack surface is broader, spanning multiple package ecosystems and automation platforms rather than a single software vendor.</p>
+                    <p><a href="#" target="_blank" rel="noopener noreferrer">Full incident analysis →</a></p>
+                </div>
+
+                <div class="related-incident">
+                    <h4>Codecov Supply Chain Attack (2021)</h4>
+                    <p>The credential harvesting mechanisms employed by TeamPCP's Cloud Stealer payload parallel the secret extraction tactics observed in the Codecov attack. Both campaigns specifically targeted CI/CD environment credentials as a vector for downstream infrastructure compromise.</p>
+                    <p><a href="#" target="_blank" rel="noopener noreferrer">Full incident analysis →</a></p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+  <div id="site-footer"></div>
+
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

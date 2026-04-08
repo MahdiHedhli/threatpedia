@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Incident Reports — Threatpedia</title>
+  <meta name="description" content="Comprehensive archive of cyber security incidents, breaches, and attack campaigns. Searchable database with threat actor profiles, attack vectors, and impact analysis." />
+  <meta name="theme-color" content="#080b10" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Incident Reports — Threatpedia" />
+  <meta property="og:description" content="Comprehensive archive of cyber security incidents, breaches, and attack campaigns." />
+  <meta property="og:url" content="https://threatpedia.wiki/incidents/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../tp-favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../tp-favicon-180.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ─────────────────────────────────────────────────────────── */
+    :root {
+      --bg:        #080b10;
+      --surface:   #0d1117;
+      --border:    #1e2733;
+      --amber:     #e8a020;
+      --amber-dim: #a06a10;
+      --text:      #cdd5e0;
+      --muted:     #5a6a7e;
+      --white:     #f0f4f8;
+      --red:       #dc2626;
+      --orange:    #f97316;
+      --yellow:    #eab308;
+    }
+
+    /* ── Reset ─────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid overlay ──────────────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Noise texture ─────────────────────────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Main content ──────────────────────────────────────────────────────── */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Hero ──────────────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 48px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    .hero-desc strong { color: var(--white); font-weight: 500; }
+
+    /* ── Stats bar ─────────────────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      max-width: 1000px;
+      margin-bottom: 60px;
+      gap: 0;
+    }
+
+    .stat {
+      flex: 1;
+      min-width: 180px;
+      padding: 24px 28px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 900;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── Filters section ───────────────────────────────────────────────────── */
+    .filters-section {
+      padding: 0 48px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filters-header {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--amber-dim);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-box::placeholder { color: var(--muted); }
+    .search-box:focus { border-color: var(--amber); box-shadow: 0 0 0 2px rgba(232,160,32,0.1); }
+
+    .sort-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.88rem;
+      padding: 10px 12px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .sort-select:focus { border-color: var(--amber); }
+    .sort-select option { background: var(--surface); color: var(--text); }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip:hover { border-color: var(--amber); color: var(--amber); }
+    .chip.active {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--bg);
+    }
+
+    /* ── Incidents grid ────────────────────────────────────────────────────── */
+    .incidents-container {
+      padding: 60px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .incidents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 1100px) {
+      .incidents-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .incidents-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 120px 24px 50px;
+      }
+
+      .filters-section {
+        padding: 0 24px 40px;
+      }
+
+      .incidents-container {
+        padding: 50px 24px;
+      }
+
+      .sort-select {
+        min-width: 100%;
+      }
+    }
+
+    .incident-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .incident-card:hover {
+      border-color: var(--amber);
+      box-shadow: 0 8px 24px rgba(232,160,32,0.08);
+    }
+
+    .incident-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .incident-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.3;
+      flex: 1;
+      margin-bottom: 8px;
+    }
+
+    .incident-title a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .incident-card:hover .incident-title a {
+      color: var(--amber);
+    }
+
+    .severity-badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .severity-critical {
+      background: rgba(220, 38, 38, 0.15);
+      color: #ff6b6b;
+      border: 1px solid rgba(220, 38, 38, 0.3);
+    }
+
+    .severity-high {
+      background: rgba(249, 115, 22, 0.15);
+      color: #ff9850;
+      border: 1px solid rgba(249, 115, 22, 0.3);
+    }
+
+    .severity-medium {
+      background: rgba(234, 179, 8, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
+    .incident-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      align-items: center;
+    }
+
+    .incident-date {
+      color: var(--amber);
+    }
+
+    .incident-org {
+      color: var(--text);
+    }
+
+    .incident-type {
+      display: inline-block;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+    }
+
+    .incident-actor {
+      color: var(--text);
+    }
+
+    .incident-excerpt {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .incident-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(232, 160, 32, 0.08);
+      color: var(--amber);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border: 1px solid rgba(232, 160, 32, 0.2);
+      border-radius: 2px;
+    }
+
+    .tag:hover {
+      background: rgba(232, 160, 32, 0.15);
+      border-color: var(--amber);
+      cursor: pointer;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 48px;
+      color: var(--muted);
+    }
+
+    .no-results-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    footer p { margin: 8px 0; }
+  </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+<!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-eyebrow">Incident Reports</div>
+      <h1 class="hero-title">Security Incidents</h1>
+      <p class="hero-desc">
+        A comprehensive archive of cyber security incidents, breaches, and attack campaigns. Each incident is documented with threat actor profiles, attack vectors, and verified impact analysis.
+      </p>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar" id="statsBar">
+        <div class="stat">
+          <div class="stat-value" id="totalCount">11</div>
+          <div class="stat-label">Total Incidents</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="criticalCount">6</div>
+          <div class="stat-label">Critical Severity</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="supplyChainCount">4</div>
+          <div class="stat-label">Supply Chain</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="ransomwareCount">3</div>
+          <div class="stat-label">Ransomware</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+      <div class="filters-header">Search & Filter</div>
+
+      <div class="filter-row">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search incidents by title, org, threat actor, tags...">
+        <select class="sort-select" id="sortSelect">
+          <option value="date">Most Recent</option>
+          <option value="severity">Severity</option>
+          <option value="title">Alphabetical</option>
+        </select>
+      </div>
+
+      <div class="filter-row">
+        <div class="filter-chips" id="attackTypeChips"></div>
+      </div>
+
+      <div class="filter-row">
+        <div class="filter-chips" id="severityChips"></div>
+      </div>
+    </section>
+
+    <!-- Incidents Grid -->
+    <section class="incidents-container">
+      <div class="incidents-grid" id="incidentsGrid"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script>
+    // Incident data from manifest
+    const incidentsData = [
+      {
+        slug: "axios-unc1069-compromise",
+        incidentId: "TP-2026-0015",
+        title: "Axios npm Package Compromise by UNC1069",
+        org: "Axios (npm)",
+        attackType: "supply-chain",
+        threatActor: "UNC1069",
+        date: "2026-03-31",
+        severity: "Critical",
+        excerpt: "A critical supply chain attack compromised the Axios npm package, exposing millions of developers to potential malware distribution.",
+        tags: ["npm", "north-korea", "open-source", "rat", "supply-chain"]
+      },
+      {
+        slug: "teampcp-supply-chain-attack",
+        incidentId: null,
+        title: "TeamPCP Supply Chain Attack Campaign",
+        org: "Multiple (GitHub Actions, PyPI, OpenVSX)",
+        attackType: "supply-chain",
+        threatActor: "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
+        date: "2026-02-28",
+        severity: "Critical",
+        excerpt: "A sophisticated multi-platform supply chain attack targeted GitHub Actions, PyPI, and OpenVSX, stealing credentials from multiple organizations.",
+        tags: ["github-actions", "pypi", "supply-chain", "cicd", "credential-theft", "litellm", "telnyx", "kics"]
+      },
+      {
+        slug: "european-commission-trivy-breach-2026",
+        incidentId: "TP-2026-0020",
+        title: "European Commission Cloud Breach via Trivy Supply Chain",
+        org: "European Commission",
+        attackType: "supply-chain",
+        threatActor: "TeamPCP",
+        date: "2026-03-19",
+        severity: "Critical",
+        excerpt: "The European Commission's cloud infrastructure was breached through a compromised Trivy security scanner, affecting government systems across EU states.",
+        tags: ["trivy", "cloud", "government", "eu", "data-exfiltration", "shinyhunters"]
+      },
+      {
+        slug: "vivaticket-ransomhouse-2026",
+        incidentId: "TP-2026-0018",
+        title: "Vivaticket Ransomware Attack Disrupts European Cultural Institutions",
+        org: "Vivaticket",
+        attackType: "ransomware",
+        threatActor: "RansomHouse",
+        date: "2026-03-02",
+        severity: "High",
+        excerpt: "RansomHouse ransomware crippled Vivaticket's ticketing system, disrupting cultural events across France and Italy including the Louvre.",
+        tags: ["ransomware", "ransomhouse", "ticketing", "europe", "louvre", "anssi"]
+      },
+      {
+        slug: "cegedim-sante-health-breach-2026",
+        incidentId: null,
+        title: "Cegedim Santé Healthcare Data Breach",
+        org: "Cegedim Santé",
+        attackType: "data-breach",
+        threatActor: "Unknown",
+        date: "2026-03-15",
+        severity: "Critical",
+        excerpt: "A major healthcare data breach exposed sensitive medical records and social security information for thousands of French patients.",
+        tags: ["healthcare", "pii", "france", "social-security", "medical-records"]
+      },
+      {
+        slug: "stryker-handala-wiper-2026",
+        incidentId: "TP-2026-0017",
+        title: "Stryker Corporation Wiper Attack by Handala",
+        org: "Stryker Corporation",
+        attackType: "wiper",
+        threatActor: "Handala (Void Manticore / Iran MOIS)",
+        date: "2026-03-11",
+        severity: "Critical",
+        excerpt: "Handala wiper malware destroyed data across Stryker's systems in 79 countries, targeting critical medical device infrastructure.",
+        tags: ["wiper", "iran", "medical-devices", "destructive", "mdm", "handala", "intune"]
+      },
+      {
+        slug: "drift-protocol-dprk-exploit-2026",
+        incidentId: "TP-2026-0021",
+        title: "Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors",
+        org: "Drift Protocol (Solana)",
+        attackType: "defi-exploit",
+        threatActor: "DPRK-linked (Sapphire Sleet / Lazarus Group)",
+        date: "2026-04-01",
+        severity: "Critical",
+        excerpt: "DPRK-linked threat actors exploited an oracle manipulation vulnerability in Drift Protocol, draining $285 million in cryptocurrency.",
+        tags: ["defi", "crypto", "north-korea", "oracle-manipulation", "solana", "lazarus"]
+      },
+      {
+        slug: "foster-city-ransomware-2026",
+        incidentId: "TP-2026-0022",
+        title: "Foster City Ransomware Attack Forces State of Emergency",
+        org: "City of Foster City, California",
+        attackType: "ransomware",
+        threatActor: "Unknown",
+        date: "2026-03-19",
+        severity: "High",
+        excerpt: "A ransomware attack crippled Foster City's municipal systems, forcing officials to declare a state of emergency.",
+        tags: ["ransomware", "municipal", "government", "state-of-emergency", "california"]
+      },
+      {
+        slug: "die-linke-qilin-ransomware-2026",
+        incidentId: "TP-2026-0023",
+        title: "Die Linke Political Party Hit by Qilin Ransomware",
+        org: "Die Linke (The Left Party)",
+        attackType: "ransomware",
+        threatActor: "Qilin",
+        date: "2026-03-26",
+        severity: "High",
+        excerpt: "Qilin ransomware gang targeted Germany's Die Linke political party, exfiltrating sensitive internal communications and member data.",
+        tags: ["ransomware", "qilin", "political-party", "germany", "data-exfiltration"]
+      },
+      {
+        slug: "trivy-cve-2026-33634",
+        incidentId: "TP-2026-0024",
+        title: "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
+        org: "Aqua Security (Trivy)",
+        attackType: "supply-chain",
+        threatActor: "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
+        date: "2026-03-19",
+        severity: "Critical",
+        excerpt: "CVE-2026-33634 revealed a critical vulnerability in Trivy's GitHub Actions integration, exploited in multiple targeted supply chain attacks.",
+        tags: ["trivy", "github-actions", "supply-chain", "cve", "infostealer", "cicd"]
+      },
+      {
+        slug: "shiny-hunters-leak-site",
+        incidentId: "TP-TA-0008",
+        title: "ShinyHunters Operations & Leak Site Activity",
+        org: "ShinyHunters (Threat Actor Profile)",
+        attackType: "data-extortion",
+        threatActor: "ShinyHunters (UNC5537)",
+        date: "2026-01-28",
+        severity: "High",
+        excerpt: "ShinyHunters threat actor group maintains active leak site with stolen data from SaaS platforms, using vishing tactics for credential theft.",
+        tags: ["shinyhunters", "data-leak-site", "extortion", "vishing", "saas", "salesforce", "snowflake"]
+      },
+      {
+        slug: "fbi-dcsnet-salt-typhoon-2026",
+        incidentId: "TP-2026-0025",
+        title: "FBI DCSNet Surveillance System Breach by Salt Typhoon",
+        org: "Federal Bureau of Investigation (FBI)",
+        attackType: "espionage",
+        threatActor: "Salt Typhoon (China MSS)",
+        date: "2026-02-17",
+        severity: "Critical",
+        excerpt: "Salt Typhoon breached FBI's DCSNet wiretap surveillance system via ISP supply chain compromise, exposing classified law enforcement data.",
+        tags: ["espionage", "china", "salt-typhoon", "surveillance", "fisma", "dcsnet"]
+      },
+      {
+        slug: "lexisnexis-react2shell-breach-2026",
+        incidentId: "TP-2026-0026",
+        title: "LexisNexis AWS Cloud Breach via React2Shell Exploit",
+        org: "LexisNexis Legal & Professional",
+        attackType: "data-breach",
+        threatActor: "FulcrumSec",
+        date: "2026-02-24",
+        severity: "High",
+        excerpt: "FulcrumSec exploited a React2Shell vulnerability to breach LexisNexis AWS infrastructure, exfiltrating government user profiles and legal data.",
+        tags: ["cloud", "aws", "react2shell", "data-breach", "legal", "government"]
+      },
+      {
+        slug: "adobe-mr-raccoon-breach-2026",
+        incidentId: "TP-2026-0027",
+        title: "Adobe BPO Supply Chain Breach by Mr. Raccoon",
+        org: "Adobe",
+        attackType: "data-breach",
+        threatActor: "Mr. Raccoon",
+        date: "2026-04-03",
+        severity: "High",
+        excerpt: "Threat actor Mr. Raccoon breached Adobe via an Indian BPO contractor, exfiltrating 13 million support tickets, employee records, and HackerOne submissions.",
+        tags: ["data-breach", "bpo", "supply-chain", "rat", "spearphishing", "adobe"]
+      },
+      {
+        slug: "conduent-data-breach-2026",
+        incidentId: "TP-2026-0028",
+        title: "Conduent Massive Data Breach Affects 25 Million Americans",
+        org: "Conduent Business Services",
+        attackType: "data-breach",
+        threatActor: "Unknown",
+        date: "2026-02-20",
+        severity: "Critical",
+        excerpt: "A massive breach at Conduent exposed SSNs, medical data, and personal information of 25 million Americans — potentially the largest US breach in history.",
+        tags: ["data-breach", "healthcare", "government-services", "ssn", "medical-data", "largest-breach"]
+      },
+      {
+        slug: "hims-hers-shinyhunters-breach-2026",
+        incidentId: "TP-2026-0029",
+        title: "Hims & Hers Health Zendesk Breach by ShinyHunters",
+        org: "Hims & Hers Health",
+        attackType: "data-breach",
+        threatActor: "ShinyHunters (UNC5537)",
+        date: "2026-02-05",
+        severity: "High",
+        excerpt: "ShinyHunters compromised Hims & Hers' Zendesk via Okta SSO, stealing millions of telehealth support tickets containing customer PII.",
+        tags: ["data-breach", "telehealth", "zendesk", "okta", "shinyhunters", "healthcare"]
+      }
+    ];
+
+    // State
+    let filteredIncidents = [...incidentsData];
+    let activeAttackTypeFilter = null;
+    let activeSeverityFilter = null;
+
+    // Parse date
+    function parseDate(dateStr) {
+      return new Date(dateStr);
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      const date = parseDate(dateStr);
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    // Get severity color
+    function getSeverityClass(severity) {
+      if (severity === 'Critical') return 'severity-critical';
+      if (severity === 'High') return 'severity-high';
+      return 'severity-medium';
+    }
+
+    // Get unique attack types
+    function getUniqueAttackTypes() {
+      const types = new Set(incidentsData.map(i => i.attackType));
+      return Array.from(types).sort();
+    }
+
+    // Get unique severities
+    function getUniqueSeverities() {
+      return ['Critical', 'High', 'Medium'];
+    }
+
+    // Render attack type chips
+    function renderAttackTypeChips() {
+      const container = document.getElementById('attackTypeChips');
+      container.innerHTML = '';
+      getUniqueAttackTypes().forEach(type => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.textContent = type.replace('-', ' ').toUpperCase();
+        chip.dataset.type = type;
+        if (activeAttackTypeFilter === type) chip.classList.add('active');
+        chip.addEventListener('click', () => {
+          activeAttackTypeFilter = activeAttackTypeFilter === type ? null : type;
+          renderAttackTypeChips();
+          renderSeverityChips();
+          filterAndRender();
+        });
+        container.appendChild(chip);
+      });
+    }
+
+    // Render severity chips
+    function renderSeverityChips() {
+      const container = document.getElementById('severityChips');
+      container.innerHTML = '';
+      getUniqueSeverities().forEach(sev => {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.textContent = 'SEVERITY: ' + sev.toUpperCase();
+        chip.dataset.severity = sev;
+        if (activeSeverityFilter === sev) chip.classList.add('active');
+        chip.addEventListener('click', () => {
+          activeSeverityFilter = activeSeverityFilter === sev ? null : sev;
+          renderAttackTypeChips();
+          renderSeverityChips();
+          filterAndRender();
+        });
+        container.appendChild(chip);
+      });
+    }
+
+    // Filter and render incidents
+    function filterAndRender() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const sortBy = document.getElementById('sortSelect').value;
+
+      filteredIncidents = incidentsData.filter(incident => {
+        // Search filter
+        if (searchTerm) {
+          const matchesSearch =
+            incident.title.toLowerCase().includes(searchTerm) ||
+            incident.org.toLowerCase().includes(searchTerm) ||
+            incident.threatActor.toLowerCase().includes(searchTerm) ||
+            incident.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+          if (!matchesSearch) return false;
+        }
+
+        // Attack type filter
+        if (activeAttackTypeFilter && incident.attackType !== activeAttackTypeFilter) {
+          return false;
+        }
+
+        // Severity filter
+        if (activeSeverityFilter && incident.severity !== activeSeverityFilter) {
+          return false;
+        }
+
+        return true;
+      });
+
+      // Sort
+      if (sortBy === 'date') {
+        filteredIncidents.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      } else if (sortBy === 'severity') {
+        const severityOrder = { Critical: 0, High: 1, Medium: 2 };
+        filteredIncidents.sort((a, b) => {
+          if (severityOrder[a.severity] !== severityOrder[b.severity]) {
+            return severityOrder[a.severity] - severityOrder[b.severity];
+          }
+          return parseDate(b.date) - parseDate(a.date);
+        });
+      } else if (sortBy === 'title') {
+        filteredIncidents.sort((a, b) => a.title.localeCompare(b.title));
+      }
+
+      renderIncidents();
+    }
+
+    // Render incidents grid
+    function renderIncidents() {
+      const grid = document.getElementById('incidentsGrid');
+      grid.innerHTML = '';
+
+      if (filteredIncidents.length === 0) {
+        grid.innerHTML = `
+          <div class="no-results">
+            <div class="no-results-title">No incidents found</div>
+            <p>Try adjusting your filters or search terms</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredIncidents.forEach(incident => {
+        const card = document.createElement('article');
+        card.className = 'incident-card';
+
+        const tagsHtml = incident.tags
+          .slice(0, 4)
+          .map(tag => `<span class="tag">${tag}</span>`)
+          .join('');
+
+        card.innerHTML = `
+          <div class="incident-header">
+            <div>
+              <div class="incident-title">
+                <a href="${incident.slug}.html">${incident.title}</a>
+              </div>
+            </div>
+            <span class="severity-badge ${getSeverityClass(incident.severity)}">
+              ${incident.severity}
+            </span>
+          </div>
+
+          <div class="incident-meta">
+            <span class="incident-date">${formatDate(incident.date)}</span>
+            <span class="incident-org">${incident.org}</span>
+            <span class="incident-type">${incident.attackType.replace('-', ' ').toUpperCase()}</span>
+            ${incident.threatActor && incident.threatActor !== 'Unknown' ? `<span class="incident-actor">${incident.threatActor.split('(')[0].trim()}</span>` : ''}
+          </div>
+
+          <div class="incident-excerpt">${incident.excerpt}</div>
+
+          <div class="incident-tags">
+            ${tagsHtml}
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          window.location.href = `${incident.slug}.html`;
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+
+    // Search input event
+    document.getElementById('searchInput').addEventListener('input', filterAndRender);
+    document.getElementById('sortSelect').addEventListener('change', filterAndRender);
+
+    // Initial render
+    renderAttackTypeChips();
+    renderSeverityChips();
+    renderIncidents();
+  </script>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+</html>

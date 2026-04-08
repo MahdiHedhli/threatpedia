@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackCat / ALPHV | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="blackcatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <!-- Global map background -->
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Stylized black cat silhouette -->
+                <g fill="url(#blackcatGradient)" stroke="#e8a020" stroke-width="1">
+                    <!-- Body -->
+                    <ellipse cx="100" cy="110" rx="35" ry="30" fill="url(#blackcatGradient)"/>
+                    <!-- Head -->
+                    <circle cx="100" cy="75" r="20" fill="url(#blackcatGradient)"/>
+                    <!-- Ears -->
+                    <polygon points="85,60 80,40 90,50" fill="url(#blackcatGradient)"/>
+                    <polygon points="115,60 120,40 110,50" fill="url(#blackcatGradient)"/>
+                    <!-- Eyes -->
+                    <circle cx="95" cy="72" r="3" fill="#0d1117"/>
+                    <circle cx="105" cy="72" r="3" fill="#0d1117"/>
+                    <!-- Tail -->
+                    <path d="M 125 100 Q 150 80 145 50" stroke="#e8a020" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </g>
+                <!-- Advanced encryption symbol -->
+                <circle cx="100" cy="100" r="65" fill="none" stroke="#e8a020" stroke-width="1" opacity="0.4" stroke-dasharray="3,3"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>BlackCat / ALPHV</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                ALPHV, UNC4711, Noname02541, BlackCat, Black Cat, Alphv Blackcat
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>BlackCat</strong> (also known as ALPHV) is a sophisticated ransomware-as-a-service (RaaS) operation first observed in late 2021. BlackCat represents a significant evolution in ransomware technology, being the first major ransomware family written entirely in Rust programming language, enabling superior performance, evading detection systems tuned for traditional malware patterns, and providing cross-platform portability. The group operates a managed affiliate program managing hundreds of criminal operators who conduct initial access operations on BlackCat's behalf.</p>
+
+                    <p>BlackCat distinguishes itself through sophisticated technical capabilities including rapid encryption speeds, advanced obfuscation, polymorphic behavior, and sophisticated supply chain exploitation. The group has documented attacks on enterprise organizations across all major industry sectors globally, with particular emphasis on high-value targets capable of paying substantial ransom demands. BlackCat's business model combines technical sophistication with aggressive extortion practices, maintaining a public leak site for data publication and victim shaming to coerce ransom payment.</p>
+
+                    <p>Notable BlackCat operations include the Change Healthcare breach (February 2024) resulting in significant healthcare disruption across the US, attacks on major pharmaceutical companies, energy sector disruption, and targeting of critical infrastructure. The group demonstrates operational sophistication comparable to state-sponsored actors, with mature incident response capabilities and technical innovation. As of 2025, BlackCat remains one of the most active and dangerous ransomware threats globally, competing directly with LockBit for market dominance in the RaaS ecosystem.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566.001: Phishing - Spearphishing Attachment</span>
+                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1199: Trusted Relationship</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: Command and Scripting Interpreter - PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Command and Scripting Interpreter - Windows Command Shell</span>
+                                <span class="ttp-technique">T1203: Exploitation for Client Execution</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
+                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1547.014: Boot or Logon Autostart Execution - Active Setup</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div>
+                                <span class="ttp-technique">T1562.001: Impair Defenses - Disable or Modify Tools</span>
+                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
+                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Supply Chain Exploitation:</strong> Targeting of managed service providers (MSPs), software vendors, and IT contractors enabling mass compromise of customer environments.</li>
+                            <li><strong>Vulnerability Exploitation:</strong> Rapid exploitation of zero-day and known vulnerabilities in edge devices, VPNs, and remote access infrastructure.</li>
+                            <li><strong>Credential Theft & Brute Force:</strong> Large-scale password spraying and credential harvesting targeting weak credentials in remote services.</li>
+                            <li><strong>Phishing Campaigns:</strong> Targeted phishing with weaponized attachments or malicious links to distribute initial payloads.</li>
+                            <li><strong>Managed Affiliate Network:</strong> Hundreds of affiliate operators conducting initial access operations, with BlackCat providing ransomware payloads and backend infrastructure.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Tools & Malware</div>
+                        <ul>
+                            <li><strong>BlackCat Ransomware:</strong> Advanced ransomware written in Rust with multi-threaded encryption, polymorphic capabilities, and sophisticated obfuscation.</li>
+                            <li><strong>ALPHV Custom Tools:</strong> Bespoke tools for reconnaissance, privilege escalation, and lateral movement within victim networks.</li>
+                            <li><strong>Data Exfiltration Tools:</strong> Custom utilities for rapid mass data theft from victim systems before encryption deployment.</li>
+                            <li><strong>Legitimate Tool Abuse:</strong> Extensive use of PsExec, WinRM, RDP, and other administrative tools for lateral movement.</li>
+                            <li><strong>Cobalt Strike:</strong> Commercial penetration testing framework widely abused for command-and-control and lateral movement.</li>
+                            <li><strong>Reverse Proxy Tools:</strong> Use of legitimate reverse proxy and tunneling tools for C2 communications.</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Sophisticated C2 Infrastructure:</strong> Distributed command-and-control utilizing compromised hosting, bulletproof hosting, and residential proxies.</li>
+                            <li><strong>Leak Site Operations:</strong> Professional dark web presence with leak site publishing victim data and facilitating extortion.</li>
+                            <li><strong>Cryptocurrency Infrastructure:</strong> Integration with cryptocurrency exchanges and sophisticated money laundering mechanisms.</li>
+                            <li><strong>Affiliate Management Platform:</strong> Professional portal for affiliate recruitment, campaign tracking, and profit distribution.</li>
+                            <li><strong>Ransom Negotiation Infrastructure:</strong> Managed negotiation and payment portal with professional chat support.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <div class="section-content">
+                    <p>BlackCat targets high-value organizations across all major sectors with emphasis on organizations capable of paying ransom:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sector</th>
+                                <th>Notable Victims / Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Healthcare</td>
+                                <td>Change Healthcare (major US healthcare disruption, February 2024), hospital networks, pharmaceutical companies. Targets for high ransom demands.</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Services</td>
+                                <td>Banks, insurance companies, investment firms, payment processors.</td>
+                            </tr>
+                            <tr>
+                                <td>Technology & Software</td>
+                                <td>Software vendors, cloud providers, IT service providers, managed service providers (MSPs).</td>
+                            </tr>
+                            <tr>
+                                <td>Manufacturing</td>
+                                <td>Industrial equipment manufacturers, automotive suppliers, electronics companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Critical Infrastructure</td>
+                                <td>Energy utilities, transportation systems, water treatment facilities.</td>
+                            </tr>
+                            <tr>
+                                <td>Telecommunications</td>
+                                <td>Telecom providers, communications infrastructure companies.</td>
+                            </tr>
+                            <tr>
+                                <td>Government</td>
+                                <td>Federal agencies, state and local government, critical infrastructure agencies.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Geographic Scope:</strong> Global targeting across North America, Europe, Asia, and other regions. No geographic restrictions on targeting.</p>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Nov 2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>BlackCat / ALPHV Launch</div>
+                                <div class="timeline-event-detail">BlackCat ransomware first observed in criminal forums as new Rust-based ransomware-as-a-service. Immediate adoption by criminal affiliates due to advanced technical capabilities and operational sophistication.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Rapid Growth & Affiliate Recruitment</div>
+                                <div class="timeline-event-detail">BlackCat rapidly expands affiliate network, conducting hundreds of attacks globally. Group demonstrates sophisticated operational management with professional victim negotiations and ransom collection.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Supply Chain Exploitation Focus</div>
+                                <div class="timeline-event-detail">BlackCat shifts focus toward supply chain compromise targeting managed service providers (MSPs), software vendors, and IT contractors. Strategy enables mass compromise of multiple customer environments simultaneously.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Feb 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Change Healthcare Breach</div>
+                                <div class="timeline-event-detail">BlackCat compromises Change Healthcare through exploitation of zero-day vulnerability. Attack disrupts healthcare services across United States, impacts patient care nationwide. Ransom negotiation reveals sophisticated operational management.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Q2-Q3 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued High-Value Targeting</div>
+                                <div class="timeline-event-detail">BlackCat maintains active operations targeting pharmaceutical companies, financial institutions, and critical infrastructure providers. Multiple attacks with ransom demands exceeding $5+ million each.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">Q4 2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Technical Innovation & Evolution</div>
+                            <div class="timeline-event-detail">BlackCat continues technical development with improved obfuscation, polymorphic capabilities, and enhanced data exfiltration tools. Demonstrates sustained operational sophistication and investment in capability development.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025-Present</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Direct Competition with LockBit</div>
+                                <div class="timeline-event-detail">BlackCat positioned as primary competitor to LockBit in RaaS marketplace. Group demonstrates parity in operational capability, affiliate management, and victim targeting sophistication. Estimated cumulative losses exceed $500M+.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <div class="section-content">
+                    <p>BlackCat affiliates have demonstrated rapid exploitation of critical infrastructure vulnerabilities:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-3156" class="cve-link" target="_blank">CVE-2024-3156</a></td>
+                                <td>Remote Code Execution in Change Healthcare</td>
+                                <td>Change Healthcare Software</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
+                                <td>Remote Code Execution in GE Devices</td>
+                                <td>GE Industrial Equipment</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-3824" class="cve-link" target="_blank">CVE-2023-3824</a></td>
+                                <td>ConnectWise ScreenConnect Authentication Bypass</td>
+                                <td>ConnectWise Control</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21899" class="cve-link" target="_blank">CVE-2024-21899</a></td>
+                                <td>Windows Privilege Escalation</td>
+                                <td>Microsoft Windows</td>
+                                <td>8.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
+                                <td>Log4Shell Remote Code Execution</td>
+                                <td>Apache Log4j</td>
+                                <td>10.0</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-41080" class="cve-link" target="_blank">CVE-2022-41080</a></td>
+                                <td>Exchange Server Remote Code Execution</td>
+                                <td>Microsoft Exchange Server</td>
+                                <td>10.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <p>BlackCat is tracked by security vendors and law enforcement:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">MITRE ATT&CK</td>
+                                <td>UNC4711</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CrowdStrike</td>
+                                <td>ALPHV, BlackCat</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>UNC4711, BlackCat</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>ALPHV, BlackCat</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Networks</td>
+                                <td>BlackCat / ALPHV</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">FBI / CISA</td>
+                                <td>BlackCat / ALPHV</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Kaspersky</td>
+                                <td>BlackCat</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>LockBit:</strong> Primary competitive threat actor operating largest RaaS network. Both operate affiliate programs and maintain leak sites, competing for market dominance in ransomware ecosystem.</li>
+                        <li><strong>Scattered Spider (UNC3944):</strong> Social engineering and initial access focused group frequently enabling ransomware deployment for BlackCat and LockBit affiliates.</li>
+                        <li><strong>Cl0p / FIN11:</strong> Supply chain focused threat actor with ransomware operations. Similar targeting of software vendors and file transfer platforms.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References & Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>FBI Alert:</strong> "BlackCat / ALPHV Ransomware Operations"
+                            <a href="https://www.fbi.gov/investigate/cyber" target="_blank">FBI Cyber Division</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>CISA Alert:</strong> "BlackCat / ALPHV Ransomware Campaign"
+                            <a href="https://www.cisa.gov/alerts" target="_blank">CISA Alerts & Advisories</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>CrowdStrike Intelligence:</strong> "ALPHV / BlackCat RaaS Operations"
+                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Global Threat Report</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>Mandiant Research:</strong> "BlackCat / ALPHV - Advanced RaaS Threat"
+                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence Reports</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[5]</span>
+                            <strong>Healthcare ISAC Report:</strong> "Change Healthcare Breach Analysis"
+                            <a href="https://www.hhs.gov" target="_blank">HHS Breach Notification</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🏴</span>
+                        Unknown (Russian-speaking)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">No, Criminal Enterprise</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial Extortion</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">Nov 2021</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2025-Q1</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">Very High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">UNC4711, Noname02541</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">Active</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>
