@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patriot Regional Emergency Communications Center Cyberattack | Threatpedia</title>
+
+    <!-- Meta Tags -->
+    <meta name="report-id" content="TP-2026-0039">
+    <meta name="review-status" content="PENDING HUMAN REVIEW">
+    <meta name="severity" content="High">
+    <meta name="generated-by" content="new-threat-intel">
+    <meta name="generated-date" content="2026-04-08">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' fill='rgba(255,255,255,0.02)' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 96px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .severity-high {
+            color: #ff9900;
+            font-weight: 700;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .actor-link:hover {
+            color: var(--white);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        /* Code/Technical Elements */
+        .tech-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+            font-size: 13px;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* Attack Flow Diagram */
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--amber);
+        }
+
+        .stage-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .stage-description {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* IOC Cards */
+        .ioc-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .ioc-header {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .ioc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ioc-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ioc-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .ioc-value {
+            font-size: 13px;
+            color: var(--text);
+            word-break: break-word;
+        }
+
+        /* Table Styling */
+        .attack-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .attack-table thead {
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .attack-table th {
+            padding: 12px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .attack-table td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            background: rgba(13, 17, 23, 0.5);
+        }
+
+        .attack-table tbody tr:hover {
+            background: rgba(232, 160, 32, 0.05);
+        }
+
+        /* References */
+        .reference-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reference-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .reference-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .reference-link:hover {
+            color: var(--white);
+        }
+
+        .reference-source {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        /* Sidebar */
+        .sidebar-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .sidebar-content {
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .sidebar-content p {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                top: auto;
+            }
+
+            .incident-title {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+    <div class="container">
+        <div class="article-header">
+            <h1 class="incident-title">Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts 911 Services</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0039</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Critical Infrastructure / Emergency Services Attack</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">April 1, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value severity-high">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Government / Emergency Services</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Geography</span>
+                    <span class="meta-value">United States (Massachusetts)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Threat Actor</span>
+                    <span class="meta-value">Unknown / Unattributed</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; padding: 20px; background: rgba(232, 160, 32, 0.15); border: 2px solid #e8a020; border-radius: 6px; display: flex; align-items: center; gap: 16px;">
+                <div style="font-size: 28px;">⚠</div>
+                <div>
+                    <div style="color: #e8a020; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;">CRITICAL INFRASTRUCTURE ATTACK</div>
+                    <div style="color: #cdd5e0; font-size: 14px; font-weight: 500;">Patriot Regional Emergency Communications Center in Pepperell, Massachusetts experienced a cyberattack on April 1, 2026 that compromised town and public safety computer systems. 911 services remained operational but non-emergency lines were offline. Federal law enforcement has been notified.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Executive Summary -->
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>On April 1, 2026, the Patriot Regional Emergency Communications Center (PRECC) in Pepperell, Massachusetts, suffered a cyberattack that compromised town and public safety computer systems. The attack impacted the dispatch hub serving Pepperell, Ashby, Dunstable, Groton, and other northern Massachusetts municipalities.</p>
+                        <p>While 911 emergency phone lines remained operational throughout the incident, non-emergency dispatch lines went offline. The CodeRED emergency notification system connected to the center was also affected. Police and fire departments continued operations through mutual aid agreements with neighboring communities.</p>
+                        <p>Town Administrator Andrew MacLean engaged the town's insurance provider and coordinated with federal cybersecurity agencies. Law enforcement has been notified and the investigation is ongoing. Attribution remains unknown pending forensic analysis. This incident underscores escalating threats to critical emergency communications infrastructure nationwide.</p>
+                    </div>
+                </section>
+
+                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <p>The cyberattack had significant operational consequences for emergency services across multiple municipalities:</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Systems Compromised</h3>
+                        <ul>
+                            <li>Town computer systems</li>
+                            <li>Public safety computer systems</li>
+                            <li>Emergency dispatch systems (partial)</li>
+                            <li>CodeRED emergency notification system</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Operational Impact</h3>
+                        <ul>
+                            <li><strong>911 Services:</strong> Emergency phone lines remained operational with no disruption to critical 911 call receipt</li>
+                            <li><strong>Non-Emergency Lines:</strong> Dispatch and non-emergency lines taken offline, forcing rerouting of calls</li>
+                            <li><strong>Emergency Notification:</strong> CodeRED system compromised, limiting emergency public notification capabilities</li>
+                            <li><strong>Mutual Aid:</strong> Police and fire departments operated under mutual aid agreements with neighboring jurisdictions to continue service delivery</li>
+                            <li><strong>Geographic Scope:</strong> Incident affected emergency services for Pepperell, Ashby, Dunstable, Groton, and surrounding northern Massachusetts towns</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Investigation Status</h3>
+                        <ul>
+                            <li>Federal law enforcement notified and engaged</li>
+                            <li>Insurance provider engaged for breach coverage and incident response</li>
+                            <li>Forensic investigation ongoing to determine attack methodology and data access scope</li>
+                            <li>No attribution currently available pending forensic analysis</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Incident Timeline -->
+                <section class="section">
+                    <h2 class="section-title">Incident Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 1, 2026<br>(Early Morning)</div>
+                            <div class="timeline-event">
+                                <strong>Cyberattack occurs</strong>
+                                <p>Patriot Regional Emergency Communications Center systems experience compromise. Exact time and attack vector unknown pending forensic analysis.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 1, 2026<br>(Morning)</div>
+                            <div class="timeline-event">
+                                <strong>Discovery and response initiation</strong>
+                                <p>Town and public safety officials discover the breach and initiate incident response procedures. Non-emergency dispatch lines taken offline. Emergency mutual aid activated.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 1, 2026<br>(Day of)</div>
+                            <div class="timeline-event">
+                                <strong>Official notification and coordination</strong>
+                                <p>Town Administrator Andrew MacLean engages insurance provider and federal cybersecurity agencies. Federal law enforcement notified of the incident.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">April 2–8, 2026</div>
+                            <div class="timeline-event">
+                                <strong>Forensic investigation and recovery</strong>
+                                <p>Ongoing forensic analysis to determine attack scope, data accessed, and threat actor attribution. Systems recovery and remediation work continues.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical Analysis -->
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <p>Limited technical details are publicly available at this stage of the investigation. However, initial assessments suggest the following technical characteristics:</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Attack Characteristics</h3>
+                        <ul>
+                            <li><strong>Attack Type:</strong> Likely ransomware, though unconfirmed pending forensic completion</li>
+                            <li><strong>Systems Targeted:</strong> Town and public safety computer systems, emergency dispatch infrastructure</li>
+                            <li><strong>Data Exposure:</strong> Investigation ongoing to determine what data may have been accessed or exfiltrated</li>
+                            <li><strong>Restoration Approach:</strong> Systems recovery initiated; scope of restoration unknown</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">MITRE ATT&CK Mapping</h3>
+                        <p>Suspected techniques based on available information:</p>
+                        <ul>
+                            <li><strong>T1486:</strong> Data Encrypted for Impact (suspected ransomware component)</li>
+                            <li><strong>T1489:</strong> Service Stop (dispatch and notification system outages)</li>
+                            <li><strong>T1490:</strong> Inhibit System Recovery (potential encryption of backups)</li>
+                            <li><strong>T1562:</strong> Impair Defenses (potential compromise of security tools)</li>
+                            <li><strong>T1018:</strong> Remote System Discovery (reconnaissance of network infrastructure)</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Attack Surface Assessment</h3>
+                        <p>Emergency communications centers represent a high-value target due to their critical infrastructure role. PRECC systems likely include:</p>
+                        <ul>
+                            <li>Computer Aided Dispatch (CAD) systems</li>
+                            <li>Telephone switching and management systems</li>
+                            <li>Emergency notification platforms (CodeRED)</li>
+                            <li>Records management and administrative systems</li>
+                            <li>Network infrastructure and security systems</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Remediation -->
+                <section class="section">
+                    <h2 class="section-title">Remediation & Recovery</h2>
+                    <div class="section-content">
+                        <p>The town of Pepperell and state/federal agencies have initiated remediation and recovery efforts:</p>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Immediate Actions Taken</h3>
+                        <ul>
+                            <li>Engaged insurance provider for breach coverage and incident response support</li>
+                            <li>Notified federal law enforcement and cybersecurity agencies</li>
+                            <li>Isolated compromised systems to prevent further spread</li>
+                            <li>Activated mutual aid agreements with neighboring communities</li>
+                            <li>Implemented emergency procedures for 911 operations</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Recommended Actions</h3>
+                        <ul>
+                            <li><strong>Forensic Analysis:</strong> Complete comprehensive forensic investigation to understand attack scope and determine attribution</li>
+                            <li><strong>Data Breach Assessment:</strong> Determine what personal information or sensitive data may have been accessed or exfiltrated</li>
+                            <li><strong>System Hardening:</strong> Implement network segmentation, access controls, and monitoring for emergency communications systems</li>
+                            <li><strong>Backup Verification:</strong> Confirm integrity of backups and off-site recovery systems</li>
+                            <li><strong>Incident Disclosure:</strong> Determine if public notification is required under state or federal breach notification laws</li>
+                            <li><strong>Coordination:</strong> Engage with Massachusetts state cybersecurity authorities and CISA for guidance on recovery and prevention</li>
+                        </ul>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Regional Implications</h3>
+                        <p>This incident should prompt other emergency communications centers across Massachusetts and the nation to:</p>
+                        <ul>
+                            <li>Conduct vulnerability assessments of CAD systems and emergency dispatch infrastructure</li>
+                            <li>Review and test incident response plans for prolonged system outages</li>
+                            <li>Verify mutual aid agreements and communication protocols with neighboring jurisdictions</li>
+                            <li>Implement enhanced monitoring and threat detection for critical infrastructure networks</li>
+                            <li>Consider cybersecurity insurance and incident response retainer agreements</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Sources & References -->
+                <section class="section">
+                    <h2 class="section-title">Sources & References</h2>
+                    <div class="reference-item">
+                        <a href="https://therecord.media/massachusetts-emergency-alert-cyberattack" class="reference-link">The Record (Recorded Future) — Massachusetts Emergency Alert System Cyberattack</a>
+                        <span class="reference-source">https://therecord.media/massachusetts-emergency-alert-cyberattack</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://thecyberexpress.com/massachusetts-emergency-cyberattack/" class="reference-link">The Cyber Express — Massachusetts Emergency Cyberattack Disrupts Services</a>
+                        <span class="reference-source">https://thecyberexpress.com/massachusetts-emergency-cyberattack/</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.bostonglobe.com/2026/04/01/metro/cyberattack-pepperell-townsend/" class="reference-link">Boston Globe — Cyberattack Hits Pepperell and Surrounding Towns</a>
+                        <span class="reference-source">https://www.bostonglobe.com/2026/04/01/metro/cyberattack-pepperell-townsend/</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.boston25news.com/news/local/middlesex-county-town-impacted-by-cyber-attack/N3RNZWIKI5A5NLMNFFWMLO3W5M/" class="reference-link">Boston 25 News — Middlesex County Town Impacted by Cyber Attack</a>
+                        <span class="reference-source">https://www.boston25news.com/news/local/middlesex-county-town-impacted-by-cyber-attack/N3RNZWIKI5A5NLMNFFWMLO3W5M/</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://www.nbcboston.com/news/local/pepperell-cyberattack-impacting-town-public-safety-computer-systems/3925990/" class="reference-link">NBC Boston — Pepperell Cyberattack Impacting Town Public Safety Systems</a>
+                        <span class="reference-source">https://www.nbcboston.com/news/local/pepperell-cyberattack-impacting-town-public-safety-computer-systems/3925990/</span>
+                    </div>
+                    <div class="reference-item">
+                        <a href="https://securityboulevard.com/2026/04/massachusetts-emergency-communications-system-hit-by-cyberattack/" class="reference-link">Security Boulevard — Massachusetts Emergency Communications System Hit by Cyberattack</a>
+                        <span class="reference-source">https://securityboulevard.com/2026/04/massachusetts-emergency-communications-system-hit-by-cyberattack/</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Key Takeaways -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div class="sidebar-content">
+                        <p style="font-size: 13px; margin-bottom: 12px;">On April 1, 2026, the Patriot Regional Emergency Communications Center in Pepperell, Massachusetts experienced a cyberattack compromising town and public safety computer systems. While 911 services remained operational, non-emergency dispatch and emergency notification capabilities were degraded.</p>
+                        <p style="font-size: 13px; margin-bottom: 12px;"><strong>Critical Context:</strong></p>
+                        <ul style="font-size: 12px; margin-left: 16px;">
+                            <li>Critical infrastructure attack targeting emergency services</li>
+                            <li>Federal law enforcement engaged</li>
+                            <li>Likely ransomware, attribution pending</li>
+                            <li>Regional implications for other emergency centers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Related Incidents -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <div class="sidebar-content">
+                        <a href="foster-city-ransomware-2026.html" class="sidebar-link">Foster City Ransomware (2026)</a>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Another municipal ransomware attack targeting local government systems in 2026.</p>
+                        <a href="passaic-county-medusa-ransomware-2026.html" class="sidebar-link" style="margin-top: 12px;">Passaic County Medusa Ransomware (2026)</a>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Ransomware attack impacting New Jersey county government infrastructure and services.</p>
+                    </div>
+                </div>
+
+                <!-- Attack Details -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Attack Details</div>
+                    <div class="sidebar-content">
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">Unknown</div>
+                                <div style="color: var(--muted); font-size: 12px;">Threat Actor</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">Likely Ransomware</div>
+                                <div style="color: var(--muted); font-size: 12px;">Attack Type (Unconfirmed)</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">April 1, 2026</div>
+                                <div style="color: var(--muted); font-size: 12px;">Incident Date</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">5+ Municipalities</div>
+                                <div style="color: var(--muted); font-size: 12px;">Geographic Scope</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">Ongoing</div>
+                                <div style="color: var(--muted); font-size: 12px;">Investigation Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Severity Metrics -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Severity & Impact</div>
+                    <div class="sidebar-content">
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">HIGH</div>
+                                <div style="color: var(--muted); font-size: 12px;">Severity Rating</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">Critical Infrastructure</div>
+                                <div style="color: var(--muted); font-size: 12px;">Target Classification</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">911 + Non-Emergency</div>
+                                <div style="color: var(--muted); font-size: 12px;">Systems Impacted</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--amber); font-weight: 700;">Ongoing</div>
+                                <div style="color: var(--muted); font-size: 12px;">Recovery Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div id="site-footer"></div>
+
+    <script>
+        // Hamburger menu functionality
+    </script>
+
+  <script src="../assets/header.js"></script>
+  <script src="../assets/glossary-tooltips.js"></script>
+</body>
+</html>

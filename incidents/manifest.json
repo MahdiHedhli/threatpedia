@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T00:23:06Z",
+  "lastUpdated": "2026-04-08T13:30:00Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
   "incidents": [
@@ -799,6 +799,191 @@
         "browser",
         "cisa-kev",
         "in-the-wild"
+      ]
+    },
+    {
+      "slug": "ransomhouse-operations",
+      "incidentId": "TP-TA-0009",
+      "title": "RansomHouse Ransomware Group — Operations & Campaigns",
+      "org": "RansomHouse (Threat Actor Profile)",
+      "attackType": "data-extortion",
+      "threatActor": "RansomHouse / Jolly Scorpius",
+      "sector": "Multi-Sector",
+      "geography": "Global",
+      "date": "2021-12-01",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "incident-crosslink-gapfill",
+      "relatedSlugs": [
+        "vivaticket-ransomhouse-2026",
+        "cegedim-sante-health-breach-2026"
+      ],
+      "tags": [
+        "ransomhouse",
+        "data-extortion",
+        "raas",
+        "mariolocker",
+        "mragent",
+        "double-extortion",
+        "esxi",
+        "jolly-scorpius"
+      ]
+    },
+    {
+      "slug": "trueconf-cve-2026-3502-zero-day",
+      "incidentId": "TP-2026-0036",
+      "title": "Operation TrueChaos: TrueConf Zero-Day Exploitation Targeting Southeast Asian Governments (CVE-2026-3502)",
+      "org": "Southeast Asian Government Entities",
+      "attackType": "zero-day-exploitation",
+      "threatActor": "Chinese-nexus APT (Amaranth-Dragon overlap)",
+      "sector": "Government",
+      "geography": "Southeast Asia",
+      "date": "2026-03-01",
+      "severity": "Critical",
+      "cves": [
+        "CVE-2026-3502"
+      ],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel",
+      "relatedSlugs": [
+        "forticlient-ems-cve-2026-35616",
+        "chrome-cve-2026-5281-zero-day",
+        "fbi-dcsnet-salt-typhoon-2026"
+      ],
+      "tags": [
+        "zero-day",
+        "trueconf",
+        "supply-chain",
+        "update-mechanism",
+        "havoc",
+        "dll-sideloading",
+        "cisa-kev",
+        "china",
+        "nation-state",
+        "government",
+        "espionage",
+        "southeast-asia"
+      ]
+    },
+    {
+      "slug": "mercor-litellm-supply-chain-breach-2026",
+      "incidentId": "TP-2026-0037",
+      "title": "Mercor AI $10B Startup Breach via LiteLLM Supply Chain Compromise",
+      "org": "Mercor.io",
+      "attackType": "supply-chain",
+      "threatActor": "TeamPCP / Lapsus$",
+      "sector": "Technology / AI",
+      "geography": "Global",
+      "date": "2026-03-27",
+      "severity": "Critical",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel",
+      "relatedSlugs": [
+        "teampcp-supply-chain-attack",
+        "axios-unc1069-compromise",
+        "european-commission-trivy-breach-2026"
+      ],
+      "tags": [
+        "supply-chain",
+        "litellm",
+        "pypi",
+        "ai",
+        "lapsus",
+        "extortion",
+        "meta",
+        "anthropic",
+        "openai",
+        "class-action",
+        "credential-harvesting"
+      ]
+    },
+    {
+      "slug": "docketwise-immigration-data-breach-2026",
+      "incidentId": "TP-2026-0038",
+      "title": "DocketWise Immigration Software Breach Exposes 116,666 People",
+      "org": "DocketWise",
+      "attackType": "data-breach",
+      "threatActor": "Unknown",
+      "sector": "Legal / Immigration Services",
+      "geography": "United States",
+      "date": "2026-04-03",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel",
+      "relatedSlugs": [
+        "conduent-data-breach-2026",
+        "hims-hers-shinyhunters-breach-2026",
+        "carecloud-healthcare-breach-2026"
+      ],
+      "tags": [
+        "data-breach",
+        "immigration",
+        "legal",
+        "ssn",
+        "passport",
+        "credential-compromise",
+        "class-action",
+        "pii"
+      ]
+    },
+    {
+      "slug": "patriot-regional-emergency-comms-attack-2026",
+      "incidentId": "TP-2026-0039",
+      "title": "Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts 911 Services",
+      "org": "Patriot Regional Emergency Communications Center",
+      "attackType": "cyberattack",
+      "threatActor": "Unknown",
+      "sector": "Government / Emergency Services",
+      "geography": "United States (Massachusetts)",
+      "date": "2026-04-01",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel",
+      "relatedSlugs": [
+        "foster-city-ransomware-2026",
+        "passaic-county-medusa-ransomware-2026"
+      ],
+      "tags": [
+        "emergency-services",
+        "911",
+        "government",
+        "municipal",
+        "critical-infrastructure",
+        "massachusetts"
+      ]
+    },
+    {
+      "slug": "dragonforce-ransomware-campaign-april-2026",
+      "incidentId": "TP-2026-0040",
+      "title": "DragonForce Ransomware Group Multi-Sector Campaign — April 2026",
+      "org": "Multiple (13+ organizations)",
+      "attackType": "ransomware",
+      "threatActor": "DragonForce",
+      "sector": "Multi-Sector (Manufacturing, Hospitality, Legal, Utilities)",
+      "geography": "Global (US, Canada)",
+      "date": "2026-04-02",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel",
+      "relatedSlugs": [
+        "die-linke-qilin-ransomware-2026",
+        "vivaticket-ransomhouse-2026",
+        "foster-city-ransomware-2026",
+        "passaic-county-medusa-ransomware-2026"
+      ],
+      "tags": [
+        "ransomware",
+        "dragonforce",
+        "raas",
+        "double-extortion",
+        "multi-victim",
+        "manufacturing",
+        "packaging"
       ]
     }
   ],
