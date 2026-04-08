@@ -9,7 +9,7 @@
       "disabledTaskIds": ["new-threat-intel-weekday-afternoon"],
       "frequency": "2x weekday (5 AM + 8 PM) + 1x weekend (noon Sat/Sun)",
       "purpose": "Discover and publish new incident reports from the past 14 days",
-      "writesTo": ["incidents/*.html", "incidents/manifest.json", "index.html"],
+      "writesTo": ["incidents/*.html", "incidents/manifest.json"],
       "readsFrom": ["incidents/manifest.json"]
     },
     "dailyIncidentUpdater": {
@@ -23,7 +23,7 @@
       "taskId": "incident-crosslink-gapfill",
       "frequency": "Weekly Wednesday 9 AM",
       "purpose": "Create up to 4-5 gap-fill reports for referenced-but-missing incidents, discover and apply bidirectional cross-links",
-      "writesTo": ["incidents/*.html", "incidents/manifest.json", "index.html"],
+      "writesTo": ["incidents/*.html", "incidents/manifest.json"],
       "readsFrom": ["incidents/manifest.json"]
     },
     "glossaryTermUpdater": {
@@ -93,11 +93,12 @@
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
-      "totalReports": 14,
-      "pendingReview": 12,
+      "totalReports": 22,
+      "pendingReview": 20,
       "approved": 2,
       "referencedButMissing": 1,
-      "lastNewReportDate": "2026-04-07"
+      "lastNewReportDate": "2026-04-07",
+      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files — the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
       "totalTerms": 1006,
@@ -119,7 +120,7 @@
     "threatActorPipeline": {
       "flow": "new-threat-intel / daily-incident-updater / incident-crosslink-gapfill → threat-actor-queue.json → threat-actor-updater processes queue → threat-actors.html + threat-actor-index.json updated → bidirectional links verified",
       "files": {
-        "threat-actors.html": "The Threat Actor Registry page with 78 actors (JS array, searchable/filterable)",
+        "threat-actors.html": "The Threat Actor Registry page with 78 actors (JS array, searchable/filterable). IMPORTANT: threat-actors.html has an 'actorPages' Set in JS that lists all actors with dedicated pages (e.g. 'apt1', 'lazarus-group'). When creating a new actor HTML page in threat-actors/*.html, the threat-actor-updater MUST also add the actor slug to the actorPages Set in threat-actors.html so the listing page links to it.",
         "threat-actor-index.json": "Lightweight actor lookup index (78 actors, 224 alias keys) for quick queue-or-skip decisions by incident tasks",
         "threat-actor-queue.json": "Worklist — incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
       },
@@ -164,7 +165,8 @@
 
   "coordinationRules": {
     "manifestFirst": "All incident-related tasks MUST read incidents/manifest.json as their first step",
-    "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports",
+    "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports. The incidents/index.html page now reads from manifest.json dynamically via fetch() — updating manifest.json is ALL that is needed for new incidents to appear on the page and in the stats. Do NOT modify incidents/index.html to add incident data.",
+    "actorPageLinking": "When threat-actor-updater creates a new threat-actors/*.html page, it MUST also add the actor slug to the 'actorPages' Set in threat-actors.html so the registry links to the new page.",
     "noOverlap": {
       "newThreatIntel": "Only creates reports for brand-new incidents from news. Does NOT create gap-fill reports or update existing reports.",
       "dailyIncidentUpdater": "Only updates EXISTING reports. Does NOT create new reports. Handles broken links, image generation, and enrichment.",

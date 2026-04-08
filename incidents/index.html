@@ -472,22 +472,22 @@
         A comprehensive archive of cyber security incidents, breaches, and attack campaigns. Each incident is documented with threat actor profiles, attack vectors, and verified impact analysis.
       </p>
 
-      <!-- Stats Bar -->
+      <!-- Stats Bar (computed dynamically from manifest.json) -->
       <div class="stats-bar" id="statsBar">
         <div class="stat">
-          <div class="stat-value" id="totalCount">11</div>
+          <div class="stat-value" id="totalCount">—</div>
           <div class="stat-label">Total Incidents</div>
         </div>
         <div class="stat">
-          <div class="stat-value" id="criticalCount">6</div>
+          <div class="stat-value" id="criticalCount">—</div>
           <div class="stat-label">Critical Severity</div>
         </div>
         <div class="stat">
-          <div class="stat-value" id="supplyChainCount">4</div>
+          <div class="stat-value" id="supplyChainCount">—</div>
           <div class="stat-label">Supply Chain</div>
         </div>
         <div class="stat">
-          <div class="stat-value" id="ransomwareCount">3</div>
+          <div class="stat-value" id="ransomwareCount">—</div>
           <div class="stat-label">Ransomware</div>
         </div>
       </div>
@@ -526,206 +526,54 @@
   <div id="site-footer"></div>
 
   <script>
-    // Incident data from manifest
-    const incidentsData = [
-      {
-        slug: "axios-unc1069-compromise",
-        incidentId: "TP-2026-0015",
-        title: "Axios npm Package Compromise by UNC1069",
-        org: "Axios (npm)",
-        attackType: "supply-chain",
-        threatActor: "UNC1069",
-        date: "2026-03-31",
-        severity: "Critical",
-        excerpt: "A critical supply chain attack compromised the Axios npm package, exposing millions of developers to potential malware distribution.",
-        tags: ["npm", "north-korea", "open-source", "rat", "supply-chain"]
-      },
-      {
-        slug: "teampcp-supply-chain-attack",
-        incidentId: null,
-        title: "TeamPCP Supply Chain Attack Campaign",
-        org: "Multiple (GitHub Actions, PyPI, OpenVSX)",
-        attackType: "supply-chain",
-        threatActor: "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
-        date: "2026-02-28",
-        severity: "Critical",
-        excerpt: "A sophisticated multi-platform supply chain attack targeted GitHub Actions, PyPI, and OpenVSX, stealing credentials from multiple organizations.",
-        tags: ["github-actions", "pypi", "supply-chain", "cicd", "credential-theft", "litellm", "telnyx", "kics"]
-      },
-      {
-        slug: "european-commission-trivy-breach-2026",
-        incidentId: "TP-2026-0020",
-        title: "European Commission Cloud Breach via Trivy Supply Chain",
-        org: "European Commission",
-        attackType: "supply-chain",
-        threatActor: "TeamPCP",
-        date: "2026-03-19",
-        severity: "Critical",
-        excerpt: "The European Commission's cloud infrastructure was breached through a compromised Trivy security scanner, affecting government systems across EU states.",
-        tags: ["trivy", "cloud", "government", "eu", "data-exfiltration", "shinyhunters"]
-      },
-      {
-        slug: "vivaticket-ransomhouse-2026",
-        incidentId: "TP-2026-0018",
-        title: "Vivaticket Ransomware Attack Disrupts European Cultural Institutions",
-        org: "Vivaticket",
-        attackType: "ransomware",
-        threatActor: "RansomHouse",
-        date: "2026-03-02",
-        severity: "High",
-        excerpt: "RansomHouse ransomware crippled Vivaticket's ticketing system, disrupting cultural events across France and Italy including the Louvre.",
-        tags: ["ransomware", "ransomhouse", "ticketing", "europe", "louvre", "anssi"]
-      },
-      {
-        slug: "cegedim-sante-health-breach-2026",
-        incidentId: null,
-        title: "Cegedim Santé Healthcare Data Breach",
-        org: "Cegedim Santé",
-        attackType: "data-breach",
-        threatActor: "Unknown",
-        date: "2026-03-15",
-        severity: "Critical",
-        excerpt: "A major healthcare data breach exposed sensitive medical records and social security information for thousands of French patients.",
-        tags: ["healthcare", "pii", "france", "social-security", "medical-records"]
-      },
-      {
-        slug: "stryker-handala-wiper-2026",
-        incidentId: "TP-2026-0017",
-        title: "Stryker Corporation Wiper Attack by Handala",
-        org: "Stryker Corporation",
-        attackType: "wiper",
-        threatActor: "Handala (Void Manticore / Iran MOIS)",
-        date: "2026-03-11",
-        severity: "Critical",
-        excerpt: "Handala wiper malware destroyed data across Stryker's systems in 79 countries, targeting critical medical device infrastructure.",
-        tags: ["wiper", "iran", "medical-devices", "destructive", "mdm", "handala", "intune"]
-      },
-      {
-        slug: "drift-protocol-dprk-exploit-2026",
-        incidentId: "TP-2026-0021",
-        title: "Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors",
-        org: "Drift Protocol (Solana)",
-        attackType: "defi-exploit",
-        threatActor: "DPRK-linked (Sapphire Sleet / Lazarus Group)",
-        date: "2026-04-01",
-        severity: "Critical",
-        excerpt: "DPRK-linked threat actors exploited an oracle manipulation vulnerability in Drift Protocol, draining $285 million in cryptocurrency.",
-        tags: ["defi", "crypto", "north-korea", "oracle-manipulation", "solana", "lazarus"]
-      },
-      {
-        slug: "foster-city-ransomware-2026",
-        incidentId: "TP-2026-0022",
-        title: "Foster City Ransomware Attack Forces State of Emergency",
-        org: "City of Foster City, California",
-        attackType: "ransomware",
-        threatActor: "Unknown",
-        date: "2026-03-19",
-        severity: "High",
-        excerpt: "A ransomware attack crippled Foster City's municipal systems, forcing officials to declare a state of emergency.",
-        tags: ["ransomware", "municipal", "government", "state-of-emergency", "california"]
-      },
-      {
-        slug: "die-linke-qilin-ransomware-2026",
-        incidentId: "TP-2026-0023",
-        title: "Die Linke Political Party Hit by Qilin Ransomware",
-        org: "Die Linke (The Left Party)",
-        attackType: "ransomware",
-        threatActor: "Qilin",
-        date: "2026-03-26",
-        severity: "High",
-        excerpt: "Qilin ransomware gang targeted Germany's Die Linke political party, exfiltrating sensitive internal communications and member data.",
-        tags: ["ransomware", "qilin", "political-party", "germany", "data-exfiltration"]
-      },
-      {
-        slug: "trivy-cve-2026-33634",
-        incidentId: "TP-2026-0024",
-        title: "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
-        org: "Aqua Security (Trivy)",
-        attackType: "supply-chain",
-        threatActor: "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
-        date: "2026-03-19",
-        severity: "Critical",
-        excerpt: "CVE-2026-33634 revealed a critical vulnerability in Trivy's GitHub Actions integration, exploited in multiple targeted supply chain attacks.",
-        tags: ["trivy", "github-actions", "supply-chain", "cve", "infostealer", "cicd"]
-      },
-      {
-        slug: "shiny-hunters-leak-site",
-        incidentId: "TP-TA-0008",
-        title: "ShinyHunters Operations & Leak Site Activity",
-        org: "ShinyHunters (Threat Actor Profile)",
-        attackType: "data-extortion",
-        threatActor: "ShinyHunters (UNC5537)",
-        date: "2026-01-28",
-        severity: "High",
-        excerpt: "ShinyHunters threat actor group maintains active leak site with stolen data from SaaS platforms, using vishing tactics for credential theft.",
-        tags: ["shinyhunters", "data-leak-site", "extortion", "vishing", "saas", "salesforce", "snowflake"]
-      },
-      {
-        slug: "fbi-dcsnet-salt-typhoon-2026",
-        incidentId: "TP-2026-0025",
-        title: "FBI DCSNet Surveillance System Breach by Salt Typhoon",
-        org: "Federal Bureau of Investigation (FBI)",
-        attackType: "espionage",
-        threatActor: "Salt Typhoon (China MSS)",
-        date: "2026-02-17",
-        severity: "Critical",
-        excerpt: "Salt Typhoon breached FBI's DCSNet wiretap surveillance system via ISP supply chain compromise, exposing classified law enforcement data.",
-        tags: ["espionage", "china", "salt-typhoon", "surveillance", "fisma", "dcsnet"]
-      },
-      {
-        slug: "lexisnexis-react2shell-breach-2026",
-        incidentId: "TP-2026-0026",
-        title: "LexisNexis AWS Cloud Breach via React2Shell Exploit",
-        org: "LexisNexis Legal & Professional",
-        attackType: "data-breach",
-        threatActor: "FulcrumSec",
-        date: "2026-02-24",
-        severity: "High",
-        excerpt: "FulcrumSec exploited a React2Shell vulnerability to breach LexisNexis AWS infrastructure, exfiltrating government user profiles and legal data.",
-        tags: ["cloud", "aws", "react2shell", "data-breach", "legal", "government"]
-      },
-      {
-        slug: "adobe-mr-raccoon-breach-2026",
-        incidentId: "TP-2026-0027",
-        title: "Adobe BPO Supply Chain Breach by Mr. Raccoon",
-        org: "Adobe",
-        attackType: "data-breach",
-        threatActor: "Mr. Raccoon",
-        date: "2026-04-03",
-        severity: "High",
-        excerpt: "Threat actor Mr. Raccoon breached Adobe via an Indian BPO contractor, exfiltrating 13 million support tickets, employee records, and HackerOne submissions.",
-        tags: ["data-breach", "bpo", "supply-chain", "rat", "spearphishing", "adobe"]
-      },
-      {
-        slug: "conduent-data-breach-2026",
-        incidentId: "TP-2026-0028",
-        title: "Conduent Massive Data Breach Affects 25 Million Americans",
-        org: "Conduent Business Services",
-        attackType: "data-breach",
-        threatActor: "Unknown",
-        date: "2026-02-20",
-        severity: "Critical",
-        excerpt: "A massive breach at Conduent exposed SSNs, medical data, and personal information of 25 million Americans — potentially the largest US breach in history.",
-        tags: ["data-breach", "healthcare", "government-services", "ssn", "medical-data", "largest-breach"]
-      },
-      {
-        slug: "hims-hers-shinyhunters-breach-2026",
-        incidentId: "TP-2026-0029",
-        title: "Hims & Hers Health Zendesk Breach by ShinyHunters",
-        org: "Hims & Hers Health",
-        attackType: "data-breach",
-        threatActor: "ShinyHunters (UNC5537)",
-        date: "2026-02-05",
-        severity: "High",
-        excerpt: "ShinyHunters compromised Hims & Hers' Zendesk via Okta SSO, stealing millions of telehealth support tickets containing customer PII.",
-        tags: ["data-breach", "telehealth", "zendesk", "okta", "shinyhunters", "healthcare"]
-      }
-    ];
-
-    // State
-    let filteredIncidents = [...incidentsData];
+    /* ── Dynamic data from manifest.json ─────────────────────────────────── */
+    let incidentsData = [];
+    let filteredIncidents = [];
     let activeAttackTypeFilter = null;
     let activeSeverityFilter = null;
+
+    // Load incidents from manifest.json — the single source of truth
+    (async function loadIncidents() {
+      try {
+        const resp = await fetch('manifest.json');
+        if (!resp.ok) throw new Error('Failed to load manifest.json: ' + resp.status);
+        const data = await resp.json();
+        incidentsData = (data.incidents || []).map(inc => ({
+          slug: inc.slug,
+          incidentId: inc.incidentId,
+          title: inc.title,
+          org: inc.org,
+          attackType: inc.attackType || 'unknown',
+          threatActor: inc.threatActor || 'Unknown',
+          date: inc.date,
+          severity: inc.severity || 'Medium',
+          // Generate excerpt from available fields (manifest doesn't carry excerpts)
+          excerpt: inc.excerpt || `${inc.severity} ${inc.attackType.replace(/-/g, ' ')} incident targeting ${inc.org}` +
+                   (inc.threatActor && inc.threatActor !== 'Unknown' ? ` attributed to ${inc.threatActor.split('(')[0].trim()}` : '') +
+                   `. Sector: ${inc.sector || 'Unknown'}. Geography: ${inc.geography || 'Unknown'}.`,
+          tags: inc.tags || []
+        }));
+        updateStats();
+        renderAttackTypeChips();
+        renderSeverityChips();
+        filterAndRender();
+      } catch (err) {
+        console.error('Incident manifest load error:', err);
+        document.getElementById('incidentsGrid').innerHTML =
+          '<div class="no-results"><div class="no-results-title">Error loading incidents</div><p>' + err.message + '</p></div>';
+      }
+    })();
+
+    // Compute and display stats dynamically from loaded data
+    function updateStats() {
+      document.getElementById('totalCount').textContent = incidentsData.length;
+      document.getElementById('criticalCount').textContent =
+        incidentsData.filter(i => i.severity === 'Critical').length;
+      document.getElementById('supplyChainCount').textContent =
+        incidentsData.filter(i => i.attackType === 'supply-chain').length;
+      document.getElementById('ransomwareCount').textContent =
+        incidentsData.filter(i => i.attackType === 'ransomware').length;
+    }
 
     // Parse date
     function parseDate(dateStr) {
@@ -763,7 +611,7 @@
       getUniqueAttackTypes().forEach(type => {
         const chip = document.createElement('button');
         chip.className = 'chip';
-        chip.textContent = type.replace('-', ' ').toUpperCase();
+        chip.textContent = type.replace(/-/g, ' ').toUpperCase();
         chip.dataset.type = type;
         if (activeAttackTypeFilter === type) chip.classList.add('active');
         chip.addEventListener('click', () => {
@@ -882,7 +730,7 @@
           <div class="incident-meta">
             <span class="incident-date">${formatDate(incident.date)}</span>
             <span class="incident-org">${incident.org}</span>
-            <span class="incident-type">${incident.attackType.replace('-', ' ').toUpperCase()}</span>
+            <span class="incident-type">${incident.attackType.replace(/-/g, ' ').toUpperCase()}</span>
             ${incident.threatActor && incident.threatActor !== 'Unknown' ? `<span class="incident-actor">${incident.threatActor.split('(')[0].trim()}</span>` : ''}
           </div>
 
@@ -901,15 +749,9 @@
       });
     }
 
-
     // Search input event
     document.getElementById('searchInput').addEventListener('input', filterAndRender);
     document.getElementById('sortSelect').addEventListener('change', filterAndRender);
-
-    // Initial render
-    renderAttackTypeChips();
-    renderSeverityChips();
-    renderIncidents();
   </script>
 
   <script src="../assets/site-chrome.js"></script>
