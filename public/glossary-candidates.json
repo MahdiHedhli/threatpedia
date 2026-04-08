@@ -1,0 +1,145 @@
+{
+  "lastUpdated": "2026-04-07T13:00:00Z",
+  "candidates": [
+    {
+      "term": "Durable Nonce",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "Solana transaction feature allowing transactions to remain valid for extended periods, exploited to pre-sign administrative transfers weeks before execution",
+      "suggestedRoles": ["threat-intel", "cloud-sec"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Oracle Manipulation",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "Attack vector exploiting DeFi protocol price oracles by artificially inflating token prices through wash trading and liquidity manipulation",
+      "suggestedRoles": ["threat-intel", "appsec-devsecops"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "WAVESHAPER.V2",
+      "foundIn": ["axios-unc1069-compromise", "teampcp-supply-chain-attack"],
+      "context": "Multi-platform remote access trojan deployed in axios supply chain attack with reconnaissance, C2 beaconing, and enhanced stealth capabilities",
+      "suggestedRoles": ["threat-intel", "ir-forensics"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Demodex",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "Windows kernel-mode rootkit deployed by Salt Typhoon enabling persistent remote access with process hiding and anti-forensics capabilities",
+      "suggestedRoles": ["threat-intel", "ir-forensics"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "CALEA",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "Communications Assistance for Law Enforcement Act; Salt Typhoon compromised telecom CALEA infrastructure coordinated with DCSNet breach",
+      "suggestedRoles": ["threat-intel", "grc"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "DCS-3000",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "FBI Digital Collection System component codenamed 'Red Hook'; processes pen register and trap-and-trace surveillance operations",
+      "suggestedRoles": ["threat-intel", "ir-forensics"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Phantom Dependency",
+      "foundIn": ["axios-unc1069-compromise"],
+      "context": "Supply chain attack technique using fake npm package dependency (plain-crypto-js) to inject malicious second-stage payload via postinstall script",
+      "suggestedRoles": ["appsec-devsecops", "threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "SILKBELL",
+      "foundIn": ["axios-unc1069-compromise"],
+      "context": "Second-stage dropper in axios attack that decrypts payload, detects platform (Windows/macOS/Linux), and deploys appropriate RAT variant",
+      "suggestedRoles": ["threat-intel", "ir-forensics"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "CanisterWorm",
+      "foundIn": ["teampcp-supply-chain-attack"],
+      "context": "Self-replicating worm leveraging stolen npm tokens to autonomously propagate malicious code across 47+ npm packages in TeamPCP campaign",
+      "suggestedRoles": ["threat-intel", "appsec-devsecops"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "UNC4736",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "DPRK-linked threat actor attributed to Drift Protocol DeFi exploit and $50M Radiant Capital hack with medium-high confidence",
+      "suggestedRoles": ["threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "FISMA",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "Federal Information Security Modernization Act; DCSNet breach classified as 'major incident' under FISMA governing federal cyber incident reporting",
+      "suggestedRoles": ["grc", "threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "CWE-506",
+      "foundIn": ["teampcp-supply-chain-attack", "trivy-cve-2026-33634"],
+      "context": "CWE classification for Embedded Malicious Code; categorizes TeamPCP's code injection in supply chain attack on Trivy",
+      "suggestedRoles": ["appsec-devsecops", "threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Wash Trading",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "Market manipulation technique used in DeFi exploits to artificially inflate token trading volume and price before using as collateral",
+      "suggestedRoles": ["threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "SIRN",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "Solana Incident Response Network; launched by Solana Foundation to coordinate DeFi ecosystem security incident response after Drift exploit",
+      "suggestedRoles": ["threat-intel", "ir-forensics"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "BOD 22-01",
+      "foundIn": ["trivy-cve-2026-33634"],
+      "context": "CISA Binding Operational Directive requiring federal agencies to remediate known exploited vulnerabilities within specified deadlines",
+      "suggestedRoles": ["grc", "threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Sapphire Sleet",
+      "foundIn": ["drift-protocol-dprk-exploit-2026", "axios-unc1069-compromise"],
+      "context": "Microsoft designation for North Korean state actor overlapping with UNC1069, BlueNoroff, STARDUST CHOLLIMA in multiple supply chain campaigns",
+      "suggestedRoles": ["threat-intel"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "React2Shell",
+      "foundIn": ["lexisnexis-react2shell-breach-2026"],
+      "context": "Vulnerability in unpatched React frontend application exploited by FulcrumSec to gain unauthorized access to LexisNexis AWS infrastructure",
+      "suggestedRoles": ["appsec-devsecops", "pentest-red"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Pen Register",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "Surveillance tool that records outgoing call metadata from a targeted phone line; processed by FBI DCS-3000 system breached by Salt Typhoon",
+      "suggestedRoles": ["threat-intel", "grc"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Trap and Trace",
+      "foundIn": ["fbi-dcsnet-salt-typhoon-2026"],
+      "context": "Surveillance device that captures incoming call metadata to a targeted phone; paired with pen registers in FBI DCSNet operations",
+      "suggestedRoles": ["threat-intel", "grc"],
+      "discoveredDate": "2026-04-07"
+    },
+    {
+      "term": "Durable Transaction",
+      "foundIn": ["drift-protocol-dprk-exploit-2026"],
+      "context": "Blockchain transaction mechanism allowing pre-signing of transactions that bypass normal expiration, used in Drift Protocol governance exploit",
+      "suggestedRoles": ["threat-intel", "cloud-sec"],
+      "discoveredDate": "2026-04-07"
+    }
+  ]
+}

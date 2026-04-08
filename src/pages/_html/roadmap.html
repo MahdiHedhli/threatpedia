@@ -330,10 +330,10 @@
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 1 &mdash; 45%</span>
+        <span>Phase 1 &mdash; 39%</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" style="width: 45%"></div>
+        <div class="progress-fill" style="width: 39%"></div>
       </div>
     </div>
 
@@ -388,9 +388,9 @@
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">16 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 2 approved, 14 pending review.</div>
+          <div class="item-desc">21 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 2 approved, 19 pending review.</div>
           <div class="item-meta">
-            <span class="item-tag">16 reports</span>
+            <span class="item-tag">21 reports</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -534,6 +534,44 @@
           <div class="item-meta">
             <span class="item-tag">X/Twitter</span>
             <span class="item-tag">RSS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Malware Family Registry</div>
+          <div class="item-desc">First-class entity type for malware families with variant tracking, hash storage (SHA-256), lineage/fork trees, and attribution chains to APTs and incidents. Seeded from Malpedia with curator enrichment. Observed-in-incidents scope first, backfill queue for historical data.</div>
+          <div class="item-meta">
+            <span class="item-tag">Malpedia integration</span>
+            <span class="item-tag">hash-only</span>
+            <span class="item-tag">family lineage</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Exploit &amp; Zero-Day Registry</div>
+          <div class="item-desc">Dedicated exploit entity tracking the full lifecycle: discovery, disclosure, patch, weaponization, CISA KEV status. Zero-day classification with days-in-the-wild metrics. Linked to CVEs, malware families, APTs, and incidents.</div>
+          <div class="item-meta">
+            <span class="item-tag">zero-day tracking</span>
+            <span class="item-tag">exploit lifecycle</span>
+            <span class="item-tag">CISA KEV</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Malware &amp; Exploit Backfill Pipeline</div>
+          <div class="item-desc">Automated backfill queue scanning existing incidents for unregistered malware references. Malpedia API seeding for stub records, prioritized by incident count and APT attribution. Quarterly reconciliation reports.</div>
+          <div class="item-meta">
+            <span class="item-tag">automated</span>
+            <span class="item-tag">backfill</span>
           </div>
         </div>
       </div>
