@@ -654,7 +654,7 @@ import json
 import time
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from bs4 import BeautifulSoup
 
@@ -746,7 +746,7 @@ class OAICNDBConnector:
 
         # Extract total notifications
         notif_match = re.search(
-            r'(\d{3,4})\s+(?:notifications?|data breach notifications?|breaches?\s+notif)',
+            r'(\d{3,7})\s+(?:notifications?|data breach notifications?|breaches?\s+notif)',
             text, re.IGNORECASE
         )
         if notif_match:
@@ -789,7 +789,7 @@ class OAICNDBConnector:
             "regulatory_framework": "Privacy Act 1988 (Cth) — NDB Scheme",
             "data_source": "oaic-ndb",
             "confidence_level": "HIGH",
-            "last_synced": datetime.utcnow().isoformat() + "Z",
+            "last_synced": datetime.now(timezone.utc).isoformat(),
         }
 
     def sync_reports(self, local_store) -> dict:
@@ -824,7 +824,7 @@ class OAICNDBConnector:
                 logger.info(f"Ingested OAIC NDB report: {period} "
                           f"({normalized.get('total_notifications', '?')} notifications)")
             except Exception as e:
-                logger.error(f"Failed to parse report {period}: {e}")
+                logger.exception(f"Failed to parse report {period}: {e}")
 
         logger.info(f"OAIC NDB sync complete: {stats}")
         return stats
