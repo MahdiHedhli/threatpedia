@@ -488,7 +488,7 @@
 
         function updateStats() {
             const total = allExploits.length;
-            const activeZeroDays = allExploits.filter(e => e.isZeroDay && e.status === 'Active').length;
+            const activeZeroDays = allExploits.filter(e => e.isZeroDay && (e.status === 'Active Exploitation' || e.status === 'Weaponized')).length;
             const unpatched = allExploits.filter(e => !e.patchDate).length;
             const cisaKev = allExploits.filter(e => e.cisaKev).length;
 
@@ -514,7 +514,7 @@
                 if (hasAllFilter) return true;
 
                 for (const filter of activeFilters) {
-                    if (filter === 'active-zeroday' && exploit.isZeroDay && exploit.status === 'Active') return true;
+                    if (filter === 'active-zeroday' && exploit.isZeroDay && (exploit.status === 'Active Exploitation' || exploit.status === 'Weaponized')) return true;
                     if (filter === 'patched' && exploit.patchDate) return true;
                     if (filter === 'critical' && exploit.severity === 'Critical') return true;
                     if (filter === 'cisa-kev' && exploit.cisaKev) return true;
