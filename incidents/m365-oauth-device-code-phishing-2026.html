@@ -832,6 +832,36 @@
           </div>
         </div>
 
+        <!-- PENDING HUMAN REVIEW: Recent Intelligence Updates (April 8, 2026) -->
+        <div class="section">
+          <h2 class="section-title">Recent Intelligence Updates (April 8, 2026)</h2>
+          <div class="section-content">
+            <p><strong>Campaign Escalation:</strong> The EvilTokens device code phishing campaign has dramatically escalated since mid-March 2026. According to The Register (April 7, 2026), threat actors are now compromising "hundreds of organizations daily," representing a significant increase from the initial 340+ organizations reported in late March.</p>
+
+            <p><strong>Advanced Infrastructure Analysis:</strong> Huntress released detailed technical analysis revealing that the campaign leverages Railway.com PaaS and Cloudflare Workers as core attack infrastructure. The report "Railway.com PaaS as Microsoft 365 Token Attack Infrastructure" provides deep technical insights into how attackers abstract and obfuscate their infrastructure for token harvesting.</p>
+
+            <p><strong>Threat-as-a-Service Expansion:</strong> Sekoia published Part 1 of a comprehensive deep-dive into the "EvilTokens kit," confirming that device code phishing has been operationalized as a fully functional as-a-service platform. This development indicates maturation of the threat landscape and commoditization of OAuth phishing techniques.</p>
+
+            <p><strong>Detection & Intelligence Updates:</strong></p>
+            <ul>
+              <li>Help Net Security (March 31, 2026): "EvilTokens ramps up device code phishing targeting Microsoft 365 users" — details on campaign acceleration and targeting patterns</li>
+              <li>Cloud Security Alliance Labs published additional research note on the campaign, providing updated detection methodologies</li>
+            </ul>
+
+            <p><strong>Future Threat Expansion:</strong> Intelligence indicates that EvilTokens operators intend to extend support beyond Microsoft 365 to include Gmail and Okta phishing pages. Organizations relying on alternative identity providers should begin hardening authentication flows accordingly.</p>
+
+            <p><strong>Operational Sophistication:</strong> The campaign now incorporates generative AI for hyper-personalized lure crafting and full end-to-end automation. Additionally, threat actors have implemented dynamic on-demand code generation, effectively bypassing the standard 15-minute device code expiration window that defenders rely on for temporal containment.</p>
+
+            <p><strong>Expanded Target Profile:</strong></p>
+            <ul>
+              <li><strong>Sector Expansion:</strong> Beyond initial targeting of tech and financial sectors, EvilTokens now targets construction, nonprofit, real estate, manufacturing, financial services, healthcare, legal services, and local government organizations.</li>
+              <li><strong>Geographic Expansion:</strong> Campaign now spans 9 countries: United States, Canada, Australia, New Zealand, Germany, France, India, Switzerland, and United Arab Emirates.</li>
+            </ul>
+
+            <p><strong>Implications for Defenders:</strong> The combination of increased operational tempo, expanded geographic reach, cross-platform targeting plans, and AI-assisted personalization signals that the EvilTokens campaign represents a significant evolution in OAuth phishing maturity. Organizations should assume that legacy detection signatures are increasingly less effective and prioritize behavioral/anomalous authentication detection over pattern-based approaches.</p>
+          </div>
+        </div>
+
         <!-- Sources & References -->
         <div class="section">
           <h2 class="section-title">Sources & References</h2>
@@ -852,6 +882,24 @@
               <li><strong>Infosecurity Magazine:</strong> "OAuth Phishing Campaigns Surge in 2026" — March 2026
                 <br><a href="https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/" style="color: var(--amber); text-decoration: none;">https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/</a>
               </li>
+
+              <li><strong>The Register:</strong> "Campaign has escalated to hundreds compromised daily" — April 7, 2026
+                <br><a href="https://www.theregister.com/" style="color: var(--amber); text-decoration: none;">https://www.theregister.com/</a>
+              </li>
+
+              <li><strong>Huntress:</strong> "Railway.com PaaS as Microsoft 365 Token Attack Infrastructure" — April 2026
+                <br><a href="https://www.huntress.com/blog/" style="color: var(--amber); text-decoration: none;">https://www.huntress.com/blog/</a>
+              </li>
+
+              <li><strong>Sekoia:</strong> "New widespread EvilTokens kit: device code phishing as-a-service" (Part 1 deep-dive) — April 2026
+                <br><a href="https://www.sekoia.io/" style="color: var(--amber); text-decoration: none;">https://www.sekoia.io/</a>
+              </li>
+
+              <li><strong>Help Net Security:</strong> "EvilTokens ramps up device code phishing targeting Microsoft 365 users" — March 31, 2026
+                <br><a href="https://www.helpnetsecurity.com/" style="color: var(--amber); text-decoration: none;">https://www.helpnetsecurity.com/</a>
+              </li>
+
+              <li><strong>Cloud Security Alliance Labs:</strong> Research note on EvilTokens campaign — April 2026</li>
 
               <li><strong>Palo Alto Networks Unit 42:</strong> Threat intelligence research on Storm-2372 and EvilTokens PhaaS platform</li>
 

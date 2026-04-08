@@ -714,6 +714,43 @@
                     </div>
                 </section>
 
+                <!-- PENDING HUMAN REVIEW: New enrichment section added with April 8, 2026 intelligence -->
+                <section class="section">
+                    <h2 class="section-title">April 8, 2026 Enrichment Update</h2>
+                    <div class="section-content">
+                        <p>As of April 8, 2026, additional intelligence has surfaced regarding the Adobe Mr. Raccoon incident. Adobe has not issued an official statement confirming or denying the breach, maintaining the same status as reported on April 7. However, significant third-party research and media coverage has emerged with new technical and strategic insights.</p>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Expanded Media & Research Coverage</h3>
+                        <p><a href="https://securityonline.info/adobe-data-breach-mr-raccoon-bpo-supply-chain-leak/" style="color: var(--amber); text-decoration: none;">SecurityOnline published "The BPO Backdoor: How Mr. Raccoon Swiped 13 Million Adobe Support Tickets"</a>, providing detailed supply chain analysis of the attack methodology. Independent researchers examining the breach claims continue to assess the incident as appearing plausible, though verification and scope confirmation remain ongoing. Coverage has expanded across multiple security research and news outlets including CyberSecurityNews, CyberPress, CyberNews, News9Live, The CyberSec Guru, Cryptika Cybersecurity, and Rankiteo.</p>
+
+                        <p><a href="https://x.com/intcybersec/" style="color: var(--amber); text-decoration: none;">International Cyber Digest first broke the story on X/Twitter</a>, catalyzing the broader security community response and subsequent analysis by independent researchers.</p>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Confirmed Attack Vector Details</h3>
+                        <p>Research consolidation has produced a detailed, step-by-step confirmation of the attack vector:</p>
+                        <div style="margin-left: 20px; margin-top: 12px;">
+                            <ol style="margin-left: 20px; margin-top: 8px;">
+                                <li style="margin-bottom: 8px;"><strong>RAT Deployment on Indian BPO Employee:</strong> Initial phishing email with malicious attachment executed Remote Access Trojan on BPO support worker's workstation</li>
+                                <li style="margin-bottom: 8px;"><strong>Webcam & WhatsApp Access:</strong> RAT provided attacker with webcam access and ability to intercept WhatsApp communications, enabling sophisticated social engineering and real-time monitoring of target communications</li>
+                                <li style="margin-bottom: 8px;"><strong>Manager Spear-Phishing:</strong> Using information gathered via webcam and messaging intercept, attacker conducted targeted spear-phishing campaign against BPO employee's manager</li>
+                                <li style="margin-bottom: 8px;"><strong>Privilege Escalation:</strong> Successful credential compromise of manager account provided elevated helpdesk access necessary for bulk ticket export operations</li>
+                                <li style="margin-bottom: 8px;"><strong>Adobe Internal Systems Access:</strong> Compromised manager credentials granted access to Adobe's internal helpdesk infrastructure and connected systems</li>
+                            </ol>
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>HackerOne Bug Bounty Exposure Risk:</strong> Analysis confirms that complete HackerOne bug bounty submission archives were compromised. This represents a critical security threat, as the submission database may contain details of unpatched vulnerabilities, exploitation techniques, and security issues under active remediation. Threat actors now possess roadmaps to vulnerabilities Adobe may still be patching or have not yet disclosed.
+                        </div>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Third-Party Vendor Supply Chain Risk Analysis</h3>
+                        <p><a href="https://rankiteo.com/bpo-supply-chain/" style="color: var(--amber); text-decoration: none;">Rankiteo published risk analysis examining BPO supply chain vulnerabilities</a>, highlighting how Adobe's use of Indian Business Process Outsourcing providers creates outsized attack surface compared to internal support operations. The analysis identifies endemic weaknesses in BPO employee endpoint security, lower baseline cybersecurity training, and access control challenges in outsourced helpdesk environments.</p>
+
+                        <p>This incident exemplifies a growing 2026 risk vector: as enterprises expand third-party vendor and outsourced support relationships to reduce costs, they simultaneously expand their attack surface to include vendor employee workstations, vendor network security, and vendor identity management systems. The compromised BPO provider becomes an effective entry point into enterprise infrastructure without requiring direct attacks on enterprise assets.</p>
+
+                        <h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Unconfirmed Status Unchanged</h3>
+                        <p>As of April 8, 2026, Adobe has not issued official confirmation or denial of the Mr. Raccoon breach claims. The lack of official response combined with credible third-party analysis and widespread media coverage suggests Adobe may be conducting internal investigation before issuing a public statement. Regulatory notification obligations may be driving internal response timelines.</p>
+                    </div>
+                </section>
+
                 <section class="section">
                     <h2 class="section-title">Remediation & Lessons Learned</h2>
                     <div class="section-content">
