@@ -7,7 +7,9 @@
     <meta name="keywords" content="BlueHammer, Windows LPE, TOCTOU, VSS Abuse, Windows Defender, Zero-Day, Public PoC, Unpatched">
     <meta name="review-status" content="approved">
     <meta name="generated-by" content="manual-zero-day-ingestion">
-    <meta name="generated-date" content="2026-04-08T12:00:00Z">
+    <meta name="generated-date" content="2026-04-08T16:00:00Z">
+    <meta name="last-enriched" content="2026-04-08T16:00:00Z">
+    <meta name="enriched-by" content="zero-day-enricher">
     <title>BlueHammer: Windows Defender LPE Zero-Day (TP-EXP-0001) - Threatpedia</title>
     <script src="../assets/analytics.js"></script>
     <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg">
@@ -1065,11 +1067,182 @@
                     </div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2026-04-08 (TODAY)</div>
+                    <div class="timeline-date">2026-04-07</div>
                     <div class="timeline-event">
-                        <strong>Status: UNPATCHED. No CVE. Active researcher iteration ongoing.</strong> — Exploit remains viable on all patched Windows 10/11 systems. No patch released; CVE not assigned. Researcher community continues variant development.
+                        <strong>SANS ISC Stormcast podcast covers BlueHammer</strong> — Episode 9882 includes BlueHammer analysis alongside redirect phishing, Internet Bug Bounty suspension, and Keycloak MFA bypass.
                     </div>
                 </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-07</div>
+                    <div class="timeline-event">
+                        <strong>BlueHammerFix detection engineering repo published</strong> — technoherder releases 7 Sigma rules, 4 YARA rules, 9 bug fixes, and MITRE ATT&amp;CK-mapped technical report on GitHub.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-08</div>
+                    <div class="timeline-event">
+                        <strong>Exploit Pack publishes independent analysis</strong> — Assesses BlueHammer as "research-grade PoC with unreliable post-exploitation chains." Local SAM extraction confirmed; final SYSTEM escalation failed in their testing due to account state assumptions.
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026-04-08</div>
+                    <div class="timeline-event">
+                        <strong>Day 5 in the wild: UNPATCHED. No CVE. No CISA KEV.</strong> — Exploit remains viable on all patched Windows 10/11 systems. Microsoft has not assigned a CVE or released a patch. Not listed in CISA KEV catalog. Variant development continues via SNEK fork. Detection engineering resources now available from community.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PENDING HUMAN REVIEW: Intelligence Enrichment Added April 8, 2026 — zero-day-enricher -->
+
+        <!-- MITRE ATT&CK Mapping -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🗺️</span>
+                <h2>MITRE ATT&amp;CK Mapping</h2>
+            </div>
+            <table class="ioc-table">
+                <thead>
+                    <tr>
+                        <th>Technique ID</th>
+                        <th>Technique Name</th>
+                        <th>Exploit Chain Stage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>T1068</code></td>
+                        <td>Exploitation for Privilege Escalation</td>
+                        <td>Stages 3–5</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1543.003</code></td>
+                        <td>Create or Modify System Process: Windows Service</td>
+                        <td>Stage 7</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1562.001</code></td>
+                        <td>Impair Defenses: Disable or Modify Tools</td>
+                        <td>Stage 4</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1574.005</code></td>
+                        <td>Hijack Execution Flow: Executable Installer File Permissions Abuse</td>
+                        <td>Stage 5</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1003.002</code></td>
+                        <td>OS Credential Dumping: SAM</td>
+                        <td>Stage 6</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1552.002</code></td>
+                        <td>Unsecured Credentials: Credentials in Registry</td>
+                        <td>Stage 6</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1098</code></td>
+                        <td>Account Manipulation</td>
+                        <td>Stage 6</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1569.002</code></td>
+                        <td>System Services: Service Execution</td>
+                        <td>Stage 7</td>
+                    </tr>
+                    <tr>
+                        <td><code>T1005</code></td>
+                        <td>Data from Local System</td>
+                        <td>Stage 5</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 1rem; color: var(--muted); font-size: 12px;">
+                Source: <a href="https://github.com/technoherder/BlueHammerFix" target="_blank">BlueHammerFix</a> detection engineering repository
+            </p>
+        </div>
+
+        <!-- Community Detection Engineering Resources -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">🔬</span>
+                <h2>Community Detection Engineering</h2>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div>
+                    <h3 style="color: var(--amber); margin-bottom: 0.75rem;">Sigma Rules (8 rules — BlueHammerFix)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div class="detection-item high">
+                            <div class="detection-label high">SIGMA</div>
+                            <strong>bluehammer_samlib_load.yml</strong> — Non-LSASS process loading samlib.dll
+                        </div>
+                        <div class="detection-item high">
+                            <div class="detection-label high">SIGMA</div>
+                            <strong>bluehammer_rapid_password_change.yml</strong> — Password change-logon-restore cycle (Event IDs 4723/4724)
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_junction_basenamed.yml</strong> — Junction to BaseNamedObjects
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_temp_service_creation.yml</strong> — GUID-named temporary service creation
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_oplock_rstrtmgr.yml</strong> — Exclusive handle on RstrtMgr.dll
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_cloudfiles_abuse.yml</strong> — Cloud Files API by non-provider
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_lsa_bootkey_access.yml</strong> — LSA boot key registry access
+                        </div>
+                        <div class="detection-item medium">
+                            <div class="detection-label medium">SIGMA</div>
+                            <strong>bluehammer_defender_rpc_call.yml</strong> — Non-Defender RPC to IMpService
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: var(--amber); margin-bottom: 0.75rem;">YARA Rules (4 rules — BlueHammerFix)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div class="detection-item high">
+                            <div class="detection-label high">YARA</div>
+                            <strong>bluehammer.yar</strong> — Exact match rule for original PoC binary + 3 variant detection patterns for modified/recompiled builds
+                        </div>
+                    </div>
+                </div>
+                <p style="color: var(--muted); font-size: 12px;">
+                    All rules available at: <a href="https://github.com/technoherder/BlueHammerFix" target="_blank">github.com/technoherder/BlueHammerFix</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Weaponization Assessment -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-icon">⚠️</span>
+                <h2>Weaponization Assessment</h2>
+            </div>
+            <div class="summary-text">
+                <p>
+                    <strong>Current assessment: Research-grade PoC — not yet production-ready for red team use.</strong>
+                </p>
+                <br>
+                <p>
+                    <strong>Exploit Pack (April 8):</strong> Independent testing confirmed local SAM hive extraction succeeds, but final SYSTEM escalation failed due to account state assumptions. Assessed as "tightly coupled to Defender update timing, Microsoft-hosted signature content, local account state." <em>Not added to Exploit Pack toolkit.</em>
+                </p>
+                <br>
+                <p>
+                    <strong>Variant Risk:</strong> The SNEK fork (<a href="https://github.com/atroubledsnake/SNEK_Blue-War-Hammer" target="_blank">SNEK_Blue-War-Hammer</a>) provides a reimplementation with documentation. Because the weakness lives in how Windows components interact (not a single file), recompiling from modified source bypasses the static Defender signature entirely. The BlueHammerFix repo includes 9 bug fixes that improve reliability of the original PoC.
+                </p>
+                <br>
+                <p>
+                    <strong>Threat Actor Adoption:</strong> No confirmed threat actor usage as of April 8, 2026. No integration into known exploit kits or frameworks. However, the combination of public PoC, community-fixed reliability issues, and lack of a vendor patch increases weaponization risk over time.
+                </p>
             </div>
         </div>
 
@@ -1120,6 +1293,31 @@
                     <strong>github.com/atroubledsnake/SNEK_Blue-War-Hammer</strong><br>
                     <a href="https://github.com/atroubledsnake/SNEK_Blue-War-Hammer" target="_blank">Community fork and variant implementations</a>
                 </div>
+                <div class="source-item">
+                    <div class="source-type analysis">ANALYSIS</div>
+                    <strong>github.com/technoherder/BlueHammerFix</strong><br>
+                    <a href="https://github.com/technoherder/BlueHammerFix" target="_blank">Detection engineering: 7 Sigma rules, 4 YARA rules, 9 bug fixes, MITRE ATT&amp;CK mapping</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type analysis">ANALYSIS</div>
+                    <strong>exploitpack.com</strong><br>
+                    <a href="https://www.exploitpack.com/blogs/news/blue-hammer-analysis-ms-defender-lpe" target="_blank">Independent reliability assessment and weaponization analysis</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>SANS ISC Stormcast — Episode 9882</strong><br>
+                    <a href="https://isc.sans.edu/podcastdetail/9882" target="_blank">April 7 podcast covering BlueHammer alongside other current threats</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>securityboulevard.com</strong><br>
+                    <a href="https://securityboulevard.com/2026/04/bluehammer-windows-zero-day-exploit-leaked-after-microsoft-disclosure-dispute/" target="_blank">Disclosure dispute context and Microsoft response analysis</a>
+                </div>
+                <div class="source-item">
+                    <div class="source-type coverage">COVERAGE</div>
+                    <strong>cyberinsider.com</strong><br>
+                    <a href="https://cyberinsider.com/disgruntled-researcher-drops-bluehammer-windows-zero-day-lpe-exploit/" target="_blank">Community and industry reaction</a>
+                </div>
             </div>
 
             <div class="tags-container">
@@ -1141,6 +1339,12 @@
                 <span class="tag">Full Disclosure</span>
                 <span class="tag">MSRC</span>
                 <span class="tag">Chaotic Eclipse</span>
+                <span class="tag">MITRE ATT&CK</span>
+                <span class="tag">Sigma Rules</span>
+                <span class="tag">YARA Rules</span>
+                <span class="tag">BlueHammerFix</span>
+                <span class="tag">SNEK Fork</span>
+                <span class="tag">SANS ISC</span>
             </div>
         </div>
     </main>

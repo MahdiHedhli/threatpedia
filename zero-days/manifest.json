@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T12:00:00Z",
+  "lastUpdated": "2026-04-08T16:00:00Z",
   "schemaVersion": "1.0",
   "description": "Zero-day and exploit index for Threatpedia. All zero-day-related agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying exploits.",
   "exploits": [
@@ -17,13 +17,37 @@
       "patchDate": null,
       "researcher": "Chaotic Eclipse / Nightmare-Eclipse",
       "confirmedBy": "Will Dormann (Tharros)",
-      "daysInTheWild": null,
+      "daysInTheWild": 5,
       "cisaKev": false,
       "reviewStatus": "approved",
       "generatedBy": "manual-zero-day-ingestion",
-      "relatedIncidents": ["bluehammer-windows-defender-zero-day-2026", "chrome-cve-2026-5281-zero-day", "forticlient-ems-cve-2026-35616"],
+      "relatedIncidents": [
+        "bluehammer-windows-defender-zero-day-2026",
+        "chrome-cve-2026-5281-zero-day",
+        "forticlient-ems-cve-2026-35616"
+      ],
       "relatedActors": [],
-      "tags": ["bluehammer", "windows-lpe", "toctou", "vss-abuse", "windows-defender", "cloud-files-api", "sam-dump", "ntlm-hash", "zero-day", "public-poc", "unpatched", "race-condition", "full-disclosure"]
+      "tags": [
+        "bluehammer",
+        "windows-lpe",
+        "toctou",
+        "vss-abuse",
+        "windows-defender",
+        "cloud-files-api",
+        "sam-dump",
+        "ntlm-hash",
+        "zero-day",
+        "public-poc",
+        "unpatched",
+        "race-condition",
+        "full-disclosure",
+        "mitre-attack",
+        "sigma-rules",
+        "yara-rules",
+        "detection-engineering",
+        "snek-fork",
+        "sans-isc"
+      ]
     }
   ],
   "referencedButMissing": []
