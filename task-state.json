@@ -69,14 +69,14 @@
       "writesTo": ["threat-actors.html", "threat-actor-index.json", "threat-actor-queue.json", "incidents/manifest.json"],
       "readsFrom": ["threat-actor-queue.json", "threat-actor-index.json", "incidents/manifest.json", "task-state.json"]
     },
-    "zeroDay­Tracker": {
+    "zeroDayTracker": {
       "taskId": "zero-day-tracker",
       "frequency": "Daily weekdays at 7 AM",
       "purpose": "Discover and publish new zero-day/exploit entries from threat intel feeds, CISA KEV, NVD, and incident reports. Update status lifecycle (PoC → Weaponized → Active → Patched → Historical). Auto-classify zero-days when first_exploited < patch_released.",
       "writesTo": ["zero-days/*.html", "zero-days/manifest.json", "incidents/manifest.json"],
       "readsFrom": ["zero-days/manifest.json", "incidents/manifest.json", "task-state.json"]
     },
-    "zeroDay­Enricher": {
+    "zeroDayEnricher": {
       "taskId": "zero-day-enricher",
       "frequency": "Wed/Sat at 4 PM",
       "purpose": "Enrich existing zero-day entries with new intel, update patch status, add detection guidance, compute days-in-the-wild metrics, cross-link to incidents and threat actors, update CISA KEV flags.",
@@ -186,7 +186,7 @@
     "incident-crosslink-gapfill": {
       "locked": false,
       "lockedAt": null,
-      "lastCompleted": null
+      "lastCompleted": "2026-04-08T13:10:08Z"
     }
   },
 
@@ -194,9 +194,9 @@
     "manifestFirst": "All incident-related tasks MUST read incidents/manifest.json as their first step",
     "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports. The incidents/index.html page now reads from manifest.json dynamically via fetch() — updating manifest.json is ALL that is needed for new incidents to appear on the page and in the stats. Do NOT modify incidents/index.html to add incident data.",
     "actorPageLinking": "When threat-actor-updater creates a new threat-actors/*.html page, it MUST also add the actor slug to the 'actorPages' Set in threat-actors.html so the registry links to the new page.",
-    "zeroDay­ManifestFirst": "All zero-day-related tasks MUST read zero-days/manifest.json as their first step for dedup and cross-referencing.",
-    "zeroDay­ManifestUpdate": "All zero-day-related tasks MUST update zero-days/manifest.json after creating or modifying exploit entries. The zero-days/index.html and zero-days.html pages read from manifest.json dynamically — updating manifest.json is ALL that is needed for new exploits to appear.",
-    "zeroDay­IncidentCrossLink": "When creating a zero-day entry, check incidents/manifest.json for related incidents using the CVE and exploit name. Add bidirectional references: exploit.relatedIncidents[] and incident.relatedSlugs[].",
+    "zeroDayManifestFirst": "All zero-day-related tasks MUST read zero-days/manifest.json as their first step for dedup and cross-referencing.",
+    "zeroDayManifestUpdate": "All zero-day-related tasks MUST update zero-days/manifest.json after creating or modifying exploit entries. The zero-days/index.html and zero-days.html pages read from manifest.json dynamically — updating manifest.json is ALL that is needed for new exploits to appear.",
+    "zeroDayIncidentCrossLink": "When creating a zero-day entry, check incidents/manifest.json for related incidents using the CVE and exploit name. Add bidirectional references: exploit.relatedIncidents[] and incident.relatedSlugs[].",
     "noOverlap": {
       "newThreatIntel": "Only creates reports for brand-new incidents from news. Does NOT create gap-fill reports or update existing reports.",
       "dailyIncidentUpdater": "Only updates EXISTING reports. Does NOT create new reports. Handles broken links, image generation, and enrichment.",
