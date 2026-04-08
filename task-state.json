@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-06T19:30:00Z",
+  "lastUpdated": "2026-04-07T20:05:00Z",
   "schemaVersion": "1.0",
   "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
 
@@ -93,11 +93,11 @@
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
-      "totalReports": 9,
-      "pendingReview": 7,
+      "totalReports": 14,
+      "pendingReview": 12,
       "approved": 2,
-      "referencedButMissing": 2,
-      "lastNewReportDate": "2026-04-06"
+      "referencedButMissing": 1,
+      "lastNewReportDate": "2026-04-07"
     },
     "glossary": {
       "totalTerms": 1006,
@@ -126,7 +126,7 @@
       "currentActorCount": 78,
       "queueSize": 0
     },
-    "lastIncidentScan": "2026-04-06T12:00:00Z",
+    "lastIncidentScan": "2026-04-07T20:00:00Z",
     "dataIngestion": {
       "manifestPath": "data/data-sources-manifest.json",
       "stagedSources": 1,
@@ -153,7 +153,7 @@
     "new-threat-intel": {
       "locked": false,
       "lockedAt": null,
-      "lastCompleted": null
+      "lastCompleted": "2026-04-07T20:05:00Z"
     },
     "incident-crosslink-gapfill": {
       "locked": false,
