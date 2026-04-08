@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueHammer: Unpatched Windows Defender Zero-Day Enables SYSTEM Escalation — Threatpedia</title>
+    <meta name="description" content="Critical zero-day in Windows Defender enables local privilege escalation to SYSTEM on all Windows 10/11 systems.">
+    <meta name="review-status" content="approved">
+    <meta name="generated-by" content="manual-zero-day-ingestion">
+    <meta name="generated-date" content="2026-04-08T12:00:00Z">
+    <meta name="incident-id" content="TP-2026-0036">
+    <meta name="severity" content="critical">
+    <meta name="attack-type" content="zero-day-lpe">
+
+    <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg">
+    <link rel="apple-touch-icon" href="../tp-favicon.svg">
+    <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+    <script src="../assets/analytics.js"></script>
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+            --danger: #d1293f;
+            --danger-dim: #7a1525;
+            --success: #3fb950;
+            --success-dim: #238636;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        body {
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(30, 39, 51, 0.3) 1px, rgba(30, 39, 51, 0.3) 2px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(30, 39, 51, 0.3) 1px, rgba(30, 39, 51, 0.3) 2px),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/></filter></defs><rect width="100" height="100" fill="%23080b10" filter="url(%23noise)" opacity="0.03"/></svg>');
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        #site-header {
+            min-height: 80px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        main {
+            min-height: 400px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Header styling */
+        .incident-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .incident-id {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.75rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .incident-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: var(--amber);
+        }
+
+        .meta-value {
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .severity-critical {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* Content sections */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--amber-dim);
+            color: var(--white);
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.875rem;
+            color: var(--white);
+        }
+
+        h4 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.05rem;
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        em {
+            color: var(--amber);
+            font-style: italic;
+        }
+
+        .tech-details {
+            background-color: var(--surface);
+            border-left: 4px solid var(--amber);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            gap: 1.5rem;
+        }
+
+        .timeline-date {
+            flex-shrink: 0;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .timeline-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: #a0a9b8;
+        }
+
+        .indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            margin: 0 0.25rem;
+            color: var(--text);
+        }
+
+        .indicator.critical {
+            background-color: rgba(209, 41, 63, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .indicator.unassigned {
+            background-color: rgba(232, 160, 32, 0.15);
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        /* Sidebar styling */
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-fact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quick-fact:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--amber);
+        }
+
+        .fact-value {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .fact-value.critical {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .sidebar-list li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar-list a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: rgba(232, 160, 32, 0.1);
+            border: 1px solid rgba(232, 160, 32, 0.3);
+            border-radius: 4px;
+            color: var(--amber);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-list a:hover {
+            background-color: rgba(232, 160, 32, 0.2);
+            border-color: var(--amber);
+        }
+
+        .sidebar-list a::before {
+            content: "→";
+            flex-shrink: 0;
+        }
+
+        .related-link {
+            display: block;
+            padding: 0.75rem;
+            background-color: rgba(13, 17, 23, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            margin-bottom: 0.75rem;
+        }
+
+        .related-link:hover {
+            background-color: var(--surface);
+            border-color: var(--amber);
+            color: var(--white);
+        }
+
+        .related-link strong {
+            color: var(--amber);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #site-footer {
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .incident-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="container">
+        <div class="content-grid">
+            <main>
+                <article>
+                    <div class="incident-header">
+                        <div class="incident-id">Incident TP-2026-0036</div>
+                        <h1>BlueHammer: Unpatched Windows Defender Zero-Day Enables SYSTEM Escalation</h1>
+                        <div class="incident-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Reported</span>
+                                <span class="meta-value">2026-04-03</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Severity</span>
+                                <span class="meta-value severity-critical">CRITICAL</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Attack Type</span>
+                                <span class="meta-value">Local Privilege Escalation</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Patch Status</span>
+                                <span class="meta-value">No patch available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section>
+                        <h2>Executive Summary</h2>
+                        <p>
+                            BlueHammer is a critical zero-day vulnerability in Windows Defender that enables local privilege escalation from standard user to SYSTEM on all Windows 10 and Windows 11 systems, regardless of patch level. Discovered and disclosed by <strong>Chaotic Eclipse</strong>, an independent security researcher, the exploit chains multiple Defender subsystems to achieve complete system compromise in under 60 seconds without requiring kernel-level exploits or elevated privileges.
+                        </p>
+                        <p>
+                            The vulnerability was initially disclosed via a detailed blog post on 2026-03-26, with public exploit details following by 2026-03-29. As of 2026-04-07, Microsoft has released a Defender signature-based mitigation, but no permanent patch exists. This vulnerability affects every Windows 10 and Windows 11 endpoint globally.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>Technical Overview</h2>
+                        <p>
+                            BlueHammer exploits a design flaw in Windows Defender's architecture by chaining multiple legitimate subsystems to achieve local privilege escalation:
+                        </p>
+
+                        <h3>Attack Chain</h3>
+                        <ol>
+                            <li><strong>Defender Update Workflow</strong> — Attacker manipulates the scheduled update process to trigger Defender service operations with elevated privileges</li>
+                            <li><strong>Volume Shadow Copy (VSS)</strong> — Exploits VSS snapshot manipulation to stage files in protected system locations</li>
+                            <li><strong>Cloud Files API</strong> — Leverages placeholder file handling to execute code during Defender's file processing</li>
+                            <li><strong>Opportunistic Locks (Oplocks)</strong> — Uses oplock callbacks to inject code into Defender's file scanning threads at SYSTEM level</li>
+                        </ol>
+
+                        <div class="tech-details">
+                            <h4>Key Technical Insight</h4>
+                            <p>
+                                The vulnerability does not require kernel exploitation or driver loading. Instead, it abuses Defender's legitimate file-monitoring subsystems and the Windows API's built-in file locking mechanisms. The exploit operates entirely within user-mode constraints while achieving SYSTEM-level code execution through Defender service interactions.
+                            </p>
+                        </div>
+
+                        <h3>Exploitation Characteristics</h3>
+                        <ul>
+                            <li><strong>Execution Time:</strong> 30–60 seconds from attack initiation to SYSTEM shell</li>
+                            <li><strong>No Kernel Exploits:</strong> Entirely user-mode exploitation</li>
+                            <li><strong>Static Signature Bypass:</strong> Exploit code is highly polymorphic; signature-based mitigations can be easily evaded</li>
+                            <li><strong>Requires Standard User:</strong> Attack can be launched from any unprivileged user account</li>
+                            <li><strong>Defender-Agnostic:</strong> Affects all versions of Windows Defender, including enterprise editions with custom configurations</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Disclosure Timeline</h2>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2026-03-26</div>
+                            <div class="timeline-content">
+                                <p><strong>Initial Disclosure:</strong> Chaotic Eclipse publishes detailed technical blog post describing BlueHammer vulnerability, including vulnerability mechanics and proof-of-concept code.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2026-03-29</div>
+                            <div class="timeline-content">
+                                <p><strong>PoC Release:</strong> Full working exploit released on public GitHub repository. Within 48 hours, exploit variants appear across underground forums.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2026-03-31</div>
+                            <div class="timeline-content">
+                                <p><strong>Microsoft Aware:</strong> Microsoft confirms awareness of BlueHammer and begins emergency response. CVE assignment requested but not yet assigned.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2026-04-07</div>
+                            <div class="timeline-content">
+                                <p><strong>Signature Mitigation:</strong> Microsoft releases Defender signature updates (definition version 1.393.X) to detect BlueHammer exploitation patterns. This is a temporary mitigation only; permanent kernel-level fix requires OS update.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2026-04-08</div>
+                            <div class="timeline-content">
+                                <p><strong>Active Exploitation:</strong> BlueHammer exploitation detected in the wild across multiple threat actor campaigns. Ransomware operators and APT groups already weaponizing the exploit.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Impact Analysis</h2>
+
+                        <h3>Affected Systems</h3>
+                        <ul>
+                            <li>All Windows 10 systems (all versions and builds)</li>
+                            <li>All Windows 11 systems (all versions and builds)</li>
+                            <li>Enterprise deployments with Windows Defender for Endpoint</li>
+                            <li>Fully patched systems are equally vulnerable</li>
+                            <li>No version, build number, or patch level provides protection</li>
+                        </ul>
+
+                        <h3>Threat Impact</h3>
+                        <p>
+                            <strong>Complete System Compromise:</strong> Any standard user can escalate to SYSTEM and gain complete control of the Windows system within minutes. Once at SYSTEM level, attackers can:
+                        </p>
+                        <ul>
+                            <li>Disable Windows Defender and other security tools</li>
+                            <li>Install persistent malware (rootkits, backdoors)</li>
+                            <li>Access sensitive data including encrypted files and credentials</li>
+                            <li>Pivot to domain controller or other network resources</li>
+                            <li>Deploy ransomware without detection or intervention</li>
+                        </ul>
+
+                        <h3>Real-World Attack Scenarios</h3>
+                        <ul>
+                            <li><strong>Phishing + LPE:</strong> Attacker sends phishing email with document that, when opened, triggers BlueHammer for immediate system compromise</li>
+                            <li><strong>Supply Chain:</strong> Compromised software installer runs as standard user, uses BlueHammer for privilege escalation, installs backdoor</li>
+                            <li><strong>Ransomware Worm:</strong> BlueHammer dramatically reduces the barrier to enterprise ransomware deployment; a single compromised user account can compromise entire network</li>
+                            <li><strong>APT Lateral Movement:</strong> Used as intermediate step for domain escalation and lateral movement in enterprise environments</li>
+                        </ul>
+
+                        <div class="tech-details">
+                            <h4>Signature Bypass Concerns</h4>
+                            <p>
+                                Microsoft's signature-based mitigation (released 2026-04-07) detects common BlueHammer exploitation patterns. However, the underlying vulnerability remains unpatched. Security researchers have already demonstrated multiple variants that bypass the current signatures. A permanent patch requires Windows kernel and Defender architecture changes, not merely signature updates.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Mitigation Guidance</h2>
+
+                        <h3>Immediate Actions (Within 24 Hours)</h3>
+                        <ul>
+                            <li><strong>Update Defender Signatures:</strong> Ensure Windows Defender definitions are updated to version 1.393.X or later. Enable automatic signature updates.</li>
+                            <li><strong>Behavioral Detection:</strong> Deploy behavioral EDR with SYSTEM process creation and privilege escalation monitoring</li>
+                            <li><strong>Audit Local Admins:</strong> Immediately audit and minimize accounts with local administrator privileges</li>
+                            <li><strong>Disable Unnecessary Services:</strong> Disable Windows Defender scheduled update task if not required, and restrict access to update infrastructure</li>
+                        </ul>
+
+                        <h3>Short-Term Mitigations (1–2 Weeks)</h3>
+                        <ul>
+                            <li><strong>Principle of Least Privilege:</strong> Remove domain users from local administrator groups. Enforce standard user-level permissions across the enterprise.</li>
+                            <li><strong>Event Log Monitoring:</strong> Monitor Windows Security Event ID 4723 (privilege escalation attempts) and 4724 (privileged group membership changes)</li>
+                            <li><strong>Process Monitoring:</strong> Alert on SYSTEM-level processes spawned from unprivileged contexts, particularly from Defender-related services</li>
+                            <li><strong>Application Whitelisting:</strong> Implement strict application whitelisting to prevent unsigned code execution at any privilege level</li>
+                            <li><strong>Credential Guard:</strong> Deploy Credential Guard on Windows 11 systems to limit credential theft impact</li>
+                        </ul>
+
+                        <h3>Long-Term Protections</h3>
+                        <ul>
+                            <li><strong>Await Permanent Patch:</strong> Monitor Microsoft security bulletins for permanent BlueHammer fix (expected in upcoming Monthly Security Update or emergency patch)</li>
+                            <li><strong>Containment Strategy:</strong> Implement network segmentation to limit lateral movement from compromised systems</li>
+                            <li><strong>EDR Enhancement:</strong> Deploy advanced EDR with behavioral analysis capabilities to detect privilege escalation attempts in real-time</li>
+                            <li><strong>Incident Response Readiness:</strong> Ensure IR team is prepared for rapid response to BlueHammer exploitation detected in the environment</li>
+                        </ul>
+
+                        <h3>Not Recommended</h3>
+                        <ul>
+                            <li><strong>Disabling Defender:</strong> Disabling Windows Defender entirely creates greater security risk than the LPE vulnerability itself</li>
+                            <li><strong>Older Windows Versions:</strong> Migrating to unsupported Windows versions introduces greater risks; instead focus on mitigation controls</li>
+                            <li><strong>Signature Reliance:</strong> Do not rely solely on signature detection; attackers will evade signatures within days</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Related Intelligence</h2>
+                        <p>
+                            BlueHammer is part of a broader pattern of critical vulnerabilities affecting core Windows components. Organizations should assess their overall vulnerability management posture and ensure patch deployment processes are optimized to handle critical exploits within days, not weeks.
+                        </p>
+                        <p>
+                            See the dedicated <strong><a href="../zero-days/bluehammer-windows-defender-lpe-2026.html">BlueHammer Zero-Day Technical Analysis</a></strong> page for deeper technical details, exploitation mechanics, variant analysis, and code references.
+                        </p>
+                    </section>
+                </article>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Facts</div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Incident ID</span>
+                        <span class="fact-value">TP-2026-0036</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Date Reported</span>
+                        <span class="fact-value">2026-04-03</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Severity</span>
+                        <span class="fact-value critical">CRITICAL</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Attack Type</span>
+                        <span class="fact-value">Local Privilege Escalation</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Affected</span>
+                        <span class="fact-value">Windows 10 & 11 (All)</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">CVE</span>
+                        <span class="fact-value">
+                            <span class="indicator unassigned">UNASSIGNED</span>
+                        </span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Patch Status</span>
+                        <span class="fact-value">
+                            <span class="indicator critical">NO PATCH</span>
+                        </span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span class="fact-label">Threat Actor</span>
+                        <span class="fact-value">Chaotic Eclipse</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <ul class="sidebar-list">
+                        <li><a href="#executive-summary">No kernel exploit required</a></li>
+                        <li><a href="#technical-overview">Exploit chains Defender subsystems</a></li>
+                        <li><a href="#impact-analysis">Affects 100% of Windows endpoints</a></li>
+                        <li><a href="#mitigation-guidance">Signatures easily bypassed</a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Full Analysis</div>
+                    <a href="../zero-days/bluehammer-windows-defender-lpe-2026.html" class="related-link">
+                        <strong>→ Technical Deep Dive</strong>
+                        BlueHammer Zero-Day analysis page with exploitation mechanics, code analysis, and variant tracking
+                    </a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="./chrome-cve-2026-5281-zero-day.html" class="related-link">
+                        <strong>Chrome RCE</strong>
+                        CVE-2026-5281 zero-day affecting Chromium-based browsers
+                    </a>
+                    <a href="./forticlient-ems-cve-2026-35616.html" class="related-link">
+                        <strong>FortiClient EMS</strong>
+                        Critical RCE in Fortinet Enterprise Management Server
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+    <script src="../assets/js/glossary-tooltips.js" defer></script>
+    <script src="../assets/site-chrome.js"></script>
+    <script src="../assets/universal-search.js"></script>
+    <script src="../assets/incident-ticker.js"></script>
+</body>
+</html>

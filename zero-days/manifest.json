@@ -1,0 +1,30 @@
+{
+  "lastUpdated": "2026-04-08T12:00:00Z",
+  "schemaVersion": "1.0",
+  "description": "Zero-day and exploit index for Threatpedia. All zero-day-related agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying exploits.",
+  "exploits": [
+    {
+      "slug": "bluehammer-windows-defender-lpe-2026",
+      "exploitId": "TP-EXP-0001",
+      "title": "BlueHammer — Windows Defender LPE via VSS Race Condition",
+      "cve": "UNASSIGNED",
+      "type": "LPE",
+      "platform": "Windows 10 / 11",
+      "severity": "Critical",
+      "status": "Active Exploitation",
+      "isZeroDay": true,
+      "disclosedDate": "2026-04-03",
+      "patchDate": null,
+      "researcher": "Chaotic Eclipse / Nightmare-Eclipse",
+      "confirmedBy": "Will Dormann (Tharros)",
+      "daysInTheWild": null,
+      "cisaKev": false,
+      "reviewStatus": "approved",
+      "generatedBy": "manual-zero-day-ingestion",
+      "relatedIncidents": ["bluehammer-windows-defender-zero-day-2026", "chrome-cve-2026-5281-zero-day", "forticlient-ems-cve-2026-35616"],
+      "relatedActors": [],
+      "tags": ["bluehammer", "windows-lpe", "toctou", "vss-abuse", "windows-defender", "cloud-files-api", "sam-dump", "ntlm-hash", "zero-day", "public-poc", "unpatched", "race-condition", "full-disclosure"]
+    }
+  ],
+  "referencedButMissing": []
+}
