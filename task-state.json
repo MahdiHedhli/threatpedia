@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T09:17:04Z",
+  "lastUpdated": "2026-04-09T15:12:14Z",
   "schemaVersion": "1.0",
   "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
   "schedules": {
@@ -192,14 +192,14 @@
         "vcdb",
         "nist-nvd",
         "cve-mitre",
-        "misp"
+        "misp",
+        "mitre-attack",
+        "hhs-ocr"
       ],
       "specsReadyToBuild": [
-        "mitre-attack",
-        "hhs-ocr",
         "eu-gdpr-enforcement-tracker"
       ],
-      "lastRunDate": "2026-04-07",
+      "lastRunDate": "2026-04-09",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
@@ -208,7 +208,7 @@
       "approved": 3,
       "referencedButMissing": 1,
       "lastNewReportDate": "2026-04-09",
-      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files \u2014 the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
+      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files — the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
       "totalTerms": 1006,
@@ -262,7 +262,7 @@
         "zero-days/manifest.json": "Exploit index with metadata, status lifecycle, CISA KEV flags, cross-references. All zero-day-related agents read this FIRST.",
         "zero-days/TEMPLATE.html": "Template for individual zero-day exploit pages with severity meters, exploit chain, detection guidance, IOCs, mitigations, timeline, sources"
       },
-      "currentExploitCount": 6,
+      "currentExploitCount": 1,
       "statusTaxonomy": [
         "PoC Only",
         "Weaponized",
@@ -272,7 +272,7 @@
         "Historical"
       ],
       "entityIdFormat": "TP-EXP-NNNN",
-      "lastRunDate": "2026-04-09"
+      "lastRunDate": "2026-04-08"
     },
     "lastIncidentScan": "2026-04-09T09:17:04Z",
     "dataIngestion": {
@@ -293,24 +293,19 @@
   },
   "activeLocks": {
     "daily-incident-updater": {
-      "locked": false,
-      "lockedAt": null,
+      "locked": true,
+      "lockedAt": "2026-04-09T15:12:14Z",
       "lastCompleted": "2026-04-08T15:31:12Z"
     },
     "new-threat-intel": {
-      "locked": true,
-      "lockedAt": "2026-04-09T09:17:04Z",
-      "lastCompleted": "2026-04-09T00:35:44Z"
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T09:28:57Z"
     },
     "incident-crosslink-gapfill": {
       "locked": false,
       "lockedAt": null,
       "lastCompleted": "2026-04-08T13:10:08Z"
-    },
-    "zero-day-tracker": {
-      "locked": false,
-      "lockedAt": null,
-      "lastCompleted": "2026-04-09T07:00:00Z"
     }
   },
   "coordinationRules": {
