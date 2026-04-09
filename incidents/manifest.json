@@ -127,8 +127,8 @@
     {
       "slug": "cegedim-sante-health-breach-2026",
       "incidentId": null,
-      "title": "Cegedim Santé Healthcare Data Breach",
-      "org": "Cegedim Santé",
+      "title": "Cegedim Sant\u00e9 Healthcare Data Breach",
+      "org": "Cegedim Sant\u00e9",
       "attackType": "data-breach",
       "threatActor": "Unknown",
       "sector": "Healthcare",
@@ -259,7 +259,7 @@
     {
       "slug": "trivy-cve-2026-33634",
       "incidentId": "TP-2026-0024",
-      "title": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
+      "title": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
       "org": "Aqua Security (Trivy)",
       "attackType": "supply-chain",
       "threatActor": "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
@@ -579,7 +579,7 @@
     {
       "slug": "chrome-cve-2026-5281-zero-day",
       "incidentId": "TP-2026-0034",
-      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) — Fourth Actively Exploited in 2026",
+      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) \u2014 Fourth Actively Exploited in 2026",
       "org": "Google (Chrome)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
