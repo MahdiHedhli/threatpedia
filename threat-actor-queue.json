@@ -190,6 +190,32 @@
       "queuedAt": "2026-04-09T09:17:04Z",
       "queuedBy": "new-threat-intel-automation",
       "notes": "Crisis24/CodeRED platform was breached in Nov 2025; municipal credentials stolen. Potentially related to Patriot Regional attack."
+    },
+    {
+      "actorName": "DragonForce",
+      "action": "create",
+      "referencedFrom": [
+        "dragonforce-ransomware-campaign-april-2026"
+      ],
+      "context": "DragonForce RaaS group claimed 13+ victims in early April 2026 across manufacturing, packaging, hospitality, and utilities. Malaysian hacktivist origins evolved into financially motivated cybercrime. Double extortion with data exfiltration up to 1TB per victim.",
+      "suggestedAffiliation": "Criminal (Malaysian origin)",
+      "suggestedMotivation": "Financial",
+      "priority": "high",
+      "queuedBy": "new-threat-intel",
+      "queuedDate": "2026-04-08"
+    },
+    {
+      "actorName": "Lapsus$",
+      "action": "update-links",
+      "referencedFrom": [
+        "mercor-litellm-supply-chain-breach-2026"
+      ],
+      "context": "Lapsus$ extortion group claimed 4TB of data from Mercor AI after TeamPCP's LiteLLM supply chain compromise. Data includes source code, Slack comms, database records, and AI system conversation videos. Customers affected include Meta, OpenAI, Anthropic.",
+      "suggestedAffiliation": "Criminal",
+      "suggestedMotivation": "Financial (Extortion)",
+      "priority": "high",
+      "queuedBy": "new-threat-intel",
+      "queuedDate": "2026-04-08"
     }
   ],
   "queueRules": {
