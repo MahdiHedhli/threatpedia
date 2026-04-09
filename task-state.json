@@ -262,7 +262,7 @@
         "zero-days/manifest.json": "Exploit index with metadata, status lifecycle, CISA KEV flags, cross-references. All zero-day-related agents read this FIRST.",
         "zero-days/TEMPLATE.html": "Template for individual zero-day exploit pages with severity meters, exploit chain, detection guidance, IOCs, mitigations, timeline, sources"
       },
-      "currentExploitCount": 1,
+      "currentExploitCount": 6,
       "statusTaxonomy": [
         "PoC Only",
         "Weaponized",
@@ -272,7 +272,7 @@
         "Historical"
       ],
       "entityIdFormat": "TP-EXP-NNNN",
-      "lastRunDate": "2026-04-08"
+      "lastRunDate": "2026-04-09"
     },
     "lastIncidentScan": "2026-04-08T15:27:34Z",
     "dataIngestion": {
@@ -306,6 +306,11 @@
       "locked": false,
       "lockedAt": null,
       "lastCompleted": "2026-04-08T13:10:08Z"
+    },
+    "zero-day-tracker": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T07:00:00Z"
     }
   },
   "coordinationRules": {
