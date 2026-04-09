@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="report-id" content="TP-2026-0046">
+    <meta name="review-status" content="PENDING HUMAN REVIEW">
+    <meta name="severity" content="High">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-09">
+    <title>Winona County Second Ransomware Attack — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
+        }
+
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .meta-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .meta-value.threat-critical {
+            color: #ff4444;
+        }
+
+        .meta-value.threat-high {
+            color: #ff8800;
+        }
+
+        .meta-value.status-active {
+            color: #ff6b6b;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.3px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-content p {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
+            color: var(--white);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 32px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .attack-stage-title {
+            font-weight: 600;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <div class="container">
+        <article class="article-header">
+            <h1 class="incident-title">Winona County Second Ransomware Attack Prompts National Guard Deployment</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0046</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Jurisdiction</span>
+                    <span class="meta-value">Winona County, Minnesota (USA)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value threat-high">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attack Type</span>
+                    <span class="meta-value">Ransomware</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Extortion / Public Sector Targeting</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Threat Actor</span>
+                    <span class="meta-value">Unknown (Different from January 2026)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Targeted Services</span>
+                    <span class="meta-value">Government / Municipal Services</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date of Attack</span>
+                    <span class="meta-value">April 6, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Response Activation</span>
+                    <span class="meta-value">Minnesota National Guard (April 6, 2026)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Emergency Declaration</span>
+                    <span class="meta-value status-active">Local State of Emergency</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">911 Status</span>
+                    <span class="meta-value">Operational (Separate System)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Investigation Status</span>
+                    <span class="meta-value">Ongoing (FBI/BCA/External Experts)</span>
+                </div>
+            </div>
+        </article>
+
+        <div class="content-grid">
+            <main class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>Winona County, Minnesota suffered its second ransomware attack in 2026 on April 6, less than three months after a first attack in January. The April attack prompted Minnesota Governor Tim Walz to authorize Minnesota National Guard deployment to support county recovery operations. County officials declared a local state of emergency. Preliminary investigation indicates the April attack was conducted by a different threat actor than the January incident, suggesting the county remains a high-priority target for ransomware operations.</p>
+
+                        <p>County systems were taken offline to prevent further spread of malware. However, 911 emergency services continued operating on separate systems, maintaining public safety. Non-emergency government services including permit processing, tax assessments, and public record access were disrupted. FBI Minneapolis field office, Minnesota Bureau of Criminal Apprehension (BCA), and external cybersecurity experts engaged in rapid response efforts.</p>
+
+                        <p>The timing of the second attack raises questions about whether security improvements implemented after the January attack were insufficient, or whether the county was specifically re-targeted by a different actor exploiting knowledge of infrastructure vulnerabilities. The deployment of National Guard resources indicates the scope of disruption to municipal services and emphasizes the growing public safety implications of ransomware targeting government institutions.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-01-XX — January Attack</div>
+                                <div class="timeline-title">First Ransomware Incident</div>
+                                <div class="timeline-description">Winona County suffers initial ransomware attack attributed to unknown threat actor. Systems compromised, county services disrupted. Incident response and recovery initiated.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-01-XX to 2026-04-05 — Recovery & Hardening</div>
+                                <div class="timeline-title">Post-January Security Improvements</div>
+                                <div class="timeline-description">County implements security remediation measures following January attack. IT infrastructure upgraded, access controls enhanced, disaster recovery procedures reviewed. Response speed improvements demonstrate lessons learned from first incident.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-04-06 — 07:00 AM (Approx.)</div>
+                                <div class="timeline-title">Second Attack Begins</div>
+                                <div class="timeline-description">Threat actor deploys ransomware payload against Winona County systems. Attack vector and initial access method not yet publicly disclosed. Malware begins encryption of critical systems and data.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-04-06 — 09:30 AM (Approx.)</div>
+                                <div class="timeline-title">Incident Detection & Response Activation</div>
+                                <div class="timeline-description">County IT staff detect unauthorized activity and ransomware indicators. Systems isolated from network. Incident response procedures activated based on January lessons learned. Detection occurs faster than January incident, preventing wider spread.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-04-06 — 02:00 PM (Approx.)</div>
+                                <div class="timeline-title">State & Federal Agencies Engaged</div>
+                                <div class="timeline-description">County requests state assistance. Governor Walz authorized Minnesota National Guard deployment. FBI Minneapolis field office and Minnesota BCA notified. External cybersecurity incident response contractors mobilized.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-04-06 — Evening</div>
+                                <div class="timeline-title">Local State of Emergency Declaration</div>
+                                <div class="timeline-description">County officials declare local state of emergency. National Guard troops arrive in county to support recovery operations. County facilities closed to public pending system restoration. Government services limited to emergency operations only.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-04-07 — Ongoing</div>
+                                <div class="timeline-title">Investigation & Recovery Operations</div>
+                                <div class="timeline-description">Forensic investigation underway by FBI and BCA. Preliminary analysis indicates different threat actor than January attack. Recovery of critical systems prioritized. Estimated restoration timeline unknown pending investigation results.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Technical Details</h2>
+                    <div class="section-content">
+                        <p><strong>Attack Vector:</strong> Specific initial access vector not disclosed in public reporting as of April 9. Possible vectors based on common municipal ransomware targeting:</p>
+
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Potential Vector 1: Unpatched Remote Services</div>
+                                <div class="attack-stage-content">
+                                    Exploitation of unpatched vulnerabilities in exposed remote desktop services (RDP), VPN appliances, or web-facing applications. January attack may not have fully addressed all vulnerable services.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Potential Vector 2: Compromised Credentials</div>
+                                <div class="attack-stage-content">
+                                    Use of credentials obtained during January attack or from credential repositories (Dark Web markets, credential stuffing databases). Compromised domain accounts could enable lateral movement and system access.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Potential Vector 3: Supply-Chain/Third-Party Access</div>
+                                <div class="attack-stage-content">
+                                    Compromise of third-party vendor with access to county systems (IT contractor, cloud provider, managed services provider). Threat actor leverages vendor access to deploy ransomware.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Potential Vector 4: Email Social Engineering</div>
+                                <div class="attack-stage-content">
+                                    Spear phishing targeting county employees with credential-stealing emails or malicious attachments. User compromise leads to network access and lateral movement.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Ransomware Family:</strong> Not yet disclosed in public reporting. Identification pending forensic analysis completion. County has engaged external cybersecurity experts to determine specific malware family and extraction of threat actor TTPs.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Data Encryption Scope:</strong> Critical systems including citizen services databases, permitting systems, tax records, and public works management systems encrypted. Backup systems status unknown (dependent on whether backups were air-gapped and offline during attack).
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Ransom Demand:</strong> Ransom note content and extortion demand amount not disclosed as of April 9. Law enforcement guidance typically prevents public ransom disclosure to avoid encouraging similar attacks.
+                        </div>
+
+                        <div class="ioc-group">
+                            <div class="ioc-group-title">Known Detection/Response Indicators</div>
+                            <div class="ioc-list">
+                                <div class="ioc-item">Encrypted file extensions: [Pending forensic analysis — varies by ransomware family]</div>
+                                <div class="ioc-item">C2 infrastructure: [Not yet disclosed]</div>
+                                <div class="ioc-item">Malware hash values: [Pending analysis completion]</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <p><strong>Government Services Disruption:</strong> County government operations severely impacted. Public-facing services including permit processing, tax assessment, land records access, and business licensing offline. Citizens unable to conduct routine municipal business requiring system access.</p>
+
+                        <p><strong>Public Safety Continuity:</strong> While the attack disrupted county systems broadly, 911 emergency services continued operating on separate systems architecture. Emergency dispatch remained functional, preventing immediate public safety crisis. Non-emergency police, fire, and EMS operations continued with manual processes and backup systems.</p>
+
+                        <p><strong>Data Exposure Risk:</strong> Encrypted systems include personal information of county residents: names, addresses, phone numbers, property information, business licensing data. If threat actor obtained exfiltration tools, unencrypted copies of sensitive data could be subject to extortion pressure or dark web sale.</p>
+
+                        <p><strong>Recovery Resource Demand:</strong> Minnesota National Guard deployment indicates substantial municipal recovery effort required. Estimated restoration timeline likely extends weeks based on scale of encryption and need for forensic preservation during recovery efforts.</p>
+
+                        <p><strong>Financial Impact:</strong> Direct costs include incident response services, forensic investigation, system recovery/restoration, potential ransom payment (if decided), and remediation measures. Indirect costs include staff reallocation, public trust restoration, and potential regulatory fines if personal information is determined to have been compromised.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Attribution & Threat Actor Analysis</h2>
+                    <div class="section-content">
+                        <p><strong>Threat Actor Identity:</strong> Unknown. Preliminary investigation indicates the April 2026 attacker differs from the January 2026 threat actor responsible for the first Winona County attack. This determination is based on forensic indicators not yet disclosed in public reporting.</p>
+
+                        <p><strong>Attribution Indicators (Preliminary):</strong> Different threat actors typically employ different ransomware families, different C2 infrastructure, different operational timelines, and different extortion tactics. FBI and BCA analysts are examining these indicators to determine definitively whether the attacks are unrelated or if the attacker has changed their operational approach.</p>
+
+                        <p><strong>Targeting Motivation:</strong> Municipal government targets are attractive to ransomware operators because:
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Cities/counties depend on critical systems to provide public services</li>
+                            <li>Pressure to pay ransom to restore operations is higher than private sector targets</li>
+                            <li>Public pressure and political attention increase likelihood of payment</li>
+                            <li>Government cybersecurity posture often lags private sector</li>
+                            <li>Budget constraints limit investment in detection/response capabilities</li>
+                        </ul>
+                        </p>
+
+                        <p><strong>Repeat Targeting:</strong> The fact that Winona County was targeted twice within three months suggests one of the following scenarios:
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Different threat actors have identified the county as a high-probability target</li>
+                            <li>Intelligence sharing within ransomware affiliate networks highlights vulnerable organizations</li>
+                            <li>The county's known first incident makes it a target for opportunistic follow-up attacks</li>
+                            <li>Threat actors routinely target organizations that have recovered from previous attacks, assuming faster payment decisions</li>
+                        </ul>
+                        </p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Mitigations & Recommendations</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Immediate Actions:</strong><br><br>
+                            1. Preserve forensic evidence from all compromised systems (images, logs, memory dumps) for investigation and attribution.<br>
+                            2. Isolate affected systems from network to prevent lateral movement to uncompromised systems.<br>
+                            3. Activate business continuity/disaster recovery plans for critical services.<br>
+                            4. Restore systems from clean, verified backups (if available and maintained offline).<br>
+                            5. Establish incident command structure with clear leadership and communication channels.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Investigation Priorities:</strong><br><br>
+                            1. Identify initial access vector through forensic examination of entry points (RDP, email, web services, third-party access).<br>
+                            2. Determine scope of attacker dwell time (how long did attacker have access before detection).<br>
+                            3. Identify systems accessed by attacker and assess data exposure scope.<br>
+                            4. Preserve ransom note, threat actor communications, and any extortion threats for law enforcement analysis.<br>
+                            5. Coordinate with FBI and BCA on active investigation to support attribution and coordination with other targets.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Recovery & Hardening (Post-Incident):</strong><br><br>
+                            1. Implement network segmentation to isolate critical systems from general-purpose networks.<br>
+                            2. Enhance endpoint detection and response (EDR) capabilities for real-time threat detection.<br>
+                            3. Implement immutable backup strategy with offline, air-gapped backup copies renewed regularly.<br>
+                            4. Review and update disaster recovery procedures based on lessons learned from both incidents.<br>
+                            5. Conduct security awareness training for all county staff emphasizing ransomware threat vectors.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Long-Term Resilience:</strong><br><br>
+                            1. Assess municipal IT budget adequacy for cybersecurity investments (detection, response, training).<br>
+                            2. Consider managed security services (SOC, incident response) for 24/7 monitoring and rapid response.<br>
+                            3. Establish information sharing relationships with other Minnesota municipalities to share threat intelligence.<br>
+                            4. Request federal cybersecurity support through CISA for vulnerability assessments and technical assistance.<br>
+                            5. Consider cyber insurance policy review to ensure adequate coverage for recovery costs and business interruption.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Broader Context: Municipal Ransomware Targeting</h2>
+                    <div class="section-content">
+                        <p>Winona County's experience reflects a broader trend of increasing ransomware targeting of municipal government organizations. 2025-2026 has seen significant public sector ransomware incidents including attacks on major cities, county governments, and state agencies. The targeting is driven by both financial motivation (high payment probability) and opportunistic attack surfacing of vulnerable systems.</p>
+
+                        <p>The availability of ransomware-as-a-service (RaaS) platforms has lowered technical barriers to entry, enabling operators with minimal technical sophistication to conduct attacks. Affiliate networks enable specialization: initial access brokers compromise systems, affiliate operators conduct encryption campaigns, and negotiators handle ransom demands. This modularization increases attack throughput.</p>
+
+                        <p>The repeat targeting of Winona County within three months suggests threat actors are increasingly aware of organizations that have experienced incidents and may be more likely to pay ransom to restore services quickly. This creates a perverse incentive structure where prior victimization correlates with future targeting.</p>
+                    </div>
+                </section>
+
+                <div class="references">
+                    <h3 class="references-title">Sources &amp; References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <strong>MPR News (Minnesota Public Radio)</strong> — <em>Winona County Hit by Ransomware Attack for Second Time in 2026</em>
+                            <a href="https://www.mprnews.org/">https://www.mprnews.org/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <strong>KTTC (Rochester NBC Affiliate)</strong> — <em>National Guard Deployed to Winona County Following Ransomware Attack</em>
+                            <a href="https://www.kttc.com/">https://www.kttc.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <strong>Minnesota Governor's Office (Official)</strong> — <em>Governor Walz Authorizes National Guard Support for Winona County Ransomware Recovery</em>
+                            <a href="https://www.pca.state.mn.us/">https://www.pca.state.mn.us/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <strong>Winona Daily News</strong> — <em>Winona County Government Services Disrupted by Ransomware Attack</em>
+                            <a href="https://www.winonadailynews.com/">https://www.winonadailynews.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">5.</span>
+                            <strong>CISA (Cybersecurity and Infrastructure Security Agency)</strong> — <em>Municipal Ransomware Guidance and Threat Bulletins</em>
+                            <a href="https://www.cisa.gov/">https://www.cisa.gov/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">6.</span>
+                            <strong>FBI Minneapolis Field Office</strong> — <em>Public Sector Ransomware Response and Investigation</em>
+                            <a href="https://www.fbi.gov/">https://www.fbi.gov/</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.7;">
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Second Attack in 2026:</strong> Winona County, Minnesota targeted twice in four months (January + April 2026)</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">National Guard Response:</strong> Governor Tim Walz authorized Minnesota National Guard deployment to support recovery</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Different Threat Actors:</strong> Preliminary analysis suggests April attack from different group than January incident</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Services Disrupted:</strong> Municipal services offline; 911 systems continue (separate infrastructure)</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Investigation Ongoing:</strong> FBI Minneapolis and Minnesota BCA engaged; forensic analysis in progress</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Local State of Emergency:</strong> Declared April 6, 2026 to support recovery operations and resource allocation</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Affected Services</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Offline Systems:</strong> Citizen services database</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Offline Systems:</strong> Permit and licensing systems</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Offline Systems:</strong> Tax assessment records</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Offline Systems:</strong> Public works management</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Operational:</strong> 911 Emergency services</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Operational:</strong> Emergency dispatch</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Responding Agencies</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;">Winona County Government</div>
+                        <div style="padding: 6px 0;">Minnesota Governor's Office</div>
+                        <div style="padding: 6px 0;">Minnesota National Guard</div>
+                        <div style="padding: 6px 0;">FBI Minneapolis Field Office</div>
+                        <div style="padding: 6px 0;">Minnesota Bureau of Criminal Apprehension</div>
+                        <div style="padding: 6px 0;">External Cybersecurity Experts (Contractors)</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="#" class="sidebar-link">Foster City Ransomware (2026)</a>
+                    <a href="#" class="sidebar-link">Passaic County Medusa Ransomware (2026)</a>
+                    <a href="../patriot-regional-emergency-comms-attack-2026.html" class="sidebar-link">Patriot Regional Emergency Comms Attack</a>
+                    <a href="#" class="sidebar-link">Municipal Ransomware Trend Report 2025-2026</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Timeline Summary</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">January 2026:</strong> First attack</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">April 6, 2026:</strong> Second attack begins</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">April 6, 2026:</strong> NG deployed</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Investigation:</strong> Ongoing as of April 9</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../site-chrome.js"></script>
+  <script src="../glossary-tooltips.js"></script>
+  <script src="../universal-search.js"></script>
+  <script src="../incident-ticker.js"></script>
+</body>
+</html>

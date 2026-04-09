@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T15:27:34Z",
+  "lastUpdated": "2026-04-09T09:17:17Z",
   "description": "Terms found in incident reports but potentially missing from the glossary. Queued for weekly glossary-term-updater.",
   "candidates": [
     {
@@ -100,6 +100,60 @@
       "foundIn": [
         "ummc-medusa-ransomware-2026"
       ]
+    },
+    {
+      "term": "DLL Sideloading",
+      "foundIn": [
+        "operation-truechaos-trueconf-zero-day-2026"
+      ],
+      "suggestedDefinition": "Technique where attackers place a malicious DLL alongside a legitimate executable that loads it due to DLL search order hijacking.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "Havoc C2",
+      "foundIn": [
+        "operation-truechaos-trueconf-zero-day-2026"
+      ],
+      "suggestedDefinition": "Open-source post-exploitation command and control framework used by threat actors as an alternative to Cobalt Strike.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "UAC Bypass",
+      "foundIn": [
+        "operation-truechaos-trueconf-zero-day-2026"
+      ],
+      "suggestedDefinition": "Technique to circumvent Windows User Account Control to elevate privileges without triggering a consent prompt.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "CodeRED",
+      "foundIn": [
+        "patriot-regional-emergency-comms-attack-2026"
+      ],
+      "suggestedDefinition": "Emergency mass notification system used by municipalities to alert residents of emergencies via phone, email, and text.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "Nuclei Scanner",
+      "foundIn": [
+        "langflow-cve-2026-33017-rce-exploitation"
+      ],
+      "suggestedDefinition": "Open-source vulnerability scanner by ProjectDiscovery used for automated template-based scanning of web applications.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "OAST",
+      "foundIn": [
+        "langflow-cve-2026-33017-rce-exploitation"
+      ],
+      "suggestedDefinition": "Out-of-Band Application Security Testing — technique using external callback servers to detect blind vulnerabilities.",
+      "addedAt": "2026-04-09T09:17:17Z",
+      "addedBy": "new-threat-intel-automation"
     }
   ]
 }
