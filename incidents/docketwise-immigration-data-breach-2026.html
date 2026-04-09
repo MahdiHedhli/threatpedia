@@ -5,20 +5,14 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocketWise Immigration Software Breach Exposes 116,666 People | Threatpedia</title>
-
-    <!-- Meta Tags -->
-    <meta name="report-id" content="TP-2026-0038">
+    <meta name="report-id" content="TP-2026-0047">
     <meta name="review-status" content="PENDING HUMAN REVIEW">
     <meta name="severity" content="High">
-    <meta name="generated-by" content="new-threat-intel">
-    <meta name="generated-date" content="2026-04-08">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-09">
+    <title>DocketWise Immigration Data Breach — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg">
     <style>
         :root {
             --bg: #080b10;
@@ -40,19 +34,18 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow-x: hidden;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'IBM Plex Sans', sans-serif;
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* Grid Overlay */
         body::before {
             content: '';
             position: fixed;
@@ -61,14 +54,13 @@
             width: 100%;
             height: 100%;
             background-image:
-                linear-gradient(0deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(232, 160, 32, 0.03) 25%, rgba(232, 160, 32, 0.03) 26%, transparent 27%, transparent 74%, rgba(232, 160, 32, 0.03) 75%, rgba(232, 160, 32, 0.03) 76%, transparent 77%, transparent);
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
             background-size: 50px 50px;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
         }
 
-        /* Noise Texture */
         body::after {
             content: '';
             position: fixed;
@@ -76,22 +68,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' fill='rgba(255,255,255,0.02)' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.5;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
         }
 
-        /* Main Content Container */
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 96px 40px 40px;
             position: relative;
-            z-index: 2;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
         }
 
-        /* Article Header */
         .article-header {
             margin-bottom: 48px;
         }
@@ -99,869 +89,755 @@
         .incident-title {
             font-family: 'Playfair Display', serif;
             font-size: 48px;
-            font-weight: 800;
+            font-weight: 700;
             color: var(--white);
-            margin-bottom: 20px;
-            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
         }
 
         .incident-meta {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 32px;
-            padding: 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
         }
 
         .meta-label {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--amber);
-            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .meta-value {
-            font-size: 16px;
-            color: var(--white);
+            font-size: 14px;
             font-weight: 500;
+            color: var(--white);
         }
 
-        .severity-high {
-            color: #ff9900;
-            font-weight: 700;
+        .meta-value.threat-high {
+            color: #ff8800;
         }
 
-        .actor-link {
-            color: var(--amber);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .actor-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Content Grid */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 320px;
-            gap: 40px;
-            margin-top: 40px;
+            gap: 32px;
+            margin-bottom: 48px;
         }
 
         .main-content {
-            grid-column: 1;
+            min-width: 0;
         }
 
-        .sidebar {
-            grid-column: 2;
-            position: sticky;
-            top: 96px;
-            height: fit-content;
-        }
-
-        /* Section Styling */
         .section {
-            margin-bottom: 48px;
+            margin-bottom: 40px;
         }
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 600;
             color: var(--white);
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 2px solid var(--amber);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
 
         .section-content {
-            color: var(--text);
-            line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .section-content p {
-            margin-bottom: 16px;
+            color: var(--text);
+            line-height: 1.7;
         }
 
-        .section-content strong {
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
             color: var(--white);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
             font-weight: 600;
-        }
-
-        .subsection {
-            margin-top: 24px;
-            margin-bottom: 24px;
-        }
-
-        .subsection-title {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             color: var(--amber);
             margin-bottom: 12px;
-            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Timeline */
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
         .timeline {
-            margin-top: 20px;
+            position: relative;
+            margin: 32px 0;
         }
 
         .timeline-item {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-left: 20px;
-            border-left: 2px solid var(--border);
-            transition: border-color 0.2s ease;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
         }
 
-        .timeline-item:hover {
-            border-left-color: var(--amber);
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
         }
 
         .timeline-date {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 12px;
-            color: var(--amber);
             font-weight: 600;
-            min-width: 180px;
-            flex-shrink: 0;
-        }
-
-        .timeline-event {
-            color: var(--text);
-            flex-grow: 1;
-        }
-
-        /* Code/Technical Elements */
-        .tech-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--amber);
-            padding: 16px;
-            border-radius: 4px;
-            margin: 20px 0;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            overflow-x: auto;
-        }
-
-        .code-inline {
-            font-family: 'IBM Plex Mono', monospace;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 3px;
             color: var(--amber);
-            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
-        /* List Styling */
-        ul, ol {
-            margin-left: 20px;
-            margin-bottom: 16px;
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
         }
 
-        li {
-            margin-bottom: 12px;
+        .timeline-description {
+            font-size: 14px;
             color: var(--text);
+            line-height: 1.6;
         }
 
-        /* Attack Flow Diagram */
         .attack-flow {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             margin: 24px 0;
         }
 
         .attack-stage {
-            background: var(--surface);
+            background-color: var(--surface);
             border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 6px;
             border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
         }
 
-        .stage-number {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--amber);
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .stage-title {
-            font-size: 16px;
+        .attack-stage-title {
             font-weight: 600;
-            color: var(--white);
-            margin-bottom: 12px;
-        }
-
-        .stage-description {
-            font-size: 14px;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        /* IOC Cards */
-        .ioc-group {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .ioc-header {
+            color: var(--amber);
             font-family: 'IBM Plex Mono', monospace;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--amber);
-            margin-bottom: 12px;
-            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
-        .ioc-item {
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
+            gap: 24px;
         }
 
-        .ioc-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .ioc-label {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 11px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .ioc-value {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            color: #ff6b6b;
-            word-break: break-all;
-        }
-
-        /* Sidebar */
         .sidebar-box {
-            background: var(--surface);
+            background-color: var(--surface);
             border: 1px solid var(--border);
             padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            border-radius: 4px;
         }
 
         .sidebar-title {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--amber);
-            margin-bottom: 12px;
-            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
         }
 
-        .sidebar-content {
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
             font-size: 13px;
             line-height: 1.6;
             color: var(--text);
         }
 
-        .sidebar-link {
-            display: block;
+        .reference-item a {
             color: var(--amber);
             text-decoration: none;
-            margin-bottom: 10px;
-            transition: color 0.2s ease;
-            font-size: 13px;
-        }
-
-        .sidebar-link:hover {
-            color: var(--white);
-        }
-
-        .attack-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .attack-table th {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 12px;
-            text-align: left;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 11px;
-            color: var(--amber);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .attack-table td {
-            border: 1px solid var(--border);
-            padding: 12px;
-            background: rgba(13, 17, 23, 0.5);
-        }
-
-        .attack-table tbody tr:hover {
-            background: rgba(232, 160, 32, 0.05);
-        }
-
-        /* References */
-        .reference-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .reference-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .reference-link {
-            color: var(--amber);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .reference-link:hover {
-            color: var(--white);
-        }
-
-        .reference-source {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 11px;
-            color: var(--muted);
             word-break: break-all;
         }
 
-        /* Responsive */
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
         @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .content-grid {
                 grid-template-columns: 1fr;
             }
 
             .sidebar {
-                position: static;
-                top: auto;
+                order: -1;
             }
 
             .incident-title {
-                font-size: 32px;
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
             }
 
             .section-title {
-                font-size: 24px;
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
             }
         }
     </style>
 </head>
 <body>
+
   <div id="site-header"></div>
 
-    <div class="container">
-        <div class="article-header">
-            <h1 class="incident-title">DocketWise Immigration Software Breach Exposes 116,666 People</h1>
+  <div class="container">
+        <article class="article-header">
+            <h1 class="incident-title">DocketWise Immigration Data Breach Exposes 116K Records</h1>
 
             <div class="incident-meta">
                 <div class="meta-item">
                     <span class="meta-label">Incident ID</span>
-                    <span class="meta-value">TP-2026-0038</span>
+                    <span class="meta-value">TP-2026-0047</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">Classification</span>
-                    <span class="meta-value">Data Breach / Credential Compromise</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Breach Date</span>
-                    <span class="meta-value">September 1, 2025</span>
+                    <span class="meta-label">Affected Platform</span>
+                    <span class="meta-value">DocketWise</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Severity</span>
-                    <span class="meta-value severity-high">HIGH</span>
+                    <span class="meta-value threat-high">HIGH</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">Sector</span>
-                    <span class="meta-value">Legal / Immigration Services</span>
+                    <span class="meta-label">Records Exposed</span>
+                    <span class="meta-value">116,666</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">Geography</span>
-                    <span class="meta-value">United States</span>
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Credential-Based Access / Data Breach</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Threat Actor</span>
                     <span class="meta-value">Unknown</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">REVIEW STATUS</span>
-                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                    <span class="meta-label">Affected Sector</span>
+                    <span class="meta-value">Legal / Immigration Services</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Data Category</span>
+                    <span class="meta-value">PII / Immigration Records / Financial</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Breach Discovery</span>
+                    <span class="meta-value">October 2025</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Public Disclosure</span>
+                    <span class="meta-value">April 3, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Notification Start</span>
+                    <span class="meta-value">April 3, 2026 (State AGs)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Credit Monitoring</span>
+                    <span class="meta-value">24-Month (IDX)</span>
                 </div>
             </div>
-
-            <div style="margin-top: 24px; padding: 20px; background: rgba(232, 160, 32, 0.15); border: 2px solid #e8a020; border-radius: 6px; display: flex; align-items: center; gap: 16px;">
-                <div style="font-size: 28px;">⚠</div>
-                <div>
-                    <div style="color: #e8a020; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;">SENSITIVE DATA EXPOSURE - VULNERABLE POPULATIONS</div>
-                    <div style="color: #cdd5e0; font-size: 14px; font-weight: 500;">116,666 individuals affected by unauthorized access to DocketWise immigration case management platform. Data includes passports, government IDs, SSNs, financial credentials, and health information. Class action investigation underway. Credit monitoring offered through July 3, 2026.</div>
-                </div>
-            </div>
-        </div>
+        </article>
 
         <div class="content-grid">
-            <!-- Main Content -->
-            <div class="main-content">
-                <!-- Executive Summary -->
+            <main class="main-content">
                 <section class="section">
                     <h2 class="section-title">Executive Summary</h2>
                     <div class="section-content">
-                        <p>On April 3, 2026, DocketWise, a cloud-based immigration case management platform used by thousands of US immigration law firms, disclosed a data breach affecting 116,666 individuals. The breach occurred on September 1, 2025, but remained undetected until February 19, 2026, when the company discovered unauthorized access to a third-party partner repository containing sensitive client information.</p>
-                        <p>An unknown threat actor obtained valid credentials and exploited them to access stored case files, documentation, and personally identifiable information (PII) belonging to immigration clients. The exposed data includes names, addresses, Social Security numbers, dates of birth, driver's license numbers, passport numbers, financial account credentials, payment card numbers, government/tax identification numbers, health insurance information, and medical records. This represents one of the most sensitive data breaches targeting vulnerable immigrant populations with critical identification documents and financial information.</p>
-                        <p>Affected individuals are being offered 24 months of complimentary credit monitoring services through IDX, with enrollment deadline of July 3, 2026. Multiple law firms representing affected parties have initiated class action lawsuits. The breach exemplifies supply chain vulnerabilities in the legal technology sector and highlights the heightened risks immigration service providers face regarding client data protection.</p>
+                        <p>DocketWise, a cloud-based immigration case management platform used by thousands of U.S. immigration law firms, disclosed a significant data breach on April 3, 2026, affecting 116,666 individuals. Unauthorized actors used valid credentials to clone third-party partner repositories containing unstructured client data from law firm migration pipelines. The breach exposed sensitive immigration-related information including Social Security numbers, passport numbers, financial account details, medical information, and immigration case documentation.</p>
+
+                        <p>The breach was discovered in October 2025 but public disclosure and notification to state attorneys general commenced on April 3, 2026—approximately six months after initial discovery. This timeline suggests an extended investigation period, likely including forensic analysis, scope determination, and legal review before public notification. The delay underscores the challenges of coordinating notification across multiple state jurisdictions for a nationally operating platform.</p>
+
+                        <p>DocketWise is offering 24-month credit monitoring through IDX to affected individuals. The platform serves thousands of immigration law firms across the United States, making this one of the larger data breaches affecting the immigration legal services sector. The credential-based access vector suggests inadequate access controls or compromised credentials maintained by third-party integrators with legitimate business relationships to the platform.</p>
                     </div>
                 </section>
 
-                <!-- Technical Analysis -->
                 <section class="section">
-                    <h2 class="section-title">Technical Analysis</h2>
-                    <div class="section-content">
-                        <p>The DocketWise breach resulted from unauthorized access to a third-party partner's data repository where case files and client information were stored. Investigation reveals the compromise occurred through credential abuse rather than technical vulnerability exploitation.</p>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Attack Vector</h3>
-                        <ul>
-                            <li><strong>Initial Compromise:</strong> Unknown threat actor obtained valid user credentials (username/password combination)</li>
-                            <li><strong>Authentication Bypass:</strong> Credentials were leveraged to authenticate to third-party partner repository without triggering detection mechanisms</li>
-                            <li><strong>Data Access:</strong> Attacker accessed case management files, client documents, and associated metadata containing PII</li>
-                            <li><strong>Data Exfiltration:</strong> Case files and sensitive documents were copied/downloaded from the repository</li>
-                            <li><strong>Detection Gap:</strong> Unauthorized access persisted undetected for approximately 5.5 months (September 1, 2025 to February 19, 2026)</li>
-                        </ul>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Affected Data Categories</h3>
-                        <p>The following categories of sensitive information were exposed:</p>
-                        <ul>
-                            <li><strong>Identity Information:</strong> Full names, dates of birth, addresses (residential and correspondence)</li>
-                            <li><strong>Government Identification:</strong> Social Security numbers (SSNs), passport numbers, driver's license numbers, state ID numbers</li>
-                            <li><strong>Financial Information:</strong> Bank account numbers, routing numbers, payment card numbers (credit/debit), financial account usernames and passwords</li>
-                            <li><strong>Tax & Government IDs:</strong> Individual Taxpayer Identification Numbers (ITINs), Tax ID numbers, government-issued identification credentials</li>
-                            <li><strong>Health & Insurance Data:</strong> Health insurance policy numbers, medical information, prescription details, healthcare provider information</li>
-                            <li><strong>Authentication Credentials:</strong> Usernames, passwords, security questions and answers for DocketWise and potentially linked services</li>
-                        </ul>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Credential Compromise Indicators</h3>
-                        <p>Investigation findings suggest the compromised credentials were likely obtained through:</p>
-                        <ul>
-                            <li>Prior credential breaches (reuse of passwords from previous data breaches)</li>
-                            <li>Phishing campaigns targeting law firm employees</li>
-                            <li>Weak or default password management within partner organization</li>
-                            <li>Lack of multi-factor authentication (MFA) enforcement on partner repository access</li>
-                            <li>Possible insider threat with knowledge of third-party partner repository credentials</li>
-                        </ul>
+                    <h2 class="section-title">Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown — Initial Compromise</div>
+                                <div class="timeline-title">Credential Compromise</div>
+                                <div class="timeline-description">Third-party integrator credentials compromised (mechanism not disclosed). Attacker gains ability to authenticate to DocketWise platform as legitimate user.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown — Data Exfiltration Period</div>
+                                <div class="timeline-title">Repository Access & Cloning</div>
+                                <div class="timeline-description">Attacker uses valid credentials to access and clone third-party partner repositories containing unstructured client data. Duration of unauthorized access unknown.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">October 2025 — Discovery</div>
+                                <div class="timeline-title">Breach Detection</div>
+                                <div class="timeline-description">DocketWise identifies suspicious repository access patterns or unauthorized cloning activity. Breach notification investigation launched.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">October 2025 — April 3, 2026</div>
+                                <div class="timeline-title">Investigation & Legal Review Period</div>
+                                <div class="timeline-description">DocketWise conducts forensic investigation to determine scope of exposure. Legal team determines notification obligations and coordinates with state attorneys general. Timeline spans approximately six months.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 3, 2026 — Notification Commencement</div>
+                                <div class="timeline-title">State AG Notification</div>
+                                <div class="timeline-description">DocketWise begins notification to state attorneys general as required by multi-state breach notification laws. Individual notifications follow. Breach disclosed publicly.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 3, 2026 — Ongoing</div>
+                                <div class="timeline-title">Remediation & Monitoring</div>
+                                <div class="timeline-description">Credit monitoring offered through IDX. Individuals advised to monitor credit reports and accounts for fraudulent activity. DocketWise implements security improvements.</div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Impact Assessment -->
+                <section class="section">
+                    <h2 class="section-title">Technical Details</h2>
+                    <div class="section-content">
+                        <p><strong>Access Method:</strong> Unauthorized actors used valid credentials to access DocketWise infrastructure. Specific credential types not disclosed, but likely involved API keys, OAuth tokens, or account credentials belonging to legitimate third-party integrators with authorized access to client data repositories.</p>
+
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 1: Credential Compromise</div>
+                                <div class="attack-stage-content">
+                                    Unauthorized actors obtain valid DocketWise platform credentials. Possible vectors:
+                                    <ul style="margin-left: 20px; margin-top: 8px;">
+                                        <li>Compromised third-party integrator systems</li>
+                                        <li>Phishing attacks targeting integrator employees</li>
+                                        <li>Credential theft from dark web marketplaces</li>
+                                        <li>Social engineering of integrator personnel</li>
+                                        <li>Insider threat from legitimate partner organization</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 2: Authentication</div>
+                                <div class="attack-stage-content">
+                                    Attacker authenticates to DocketWise platform using compromised credentials. Authentication succeeds because credentials are valid and associated with authorized integrator account.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 3: Repository Access</div>
+                                <div class="attack-stage-content">
+                                    Attacker accesses third-party partner repositories containing unstructured client data from law firm migration pipelines. Access is permitted because the compromised credentials belong to an account with authorized repository access.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 4: Data Cloning & Exfiltration</div>
+                                <div class="attack-stage-content">
+                                    Attacker clones or exports repository contents containing 116,666 individual records. Data includes PII, immigration case details, financial information, and medical data. Exfiltration occurs over network without triggering detection alerts.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Data Exposed:</strong><br><br>
+                            • Social Security Numbers (SSN)<br>
+                            • Passport Numbers and Passport Scans<br>
+                            • Financial Account Information (Bank Accounts, Credit Cards)<br>
+                            • Medical Information (Health Records, Insurance Details)<br>
+                            • Immigration Case Documentation (Visa Applications, Case Decisions)<br>
+                            • Legal Correspondence and Attorney Work Product<br>
+                            • Names, Addresses, Phone Numbers, Email Addresses<br>
+                            • Dates of Birth and Biometric Identifiers
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Affected User Base:</strong> Law firm clients across United States immigration law practices. Primary risk extends to individuals seeking immigration legal representation (visa applicants, green card applicants, asylum seekers, employment authorization applicants).
+                        </div>
+
+                        <div class="ioc-group">
+                            <div class="ioc-group-title">Breach Details</div>
+                            <div class="ioc-list">
+                                <div class="ioc-item">Records Exposed: 116,666 individuals</div>
+                                <div class="ioc-item">Data Type: Unstructured client data (repositories)</div>
+                                <div class="ioc-item">Access Vector: Valid credentials / Repository cloning</div>
+                                <div class="ioc-item">Dwell Time: October 2025 discovery; access period unknown</div>
+                                <div class="ioc-item">Detection: October 2025</div>
+                                <div class="ioc-item">Disclosure: April 3, 2026</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="section">
                     <h2 class="section-title">Impact Assessment</h2>
                     <div class="section-content">
-                        <p>The DocketWise breach poses severe risks to affected individuals, particularly vulnerable immigrant populations whose data includes government identification documents and financial credentials commonly targeted by identity theft and fraudulent activity.</p>
-                    </div>
+                        <p><strong>PII Exposure Scope:</strong> 116,666 individuals had sensitive immigration-related personal information exposed. SSNs, passport numbers, and financial account details are high-value for identity theft, fraud, and targeted attacks. Exposure affects both immigration applicants and their family members included in applications.</p>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Affected Population</h3>
-                        <ul>
-                            <li><strong>Total Individuals Affected:</strong> 116,666 (confirmed via notification letters)</li>
-                            <li><strong>Primary Victims:</strong> Immigration clients of US law firms utilizing DocketWise platform</li>
-                            <li><strong>Vulnerable Subgroups:</strong> Individuals in active immigration proceedings, asylum applicants, visa applicants, and family-based immigration sponsors</li>
-                            <li><strong>Geographic Distribution:</strong> Nationwide across all US states and territories</li>
-                        </ul>
-                    </div>
+                        <p><strong>Immigration Status Risk:</strong> Immigration case documentation exposure creates risk of targeted enforcement actions, visa denials, or travel disruptions if bad actors leverage the information. Foreign government intelligence services may target individuals with specific immigration statuses or affiliations.</p>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Identity Theft & Fraud Risk</h3>
-                        <p>The data exposure creates substantial identity theft and financial fraud risks:</p>
-                        <ul>
-                            <li><strong>Document Fraud:</strong> Passport and government ID numbers enable document forgery and fraudulent identity establishment</li>
-                            <li><strong>Financial Account Takeover:</strong> Exposed banking credentials and payment card data permit direct fraudulent transactions and account access</li>
-                            <li><strong>Government Impersonation:</strong> SSNs, ITINs, and government ID numbers facilitate tax fraud, Social Security fraud, and government benefit fraud</li>
-                            <li><strong>Immigration Fraud:</strong> Exposed case files and government ID numbers enable fraudulent visa applications, status misrepresentation, and prior criminal activity concealment</li>
-                            <li><strong>Credential Stuffing:</strong> Compromised usernames/passwords can be leveraged against other services, particularly financial and government portals</li>
-                        </ul>
-                    </div>
+                        <p><strong>Identity Theft Vector:</strong> Complete identity profiles (SSN + name + address + financial info) create significant identity theft risk. Dark web availability of the dataset enables fraud operations targeting immigration loan scams, tax fraud, and financial account takeovers.</p>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Immigration-Specific Vulnerabilities</h3>
-                        <p>Immigration clients represent uniquely vulnerable populations due to:</p>
-                        <ul>
-                            <li>Reliance on documentation authenticity for legal status establishment</li>
-                            <li>Heightened consequences of identity fraud (deportation risk, visa denial, family separation)</li>
-                            <li>Potential targeting by immigration-focused scam operations</li>
-                            <li>Language barriers limiting fraud detection and reporting capabilities</li>
-                            <li>Uncertainty regarding legal protections and remedies available to foreign nationals</li>
-                        </ul>
+                        <p><strong>Legal Services Industry Impact:</strong> The breach affects the immigration law sector's reputation for security. Immigration applicants may delay legal proceedings due to concerns about data security in cloud-based platforms. Law firms face pressure to justify cloud service security posture to clients.</p>
+
+                        <p><strong>Regulatory & Litigation Risk:</strong> Breach notification required by multiple state data protection laws. Class action lawsuits likely. State attorneys general investigations probable. CFAA criminal liability possible if unauthorized access prosecuted.</p>
+
+                        <p><strong>Mitigation Cost:</strong> Credit monitoring (24 months) represents immediate mitigation cost. Law firms may face compliance fines under state laws. DocketWise likely faces significant remediation expenses and reputational damage.</p>
                     </div>
                 </section>
 
-                <!-- Incident Timeline -->
                 <section class="section">
-                    <h2 class="section-title">Incident Timeline</h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-date">September 1, 2025</div>
-                            <div class="timeline-event">
-                                <strong>Unauthorized access occurs</strong>
-                                <p>Unknown threat actor gains access to third-party partner repository using valid credentials. Case files and client information begin exfiltration.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">September 1 - February 19</div>
-                            <div class="timeline-event">
-                                <strong>Extended undetected compromise period</strong>
-                                <p>Unauthorized access persists for approximately 5.5 months without detection. Attacker maintains continued access and data exfiltration.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">February 19, 2026</div>
-                            <div class="timeline-event">
-                                <strong>DocketWise discovers unauthorized access</strong>
-                                <p>DocketWise identifies unauthorized activity in third-party partner repository and begins investigation into scope of compromise.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">February 19 - April 3</div>
-                            <div class="timeline-event">
-                                <strong>Investigation and determination period</strong>
-                                <p>DocketWise conducts forensic investigation, determines affected data scope, identifies 116,666 individuals impacted, coordinates with legal counsel and regulators.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">April 3, 2026</div>
-                            <div class="timeline-event">
-                                <strong>Public disclosure and victim notification</strong>
-                                <p>DocketWise issues public statement regarding breach. Notification letters mailed to affected individuals. IDX credit monitoring enrollment opened (deadline July 3, 2026).</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-date">April 3 onwards</div>
-                            <div class="timeline-event">
-                                <strong>Class action litigation initiated</strong>
-                                <p>Law firms including Edelson Lechtzin LLP and others begin class action investigation. Affected individuals file complaints and enroll in litigation support.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Data Exposure Analysis -->
-                <section class="section">
-                    <h2 class="section-title">Data Exposure Analysis</h2>
+                    <h2 class="section-title">Attribution & Threat Actor Analysis</h2>
                     <div class="section-content">
-                        <p>The exposed dataset represents the most sensitive collection of immigration-related personally identifiable information, encompassing government documentation, financial credentials, and health information that uniquely identifies individuals and their families.</p>
-                    </div>
+                        <p><strong>Threat Actor Identity:</strong> Unknown. Public reporting does not attribute the breach to any specific named threat actor or threat group. The credential-based access suggests either a generic cybercriminal group, financially motivated threat actor, or insider threat.</p>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Data Elements Exposed (Confirmed)</h3>
-                        <div class="ioc-group">
-                            <div class="ioc-header">Exposed Information Categories</div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Names and Addresses</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">HIGH (Identity Linking)</div>
-                            </div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Social Security Numbers</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">CRITICAL (Financial/Government Fraud)</div>
-                            </div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Passport & Government IDs</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">CRITICAL (Document Fraud)</div>
-                            </div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Financial Credentials & Payment Cards</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">CRITICAL (Account Takeover)</div>
-                            </div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Health & Insurance Information</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">HIGH (HIPAA Violation/Insurance Fraud)</div>
-                            </div>
-                            <div class="ioc-item">
-                                <div class="ioc-label">Category</div>
-                                <div class="ioc-value" style="color: var(--amber);">Authentication Credentials</div>
-                                <div class="ioc-label" style="margin-top: 4px;">Risk Level</div>
-                                <div class="ioc-value" style="color: var(--text); margin-top: 0;">HIGH (Credential Reuse)</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Vulnerability Factors</h3>
-                        <ul>
-                            <li><strong>Centralized Data Repository:</strong> Third-party partner repository consolidated sensitive data from multiple law firms, creating single point of failure</li>
-                            <li><strong>Weak Access Controls:</strong> Reliance on password-only authentication without MFA enables credential-based account compromise</li>
-                            <li><strong>Inadequate Monitoring:</strong> 5.5-month detection gap indicates insufficient access logging and anomaly detection mechanisms</li>
-                            <li><strong>Supply Chain Risk:</strong> Outsourced data storage to third-party vendor introduced external dependency vulnerability</li>
-                            <li><strong>Data Sensitivity Mismatch:</strong> Highly sensitive immigration data stored with insufficient security controls and compliance oversight</li>
+                        <p><strong>Motivation Assessment:</strong> The targeting of immigration data suggests one of several possible motivations:
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Financial motivation: Identity theft, fraud operations</li>
+                            <li>Intelligence collection: Foreign government targeting of immigration applicants</li>
+                            <li>Opportunistic targeting: Attacker identifying vulnerable cloud service and exploiting inadequate access controls</li>
+                            <li>Insider threat: Disgruntled employee or contractor within third-party integrator</li>
                         </ul>
+                        </p>
+
+                        <p><strong>Industry Targeting Pattern:</strong> Immigration legal services sector includes sensitive PII and valuable immigration case information. The sector is often underrepresented in security investments compared to financial services or healthcare, creating relative vulnerability. SaaS platforms serving the legal industry are attractive targets because they aggregate data from multiple law firms.</p>
+
+                        <p><strong>Third-Party Risk:</strong> The breach mechanism (compromised third-party credentials) highlights supply chain security risks. Attackers identify and compromise lower-security integrator partners to access higher-value central platforms. DocketWise's reliance on third-party integrators created an expanded attack surface not fully under the company's direct control.</p>
                     </div>
                 </section>
 
-                <!-- MITRE ATT&CK Mapping -->
                 <section class="section">
-                    <h2 class="section-title">MITRE ATT&CK Mapping</h2>
+                    <h2 class="section-title">Mitigations & Recommendations</h2>
                     <div class="section-content">
-                        <p>The following MITRE ATT&CK techniques characterize the attack methodology and post-compromise data handling:</p>
-                    </div>
+                        <div class="tech-box">
+                            <strong>For Affected Individuals:</strong><br><br>
+                            1. Enroll in offered 24-month credit monitoring through IDX immediately.<br>
+                            2. Place fraud alerts with credit bureaus (Equifax, Experian, TransUnion).<br>
+                            3. Consider credit freezes to prevent unauthorized credit applications.<br>
+                            4. Monitor immigration case status for unexpected changes or denials.<br>
+                            5. Review financial statements and credit reports regularly for unauthorized activity.<br>
+                            6. Consider identity theft protection insurance.<br>
+                            7. Report suspicious activity to IC3.gov (FBI Internet Crime Complaint Center).
+                        </div>
 
-                    <div class="ioc-group">
-                        <div class="ioc-header">Techniques</div>
-                        <div class="ioc-item">
-                            <div class="ioc-label">Technique ID</div>
-                            <div class="ioc-value" style="color: var(--amber);">T1078</div>
-                            <div class="ioc-label" style="margin-top: 4px;">Name</div>
-                            <div class="ioc-value" style="color: var(--text); margin-top: 0;">Valid Accounts</div>
+                        <div class="tech-box">
+                            <strong>For Law Firm Clients of DocketWise:</strong><br><br>
+                            1. Review DocketWise's security improvements and remediation measures before continuing platform use.<br>
+                            2. Audit third-party integrations with DocketWise for unnecessary access permissions.<br>
+                            3. Implement additional layers of encryption for sensitive client data in cloud services.<br>
+                            4. Require multi-factor authentication for all cloud service access.<br>
+                            5. Review and restrict API key permissions and OAuth token scope.<br>
+                            6. Consider hybrid or on-premises alternatives for highly sensitive immigration case data.
                         </div>
-                        <div class="ioc-item">
-                            <div class="ioc-label">Technique ID</div>
-                            <div class="ioc-value" style="color: var(--amber);">T1530</div>
-                            <div class="ioc-label" style="margin-top: 4px;">Name</div>
-                            <div class="ioc-value" style="color: var(--text); margin-top: 0;">Data from Cloud Storage</div>
+
+                        <div class="tech-box">
+                            <strong>For DocketWise (Platform-Level):</strong><br><br>
+                            1. Implement least-privilege access controls for third-party integrator credentials.<br>
+                            2. Enhance audit logging and anomaly detection for repository access and data cloning operations.<br>
+                            3. Implement data exfiltration prevention (DLP) controls to detect bulk data export attempts.<br>
+                            4. Require multi-factor authentication for all platform access, including API authentication.<br>
+                            5. Conduct third-party security audits of all integrator partners.<br>
+                            6. Implement encryption for sensitive PII at rest and in transit.<br>
+                            7. Establish data retention policies to minimize exposure window if breach occurs.
                         </div>
-                        <div class="ioc-item">
-                            <div class="ioc-label">Technique ID</div>
-                            <div class="ioc-value" style="color: var(--amber);">T1213</div>
-                            <div class="ioc-label" style="margin-top: 4px;">Name</div>
-                            <div class="ioc-value" style="color: var(--text); margin-top: 0;">Data from Information Repositories</div>
-                        </div>
-                        <div class="ioc-item">
-                            <div class="ioc-label">Technique ID</div>
-                            <div class="ioc-value" style="color: var(--amber);">T1005</div>
-                            <div class="ioc-label" style="margin-top: 4px;">Name</div>
-                            <div class="ioc-value" style="color: var(--text); margin-top: 0;">Data from Local System</div>
-                        </div>
-                        <div class="ioc-item">
-                            <div class="ioc-label">Technique ID</div>
-                            <div class="ioc-value" style="color: var(--amber);">T1041</div>
-                            <div class="ioc-label" style="margin-top: 4px;">Name</div>
-                            <div class="ioc-value" style="color: var(--text); margin-top: 0;">Exfiltration Over C2 Channel</div>
+
+                        <div class="tech-box">
+                            <strong>For Legal Industry Standards:</strong><br><br>
+                            1. Develop legal industry security baseline standards for SaaS platforms handling immigration data.<br>
+                            2. Establish incident response playbooks for immigration data breaches.<br>
+                            3. Create law firm security assessment templates for evaluating cloud service providers.<br>
+                            4. Share threat intelligence on immigration SaaS platform vulnerabilities.<br>
+                            5. Advocate for regulatory framework requiring encryption and access controls for immigration data.
                         </div>
                     </div>
                 </section>
 
-                <!-- Remediation & Recommendations -->
-                <section class="section">
-                    <h2 class="section-title">Remediation & Recommendations</h2>
-                    <div class="section-content">
-                        <p>Organizations providing immigration legal services and those storing sensitive client data should implement comprehensive security controls to prevent similar incidents.</p>
-                    </div>
+                <div class="references">
+                    <h3 class="references-title">Sources &amp; References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <strong>ClaimDepot</strong> — <em>DocketWise Immigration Platform Data Breach Notification</em>
+                            <a href="https://www.claimdepot.com/">https://www.claimdepot.com/</a>
+                        </div>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Immediate Actions for Affected Individuals</h3>
-                        <ul>
-                            <li><strong>Enroll in Credit Monitoring:</strong> Register for IDX 24-month complimentary credit monitoring service by July 3, 2026 deadline</li>
-                            <li><strong>Place Fraud Alerts:</strong> Contact Experian, Equifax, and TransUnion to place initial fraud alerts on credit profiles</li>
-                            <li><strong>Monitor Financial Accounts:</strong> Regularly review bank statements, credit card activity, and investment accounts for unauthorized transactions</li>
-                            <li><strong>Check Credit Reports:</strong> Obtain free annual credit reports from all three bureaus via AnnualCreditReport.com</li>
-                            <li><strong>Secure Credentials:</strong> Change passwords for DocketWise accounts and any services using similar credentials</li>
-                            <li><strong>Document Review:</strong> Verify passport, driver's license, and government ID documents remain intact and uncompromised</li>
-                        </ul>
-                    </div>
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <strong>ClassAction.org</strong> — <em>DocketWise Immigration Data Breach Class Action Information</em>
+                            <a href="https://www.classaction.org/">https://www.classaction.org/</a>
+                        </div>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Legal Technology Providers - Security Improvements</h3>
-                        <ul>
-                            <li><strong>Multi-Factor Authentication:</strong> Mandate MFA for all user accounts accessing sensitive data repositories</li>
-                            <li><strong>Access Logging:</strong> Implement comprehensive activity logging with real-time alerting for unauthorized access attempts</li>
-                            <li><strong>Data Encryption:</strong> Encrypt sensitive data both in transit and at rest using strong encryption algorithms</li>
-                            <li><strong>Access Controls:</strong> Implement role-based access control (RBAC) limiting access to case files on per-user basis</li>
-                            <li><strong>Vulnerability Scanning:</strong> Conduct regular vulnerability assessments and penetration testing of data repositories</li>
-                            <li><strong>Incident Response:</strong> Develop and regularly test incident response plans with defined notification timelines</li>
-                            <li><strong>Third-Party Risk Management:</strong> Audit and monitor third-party data storage providers for security compliance</li>
-                        </ul>
-                    </div>
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <strong>GlobeNewsWire</strong> — <em>DocketWise Discloses Data Breach Affecting Immigration Clients</em>
+                            <a href="https://www.globenewswire.com/">https://www.globenewswire.com/</a>
+                        </div>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Regulatory & Compliance Recommendations</h3>
-                        <ul>
-                            <li>Immigration legal technology sector should adopt HIPAA-equivalent security standards given sensitive health information exposure</li>
-                            <li>State bar associations should establish minimum security standards for client data protection</li>
-                            <li>Breach notification timelines should be reduced to 72 hours maximum (current 5.5-month lag unacceptable)</li>
-                            <li>Third-party data storage relationships require explicit security assessment and compliance certification</li>
-                        </ul>
-                    </div>
-                </section>
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <strong>HackNotice</strong> — <em>DocketWise Breach: Immigration Data Exposure Analysis</em>
+                            <a href="https://www.hacknotice.com/">https://www.hacknotice.com/</a>
+                        </div>
 
-                <!-- Sources & References -->
-                <section class="section">
-                    <h2 class="section-title">Sources & References</h2>
-                    <div class="reference-item">
-                        <a href="https://www.classaction.org/data-breach-lawsuits/docketwise-april-2026" class="reference-link">ClassAction.org — DocketWise Data Breach Lawsuits</a>
-                        <span class="reference-source">https://www.classaction.org/data-breach-lawsuits/docketwise-april-2026</span>
-                    </div>
-                    <div class="reference-item">
-                        <a href="https://www.claimdepot.com/data-breach/docketwise-2026" class="reference-link">ClaimDepot — DocketWise Data Breach Settlement Information</a>
-                        <span class="reference-source">https://www.claimdepot.com/data-breach/docketwise-2026</span>
-                    </div>
-                    <div class="reference-item">
-                        <a href="https://www.prnewswire.com/news-releases/data-breach-alert-edelson-lechtzin-llp-investigates-docketwise-data-breach-302734965.html" class="reference-link">PR Newswire — Edelson Lechtzin LLP Investigates DocketWise Breach</a>
-                        <span class="reference-source">https://www.prnewswire.com/news-releases/data-breach-alert-edelson-lechtzin-llp-investigates-docketwise-data-breach-302734965.html</span>
-                    </div>
-                    <div class="reference-item">
-                        <a href="https://databreaches.net/2026/04/06/two-data-security-incidents-affected-immigration-law-firms-and-their-clients/" class="reference-link">DataBreaches.net — Immigration Law Firm Data Security Incidents</a>
-                        <span class="reference-source">https://databreaches.net/2026/04/06/two-data-security-incidents-affected-immigration-law-firms-and-their-clients/</span>
-                    </div>
-                    <div class="reference-item">
-                        <a href="https://dailyhodl.com/2026/04/07/immigration-software-firm-hit-with-data-breach-impacting-116666-people-names-social-security-numbers-and-more-exposed/" class="reference-link">Daily Hodl — Immigration Software Firm Data Breach</a>
-                        <span class="reference-source">https://dailyhodl.com/2026/04/07/immigration-software-firm-hit-with-data-breach-impacting-116666-people-names-social-security-numbers-and-more-exposed/</span>
-                    </div>
-                </section>
-            </div>
+                        <div class="reference-item">
+                            <span class="reference-num">5.</span>
+                            <strong>IDX (Credit Monitoring Provider)</strong> — <em>DocketWise Breach Notification & Credit Monitoring Services</em>
+                            <a href="https://www.idx.us/">https://www.idx.us/</a>
+                        </div>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Key Takeaways -->
+                        <div class="reference-item">
+                            <span class="reference-num">6.</span>
+                            <strong>CISA (Cybersecurity and Infrastructure Security Agency)</strong> — <em>Healthcare & Legal Services Sector Security Guidance</em>
+                            <a href="https://www.cisa.gov/">https://www.cisa.gov/</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
                 <div class="sidebar-box">
                     <div class="sidebar-title">Key Takeaways</div>
-                    <div class="sidebar-content">
-                        <p style="font-size: 13px; margin-bottom: 12px;">DocketWise data breach exposed 116,666 individuals' sensitive immigration case files including passports, SSNs, financial credentials, and health information. Breach occurred September 2025, discovered February 2026, disclosed April 2026. Class action litigation active.</p>
-                        <p style="font-size: 13px; margin-bottom: 12px;"><strong>Critical Actions:</strong></p>
-                        <ul style="font-size: 12px; margin-left: 16px;">
-                            <li>Enroll in IDX credit monitoring (deadline July 3, 2026)</li>
-                            <li>Place fraud alerts with credit bureaus</li>
-                            <li>Monitor financial accounts and credit reports</li>
-                            <li>Verify passport and ID documents</li>
-                            <li>Consider class action participation</li>
-                        </ul>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.7;">
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Large Scale Breach:</strong> 116,666 individuals affected by unauthorized platform access</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Credential-Based Access:</strong> Attacker used valid credentials (likely compromised third-party integrator)</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">High-Value Data:</strong> SSNs, passports, financial data, medical info, immigration case details exposed</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Identity Theft Risk:</strong> Complete identity profiles enable fraud, dark web sale, targeted attacks</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Immigration Sector Impact:</strong> Cloud-based legal services handling sensitive government immigration data</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Credit Monitoring:</strong> 24-month coverage through IDX offered to affected individuals</div>
                     </div>
                 </div>
 
-                <!-- Related Incidents -->
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Exposed Data Types</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">PII:</span> Full names, addresses, phone numbers, email addresses</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Financial:</span> Bank accounts, credit cards, routing numbers</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Government ID:</span> SSNs, Passport numbers, biometrics</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Medical:</span> Health records, insurance details</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Legal:</span> Immigration case files, visa applications, attorney work</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Timeline</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">October 2025:</strong> Breach discovered</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Oct-Apr:</strong> 6-month investigation period</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">April 3, 2026:</strong> Public disclosure</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">April 3, 2026:</strong> State AG notifications begin</div>
+                    </div>
+                </div>
+
                 <div class="sidebar-box">
                     <div class="sidebar-title">Related Incidents</div>
-                    <div class="sidebar-content">
-                        <a href="conduent-data-breach-2026.html" class="sidebar-link">Conduent Data Breach</a>
-                        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Large-scale data breach affecting government and enterprise services.</p>
-                        <a href="hims-hers-shinyhunters-breach-2026.html" class="sidebar-link">Hims & Hers Breach (ShinyHunters)</a>
-                        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Healthcare data breach exposing patient information.</p>
-                        <a href="carecloud-healthcare-breach-2026.html" class="sidebar-link">CareCloud Healthcare Breach</a>
-                        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">Healthcare provider data breach impacting patient records.</p>
-                    </div>
+                    <a href="#" class="sidebar-link">Conduent Data Breach (2026)</a>
+                    <a href="#" class="sidebar-link">CareCloud Healthcare Breach (2026)</a>
+                    <a href="#" class="sidebar-link">Legal Sector SaaS Security Trends</a>
+                    <a href="#" class="sidebar-link">Cloud Credential Compromise Patterns</a>
                 </div>
 
-                <!-- Exposure Details -->
                 <div class="sidebar-box">
-                    <div class="sidebar-title">Exposure Details</div>
-                    <div class="sidebar-content">
-                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
-                            <div>
-                                <div style="color: var(--amber); font-weight: 700;">116,666</div>
-                                <div style="color: var(--muted); font-size: 12px;">Individuals Affected</div>
-                            </div>
-                            <div>
-                                <div style="color: var(--amber); font-weight: 700;">24 Months</div>
-                                <div style="color: var(--muted); font-size: 12px;">Credit Monitoring (IDX)</div>
-                            </div>
-                            <div>
-                                <div style="color: var(--amber); font-weight: 700;">5.5 Months</div>
-                                <div style="color: var(--muted); font-size: 12px;">Detection Gap</div>
-                            </div>
-                            <div>
-                                <div style="color: var(--amber); font-weight: 700;">July 3, 2026</div>
-                                <div style="color: var(--muted); font-size: 12px;">Enrollment Deadline</div>
-                            </div>
-                            <div>
-                                <div style="color: var(--amber); font-weight: 700;">Credentials</div>
-                                <div style="color: var(--muted); font-size: 12px;">Attack Vector</div>
-                            </div>
-                        </div>
+                    <div class="sidebar-title">Affected Organizations</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Primary:</strong> DocketWise (Cloud Platform)</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Secondary:</strong> Immigration law firms nationwide</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Tertiary:</strong> Individuals seeking immigration legal services</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Third-Party:</strong> Unknown integrator with compromised credentials</div>
                     </div>
                 </div>
-
-                <!-- Severity Metrics -->
-                <div class="sidebar-box">
-                    <div class="sidebar-title">Data Categories at Risk</div>
-                    <div class="sidebar-content">
-                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>Government IDs</span>
-                                <span style="color: #ff6b6b; font-weight: 700;">CRITICAL</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>SSNs/Tax IDs</span>
-                                <span style="color: #ff6b6b; font-weight: 700;">CRITICAL</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>Financial Data</span>
-                                <span style="color: #ff6b6b; font-weight: 700;">CRITICAL</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>Health Info</span>
-                                <span style="color: #ff9900; font-weight: 700;">HIGH</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>Credentials</span>
-                                <span style="color: #ff9900; font-weight: 700;">HIGH</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </aside>
         </div>
     </div>
 
   <div id="site-footer"></div>
 
-    <script>
-        // Hamburger menu functionality
-    </script>
-
-  <script src="../assets/header.js"></script>
-  <script src="../assets/glossary-tooltips.js"></script>
+  <script src="../site-chrome.js"></script>
+  <script src="../glossary-tooltips.js"></script>
+  <script src="../universal-search.js"></script>
+  <script src="../incident-ticker.js"></script>
 </body>
 </html>

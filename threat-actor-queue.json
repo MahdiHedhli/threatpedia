@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T13:30:00Z",
+  "lastUpdated": "2026-04-09T09:17:04Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
   "queue": [
@@ -170,6 +170,26 @@
       "action": "create",
       "queuedBy": "new-threat-intel-automation",
       "queuedDate": "2026-04-08"
+    },
+    {
+      "actorName": "Operation TrueChaos (Chinese-nexus)",
+      "action": "create",
+      "referencedFrom": [
+        "operation-truechaos-trueconf-zero-day-2026"
+      ],
+      "queuedAt": "2026-04-09T09:17:04Z",
+      "queuedBy": "new-threat-intel-automation",
+      "notes": "Chinese-nexus threat actor targeting SE Asian governments via TrueConf zero-day. Moderate confidence attribution per Check Point Research."
+    },
+    {
+      "actorName": "Crisis24 (CodeRED) Breach Connection",
+      "action": "create",
+      "referencedFrom": [
+        "patriot-regional-emergency-comms-attack-2026"
+      ],
+      "queuedAt": "2026-04-09T09:17:04Z",
+      "queuedBy": "new-threat-intel-automation",
+      "notes": "Crisis24/CodeRED platform was breached in Nov 2025; municipal credentials stolen. Potentially related to Patriot Regional attack."
     },
     {
       "actorName": "DragonForce",

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="report-id" content="TP-2026-0045">
+    <meta name="review-status" content="PENDING HUMAN REVIEW">
+    <meta name="severity" content="Critical">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-09">
+    <title>Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../tp-favicon.svg">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
+        }
+
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .meta-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .meta-value.threat-critical {
+            color: #ff4444;
+        }
+
+        .meta-value.threat-high {
+            color: #ff8800;
+        }
+
+        .meta-value.status-disrupted {
+            color: #51cf66;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.3px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-content p {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
+            color: var(--white);
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            background-color: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 32px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .attack-stage-title {
+            font-weight: 600;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-stage-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .attack-stage-content li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <div class="container">
+        <article class="article-header">
+            <h1 class="incident-title">Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0045</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Campaign Name</span>
+                    <span class="meta-value">Operation TrueChaos</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value threat-critical">CRITICAL</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">CVE Identifier</span>
+                    <span class="meta-value">CVE-2026-3502 (CVSS 7.8)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Classification</span>
+                    <span class="meta-value">Supply-Chain / Zero-Day / Espionage</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Threat Actor</span>
+                    <span class="meta-value">Chinese-Nexus (Unattributed)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attribution Confidence</span>
+                    <span class="meta-value">Moderate (Check Point Research)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Affected Sector</span>
+                    <span class="meta-value">Government / International Relations</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Target Region</span>
+                    <span class="meta-value">Southeast Asia</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Affected Users Estimate</span>
+                    <span class="meta-value">100,000+ organizations</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">First Disclosure</span>
+                    <span class="meta-value">March 28, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status</span>
+                    <span class="meta-value">Patch Released (v8.5.3)</span>
+                </div>
+            </div>
+        </article>
+
+        <div class="content-grid">
+            <main class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>Check Point Research disclosed Operation TrueChaos on March 28, 2026, a sophisticated supply-chain attack targeting Southeast Asian government entities through a zero-day vulnerability in TrueConf video conferencing client. The threat actor, attributed with moderate confidence to Chinese-nexus operations, compromised TrueConf on-premises servers and weaponized the product's automatic update mechanism to deliver malicious payloads to government endpoints.</p>
+
+                        <p>CVE-2026-3502 (CVSS 7.8) in the TrueConf update client allowed privilege escalation and arbitrary code execution. The attack chain combined DLL sideloading via poweriso.exe, UAC bypass through iscsicpl.exe, and deployment of Havoc C2 framework implants. The attack specifically targeted Southeast Asian governments, indicating espionage objectives aligned with regional geopolitical interests.</p>
+
+                        <p>TrueConf, with 100,000+ organizations globally, released patched version 8.5.3 in March 2026. The attack demonstrates how even mature supply-chain update mechanisms can be weaponized when combined with initial access to infrastructure, posing significant risk to government and critical infrastructure sectors worldwide.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown — Initial Compromise</div>
+                                <div class="timeline-title">Server Infrastructure Access</div>
+                                <div class="timeline-description">Threat actor gains initial access to TrueConf on-premises server infrastructure. Specific vector not disclosed.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">Unknown — Exploitation Period</div>
+                                <div class="timeline-title">Supply-Chain Preparation</div>
+                                <div class="timeline-description">Attacker establishes presence on compromised servers, modifies update package distribution mechanisms to inject malicious payloads into legitimate TrueConf client updates.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-03-17 — Campaign Execution</div>
+                                <div class="timeline-title">Malicious Updates Deployed</div>
+                                <div class="timeline-description">Government endpoints receiving TrueConf automatic updates download and install packages containing malicious payloads. DLL sideloading phase begins on affected systems.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-03-18 — Post-Exploitation</div>
+                                <div class="timeline-title">Privilege Escalation & Havoc Deployment</div>
+                                <div class="timeline-description">UAC bypass executed via iscsicpl.exe. Havoc C2 implants deployed to establish command and control channels. Data exfiltration begins.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-03-28 — Public Disclosure</div>
+                                <div class="timeline-title">Check Point Research Publication</div>
+                                <div class="timeline-description">Check Point Research publishes Operation TrueChaos analysis detailing TTPs, IOCs, and attack infrastructure.</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">2026-03-30 — Remediation Available</div>
+                                <div class="timeline-title">TrueConf v8.5.3 Patch Release</div>
+                                <div class="timeline-description">TrueConf releases patch version 8.5.3 remediating CVE-2026-3502. Users advised to update immediately.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Technical Details</h2>
+                    <div class="section-content">
+                        <p><strong>Vulnerability Overview:</strong> CVE-2026-3502 represents a critical gap in the TrueConf update client's handling of signed packages. The vulnerability permits elevation of privilege and arbitrary code execution when processing crafted update packages delivered through the standard update mechanism.</p>
+
+                        <div class="attack-flow">
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 1: Infrastructure Compromise</div>
+                                <div class="attack-stage-content">
+                                    Threat actor establishes persistent access to TrueConf on-premises server infrastructure. Specific initial access vector remains undisclosed in public reporting. Server-side access allows manipulation of update packages before distribution to clients.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 2: Malicious Update Package Creation</div>
+                                <div class="attack-stage-content">
+                                    Attacker crafts update packages containing:
+                                    <ul>
+                                        <li>Legitimate TrueConf binaries (to avoid immediate detection)</li>
+                                        <li>Malicious DLL files (7z-x64.dll, others)</li>
+                                        <li>Sideloading trigger via poweriso.exe replacement</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 3: DLL Sideloading via poweriso.exe</div>
+                                <div class="attack-stage-content">
+                                    Update package includes malicious poweriso.exe that sideloads 7z-x64.dll during execution. This DLL contains code for UAC bypass and C2 communication. The sideloading technique abuses Windows DLL search order to load attacker-controlled libraries during normal process execution.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 4: UAC Bypass via iscsicpl.exe</div>
+                                <div class="attack-stage-content">
+                                    Sideloaded DLL exploits iscsicpl.exe (iSCSI Initiator Control Panel, marked as auto-elevate) to bypass User Access Control. This permits the malicious payload to execute with System-level privileges without user interaction.
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 5: Havoc C2 Deployment</div>
+                                <div class="attack-stage-content">
+                                    Elevated payload deploys Havoc C2 framework implant with capabilities for:
+                                    <ul>
+                                        <li>Remote code execution and command execution</li>
+                                        <li>File exfiltration</li>
+                                        <li>Lateral movement within government networks</li>
+                                        <li>Defense evasion and persistence mechanisms</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="attack-stage">
+                                <div class="attack-stage-title">Stage 6: Data Collection & Exfiltration</div>
+                                <div class="attack-stage-content">
+                                    Havoc implants establish command and control communications with attacker infrastructure. Government networks become subject to targeted data collection aligned with espionage objectives. Persistence mechanisms ensure ongoing access beyond initial intrusion period.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ioc-group">
+                            <div class="ioc-group-title">File Hashes (Malicious Samples)</div>
+                            <div class="ioc-list">
+                                <div class="ioc-item">22e32bcf113326e366ac480b077067cf</div>
+                                <div class="ioc-item">9b435ad985b733b64a6d5f39080f4ae0</div>
+                                <div class="ioc-item">248a4d7d4c48478dcbeade8f7dba80b3</div>
+                            </div>
+                        </div>
+
+                        <div class="ioc-group">
+                            <div class="ioc-group-title">C2 Infrastructure</div>
+                            <div class="ioc-list">
+                                <div class="ioc-item">43.134.90[.]60</div>
+                                <div class="ioc-item">43.134.52[.]221</div>
+                                <div class="ioc-item">47.237.15[.]197</div>
+                            </div>
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Havoc C2 Framework:</strong> Open-source command and control framework known for use in targeted attacks against government and critical infrastructure. Provides extensive capabilities for post-exploitation operations. Selection of Havoc indicates attacker sophistication and intent for sustained operations within compromised networks.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <p><strong>Scope of Compromise:</strong> The attack targeted Southeast Asian government agencies operating TrueConf video conferencing infrastructure. The exact number of affected organizations has not been disclosed, though the region's government sector represents a high-value target set for espionage operations. TrueConf serves 100,000+ organizations globally, creating potential for collateral exposure if update mechanisms were compromised more broadly than disclosed.</p>
+
+                        <p><strong>Data at Risk:</strong> Government endpoints running compromised TrueConf clients became subject to full remote access and data exfiltration. Sensitive information potentially exposed includes: diplomatic communications, intelligence assessments, government decision-making processes, personnel information, and classified or controlled unclassified information related to government operations.</p>
+
+                        <p><strong>Lateral Movement Potential:</strong> Havoc implants operating at System privilege level can conduct reconnaissance and lateral movement within government networks. The presence of C2-capable implants suggests ongoing ability to maintain access and conduct secondary phases of espionage objectives aligned with strategic interests of the threat actor.</p>
+
+                        <p><strong>Supply-Chain Implications:</strong> Successful compromise of TrueConf server infrastructure and update mechanisms demonstrates a complete breach of the software supply chain. Organizations relying on TrueConf for secure government communications face the risk that any future update could be weaponized, requiring out-of-band verification procedures and increased supply-chain security scrutiny.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Attribution Analysis</h2>
+                    <div class="section-content">
+                        <p><strong>Primary Attribution:</strong> Check Point Research attributes Operation TrueChaos to a Chinese-nexus threat actor with moderate confidence. The attribution is based on operational tempo, targeting patterns (Southeast Asian governments), capabilities (Havoc C2 deployment), and overlaps with documented Chinese state-sponsored cyber operations.</p>
+
+                        <p><strong>Confidence Rationale:</strong> "Moderate confidence" indicates analysts possess supporting evidence but acknowledge the possibility of misattribution or false-flag operations. TTPs alone are insufficient for definitive attribution; geopolitical context, targeting patterns, and timing strengthen the assessment but do not constitute proof.</p>
+
+                        <p><strong>Regional Context:</strong> Southeast Asian government entities are consistent targets for Chinese intelligence collection due to regional geopolitical significance. The targeting aligns with known Chinese strategies to develop persistent access into government networks for long-term intelligence collection.</p>
+
+                        <p><strong>Caveats:</strong> Definitive attribution requires additional intelligence not disclosed in public reporting. Threat actors routinely implement OPSEC measures, false-flag operations, and misdirection. The assessment should be treated as "likely responsible" rather than definitive, and updated as additional evidence emerges.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Mitigations & Defenses</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Immediate Actions:</strong><br><br>
+                            1. Update TrueConf to version 8.5.3 or later immediately. Prioritize government and critical infrastructure organizations.<br>
+                            2. Disable automatic updates temporarily and implement manual, controlled update procedures with verification steps.<br>
+                            3. Review server-side access logs for TrueConf infrastructure for signs of compromise or unauthorized access.<br>
+                            4. Block C2 IOCs (43.134.90[.]60, 43.134.52[.]221, 47.237.15[.]197) at network perimeter and endpoint firewalls.<br>
+                            5. Search endpoint security tools for file hashes associated with the malicious payloads.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Incident Response (If Compromised):</strong><br><br>
+                            1. Isolate affected systems from network to prevent lateral movement and ongoing C2 communications.<br>
+                            2. Collect forensic images of affected endpoints before remediation (prioritize volatile memory capture).<br>
+                            3. Conduct full endpoint forensic analysis to identify dwell time, lateral movement scope, and exfiltrated data.<br>
+                            4. Assume all credentials and tokens stored/processed on compromised systems are potentially compromised. Rotate credentials immediately.<br>
+                            5. Review and revoke any OAuth tokens, session cookies, or API keys that may have been accessed during compromise window.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Detection & Hunting:</strong><br><br>
+                            1. Hunt for poweriso.exe and 7z-x64.dll in TrueConf client installation directories (non-standard).<br>
+                            2. Monitor process execution for iscsicpl.exe spawning child processes (abnormal behavior).<br>
+                            3. Hunt for Havoc C2 network signatures (protocol beaconing patterns to C2 infrastructure).<br>
+                            4. Review Windows Defender SmartScreen / cloud-based detection logs for blocked or suspicious executables.<br>
+                            5. Search endpoint telemetry for UAC bypass techniques (token elevation, process token modifications).
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Long-Term Supply-Chain Security:</strong><br><br>
+                            1. Implement code signing verification procedures for all software updates before deployment.<br>
+                            2. Require vendors to publish software Bill of Materials (SBOM) for transparency and vulnerability tracking.<br>
+                            3. Establish supply-chain risk management framework for critical software dependencies.<br>
+                            4. Consider software composition analysis (SCA) tools to track third-party component vulnerabilities.<br>
+                            5. Require out-of-band verification of critical security updates before deployment to critical systems.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Operational Context</h2>
+                    <div class="section-content">
+                        <p>Operation TrueChaos represents a continuation of Chinese state-sponsored cyber operations targeting Southeast Asian governments for espionage purposes. Similar patterns have been observed in prior campaigns including: APT1 (Comment Crew) targeting of US federal agencies, Axiom targeting of NATO members, and ongoing operations against regional governments in Southeast Asia.</p>
+
+                        <p>The exploitation of supply-chain mechanisms to deliver payloads demonstrates an evolution in TTPs. Rather than pursuing vulnerable software components within organizations, the threat actor conducted a highly targeted attack on the software vendor's infrastructure, enabling a precision strike against a specific region's government sector. This approach minimizes collateral exposure and maximizes dwell time before detection.</p>
+
+                        <p>The use of Havoc C2 framework indicates the attacker seeks extended persistence and post-exploitation capabilities, not merely one-time data theft. This aligns with strategic intelligence objectives: maintaining access to government networks for ongoing collection of diplomatic, military, and intelligence information over extended periods.</p>
+                    </div>
+                </section>
+
+                <div class="references">
+                    <h3 class="references-title">Sources &amp; References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <strong>Check Point Research</strong> — <em>Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack on Southeast Asian Governments</em>
+                            <a href="https://research.checkpoint.com/">https://research.checkpoint.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <strong>The Hacker News</strong> — <em>TrueConf Zero-Day Used in Targeted Attack Against Southeast Asian Governments</em>
+                            <a href="https://thehackernews.com/">https://thehackernews.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <strong>BleepingComputer</strong> — <em>Chinese Hackers Exploit TrueConf Supply Chain in Targeted Attack</em>
+                            <a href="https://www.bleepingcomputer.com/">https://www.bleepingcomputer.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <strong>Help Net Security</strong> — <em>Operation TrueChaos: DLL Sideloading and UAC Bypass in Government Targeting Attack</em>
+                            <a href="https://www.helpnetsecurity.com/">https://www.helpnetsecurity.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">5.</span>
+                            <strong>MITRE ATT&CK</strong> — <em>Havoc C2 Framework Documentation and Detection Guidance</em>
+                            <a href="https://attack.mitre.org/">https://attack.mitre.org/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">6.</span>
+                            <strong>CVE Details</strong> — <em>CVE-2026-3502: TrueConf Update Client Privilege Escalation</em>
+                            <a href="https://www.cvedetails.com/">https://www.cvedetails.com/</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.7;">
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Supply-Chain Attack:</strong> Compromise of TrueConf server infrastructure enabling injection of malicious payloads into legitimate client updates</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Zero-Day Exploitation:</strong> CVE-2026-3502 (CVSS 7.8) in TrueConf update client facilitates privilege escalation and code execution</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">DLL Sideloading + UAC Bypass:</strong> Multi-stage exploitation chain: poweriso.exe → 7z-x64.dll → iscsicpl.exe elevation → System-level access</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Havoc C2 Deployment:</strong> Post-exploitation implants provide remote access, lateral movement, and sustained espionage capabilities</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Attribution:</strong> Chinese-nexus threat actor, moderate confidence, targeting Southeast Asian governments for espionage</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Patch Available:</strong> TrueConf v8.5.3 (March 2026) — Update immediately, especially critical for government sector</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor Profile</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Classification:</span> Nation-State / Espionage</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Attribution:</span> Chinese-Nexus (Unattributed)</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Confidence Level:</span> Moderate</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Primary Target:</span> Southeast Asian Governments</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Motive:</span> Intelligence Collection / Espionage</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Sophistication Level:</span> High (Supply-chain + zero-day)</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Affected Technology</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Product:</strong> TrueConf</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Affected Versions:</strong> Prior to 8.5.3</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Type:</strong> Video Conferencing Client</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Global Install Base:</strong> 100,000+ organizations</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Patch Status:</strong> Available (v8.5.3, March 2026)</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="../frostarmada-soho-dns-hijacking-2026.html" class="sidebar-link">FrostArmada: SOHO Router DNS Hijacking</a>
+                    <a href="../fbi-dcsnet-salt-typhoon-2026.html" class="sidebar-link">Salt Typhoon: DCInet Telecom Compromise</a>
+                    <a href="#" class="sidebar-link">APT1 (Comment Crew): Targeted US Federal Operations</a>
+                    <a href="#" class="sidebar-link">Axiom: NATO Member Targeting</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Quick Facts</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">First Observed:</strong> Unknown (Publicly disclosed March 28, 2026)</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Dwell Time:</strong> Likely months (pre-disclosure)</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Attack Vector:</strong> Compromised supply-chain update mechanism</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Data Risk:</strong> Government communications, intelligence, classified info</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../site-chrome.js"></script>
+  <script src="../glossary-tooltips.js"></script>
+  <script src="../universal-search.js"></script>
+  <script src="../incident-ticker.js"></script>
+</body>
+</html>

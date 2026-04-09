@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T13:30:00Z",
+  "lastUpdated": "2026-04-09T09:17:04Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
   "incidents": [
@@ -127,8 +127,8 @@
     {
       "slug": "cegedim-sante-health-breach-2026",
       "incidentId": null,
-      "title": "Cegedim Santé Healthcare Data Breach",
-      "org": "Cegedim Santé",
+      "title": "Cegedim Sant\u00e9 Healthcare Data Breach",
+      "org": "Cegedim Sant\u00e9",
       "attackType": "data-breach",
       "threatActor": "Unknown",
       "sector": "Healthcare",
@@ -259,7 +259,7 @@
     {
       "slug": "trivy-cve-2026-33634",
       "incidentId": "TP-2026-0024",
-      "title": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
+      "title": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
       "org": "Aqua Security (Trivy)",
       "attackType": "supply-chain",
       "threatActor": "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
@@ -579,7 +579,7 @@
     {
       "slug": "chrome-cve-2026-5281-zero-day",
       "incidentId": "TP-2026-0034",
-      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) — Fourth Actively Exploited in 2026",
+      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) \u2014 Fourth Actively Exploited in 2026",
       "org": "Google (Chrome)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
@@ -802,107 +802,72 @@
       ]
     },
     {
-      "slug": "ransomhouse-operations",
-      "incidentId": "TP-TA-0009",
-      "title": "RansomHouse Ransomware Group — Operations & Campaigns",
-      "org": "RansomHouse (Threat Actor Profile)",
-      "attackType": "data-extortion",
-      "threatActor": "RansomHouse / Jolly Scorpius",
-      "sector": "Multi-Sector",
-      "geography": "Global",
-      "date": "2021-12-01",
-      "severity": "High",
-      "cves": [],
-      "reviewStatus": "pending",
-      "generatedBy": "incident-crosslink-gapfill",
-      "relatedSlugs": [
-        "vivaticket-ransomhouse-2026",
-        "cegedim-sante-health-breach-2026"
-      ],
-      "tags": [
-        "ransomhouse",
-        "data-extortion",
-        "raas",
-        "mariolocker",
-        "mragent",
-        "double-extortion",
-        "esxi",
-        "jolly-scorpius"
-      ]
-    },
-    {
-      "slug": "trueconf-cve-2026-3502-zero-day",
-      "incidentId": "TP-2026-0036",
-      "title": "Operation TrueChaos: TrueConf Zero-Day Exploitation Targeting Southeast Asian Governments (CVE-2026-3502)",
-      "org": "Southeast Asian Government Entities",
-      "attackType": "zero-day-exploitation",
-      "threatActor": "Chinese-nexus APT (Amaranth-Dragon overlap)",
-      "sector": "Government",
+      "slug": "operation-truechaos-trueconf-zero-day-2026",
+      "incidentId": "TP-2026-0045",
+      "title": "Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack on Southeast Asian Governments",
+      "org": "TrueConf / Southeast Asian Government Entities",
+      "attackType": "supply-chain",
+      "threatActor": "Chinese-nexus (unattributed)",
+      "sector": "Government / International",
       "geography": "Southeast Asia",
-      "date": "2026-03-01",
+      "date": "2026-03-28",
       "severity": "Critical",
       "cves": [
         "CVE-2026-3502"
       ],
       "reviewStatus": "pending",
-      "generatedBy": "new-threat-intel",
+      "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "forticlient-ems-cve-2026-35616",
-        "chrome-cve-2026-5281-zero-day",
-        "fbi-dcsnet-salt-typhoon-2026"
+        "fbi-dcsnet-salt-typhoon-2026",
+        "frostarmada-soho-dns-hijacking-2026"
       ],
       "tags": [
         "zero-day",
-        "trueconf",
         "supply-chain",
-        "update-mechanism",
-        "havoc",
-        "dll-sideloading",
-        "cisa-kev",
+        "trueconf",
         "china",
         "nation-state",
+        "dll-sideloading",
+        "havoc-c2",
         "government",
-        "espionage",
-        "southeast-asia"
+        "southeast-asia",
+        "update-mechanism",
+        "espionage"
       ]
     },
     {
-      "slug": "mercor-litellm-supply-chain-breach-2026",
-      "incidentId": "TP-2026-0037",
-      "title": "Mercor AI $10B Startup Breach via LiteLLM Supply Chain Compromise",
-      "org": "Mercor.io",
-      "attackType": "supply-chain",
-      "threatActor": "TeamPCP / Lapsus$",
-      "sector": "Technology / AI",
-      "geography": "Global",
-      "date": "2026-03-27",
-      "severity": "Critical",
+      "slug": "winona-county-ransomware-2026",
+      "incidentId": "TP-2026-0046",
+      "title": "Winona County Second Ransomware Attack Prompts National Guard Deployment",
+      "org": "Winona County, Minnesota",
+      "attackType": "ransomware",
+      "threatActor": "Unknown",
+      "sector": "Government / Municipal Services",
+      "geography": "United States (Minnesota)",
+      "date": "2026-04-06",
+      "severity": "High",
       "cves": [],
       "reviewStatus": "pending",
-      "generatedBy": "new-threat-intel",
+      "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "teampcp-supply-chain-attack",
-        "axios-unc1069-compromise",
-        "european-commission-trivy-breach-2026"
+        "foster-city-ransomware-2026",
+        "passaic-county-medusa-ransomware-2026",
+        "patriot-regional-emergency-comms-attack-2026"
       ],
       "tags": [
-        "supply-chain",
-        "litellm",
-        "pypi",
-        "ai",
-        "lapsus",
-        "extortion",
-        "meta",
-        "anthropic",
-        "openai",
-        "class-action",
-        "credential-harvesting"
+        "ransomware",
+        "government",
+        "municipal",
+        "minnesota",
+        "national-guard",
+        "state-of-emergency",
+        "repeat-attack"
       ]
     },
     {
       "slug": "docketwise-immigration-data-breach-2026",
-      "incidentId": "TP-2026-0038",
-      "title": "DocketWise Immigration Software Breach Exposes 116,666 People",
+      "incidentId": "TP-2026-0047",
+      "title": "DocketWise Immigration Case Management Platform Breach Exposes 116K Records",
       "org": "DocketWise",
       "attackType": "data-breach",
       "threatActor": "Unknown",
@@ -912,10 +877,9 @@
       "severity": "High",
       "cves": [],
       "reviewStatus": "pending",
-      "generatedBy": "new-threat-intel",
+      "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "conduent-data-breach-2026",
-        "hims-hers-shinyhunters-breach-2026",
         "carecloud-healthcare-breach-2026"
       ],
       "tags": [
@@ -924,17 +888,18 @@
         "legal",
         "ssn",
         "passport",
-        "credential-compromise",
-        "class-action",
-        "pii"
+        "credential-theft",
+        "third-party",
+        "pii",
+        "medical-data"
       ]
     },
     {
       "slug": "patriot-regional-emergency-comms-attack-2026",
-      "incidentId": "TP-2026-0039",
-      "title": "Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts 911 Services",
+      "incidentId": "TP-2026-0048",
+      "title": "Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns",
       "org": "Patriot Regional Emergency Communications Center",
-      "attackType": "cyberattack",
+      "attackType": "ransomware",
       "threatActor": "Unknown",
       "sector": "Government / Emergency Services",
       "geography": "United States (Massachusetts)",
@@ -942,48 +907,53 @@
       "severity": "High",
       "cves": [],
       "reviewStatus": "pending",
-      "generatedBy": "new-threat-intel",
+      "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "foster-city-ransomware-2026",
-        "passaic-county-medusa-ransomware-2026"
-      ],
-      "tags": [
-        "emergency-services",
-        "911",
-        "government",
-        "municipal",
-        "critical-infrastructure",
-        "massachusetts"
-      ]
-    },
-    {
-      "slug": "dragonforce-ransomware-campaign-april-2026",
-      "incidentId": "TP-2026-0040",
-      "title": "DragonForce Ransomware Group Multi-Sector Campaign — April 2026",
-      "org": "Multiple (13+ organizations)",
-      "attackType": "ransomware",
-      "threatActor": "DragonForce",
-      "sector": "Multi-Sector (Manufacturing, Hospitality, Legal, Utilities)",
-      "geography": "Global (US, Canada)",
-      "date": "2026-04-02",
-      "severity": "High",
-      "cves": [],
-      "reviewStatus": "pending",
-      "generatedBy": "new-threat-intel",
-      "relatedSlugs": [
-        "die-linke-qilin-ransomware-2026",
-        "vivaticket-ransomhouse-2026",
-        "foster-city-ransomware-2026",
-        "passaic-county-medusa-ransomware-2026"
+        "winona-county-ransomware-2026"
       ],
       "tags": [
         "ransomware",
-        "dragonforce",
-        "raas",
-        "double-extortion",
-        "multi-victim",
-        "manufacturing",
-        "packaging"
+        "emergency-services",
+        "government",
+        "municipal",
+        "massachusetts",
+        "911",
+        "codered",
+        "crisis24"
+      ]
+    },
+    {
+      "slug": "langflow-cve-2026-33017-rce-exploitation",
+      "incidentId": "TP-2026-0049",
+      "title": "Langflow AI Platform Unauthenticated RCE (CVE-2026-33017) — Exploited Within 20 Hours",
+      "org": "Langflow (DataStax)",
+      "attackType": "zero-day-exploitation",
+      "threatActor": "Multiple (6 unique source IPs)",
+      "sector": "Technology / AI Infrastructure",
+      "geography": "Global",
+      "date": "2026-03-17",
+      "severity": "Critical",
+      "cves": [
+        "CVE-2026-33017"
+      ],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "forticlient-ems-cve-2026-35616",
+        "chrome-cve-2026-5281-zero-day"
+      ],
+      "tags": [
+        "zero-day",
+        "rce",
+        "ai",
+        "langflow",
+        "cisa-kev",
+        "unauthenticated",
+        "python",
+        "api-key-theft",
+        "credential-theft",
+        "rapid-exploitation"
       ]
     }
   ],

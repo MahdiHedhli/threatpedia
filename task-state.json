@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T15:27:34Z",
+  "lastUpdated": "2026-04-09T09:17:04Z",
   "schemaVersion": "1.0",
   "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
   "schedules": {
@@ -203,12 +203,12 @@
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
-      "totalReports": 33,
-      "pendingReview": 30,
+      "totalReports": 32,
+      "pendingReview": 29,
       "approved": 3,
       "referencedButMissing": 1,
-      "lastNewReportDate": "2026-04-08",
-      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files — the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
+      "lastNewReportDate": "2026-04-09",
+      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files \u2014 the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
       "totalTerms": 1006,
@@ -262,7 +262,7 @@
         "zero-days/manifest.json": "Exploit index with metadata, status lifecycle, CISA KEV flags, cross-references. All zero-day-related agents read this FIRST.",
         "zero-days/TEMPLATE.html": "Template for individual zero-day exploit pages with severity meters, exploit chain, detection guidance, IOCs, mitigations, timeline, sources"
       },
-      "currentExploitCount": 1,
+      "currentExploitCount": 6,
       "statusTaxonomy": [
         "PoC Only",
         "Weaponized",
@@ -272,9 +272,9 @@
         "Historical"
       ],
       "entityIdFormat": "TP-EXP-NNNN",
-      "lastRunDate": "2026-04-08"
+      "lastRunDate": "2026-04-09"
     },
-    "lastIncidentScan": "2026-04-08T15:27:34Z",
+    "lastIncidentScan": "2026-04-09T09:17:04Z",
     "dataIngestion": {
       "manifestPath": "data/data-sources-manifest.json",
       "stagedSources": 1,
@@ -299,13 +299,18 @@
     },
     "new-threat-intel": {
       "locked": true,
-      "lockedAt": "2026-04-09T00:09:58Z",
-      "lastCompleted": "2026-04-08T13:30:00Z"
+      "lockedAt": "2026-04-09T09:17:04Z",
+      "lastCompleted": "2026-04-09T00:35:44Z"
     },
     "incident-crosslink-gapfill": {
       "locked": false,
       "lockedAt": null,
       "lastCompleted": "2026-04-08T13:10:08Z"
+    },
+    "zero-day-tracker": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T07:00:00Z"
     }
   },
   "coordinationRules": {
@@ -328,5 +333,5 @@
       "pushProtocol": "Always: git pull --rebase origin main → git push origin main. If push fails, clear git locks, pull --rebase again, retry push once. If still fails, abort rebase and report failure."
     }
   },
-  "lastIncidentScan": "2026-04-09T00:23:06Z"
+  "lastIncidentScan": "2026-04-09T09:17:04Z"
 }
