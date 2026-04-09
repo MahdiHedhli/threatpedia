@@ -150,19 +150,23 @@
       "queuedDate": "2026-04-07"
     },
     {
-      "name": "Medusa",
+      "actorName": "Medusa",
       "aliases": [
         "Storm-1175"
       ],
-      "referencedFrom": "ummc-medusa-ransomware-2026",
+      "referencedFrom": [
+        "ummc-medusa-ransomware-2026"
+      ],
       "action": "update-links",
       "queuedBy": "new-threat-intel-automation",
       "queuedDate": "2026-04-08"
     },
     {
-      "name": "Z-CERT",
+      "actorName": "Z-CERT",
       "aliases": [],
-      "referencedFrom": "chipsoft-ransomware-dutch-healthcare-2026",
+      "referencedFrom": [
+        "chipsoft-ransomware-dutch-healthcare-2026"
+      ],
       "action": "create",
       "queuedBy": "new-threat-intel-automation",
       "queuedDate": "2026-04-08"
