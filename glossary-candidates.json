@@ -1,0 +1,95 @@
+{
+  "lastUpdated": "2026-04-08T15:27:34Z",
+  "description": "Terms found in incident reports but potentially missing from the glossary. Queued for weekly glossary-term-updater.",
+  "candidates": [
+    {
+      "term": "STRIDE",
+      "context": "Solana Foundation STRIDE program (Security Threat Response, Investigation, and Detection Engagement) - referenced in Drift Protocol exploit report",
+      "foundIn": [
+        "drift-protocol-dprk-exploit-2026"
+      ],
+      "suggestedDefinition": "Security Threat Response, Investigation, and Detection Engagement — a Solana Foundation initiative providing security evaluations and threat monitoring for DeFi protocols",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "Device Code Phishing",
+      "context": "OAuth 2.0 Device Authorization Grant (RFC 8628) weaponized for token theft — core technique in EvilTokens PhaaS campaign",
+      "foundIn": [
+        "m365-oauth-device-code-phishing-2026"
+      ],
+      "suggestedDefinition": "A phishing technique that abuses the OAuth 2.0 Device Authorization Grant flow to intercept authentication tokens, routing victims through legitimate MFA challenges while attackers capture the resulting tokens",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "Durable Nonce Attack",
+      "context": "Attack mechanism used in Drift Protocol exploit to bypass multisig governance on Solana blockchain",
+      "foundIn": [
+        "drift-protocol-dprk-exploit-2026"
+      ],
+      "suggestedDefinition": "An attack technique exploiting Solana's durable nonce feature to pre-sign transactions that remain valid indefinitely, enabling attackers to bypass time-based security controls in multisig governance",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "React2Shell",
+      "context": "Vulnerability exploited in LexisNexis AWS breach — enables remote code execution via React frontend",
+      "foundIn": [
+        "lexisnexis-react2shell-breach-2026"
+      ],
+      "suggestedDefinition": "A critical vulnerability in React-based frontend applications that allows remote attackers to achieve shell access through crafted requests, enabling unauthorized access to backend cloud infrastructure",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "Operation Masquerade",
+      "context": "FBI court-authorized operation to disrupt APT28's DNS hijacking infrastructure by resetting compromised router DNS settings",
+      "foundIn": [
+        "frostarmada-soho-dns-hijacking-2026"
+      ],
+      "suggestedDefinition": "A 2026 FBI law enforcement operation that disrupted Russian APT28's DNS hijacking network by performing court-authorized DNS resets on thousands of compromised SOHO routers across 120+ countries",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "PhaaS",
+      "context": "Phishing-as-a-Service model used by EvilTokens platform to distribute device code phishing kits via Telegram",
+      "foundIn": [
+        "m365-oauth-device-code-phishing-2026"
+      ],
+      "suggestedDefinition": "Phishing-as-a-Service — a cybercrime business model where operators provide turnkey phishing kits, infrastructure, and support to customers for a fee, lowering the barrier to entry for credential theft campaigns",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "EPD",
+      "context": "Electronic Patient Dossier — Dutch healthcare record system used by ChipSoft",
+      "source": "chipsoft-ransomware-dutch-healthcare-2026",
+      "discoveredBy": "new-threat-intel-automation",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "Z-CERT",
+      "context": "Netherlands healthcare computer emergency response team",
+      "source": "chipsoft-ransomware-dutch-healthcare-2026",
+      "discoveredBy": "new-threat-intel-automation",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "CSSFontFeatureValuesMap",
+      "context": "Chrome API for CSS font feature values, exploited in CVE-2026-2441",
+      "source": "chrome-cve-2026-2441-css-zero-day",
+      "discoveredBy": "new-threat-intel-automation",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "DLL side-loading",
+      "context": "Technique where a legitimate application loads a malicious DLL",
+      "source": "trueconf-cve-2026-3502-zero-day",
+      "discoveredBy": "new-threat-intel-automation",
+      "discoveredDate": "2026-04-08"
+    },
+    {
+      "term": "EPIC EHR",
+      "context": "Electronic Health Record system by Epic Systems, disrupted in UMMC attack",
+      "source": "ummc-medusa-ransomware-2026",
+      "discoveredBy": "new-threat-intel-automation",
+      "discoveredDate": "2026-04-08"
+    }
+  ]
+}

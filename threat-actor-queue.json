@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T09:00:00Z",
+  "lastUpdated": "2026-04-07T20:00:00Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
   "queue": [
@@ -116,7 +116,7 @@
       "referencedFrom": [
         "passaic-county-medusa-ransomware-2026"
       ],
-      "context": "Medusa ransomware group attacked Passaic County NJ, demanding $800K ransom. Known for double extortion and rapid exploitation \u2014 Microsoft reports they can move from initial access to deployment within 24 hours, including zero-day exploitation.",
+      "context": "Medusa ransomware group attacked Passaic County NJ, demanding $800K ransom. Known for double extortion and rapid exploitation — Microsoft reports they can move from initial access to deployment within 24 hours, including zero-day exploitation.",
       "suggestedAffiliation": "Criminal",
       "suggestedMotivation": "Financial",
       "priority": "high",
@@ -150,25 +150,29 @@
       "queuedDate": "2026-04-07"
     },
     {
-      "actorName": "RansomHouse",
-      "action": "update-links",
-      "referencedFrom": [
-        "ransomhouse-operations",
-        "vivaticket-ransomhouse-2026"
+      "name": "Medusa",
+      "aliases": [
+        "Storm-1175"
       ],
-      "context": "RansomHouse (Jolly Scorpius) is a data extortion / RaaS group active since Dec 2021 with 187+ victims. Uses MarioLocker and MrAgent. Gap-fill report created.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial",
-      "priority": "normal",
-      "queuedBy": "incident-crosslink-gapfill",
+      "referencedFrom": "ummc-medusa-ransomware-2026",
+      "action": "update-links",
+      "queuedBy": "new-threat-intel-automation",
+      "queuedDate": "2026-04-08"
+    },
+    {
+      "name": "Z-CERT",
+      "aliases": [],
+      "referencedFrom": "chipsoft-ransomware-dutch-healthcare-2026",
+      "action": "create",
+      "queuedBy": "new-threat-intel-automation",
       "queuedDate": "2026-04-08"
     }
   ],
   "queueRules": {
     "actions": {
-      "create": "Threat actor not found in threat-actor-index.json \u2014 needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
-      "update-links": "Threat actor exists but a new incident report references them \u2014 update their campaigns/description and ensure bidirectional linking",
-      "enrich": "Threat actor exists but has thin data \u2014 research and expand their entry"
+      "create": "Threat actor not found in threat-actor-index.json — needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
+      "update-links": "Threat actor exists but a new incident report references them — update their campaigns/description and ensure bidirectional linking",
+      "enrich": "Threat actor exists but has thin data — research and expand their entry"
     },
     "priority": {
       "critical": "Actor tied to active/ongoing campaign affecting critical infrastructure",
