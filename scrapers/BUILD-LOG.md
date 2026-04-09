@@ -1,0 +1,53 @@
+# Threatpedia Scrapers — Build Log
+
+Tracks which connectors have been built, tested, and are ready for deployment.
+
+---
+
+## Infrastructure
+
+| Component | File | Status | Date |
+|-----------|------|--------|------|
+| Base connector class | `base_connector.py` | Built | 2026-03-28 |
+| Package init | `__init__.py` | Built | 2026-03-28 |
+| Requirements | `requirements.txt` | Created | 2026-03-28 |
+
+## Phase 1 — Connectors
+
+| # | Source | File | Status | Date | Notes |
+|---|--------|------|--------|------|-------|
+| 2 | CISA KEV Catalog | `cisa_kev_connector.py` | Built & CLI verified | 2026-03-28 | No auth required. Full catalog + incremental (dateAdded filter). Fallback from CISA CDN to GitHub mirror. SHA-256 change detection. CLI tested (`--help` OK). Live fetch blocked by sandbox proxy — retry/fallback logic confirmed working. |
+| 9 | Have I Been Pwned (HIBP) | `hibp_connector.py` | Built & CLI verified | 2026-03-29 | Free `/breaches` endpoint — single request for full catalog (~800 records, ~2 MB). Incremental via full-fetch + ModifiedDate diff. Data class taxonomy mapping (47 classes → Threatpedia categories + sensitivity tiers). HTML stripping on descriptions. Fabricated/spam-list filtering. Optional API key for paid endpoints. CLI tested (`--help` OK). Live fetch blocked by sandbox proxy — retry/backoff logic confirmed. |
+| 11 | VERIS Community DB (VCDB) | `vcdb_connector.py` | Built & CLI verified | 2026-04-04 | GitHub API-based ingestion (Git Trees + Blobs for bulk, Commits API for incremental). NAICS→sector mapping (24 codes). VERIS A4 model normalization: actors, actions, confidentiality attributes, timeline composition (year/month/day with partial-date support). CVE extraction from hacking+malware actions. IOC flattening. Confidence→numeric scoring. Batch progress logging. CLI tested (`--help` OK, arg validation OK). No new dependencies — uses `requests` only. Live fetch blocked by sandbox proxy — retry/backoff logic confirmed. |
+| 14 | NIST NVD | `nist_nvd_connector.py` | Built & CLI verified | 2026-04-05 | REST API 2.0 paginated ingestion (resultsPerPage=2000, startIndex pagination). Incremental via lastModStartDate/lastModEndDate with automatic 120-day window chunking. CVSS version preference cascade (v3.1→v3.0→v4.0→v2.0, Primary→Secondary). CWE/CPE/KEV extraction. CPE vendor→display-name alias table. Enrichment-only source (no breach data). Optional API key (50 req/30s with key, 5 without). CLI tested (`--help` OK, arg validation OK). Unit tests passed. No new dependencies — uses `requests` only. Live fetch blocked by sandbox proxy — retry/backoff logic confirmed. |
+| 15 | CVE / MITRE | `cve_mitre_connector.py` | Built & CLI verified | 2026-04-06 | Three-channel ingestion: CVE Services REST API (primary, paginated `/cve` search with `timeModified.gt` filters, 500/page), GitHub Releases daily/hourly zips (bulk), GitHub REST API (release metadata). CVSS version preference cascade (v4.0→v3.1→v3.0→v2.0) with CNA→CISA-ADP fallback. Multi-container parsing: CNA primary + ADP enrichment. CWE extraction, affected product/version normalization, reference+tag extraction. `lookup` mode for single-CVE retrieval. Enrichment-only source (no breach data). Optional GitHub PAT for higher rate limits. CLI tested (`--help` OK, arg validation OK). Unit tests passed. No new dependencies — uses `requests` only. Live fetch blocked by sandbox proxy — retry/backoff logic confirmed. |
+
+| 25 | MISP (Open Source) | `misp_connector.py` | Built & CLI verified | 2026-04-07 | REST API client (no PyMISP dependency — pure `requests`). Four modes: full (paginated event sync), incremental (timestamp-based delta), lookup (single event by ID/UUID), attributes (IOC search across events). TLP filtering (blocks tlp:red by default). Full event normalization: tags, galaxies (ATT&CK TTPs, threat actors, malware families), composite attribute splitting (filename\|sha256, ip-dst\|port), CVE extraction from attributes and MISP Objects, sector/country tag parsing. Token-bucket rate limiting, SSL toggle, warninglist enforcement. CLI tested (`--help` OK, arg validation OK). 35 unit tests passed. No new dependencies — uses `requests` only. Live fetch blocked by sandbox proxy — retry/backoff logic confirmed. |
+
+| 27 | MITRE ATT&CK | `mitre_attack_connector.py` | Built & Live tested | 2026-04-08 | GitHub raw STIX 2.1 bundle download (Enterprise/Mobile/ICS domains). Three modes: full (bulk download + parse), incremental (modified-date filter), lookup (ATT&CK ID search). Relationship graph: group→technique, software→technique, mitigation→technique queries. STIX type normalization: attack-pattern→technique, intrusion-set→group, tool/malware→software, course-of-action→mitigation, campaign. Tactic→ATT&CK ID mapping (14 Enterprise tactics). CVE extraction from external_references. Revoked/deprecated filtering. TAXII 2.1 fallback for single-object lookups (10 req/10 min rate limiter). Optional GitHub PAT. Stats summary. JSON/JSONL output. CLI tested (`--help` OK, arg validation OK). Unit tests passed. **Live test passed: 24,772 STIX objects fetched, 1,757 active primary objects normalized, 0 errors. APT29 group-techniques query returned 66 techniques.** No new dependencies — uses `requests` only. |
+
+## Phase 2 — Connectors
+
+| # | Source | File | Status | Date | Notes |
+|---|--------|------|--------|------|-------|
+| 1 | HHS/OCR Breach Portal | `hhs_ocr_connector.py` | Built & Live tested | 2026-04-09 | Web scraping via requests+BeautifulSoup with optional Selenium fallback. JSF ViewState extraction and front-page navigation for investigation portal. Handles "Expand All" column in table headers. Three modes: full (both portals), incremental (investigation only, date-filtered), lookup (entity name search). Deterministic source_id (SHA-256 of entity+date+state). Breach type mapping (7 HHS types → Threatpedia taxonomy). Multi-value field parsing. Archive portal live tested: 100 records parsed, normalization verified (Healthcare sector, US-only). Investigation portal requires Selenium for full JS rendering. JSON/JSONL output. 10+ unit tests passed. Dependencies: beautifulsoup4, lxml; optional: selenium, webdriver-manager. |
+
+## Build Queue (Next Up)
+
+1. **EU GDPR Enforcement Tracker** — Selenium scraper, DataTables parsing
+
+---
+
+## Run Log
+
+| Date | Action | Details |
+|------|--------|---------|
+| 2026-03-28 | Initial scaffolding | Created `base_connector.py` (abstract base, dataclass, rate limiter, retry decorator, JSON serializer, timestamp normalizer), `__init__.py`, `requirements.txt` |
+| 2026-03-28 | CISA KEV connector | Built `cisa_kev_connector.py` with full/incremental modes, validation, fallback URLs, CLI entry point. `--help` verified. Live test confirmed retry + fallback behavior (sandbox blocks outbound HTTP). |
+| 2026-03-29 | HIBP connector | Built `hibp_connector.py` — free `/breaches` catalog sync, ModifiedDate-based incremental, 47-class data taxonomy mapping, HTML stripping, fabricated/spam filtering, optional paid API key support. `--help` verified. Live fetch blocked by sandbox. Next up: VCDB. |
+| 2026-04-04 | VCDB connector | Built `vcdb_connector.py` — GitHub API ingestion (Trees+Blobs for full, Commits API for incremental). VERIS schema normalization: A4 actions, NAICS sector mapping, partial-date timeline composition, CVE/IOC extraction, confidence scoring. `--help` and arg validation verified. Next up: NIST NVD. |
+| 2026-04-05 | NIST NVD connector | Built `nist_nvd_connector.py` — NVD 2.0 REST API with paginated bulk download and incremental delta sync (120-day window chunking). CVSS cascade (v3.1→v3.0→v4.0→v2.0, Primary→Secondary), CWE/CPE/KEV extraction, CPE vendor alias table, enrichment-only schema mapping. `--help`, arg validation, and unit tests verified. Next up: CVE / MITRE. |
+| 2026-04-06 | CVE/MITRE connector | Built `cve_mitre_connector.py` — CVE Services REST API + GitHub Releases dual-channel ingestion. CVE JSON 5.x multi-container parsing (CNA + CISA-ADP). CVSS v4.0→v3.1→v3.0→v2.0 cascade with CNA→ADP fallback. CWE, affected product/version, reference extraction. Three modes: full (daily zip → API fallback), incremental (timeModified.gt pagination), lookup (single CVE). `--help`, arg validation, and unit tests verified. Next up: MISP. |
+| 2026-04-07 | MISP connector | Built `misp_connector.py` — Pure-requests MISP REST API client (no PyMISP dependency). Four modes: full (paginated event restSearch), incremental (timestamp delta sync), lookup (single event view), attributes (IOC search). TLP filtering, composite attribute decomposition, Galaxy cluster extraction (ATT&CK TTPs, threat actors, malware), sector/country tag parsing, CVE extraction from attributes + Objects. Token-bucket rate limiter. 35 unit tests passed. `--help` and arg validation verified. Next up: MITRE ATT&CK. |
+| 2026-04-08 | MITRE ATT&CK connector | Built `mitre_attack_connector.py` — GitHub raw STIX 2.1 bundle ingestion for Enterprise/Mobile/ICS. Three modes: full, incremental (modified-date filter), lookup. Relationship graph queries (group→technique, technique→groups). STIX→ATT&CK concept normalization (8 types). TAXII 2.1 fallback. Live test passed: 24,772 objects, 1,757 normalized, 0 errors. APT29 query returned 66 techniques. Next up: HHS/OCR Breach Portal. |
+| 2026-04-09 | HHS/OCR Breach Portal connector | Built `hhs_ocr_connector.py` — requests+BS4 web scraper with optional Selenium fallback for JSF portal. Full/incremental/lookup modes. JSF ViewState handling, front-page navigation, Expand All column support, multi-value field parsing, deterministic source_id. Live test: 100 archive records parsed, normalization verified. 10+ unit tests passed. Next up: EU GDPR Enforcement Tracker. |
