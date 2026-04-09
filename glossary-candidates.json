@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T09:17:17Z",
+  "lastUpdated": "2026-04-09T15:12:14Z",
   "description": "Terms found in incident reports but potentially missing from the glossary. Queued for weekly glossary-term-updater.",
   "candidates": [
     {
@@ -59,47 +59,37 @@
     {
       "term": "EPD",
       "context": "Electronic Patient Dossier — Dutch healthcare record system used by ChipSoft",
+      "source": "chipsoft-ransomware-dutch-healthcare-2026",
       "discoveredBy": "new-threat-intel-automation",
-      "discoveredDate": "2026-04-08",
-      "foundIn": [
-        "chipsoft-ransomware-dutch-healthcare-2026"
-      ]
+      "discoveredDate": "2026-04-08"
     },
     {
       "term": "Z-CERT",
       "context": "Netherlands healthcare computer emergency response team",
+      "source": "chipsoft-ransomware-dutch-healthcare-2026",
       "discoveredBy": "new-threat-intel-automation",
-      "discoveredDate": "2026-04-08",
-      "foundIn": [
-        "chipsoft-ransomware-dutch-healthcare-2026"
-      ]
+      "discoveredDate": "2026-04-08"
     },
     {
       "term": "CSSFontFeatureValuesMap",
       "context": "Chrome API for CSS font feature values, exploited in CVE-2026-2441",
+      "source": "chrome-cve-2026-2441-css-zero-day",
       "discoveredBy": "new-threat-intel-automation",
-      "discoveredDate": "2026-04-08",
-      "foundIn": [
-        "chrome-cve-2026-2441-css-zero-day"
-      ]
+      "discoveredDate": "2026-04-08"
     },
     {
       "term": "DLL side-loading",
       "context": "Technique where a legitimate application loads a malicious DLL",
+      "source": "trueconf-cve-2026-3502-zero-day",
       "discoveredBy": "new-threat-intel-automation",
-      "discoveredDate": "2026-04-08",
-      "foundIn": [
-        "trueconf-cve-2026-3502-zero-day"
-      ]
+      "discoveredDate": "2026-04-08"
     },
     {
       "term": "EPIC EHR",
       "context": "Electronic Health Record system by Epic Systems, disrupted in UMMC attack",
+      "source": "ummc-medusa-ransomware-2026",
       "discoveredBy": "new-threat-intel-automation",
-      "discoveredDate": "2026-04-08",
-      "foundIn": [
-        "ummc-medusa-ransomware-2026"
-      ]
+      "discoveredDate": "2026-04-08"
     },
     {
       "term": "DLL Sideloading",
@@ -154,6 +144,33 @@
       "suggestedDefinition": "Out-of-Band Application Security Testing — technique using external callback servers to detect blind vulnerabilities.",
       "addedAt": "2026-04-09T09:17:17Z",
       "addedBy": "new-threat-intel-automation"
+    },
+    {
+      "term": "STRIDE Program",
+      "context": "Solana Foundation STRIDE program — security evaluations initiative for DeFi protocols, referenced in Drift Protocol recovery",
+      "foundIn": [
+        "drift-protocol-dprk-exploit-2026"
+      ],
+      "suggestedDefinition": "Security Threat Response, Investigation, and Detection Engagement — a Solana Foundation initiative providing comprehensive security evaluations and structured support for qualifying DeFi protocols",
+      "discoveredDate": "2026-04-09"
+    },
+    {
+      "term": "Primary Refresh Token (PRT)",
+      "context": "Token type used in EvilTokens post-compromise for persistent MFA-bypassing access to M365",
+      "foundIn": [
+        "m365-oauth-device-code-phishing-2026"
+      ],
+      "suggestedDefinition": "A Primary Refresh Token (PRT) is a key artifact of Microsoft Entra ID authentication that provides SSO across all applications on a device, allowing persistent access without repeated MFA challenges",
+      "discoveredDate": "2026-04-09"
+    },
+    {
+      "term": "TOCTOU",
+      "context": "Time-of-check to time-of-use race condition — core vulnerability type in BlueHammer Windows Defender zero-day",
+      "foundIn": [
+        "bluehammer-windows-defender-zero-day-2026"
+      ],
+      "suggestedDefinition": "Time-of-check to time-of-use — a class of race condition vulnerability where the state of a resource changes between the moment it is checked and the moment it is used, creating an exploitable window",
+      "discoveredDate": "2026-04-09"
     }
   ]
 }
