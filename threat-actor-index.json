@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-06T21:00:00Z",
-  "actorCount": 78,
+  "generatedAt": "2026-04-09T15:00:00Z",
+  "actorCount": 83,
   "actors": {
     "apt1": {
       "name": "APT1",
@@ -1250,9 +1250,9 @@
     "medusa": {
       "name": "Medusa",
       "aliases": [
-        "MEDUSA"
+        "Storm-1175"
       ],
-      "affiliation": "Unknown",
+      "affiliation": "Criminal",
       "motivation": "Financial",
       "status": "Active"
     },
@@ -1371,6 +1371,120 @@
     },
     "scattered spider original name": {
       "canonicalName": "Storm-0875",
+      "isAlias": true
+    },
+    "shinyhunters": {
+      "name": "ShinyHunters",
+      "aliases": [
+        "UNC5537",
+        "ShinyCorp",
+        "SLSH Alliance"
+      ],
+      "affiliation": "Criminal",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "unc5537": {
+      "canonicalName": "ShinyHunters",
+      "isAlias": true
+    },
+    "shinycorp": {
+      "canonicalName": "ShinyHunters",
+      "isAlias": true
+    },
+    "slsh alliance": {
+      "canonicalName": "ShinyHunters",
+      "isAlias": true
+    },
+    "handala": {
+      "name": "Handala",
+      "aliases": [
+        "Void Manticore",
+        "Storm-0842",
+        "Banished Kitten",
+        "Homeland Justice",
+        "Karma"
+      ],
+      "affiliation": "Iran",
+      "motivation": "Hacktivism / Destructive",
+      "status": "Active"
+    },
+    "void manticore": {
+      "canonicalName": "Handala",
+      "isAlias": true
+    },
+    "storm-0842": {
+      "canonicalName": "Handala",
+      "isAlias": true
+    },
+    "banished kitten": {
+      "canonicalName": "Handala",
+      "isAlias": true
+    },
+    "homeland justice": {
+      "canonicalName": "Handala",
+      "isAlias": true
+    },
+    "karma": {
+      "canonicalName": "Handala",
+      "isAlias": true
+    },
+    "teampcp": {
+      "name": "TeamPCP",
+      "aliases": [
+        "UNC6780",
+        "DeadCatx3",
+        "PCPcat",
+        "ShellForce"
+      ],
+      "affiliation": "Criminal",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "unc6780": {
+      "canonicalName": "TeamPCP",
+      "isAlias": true
+    },
+    "deadcatx3": {
+      "canonicalName": "TeamPCP",
+      "isAlias": true
+    },
+    "pcpcat": {
+      "canonicalName": "TeamPCP",
+      "isAlias": true
+    },
+    "shellforce": {
+      "canonicalName": "TeamPCP",
+      "isAlias": true
+    },
+    "storm-1175": {
+      "canonicalName": "Medusa",
+      "isAlias": true
+    },
+    "eviltokens": {
+      "name": "EvilTokens",
+      "aliases": [
+        "NOIRLEGACY GROUP"
+      ],
+      "affiliation": "Criminal",
+      "motivation": "Financial (PhaaS)",
+      "status": "Active"
+    },
+    "noirlegacy group": {
+      "canonicalName": "EvilTokens",
+      "isAlias": true
+    },
+    "dragonforce": {
+      "name": "DragonForce",
+      "aliases": [
+        "DragonForce RaaS"
+      ],
+      "affiliation": "Criminal (Malaysian origin)",
+      "motivation": "Financial",
+      "status": "Active"
+    },
+    "dragonforce raas": {
+      "canonicalName": "DragonForce",
       "isAlias": true
     }
   }

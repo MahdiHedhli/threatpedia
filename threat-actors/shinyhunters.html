@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>ShinyHunters | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,28 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="shinyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- Data theft symbol -->
+                <path d="M 60 80 L 100 50 L 140 80 L 140 140 L 60 140 Z" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                <circle cx="100" cy="105" r="20" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <line x1="100" y1="85" x2="100" y2="70" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="100" cy="105" r="5" fill="#e8a020" opacity="0.8"/>
+                <!-- Shine rays -->
+                <line x1="70" y1="60" x2="65" y2="50" stroke="#e8a020" stroke-width="1.5" opacity="0.5"/>
+                <line x1="130" y1="60" x2="135" y2="50" stroke="#e8a020" stroke-width="1.5" opacity="0.5"/>
+                <line x1="100" y1="45" x2="100" y2="35" stroke="#e8a020" stroke-width="1.5" opacity="0.5"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>ShinyHunters</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                UNC5537, ShinyCorp, SLSH Alliance (with Scattered Spider &amp; Lapsus$)
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +645,71 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>ShinyHunters</strong> is a prolific financially motivated cybercriminal group active since April 2020, tracked by Mandiant as <strong>UNC5537</strong>. The group specializes in large-scale data theft and extortion, targeting SaaS platforms, cloud infrastructure, and enterprise applications. ShinyHunters has been responsible for some of the largest data breaches in recent history, including the compromise of over 160 Snowflake customer environments in 2024 and extensive Salesforce-targeting campaigns in 2025.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>In late 2025, ShinyHunters formed the <strong>SLSH Alliance</strong> with Scattered Spider and Lapsus$, combining social engineering expertise with credential theft capabilities. The group operates a dedicated data leak site launched in October 2025, where stolen data is published when extortion demands are not met. Their operations leverage voice phishing (vishing), credential stuffing, and exploitation of misconfigured cloud environments — particularly those lacking multi-factor authentication.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>In February 2026, ShinyHunters compromised <strong>Hims &amp; Hers Health</strong> through a Zendesk breach via Okta SSO, and breached the <strong>European Commission</strong> via the Trivy supply chain attack, exfiltrating 350GB of data including signing keys from 71 EU entities. The group has demonstrated an ability to rapidly pivot across cloud platforms and SaaS services, making them one of the most dangerous data theft operations currently active.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1598: Phishing for Information</span>
+                                <span class="ttp-technique">T1566.004: Spearphishing Voice (Vishing)</span>
+                                <span class="ttp-technique">T1078: Valid Accounts</span>
                                 <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1589.001: Gather Victim Identity - Credentials</span>
+                                <span class="ttp-technique">T1589.002: Gather Victim Identity - Email Addresses</span>
+                                <span class="ttp-technique">T1528: Steal Application Access Token</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                                <span class="ttp-technique">T1078.004: Valid Accounts - Cloud Accounts</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Collection &amp; Exfiltration:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
-                            </div>
-                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
-                            <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
-                            </div>
-                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                                <span class="ttp-technique">T1530: Data from Cloud Storage</span>
+                                <span class="ttp-technique">T1567: Exfiltration Over Web Service</span>
+                                <span class="ttp-technique">T1534: Internal Spearphishing</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>Voice Phishing (Vishing):</strong> Social engineering attacks impersonating IT helpdesks to trick employees into revealing credentials or approving MFA prompts. Targeted Snowflake and Salesforce customer organizations.</li>
+                            <li><strong>Credential Stuffing:</strong> Large-scale reuse of stolen credentials from infostealer malware (Aurora Stealer) against cloud platforms lacking MFA enforcement.</li>
+                            <li><strong>SSO/OAuth Exploitation:</strong> Targeting Okta SSO and OAuth flows to gain access to downstream SaaS applications like Zendesk, Salesforce, and cloud storage.</li>
+                            <li><strong>Supply Chain Exploitation:</strong> Leveraging third-party compromises (e.g., Trivy supply chain attack) to access enterprise environments.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>Aurora Stealer:</strong> Golang-based infostealer (MaaS, ~$250/month) used to harvest browser cookies, credentials, and session tokens from victim systems.</li>
+                            <li><strong>Custom Data Exfiltration Scripts:</strong> Purpose-built tools for bulk extraction of data from Snowflake, Salesforce, and other cloud platforms.</li>
+                            <li><strong>Credential Harvesting Infrastructure:</strong> Phishing kits and vishing call centers for large-scale credential collection campaigns.</li>
+                            <li><strong>Dark Web Leak Site:</strong> Dedicated platform for publishing stolen data and managing extortion negotiations.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>Dark Web Forums:</strong> Active presence on underground marketplaces for data sales and initial access brokerage.</li>
+                            <li><strong>Telegram Channels:</strong> Communication and coordination via encrypted messaging platforms.</li>
+                            <li><strong>Cloud-Based Infrastructure:</strong> Use of legitimate cloud services for staging and exfiltration of stolen data.</li>
+                            <li><strong>Bulletproof Hosting:</strong> Infrastructure hosted on resilient platforms designed to resist takedown efforts.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +717,22 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>ShinyHunters targets organizations with valuable data stores across cloud and SaaS platforms:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Cloud / SaaS Platforms</td><td>Snowflake (160+ customers), Salesforce (39+ organizations), Microsoft 365</td></tr>
+                            <tr><td>Healthcare</td><td>Hims &amp; Hers Health (Zendesk breach via Okta SSO)</td></tr>
+                            <tr><td>Telecommunications</td><td>AT&amp;T (110M call records via Snowflake)</td></tr>
+                            <tr><td>Entertainment / Media</td><td>Ticketmaster (560M records), Wattpad (270M records)</td></tr>
+                            <tr><td>Government</td><td>European Commission (350GB via Trivy supply chain)</td></tr>
+                            <tr><td>Financial Services</td><td>Santander Bank, Neiman Marcus</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +742,52 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">Apr 2020</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Group Emergence</div>
+                                <div class="timeline-event-detail">ShinyHunters begins operations with breaches of GitHub, Tokopedia, and multiple other platforms, selling stolen data on dark web forums.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">2020-2021</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Mass Breach Campaign</div>
+                                <div class="timeline-event-detail">Compromises Wattpad (270M records), Pixlr, Pluto TV, AT&amp;T (70M subscribers), establishing reputation as prolific data theft operation.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">May 2022</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Key Member Arrested</div>
+                                <div class="timeline-event-detail">Sébastien Raoult, a French national and alleged ShinyHunters member, arrested in Morocco and later extradited to the United States.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
+<div class="timeline-item">
+                            <div class="timeline-date">2024</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Snowflake Campaign</div>
+                                <div class="timeline-event-detail">Massive campaign compromising 160+ Snowflake customer environments including AT&amp;T (110M records), Ticketmaster (560M), Santander. Exploited missing MFA on cloud accounts. <a href="../incidents/shiny-hunters-leak-site.html" class="incident-link">Leak Site Operations →</a></div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">2025</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Salesforce &amp; Alliance Formation</div>
+                                <div class="timeline-event-detail">Launches vishing campaigns against 39+ Salesforce organizations. Forms SLSH Alliance with Scattered Spider and Lapsus$. Launches dedicated data leak site in October.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">Feb 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Hims &amp; Hers Breach</div>
+                                <div class="timeline-event-detail">Compromises Hims &amp; Hers Health through Zendesk breach via Okta SSO voice phishing. <a href="../incidents/hims-hers-shinyhunters-breach-2026.html" class="incident-link">Full Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Apr 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>EU Commission Breach</div>
+                                <div class="timeline-event-detail">Exfiltrates 350GB from 71 EU entities via Trivy supply chain compromise. <a href="../incidents/european-commission-trivy-breach-2026.html" class="incident-link">Full Report →</a></div>
                             </div>
                         </div>
                     </div>
@@ -845,10 +796,8 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -860,40 +809,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-35587" class="cve-link" target="_blank">CVE-2021-35587</a></td>
+                                <td>Oracle Access Manager Authentication Bypass</td>
+                                <td>Oracle Access Manager</td>
                                 <td>9.8</td>
                             </tr>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-31324" class="cve-link" target="_blank">CVE-2025-31324</a></td>
+                                <td>SAP NetWeaver Remote Code Execution</td>
+                                <td>SAP NetWeaver</td>
                                 <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
                             </tr>
                         </tbody>
                     </table>
@@ -904,8 +829,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +838,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Mandiant / Google</td>
+                                <td>UNC5537</td>
                             </tr>
                             <tr>
                                 <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
+                                <td>ShinyHunters</td>
                             </tr>
                             <tr>
                                 <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
+                                <td>ShinyHunters</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">EclecticIQ</td>
+                                <td>ShinyHunters</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Intel 471</td>
+                                <td>ShinyHunters</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +867,42 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><a href="scattered-spider.html" class="actor-link"><strong>Scattered Spider:</strong></a> Alliance partner in the SLSH (Scattered Lapsus$ ShinyHunters) coalition formed in late 2025. Shares social engineering TTPs and target overlap in SaaS platforms.</li>
+                        <li><strong>Lapsus$:</strong> Third member of the SLSH Alliance. Known for extortion campaigns against major technology companies.</li>
+                        <li><strong>UNC1069:</strong> North Korean threat actor whose Axios npm compromise intersected with ShinyHunters operations via shared supply chain vectors.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>EclecticIQ: ShinyHunters Financially Motivated Data Extortion Group</strong>
+                            <a href="https://blog.eclecticiq.com/shinyhunters-calling-financially-motivated-data-extortion-group-targeting-enterprise-cloud-applications" target="_blank">EclecticIQ Research</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>Intel 471: ShinyHunters MITRE ATT&CK Analysis</strong>
+                            <a href="https://www.intel471.com/blog/shinyhunters-data-breach-mitre-attack" target="_blank">Intel 471 Blog</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>Obsidian Security: ShinyHunters and Scattered Spider Salesforce Attacks</strong>
+                            <a href="https://www.obsidiansecurity.com/blog/shinyhunters-and-scattered-spider-a-merger-of-chaos-in-the-2025-salesforce-attacks/" target="_blank">Obsidian Security</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                            <strong>BleepingComputer: Hims and Hers Zendesk Breach</strong>
+                            <a href="https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/" target="_blank">BleepingComputer</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>CISA Advisory: Snowflake Customer Breaches</strong>
+                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
                         </div>
                     </div>
                 </div>
@@ -1003,29 +918,29 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🌐</span>
+                        International (Eastern Europe / Asia)
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">No — Criminal Enterprise</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Financial (Data Theft &amp; Extortion)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">April 2020</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Last Seen</div>
-                    <div class="fact-value">2026-Q1</div>
+                    <div class="fact-value">2026-Q2</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +950,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">UNC5537, ShinyCorp, SLSH Alliance</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">

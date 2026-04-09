@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>TeamPCP | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,31 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="pcpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- Supply chain symbol: interconnected nodes -->
+                <circle cx="100" cy="60" r="12" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="60" cy="110" r="12" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="140" cy="110" r="12" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="100" cy="150" r="12" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <line x1="100" y1="72" x2="68" y2="102" stroke="#e8a020" stroke-width="1.5" opacity="0.6"/>
+                <line x1="100" y1="72" x2="132" y2="102" stroke="#e8a020" stroke-width="1.5" opacity="0.6"/>
+                <line x1="72" y1="116" x2="88" y2="144" stroke="#e8a020" stroke-width="1.5" opacity="0.6"/>
+                <line x1="128" y1="116" x2="112" y2="144" stroke="#e8a020" stroke-width="1.5" opacity="0.6"/>
+                <!-- Worm propagation arrows -->
+                <path d="M 105 60 L 115 55 L 115 65 Z" fill="#e8a020" opacity="0.5"/>
+                <path d="M 65 115 L 55 120 L 55 110 Z" fill="#e8a020" opacity="0.5"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>TeamPCP</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                UNC6780, DeadCatx3, PCPcat, ShellForce
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +648,77 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>TeamPCP</strong> is a financially motivated cybercriminal group tracked by Mandiant as <strong>UNC6780</strong>, also known as DeadCatx3, PCPcat, and ShellForce. First observed in September 2025 with cryptocurrency theft and ransomware operations, the group pivoted to large-scale <strong>supply chain attacks</strong> in early 2026, executing one of the most significant cascading compromises in recent history.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>In March 2026, TeamPCP launched a cascading supply chain campaign targeting <strong>Aqua Security's Trivy</strong> vulnerability scanner, <strong>Checkmarx KICS</strong>, <strong>LiteLLM</strong>, and <strong>Telnyx SDK</strong>. The group exploited a GitHub Actions PAT compromise (CVE-2026-33634) to inject malicious code into trusted security tools, then deployed <strong>CanisterWorm</strong> — a self-propagating worm using Internet Computer (ICP) canisters for decentralized command-and-control. The campaign compromised an estimated 500,000+ machines and harvested 300GB+ of credentials.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>The downstream impact was massive: the <strong>European Commission</strong> suffered a 340GB breach affecting 71 EU entities, <strong>Cisco</strong> development environments were compromised, and the attack propagated through 141 malicious artifacts across 66+ npm packages. In late March 2026, TeamPCP announced a formal partnership with the <strong>Vect ransomware group</strong> for credential-based initial access operations, signaling continued escalation.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1195.002: Supply Chain Compromise - Software Supply Chain</span>
                                 <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                                <span class="ttp-technique">T1133: External Remote Services</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.004: Unix Shell</span>
+                                <span class="ttp-technique">T1053.003: Cron/Scheduled Task</span>
+                                <span class="ttp-technique">T1204: User Execution (via compromised packages)</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                                <span class="ttp-technique">T1547: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1543: Create or Modify System Process</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1552.001: Credentials in Files (SSH keys, cloud tokens)</span>
+                                <span class="ttp-technique">T1555: Credentials from Password Stores</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
+                                <span class="ttp-technique">T1210: Exploitation of Remote Services (Docker APIs, K8s)</span>
+                                <span class="ttp-technique">T1021.004: SSH</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            <div style="margin-bottom: 12px;"><strong>Command &amp; Control:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">Custom: Decentralized C2 via Internet Computer (ICP) Canisters</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>CI/CD Pipeline Compromise:</strong> Theft of GitHub Actions Personal Access Tokens (PATs) to inject malicious code into trusted open-source security tools during build processes.</li>
+                            <li><strong>Package Repository Poisoning:</strong> Publication of 141 malicious artifacts across 66+ npm packages, exploiting developer trust in popular package ecosystems.</li>
+                            <li><strong>Exposed Service Exploitation:</strong> Automated scanning for weakly-secured Docker APIs, Kubernetes control planes, and other externally accessible development services.</li>
+                            <li><strong>Credential Harvesting at Scale:</strong> CanisterWorm harvests SSH keys, cloud credentials, database passwords, Kubernetes tokens, and Docker configs from compromised systems.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>CanisterWorm:</strong> Self-propagating worm that uses Internet Computer (ICP) canisters for decentralized C2 communication, making takedown extremely difficult. Harvests credentials across cloud, container, and development environments.</li>
+                            <li><strong>Credential Infostealer Modules:</strong> Custom modules targeting SSH keys, AWS/GCP/Azure credentials, database connection strings, and CI/CD tokens.</li>
+                            <li><strong>Cloud Lateral Movement Toolkit:</strong> Purpose-built tools for moving between cloud environments using harvested credentials.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>Internet Computer (ICP) Canisters:</strong> Decentralized C2 infrastructure leveraging blockchain-based compute to resist takedown and attribution.</li>
+                            <li><strong>Compromised CI/CD Pipelines:</strong> Abuse of GitHub Actions, PyPI, and npm infrastructure for malware distribution.</li>
+                            <li><strong>Automated Scanning Infrastructure:</strong> Large-scale scanning for exposed Docker APIs, Kubernetes clusters, and development services.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +726,22 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>TeamPCP targets the software supply chain and cloud-native infrastructure:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Security Tools / DevOps</td><td>Aqua Security Trivy, Checkmarx KICS — compromised via GitHub Actions PAT theft. <a href="../incidents/teampcp-supply-chain-attack.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>AI / ML Platforms</td><td>LiteLLM AI proxy — PyPI package compromised for credential harvesting</td></tr>
+                            <tr><td>Telecommunications</td><td>Telnyx SDK — compromised for credential theft and downstream access</td></tr>
+                            <tr><td>Government</td><td>European Commission — 340GB stolen from 71 EU entities via Trivy supply chain. <a href="../incidents/european-commission-trivy-breach-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Technology</td><td>Cisco development environments — breached via Trivy supply chain compromise</td></tr>
+                            <tr><td>npm Ecosystem</td><td>66+ npm packages poisoned with 141 malicious artifacts</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +751,45 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">Sep 2025</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial Activity</div>
+                                <div class="timeline-event-detail">TeamPCP begins operations with cryptocurrency theft and ransomware attacks, establishing financial motivation and technical capabilities.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2023</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2025</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">Feb 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Trivy GitHub Actions Compromise</div>
+                                <div class="timeline-event-detail">Compromises Aqua Security Trivy via stolen GitHub Actions PAT, injecting malicious code into the trusted vulnerability scanner. CVE-2026-33634 assigned. <a href="../incidents/trivy-cve-2026-33634.html" class="incident-link">CVE Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 19, 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Aqua-bot Service Account Breach</div>
+                                <div class="timeline-event-detail">Breaches the Aqua-bot service account used for automated Trivy builds, expanding supply chain access.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 27, 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>LiteLLM &amp; Telnyx Compromises</div>
+                                <div class="timeline-event-detail">Extends supply chain campaign to LiteLLM AI proxy (PyPI) and Telnyx SDK, deploying CanisterWorm for credential harvesting.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 30, 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Vect Ransomware Partnership</div>
+                                <div class="timeline-event-detail">Announces formal partnership with Vect ransomware group for credential-based initial access operations.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Apr 2-3, 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>EU Commission Breach Confirmed</div>
+                                <div class="timeline-event-detail">CERT-EU confirms European Commission breach — 340GB stolen from 71 entities, including signing keys. <a href="../incidents/european-commission-trivy-breach-2026.html" class="incident-link">Full Report →</a></div>
                             </div>
                         </div>
                     </div>
@@ -845,10 +798,8 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -860,40 +811,10 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-33634" class="cve-link" target="_blank">CVE-2026-33634</a></td>
+                                <td>GitHub Actions Misconfiguration in Aqua Security Trivy</td>
+                                <td>Aqua Security Trivy</td>
+                                <td>9.4</td>
                             </tr>
                         </tbody>
                     </table>
@@ -904,8 +825,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +834,28 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
-                            </tr>
-                            <tr>
                                 <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
+                                <td>UNC6780</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
+                                <td class="vendor-name">Palo Alto Unit 42</td>
+                                <td>TeamPCP</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
+                                <td class="vendor-name">Datadog Security Labs</td>
+                                <td>TeamPCP</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">SANS Institute</td>
+                                <td>TeamPCP / DeadCatx3</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Cloud Security Alliance</td>
+                                <td>TeamPCP</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Endor Labs</td>
+                                <td>TeamPCP</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +867,42 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><strong>Vect Ransomware Group:</strong> Formal partnership announced March 30, 2026 for credential-based initial access operations. TeamPCP provides initial compromise, Vect deploys ransomware.</li>
+                        <li><strong>CipherForce:</strong> Allied group participating in joint operations with TeamPCP for credential harvesting and monetization.</li>
+                        <li><strong>UNC1069:</strong> North Korean threat actor whose Axios npm compromise leveraged similar supply chain vectors. <a href="../incidents/axios-unc1069-compromise.html" class="incident-link">Related Incident →</a></li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>Palo Alto Unit 42: TeamPCP Supply Chain Attacks Analysis</strong>
+                            <a href="https://unit42.paloaltonetworks.com/teampcp-supply-chain-attacks/" target="_blank">Unit 42</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>Datadog Security Labs: LiteLLM Compromised — TeamPCP Supply Chain Campaign</strong>
+                            <a href="https://securitylabs.datadoghq.com/articles/litellm-compromised-pypi-teampcp-supply-chain-campaign/" target="_blank">Datadog Security Labs</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>SANS Institute: When a Security Scanner Became a Weapon</strong>
+                            <a href="https://www.sans.org/blog/when-security-scanner-became-weapon-inside-teampcp-supply-chain-campaign/" target="_blank">SANS Blog</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                            <strong>Cloud Security Alliance: TeamPCP CI/CD Kill Chain</strong>
+                            <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-teampcp-cicd-supply-chain-20260403-csa-sty/" target="_blank">CSA Research</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>Endor Labs: TeamPCP Supply Chain Updates</strong>
+                            <a href="https://www.endorlabs.com/learn/teampcp-isnt-done" target="_blank">Endor Labs</a>
                         </div>
                     </div>
                 </div>
@@ -1003,29 +918,29 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🌐</span>
+                        Unknown
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">No — Criminal Enterprise</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Financial (Supply Chain Exploitation)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">September 2025</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Last Seen</div>
-                    <div class="fact-value">2026-Q1</div>
+                    <div class="fact-value">2026-Q2</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +950,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">UNC6780, DeadCatx3, PCPcat, ShellForce</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">

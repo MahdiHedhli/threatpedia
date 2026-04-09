@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>EvilTokens | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,27 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="tokenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- OAuth token / key symbol -->
+                <circle cx="100" cy="80" r="25" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <rect x="95" y="105" width="10" height="40" rx="2" fill="#e8a020" opacity="0.6"/>
+                <rect x="105" y="120" width="15" height="6" rx="2" fill="#e8a020" opacity="0.6"/>
+                <rect x="105" y="132" width="10" height="6" rx="2" fill="#e8a020" opacity="0.6"/>
+                <!-- Phishing hook -->
+                <path d="M 60 60 Q 50 90 65 95 Q 75 100 80 85" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="80" cy="85" r="3" fill="#e8a020" opacity="0.5"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>EvilTokens</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                NOIRLEGACY GROUP (operator), EvilTokens PhaaS Platform
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +644,71 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>EvilTokens</strong> is a <strong>Phishing-as-a-Service (PhaaS)</strong> platform that exploits the OAuth device code authentication flow (RFC 8628) to steal persistent access tokens from Microsoft 365 environments. Launched in mid-February 2026 and marketed through the <strong>NOIRLEGACY GROUP</strong> Telegram channel, EvilTokens has rapidly become one of the most effective phishing platforms in the threat landscape, powering campaigns against <strong>340+ organizations</strong> across nine countries.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>Unlike traditional credential phishing, EvilTokens targets the device code authentication flow — victims enter a legitimate Microsoft device code on a genuine login page, granting attackers persistent OAuth tokens that survive password resets and MFA changes. This technique requires no credential capture or MFA defeat, making it exceptionally effective against hardened environments. The platform provides turnkey B2B phishing capabilities including email filtering bypass, AI-powered workflow automation, and professional templates impersonating Microsoft, Adobe, DocuSign, and SharePoint.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>EvilTokens serves as infrastructure for multiple sophisticated threat actors, including <strong>Storm-2372</strong> (Russia-aligned), <strong>APT29</strong> (Russian SVR), <strong>UTA0304</strong>, and <strong>UTA0307</strong>. The platform's professional support operations and modular architecture have lowered the barrier to entry for OAuth token theft, enabling even unsophisticated actors to conduct advanced identity-based attacks.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
-                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                                <span class="ttp-technique">T1566.002: Spearphishing Link</span>
+                                <span class="ttp-technique">T1566.004: Spearphishing Voice</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
-                            </div>
-                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
-                            <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1528: Steal Application Access Token</span>
+                                <span class="ttp-technique">T1550.001: Use Alternate Authentication Material</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
+                                <span class="ttp-technique">T1114.002: Remote Email Collection</span>
+                                <span class="ttp-technique">T1213: Data from Information Repositories</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1098.003: Additional Cloud Credentials (OAuth tokens persist beyond password resets)</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1550.001: Use Alternate Authentication Material (token replay)</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>OAuth Device Code Phishing:</strong> Victims receive phishing emails with QR codes or links leading to decoy pages. When they enter the device code on Microsoft's legitimate login endpoint, attackers receive persistent OAuth tokens — no credentials or MFA defeat needed.</li>
+                            <li><strong>Template Impersonation:</strong> Professional phishing templates impersonating Adobe Acrobat, DocuSign, SharePoint, Microsoft Teams, OneDrive, eFax, and email quarantine notices.</li>
+                            <li><strong>Mass Distribution:</strong> B2B phishing sender with email filtering bypass for large-scale campaign deployment across organizations.</li>
+                            <li><strong>Post-Compromise Token Exchange:</strong> Stolen tokens are exchanged for access to Outlook, Azure, SharePoint, and other M365 services for data collection and lateral movement.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>EvilTokens Platform:</strong> Full-featured PhaaS with B2B phishing sender, email filtering bypass, Office 365 capture links, and AI-powered workflow automation.</li>
+                            <li><strong>SMTP Mass Distribution:</strong> High-volume email distribution infrastructure for campaign deployment.</li>
+                            <li><strong>Template Library:</strong> Professional impersonation templates for Adobe, DocuSign, SharePoint, Microsoft, OneDrive, eFax, calendar invites, and password expiry warnings.</li>
+                            <li><strong>Token Management Console:</strong> Webmail interface and reconnaissance tools for post-compromise operations using stolen OAuth tokens.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>Telegram Distribution:</strong> NOIRLEGACY GROUP Telegram channel serves as primary marketing and sales platform with 24/7 professional support.</li>
+                            <li><strong>1,000+ Hosting Domains:</strong> By late March 2026, the platform operated across more than 1,000 hosting domains for phishing page delivery.</li>
+                            <li><strong>Railway.com Infrastructure:</strong> Some campaigns leveraged Railway PaaS for hosting phishing infrastructure.</li>
+                            <li><strong>Legitimate Microsoft Endpoints:</strong> The attack abuses Microsoft's genuine device code login flow, making the authentication page itself legitimate.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +716,23 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>EvilTokens campaigns have targeted diverse sectors across nine countries:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Multi-Sector (340+ orgs)</td><td>Microsoft 365 environments across US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, UAE. <a href="../incidents/m365-oauth-device-code-phishing-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Construction</td><td>Multiple firms targeted via device code phishing</td></tr>
+                            <tr><td>Nonprofits</td><td>NGOs and nonprofits — often with weaker security posture</td></tr>
+                            <tr><td>Financial Services</td><td>Financial institutions and real estate firms</td></tr>
+                            <tr><td>Healthcare</td><td>Healthcare organizations with M365 environments</td></tr>
+                            <tr><td>Legal</td><td>Law firms and legal services organizations</td></tr>
+                            <tr><td>Government</td><td>Local government agencies</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +742,31 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">Feb 16-19, 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Platform Launch</div>
+                                <div class="timeline-event-detail">EvilTokens advertised on NOIRLEGACY GROUP Telegram channel, offering turnkey OAuth device code phishing capabilities for Microsoft 365 environments.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Feb-Mar 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Mass Campaign Deployment</div>
+                                <div class="timeline-event-detail">Multiple threat actors (Storm-2372, APT29, UTA0304, UTA0307) begin using EvilTokens to target 340+ M365 organizations across nine countries. <a href="../incidents/m365-oauth-device-code-phishing-2026.html" class="incident-link">Full Report →</a></div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Infrastructure Expansion</div>
+                                <div class="timeline-event-detail">Platform scales to 1,000+ hosting domains. SEKOIA publishes detailed analysis of EvilTokens kit and device code phishing techniques.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar-Apr 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2025</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Feb 2026</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Operations</div>
+                                <div class="timeline-event-detail">Platform continues active operations with expanding customer base. Professional support and regular template updates maintain effectiveness against evolving defenses.</div>
                             </div>
                         </div>
                     </div>
@@ -845,58 +775,9 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>CVE</th>
-                                <th>Vulnerability</th>
-                                <th>Affected Product</th>
-                                <th>CVSS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>EvilTokens does not exploit software vulnerabilities. The platform abuses the legitimate OAuth device code authentication flow (RFC 8628) built into Microsoft 365. The attack exploits human trust rather than technical flaws — victims authenticate on a genuine Microsoft login page, making technical detection challenging.</p>
                 </div>
             </div>
 
@@ -904,8 +785,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +794,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">SEKOIA</td>
+                                <td>EvilTokens</td>
                             </tr>
                             <tr>
                                 <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
+                                <td>Device Code Phishing Kit</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
+                                <td class="vendor-name">Huntress</td>
+                                <td>EvilTokens / Railway M365 Token Campaign</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">BleepingComputer</td>
+                                <td>EvilTokens</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Cloud Security Alliance</td>
+                                <td>EvilTokens</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +823,43 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><a href="apt29.html" class="actor-link"><strong>APT29 (Cozy Bear):</strong></a> Russian SVR-affiliated threat actor using EvilTokens for device code phishing campaigns since 2008. Long history of sophisticated espionage operations.</li>
+                        <li><strong>Storm-2372:</strong> Russia-aligned threat actor and prominent EvilTokens customer, conducting campaigns since August 2024.</li>
+                        <li><strong>UTA0304 &amp; UTA0307:</strong> Additional threat actors leveraging EvilTokens platform for M365 targeting campaigns.</li>
+                        <li><strong>UNK_AcademicFlare:</strong> Threat actor using EvilTokens to target academic and research institutions.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>SEKOIA: New Widespread EvilTokens Kit — Device Code Phishing-as-a-Service</strong>
+                            <a href="https://blog.sekoia.io/new-widespread-eviltokens-kit-device-code-phishing-as-a-service-part-1/" target="_blank">SEKOIA Blog</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>The Hacker News: Device Code Phishing Hits 340+ Microsoft Organizations</strong>
+                            <a href="https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html" target="_blank">The Hacker News</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>BleepingComputer: New EvilTokens Service Fuels Microsoft Device Code Phishing</strong>
+                            <a href="https://www.bleepingcomputer.com/news/security/new-eviltokens-service-fuels-microsoft-device-code-phishing-attacks/" target="_blank">BleepingComputer</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                            <strong>Huntress: Railway PaaS M365 Token Replay Campaign</strong>
+                            <a href="https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign" target="_blank">Huntress Blog</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>CSA Research: OAuth Device Code Phishing M365</strong>
+                            <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/" target="_blank">Cloud Security Alliance</a>
                         </div>
                     </div>
                 </div>
@@ -1003,29 +875,29 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🌐</span>
+                        Unknown
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">No — Criminal Enterprise (PhaaS Operator)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Financial (Phishing-as-a-Service)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">February 2026</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Last Seen</div>
-                    <div class="fact-value">2026-Q1</div>
+                    <div class="fact-value">2026-Q2</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +907,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">NOIRLEGACY GROUP</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">

@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>DragonForce | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,31 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="dragonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- Dragon wing -->
+                <path d="M 50 90 Q 40 60 70 50 Q 80 45 85 55 Q 70 60 60 80 Z" fill="#e8a020" opacity="0.4"/>
+                <path d="M 150 90 Q 160 60 130 50 Q 120 45 115 55 Q 130 60 140 80 Z" fill="#e8a020" opacity="0.4"/>
+                <!-- Dragon body -->
+                <ellipse cx="100" cy="100" rx="35" ry="25" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <!-- Eyes -->
+                <circle cx="88" cy="95" r="4" fill="#e8a020" opacity="0.8"/>
+                <circle cx="112" cy="95" r="4" fill="#e8a020" opacity="0.8"/>
+                <!-- Flame/fire -->
+                <path d="M 90 120 Q 95 140 100 130 Q 105 140 110 120" fill="#e8a020" opacity="0.5"/>
+                <!-- Malaysia flag hint -->
+                <line x1="55" y1="150" x2="145" y2="150" stroke="#e8a020" stroke-width="1" opacity="0.3"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>DragonForce</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                DragonForce Ransomware, DragonForce RaaS Cartel
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +648,82 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>DragonForce</strong> is a financially motivated ransomware group that evolved from <strong>Malaysian hacktivist origins</strong> into a sophisticated <strong>Ransomware-as-a-Service (RaaS) cartel</strong>. First observed in August 2023, the group initially positioned itself as a pro-Palestinian hacktivist collective before pivoting to profit-driven operations. By 2026, DragonForce operates one of the most aggressive RaaS platforms in the threat landscape, with monthly victim counts surging to 650+ — up from approximately 450 per month in 2024.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>DragonForce employs a <strong>double extortion</strong> model, encrypting victim data with AES-256 while simultaneously exfiltrating up to 1TB per victim. The group operates "white-label" affiliate portals with customizable branding and payloads, and introduced a novel <strong>"data analysis service"</strong> in August 2025 that generates extortion call scripts and legal analysis reports to increase pressure on victims. By January 2026, DragonForce had claimed 363 victims across diverse sectors.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>In April 2026, DragonForce claimed <strong>13+ victims</strong> across manufacturing, packaging, hospitality, and utilities sectors. The group's evolving tactics — from hacktivism to financial extortion to cartel-style operations — demonstrate a mature threat actor with significant operational capability. Notable earlier targets include UK retail giants Marks &amp; Spencer, Co-op, and Harrods in 2025.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1078: Valid Accounts</span>
+                                <span class="ttp-technique">T1133: External Remote Services</span>
                                 <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059: Command and Scripting Interpreter</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                                <span class="ttp-technique">T1547: Boot or Logon Autostart Execution</span>
+                                <span class="ttp-technique">T1543: Create or Modify System Process</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1003: OS Credential Dumping (Mimikatz)</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1021: Remote Services (Cobalt Strike, SystemBC)</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1027: Obfuscated Files or Information</span>
+                                <span class="ttp-technique">T1562: Impair Defenses (BYOVD)</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
-                            </div>
-                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact (AES-256)</span>
+                                <span class="ttp-technique">T1567: Exfiltration Over Web Service</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>Credential Theft &amp; Social Engineering:</strong> Phishing campaigns and credential theft for initial access into victim environments.</li>
+                            <li><strong>BYOVD (Bring Your Own Vulnerable Driver):</strong> Deployment of vulnerable kernel drivers to disable endpoint security products before ransomware execution.</li>
+                            <li><strong>Exposed Remote Services:</strong> Exploitation of exposed RDP, VPN, and other remote access services with brute-forced or stolen credentials.</li>
+                            <li><strong>Affiliate Model:</strong> White-label affiliate portals allow diverse operators to deploy DragonForce payloads with customized branding and negotiation infrastructure.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>DragonForce Ransomware:</strong> Custom AES-256 encryption payload available through the RaaS platform with customizable branding via RansomBay builder service.</li>
+                            <li><strong>Cobalt Strike:</strong> Command-and-control framework used for post-exploitation, lateral movement, and payload delivery.</li>
+                            <li><strong>SystemBC:</strong> Backdoor proxy tool used for maintaining persistent access and facilitating C2 communications.</li>
+                            <li><strong>Mimikatz:</strong> Credential harvesting tool for extracting passwords and authentication tokens from Windows systems.</li>
+                            <li><strong>Data Analysis Service:</strong> Novel capability generating extortion call scripts and legal analysis reports to maximize victim compliance (launched August 2025).</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>RaaS Cartel Platform:</strong> White-label affiliate portals with customizable payloads, branding, and multi-extortion management.</li>
+                            <li><strong>Dark Web Leak Site:</strong> Tor-hosted platform for publishing stolen data and managing victim negotiations.</li>
+                            <li><strong>Bulletproof Hosting:</strong> Infrastructure designed to resist takedown efforts and law enforcement action.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +731,23 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>DragonForce targets organizations across diverse sectors globally:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Retail</td><td>Marks &amp; Spencer, Co-op, Harrods (UK, 2025) — high-profile attacks on major retailers</td></tr>
+                            <tr><td>Manufacturing</td><td>13+ victims in April 2026 across manufacturing and packaging sectors</td></tr>
+                            <tr><td>Hospitality</td><td>Multiple hotel and hospitality organizations targeted in 2026</td></tr>
+                            <tr><td>Utilities</td><td>Energy and utilities infrastructure targeted for high-value ransom demands</td></tr>
+                            <tr><td>Financial Services</td><td>Financial institutions across North America and Europe</td></tr>
+                            <tr><td>Education</td><td>FGV Brazil (March 2026) and other educational institutions</td></tr>
+                            <tr><td>Healthcare</td><td>Healthcare organizations targeted for sensitive data value</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +757,45 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">Aug 2023</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Group Emergence</div>
+                                <div class="timeline-event-detail">DragonForce appears from Malaysian hacktivist origins, initially positioning as pro-Palestinian collective conducting website defacements and DDoS attacks.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">2024</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Pivot to Ransomware</div>
+                                <div class="timeline-event-detail">Transitions from hacktivism to financially motivated ransomware operations. Scales to approximately 450 victims per month through growing affiliate network.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2023</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">2025</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>UK Retail Campaign</div>
+                                <div class="timeline-event-detail">Aggressive targeting of major UK retailers including Marks &amp; Spencer, Co-op, and Harrods. Establishes reputation for high-profile attacks.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Feb 2026</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Aug 2025</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Data Analysis Service</div>
+                                <div class="timeline-event-detail">Introduces novel 'data analysis service' generating extortion call scripts and legal analysis reports to increase victim pressure.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Jan 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>363+ Cumulative Victims</div>
+                                <div class="timeline-event-detail">Claims 363+ total victims. Monthly victim counts surge to 650+ as cartel model attracts more affiliates.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Apr 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>April Campaign</div>
+                                <div class="timeline-event-detail">Claims 13+ new victims across manufacturing, packaging, hospitality, and utilities in early April 2026.</div>
                             </div>
                         </div>
                     </div>
@@ -845,58 +804,9 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>CVE</th>
-                                <th>Vulnerability</th>
-                                <th>Affected Product</th>
-                                <th>CVSS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>DragonForce primarily relies on credential theft, social engineering, and BYOVD techniques rather than specific CVE exploitation. The group leverages Cobalt Strike and SystemBC for post-exploitation rather than targeting specific software vulnerabilities for initial access.</p>
                 </div>
             </div>
 
@@ -904,8 +814,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +823,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Trend Micro</td>
+                                <td>DragonForce Ransomware</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Group-IB</td>
+                                <td>DragonForce</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Bitdefender</td>
+                                <td>DragonForce Ransomware Cartel</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">SentinelOne</td>
+                                <td>DragonForce</td>
                             </tr>
                             <tr>
                                 <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td>DragonForce</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +852,37 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><a href="lockbit.html" class="actor-link"><strong>LockBit:</strong></a> Major RaaS competitor. Some DragonForce affiliates are suspected of cross-platform operations with LockBit infrastructure.</li>
+                        <li><a href="blackcat-alphv.html" class="actor-link"><strong>BlackCat/ALPHV:</strong></a> Another RaaS operation with overlapping affiliate networks and similar targeting patterns.</li>
+                        <li><strong>DragonForce Malaysia:</strong> Malaysian hacktivist group that denies involvement in ransomware operations, despite sharing the DragonForce name. Relationship disputed.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>Trend Micro: Ransomware Spotlight — DragonForce</strong>
+                            <a href="https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-dragonforce" target="_blank">Trend Micro</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>Group-IB: DragonForce Ransomware Analysis</strong>
+                            <a href="https://www.group-ib.com/blog/dragonforce-ransomware/" target="_blank">Group-IB</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>Bitdefender: DragonForce Ransomware Cartel</strong>
+                            <a href="https://www.bitdefender.com/en-us/blog/businessinsights/dragonforce-ransomware-cartel" target="_blank">Bitdefender</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
-                        </div>
-                        <div class="reference-item">
-                            <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>SentinelOne: From Hacktivists to High Street Extortionists</strong>
+                            <a href="https://www.sentinelone.com/blog/dragonforce-ransomware-gang-from-hacktivists-to-high-street-extortionists/" target="_blank">SentinelOne</a>
                         </div>
                     </div>
                 </div>
@@ -1003,29 +898,29 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🇲🇾</span>
+                        Malaysia (origin)
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">No — Criminal Enterprise (RaaS Cartel)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Financial (Ransomware &amp; Double Extortion)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">August 2023</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Last Seen</div>
-                    <div class="fact-value">2026-Q1</div>
+                    <div class="fact-value">2026-Q2</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +930,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">DragonForce Malaysia (disputed)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">

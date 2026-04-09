@@ -1,21 +1,8 @@
 {
-  "lastUpdated": "2026-04-09T09:17:04Z",
+  "lastUpdated": "2026-04-09T15:00:00Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
   "queue": [
-    {
-      "actorName": "Salt Typhoon",
-      "action": "update-links",
-      "referencedFrom": [
-        "fbi-dcsnet-salt-typhoon-2026"
-      ],
-      "context": "Salt Typhoon breached FBI DCSNet surveillance system (DCS-3000/Red Hook) via ISP vendor supply chain compromise. Classified as FISMA major incident April 2026.",
-      "suggestedAffiliation": "China",
-      "suggestedMotivation": "Espionage",
-      "priority": "critical",
-      "queuedBy": "new-threat-intel-automation",
-      "queuedDate": "2026-04-06"
-    },
     {
       "actorName": "FulcrumSec",
       "action": "create",
@@ -43,20 +30,6 @@
       "queuedDate": "2026-04-07"
     },
     {
-      "actorName": "ShinyHunters",
-      "action": "create",
-      "referencedFrom": [
-        "hims-hers-shinyhunters-breach-2026",
-        "shiny-hunters-leak-site"
-      ],
-      "context": "ShinyHunters (UNC5537) compromised Hims & Hers Zendesk via Okta SSO and maintains active data leak site. Known for vishing, SaaS platform targeting, and credential theft operations against Snowflake, Salesforce customers.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial",
-      "priority": "high",
-      "queuedBy": "new-threat-intel-automation",
-      "queuedDate": "2026-04-07"
-    },
-    {
       "actorName": "Qilin",
       "action": "create",
       "referencedFrom": [
@@ -67,73 +40,6 @@
       "suggestedMotivation": "Financial / Political",
       "priority": "normal",
       "queuedBy": "daily-incident-updater",
-      "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "Handala",
-      "action": "create",
-      "referencedFrom": [
-        "stryker-handala-wiper-2026"
-      ],
-      "context": "Iran-linked hacktivist group (Void Manticore / MOIS) that wiped 200,000+ Stryker devices across 79 countries via compromised Microsoft Intune. Motivated by retaliation for Feb 28 missile strike on Iranian school. Shifting from espionage to destructive operations.",
-      "suggestedAffiliation": "Iran",
-      "suggestedMotivation": "Hacktivism / Destructive",
-      "priority": "high",
-      "queuedBy": "daily-incident-updater",
-      "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "TeamPCP",
-      "action": "create",
-      "referencedFrom": [
-        "teampcp-supply-chain-attack",
-        "european-commission-trivy-breach-2026",
-        "trivy-cve-2026-33634"
-      ],
-      "context": "Also tracked as UNC6780, DeadCatx3, PCPcat, ShellForce. Executed cascading supply chain campaign against Trivy, KICS, LiteLLM, Telnyx. CanisterWorm spread across 47+ npm packages. Partnership with CipherForce and Vect ransomware groups. Estimated 300GB credentials and 500K machine compromises.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial",
-      "priority": "high",
-      "queuedBy": "daily-incident-updater",
-      "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "Lazarus Group",
-      "action": "update-links",
-      "referencedFrom": [
-        "drift-protocol-dprk-exploit-2026"
-      ],
-      "context": "UNC4736 subgroup attributed to $285M Drift Protocol DeFi exploit. 6-month social engineering campaign using VSCode/Cursor vulnerability and malicious TestFlight app. Durable nonce attack mechanism bypassed multisig governance. Also linked to $50M Radiant Capital hack.",
-      "suggestedAffiliation": "North Korea",
-      "suggestedMotivation": "Financial",
-      "priority": "high",
-      "queuedBy": "daily-incident-updater",
-      "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "Medusa",
-      "action": "create",
-      "referencedFrom": [
-        "passaic-county-medusa-ransomware-2026"
-      ],
-      "context": "Medusa ransomware group attacked Passaic County NJ, demanding $800K ransom. Known for double extortion and rapid exploitation — Microsoft reports they can move from initial access to deployment within 24 hours, including zero-day exploitation.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial",
-      "priority": "high",
-      "queuedBy": "new-threat-intel",
-      "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "EvilTokens",
-      "action": "create",
-      "referencedFrom": [
-        "m365-oauth-device-code-phishing-2026"
-      ],
-      "context": "EvilTokens is a Phishing-as-a-Service (PhaaS) platform launched mid-February 2026 via NOIRLEGACY GROUP Telegram channel. Powers OAuth device code phishing campaign targeting 340+ M365 organizations across nine countries. Templates impersonate Microsoft, Adobe, DocuSign, SharePoint. Used by Storm-2372, APT29, UTA0304, UTA0307.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial (PhaaS operator)",
-      "priority": "high",
-      "queuedBy": "new-threat-intel",
       "queuedDate": "2026-04-07"
     },
     {
@@ -148,18 +54,6 @@
       "priority": "normal",
       "queuedBy": "new-threat-intel",
       "queuedDate": "2026-04-07"
-    },
-    {
-      "actorName": "Medusa",
-      "aliases": [
-        "Storm-1175"
-      ],
-      "referencedFrom": [
-        "ummc-medusa-ransomware-2026"
-      ],
-      "action": "update-links",
-      "queuedBy": "new-threat-intel-automation",
-      "queuedDate": "2026-04-08"
     },
     {
       "actorName": "Z-CERT",
@@ -192,19 +86,6 @@
       "notes": "Crisis24/CodeRED platform was breached in Nov 2025; municipal credentials stolen. Potentially related to Patriot Regional attack."
     },
     {
-      "actorName": "DragonForce",
-      "action": "create",
-      "referencedFrom": [
-        "dragonforce-ransomware-campaign-april-2026"
-      ],
-      "context": "DragonForce RaaS group claimed 13+ victims in early April 2026 across manufacturing, packaging, hospitality, and utilities. Malaysian hacktivist origins evolved into financially motivated cybercrime. Double extortion with data exfiltration up to 1TB per victim.",
-      "suggestedAffiliation": "Criminal (Malaysian origin)",
-      "suggestedMotivation": "Financial",
-      "priority": "high",
-      "queuedBy": "new-threat-intel",
-      "queuedDate": "2026-04-08"
-    },
-    {
       "actorName": "Lapsus$",
       "action": "update-links",
       "referencedFrom": [
@@ -220,9 +101,9 @@
   ],
   "queueRules": {
     "actions": {
-      "create": "Threat actor not found in threat-actor-index.json — needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
-      "update-links": "Threat actor exists but a new incident report references them — update their campaigns/description and ensure bidirectional linking",
-      "enrich": "Threat actor exists but has thin data — research and expand their entry"
+      "create": "Threat actor not found in threat-actor-index.json \u2014 needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
+      "update-links": "Threat actor exists but a new incident report references them \u2014 update their campaigns/description and ensure bidirectional linking",
+      "enrich": "Threat actor exists but has thin data \u2014 research and expand their entry"
     },
     "priority": {
       "critical": "Actor tied to active/ongoing campaign affecting critical infrastructure",
