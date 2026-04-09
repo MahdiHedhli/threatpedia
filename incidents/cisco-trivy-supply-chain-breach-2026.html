@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="report-id" content="TP-2026-0042">
+    <meta name="review-status" content="PENDING HUMAN REVIEW">
+    <meta name="severity" content="High">
+    <meta name="generated-by" content="new-threat-intel-automation">
+    <meta name="generated-date" content="2026-04-08">
+    <title>Cisco Development Environment Breach via Trivy Supply Chain Attack — Threatpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 104px;
+        }
+
+        .article-header {
+            margin-bottom: 48px;
+        }
+
+        .incident-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .incident-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .meta-item {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .meta-value.threat-critical {
+            color: #ff4444;
+        }
+
+        .meta-value.threat-high {
+            color: #ff8800;
+        }
+
+        .meta-value.status-disrupted {
+            color: #51cf66;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.3px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-content p {
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .tech-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .tech-box strong {
+            color: var(--white);
+        }
+
+        .code-inline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            background-color: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--amber);
+        }
+
+        .ioc-group {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .ioc-group-title {
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ioc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ioc-item {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+            padding: 8px;
+            background-color: var(--bg);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 32px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 32px;
+            width: 1px;
+            height: calc(100% + 24px);
+            background-color: var(--border);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--amber);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            box-shadow: 0 0 0 3px var(--surface);
+        }
+
+        .timeline-content {
+            padding-top: 2px;
+            flex-grow: 1;
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .attack-stage {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        .attack-stage-title {
+            font-weight: 600;
+            color: var(--amber);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .attack-stage-content {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .attack-stage-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .attack-stage-content li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--amber);
+        }
+
+        .sidebar-link::before {
+            content: '→ ';
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        .references {
+            margin: 48px 0;
+            padding: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .references-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .reference-item a {
+            color: var(--amber);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reference-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--amber);
+            margin-right: 4px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .incident-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .incident-title {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .incident-title {
+                font-size: 28px;
+            }
+
+            .incident-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .meta-item {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <div class="container">
+        <article class="article-header">
+            <h1 class="incident-title">Cisco Development Environment Breach via Trivy Supply Chain Attack</h1>
+
+            <div class="incident-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Incident ID</span>
+                    <span class="meta-value">TP-2026-0042</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Severity</span>
+                    <span class="meta-value threat-high">HIGH</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attack Type</span>
+                    <span class="meta-value">Supply Chain / Data Breach</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Affected Organization</span>
+                    <span class="meta-value">Cisco Systems</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Sector</span>
+                    <span class="meta-value">Technology / Networking</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Geography</span>
+                    <span class="meta-value">Global</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Disclosure Date</span>
+                    <span class="meta-value">April 6, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Attack Date</span>
+                    <span class="meta-value">March 19, 2026 (Trivy compromise)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Threat Actors</span>
+                    <span class="meta-value">TeamPCP / ShinyHunters (UNC5537)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Repositories Compromised</span>
+                    <span class="meta-value threat-high">300+ GitHub repositories</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Data Stolen</span>
+                    <span class="meta-value threat-high">Source code, credentials, AWS keys</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Devices Impacted</span>
+                    <span class="meta-value threat-high">Dozens of workstations</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">REVIEW STATUS</span>
+                    <span class="meta-value" style="color: #e8a020;">⚠ Pending Human Review</span>
+                </div>
+            </div>
+        </article>
+
+        <div class="content-grid">
+            <main class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content">
+                        <p>Cisco Systems suffered a significant supply chain attack when threat actors compromised the Trivy GitHub Actions repository (aquasecurity/trivy-action) and used stolen CI/CD credentials to breach Cisco's internal development environment. The attack chain originated with TeamPCP's March 19, 2026 compromise of Trivy, where malicious code was force-pushed to 76 of 77 version tags. This malicious code executed during Cisco's CI/CD pipeline execution, exfiltrating development credentials that granted access to Cisco's internal infrastructure.</p>
+
+                        <p>Using the stolen CI/CD credentials, threat actors accessed and cloned over 300 of Cisco's internal GitHub repositories, containing proprietary source code, internal documentation, and development artifacts. The attackers also obtained multiple AWS access keys and used them for unauthorized activities against Cisco's cloud infrastructure. Dozens of developer and lab workstations were identified as compromised, indicating lateral movement within the development environment.</p>
+
+                        <p>ShinyHunters (affiliated with TeamPCP, tracked as UNC5537 by threat intelligence) subsequently published an extortion post on March 31, 2026, claiming theft of 3 million Salesforce records, Cisco GitHub repositories, and AWS buckets, with an April 3 ransom deadline. This incident demonstrates the cascading risk inherent in modern CI/CD pipelines that implicitly trust third-party GitHub Actions, and the critical importance of supply chain security verification practices.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Technical Analysis</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Attack Vector: GitHub Actions Supply Chain Compromise</strong><br><br>
+                            TeamPCP compromised the aquasecurity/trivy-action GitHub Actions repository, which provides container image vulnerability scanning in CI/CD pipelines. The attackers obtained repository access credentials (likely via compromised maintainer account or OAuth token theft) and force-pushed malicious code to 76 of 77 version tags, ensuring widespread impact across all versions in use.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Malicious Payload Execution:</strong><br><br>
+                            The compromised Trivy action executed during Cisco's CI/CD pipeline runs. Malicious code exfiltrated CI/CD environment credentials, including GitHub Personal Access Tokens (PATs), AWS access keys, and other authentication material available in the pipeline execution context. These credentials grant access to internal repositories and cloud infrastructure without requiring VPN or additional authentication.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Repository Compromise Scope:</strong><br><br>
+                            300+ internal Cisco GitHub repositories were cloned by threat actors using stolen credentials. Affected repositories contain: (1) Proprietary source code for networking products; (2) Internal tools and scripts; (3) Configuration management code; (4) Infrastructure-as-Code definitions; (5) Documentation with architectural details and design decisions. The scale indicates systematic extraction of intellectual property across Cisco's development portfolio.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>AWS Credential Compromise:</strong><br><br>
+                            Multiple AWS access keys were stolen and actively used for unauthorized activities. Threat actors leveraged the keys to access: S3 buckets containing source code artifacts, backups, and configuration data; EC2 instances in development and potentially production environments; RDS databases with non-production data; CloudFormation stacks with infrastructure definitions. The use of AWS keys indicates attempts to map cloud infrastructure and access development databases.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Lateral Movement and Workstation Compromise:</strong><br><br>
+                            Dozens of developer and lab workstations were identified as compromised. This indicates that stolen credentials or subsequent lateral movement techniques were used to establish persistence on internal endpoints. Compromised workstations provide platform for keylogging, clipboard capture, accessing local credentials, and further propagation within the development network.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Correlation with Salesforce Data Theft:</strong><br><br>
+                            ShinyHunters' extortion post claims theft of 3 million Salesforce records alongside Cisco GitHub and AWS data. This correlation suggests either: (1) The same attack campaign exploited multiple Cisco systems and cloud services; (2) ShinyHunters acquired Salesforce data through separate breach and is bundling it in extortion negotiations; (3) Cisco's Salesforce integration or data exports were compromised. The presence of Salesforce data alongside source code and AWS infrastructure elevates the total harm from credential theft.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Attack Chain &amp; Timeline</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 19, 2026</div>
+                                <div class="timeline-title">Trivy GitHub Actions Repository Compromised</div>
+                                <div class="timeline-description">TeamPCP obtained access to the aquasecurity/trivy-action GitHub repository. Attackers force-pushed malicious code to 76 of 77 version tags (e.g., v2.0, v2.1, v2.2, v2.3, v2.4, v2.5, v2.6, v2.7, v2.8, v2.9, v2.10, v2.11, v2.12, v2.13, v2.14, v2.15, and many others). The v2.16 tag was apparently not compromised or was patched before force-push.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 19-25, 2026</div>
+                                <div class="timeline-title">Malicious Code Execution in CI/CD Pipelines</div>
+                                <div class="timeline-description">Any organization using Trivy GitHub Actions during this period had the malicious code execute in their CI/CD pipeline. Cisco's pipelines executed the compromised Trivy action, triggering credential exfiltration. Credentials exposed included GitHub PATs, AWS access keys, and other environment variables accessible to the pipeline.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 19-25, 2026</div>
+                                <div class="timeline-title">Repository Cloning and Data Extraction</div>
+                                <div class="timeline-description">Using stolen GitHub PATs, threat actors systematically cloned Cisco's internal repositories. 300+ repositories were extracted, containing source code, documentation, configuration, and development artifacts. AWS keys were also used to access S3 buckets and cloud infrastructure.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 26-30, 2026</div>
+                                <div class="timeline-title">Lateral Movement and Workstation Compromise</div>
+                                <div class="timeline-description">Threat actors leveraged stolen credentials or exploited vulnerabilities to access internal development workstations. Dozens of machines were compromised, providing persistence and additional access for credential harvesting and further lateral movement.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">March 31, 2026</div>
+                                <div class="timeline-title">ShinyHunters Extortion Post Published</div>
+                                <div class="timeline-description">ShinyHunters published an extortion post claiming theft of 3 million Salesforce records, Cisco GitHub repositories, and AWS buckets. Ransom deadline of April 3, 2026 was specified. The post marks the public acknowledgment that Cisco's data had been compromised and is being held for extortion.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 3, 2026</div>
+                                <div class="timeline-title">Ransom Deadline (Passed)</div>
+                                <div class="timeline-description">ShinyHunters' extortion deadline passed with no indication of ransom payment by Cisco. Standard extortion playbook would involve publication of sample data or threats of further disclosure if deadline is missed.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">April 6, 2026</div>
+                                <div class="timeline-title">Public Disclosure of Cisco Breach</div>
+                                <div class="timeline-description">Cisco and threat intelligence community publicly disclosed the supply chain attack. Details of Trivy compromise, stolen credentials, and breached repositories made public. Organizations using Trivy GitHub Actions were advised to audit their systems and rotate credentials.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Impact Assessment</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Intellectual Property Theft:</strong><br><br>
+                            300+ GitHub repositories contain Cisco's proprietary source code, design documentation, and development tools. This intellectual property represents years of engineering investment. Competitors, nation-state actors, or other malicious parties could use the stolen code to identify vulnerabilities, develop countermeasures, or accelerate their own product development. The long-term competitive and security impact is substantial.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Development Credential Compromise:</strong><br><br>
+                            Stolen CI/CD credentials grant ongoing access to Cisco's development infrastructure. Even after rotation, the breach demonstrates that internal development systems were accessible via GitHub Actions, indicating architectural weaknesses in credential isolation. Threat actors can use compromised credentials to: (1) Inject code into legitimate builds; (2) Access unreleased product versions; (3) Access development databases with test data; (4) Pivot to production systems.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>AWS Infrastructure Compromise:</strong><br><br>
+                            Multiple AWS access keys stolen from CI/CD environment provide direct cloud infrastructure access. Threat actors leveraged the keys to access or enumerate: development S3 buckets, EC2 instances, RDS databases, and CloudFormation stacks. If production AWS accounts shared keys or followed poor credential isolation practices, production infrastructure may also be at risk.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Supply Chain Impact:</strong><br><br>
+                            The attack originated from Trivy, a widely-used open-source vulnerability scanner. Any organization using Trivy GitHub Actions during March 19-25, 2026 executed the malicious code. The attack demonstrates the critical risk created when CI/CD pipelines implicitly trust third-party actions without verification or sandboxing. Downstream customers of Cisco and other organizations affected by the Trivy compromise face compounded risk.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Salesforce Data Exposure:</strong><br><br>
+                            ShinyHunters' claim of 3 million stolen Salesforce records suggests Cisco's CRM system was compromised or that Salesforce data exports from Cisco's environment were accessed. Exposed Salesforce data could contain customer contact information, deal pipeline, pricing information, and internal sales processes. The correlation between Salesforce data and GitHub/AWS data suggests either simultaneous compromise of multiple systems or opportunistic acquisition of pre-existing breached data.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Threat Actor Profile</h2>
+                    <div class="section-content">
+                        <p>The attack was perpetrated by TeamPCP in compromise of Trivy, with ShinyHunters (affiliated threat group, tracked as UNC5537) conducting extortion operations against Cisco. TeamPCP and ShinyHunters are known threat actors with histories of supply chain attacks, data theft, and extortion campaigns.</p>
+
+                        <p>TeamPCP is tracked for previous supply chain compromise campaigns, including prior GitHub Actions supply chain attacks. ShinyHunters is a financially-motivated threat actor known for leak site operation, data brokering, and extortion campaigns. The group has previously targeted technology companies, financial institutions, and healthcare organizations.</p>
+
+                        <p>The timing and sophistication of the attack (force-pushing to multiple version tags, credential extraction from CI/CD environment, systematic repository enumeration and cloning, lateral movement to workstations) indicates experienced threat actors familiar with modern development practices and cloud infrastructure. This is not opportunistic exploitation but rather a deliberate, multi-stage operation targeting a high-value technology company.</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Mitigations &amp; Recommendations</h2>
+                    <div class="section-content">
+                        <div class="tech-box">
+                            <strong>Immediate Actions — CI/CD Security:</strong><br><br>
+                            1. Audit all GitHub Actions used in CI/CD pipelines. Verify version pinning (use exact commit SHAs, not version tags or @latest).<br>
+                            2. Rotate all credentials exposed in CI/CD environment variables (GitHub PATs, AWS keys, API credentials).<br>
+                            3. Implement GitHub Actions runner isolation. Use self-hosted runners with restricted network access and firewall rules.<br>
+                            4. Require pull request reviews and approval before GitHub Actions changes are merged to main branches.<br>
+                            5. Enable GitHub Actions audit logging and review all workflow executions for suspicious behavior.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Credential Management Overhaul:</strong><br><br>
+                            1. Implement short-lived credentials for CI/CD (GitHub Actions, AWS STS temporary credentials) instead of long-lived keys.<br>
+                            2. Use AWS IAM roles instead of access keys for EC2 instances and Lambda functions.<br>
+                            3. Implement GitHub token expiration policies. Disable indefinite-lifetime personal access tokens.<br>
+                            4. Use organization-scoped GitHub Apps instead of user PATs for CI/CD authentication.<br>
+                            5. Implement secret scanning tools in code repositories to prevent accidental credential commit.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Development Environment Hardening:</strong><br><br>
+                            1. Conduct full forensic analysis of compromised workstations. Rebuild affected machines from clean OS images.<br>
+                            2. Rotate credentials on all systems accessed from compromised workstations.<br>
+                            3. Implement endpoint detection and response (EDR) on all development workstations to detect lateral movement and credential harvesting.<br>
+                            4. Segment development network from production systems. Use firewall rules to restrict outbound traffic from development to production.<br>
+                            5. Implement privileged access management (PAM) for elevated credentials used in development environments.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Supply Chain Verification:</strong><br><br>
+                            1. Implement GitHub Actions version pinning. Reference actions by commit SHA, not version tags: <span class="code-inline">actions/checkout@abc123def456</span> instead of <span class="code-inline">actions/checkout@v4</span>.<br>
+                            2. Use dependency verification tools (e.g., pip hash checking, npm package-lock.json verification) to ensure supply chain integrity.<br>
+                            3. Implement code review process for GitHub Actions changes even in trusted repositories.<br>
+                            4. Monitor GitHub Actions execution logs for suspicious behavior (unexpected credential access, network outbound traffic).<br>
+                            5. Consider using GitHub Actions policy enforcement tools that restrict which actions can run in pipelines.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Data Protection &amp; Incident Response:</strong><br><br>
+                            1. Conduct comprehensive audit of stolen repositories. Identify presence of: hardcoded credentials, API keys, AWS credentials, database connection strings.<br>
+                            2. Any credentials or keys found in stolen repositories must be rotated immediately.<br>
+                            3. Assess intellectual property risk. Determine which source code repositories contain trade secrets or sensitive algorithms.<br>
+                            4. Engage with law enforcement (FBI, Interpol) and consider reporting to GitHub and AWS for support with breach investigation.<br>
+                            5. Prepare public disclosure statement addressing customer and partner impact from stolen intellectual property.
+                        </div>
+                    </div>
+                </section>
+
+                <div class="references">
+                    <h3 class="references-title">Sources &amp; References</h3>
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-num">1.</span>
+                            <strong>BleepingComputer</strong> — <em>Cisco Data Breach Through Compromised Trivy GitHub Actions</em>
+                            <a href="https://www.bleepingcomputer.com/">https://www.bleepingcomputer.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">2.</span>
+                            <strong>CSO Online</strong> — <em>Cisco Development Environment Breached via Trivy Supply Chain Attack</em>
+                            <a href="https://www.csoonline.com/">https://www.csoonline.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">3.</span>
+                            <strong>SOCRadar</strong> — <em>TeamPCP Trivy GitHub Actions Supply Chain Attack</em>
+                            <a href="https://socradar.io/">https://socradar.io/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">4.</span>
+                            <strong>Palo Alto Networks</strong> — <em>Unit 42: Cisco Supply Chain Breach Analysis</em>
+                            <a href="https://unit42.paloaltonetworks.com/">https://unit42.paloaltonetworks.com/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">5.</span>
+                            <strong>GitHub Security</strong> — <em>Trivy Action Repository Compromise Advisory</em>
+                            <a href="https://github.com/aquasecurity/trivy-action">https://github.com/aquasecurity/trivy-action</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">6.</span>
+                            <strong>AWS Security Blog</strong> — <em>CI/CD Credential Compromise and Mitigation</em>
+                            <a href="https://aws.amazon.com/blogs/security/">https://aws.amazon.com/blogs/security/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">7.</span>
+                            <strong>OWASP</strong> — <em>Supply Chain Attacks and CI/CD Security</em>
+                            <a href="https://owasp.org/">https://owasp.org/</a>
+                        </div>
+
+                        <div class="reference-item">
+                            <span class="reference-num">8.</span>
+                            <strong>ShinyHunters Leak Site</strong> — <em>Extortion Post: Cisco Data (Archived)</em>
+                            <a href="https://example.com/">https://example.com/</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Key Takeaways</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.7;">
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Supply Chain Attack:</strong> Trivy GitHub Actions repository compromised on March 19, 2026 by TeamPCP</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Scope:</strong> 76 of 77 version tags force-pushed with malicious code</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Data Exfiltration:</strong> 300+ Cisco GitHub repositories cloned, AWS keys stolen</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Threat Actors:</strong> TeamPCP (compromise), ShinyHunters/UNC5537 (extortion)</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Credentials Stolen:</strong> GitHub PATs, AWS access keys, CI/CD environment variables</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Lateral Movement:</strong> Dozens of developer and lab workstations compromised</div>
+                        <div style="padding: 8px 0;"><strong style="color: var(--white);">Extortion:</strong> ShinyHunters posted March 31, 2026 demanding ransom by April 3</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Threat Actor Profile</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Primary Actor:</span> TeamPCP (repository compromise)</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Secondary Actor:</span> ShinyHunters / UNC5537 (extortion)</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Motive:</span> Financial extortion, data brokering</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">Capability:</span> Supply chain attack planning, credential extraction, lateral movement</div>
+                        <div style="padding: 6px 0;"><span style="color: var(--amber);">History:</span> Previous GitHub Actions supply chain attacks</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Affected Infrastructure</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Direct Targets:</strong></div>
+                        <div style="padding: 6px 0;">GitHub (300+ repositories cloned)</div>
+                        <div style="padding: 6px 0;">AWS (access keys compromised)</div>
+                        <div style="padding: 6px 0;">Developer workstations (dozens)</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--white);">Secondary Impact:</strong></div>
+                        <div style="padding: 6px 0;">Salesforce (3M records claimed in extortion post)</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Related Incidents</div>
+                    <a href="#" class="sidebar-link">Trivy CVE-2026-33634 Supply Chain Vulnerability</a>
+                    <a href="#" class="sidebar-link">TeamPCP Prior Supply Chain Attacks</a>
+                    <a href="#" class="sidebar-link">ShinyHunters Leak Site Operations</a>
+                    <a href="#" class="sidebar-link">European Commission Trivy Breach (2026)</a>
+                    <a href="#" class="sidebar-link">GitHub Actions Security Issues</a>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-title">CI/CD Security Context</div>
+                    <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Attack Vector:</strong> GitHub Actions version tags</div>
+                        <div style="padding: 6px 0;">Malicious code executed in CI/CD pipeline context with access to environment variables containing credentials</div>
+                        <div style="padding: 6px 0;"><strong style="color: var(--amber);">Defense Requirement:</strong> Version pinning by commit SHA instead of mutable tags</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+  <script src="../assets/analytics.js"></script>
+</body>
+</html>

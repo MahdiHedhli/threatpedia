@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-08T09:00:00Z",
+  "lastUpdated": "2026-04-07T20:00:00Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
   "queue": [
@@ -150,17 +150,25 @@
       "queuedDate": "2026-04-07"
     },
     {
-      "actorName": "RansomHouse",
-      "action": "update-links",
-      "referencedFrom": [
-        "ransomhouse-operations",
-        "vivaticket-ransomhouse-2026"
+      "actorName": "Medusa",
+      "aliases": [
+        "Storm-1175"
       ],
-      "context": "RansomHouse (Jolly Scorpius) is a data extortion / RaaS group active since Dec 2021 with 187+ victims. Uses MarioLocker and MrAgent. Gap-fill report created.",
-      "suggestedAffiliation": "Criminal",
-      "suggestedMotivation": "Financial",
-      "priority": "normal",
-      "queuedBy": "incident-crosslink-gapfill",
+      "referencedFrom": [
+        "ummc-medusa-ransomware-2026"
+      ],
+      "action": "update-links",
+      "queuedBy": "new-threat-intel-automation",
+      "queuedDate": "2026-04-08"
+    },
+    {
+      "actorName": "Z-CERT",
+      "aliases": [],
+      "referencedFrom": [
+        "chipsoft-ransomware-dutch-healthcare-2026"
+      ],
+      "action": "create",
+      "queuedBy": "new-threat-intel-automation",
       "queuedDate": "2026-04-08"
     }
   ],
