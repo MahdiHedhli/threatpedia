@@ -330,7 +330,7 @@
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 2 &mdash; 45%</span>
+        <span>Phase 1 &mdash; 45%</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" style="width: 45%"></div>
@@ -388,9 +388,9 @@
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">22 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 3 approved, 19 pending review.</div>
+          <div class="item-desc">27 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 3 approved, 24 pending review.</div>
           <div class="item-meta">
-            <span class="item-tag">22 reports</span>
+            <span class="item-tag">27 reports</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -445,9 +445,9 @@
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Automated Incident Ingestion</div>
-          <div class="item-desc">6 scrapers built (CISA KEV, HIBP, VCDB, NIST NVD, CVE MITRE, MISP). Threat intel feeds running 2x daily; scrapers on daily weekday schedule. 3 more specs ready to build.</div>
+          <div class="item-desc">7 scrapers built (CISA KEV, HIBP, VCDB, NIST NVD, CVE MITRE, MISP, MITRE ATT&amp;CK). Threat intel feeds running 2x daily; scrapers on daily weekday schedule. 3 more specs ready to build.</div>
           <div class="item-meta">
-            <span class="item-tag">6 scrapers live</span>
+            <span class="item-tag">7 scrapers live</span>
             <span class="item-tag">2x daily intel</span>
           </div>
         </div>
@@ -481,23 +481,10 @@
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Source Expansion Pipeline</div>
-          <div class="item-desc">Running monthly. 233 sources catalogued across 16 categories. 9 / 34 deep-dive specs completed (Phase 1 done, Phase 2 in progress).</div>
+          <div class="item-desc">Running monthly. 233 sources catalogued across 16 categories. 10 / 34 deep-dive specs completed (Phase 1 done, Phase 2 in progress).</div>
           <div class="item-meta">
             <span class="item-tag">monthly</span>
             <span class="item-tag">automated</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-status done">&#10003;</div>
-        <div class="item-body">
-          <div class="item-title">Exploit &amp; Zero-Day Registry</div>
-          <div class="item-desc">Live zero-day tracking with exploitation status lifecycle (PoC → Weaponized → Active → Patched → Historical), severity assessments, exploit chain documentation, detection guidance, and IOC tracking. First entry: BlueHammer Windows Defender LPE.</div>
-          <div class="item-meta">
-            <span class="item-tag">1 exploit tracked</span>
-            <span class="item-tag">live</span>
-            <span class="item-tag">TP-EXP-0001</span>
           </div>
         </div>
       </div>
@@ -547,44 +534,6 @@
           <div class="item-meta">
             <span class="item-tag">X/Twitter</span>
             <span class="item-tag">RSS</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-status todo">&#9675;</div>
-        <div class="item-body">
-          <div class="item-title">Malware Family Registry</div>
-          <div class="item-desc">First-class entity type for malware families with variant tracking, hash storage (SHA-256), lineage/fork trees, and attribution chains to APTs and incidents. Seeded from Malpedia with curator enrichment. Observed-in-incidents scope first, backfill queue for historical data.</div>
-          <div class="item-meta">
-            <span class="item-tag">Malpedia integration</span>
-            <span class="item-tag">hash-only</span>
-            <span class="item-tag">family lineage</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-status todo">&#9675;</div>
-        <div class="item-body">
-          <div class="item-title">Exploit &amp; Zero-Day Visualization Layer</div>
-          <div class="item-desc">Interactive visualizations for exploit and zero-day intelligence: ATT&amp;CK heatmaps per exploit family, exploit timeline graphs, weaponization funnel charts, and patch adoption tracking across the ecosystem. Links to affected threat actors and incidents.</div>
-          <div class="item-meta">
-            <span class="item-tag">interactive</span>
-            <span class="item-tag">ATT&amp;CK heatmaps</span>
-            <span class="item-tag">timeline graphs</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-status wip">&#9673;</div>
-        <div class="item-body">
-          <div class="item-title">Malware &amp; Exploit Backfill Pipeline</div>
-          <div class="item-desc">Automated backfill queue scanning existing incidents for unregistered malware references. Malpedia API seeding for stub records, prioritized by incident count and APT attribution. Quarterly reconciliation reports.</div>
-          <div class="item-meta">
-            <span class="item-tag">automated</span>
-            <span class="item-tag">backfill</span>
           </div>
         </div>
       </div>
