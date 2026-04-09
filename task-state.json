@@ -104,7 +104,7 @@
     },
     "dataIngestion": {
       "taskId": "threatpedia-data-ingestion",
-      "frequency": "Future — pending web stack and database",
+      "frequency": "Future \u2014 pending web stack and database",
       "purpose": "Ingest records from staged external databases (tracked in data/data-sources-manifest.json) into Threatpedia, using incremental sync to avoid redundant processing",
       "writesTo": [
         "incidents/*.html",
@@ -121,7 +121,7 @@
     "threatActorUpdater": {
       "taskId": "threat-actor-updater",
       "frequency": "Tue/Thu at 3 PM",
-      "purpose": "Process threat-actor-queue.json worklist — create new actor entries, update existing ones with new incident linkages, ensure bidirectional linking between actors and reports",
+      "purpose": "Process threat-actor-queue.json worklist \u2014 create new actor entries, update existing ones with new incident linkages, ensure bidirectional linking between actors and reports",
       "writesTo": [
         "threat-actors.html",
         "threat-actor-index.json",
@@ -138,7 +138,7 @@
     "zeroDayTracker": {
       "taskId": "zero-day-tracker",
       "frequency": "Daily weekdays at 7 AM",
-      "purpose": "Discover and publish new zero-day/exploit entries from threat intel feeds, CISA KEV, NVD, and incident reports. Update status lifecycle (PoC → Weaponized → Active → Patched → Historical). Auto-classify zero-days when first_exploited < patch_released.",
+      "purpose": "Discover and publish new zero-day/exploit entries from threat intel feeds, CISA KEV, NVD, and incident reports. Update status lifecycle (PoC \u2192 Weaponized \u2192 Active \u2192 Patched \u2192 Historical). Auto-classify zero-days when first_exploited < patch_released.",
       "writesTo": [
         "zero-days/*.html",
         "zero-days/manifest.json",
@@ -192,14 +192,14 @@
         "vcdb",
         "nist-nvd",
         "cve-mitre",
-        "misp"
+        "misp",
+        "mitre-attack",
+        "hhs-ocr"
       ],
       "specsReadyToBuild": [
-        "mitre-attack",
-        "hhs-ocr",
         "eu-gdpr-enforcement-tracker"
       ],
-      "lastRunDate": "2026-04-07",
+      "lastRunDate": "2026-04-09",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
@@ -237,7 +237,7 @@
       ]
     },
     "glossaryPipeline": {
-      "flow": "daily-incident-updater discovers candidates → glossary-candidates.json → glossary-term-updater processes and adds to glossary → glossary-index.json → glossary-tooltips.js renders in reports",
+      "flow": "daily-incident-updater discovers candidates \u2192 glossary-candidates.json \u2192 glossary-term-updater processes and adds to glossary \u2192 glossary-index.json \u2192 glossary-tooltips.js renders in reports",
       "files": {
         "glossary.html": "The glossary page with role filter UI",
         "glossary-index.json": "Lightweight term index for client-side tooltip consumption",
@@ -245,24 +245,24 @@
       }
     },
     "threatActorPipeline": {
-      "flow": "new-threat-intel / daily-incident-updater / incident-crosslink-gapfill → threat-actor-queue.json → threat-actor-updater processes queue → threat-actors.html + threat-actor-index.json updated → bidirectional links verified",
+      "flow": "new-threat-intel / daily-incident-updater / incident-crosslink-gapfill \u2192 threat-actor-queue.json \u2192 threat-actor-updater processes queue \u2192 threat-actors.html + threat-actor-index.json updated \u2192 bidirectional links verified",
       "files": {
         "threat-actors.html": "The Threat Actor Registry page with 78 actors (JS array, searchable/filterable). IMPORTANT: threat-actors.html has an 'actorPages' Set in JS that lists all actors with dedicated pages (e.g. 'apt1', 'lazarus-group'). When creating a new actor HTML page in threat-actors/*.html, the threat-actor-updater MUST also add the actor slug to the actorPages Set in threat-actors.html so the listing page links to it.",
         "threat-actor-index.json": "Lightweight actor lookup index (78 actors, 224 alias keys) for quick queue-or-skip decisions by incident tasks",
-        "threat-actor-queue.json": "Worklist — incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
+        "threat-actor-queue.json": "Worklist \u2014 incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
       },
       "currentActorCount": 78,
       "queueSize": 0
     },
     "zeroDayPipeline": {
-      "flow": "zero-day-tracker discovers new exploits from feeds/incidents → zero-days/manifest.json + zero-days/*.html → zero-day-enricher updates lifecycle, detection guidance, cross-links → bidirectional links verified with incidents and actors",
+      "flow": "zero-day-tracker discovers new exploits from feeds/incidents \u2192 zero-days/manifest.json + zero-days/*.html \u2192 zero-day-enricher updates lifecycle, detection guidance, cross-links \u2192 bidirectional links verified with incidents and actors",
       "files": {
         "zero-days.html": "Top-level Exploit & Zero-Day Registry hub page with stats and taxonomy",
-        "zero-days/index.html": "Full searchable/filterable zero-day listing page — loads dynamically from manifest.json via fetch()",
+        "zero-days/index.html": "Full searchable/filterable zero-day listing page \u2014 loads dynamically from manifest.json via fetch()",
         "zero-days/manifest.json": "Exploit index with metadata, status lifecycle, CISA KEV flags, cross-references. All zero-day-related agents read this FIRST.",
         "zero-days/TEMPLATE.html": "Template for individual zero-day exploit pages with severity meters, exploit chain, detection guidance, IOCs, mitigations, timeline, sources"
       },
-      "currentExploitCount": 6,
+      "currentExploitCount": 1,
       "statusTaxonomy": [
         "PoC Only",
         "Weaponized",
@@ -272,7 +272,7 @@
         "Historical"
       ],
       "entityIdFormat": "TP-EXP-NNNN",
-      "lastRunDate": "2026-04-09"
+      "lastRunDate": "2026-04-08"
     },
     "lastIncidentScan": "2026-04-09T09:17:04Z",
     "dataIngestion": {
@@ -298,27 +298,22 @@
       "lastCompleted": "2026-04-08T15:31:12Z"
     },
     "new-threat-intel": {
-      "locked": true,
-      "lockedAt": "2026-04-09T09:17:04Z",
-      "lastCompleted": "2026-04-09T00:35:44Z"
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T09:28:57Z"
     },
     "incident-crosslink-gapfill": {
       "locked": false,
       "lockedAt": null,
       "lastCompleted": "2026-04-08T13:10:08Z"
-    },
-    "zero-day-tracker": {
-      "locked": false,
-      "lockedAt": null,
-      "lastCompleted": "2026-04-09T07:00:00Z"
     }
   },
   "coordinationRules": {
     "manifestFirst": "All incident-related tasks MUST read incidents/manifest.json as their first step",
-    "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports. The incidents/index.html page now reads from manifest.json dynamically via fetch() — updating manifest.json is ALL that is needed for new incidents to appear on the page and in the stats. Do NOT modify incidents/index.html to add incident data.",
+    "manifestUpdate": "All incident-related tasks MUST update manifest.json after creating or modifying reports. The incidents/index.html page now reads from manifest.json dynamically via fetch() \u2014 updating manifest.json is ALL that is needed for new incidents to appear on the page and in the stats. Do NOT modify incidents/index.html to add incident data.",
     "actorPageLinking": "When threat-actor-updater creates a new threat-actors/*.html page, it MUST also add the actor slug to the 'actorPages' Set in threat-actors.html so the registry links to the new page.",
     "zeroDayManifestFirst": "All zero-day-related tasks MUST read zero-days/manifest.json as their first step for dedup and cross-referencing.",
-    "zeroDayManifestUpdate": "All zero-day-related tasks MUST update zero-days/manifest.json after creating or modifying exploit entries. The zero-days/index.html and zero-days.html pages read from manifest.json dynamically — updating manifest.json is ALL that is needed for new exploits to appear.",
+    "zeroDayManifestUpdate": "All zero-day-related tasks MUST update zero-days/manifest.json after creating or modifying exploit entries. The zero-days/index.html and zero-days.html pages read from manifest.json dynamically \u2014 updating manifest.json is ALL that is needed for new exploits to appear.",
     "zeroDayIncidentCrossLink": "When creating a zero-day entry, check incidents/manifest.json for related incidents using the CVE and exploit name. Add bidirectional references: exploit.relatedIncidents[] and incident.relatedSlugs[].",
     "noOverlap": {
       "newThreatIntel": "Only creates reports for brand-new incidents from news. Does NOT create gap-fill reports or update existing reports.",
@@ -328,9 +323,9 @@
     "gitConflictPrevention": "ALL tasks use the standardized Git Safety Protocol (see .git-safety-protocol.md). Protocol includes: stale lock clearing (>5 min threshold), fetch/rebase before work, lock check before staging, specific-file staging (never git add -A), push with 3-attempt retry, JSON conflict resolution (accept remote then re-apply). Updated 2026-04-06 across all 11 active tasks.",
     "taskLocking": {
       "protocol": "Before writing to incidents/ or manifest.json, a task MUST: (1) read task-state.json and check activeLocks for any other task with locked:true and lockedAt < 30 minutes ago, (2) if blocked, SKIP the run and report it, (3) if clear, set your own lock in activeLocks with locked:true and current UTC timestamp, (4) ALWAYS release your lock (locked:false) when done, even on error.",
-      "staleLockTimeout": "30 minutes — any lock older than 30 minutes is treated as stale from a crashed task and can be ignored.",
+      "staleLockTimeout": "30 minutes \u2014 any lock older than 30 minutes is treated as stale from a crashed task and can be ignored.",
       "gitLockFiles": "Before any git operation, check for and clear .git/HEAD.lock and .git/index.lock (rename to .bak, then delete .bak files). These are left by crashed git processes, not by the task locking protocol.",
-      "pushProtocol": "Always: git pull --rebase origin main → git push origin main. If push fails, clear git locks, pull --rebase again, retry push once. If still fails, abort rebase and report failure."
+      "pushProtocol": "Always: git pull --rebase origin main \u2192 git push origin main. If push fails, clear git locks, pull --rebase again, retry push once. If still fails, abort rebase and report failure."
     }
   },
   "lastIncidentScan": "2026-04-09T09:17:04Z"
