@@ -273,6 +273,9 @@ class HHSOCRRequestsScraper:
             ("state", "state"),
         ]
 
+        # Capture scrape timestamp once for the entire batch
+        batch_timestamp = datetime.now(timezone.utc).isoformat()
+
         # Skip known non-data columns
         skip_headers = {"expand", "expand all", ""}
 
@@ -330,7 +333,7 @@ class HHSOCRRequestsScraper:
                 "source_id": generate_source_id(entity_name, submission_date, state),
                 "source": "hhs_ocr",
                 "page_type": page_type,
-                "scraped_at": datetime.now(timezone.utc).isoformat(),
+                "scraped_at": batch_timestamp,
             }
 
             # Archive pages may have resolution fields
@@ -460,12 +463,11 @@ class HHSOCRRequestsScraper:
         viewstate = vs_input["value"]
 
         # Find all JSF command links (mojarra.jsfcljs calls)
-        import re as _re
         jsf_links = []
         for a in soup.find_all("a"):
             onclick = a.get("onclick", "") or ""
             text = a.get_text(strip=True).lower()
-            match = _re.search(r"'([^']+)':'([^']+)'", onclick)
+            match = re.search(r"'([^']+)':'([^']+)'", onclick)
             if match and "mojarra" in onclick:
                 jsf_links.append({
                     "text": text,
@@ -851,13 +853,8 @@ class HHSOCRConnector(ThreatpediaConnector):
         submission_date = raw_record.get("breach_submission_date", "")
         iso_date = parse_date_mmddyyyy(submission_date)
 
-        # Extract year for breach_name composition
-        year = ""
-        if iso_date:
-            try:
-                year = str(datetime.strptime(iso_date, "%Y-%m-%d").year)
-            except ValueError:
-                pass
+        # Extract year for breach_name composition (iso_date is YYYY-MM-DD)
+        year = iso_date[:4] if iso_date and len(iso_date) >= 4 else ""
 
         # Map breach types (handle multi-value)
         breach_types_raw = split_multi_value(breach_type_raw)
