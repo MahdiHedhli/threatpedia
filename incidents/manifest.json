@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T00:23:06Z",
+  "lastUpdated": "2026-04-09T09:17:04Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
   "incidents": [
@@ -799,6 +799,161 @@
         "browser",
         "cisa-kev",
         "in-the-wild"
+      ]
+    },
+    {
+      "slug": "operation-truechaos-trueconf-zero-day-2026",
+      "incidentId": "TP-2026-0045",
+      "title": "Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack on Southeast Asian Governments",
+      "org": "TrueConf / Southeast Asian Government Entities",
+      "attackType": "supply-chain",
+      "threatActor": "Chinese-nexus (unattributed)",
+      "sector": "Government / International",
+      "geography": "Southeast Asia",
+      "date": "2026-03-28",
+      "severity": "Critical",
+      "cves": [
+        "CVE-2026-3502"
+      ],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "fbi-dcsnet-salt-typhoon-2026",
+        "frostarmada-soho-dns-hijacking-2026"
+      ],
+      "tags": [
+        "zero-day",
+        "supply-chain",
+        "trueconf",
+        "china",
+        "nation-state",
+        "dll-sideloading",
+        "havoc-c2",
+        "government",
+        "southeast-asia",
+        "update-mechanism",
+        "espionage"
+      ]
+    },
+    {
+      "slug": "winona-county-ransomware-2026",
+      "incidentId": "TP-2026-0046",
+      "title": "Winona County Second Ransomware Attack Prompts National Guard Deployment",
+      "org": "Winona County, Minnesota",
+      "attackType": "ransomware",
+      "threatActor": "Unknown",
+      "sector": "Government / Municipal Services",
+      "geography": "United States (Minnesota)",
+      "date": "2026-04-06",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "foster-city-ransomware-2026",
+        "passaic-county-medusa-ransomware-2026",
+        "patriot-regional-emergency-comms-attack-2026"
+      ],
+      "tags": [
+        "ransomware",
+        "government",
+        "municipal",
+        "minnesota",
+        "national-guard",
+        "state-of-emergency",
+        "repeat-attack"
+      ]
+    },
+    {
+      "slug": "docketwise-immigration-data-breach-2026",
+      "incidentId": "TP-2026-0047",
+      "title": "DocketWise Immigration Case Management Platform Breach Exposes 116K Records",
+      "org": "DocketWise",
+      "attackType": "data-breach",
+      "threatActor": "Unknown",
+      "sector": "Legal / Immigration Services",
+      "geography": "United States",
+      "date": "2026-04-03",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "conduent-data-breach-2026",
+        "carecloud-healthcare-breach-2026"
+      ],
+      "tags": [
+        "data-breach",
+        "immigration",
+        "legal",
+        "ssn",
+        "passport",
+        "credential-theft",
+        "third-party",
+        "pii",
+        "medical-data"
+      ]
+    },
+    {
+      "slug": "patriot-regional-emergency-comms-attack-2026",
+      "incidentId": "TP-2026-0048",
+      "title": "Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns",
+      "org": "Patriot Regional Emergency Communications Center",
+      "attackType": "ransomware",
+      "threatActor": "Unknown",
+      "sector": "Government / Emergency Services",
+      "geography": "United States (Massachusetts)",
+      "date": "2026-04-01",
+      "severity": "High",
+      "cves": [],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "foster-city-ransomware-2026",
+        "winona-county-ransomware-2026"
+      ],
+      "tags": [
+        "ransomware",
+        "emergency-services",
+        "government",
+        "municipal",
+        "massachusetts",
+        "911",
+        "codered",
+        "crisis24"
+      ]
+    },
+    {
+      "slug": "langflow-cve-2026-33017-rce-exploitation",
+      "incidentId": "TP-2026-0049",
+      "title": "Langflow AI Platform Unauthenticated RCE (CVE-2026-33017) — Exploited Within 20 Hours",
+      "org": "Langflow (DataStax)",
+      "attackType": "zero-day-exploitation",
+      "threatActor": "Multiple (6 unique source IPs)",
+      "sector": "Technology / AI Infrastructure",
+      "geography": "Global",
+      "date": "2026-03-17",
+      "severity": "Critical",
+      "cves": [
+        "CVE-2026-33017"
+      ],
+      "reviewStatus": "pending",
+      "generatedBy": "new-threat-intel-automation",
+      "relatedSlugs": [
+        "forticlient-ems-cve-2026-35616",
+        "chrome-cve-2026-5281-zero-day"
+      ],
+      "tags": [
+        "zero-day",
+        "rce",
+        "ai",
+        "langflow",
+        "cisa-kev",
+        "unauthenticated",
+        "python",
+        "api-key-theft",
+        "credential-theft",
+        "rapid-exploitation"
       ]
     }
   ],
