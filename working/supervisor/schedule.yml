@@ -1,0 +1,76 @@
+# Threatpedia Job Schedule
+# Owner: Kernel K (only Kernel K edits)
+# Read by: DangerMouse-Bot, Penfold-Bot, dangermouse-bot runtime (when operational)
+# Format: YAML, machine-readable
+# Last updated: 2026-04-10T15:00:00Z (bootstrap)
+#
+# This file defines scheduled jobs and recurring tasks for Threatpedia agents.
+# During Phase 0 freeze, only manual jobs are defined. Scheduled jobs will be
+# enabled after the freeze lifts and the dangermouse-bot runtime is operational.
+#
+# JOB FORMAT:
+#   - id: unique identifier (JOB-NNNN)
+#     name: human-readable name
+#     owner: which agent runs this (dangermouse | penfold | kernel-k | runtime)
+#     trigger: manual | schedule | event
+#     schedule: cron expression (only if trigger=schedule)
+#     event: event name (only if trigger=event)
+#     status: enabled | disabled | frozen
+#     description: what this job does
+#     references: list of related files/docs
+#     last_run: ISO 8601 UTC of most recent run
+#     next_run: ISO 8601 UTC of next scheduled run
+
+version: 1.0
+freeze_active: true
+freeze_started: 2026-04-09T22:00:00Z
+freeze_authorized_by: kernel-k
+
+jobs: []
+
+# Examples (commented out, not active):
+#
+#   - id: JOB-0001
+#     name: Nightly source archiving
+#     owner: runtime
+#     trigger: schedule
+#     schedule: "0 3 * * *"  # 3:00 AM UTC daily
+#     status: disabled  # waiting for runtime
+#     description: |
+#       For all articles in the live corpus, find sources that lack archived_url
+#       and submit them to the Wayback Machine. Update sources.archive_status.
+#     references:
+#       - docs/DATA-STANDARDS-v1.0.md#section-4.5
+#       - working/supervisor/standards.md
+#     last_run: null
+#     next_run: null
+#
+#   - id: JOB-0002
+#     name: Weekly drift audit
+#     owner: dangermouse
+#     trigger: schedule
+#     schedule: "0 9 * * MON"  # 9:00 AM UTC every Monday
+#     status: disabled
+#     description: |
+#       Run audit script across the corpus. Compare manifest vs HTML meta tags,
+#       check schema compliance, identify orphans, generate drift report.
+#       Output to working/outbox/dangermouse/drift-audit-{date}.md.
+#     references:
+#       - scripts/audit.py
+#     last_run: null
+#     next_run: null
+#
+#   - id: JOB-0003
+#     name: Monthly schema compliance report
+#     owner: dangermouse
+#     trigger: schedule
+#     schedule: "0 10 1 * *"  # 10:00 AM UTC on the 1st of each month
+#     status: disabled
+#     description: |
+#       For each article in the corpus, run computeConfidenceScore and aggregate
+#       results into a corpus health report. Identify articles that have degraded
+#       since last month.
+#     references:
+#       - scripts/computeConfidenceScore.ts
+#     last_run: null
+#     next_run: null

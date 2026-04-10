@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RansomHouse Threat Actor Operations — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-PENDING-ransomho">
+  <meta name="article-type" content="entity_profile">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-04-09">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:16Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="RansomHouse Threat Actor Operations">
+  <meta property="og:description" content="RansomHouse Threat Actor Operations · TP-PENDING-ransomho · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-PENDING-ransomho.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/ransomhouse-operations",
+  "headline": "RansomHouse Threat Actor Operations",
+  "datePublished": null,
+  "dateModified": "2026-04-10T14:19:16.267217+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-PENDING-ransomho"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 49
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 4
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "entity_profile"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">RansomHouse Threat Actor Operations</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-PENDING-ransomho</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-4">High</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (49/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 3 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Actor Profile&quot;, &quot;Operational Timeline&quot;, &quot;Defensive Recommendations&quot;</li>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>Missing: Timeline section</li>
+          <li>Missing: Remediation &amp; Mitigation section</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>ORPHAN: file was not in manifest — added during normalization</li>
+          <li>RECLASSIFIED: article_type changed to &#x27;entity_profile&#x27;. Should move to entities collection during Astro migration.</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>RansomHouse is a financially motivated data extortion and ransomware-as-a-service (RaaS) operation that emerged in late 2021. The group initially built its reputation through data theft and extortion without encryption, later evolving to incorporate encryption capabilities via MarioLocker and other ransomware variants. RansomHouse has established itself as a significant threat to organizations across multiple critical sectors globally, with confirmed operations across healthcare, manufacturing, education, government, and financial services.</p>
+<p>The group is tracked by Palo Alto Unit 42 under the alias "Jolly Scorpius" and operates as a distributed ecosystem with separated operational roles. RansomHouse has demonstrated strategic partnerships with other threat actors including White Rabbit, 8Base, and BianLian, suggesting a collaborative ransomware ecosystem. As of April 2026, the group has compromised at least 187 confirmed victims across multiple continents.</p>
+<p>RansomHouse employs a double extortion model, combining data exfiltration with encryption threats and public disclosure of stolen information. The group uses third-party ransomware tools, maintains a public leak site accessible via Tor, and actively recruits affiliates, positioning itself as a professional cybercriminal enterprise rather than a traditional single-actor group.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>RansomHouse leverages a sophisticated technical ecosystem combining multiple attack tools, infrastructure components, and operational techniques. The group demonstrates advanced capabilities in data exfiltration, lateral movement, and ransomware deployment targeting both traditional infrastructure and modern virtualization platforms.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Associated Malware</h3>
+<p>RansomHouse employs or has integrated the following malware families and tools:</p>
+<ul>
+<li><strong>MarioLocker:</strong> Primary encryption ransomware in recent campaigns; supports ESXi VM targeting, dual-key encryption (32-byte primary + 8-byte secondary), sparse encryption optimization, and modular command execution</li>
+<li><strong>MrAgent:</strong> Deployment tool and post-exploitation framework; facilitates C2 connectivity, ESXi firewall manipulation, host enumeration, and lateral movement</li>
+<li><strong>Ransomware-as-a-Service Tools:</strong> Integration with third-party RaaS platforms; adaptable encryption payloads deployed across victim infrastructure</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">MarioLocker Encryption Characteristics</h3>
+<p>Palo Alto Unit 42 analysis of MarioLocker variants deployed by RansomHouse documented the following technical characteristics:</p>
+<div class="tech-box">Encryption Method: Dual-key hybrid encryption (32-byte primary + 8-byte secondary)
+Algorithm: AES-256 with sparse encryption optimization
+Target Focus: VMware ESXi virtualization infrastructure (VMDK, VMSN files)
+Chunk Size: Dynamic sizing with 8GB threshold optimization
+File Extensions: .encrypted, .mario, custom extensions per variant
+Registry Persistence: HKLM\Software\Microsoft\Windows\Run modifications
+Execution Context: System-level process injection and SYSTEM privilege escalation</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">MrAgent Post-Exploitation Capabilities</h3>
+<p>MrAgent functions as a modular post-exploitation framework deployed after initial compromise:</p>
+<ul>
+<li><strong>Command &amp; Control:</strong> HTTPS-based C2 with callback intervals; DNS failover for resilience</li>
+<li><strong>Host Enumeration:</strong> System information discovery including OS version, CPU count, memory, installed software, and unique host identifiers</li>
+<li><strong>Firewall Manipulation:</strong> ESXi firewall rule disabling to facilitate lateral movement and ransomware deployment</li>
+<li><strong>Privilege Escalation:</strong> Exploitation of local privilege escalation vulnerabilities (CVE-2020-1472 Netlogon, similar techniques)</li>
+<li><strong>Modular Execution:</strong> Secondary payload execution framework supporting pluggable exploitation modules</li>
+<li><strong>Credential Harvesting:</strong> LSASS memory dumping and Active Directory credential extraction</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Attack Infrastructure</h3>
+<p>RansomHouse maintains distributed infrastructure supporting operational activities:</p>
+<ul>
+<li><strong>C2 Domains:</strong> Multiple domains registered under privacy services; subject to sinkhole operations by ANSSI and international law enforcement</li>
+<li><strong>Leak Site:</strong> Tor-accessible domain hosting victim pressure pages with teaser data, negotiation portals, and public claim announcements</li>
+<li>Payment Infrastructure: Cryptocurrency addresses (Bitcoin, Monero) with tumbling and mixing services</li>
+<li><strong>Access Broker Relationships:</strong> Partnerships with initial access providers suggesting ecosystem integration for victim lead generation</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">MITRE ATT&amp;CK Framework Mapping</h3>
+<p>RansomHouse operations align with the following MITRE ATT&amp;CK techniques:</p>
+<ul>
+<li><strong>T1078 — Valid Accounts:</strong> Exploitation of compromised credentials for lateral movement and initial access via Iranian-linked access brokers</li>
+<li><strong>T1021.004 — Remote Services: SSH:</strong> Direct SSH access to VMware ESXi hypervisors for post-compromise lateral movement</li>
+<li><strong>T1082 — System Information Discovery:</strong> Reconnaissance performed by MrAgent for host enumeration and network mapping</li>
+<li><strong>T1562.004 — Impair Defenses: Disable or Modify System Firewall:</strong> MrAgent disables ESXi firewall rules to facilitate ransomware deployment</li>
+<li><strong>T1567 — Exfiltration Over Web Service:</strong> Systematic data exfiltration via HTTPS to attacker-controlled infrastructure prior to encryption</li>
+<li><strong>T1486 — Data Encrypted for Impact:</strong> Deployment of MarioLocker and other encryption tools targeting both Windows and VMware infrastructure</li>
+<li><strong>T1071.001 — Application Layer Protocol: Web Protocols:</strong> HTTPS-based command and control communication</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>RansomHouse has demonstrated significant impact across multiple victim organizations and sectors. The group's operational sophistication and strategic partnerships have enabled large-scale data exfiltration and successful extortion campaigns. The March 2026 Vivaticket attack exemplifies the cascading damage potential when critical infrastructure service providers are compromised.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Victim Statistics</h3>
+<table class="impact-table">
+<tr>
+<td>Confirmed Victims</td>
+<td>187+ organizations (as of April 2026)</td>
+</tr>
+<tr>
+<td>Geographic Distribution</td>
+<td>Global (North America 45%, Europe 35%, APAC 15%, other 5%)</td>
+</tr>
+<tr>
+<td>Sector Distribution</td>
+<td>Healthcare 28%, Manufacturing 22%, Education 18%, Finance 16%, Government 9%, Other 7%</td>
+</tr>
+<tr>
+<td>Data Exfiltrated</td>
+<td>Estimated 10+ terabytes across all campaigns (conservative estimate)</td>
+</tr>
+<tr>
+<td>Notable Supply Chain Impact</td>
+<td>Vivaticket: 3,500+ cultural institutions, 10-15 million visitor records</td>
+</tr>
+</table>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Ransomware Impact Patterns</h3>
+<ul>
+<li><strong>Operational Disruption:</strong> Organizations experience extended downtime during ransomware deployment and recovery; critical systems offline for days to weeks</li>
+<li><strong>Data Breach Consequences:</strong> PII exposure affecting customers, patients, and employees; regulatory notification obligations and GDPR fines</li>
+<li><strong>Financial Impact:</strong> Direct ransom payments (ranging from $100K to $5M+), incident response costs, recovery infrastructure rebuilding, regulatory fines</li>
+<li><strong>Reputational Damage:</strong> Customer confidence erosion, public disclosure of data breaches, negative media coverage affecting organizational reputation</li>
+<li><strong>Supply Chain Amplification:</strong> Compromise of critical service providers cascades to thousands of downstream organizations</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Strategic Implications</h3>
+<ul>
+<li>RansomHouse demonstrates the professionalization of ransomware as a business model with distributed affiliates and strategic partnerships</li>
+<li>Integration of data extortion with encryption creates psychological pressure beyond traditional encryption-only attacks</li>
+<li>Collaborative campaigns with other threat actors (Cyber-Extortion Trinity) indicate ecosystem maturation and specialization</li>
+<li>Focus on critical infrastructure and supply chain providers amplifies impact far beyond direct victim organizations</li>
+<li>Cryptocurrency integration and Tor infrastructure provide operational resilience against law enforcement</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Indicators of Compromise</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The following indicators have been associated with RansomHouse operations and are provided for detection and response purposes.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Malware Hashes (SHA-256)</h3>
+<div class="ioc-group">
+<div class="ioc-header">MarioLocker Variants</div>
+<div class="ioc-item">
+<span class="ioc-label">Variant / Description</span>
+<span class="ioc-value">0fe7fcc66726f8f2daed29b807d1da3c531ec004925625855f8889950d0d24d8</span>
+<span class="ioc-label" style="margin-top: 4px;">Notes</span>
+<span class="ioc-value">MarioLocker upgraded variant with dual-key encryption and ESXi optimization</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Variant / Description</span>
+<span class="ioc-value">d36afcfe1ae2c3e6669878e6f9310a04fb6c8af525d17c4ffa8b510459d7dd4d</span>
+<span class="ioc-label" style="margin-top: 4px;">Notes</span>
+<span class="ioc-value">MarioLocker original variant; earlier deployment phase</span>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-header">MrAgent Variants</div>
+<div class="ioc-item">
+<span class="ioc-label">Variant / Description</span>
+<span class="ioc-value">26b3c1269064ba1bf2bfdcf2d3d069e939f0e54fc4189e5a5263a49e17872f2a</span>
+<span class="ioc-label" style="margin-top: 4px;">Notes</span>
+<span class="ioc-value">MrAgent post-exploitation framework; C2 and host enumeration capabilities</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Variant / Description</span>
+<span class="ioc-value">8189c708706eb7302d7598aeee8cd6bdb048bf1a6dbe29c59e50f0a39fd53973</span>
+<span class="ioc-label" style="margin-top: 4px;">Notes</span>
+<span class="ioc-value">MrAgent variant with enhanced ESXi firewall manipulation</span>
+</div>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Infrastructure Indicators</h3>
+<div class="ioc-group">
+<div class="ioc-header">C2 Domains &amp; Infrastructure</div>
+<div class="ioc-item">
+<span class="ioc-label">Type</span>
+<span class="ioc-value">Multiple C2 domains registered with privacy services; subject to sinkhole operations</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Type</span>
+<span class="ioc-value">Tor leak site accessible on .onion domain; teaser data and negotiation portals</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Type</span>
+<span class="ioc-value">Bitcoin &amp; Monero cryptocurrency addresses for ransom payment processing</span>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-header">File Signatures &amp; Artifacts</div>
+<div class="ioc-item">
+<span class="ioc-label">Artifact</span>
+<span class="ioc-value">Ransom note filenames: README.txt, RECOVER_FILES.html, RansomHouse_RECOVERY.txt</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Artifact</span>
+<span class="ioc-value">Registry modifications in HKLM\Software\Microsoft\Windows\Run for persistence</span>
+</div>
+<div class="ioc-item">
+<span class="ioc-label">Artifact</span>
+<span class="ioc-value">Scheduled tasks created with system-level privileges for post-exploitation execution</span>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Actor Profile</h3>
+              <div class="section-content">
+<p>RansomHouse operates as an organized threat entity with distributed operational capabilities. The group demonstrates sophisticated business practices typical of professional RaaS operations, including affiliate recruitment, victim negotiation, payment processing, and reputation management through its public leak site.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Operational Model</h3>
+<p>RansomHouse functions as a hybrid between pure data extortion and ransomware operations. The group initially emerged as a data theft-only operation in late 2021, leveraging stolen information for extortion without deploying encryption. This model proved effective and became the foundation for the group's business approach. As ransomware enforcement became a market differentiator, RansomHouse integrated encryption capabilities through partnerships and third-party tools.</p>
+<p>The group maintains a professional infrastructure including:</p>
+<ul>
+<li>Public leak site on Tor network for victim shaming and reputation enforcement</li>
+<li>Established victim negotiation procedures with formal ransom demands</li>
+<li>Cryptocurrency payment processing capabilities (Bitcoin and Monero)</li>
+<li>Affiliate recruitment and management programs with documented revenue sharing</li>
+<li>Incident response impersonation tactics to gather intelligence on detection capabilities</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Affiliations &amp; Partnerships</h3>
+<p>RansomHouse has established strategic relationships with multiple threat actors, indicating a collaborative ransomware ecosystem:</p>
+<ul>
+<li><strong>White Rabbit:</strong> Overlapping ransom note templates, victim overlap, and joint marketing suggesting shared infrastructure or operational collaboration</li>
+<li><strong>8Base:</strong> Near-identical ransom note formatting and parallel victim targeting in similar sectors</li>
+<li><strong>BianLian:</strong> 2024 joint extortion campaign targeting financial services ("Cyber-Extortion Trinity")</li>
+<li><strong>Iranian-linked Access Brokers:</strong> Intelligence suggests collaboration with initial access providers during 2022-2024 period</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Geographic &amp; Sectoral Focus</h3>
+<p>RansomHouse operates a global targeting strategy with no geographic restrictions. Victim distribution analysis indicates:</p>
+<ul>
+<li><strong>Primary Regions:</strong> North America (45%), Europe (35%), APAC (15%), other regions (5%)</li>
+<li><strong>Key Sectors:</strong> Healthcare (28%), Manufacturing (22%), Education (18%), Financial Services (16%), Government (9%), Other (7%)</li>
+<li><strong>Target Profile:</strong> Mid to large organizations with significant data assets and demonstrated capability to negotiate ransoms</li>
+<li><strong>Strategic Targeting:</strong> Critical infrastructure and essential services sectors due to higher ransom negotiation potential</li>
+</ul>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Operational Timeline</h3>
+              <div class="timeline">
+<div class="timeline-item">
+<span class="timeline-date">December 2021</span>
+<span class="timeline-event"><strong>Group Emergence:</strong> First confirmed victim, Saskatchewan Liquor and Gaming Authority, publicly claims data theft on underground forums</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2022 Early</span>
+<span class="timeline-event"><strong>Market Establishment:</strong> RansomHouse establishes public leak site and formalizes victim extortion procedures; begins accepting affiliate partnerships</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2022 Mid</span>
+<span class="timeline-event"><strong>White Rabbit Association:</strong> RansomHouse mentioned in White Rabbit ransom notes; intelligence suggests shared resources or operator overlap</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2022-2024</span>
+<span class="timeline-event"><strong>Victim Accumulation:</strong> Approximately 73+ confirmed victims documented during this period; active affiliate recruitment in Russian-language forums</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2024 Q2</span>
+<span class="timeline-event"><strong>MarioLocker Integration:</strong> Palo Alto Unit 42 documents upgraded encryption capabilities via MarioLocker malware with ESXi targeting and dual-key encryption</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2024 Q3</span>
+<span class="timeline-event"><strong>Cyber-Extortion Trinity:</strong> Joint extortion campaign with BianLian and White Rabbit targeting financial services sector; coordinated victim pressure campaign</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">October 2025</span>
+<span class="timeline-event"><strong>Vicchem &amp; Fulgar Breaches:</strong> Multiple Australian industrial organizations compromised; 847 GB data exfiltration from Vicchem</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">March 2026</span>
+<span class="timeline-event"><strong>Vivaticket Ransomware Attack:</strong> Major supply chain compromise affecting 3,500+ European cultural institutions including Louvre; 10-15 million visitor records exfiltrated</span>
+</div>
+<div class="timeline-item">
+<span class="timeline-date">2025-2026</span>
+<span class="timeline-event"><strong>Ongoing Campaigns:</strong> Warren County Sheriff's Office (743 GB data theft); multiple unattributed incidents with RansomHouse infrastructure indicators</span>
+</div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Defensive Recommendations</h3>
+              <div class="section-content">
+<p>Organizations should implement comprehensive defensive measures targeting the specific techniques, tools, and access vectors employed by RansomHouse. These recommendations are tailored to the group's operational characteristics and demonstrated attack methodologies.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Technical Controls</h3>
+<ul>
+<li><strong>Network Segmentation:</strong> Implement zero-trust architecture with restricted lateral movement between network zones; isolate virtualization infrastructure from general compute environments</li>
+<li><strong>ESXi Hardening:</strong> Disable SSH by default; implement strict firewall rules; require multi-factor authentication for administrative access; apply security patches promptly</li>
+<li><strong>Endpoint Detection &amp; Response (EDR):</strong> Deploy EDR agents on all systems including servers and virtualization hosts; configure detection for MarioLocker and MrAgent behavioral signatures</li>
+<li><strong>Security Monitoring:</strong> Implement SIEM with correlation rules for lateral movement; monitor for MrAgent C2 communication patterns; track unusual SSH access to ESXi systems</li>
+<li><strong>Backup &amp; Recovery:</strong> Maintain 3-2-1 backup strategy with offline, encrypted, tested backups; verify recovery capability regularly; isolate backup infrastructure from production networks</li>
+<li><strong>Email Security:</strong> Implement advanced phishing detection; verify external emails; enforce multi-factor authentication for compromised credential scenarios</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Operational Security</h3>
+<ul>
+<li><strong>Credential Management:</strong> Enforce strong password policies; rotate administrative credentials regularly; eliminate shared accounts; implement passwordless authentication where possible</li>
+<li><strong>Vulnerability Management:</strong> Maintain comprehensive asset inventory; prioritize patching for critical and high-severity vulnerabilities; scan for misconfigurations regularly</li>
+<li><strong>Access Control:</strong> Implement principle of least privilege; require multi-factor authentication for all administrative accounts; disable legacy authentication protocols</li>
+<li><strong>Incident Response Planning:</strong> Develop ransomware-specific incident response procedures; conduct tabletop exercises; establish communication protocols and decision-making authority</li>
+<li><strong>Supply Chain Security:</strong> Assess vendor security posture; include security requirements in contracts; verify third-party incident response capabilities</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Detection Signatures</h3>
+<ul>
+<li><strong>Hash-based Detection:</strong> Alert on execution of known MarioLocker and MrAgent hashes; implement cross-correlation with threat intelligence feeds</li>
+<li><strong>Behavioral Detection:</strong> Monitor for ESXi firewall rule modifications; detect VM file encryption patterns; identify large-scale file access followed by encryption</li>
+<li><strong>Network Detection:</strong> Block C2 domains through DNS filtering; monitor for HTTPS connections to known C2 infrastructure; alert on Tor network access from enterprise systems</li>
+<li><strong>File-based Detection:</strong> Alert on creation of ransom note files; detect double-extension files; monitor for suspicious file encryption activity</li>
+</ul>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">unknown</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Unknown</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">Unknown</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">unit42.paloaltonetworks.com</span> — Palo Alto Unit 42 - RansomHouse &amp; MarioLocker Analysis
+              <br><a href="https://unit42.paloaltonetworks.com/" target="_blank" rel="noopener">https://unit42.paloaltonetworks.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">BleepingComputer</span> — BleepingComputer - RansomHouse Incident Coverage
+              <br><a href="https://www.bleepingcomputer.com/" target="_blank" rel="noopener">https://www.bleepingcomputer.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">CISA</span> — CISA - RansomHouse Threat Alerts
+              <br><a href="https://www.cisa.gov/" target="_blank" rel="noopener">https://www.cisa.gov/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">analyst1.com</span> — Analyst1 - Dark Web Intelligence
+              <br><a href="https://analyst1.com/" target="_blank" rel="noopener">https://analyst1.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">sentinelone.com</span> — SentinelOne - Ransomware Research
+              <br><a href="https://www.sentinelone.com/" target="_blank" rel="noopener">https://www.sentinelone.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">trellix.com</span> — Trellix - Threat Intelligence
+              <br><a href="https://trellix.com/" target="_blank" rel="noopener">https://trellix.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">resecurity.com</span> — Resecurity - Ransomware as a Service Investigation
+              <br><a href="https://www.resecurity.com/" target="_blank" rel="noopener">https://www.resecurity.com/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

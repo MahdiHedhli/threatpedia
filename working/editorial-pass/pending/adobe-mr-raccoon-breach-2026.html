@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adobe Customer Support Data Breach — Mr. Raccoon — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0027">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-04-03">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Adobe Customer Support Data Breach — Mr. Raccoon">
+  <meta property="og:description" content="Adobe Customer Support Data Breach — Mr. Raccoon · TP-2026-0027 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0027.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/adobe-mr-raccoon-breach-2026",
+  "headline": "Adobe Customer Support Data Breach \u2014 Mr. Raccoon",
+  "datePublished": "2026-04-03",
+  "dateModified": "2026-04-10T14:19:15.057339+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0027"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 53
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 4
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Adobe Customer Support Data Breach — Mr. Raccoon</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0027</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-4">High</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-04-03</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-concluded">Concluded</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (53/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>In April 2026, a threat actor operating under the handle "Mr. Raccoon" published claims of a significant data breach affecting Adobe through a compromised Business Process Outsourcing (BPO) provider in India. The claim alleges access to approximately 13 million customer support tickets containing personally identifiable information (PII), approximately 15,000 Adobe employee records, complete HackerOne bug bounty submission archives, and internal corporate documents.</p>
+<p>The attack vector leveraged a Remote Access Trojan (RAT) deployed via spear-phishing email to a BPO employee, followed by lateral movement and privilege escalation to compromise the employee's manager. The attacker reportedly exploited an access control misconfiguration in Adobe's helpdesk infrastructure that permitted bulk export of all customer support tickets through a single API request using an agent account. Adobe has neither confirmed nor denied the breach as of April 7, 2026.</p>
+<p>vx-underground researchers examined samples and assessed the breach as appearing legitimate but potentially limited in scope to the helpdesk environment, with unclear scope regarding production systems and customer data repositories. The incident highlights supply chain risk in third-party customer support operations and the critical importance of access control segmentation in legacy helpdesk infrastructure.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">BPO Supply Chain Attack</h3>
+<p>Mr. Raccoon gained initial access through an Indian Business Process Outsourcing (BPO) firm contracted for Adobe's customer support operations. The attack began with a carefully crafted phishing email containing a malicious attachment that deployed a Remote Access Trojan (RAT) to the targeted BPO employee's workstation. Once the RAT was established, the attacker conducted reconnaissance and identified the victim's manager as a higher-value target with elevated helpdesk permissions.</p>
+<p>The attacker then executed spear-phishing attacks specifically targeting the BPO manager, successfully capturing credentials and Multi-Factor Authentication codes. This supply chain compromise is notable for exploiting the trust relationship between Adobe and its third-party support provider, a common vector in enterprise breaches where external vendors maintain significant access to sensitive infrastructure.</p>
+<h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Access Control Misconfiguration</h3>
+<p>Once authenticated as a manager account in the helpdesk system, the attacker discovered a critical access control flaw: the ability to export all customer support tickets in a single bulk request. This represents a significant failure in principle of least privilege — support agent accounts should be restricted to accessing only tickets assigned to them or their team, with bulk export functionality reserved for administrative roles subject to additional access controls and audit logging.</p>
+<p>The configuration error allowed the attacker to retrieve approximately 13 million support tickets via a single API call, each potentially containing sensitive PII including customer names, email addresses, phone numbers, and support interaction details that may reference security-sensitive issues or account information.</p>
+<h3 style="font-weight: 600; color: var(--white); margin: 20px 0 12px 0; font-size: 16px;">Data Exfiltration</h3>
+<p>After successful bulk export of support tickets, the attacker leveraged the compromised account to access additional systems within the helpdesk environment, obtaining approximately 15,000 employee records, complete archives of HackerOne bug bounty submissions (potentially including vulnerability details and remediation timelines), and internal corporate documents. The data was exfiltrated over HTTPS connections, blending with legitimate support platform traffic and evading detection.</p>
+<div class="tech-box">
+<strong>Data Exfiltration Method:</strong> Standard HTTPS connections to cloud storage; likely stored initially in temporary staging areas before bulk download and transfer to attacker-controlled infrastructure. No evidence of advanced evasion techniques reported.
+                        </div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">MITRE ATT&amp;CK Mapping</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="attack-stage-title">T1566.001 — Phishing: Spearphishing Attachment</div>
+<div class="attack-stage-content">
+                                    Initial RAT deployment via malicious email attachment targeting BPO support employee. Subsequent spear-phishing attacks targeting BPO manager with credential harvesting intent.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">T1219 — Remote Access Tools</div>
+<div class="attack-stage-content">
+                                    Remote Access Trojan deployed to BPO employee workstation, providing persistent interactive access and enabling reconnaissance and lateral movement activities.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">T1078 — Valid Accounts</div>
+<div class="attack-stage-content">
+                                    Compromised BPO manager account credentials used to authenticate to helpdesk system with elevated permissions, enabling unauthorized data access and bulk export operations.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">T1530 — Data from Cloud Storage</div>
+<div class="attack-stage-content">
+                                    Bulk retrieval and exfiltration of customer support tickets, employee records, and internal documents from cloud-hosted helpdesk infrastructure. Represents unauthorized access to cloud-stored data assets.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">T1567 — Exfiltration Over Web Service</div>
+<div class="attack-stage-content">
+                                    Data transferred from Adobe helpdesk system to attacker-controlled infrastructure via HTTPS connections, disguised as legitimate support platform traffic.
+                                </div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="tech-box">
+<strong>Customer PII Exposure:</strong> Approximately 13 million customer support tickets potentially exposed, containing names, email addresses, phone numbers, and contextual information about customer issues. Represents significant identity theft risk and potential for social engineering attacks against exposed customers.
+                        </div>
+<div class="tech-box">
+<strong>Employee Records:</strong> ~15,000 Adobe employee records compromised, including personnel information that enables targeted social engineering and credential harvesting campaigns against current and former staff.
+                        </div>
+<div class="tech-box">
+<strong>HackerOne Bug Bounty Archive:</strong> Complete submission history including vulnerability descriptions, remediation details, and exploitation potential information. May reveal security issues already known to Adobe but not yet disclosed or patched.
+                        </div>
+<div class="tech-box">
+<strong>Internal Documents:</strong> Corporate communications, strategy documents, and operational details that may inform future targeted attacks against Adobe or its customers. Competitive intelligence value to threat actors and rival organizations.
+                        </div>
+<div class="tech-box">
+<strong>Supply Chain Risk:</strong> Incident demonstrates vulnerability of third-party support providers and the importance of zero-trust security models in managing external vendor access. Organizations relying on this BPO firm may be at elevated risk.
+                        </div>
+<div class="tech-box">
+<strong>Regulatory Exposure:</strong> GDPR, CCPA, and other privacy regulations may apply to exposed customer records. Adobe likely faces notification obligations and regulatory inquiry regardless of breach confirmation status.
+                        </div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown (Weeks Prior)</div>
+<div class="timeline-title">Initial Reconnaissance</div>
+<div class="timeline-description">Threat actor conducts targeting and reconnaissance on Adobe BPO support operations, identifies personnel structure and access controls.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown Date</div>
+<div class="timeline-title">Malicious Email to BPO Employee</div>
+<div class="timeline-description">Spear-phishing email containing Remote Access Trojan (RAT) attachment sent to targeted BPO support employee. Employee opens attachment, RAT executed on workstation.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown Date</div>
+<div class="timeline-title">Lateral Movement &amp; Privilege Escalation</div>
+<div class="timeline-description">Attacker conducts reconnaissance on compromised BPO network, identifies BPO manager account with elevated helpdesk permissions as escalation target.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown Date</div>
+<div class="timeline-title">Manager Credential Compromise</div>
+<div class="timeline-description">Spear-phishing attack targeting BPO manager yields credentials and MFA codes; attacker authenticates to helpdesk system as privileged user.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown Date</div>
+<div class="timeline-title">Bulk Ticket Export</div>
+<div class="timeline-description">Attacker discovers access control misconfiguration permitting bulk export of all customer support tickets via single API request. ~13 million tickets exported.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown Date</div>
+<div class="timeline-title">Additional Data Collection</div>
+<div class="timeline-description">Employee records (~15,000 records), HackerOne submission archives, and internal documents accessed and exfiltrated to attacker-controlled infrastructure.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">April 2026</div>
+<div class="timeline-title">Public Breach Announcement</div>
+<div class="timeline-description">Threat actor "Mr. Raccoon" publicly announces Adobe breach, publishes sample data and breach details. Media coverage and security researcher analysis begins.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">April 7, 2026</div>
+<div class="timeline-title">Status: Unconfirmed</div>
+<div class="timeline-description">Adobe has not confirmed or denied the breach. vx-underground researchers assess breach as potentially legitimate but possibly limited to helpdesk environment.</div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="tech-box">
+<strong>Principle of Least Privilege:</strong> Support agent accounts must be restricted to accessing only assigned tickets or team-level data. Bulk export functionality should require administrative approval, multi-factor authentication, and comprehensive audit logging. Access control review should be prioritized in all third-party support environments.
+                        </div>
+<div class="tech-box">
+<strong>Third-Party Risk Management:</strong> BPO and external support providers require the same security posture as internal teams. Regular penetration testing, phishing simulations, and endpoint security assessments should be contractual requirements. Zero-trust architectures should be implemented for third-party access.
+                        </div>
+<div class="tech-box">
+<strong>Endpoint Protection:</strong> RAT delivery via phishing email should be blocked through advanced email filtering, sandboxing, and endpoint detection and response (EDR) solutions. BPO environments in particular require robust EDR and behavior monitoring.
+                        </div>
+<div class="tech-box">
+<strong>MFA Hardening:</strong> BPO employee credentials were compromised and MFA codes obtained through phishing. Organizations should implement FIDO2 authentication or push-based MFA that cannot be trivially harvested through social engineering.
+                        </div>
+<div class="tech-box">
+<strong>Data Minimization:</strong> Historical support ticket retention policies should reflect regulatory and business requirements, not default indefinite retention. Older tickets with expired personal data should be purged to minimize blast radius of future breaches.
+                        </div>
+<div class="tech-box">
+<strong>Audit Logging &amp; Detection:</strong> Bulk data export operations should trigger immediate security alerts. API call patterns, export volumes, and unusual access patterns require real-time monitoring and incident response procedures.
+                        </div>
+<div class="tech-box">
+<strong>Threat Intelligence:</strong> Monitor for Mr. Raccoon listings on dark web marketplaces and underground forums. Engage law enforcement and industry ISACs for coordinated response. Prepare customer notification and regulatory filing strategies.
+                        </div>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">data-breach</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Technology / Software</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">Global</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">Mr. Raccoon</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="shiny-hunters-leak-site.html">Shiny Hunters Leak Site</a>
+            <a class="sidebar-link" href="lexisnexis-react2shell-breach-2026.html">Lexisnexis React2Shell Breach 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">thecybersecguru.com</span> — The Cybersec Guru — Adobe Data Breach 2026: Mr. Raccoon Claims Breach via BPO Provider
+              <br><a href="https://thecybersecguru.com/news/adobe-data-breach-2026/" target="_blank" rel="noopener">https://thecybersecguru.com/news/adobe-data-breach-2026/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">securityonline.info</span> — Security Online — Adobe Data Breach: Mr. Raccoon BPO Supply Chain Leak
+              <br><a href="https://securityonline.info/adobe-data-breach-mr-raccoon-bpo-supply-chain-leak/" target="_blank" rel="noopener">https://securityonline.info/adobe-data-breach-mr-raccoon-bpo-supply-chain-leak/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cybersecuritynews.com</span> — Cybersecurity News — Adobe Customer Support Breach Investigation
+              <br><a href="https://cybersecuritynews.com/adobe-breach/" target="_blank" rel="noopener">https://cybersecuritynews.com/adobe-breach/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cybernews.com</span> — Cybernews — Threat Actor Claims Adobe Data Theft in Supply Chain Attack
+              <br><a href="https://cybernews.com/security/threat-actor-claims-adobe-data-theft/" target="_blank" rel="noopener">https://cybernews.com/security/threat-actor-claims-adobe-data-theft/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

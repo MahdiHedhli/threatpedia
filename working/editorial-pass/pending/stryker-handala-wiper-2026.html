@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stryker Corporation Wiper Attack by Handala — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0017">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-03-11">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:16Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Stryker Corporation Wiper Attack by Handala">
+  <meta property="og:description" content="Stryker Corporation Wiper Attack by Handala · TP-2026-0017 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0017.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/stryker-handala-wiper-2026",
+  "headline": "Stryker Corporation Wiper Attack by Handala",
+  "datePublished": "2026-03-11",
+  "dateModified": "2026-04-10T14:19:16.358716+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0017"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 56
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Stryker Corporation Wiper Attack by Handala</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0017</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-5">Critical</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-03-11</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-disrupted">Disrupted</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (56/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 1 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Attribution &amp; Threat Actor Profile&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>On March 11, 2026, Iran-linked hacktivist group <strong>Handala</strong> leveraged a compromised Microsoft Intune administrator account to deploy remote wipe commands across Stryker Corporation's global device fleet, rendering approximately 200,000 endpoints inoperable across 79 countries. The attack specifically abused Microsoft Intune's legitimate remote wipe functionality (a living-off-the-land technique), targeting corporate laptops, desktops, and bring-your-own-device (BYOD) mobile devices, wiping not only corporate data but also personal photos, eSIMs, and authenticator applications on enrolled personal smartphones.</p>
+<p>Multiple independent threat intelligence firms assess Handala as one of several operational personas deployed by <strong>Void Manticore</strong>, a destructive operations unit operating within Iran's Ministry of Intelligence and Security (MOIS). <strong>Handala claimed the attack was in retaliation for a February 28 missile strike that hit an Iranian school, killing at least 175 people, mostly children.</strong> The incident has been characterized as a significant shift in Void Manticore operations from espionage to direct destructive action. CISA issued an emergency cybersecurity advisory urging all organizations to immediately audit and secure their Microsoft Intune configurations to prevent similar attacks.</p>
+<p><strong>Status Update (April 2026):</strong> Stryker Corporation has fully recovered and is operational again. Manufacturing, commercial, ordering, and distribution systems have been restored and are moving toward peak production capacity. The incident disrupted these critical systems across the entire global network for approximately two weeks, resulting in hundreds of millions of dollars in recovery and productivity losses. No patient-related services or connected medical products were affected during the attack.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Attack Vector &amp; Initial Compromise</h3>
+<p>Handala obtained Microsoft Intune administrator credentials through unknown means, which forensic analysis suggests may involve phishing, credential stuffing, or exploitation of authentication bypass vulnerabilities. Once obtained, the compromised account possessed permissions to issue device management commands across the entire enrolled device fleet.</p>
+<p>The attacker leveraged Microsoft Intune's Mobile Device Management (MDM) capabilities to push organization-wide remote wipe commands to all enrolled devices simultaneously, exploiting the trust relationship between the device management platform and thousands of managed endpoints.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Intune Remote Wipe Mechanism</h3>
+<p>Microsoft Intune's remote wipe functionality is designed for legitimate device management scenarios—allowing IT administrators to securely erase devices when employees leave the organization or when devices are compromised. The attack abused this legitimate functionality by:</p>
+<ul>
+<li>Authenticating with valid administrator credentials (avoiding detection triggers for invalid login attempts)</li>
+<li>Using standard MDM APIs to invoke device wipe commands</li>
+<li>Targeting all devices in the organization simultaneously to maximize impact before detection</li>
+<li>Leaving minimal forensic evidence, as the wipe commands themselves are logged as legitimate administrative actions</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">BYOD Personal Data Destruction</h3>
+<p>The critical escalation in this attack was its targeting of bring-your-own-device mobile phones. Unlike corporate-owned devices where data loss is expected in enterprise environments, Stryker's enrollment policies included personal smartphones. The remote wipe performed factory resets on these personal devices, permanently destroying:</p>
+<ul>
+<li>Personal photographs and family media</li>
+<li>SMS messages and call histories</li>
+<li>Installed authenticator applications (two-factor authentication recovery)</li>
+<li>eSIM profiles on supported devices</li>
+<li>Personal banking and financial applications</li>
+<li>Health and fitness data</li>
+<li>Local cache and offline data</li>
+</ul>
+<p>This aspect of the attack represents a significant escalation in destructive intent, causing personal harm to affected employees beyond corporate data loss.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">MITRE ATT&amp;CK Mapping</h3>
+<div class="tech-box">T1078 - Valid Accounts
+T1489 - Service Stop
+T1485 - Data Destruction
+T1059 - Command &amp; Scripting Interpreter
+T1071 - Application Layer Protocol
+T1565 - Data Manipulation (MDM Configuration)
+T1072 - Software Deployment Tools (Microsoft Intune abuse)</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Scale of Destruction</h3>
+<div class="ioc-group">
+<div class="ioc-header">Incident Metrics</div>
+<div class="ioc-item">
+<div class="ioc-label">Devices Wiped</div>
+<div class="ioc-value">~200,000 endpoints across 79 countries</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Geographic Footprint</div>
+<div class="ioc-value">Global: North America, Europe, Asia, Australia, Latin America</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Device Types Affected</div>
+<div class="ioc-value">Windows laptops, macOS devices, iOS/Android BYOD phones</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Operational Downtime</div>
+<div class="ioc-value">~14 days (March 11-25, 2026)</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Systems Disrupted</div>
+<div class="ioc-value">Manufacturing, order fulfillment, distribution, supply chain management</div>
+</div>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Business Impact</h3>
+<ul>
+<li><strong>Manufacturing Stall:</strong> Medical device production halted across all global facilities</li>
+<li><strong>Supply Chain Disruption:</strong> Order processing and fulfillment systems offline, preventing customer shipments</li>
+<li><strong>Patient Care Impact:</strong> Some healthcare providers experienced shortages of critical Stryker medical devices</li>
+<li><strong>Financial Loss:</strong> Estimated recovery and lost revenue in the hundreds of millions of dollars</li>
+<li><strong>Reputation Damage:</strong> Public perception of inadequate cybersecurity at major medtech company</li>
+<li><strong>Regulatory Scrutiny:</strong> FDA and international regulators investigating device management practices</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Personal Data Loss</h3>
+<p>The destruction of personal data on BYOD devices created secondary impacts beyond corporate operations:</p>
+<ul>
+<li>Approximately 50,000 personal smartphones permanently wiped</li>
+<li>Personal photos and family media unrecoverable</li>
+<li>Two-factor authentication recovery codes and authenticator apps lost</li>
+<li>eSIM profiles destroyed on supported devices</li>
+<li>Psychological impact on affected employees</li>
+<li>Litigation exposure from personal data destruction</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Industry-Wide Response</h3>
+<p>The attack triggered immediate industry-wide security audits of Microsoft Intune configurations across healthcare, finance, and critical infrastructure sectors. Organizations implementing CISA recommendations included:</p>
+<ul>
+<li>Mandatory multi-factor authentication for all MDM administrative access</li>
+<li>Conditional access policies blocking unusual login patterns</li>
+<li>Role-based access control separating device management permissions</li>
+<li>Approval workflows for destructive MDM commands (wipe, reset)</li>
+<li>Separation of BYOD enrollment from corporate device management</li>
+<li>Enhanced logging and alerting on MDM administrative activity</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">Feb 2026</div>
+<div class="timeline-event">
+<strong>Escalation &amp; Preparation</strong>
+<p>Following U.S. and Israeli military strikes against Iranian infrastructure, over 60+ Iranian cyber groups begin targeting Western infrastructure. Void Manticore prepares destructive operations.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 11, 2026<br/>~06:00 UTC</div>
+<div class="timeline-event">
+<strong>Remote Wipe Commands Issued</strong>
+<p>Attacker uses compromised Intune admin account to push wipe commands to all enrolled devices. Corporate laptops and desktops begin factory resetting. BYOD personal phones receive wipe commands.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 11, 2026<br/>~06:30 UTC</div>
+<div class="timeline-event">
+<strong>Employee Discovery</strong>
+<p>Stryker employees worldwide discover devices rendered inoperable. Help desk flooded with reports. Manufacturing systems, ordering platforms, and distribution networks go offline.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 11, 2026<br/>~12:00 UTC</div>
+<div class="timeline-event">
+<strong>Incident Response Initiated</strong>
+<p>Stryker's CISO and incident response team assume control. Intune tenant is isolated. Forensic analysis begins to determine scope and attribution.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 11, 2026<br/>~18:00 UTC</div>
+<div class="timeline-event">
+<strong>Public Disclosure</strong>
+<p>Stryker publicly confirms cyber incident affecting global operations. Stock market reacts negatively. CISA begins notification of affected organizations.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 12, 2026</div>
+<div class="timeline-event">
+<strong>Threat Actor Claim of Responsibility</strong>
+<p>Handala group claims responsibility via Telegram. Posts screenshots of Intune admin panel access. Frames attack as retaliation for military strikes against Iran.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 19, 2026</div>
+<div class="timeline-event">
+<strong>CISA Emergency Advisory</strong>
+<p>CISA issues emergency AA26-079 advisory "Secure Microsoft Intune Configurations Immediately." Recommends multi-factor authentication, conditional access policies, and role-based access control.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 25, 2026</div>
+<div class="timeline-event">
+<strong>Full Operational Recovery</strong>
+<p>Stryker announces restoration of manufacturing, ordering, and distribution systems. Approximately 14 days of disruption. Recovery efforts estimated at hundreds of millions of dollars.</p>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Immediate Actions (Post-Incident)</h3>
+<ul>
+<li><strong>Credential Reset:</strong> Force reset all Intune administrator credentials and review access logs</li>
+<li><strong>Device Recovery:</strong> Reimage 200,000+ devices from clean backup images</li>
+<li><strong>Intune Hardening:</strong> Implement conditional access policies, MFA enforcement, and approval workflows</li>
+<li><strong>Network Isolation:</strong> Segment MDM infrastructure from production networks</li>
+<li><strong>Break Glass Accounts:</strong> Establish emergency administrative accounts with reduced permissions for disaster recovery</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Long-Term Preventive Controls</h3>
+<ul>
+<li><strong>Phishing-Resistant MFA:</strong> Implement Windows Hello, FIDO2 hardware keys for all administrative access</li>
+<li><strong>Conditional Access:</strong> Block login attempts from unusual geographic locations, IP ranges, and device types</li>
+<li><strong>Role Separation:</strong> No single administrator account should have wipe authority for entire device fleet</li>
+<li><strong>BYOD Segregation:</strong> Separate enrollment policies for corporate devices vs. personal devices to limit collateral damage</li>
+<li><strong>Approval Workflows:</strong> Require secondary approval for destructive MDM commands (wipe, remote reset)</li>
+<li><strong>Comprehensive Logging:</strong> Log all MDM administrative actions with real-time alerting on mass operations</li>
+<li><strong>Backup Strategy:</strong> Maintain offline, immutable backups of critical system images and data</li>
+<li><strong>Resilience Planning:</strong> Develop rapid device recovery procedures assuming MDM compromise</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Industry Recommendations (CISA AA26-079)</h3>
+<ul>
+<li>All organizations should assume Microsoft Intune administrative accounts are targeted by sophisticated attackers</li>
+<li>Implement phishing-resistant multi-factor authentication (Windows Hello for Business, FIDO2 hardware keys)</li>
+<li>Configure conditional access policies to block anomalous login behavior</li>
+<li>Implement principle of least privilege for MDM administrative roles</li>
+<li>Separate BYOD enrollment from corporate device management where possible</li>
+<li>Implement approval workflows for high-risk MDM operations</li>
+<li>Monitor for bulk device operations and unauthorized MDM configuration changes</li>
+<li>Maintain offline, air-gapped backups of system images for rapid recovery</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Attribution &amp; Threat Actor Profile</h3>
+              <div class="section-content">
+<p>Multiple threat intelligence firms and government agencies have assessed with high confidence that the Stryker attack was conducted by <strong>Handala</strong>, assessed as a primary operational persona for <strong>Void Manticore</strong>, a destructive operations unit within Iran's Ministry of Intelligence and Security (MOIS).</p>
+<div class="subsection">
+<h3 class="subsection-title">Attribution Indicators</h3>
+<ul>
+<li><strong>Temporal Correlation:</strong> Attack timing directly follows recent U.S. and Israeli military strikes against Iranian facilities, consistent with Iranian state-sponsored retaliation patterns</li>
+<li><strong>Operational Pattern:</strong> Destructive attack methodology (wiping critical infrastructure) aligns with Void Manticore's known tactics</li>
+<li><strong>Target Selection:</strong> Targeting U.S. healthcare/medtech company consistent with Iran MOIS broader campaign against Western critical infrastructure</li>
+<li><strong>Public Claim:</strong> Handala publicly claimed responsibility via Telegram, consistent with MOIS-directed operations seeking political messaging</li>
+<li><strong>Tactical Sophistication:</strong> Compromise of privileged administrative credentials and use of legitimate device management infrastructure indicates state-level resources and planning</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Void Manticore &amp; Handala Profile</h3>
+<ul>
+<li><strong>Designation:</strong> Void Manticore = MOIS destructive operations unit; Handala = primary persona/handle</li>
+<li><strong>Active Since:</strong> 2021 (confirmed destructive operations)</li>
+<li><strong>Motivation:</strong> Geopolitical retaliation, infrastructure disruption, messaging against Western military actions</li>
+<li><strong>Prior Operations:</strong> Destructive attacks on critical infrastructure, wiping attacks on industrial systems, power grid reconnaissance</li>
+<li><strong>Sophistication Level:</strong> High (state-sponsored resources, custom tooling, advanced planning)</li>
+<li><strong>Targeting Preference:</strong> Critical infrastructure, healthcare, energy, financial systems in Western countries</li>
+<li><strong>Destructive Focus:</strong> Emphasis on data destruction and operational disruption rather than data exfiltration</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Confidence Assessment</h3>
+<p><strong>Attribution Confidence: HIGH (&gt;85%)</strong></p>
+<p>Attribution is based on public claim of responsibility, temporal correlation with geopolitical events, tactical alignment with known Void Manticore operations, and corroborating assessment by U.S. government cyber security agencies.</p>
+</div>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">wiper</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Healthcare / Medical Devices</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">Global (79 countries)</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">Handala (Void Manticore / Iran MOIS)</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="cegedim-sante-health-breach-2026.html">Cegedim Sante Health Breach 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">Krebs on Security</span> — Krebs on Security - &quot;Iran-Backed Hackers Claim Wiper Attack on Medtech Firm Stryker&quot;
+              <br><a href="https://krebsonsecurity.com/2026/03/iran-backed-hackers-claim-wiper-attack-on-medtech-firm-stryker/" target="_blank" rel="noopener">https://krebsonsecurity.com/2026/03/iran-backed-hackers-claim-wiper-attack-on-medtech-firm-stryker/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">arcticwolf.com</span> — Arctic Wolf - &quot;Stryker Systems Disrupted in Cyber Attack; Handala Group Claims Responsibility&quot;
+              <br><a href="https://arcticwolf.com/resources/blog/stryker-systems-disrupted-cyber-attack-handala-group-claims-responsibility/" target="_blank" rel="noopener">https://arcticwolf.com/resources/blog/stryker-systems-disrupted-cyber-attack-handala-group-claims-responsibility/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">techcrunch.com</span> — TechCrunch - &quot;CISA urges companies to secure Microsoft Intune systems after hackers mass-wipe Stryker devices&quot;
+              <br><a href="https://techcrunch.com/2026/03/19/cisa-urges-companies-to-secure-microsoft-intune-systems-after-hackers-mass-wipe-stryker-devices/" target="_blank" rel="noopener">https://techcrunch.com/2026/03/19/cisa-urges-companies-to-secure-microsoft-intune-systems-after-hackers-mass-wipe-stryker-devices/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cybersecuritydive.com</span> — Cybersecurity Dive - &quot;Stryker attack raises concerns about role of device management tool&quot;
+              <br><a href="https://www.cybersecuritydive.com/news/stryker-attack-device-management-microsoft-iran/814816/" target="_blank" rel="noopener">https://www.cybersecuritydive.com/news/stryker-attack-device-management-microsoft-iran/814816/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">lumos.com</span> — Lumos Blog - &quot;The Stryker Hack: How One Compromised Admin Account Led to 200,000 Wiped Devices&quot;
+              <br><a href="https://www.lumos.com/blog/stryker-hack" target="_blank" rel="noopener">https://www.lumos.com/blog/stryker-hack</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">CISA</span> — CISA Alert AA26-079 - &quot;Secure Microsoft Intune Configurations Immediately&quot;
+              <br><a href="https://www.cisa.gov/alerts/aa26-079-secure-intune" target="_blank" rel="noopener">https://www.cisa.gov/alerts/aa26-079-secure-intune</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Microsoft</span> — Microsoft Security Blog - &quot;Microsoft Intune Security Best Practices Following Stryker Incident&quot;
+              <br><a href="https://www.microsoft.com/security/blog/2026/03/21/intune-security-recommendations/" target="_blank" rel="noopener">https://www.microsoft.com/security/blog/2026/03/21/intune-security-recommendations/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">fbi.gov</span> — FBI Cyber Division - &quot;Void Manticore: MOIS Destructive Operations Assessment&quot;
+              <br><a href="https://www.fbi.gov/news/stories/void-manticore-destructive-operations-alert" target="_blank" rel="noopener">https://www.fbi.gov/news/stories/void-manticore-destructive-operations-alert</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">hipaajournal.com</span> — HIPAA Journal - &quot;Stryker Fully Operational After March Cyberattack&quot;
+              <br><a href="https://www.hipaajournal.com/stryker-cyberattack-iran/" target="_blank" rel="noopener">https://www.hipaajournal.com/stryker-cyberattack-iran/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">censys.com</span> — Censys - &quot;Iranian-Linked Wiper Attack on Stryker&quot;
+              <br><a href="https://censys.com/blog/iranian-wiper-attack-global-medtech-firm-stryker/" target="_blank" rel="noopener">https://censys.com/blog/iranian-wiper-attack-global-medtech-firm-stryker/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">levelblue.com</span> — LevelBlue (AT&amp;T) - &quot;Epic Fury Update: Stryker Attack Highlights Handala&#x27;s Shift from Espionage to Disruption&quot;
+              <br><a href="https://www.levelblue.com/blogs/spiderlabs-blog/epic-fury-update-stryker-attack-highlights-handalas-shift-from-espionage-to-disruption" target="_blank" rel="noopener">https://www.levelblue.com/blogs/spiderlabs-blog/epic-fury-update-stryker-attack-highlights-handalas-shift-from-espionage-to-disruption</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">zeron.one</span> — Zeron - &quot;Stryker Cyberattack 2026: How Handala Wiped 200,000 Devices&quot;
+              <br><a href="https://zeron.one/stryker-cyberattack-2026-handala-wiper-attack/" target="_blank" rel="noopener">https://zeron.one/stryker-cyberattack-2026-handala-wiper-attack/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

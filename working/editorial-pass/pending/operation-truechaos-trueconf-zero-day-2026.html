@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0045">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-03-28">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:16Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack">
+  <meta property="og:description" content="Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack · TP-2026-0045 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0045.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/operation-truechaos-trueconf-zero-day-2026",
+  "headline": "Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack",
+  "datePublished": "2026-03-28",
+  "dateModified": "2026-04-10T14:19:16.151299+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0045"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 49
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0045</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-5">Critical</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-03-28</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (49/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 3 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Attribution Analysis&quot;, &quot;Mitigations &amp; Defenses&quot;, &quot;Operational Context&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>Missing: Remediation &amp; Mitigation section</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>Check Point Research disclosed Operation TrueChaos on March 28, 2026, a sophisticated supply-chain attack targeting Southeast Asian government entities through a zero-day vulnerability in TrueConf video conferencing client. The threat actor, attributed with moderate confidence to Chinese-nexus operations, compromised TrueConf on-premises servers and weaponized the product's automatic update mechanism to deliver malicious payloads to government endpoints.</p>
+<p>CVE-2026-3502 (CVSS 7.8) in the TrueConf update client allowed privilege escalation and arbitrary code execution. The attack chain combined DLL sideloading via poweriso.exe, UAC bypass through iscsicpl.exe, and deployment of Havoc C2 framework implants. The attack specifically targeted Southeast Asian governments, indicating espionage objectives aligned with regional geopolitical interests.</p>
+<p>TrueConf, with 100,000+ organizations globally, released patched version 8.5.3 in March 2026. The attack demonstrates how even mature supply-chain update mechanisms can be weaponized when combined with initial access to infrastructure, posing significant risk to government and critical infrastructure sectors worldwide.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p><strong>Vulnerability Overview:</strong> CVE-2026-3502 represents a critical gap in the TrueConf update client's handling of signed packages. The vulnerability permits elevation of privilege and arbitrary code execution when processing crafted update packages delivered through the standard update mechanism.</p>
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 1: Infrastructure Compromise</div>
+<div class="attack-stage-content">
+                                    Threat actor establishes persistent access to TrueConf on-premises server infrastructure. Specific initial access vector remains undisclosed in public reporting. Server-side access allows manipulation of update packages before distribution to clients.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 2: Malicious Update Package Creation</div>
+<div class="attack-stage-content">
+                                    Attacker crafts update packages containing:
+                                    <ul>
+<li>Legitimate TrueConf binaries (to avoid immediate detection)</li>
+<li>Malicious DLL files (7z-x64.dll, others)</li>
+<li>Sideloading trigger via poweriso.exe replacement</li>
+</ul>
+</div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 3: DLL Sideloading via poweriso.exe</div>
+<div class="attack-stage-content">
+                                    Update package includes malicious poweriso.exe that sideloads 7z-x64.dll during execution. This DLL contains code for UAC bypass and C2 communication. The sideloading technique abuses Windows DLL search order to load attacker-controlled libraries during normal process execution.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 4: UAC Bypass via iscsicpl.exe</div>
+<div class="attack-stage-content">
+                                    Sideloaded DLL exploits iscsicpl.exe (iSCSI Initiator Control Panel, marked as auto-elevate) to bypass User Access Control. This permits the malicious payload to execute with System-level privileges without user interaction.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 5: Havoc C2 Deployment</div>
+<div class="attack-stage-content">
+                                    Elevated payload deploys Havoc C2 framework implant with capabilities for:
+                                    <ul>
+<li>Remote code execution and command execution</li>
+<li>File exfiltration</li>
+<li>Lateral movement within government networks</li>
+<li>Defense evasion and persistence mechanisms</li>
+</ul>
+</div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 6: Data Collection &amp; Exfiltration</div>
+<div class="attack-stage-content">
+                                    Havoc implants establish command and control communications with attacker infrastructure. Government networks become subject to targeted data collection aligned with espionage objectives. Persistence mechanisms ensure ongoing access beyond initial intrusion period.
+                                </div>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-group-title">File Hashes (Malicious Samples)</div>
+<div class="ioc-list">
+<div class="ioc-item">22e32bcf113326e366ac480b077067cf</div>
+<div class="ioc-item">9b435ad985b733b64a6d5f39080f4ae0</div>
+<div class="ioc-item">248a4d7d4c48478dcbeade8f7dba80b3</div>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-group-title">C2 Infrastructure</div>
+<div class="ioc-list">
+<div class="ioc-item">43.134.90[.]60</div>
+<div class="ioc-item">43.134.52[.]221</div>
+<div class="ioc-item">47.237.15[.]197</div>
+</div>
+</div>
+<div class="tech-box">
+<strong>Havoc C2 Framework:</strong> Open-source command and control framework known for use in targeted attacks against government and critical infrastructure. Provides extensive capabilities for post-exploitation operations. Selection of Havoc indicates attacker sophistication and intent for sustained operations within compromised networks.
+                        </div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p><strong>Scope of Compromise:</strong> The attack targeted Southeast Asian government agencies operating TrueConf video conferencing infrastructure. The exact number of affected organizations has not been disclosed, though the region's government sector represents a high-value target set for espionage operations. TrueConf serves 100,000+ organizations globally, creating potential for collateral exposure if update mechanisms were compromised more broadly than disclosed.</p>
+<p><strong>Data at Risk:</strong> Government endpoints running compromised TrueConf clients became subject to full remote access and data exfiltration. Sensitive information potentially exposed includes: diplomatic communications, intelligence assessments, government decision-making processes, personnel information, and classified or controlled unclassified information related to government operations.</p>
+<p><strong>Lateral Movement Potential:</strong> Havoc implants operating at System privilege level can conduct reconnaissance and lateral movement within government networks. The presence of C2-capable implants suggests ongoing ability to maintain access and conduct secondary phases of espionage objectives aligned with strategic interests of the threat actor.</p>
+<p><strong>Supply-Chain Implications:</strong> Successful compromise of TrueConf server infrastructure and update mechanisms demonstrates a complete breach of the software supply chain. Organizations relying on TrueConf for secure government communications face the risk that any future update could be weaponized, requiring out-of-band verification procedures and increased supply-chain security scrutiny.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown — Initial Compromise</div>
+<div class="timeline-title">Server Infrastructure Access</div>
+<div class="timeline-description">Threat actor gains initial access to TrueConf on-premises server infrastructure. Specific vector not disclosed.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown — Exploitation Period</div>
+<div class="timeline-title">Supply-Chain Preparation</div>
+<div class="timeline-description">Attacker establishes presence on compromised servers, modifies update package distribution mechanisms to inject malicious payloads into legitimate TrueConf client updates.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">2026-03-17 — Campaign Execution</div>
+<div class="timeline-title">Malicious Updates Deployed</div>
+<div class="timeline-description">Government endpoints receiving TrueConf automatic updates download and install packages containing malicious payloads. DLL sideloading phase begins on affected systems.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">2026-03-18 — Post-Exploitation</div>
+<div class="timeline-title">Privilege Escalation &amp; Havoc Deployment</div>
+<div class="timeline-description">UAC bypass executed via iscsicpl.exe. Havoc C2 implants deployed to establish command and control channels. Data exfiltration begins.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">2026-03-28 — Public Disclosure</div>
+<div class="timeline-title">Check Point Research Publication</div>
+<div class="timeline-description">Check Point Research publishes Operation TrueChaos analysis detailing TTPs, IOCs, and attack infrastructure.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">2026-03-30 — Remediation Available</div>
+<div class="timeline-title">TrueConf v8.5.3 Patch Release</div>
+<div class="timeline-description">TrueConf releases patch version 8.5.3 remediating CVE-2026-3502. Users advised to update immediately.</div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Attribution Analysis</h3>
+              <div class="section-content">
+<p><strong>Primary Attribution:</strong> Check Point Research attributes Operation TrueChaos to a Chinese-nexus threat actor with moderate confidence. The attribution is based on operational tempo, targeting patterns (Southeast Asian governments), capabilities (Havoc C2 deployment), and overlaps with documented Chinese state-sponsored cyber operations.</p>
+<p><strong>Confidence Rationale:</strong> "Moderate confidence" indicates analysts possess supporting evidence but acknowledge the possibility of misattribution or false-flag operations. TTPs alone are insufficient for definitive attribution; geopolitical context, targeting patterns, and timing strengthen the assessment but do not constitute proof.</p>
+<p><strong>Regional Context:</strong> Southeast Asian government entities are consistent targets for Chinese intelligence collection due to regional geopolitical significance. The targeting aligns with known Chinese strategies to develop persistent access into government networks for long-term intelligence collection.</p>
+<p><strong>Caveats:</strong> Definitive attribution requires additional intelligence not disclosed in public reporting. Threat actors routinely implement OPSEC measures, false-flag operations, and misdirection. The assessment should be treated as "likely responsible" rather than definitive, and updated as additional evidence emerges.</p>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Mitigations &amp; Defenses</h3>
+              <div class="section-content">
+<div class="tech-box">
+<strong>Immediate Actions:</strong><br/><br/>
+                            1. Update TrueConf to version 8.5.3 or later immediately. Prioritize government and critical infrastructure organizations.<br/>
+                            2. Disable automatic updates temporarily and implement manual, controlled update procedures with verification steps.<br/>
+                            3. Review server-side access logs for TrueConf infrastructure for signs of compromise or unauthorized access.<br/>
+                            4. Block C2 IOCs (43.134.90[.]60, 43.134.52[.]221, 47.237.15[.]197) at network perimeter and endpoint firewalls.<br/>
+                            5. Search endpoint security tools for file hashes associated with the malicious payloads.
+                        </div>
+<div class="tech-box">
+<strong>Incident Response (If Compromised):</strong><br/><br/>
+                            1. Isolate affected systems from network to prevent lateral movement and ongoing C2 communications.<br/>
+                            2. Collect forensic images of affected endpoints before remediation (prioritize volatile memory capture).<br/>
+                            3. Conduct full endpoint forensic analysis to identify dwell time, lateral movement scope, and exfiltrated data.<br/>
+                            4. Assume all credentials and tokens stored/processed on compromised systems are potentially compromised. Rotate credentials immediately.<br/>
+                            5. Review and revoke any OAuth tokens, session cookies, or API keys that may have been accessed during compromise window.
+                        </div>
+<div class="tech-box">
+<strong>Detection &amp; Hunting:</strong><br/><br/>
+                            1. Hunt for poweriso.exe and 7z-x64.dll in TrueConf client installation directories (non-standard).<br/>
+                            2. Monitor process execution for iscsicpl.exe spawning child processes (abnormal behavior).<br/>
+                            3. Hunt for Havoc C2 network signatures (protocol beaconing patterns to C2 infrastructure).<br/>
+                            4. Review Windows Defender SmartScreen / cloud-based detection logs for blocked or suspicious executables.<br/>
+                            5. Search endpoint telemetry for UAC bypass techniques (token elevation, process token modifications).
+                        </div>
+<div class="tech-box">
+<strong>Long-Term Supply-Chain Security:</strong><br/><br/>
+                            1. Implement code signing verification procedures for all software updates before deployment.<br/>
+                            2. Require vendors to publish software Bill of Materials (SBOM) for transparency and vulnerability tracking.<br/>
+                            3. Establish supply-chain risk management framework for critical software dependencies.<br/>
+                            4. Consider software composition analysis (SCA) tools to track third-party component vulnerabilities.<br/>
+                            5. Require out-of-band verification of critical security updates before deployment to critical systems.
+                        </div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Operational Context</h3>
+              <div class="section-content">
+<p>Operation TrueChaos represents a continuation of Chinese state-sponsored cyber operations targeting Southeast Asian governments for espionage purposes. Similar patterns have been observed in prior campaigns including: APT1 (Comment Crew) targeting of US federal agencies, Axiom targeting of NATO members, and ongoing operations against regional governments in Southeast Asia.</p>
+<p>The exploitation of supply-chain mechanisms to deliver payloads demonstrates an evolution in TTPs. Rather than pursuing vulnerable software components within organizations, the threat actor conducted a highly targeted attack on the software vendor's infrastructure, enabling a precision strike against a specific region's government sector. This approach minimizes collateral exposure and maximizes dwell time before detection.</p>
+<p>The use of Havoc C2 framework indicates the attacker seeks extended persistence and post-exploitation capabilities, not merely one-time data theft. This aligns with strategic intelligence objectives: maintaining access to government networks for ongoing collection of diplomatic, military, and intelligence information over extended periods.</p>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">supply-chain</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Government / International</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">Southeast Asia</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">Chinese-nexus (unattributed)</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="fbi-dcsnet-salt-typhoon-2026.html">Fbi Dcsnet Salt Typhoon 2026</a>
+            <a class="sidebar-link" href="frostarmada-soho-dns-hijacking-2026.html">Frostarmada Soho Dns Hijacking 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">research.checkpoint.com</span> — 1.Check Point Research—Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack on Southeast Asian Governmentshttps://
+              <br><a href="https://research.checkpoint.com/" target="_blank" rel="noopener">https://research.checkpoint.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">The Hacker News</span> — 2.The Hacker News—TrueConf Zero-Day Used in Targeted Attack Against Southeast Asian Governmentshttps://thehackernews.com
+              <br><a href="https://thehackernews.com/" target="_blank" rel="noopener">https://thehackernews.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">BleepingComputer</span> — 3.BleepingComputer—Chinese Hackers Exploit TrueConf Supply Chain in Targeted Attackhttps://www.bleepingcomputer.com/
+              <br><a href="https://www.bleepingcomputer.com/" target="_blank" rel="noopener">https://www.bleepingcomputer.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Help Net Security</span> — 4.Help Net Security—Operation TrueChaos: DLL Sideloading and UAC Bypass in Government Targeting Attackhttps://www.helpne
+              <br><a href="https://www.helpnetsecurity.com/" target="_blank" rel="noopener">https://www.helpnetsecurity.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">MITRE</span> — 5.MITRE ATT&amp;CK—Havoc C2 Framework Documentation and Detection Guidancehttps://attack.mitre.org/
+              <br><a href="https://attack.mitre.org/" target="_blank" rel="noopener">https://attack.mitre.org/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cvedetails.com</span> — 6.CVE Details—CVE-2026-3502: TrueConf Update Client Privilege Escalationhttps://www.cvedetails.com/
+              <br><a href="https://www.cvedetails.com/" target="_blank" rel="noopener">https://www.cvedetails.com/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocketWise Immigration Data Breach Exposes 116K Records — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0047">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-04-03">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="DocketWise Immigration Data Breach Exposes 116K Records">
+  <meta property="og:description" content="DocketWise Immigration Data Breach Exposes 116K Records · TP-2026-0047 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0047.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/docketwise-immigration-data-breach-2026",
+  "headline": "DocketWise Immigration Data Breach Exposes 116K Records",
+  "datePublished": "2026-04-03",
+  "dateModified": "2026-04-10T14:19:15.521379+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0047"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 49
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 4
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">DocketWise Immigration Data Breach Exposes 116K Records</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0047</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-4">High</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-04-03</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (49/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 1 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Attribution &amp; Threat Actor Analysis&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>DocketWise, a cloud-based immigration case management platform used by thousands of U.S. immigration law firms, disclosed a significant data breach on April 3, 2026, affecting 116,666 individuals. Unauthorized actors used valid credentials to clone third-party partner repositories containing unstructured client data from law firm migration pipelines. The breach exposed sensitive immigration-related information including Social Security numbers, passport numbers, financial account details, medical information, and immigration case documentation.</p>
+<p>The breach was discovered in October 2025 but public disclosure and notification to state attorneys general commenced on April 3, 2026—approximately six months after initial discovery. This timeline suggests an extended investigation period, likely including forensic analysis, scope determination, and legal review before public notification. The delay underscores the challenges of coordinating notification across multiple state jurisdictions for a nationally operating platform.</p>
+<p>DocketWise is offering 24-month credit monitoring through IDX to affected individuals. The platform serves thousands of immigration law firms across the United States, making this one of the larger data breaches affecting the immigration legal services sector. The credential-based access vector suggests inadequate access controls or compromised credentials maintained by third-party integrators with legitimate business relationships to the platform.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p><strong>Access Method:</strong> Unauthorized actors used valid credentials to access DocketWise infrastructure. Specific credential types not disclosed, but likely involved API keys, OAuth tokens, or account credentials belonging to legitimate third-party integrators with authorized access to client data repositories.</p>
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 1: Credential Compromise</div>
+<div class="attack-stage-content">
+                                    Unauthorized actors obtain valid DocketWise platform credentials. Possible vectors:
+                                    <ul style="margin-left: 20px; margin-top: 8px;">
+<li>Compromised third-party integrator systems</li>
+<li>Phishing attacks targeting integrator employees</li>
+<li>Credential theft from dark web marketplaces</li>
+<li>Social engineering of integrator personnel</li>
+<li>Insider threat from legitimate partner organization</li>
+</ul>
+</div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 2: Authentication</div>
+<div class="attack-stage-content">
+                                    Attacker authenticates to DocketWise platform using compromised credentials. Authentication succeeds because credentials are valid and associated with authorized integrator account.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 3: Repository Access</div>
+<div class="attack-stage-content">
+                                    Attacker accesses third-party partner repositories containing unstructured client data from law firm migration pipelines. Access is permitted because the compromised credentials belong to an account with authorized repository access.
+                                </div>
+</div>
+<div class="attack-stage">
+<div class="attack-stage-title">Stage 4: Data Cloning &amp; Exfiltration</div>
+<div class="attack-stage-content">
+                                    Attacker clones or exports repository contents containing 116,666 individual records. Data includes PII, immigration case details, financial information, and medical data. Exfiltration occurs over network without triggering detection alerts.
+                                </div>
+</div>
+</div>
+<div class="tech-box">
+<strong>Data Exposed:</strong><br/><br/>
+                            • Social Security Numbers (SSN)<br/>
+                            • Passport Numbers and Passport Scans<br/>
+                            • Financial Account Information (Bank Accounts, Credit Cards)<br/>
+                            • Medical Information (Health Records, Insurance Details)<br/>
+                            • Immigration Case Documentation (Visa Applications, Case Decisions)<br/>
+                            • Legal Correspondence and Attorney Work Product<br/>
+                            • Names, Addresses, Phone Numbers, Email Addresses<br/>
+                            • Dates of Birth and Biometric Identifiers
+                        </div>
+<div class="tech-box">
+<strong>Affected User Base:</strong> Law firm clients across United States immigration law practices. Primary risk extends to individuals seeking immigration legal representation (visa applicants, green card applicants, asylum seekers, employment authorization applicants).
+                        </div>
+<div class="ioc-group">
+<div class="ioc-group-title">Breach Details</div>
+<div class="ioc-list">
+<div class="ioc-item">Records Exposed: 116,666 individuals</div>
+<div class="ioc-item">Data Type: Unstructured client data (repositories)</div>
+<div class="ioc-item">Access Vector: Valid credentials / Repository cloning</div>
+<div class="ioc-item">Dwell Time: October 2025 discovery; access period unknown</div>
+<div class="ioc-item">Detection: October 2025</div>
+<div class="ioc-item">Disclosure: April 3, 2026</div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p><strong>PII Exposure Scope:</strong> 116,666 individuals had sensitive immigration-related personal information exposed. SSNs, passport numbers, and financial account details are high-value for identity theft, fraud, and targeted attacks. Exposure affects both immigration applicants and their family members included in applications.</p>
+<p><strong>Immigration Status Risk:</strong> Immigration case documentation exposure creates risk of targeted enforcement actions, visa denials, or travel disruptions if bad actors leverage the information. Foreign government intelligence services may target individuals with specific immigration statuses or affiliations.</p>
+<p><strong>Identity Theft Vector:</strong> Complete identity profiles (SSN + name + address + financial info) create significant identity theft risk. Dark web availability of the dataset enables fraud operations targeting immigration loan scams, tax fraud, and financial account takeovers.</p>
+<p><strong>Legal Services Industry Impact:</strong> The breach affects the immigration law sector's reputation for security. Immigration applicants may delay legal proceedings due to concerns about data security in cloud-based platforms. Law firms face pressure to justify cloud service security posture to clients.</p>
+<p><strong>Regulatory &amp; Litigation Risk:</strong> Breach notification required by multiple state data protection laws. Class action lawsuits likely. State attorneys general investigations probable. CFAA criminal liability possible if unauthorized access prosecuted.</p>
+<p><strong>Mitigation Cost:</strong> Credit monitoring (24 months) represents immediate mitigation cost. Law firms may face compliance fines under state laws. DocketWise likely faces significant remediation expenses and reputational damage.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown — Initial Compromise</div>
+<div class="timeline-title">Credential Compromise</div>
+<div class="timeline-description">Third-party integrator credentials compromised (mechanism not disclosed). Attacker gains ability to authenticate to DocketWise platform as legitimate user.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">Unknown — Data Exfiltration Period</div>
+<div class="timeline-title">Repository Access &amp; Cloning</div>
+<div class="timeline-description">Attacker uses valid credentials to access and clone third-party partner repositories containing unstructured client data. Duration of unauthorized access unknown.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">October 2025 — Discovery</div>
+<div class="timeline-title">Breach Detection</div>
+<div class="timeline-description">DocketWise identifies suspicious repository access patterns or unauthorized cloning activity. Breach notification investigation launched.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">October 2025 — April 3, 2026</div>
+<div class="timeline-title">Investigation &amp; Legal Review Period</div>
+<div class="timeline-description">DocketWise conducts forensic investigation to determine scope of exposure. Legal team determines notification obligations and coordinates with state attorneys general. Timeline spans approximately six months.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">April 3, 2026 — Notification Commencement</div>
+<div class="timeline-title">State AG Notification</div>
+<div class="timeline-description">DocketWise begins notification to state attorneys general as required by multi-state breach notification laws. Individual notifications follow. Breach disclosed publicly.</div>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-content">
+<div class="timeline-date">April 3, 2026 — Ongoing</div>
+<div class="timeline-title">Remediation &amp; Monitoring</div>
+<div class="timeline-description">Credit monitoring offered through IDX. Individuals advised to monitor credit reports and accounts for fraudulent activity. DocketWise implements security improvements.</div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="tech-box">
+<strong>For Affected Individuals:</strong><br/><br/>
+                            1. Enroll in offered 24-month credit monitoring through IDX immediately.<br/>
+                            2. Place fraud alerts with credit bureaus (Equifax, Experian, TransUnion).<br/>
+                            3. Consider credit freezes to prevent unauthorized credit applications.<br/>
+                            4. Monitor immigration case status for unexpected changes or denials.<br/>
+                            5. Review financial statements and credit reports regularly for unauthorized activity.<br/>
+                            6. Consider identity theft protection insurance.<br/>
+                            7. Report suspicious activity to IC3.gov (FBI Internet Crime Complaint Center).
+                        </div>
+<div class="tech-box">
+<strong>For Law Firm Clients of DocketWise:</strong><br/><br/>
+                            1. Review DocketWise's security improvements and remediation measures before continuing platform use.<br/>
+                            2. Audit third-party integrations with DocketWise for unnecessary access permissions.<br/>
+                            3. Implement additional layers of encryption for sensitive client data in cloud services.<br/>
+                            4. Require multi-factor authentication for all cloud service access.<br/>
+                            5. Review and restrict API key permissions and OAuth token scope.<br/>
+                            6. Consider hybrid or on-premises alternatives for highly sensitive immigration case data.
+                        </div>
+<div class="tech-box">
+<strong>For DocketWise (Platform-Level):</strong><br/><br/>
+                            1. Implement least-privilege access controls for third-party integrator credentials.<br/>
+                            2. Enhance audit logging and anomaly detection for repository access and data cloning operations.<br/>
+                            3. Implement data exfiltration prevention (DLP) controls to detect bulk data export attempts.<br/>
+                            4. Require multi-factor authentication for all platform access, including API authentication.<br/>
+                            5. Conduct third-party security audits of all integrator partners.<br/>
+                            6. Implement encryption for sensitive PII at rest and in transit.<br/>
+                            7. Establish data retention policies to minimize exposure window if breach occurs.
+                        </div>
+<div class="tech-box">
+<strong>For Legal Industry Standards:</strong><br/><br/>
+                            1. Develop legal industry security baseline standards for SaaS platforms handling immigration data.<br/>
+                            2. Establish incident response playbooks for immigration data breaches.<br/>
+                            3. Create law firm security assessment templates for evaluating cloud service providers.<br/>
+                            4. Share threat intelligence on immigration SaaS platform vulnerabilities.<br/>
+                            5. Advocate for regulatory framework requiring encryption and access controls for immigration data.
+                        </div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Attribution &amp; Threat Actor Analysis</h3>
+              <div class="section-content">
+<p><strong>Threat Actor Identity:</strong> Unknown. Public reporting does not attribute the breach to any specific named threat actor or threat group. The credential-based access suggests either a generic cybercriminal group, financially motivated threat actor, or insider threat.</p>
+<p><strong>Motivation Assessment:</strong> The targeting of immigration data suggests one of several possible motivations:
+                        </p><ul style="margin-left: 20px; margin-top: 8px;">
+<li>Financial motivation: Identity theft, fraud operations</li>
+<li>Intelligence collection: Foreign government targeting of immigration applicants</li>
+<li>Opportunistic targeting: Attacker identifying vulnerable cloud service and exploiting inadequate access controls</li>
+<li>Insider threat: Disgruntled employee or contractor within third-party integrator</li>
+</ul>
+<p><strong>Industry Targeting Pattern:</strong> Immigration legal services sector includes sensitive PII and valuable immigration case information. The sector is often underrepresented in security investments compared to financial services or healthcare, creating relative vulnerability. SaaS platforms serving the legal industry are attractive targets because they aggregate data from multiple law firms.</p>
+<p><strong>Third-Party Risk:</strong> The breach mechanism (compromised third-party credentials) highlights supply chain security risks. Attackers identify and compromise lower-security integrator partners to access higher-value central platforms. DocketWise's reliance on third-party integrators created an expanded attack surface not fully under the company's direct control.</p>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">data-breach</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Legal / Immigration Services</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">United States</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="conduent-data-breach-2026.html">Conduent Data Breach 2026</a>
+            <a class="sidebar-link" href="carecloud-healthcare-breach-2026.html">Carecloud Healthcare Breach 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">claimdepot.com</span> — 1.ClaimDepot—DocketWise Immigration Platform Data Breach Notificationhttps://www.claimdepot.com/
+              <br><a href="https://www.claimdepot.com/" target="_blank" rel="noopener">https://www.claimdepot.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">classaction.org</span> — 2.ClassAction.org—DocketWise Immigration Data Breach Class Action Informationhttps://www.classaction.org/
+              <br><a href="https://www.classaction.org/" target="_blank" rel="noopener">https://www.classaction.org/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">globenewswire.com</span> — 3.GlobeNewsWire—DocketWise Discloses Data Breach Affecting Immigration Clientshttps://www.globenewswire.com/
+              <br><a href="https://www.globenewswire.com/" target="_blank" rel="noopener">https://www.globenewswire.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">hacknotice.com</span> — 4.HackNotice—DocketWise Breach: Immigration Data Exposure Analysishttps://www.hacknotice.com/
+              <br><a href="https://www.hacknotice.com/" target="_blank" rel="noopener">https://www.hacknotice.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">idx.us</span> — 5.IDX (Credit Monitoring Provider)—DocketWise Breach Notification &amp; Credit Monitoring Serviceshttps://www.idx.us/
+              <br><a href="https://www.idx.us/" target="_blank" rel="noopener">https://www.idx.us/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">CISA</span> — 6.CISA (Cybersecurity and Infrastructure Security Agency)—Healthcare &amp; Legal Services Sector Security Guidancehttps://ww
+              <br><a href="https://www.cisa.gov/" target="_blank" rel="noopener">https://www.cisa.gov/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

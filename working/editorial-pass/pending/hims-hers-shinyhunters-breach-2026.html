@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hims &amp; Hers Health Data Breach — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0029">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-02-05">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Hims &amp; Hers Health Data Breach">
+  <meta property="og:description" content="Hims &amp; Hers Health Data Breach · TP-2026-0029 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0029.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/hims-hers-shinyhunters-breach-2026",
+  "headline": "Hims & Hers Health Data Breach",
+  "datePublished": "2026-02-05",
+  "dateModified": "2026-04-10T14:19:15.933347+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0029"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 53
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 4
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Hims &amp; Hers Health Data Breach</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0029</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-4">High</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-02-05</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-concluded">Concluded</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (53/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 1 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Threatpedia Incident Database&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>Hims &amp; Hers Health, a major U.S. telehealth company, suffered a significant data breach in early February 2026 when the threat group ShinyHunters (UNC5537) gained unauthorized access to the company's Zendesk support platform using a compromised Okta SSO account. The breach exposed support tickets containing personally identifiable information (PII) of affected individuals, including names, email addresses, phone numbers, and medical information related to customer support interactions.</p>
+<p>The unauthorized access occurred between February 4-7, 2026, with suspicious activity detected on February 5, 2026. Hims &amp; Hers management terminated the attacker's access on February 7, 2026. The company confirmed the breach on March 3, 2026, and subsequently notified affected individuals and regulatory authorities, including the California Attorney General and law enforcement. The company offered 12 months of complimentary credit monitoring to impacted customers.</p>
+<p>This incident highlights the critical risk of compromised identity and access management systems in protecting SaaS platforms. The reliance on a single authentication mechanism (Okta SSO) without apparent additional verification controls created a single point of failure that allowed attackers to pivot from the SSO infrastructure to downstream support systems containing sensitive customer data.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Okta SSO Compromise</h3>
+<div class="subsection-content">
+<p>The initial compromise vector involved a compromised Okta SSO (Single Sign-On) account. While Hims &amp; Hers did not publicly disclose the specific method by which the Okta credentials were obtained, typical attack vectors against SSO infrastructure include credential stuffing, phishing campaigns, or exploitation of unpatched Okta instances. The threat group ShinyHunters is known to actively target identity and access management systems as a high-value entry point into enterprise networks.</p>
+<p>The compromised account likely belonged to an employee with legitimate access to the Zendesk support platform, or the attackers obtained admin-level SSO credentials that allowed them to provision new accounts or impersonate legitimate users. The use of SSO as an attack vector is particularly effective as it often bypasses additional authentication layers on downstream applications.</p>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Zendesk Platform Access</h3>
+<div class="subsection-content">
+<p>Once the attackers obtained valid Okta credentials, they leveraged SSO trust relationships to gain access to Hims &amp; Hers' Zendesk instance. Zendesk, a widely-used customer support platform, is a prime target for attackers seeking customer PII and sensitive business communications. The support platform contained support tickets spanning customer inquiries related to the company's telehealth services.</p>
+<p>With access to the Zendesk instance, the attackers were able to browse, search, and exfiltrate support ticket contents. The lack of apparent session monitoring, rate limiting, or anomalous access detection allowed the attackers to conduct bulk data harvesting operations during the four-day access window (February 4-7, 2026) without triggering immediate security alerts.</p>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Data Exfiltration</h3>
+<div class="subsection-content">
+<p>Support tickets containing PII were systematically exfiltrated to attacker-controlled infrastructure. The stolen data included customer names, email addresses, phone numbers, and references to medical conditions discussed in support interactions (though complete medical records were not compromised). ShinyHunters later published samples of the stolen data on their dark web leak site to demonstrate proof-of-breach and create pressure for extortion demands.</p>
+<p>The exfiltration method likely involved standard web-based extraction techniques available within the Zendesk interface, combined with automated data processing to structure and compress the stolen information for rapid transfer off Hims &amp; Hers' infrastructure. No technical indicators suggest the use of advanced data exfiltration tools or obfuscation techniques.</p>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">MITRE ATT&amp;CK Mapping</h2>
+            <div class="section-content">
+<div class="mitre-mapping">
+<div class="mitre-technique">
+<div class="mitre-code">T1078: Valid Accounts</div>
+<div class="mitre-name">Compromise of Okta SSO Account</div>
+<div class="mitre-description">Attackers obtained legitimate user credentials through Okta SSO infrastructure, likely via credential compromise or account takeover.</div>
+</div>
+<div class="mitre-technique">
+<div class="mitre-code">T1550.001: Application Access Token</div>
+<div class="mitre-name">OAuth/SSO Token Abuse</div>
+<div class="mitre-description">Valid SSO tokens were leveraged to bypass authentication controls on downstream applications (Zendesk).</div>
+</div>
+<div class="mitre-technique">
+<div class="mitre-code">T1530: Data from Cloud Storage</div>
+<div class="mitre-name">Cloud-Hosted Support Platform Access</div>
+<div class="mitre-description">Attackers accessed customer support tickets stored in Zendesk's cloud infrastructure.</div>
+</div>
+<div class="mitre-technique">
+<div class="mitre-code">T1567: Exfiltration Over Web Service</div>
+<div class="mitre-name">Data Exfiltration via Internet Connection</div>
+<div class="mitre-description">Stolen PII was exfiltrated over HTTPS to attacker-controlled infrastructure during the four-day access window.</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="tech-box">
+<strong>Data Compromised:</strong>
+<ul style="margin-top: 0.75rem; margin-left: 1.5rem; color: var(--text);">
+<li style="margin-bottom: 0.5rem;">Customer names and contact information (email addresses, phone numbers)</li>
+<li style="margin-bottom: 0.5rem;">References to medical conditions and health information from support tickets</li>
+<li style="margin-bottom: 0.5rem;">Historical customer service interactions and communications</li>
+<li>No full medical records, prescriptions, or payment information compromised</li>
+</ul>
+</div>
+<p>The breach affected an undisclosed number of individuals who had interacted with Hims &amp; Hers customer support. While the company did not publicly release the total count of affected users, regulatory filings and notifications suggest the impact spans tens of thousands of customer records based on the four-day access window and volume of support tickets in the Zendesk instance.</p>
+<p><strong>Identity Theft Risk:</strong> The combination of personal names, email addresses, and phone numbers creates elevated risk for phishing attacks, social engineering, and impersonation. Individuals may receive fraudulent communications claiming to be from Hims &amp; Hers or other healthcare providers.</p>
+<p><strong>Medical Privacy Risk:</strong> While complete medical records were not compromised, references to medical conditions in support tickets could enable targeted phishing attacks and social engineering campaigns using health-related pretexting.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">Feb 4, 2026</div>
+<div class="timeline-event"><strong>Unauthorized Access Begins</strong> - Attackers use compromised Okta SSO credentials to access Hims &amp; Hers Zendesk support platform. Initial reconnaissance and access validation occurs.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Feb 5, 2026</div>
+<div class="timeline-event"><strong>Suspicious Activity Detected</strong> - Hims &amp; Hers internal security systems or administrators identify suspicious login activity and data access patterns on the Zendesk instance. Investigation is initiated.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Feb 7, 2026</div>
+<div class="timeline-event"><strong>Access Terminated</strong> - Hims &amp; Hers security team revokes the compromised Okta credentials and terminates attacker access to all connected systems. Access window closes after approximately 72 hours of activity.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Feb 7-Mar 3, 2026</div>
+<div class="timeline-event"><strong>Investigation &amp; Confirmation Phase</strong> - Hims &amp; Hers conducts forensic investigation, confirms data exfiltration, and identifies scope of compromised information. Legal and regulatory notification process begins.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Mar 3, 2026</div>
+<div class="timeline-event"><strong>Breach Publicly Confirmed</strong> - Hims &amp; Hers publicly acknowledges the data breach and issues notifications to affected individuals and regulators, including the California Attorney General and law enforcement agencies.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Apr 2026</div>
+<div class="timeline-event"><strong>Incident Disclosure &amp; Remediation Offer</strong> - Company announces 12-month complimentary credit monitoring and identity theft protection services for affected customers. Media coverage and regulatory scrutiny intensify.</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Immediate Response Actions</h3>
+<div class="subsection-content">
+<ul style="margin-left: 1.5rem; color: var(--text);">
+<li style="margin-bottom: 0.75rem;">Revoked compromised Okta credentials and reset all SSO trust relationships</li>
+<li style="margin-bottom: 0.75rem;">Conducted full audit of Zendesk access logs and exfiltrated data</li>
+<li style="margin-bottom: 0.75rem;">Notified regulatory authorities and law enforcement (FBI, DOJ, California AG)</li>
+<li style="margin-bottom: 0.75rem;">Offered 12-month credit monitoring and identity theft protection</li>
+<li>Engaged external cybersecurity firm for forensic investigation and remediation validation</li>
+</ul>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Preventive Measures (Recommended)</h3>
+<div class="subsection-content">
+<ul style="margin-left: 1.5rem; color: var(--text);">
+<li style="margin-bottom: 0.75rem;"><strong>Multi-Factor Authentication (MFA):</strong> Enforce mandatory MFA on all Okta SSO accounts, with particular focus on service accounts and high-privilege users with access to support platforms.</li>
+<li style="margin-bottom: 0.75rem;"><strong>Conditional Access Policies:</strong> Implement device trust verification, geolocation restrictions, and anomalous behavior detection for access to sensitive systems.</li>
+<li style="margin-bottom: 0.75rem;"><strong>Session Monitoring:</strong> Deploy real-time session monitoring and alerting on Zendesk and other customer-facing systems to detect bulk data access patterns.</li>
+<li style="margin-bottom: 0.75rem;"><strong>Data Loss Prevention (DLP):</strong> Implement DLP tools to restrict exfiltration of PII from support platforms, including API-based data extraction.</li>
+<li style="margin-bottom: 0.75rem;"><strong>Zero Trust Architecture:</strong> Transition away from implicit trust in SSO tokens; require re-authentication and authorization checks for sensitive data access.</li>
+<li style="margin-bottom: 0.75rem;"><strong>Okta Security Hardening:</strong> Apply all recommended Okta security patches, disable legacy authentication protocols, and conduct quarterly Okta configuration audits.</li>
+<li><strong>Incident Response Planning:</strong> Establish and regularly test IR procedures for compromised credentials, including rapid account lockdown and system isolation workflows.</li>
+</ul>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Key Lessons &amp; Industry Implications</h3>
+<div class="subsection-content">
+<p><strong>1. Identity and Access Management is a Critical Control:</strong> SSO systems are high-value targets for attackers. A single compromised SSO account can cascade into breaches across multiple downstream applications. Organizations must treat identity infrastructure as a crown jewel and apply the most rigorous security controls.</p>
+<p><strong>2. Support Platforms Contain Sensitive Data:</strong> Customer support ticketing systems (Zendesk, Jira Service Desk, etc.) are frequently overlooked in data security planning, but they routinely contain PII, health information, and proprietary business details. These systems warrant equivalent security controls to primary databases.</p>
+<p><strong>3. SaaS Dependency Requires Enhanced Monitoring:</strong> Organizations relying on cloud-based SaaS platforms for critical functions must implement comprehensive access logging, real-time alerting, and behavioral analysis. The four-day window in this breach (Feb 4-7) highlights the importance of rapid anomaly detection.</p>
+<p><strong>4. Implicit Trust in Federated Identity is Insufficient:</strong> The implicit trust model where SSO token validity automatically grants downstream access is fundamentally flawed. Organizations should implement explicit authorization checks and require re-authentication for access to the most sensitive data stores.</p>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Threatpedia Incident Database</h3>
+              
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">data-breach</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Healthcare / Telehealth</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">United States</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">ShinyHunters (UNC5537)</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="shiny-hunters-leak-site.html">Shiny Hunters Leak Site</a>
+            <a class="sidebar-link" href="carecloud-healthcare-breach-2026.html">Carecloud Healthcare Breach 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">BleepingComputer</span> — Hims and Hers warns of data breach after Zendesk support ticket breach
+              <br><a href="https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/" target="_blank" rel="noopener">https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">techcrunch.com</span> — Telehealth giant Hims &amp; Hers says its customer support system was hacked
+              <br><a href="https://techcrunch.com/2026/04/02/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/" target="_blank" rel="noopener">https://techcrunch.com/2026/04/02/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">malwarebytes.com</span> — Support platform breach exposes Hims &amp; Hers customer data
+              <br><a href="https://www.malwarebytes.com/blog/data-breaches/2026/04/support-platform-breach-exposes-hims-hers-customer-data" target="_blank" rel="noopener">https://www.malwarebytes.com/blog/data-breaches/2026/04/support-platform-breach-exposes-hims-hers-customer-data</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">hipaajournal.com</span> — Hims &amp; Hers Data Breach
+              <br><a href="https://www.hipaajournal.com/him-hers-data-breach/" target="_blank" rel="noopener">https://www.hipaajournal.com/him-hers-data-breach/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

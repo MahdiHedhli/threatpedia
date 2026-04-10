@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0031">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-02-19">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:16Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations">
+  <meta property="og:description" content="Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations · TP-2026-0031 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0031.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/m365-oauth-device-code-phishing-2026",
+  "headline": "Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations",
+  "datePublished": "2026-02-19",
+  "dateModified": "2026-04-10T14:19:16.062608+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0031"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 53
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 4
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0031</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-4">High</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-02-19</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (53/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 1 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Remediation &amp; Detection&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>Missing: Remediation &amp; Mitigation section</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>A sophisticated phishing campaign launched in mid-February 2026 has successfully compromised over 340 organizations worldwide by exploiting the Microsoft OAuth device code authentication flow. The threat actor group <strong>EvilTokens PhaaS</strong> (also tracked as Storm-2372, APT29, UTA0304, UTA0307) has developed and deployed an industrialized token theft-as-a-service platform that bypasses multi-factor authentication, captures valid OAuth access and refresh tokens, and maintains persistence even after victim password resets.</p>
+<p>The attack chain is notably evasive: phishing emails direct victims to attacker-controlled infrastructure disguised as legitimate Microsoft 365, Adobe Acrobat, DocuSign, and SharePoint authentication pages. When victims complete MFA during the device code flow, they unknowingly grant the attacker valid OAuth tokens without triggering typical credential-based alerts. The campaign has targeted organizations across construction, non-profit, real estate, manufacturing, financial services, healthcare, legal, and government sectors in the US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, and UAE.</p>
+<p><strong>Attribution Confidence:</strong> Confirmed (validated by multiple security vendors including Palo Alto Networks Unit 42, Huntress, and Sekoia).</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Attack Mechanism: OAuth Device Code Flow Abuse</h3>
+<div class="section-content">
+<p>The device code authentication flow is a legitimate OAuth 2.0 mechanism designed for devices with limited input capabilities (e.g., smart TVs, IoT devices). It normally operates as follows:</p>
+<ol>
+<li>Device requests a device code from the authorization server</li>
+<li>User is prompted to visit a user code URL and authenticate on another device</li>
+<li>Upon successful user authentication, the device receives valid access and refresh tokens</li>
+</ol>
+<p>EvilTokens exploits this flow by:</p>
+<ol>
+<li><strong>Generating fraudulent device codes</strong> through attacker-controlled OAuth applications registered with Microsoft</li>
+<li><strong>Embedding device codes in phishing emails</strong> disguised as security notifications or legitimate business communications</li>
+<li><strong>Directing victims to fake login pages</strong> hosted on compromised infrastructure or legitimate platforms (Cloudflare Workers, Railway.com PaaS)</li>
+<li><strong>Capturing MFA factors</strong> when victims enter their credentials and MFA codes on the attacker's replica pages</li>
+<li><strong>Intercepting the OAuth flow</strong> to extract valid access and refresh tokens before victims reach the legitimate Microsoft login endpoint</li>
+<li><strong>Maintaining persistence</strong> with refresh tokens that remain valid even after password resets</li>
+</ol>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Infrastructure &amp; Evasion Tactics</h3>
+<div class="section-content">
+<p>The EvilTokens platform leverages multiple evasion layers:</p>
+<ul>
+<li><strong>Cloudflare Workers:</strong> Attacker-controlled functions redirect phishing traffic through legitimate Cloudflare domains, obfuscating the true origin</li>
+<li><strong>Railway.com PaaS:</strong> Malicious applications hosted on Railway infrastructure (IP range 162.220.232.x–162.220.234.x) provide backend credential capture and token harvesting</li>
+<li><strong>Security vendor cloaking:</strong> Phishing URLs wrapped in legitimate redirects from Cisco Umbrella, Trend Micro, and Mimecast security appliances to evade email gateway detection</li>
+<li><strong>Template spoofing:</strong> Professional HTML/CSS replicas of Microsoft 365, Adobe Acrobat, DocuSign, and SharePoint interfaces with minimal visual differences from legitimate pages</li>
+</ul>
+<p>This multi-layer approach defeats many traditional security controls that rely on URL reputation, email header analysis, and sender verification.</p>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Token Persistence &amp; MFA Bypass</h3>
+<div class="section-content">
+<p>A critical vulnerability in this attack is the persistence of OAuth refresh tokens:</p>
+<ul>
+<li>Once an attacker captures a refresh token, they can obtain new access tokens without re-entering credentials</li>
+<li>Refresh tokens remain valid even after the victim changes their password</li>
+<li>MFA bypass occurs because the victim completes the MFA challenge on the attacker's page before the legitimate Microsoft authentication server processes the request</li>
+<li>Organizations without token-aware conditional access policies cannot detect or revoke tokens until the victim reports suspicious activity</li>
+</ul>
+<p>This creates a significant detection gap: organizations may only become aware of compromise weeks or months after the initial phishing attack.</p>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Attack Stages</h3>
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="stage-number">Stage 1</div>
+<div class="stage-title">Phishing Email Delivery</div>
+<div class="stage-description">Attacker sends spearphishing emails with lures related to financial transactions, meeting invitations, logistics updates, payroll information, construction bids, or voicemail notifications. Email headers are spoofed to appear from trusted internal senders or partners.</div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 2</div>
+<div class="stage-title">Initial Redirect via Security Vendor</div>
+<div class="stage-description">Phishing link directs through legitimate security vendor redirects (e.g., Cisco Umbrella safe browsing, Trend Micro URL reputation lookup) to create a chain of trust and evade email gateway reputation checks.</div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 3</div>
+<div class="stage-title">Landing on Attacker Replica Page</div>
+<div class="stage-description">Victim reaches a professional replica of Microsoft 365, Adobe, or DocuSign login page hosted on Cloudflare Workers or Railway.com. The page requests username, password, and MFA code.</div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 4</div>
+<div class="stage-title">OAuth Device Code Interception</div>
+<div class="stage-description">Behind the scenes, attacker's backend initiates an OAuth device code flow with a pre-registered application. The attacker embeds the device code into the phishing page to intercept the MFA challenge response.</div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 5</div>
+<div class="stage-title">Token Harvesting</div>
+<div class="stage-description">After victim enters MFA code on attacker's page, the attacker exchanges the device code for valid Microsoft OAuth access and refresh tokens. These tokens provide full application access (Mail, Teams, SharePoint, OneDrive, etc.) without triggering traditional login alerts.</div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 6</div>
+<div class="stage-title">Post-Compromise Activity</div>
+<div class="stage-description">Attacker uses stolen tokens to access email, exfiltrate data, establish persistence, deploy malware, or pivot to other cloud services. Refresh token validity ensures continued access even if victim password is reset.</div>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">MITRE ATT&amp;CK Mapping</h2>
+            <div class="section-content">
+<div class="section-content">
+<table class="mitre-table">
+<thead>
+<tr>
+<th>Tactic</th>
+<th>Technique ID</th>
+<th>Technique Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial Access</td>
+<td class="mitre-id">T1566.002</td>
+<td>Phishing: Spearphishing Link</td>
+<td>Targeted emails with malicious links to fake authentication pages</td>
+</tr>
+<tr>
+<td>Credential Access</td>
+<td class="mitre-id">T1187</td>
+<td>Forced Authentication</td>
+<td>Victim credentials and MFA codes captured on replica pages</td>
+</tr>
+<tr>
+<td>Credential Access</td>
+<td class="mitre-id">T1528</td>
+<td>Steal Application Access Token</td>
+<td>OAuth refresh and access tokens harvested via device code flow</td>
+</tr>
+<tr>
+<td>Defense Evasion</td>
+<td class="mitre-id">T1598</td>
+<td>Phishing for Information</td>
+<td>Email lures designed to trigger credential submission</td>
+</tr>
+<tr>
+<td>Lateral Movement</td>
+<td class="mitre-id">T1550.001</td>
+<td>Use Alternate Authentication Material: Application Access Token</td>
+<td>Stolen OAuth tokens used to access cloud services without re-authentication</td>
+</tr>
+</tbody>
+</table>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p><strong>Scope of Compromise:</strong> 340+ organizations across multiple sectors and geographies. Confirmed victims in:</p>
+<ul>
+<li>United States (primary target)</li>
+<li>Canada, Australia, New Zealand</li>
+<li>Germany, France, Switzerland</li>
+<li>India, United Arab Emirates</li>
+</ul>
+<p><strong>Sectoral Impact:</strong></p>
+<ul>
+<li>Construction and building services</li>
+<li>Non-profit organizations</li>
+<li>Real estate and property management</li>
+<li>Manufacturing and industrial operations</li>
+<li>Financial services and banking</li>
+<li>Healthcare and life sciences</li>
+<li>Legal services and law firms</li>
+<li>Government agencies (local, state, federal)</li>
+</ul>
+<p><strong>Data Exposure Risks:</strong></p>
+<ul>
+<li>Email content compromise (Exchange Online access via stolen tokens)</li>
+<li>Document theft (SharePoint, OneDrive exfiltration)</li>
+<li>Real-time collaboration compromise (Teams message history, video recordings)</li>
+<li>Calendar and meeting information disclosure</li>
+<li>Contact directory and organizational hierarchy exposure</li>
+<li>Lateral movement to connected SaaS applications (Salesforce, Slack, Jira, etc.) via OAuth token reuse</li>
+</ul>
+<p><strong>Operational Impact:</strong></p>
+<ul>
+<li>Business email compromise (BEC) and wire fraud facilitation</li>
+<li>Ransomware deployment and extortion</li>
+<li>Persistence establishment for long-term espionage</li>
+<li>Supply chain attacks on downstream partners</li>
+<li>Regulatory and compliance violations (HIPAA, GLBA, GDPR)</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">Mid-February 2026</div>
+<div class="timeline-event">EvilTokens PhaaS platform launched on NOIRLEGACY GROUP Telegram channel; attackers begin offering OAuth device code phishing as a service</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">February 18, 2026</div>
+<div class="timeline-event">Palo Alto Networks Unit 42 first observes reconnaissance and early phishing activity targeting US organizations</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">February 19, 2026</div>
+<div class="timeline-event">Huntress publishes initial detection of Railway.com-based token replay campaign; public awareness begins</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">Late February 2026</div>
+<div class="timeline-event">Campaign accelerates with increased spearphishing volume; multiple lure themes (financial, meeting, logistics, payroll) deployed</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 2026</div>
+<div class="timeline-event">Campaign reaches peak activity; over 340 organizations confirmed compromised; geographic expansion to EMEA and APAC regions</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 25, 2026</div>
+<div class="timeline-event">The Hacker News publishes comprehensive article detailing campaign scope and attribution to EvilTokens</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 30, 2026</div>
+<div class="timeline-event">Sekoia publishes updated threat intelligence analysis with technical deep-dive into OAuth flow abuse and evasion tactics</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">April 2026 (Ongoing)</div>
+<div class="timeline-event">Campaign continues with targeted spearphishing; new phishing templates and lures deployed to avoid email gateway updates</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Remediation &amp; Detection</h3>
+              <div class="subsection">
+<h3 class="subsection-title">Immediate Actions</h3>
+<div class="section-content">
+<ol>
+<li><strong>Identify Compromised Accounts:</strong>
+<ul>
+<li>Check email logs for abnormal access patterns, unusual geographic locations, or off-hours activity</li>
+<li>Review Azure AD sign-in logs for device code authentication flows from unusual IP addresses (especially 162.220.232.x and 162.220.234.x ranges)</li>
+<li>Search for authenticated sessions from Railway.com or Cloudflare Worker IP ranges</li>
+</ul>
+</li>
+<li><strong>Revoke Compromised Tokens:</strong>
+<ul>
+<li>Force password reset for suspected victims (does not invalidate existing refresh tokens)</li>
+<li>Use Azure AD's "Sign out all sessions" capability to invalidate all active tokens</li>
+<li>Revoke OAuth app consent permissions in Microsoft 365 admin portal</li>
+<li>Monitor Azure AD for unauthorized consent grants to OAuth applications created by attackers</li>
+</ul>
+</li>
+<li><strong>Contain Spread:</strong>
+<ul>
+<li>Block IOC IP addresses at firewall and proxy level</li>
+<li>Block Railway.com and Cloudflare Worker domains suspected of hosting phishing pages in email gateway and web proxy</li>
+<li>Add known phishing email addresses to blocklist</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Detection &amp; Monitoring</h3>
+<div class="section-content">
+<p><strong>Email Security:</strong></p>
+<ul>
+<li>Configure advanced phishing detection rules for device code lures and "verify identity" language</li>
+<li>Block emails requesting users to "complete authentication" or "confirm credentials via device code"</li>
+<li>Implement external email banners to warn of untrusted senders</li>
+<li>Monitor for emails forwarded through security vendor redirects (Cisco, Trend Micro, Mimecast) that terminate on attacker infrastructure</li>
+</ul>
+<p><strong>Cloud Access Management:</strong></p>
+<ul>
+<li>Enable Azure AD sign-in risk detection and conditional access policies to flag device code authentications from unusual locations</li>
+<li>Monitor OAuth consent grants; alert on any new third-party application approvals</li>
+<li>Review service principal activities in Azure AD; identify unauthorized applications with high permission levels</li>
+</ul>
+<p><strong>Network Detection:</strong></p>
+<ul>
+<li>Block or alert on traffic to Railway.com and Cloudflare Worker IP ranges</li>
+<li>Monitor DNS queries for suspicious OAuth-related subdomains (e.g., device-auth-*.cloudflare.workers.dev)</li>
+</ul>
+<p><strong>Endpoint Detection:</strong></p>
+<ul>
+<li>Monitor browser history and network traffic for visits to fake Microsoft 365 or OAuth authentication domains</li>
+<li>Alert on unusual PowerShell or Azure CLI authentication patterns from compromised accounts</li>
+</ul>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Long-Term Hardening</h3>
+<div class="section-content">
+<ul>
+<li><strong>Device Code Flow Restrictions:</strong> Disable device code authentication for users unless explicitly required; consider allow-listing specific applications</li>
+<li><strong>Conditional Access Policies:</strong> Enforce MFA for all users, restrict authentication to managed devices, block legacy authentication protocols</li>
+<li><strong>Token Management:</strong> Implement token lifetime policies; configure automatic refresh token rotation; monitor for unusual token refresh patterns</li>
+<li><strong>User Training:</strong> Educate users on OAuth phishing tactics; emphasize that legitimate Microsoft never requests authentication via device codes in emails</li>
+<li><strong>Email Authentication:</strong> Implement strict SPF, DKIM, and DMARC policies to prevent domain spoofing</li>
+<li><strong>Threat Intelligence Integration:</strong> Subscribe to threat feeds for IoCs; automate blocking of known Railway.com and Cloudflare attacker infrastructure</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">phishing</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Multi-Sector</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, UAE</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">EvilTokens PhaaS (Storm-2372, APT29, UTA0304, UTA0307)</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="frostarmada-soho-dns-hijacking-2026.html">Frostarmada Soho Dns Hijacking 2026</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">The Hacker News</span> — The Hacker News:&quot;Device Code Phishing Campaign Hits 340+ Microsoft 365 Organizations&quot; — March 25, 2026https://thehackern
+              <br><a href="https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html" target="_blank" rel="noopener">https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">huntress.com</span> — Huntress:&quot;Railway PaaS M365 Token Replay Campaign&quot; — February 19, 2026https://www.huntress.com/blog/railway-paas-m365-to
+              <br><a href="https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign" target="_blank" rel="noopener">https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">labs.cloudsecurityalliance.org</span> — Cloud Security Alliance:&quot;OAuth Device Code Phishing Research&quot; — March 25, 2026https://labs.cloudsecurityalliance.org/res
+              <br><a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/" target="_blank" rel="noopener">https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">infosecurity-magazine.com</span> — Infosecurity Magazine:&quot;OAuth Phishing Campaigns Surge in 2026&quot; — March 2026https://www.infosecurity-magazine.com/news/oa
+              <br><a href="https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/" target="_blank" rel="noopener">https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

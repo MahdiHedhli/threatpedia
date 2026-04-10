@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>European Commission Cloud Breach via Trivy Supply Chain Compromise — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0020">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-03-19">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="European Commission Cloud Breach via Trivy Supply Chain Compromise">
+  <meta property="og:description" content="European Commission Cloud Breach via Trivy Supply Chain Compromise · TP-2026-0020 · AI-Drafted · Awaiting Certification · Confidence F">
+  <meta property="og:image" content="/og/draft/TP-2026-0020.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/european-commission-trivy-breach-2026",
+  "headline": "European Commission Cloud Breach via Trivy Supply Chain Compromise",
+  "datePublished": "2026-03-19",
+  "dateModified": "2026-04-10T14:19:15.724291+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0020"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 41
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">European Commission Cloud Breach via Trivy Supply Chain Compromise</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0020</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-5">Critical</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-03-19</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (41/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>On April 2, 2026, CERT-EU publicly disclosed that the European Commission's Europa web hosting platform on AWS had been breached through the Trivy supply chain compromise (CVE-2026-33634), making it the highest-profile governmental victim of the TeamPCP campaign. The attack, which gained initial access on March 19 and was detected on March 24, resulted in the exfiltration of 340 GB of data including approximately 52,000 email-related files affecting 71 clients: 42 internal European Commission departments plus 29 other EU entities.</p>
+<p>TeamPCP exploited a misconfiguration in Trivy's GitHub Actions environment to implant credential-stealing malware via manipulated version tags, forcing CI/CD pipelines to automatically pull compromised code. The stolen data, including 2.22 GB of outbound communications, was published by ShinyHunters on their dark web leak site on March 28—before the official public disclosure.</p>
+<p>Mandiant estimates the broader Trivy/TeamPCP campaign affected over 1,000 SaaS environments, with other confirmed victims including Cisco, Checkmarx, LiteLLM, and Sportradar AG. This incident represents one of the most consequential supply chain attacks targeting governmental infrastructure in recent years.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The attack exploited CVE-2026-33634, a critical misconfiguration in Trivy's GitHub Actions environment that allowed unauthorized manipulation of release artifacts and version tags.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Vulnerability Details</h3>
+<p>CVE-2026-33634 stemmed from insufficient access controls on Trivy's GitHub Actions runner environment:</p>
+<ul>
+<li>Release CI/CD pipeline used overly permissive IAM policies granting broad repository access</li>
+<li>GitHub Actions secrets not properly rotated or scoped to specific workflow requirements</li>
+<li>Lack of code signing verification for version tags and release artifacts</li>
+<li>No runtime integrity checks for published container images</li>
+<li>Insufficient audit logging of version tag modifications and release operations</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Malware Implantation Mechanism</h3>
+<p>TeamPCP exploited the misconfiguration to inject credential-stealing malware into Trivy's release pipeline:</p>
+<ul>
+<li><strong>Version Tag Manipulation:</strong> Attacker created or modified version tags (e.g., v0.41.0, v0.42.0) pointing to repositories containing malicious code</li>
+<li><strong>Automated CI/CD Pull:</strong> Organizations using Trivy in container scanning pipelines configured to pull latest versions automatically received compromised code</li>
+<li><strong>Postinstall Execution:</strong> Malicious Trivy versions executed credential-harvesting scripts during initialization</li>
+<li><strong>Cloud Credential Theft:</strong> Malware specifically targeted AWS credentials, GCP service accounts, and cloud environment variables</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Impact on Europa Platform</h3>
+<p>The European Commission's AWS infrastructure running Trivy in its container scanning pipeline became compromised with the following sequence:</p>
+<ul>
+<li><strong>Automated Update:</strong> Europa's CI/CD configuration pulled latest Trivy version (compromised) on March 19</li>
+<li><strong>Credential Exfiltration:</strong> Malware harvested AWS access keys, session tokens, and IAM role credentials from EC infrastructure</li>
+<li><strong>Lateral Movement:</strong> Attacker used stolen credentials to enumerate and access EC AWS account resources</li>
+<li><strong>Data Exfiltration:</strong> Large-scale download of 340 GB from S3 buckets containing department communications and cross-institutional data</li>
+<li><strong>Minimal Detection:</strong> Attack evaded initial detection for 5 days due to legitimate-appearing credential usage patterns</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Affected Data Categories</h3>
+<p>Analysis of the 340 GB exfiltrated from EC infrastructure:</p>
+<ul>
+<li>52,000 email-related files totaling 2.22 GB of outbound communications</li>
+<li>Internal departmental correspondence and meeting notes (42 EC departments)</li>
+<li>Inter-institutional communications with 29 other EU entities and agencies</li>
+<li>Sensitive policy documents and draft legislative materials</li>
+<li>Personnel records and administrative documentation</li>
+<li>Budget and resource allocation planning documents</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Attack Chain</h2>
+            <div class="section-content">
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="stage-number">Stage 1</div>
+<div class="stage-title">Supply Chain Manipulation</div>
+<div class="stage-description">
+                                TeamPCP exploits CVE-2026-33634 in Trivy GitHub Actions to manipulate version tags and inject malicious code into release pipeline. Attacker gains ability to publish compromised versions that appear legitimate.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 2</div>
+<div class="stage-title">Automated Distribution</div>
+<div class="stage-description">
+                                Organizations worldwide with automated Trivy updates in CI/CD pipelines pull compromised versions. European Commission's Europa platform automatically integrates malicious Trivy version on March 19.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 3</div>
+<div class="stage-title">Credential Harvesting</div>
+<div class="stage-description">
+                                Malicious Trivy version executes postinstall scripts that harvest cloud credentials. AWS access keys, session tokens, and IAM role credentials from EC infrastructure are exfiltrated to attacker-controlled servers.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 4</div>
+<div class="stage-title">Cloud Infrastructure Access</div>
+<div class="stage-description">
+                                Using stolen credentials, attacker gains direct access to European Commission AWS account. Infrastructure reconnaissance and enumeration of S3 buckets, EC2 instances, and other resources begins.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 5</div>
+<div class="stage-title">Data Exfiltration</div>
+<div class="stage-description">
+                                Attacker downloads 340 GB of sensitive data from EC AWS infrastructure over 5-day period. Includes 52,000 email files, policy documents, and inter-institutional communications from 71 EU clients.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 6</div>
+<div class="stage-title">Public Leak</div>
+<div class="stage-description">
+                                ShinyHunters publishes exfiltrated data on dark web leak site on March 28, before official disclosure. Data becomes irrecoverably public and available to threat actors and foreign intelligence services.
+                            </div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The Trivy supply chain compromise represents one of the most consequential attacks on governmental infrastructure in recent years, with cascading impacts across multiple dimensions:</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Direct Institutional Impact</h3>
+<ul>
+<li><strong>340 GB Data Exfiltrated:</strong> Largest known breach of EU institutional data</li>
+<li><strong>71 EU Entity Clients:</strong> 42 European Commission departments + 29 other EU organizations compromised</li>
+<li><strong>52,000 Email Files:</strong> 2.22 GB of sensitive internal and inter-institutional communications exposed</li>
+<li><strong>Policy Exposure:</strong> Draft legislative materials and strategic policy documents exposed to threat actors</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Global Campaign Scale</h3>
+<ul>
+<li><strong>1,000+ SaaS Environments:</strong> Mandiant estimates broader campaign affected over 1,000 organizations</li>
+<li><strong>Multiple Victim Categories:</strong> Technology, defense, financial services, and government sectors</li>
+<li><strong>Confirmed Additional Victims:</strong> Cisco (source code breach), Checkmarx, Sportradar AG, LiteLLM</li>
+<li><strong>Ongoing Compromise Risk:</strong> Unknown number of environments may still be running compromised Trivy versions</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Diplomatic &amp; National Security Implications</h3>
+<ul>
+<li><strong>Intelligence Value:</strong> Stolen inter-institutional communications provide strategic intelligence on EU decision-making processes</li>
+<li><strong>Negotiation Leverage:</strong> Compromised policy documents and draft materials could be exploited in international negotiations</li>
+<li><strong>Espionage Exposure:</strong> Intelligence liaison communications and sensitive coordination details exposed</li>
+<li><strong>Personnel Risk:</strong> Administrative data exposure creates vulnerabilities for coercion and insider recruitment</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Data Irretrievability</h3>
+<ul>
+<li>ShinyHunters publication on March 28 made data irrecoverably public</li>
+<li>Data available to threat actors, foreign intelligence services, and criminal organizations</li>
+<li>No containment possible after dark web publication</li>
+<li>Reputational and operational damage permanent and irreversible</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">MITRE ATT&amp;CK Techniques</h3>
+<ul>
+<li><strong>T1195.002:</strong> Compromise Software Supply Chain — CVE-2026-33634 exploitation</li>
+<li><strong>T1078:</strong> Valid Accounts — Use of stolen AWS credentials</li>
+<li><strong>T1530:</strong> Data from Cloud Storage — S3 bucket enumeration and exfiltration</li>
+<li><strong>T1567:</strong> Exfiltration Over Web Service — Data transfer to attacker-controlled infrastructure</li>
+<li><strong>T1588.004:</strong> Obtain Capabilities: Digital Certificates — Credential harvesting and collection</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">February 2026</div>
+<div class="timeline-event">
+<strong>CVE-2026-33634 exploitation begins</strong>
+<p>TeamPCP begins exploiting misconfiguration in Trivy GitHub Actions environment. Attacker gains ability to manipulate version tags and inject malicious code into release pipelines.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 19, 2026<br/>~14:30 UTC</div>
+<div class="timeline-event">
+<strong>Initial access via compromised Trivy supply chain</strong>
+<p>European Commission's AWS infrastructure running compromised Trivy in container scanning pipeline becomes infected with credential-stealing malware. AWS API key stolen. TeamPCP gains access to AWS credentials and begins reconnaissance.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 19–24, 2026</div>
+<div class="timeline-event">
+<strong>Data exfiltration phase using TruffleHog scanning</strong>
+<p>Attacker exfiltrates 340 GB (uncompressed) of data from EC AWS account, including 52,000 email files representing 2.22 GB of outbound communications from 71 EU clients (42 EC departments + 29 other entities). Data includes names, emails, and usernames from EC websites. Attacker used TruffleHog to scan for additional secrets. 5-day detection gap allows extensive data collection.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 24, 2026<br/>~09:15 UTC</div>
+<div class="timeline-event">
+<strong>Security Operations Center detects intrusion</strong>
+<p>EC SOC fires critical alerts related to unusual AWS credential usage and large data exfiltration events. Incident response is activated and attacker access is revoked.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 25, 2026</div>
+<div class="timeline-event">
+<strong>CERT-EU notified and CVE added to CISA KEV</strong>
+<p>CERT-EU is notified and begins detailed forensic analysis. Root cause traced to CVE-2026-33634 in Trivy supply chain. CVE-2026-33634 added to CISA Known Exploited Vulnerabilities (KEV) catalog with remediation deadline April 8, 2026. Incident response efforts escalate to EU intelligence coordination.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 27, 2026</div>
+<div class="timeline-event">
+<strong>European Commission public disclosure via press release</strong>
+<p>European Commission issues official press release disclosing the breach and alerting EU institutions and international partners of the supply chain compromise.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 28, 2026</div>
+<div class="timeline-event">
+<strong>ShinyHunters adds stolen data to Tor leak site</strong>
+<p>The dark web leak site ShinyHunters publishes 340 GB of exfiltrated data from EC breach, making sensitive inter-departmental and inter-institutional communications irrecoverably public.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">April 2, 2026</div>
+<div class="timeline-event">
+<strong>CERT-EU public disclosure</strong>
+<p>CERT-EU publicly discloses the breach and attributes attack to TeamPCP via Trivy CVE-2026-33634. Incident details, scope, and recommendations shared with government partners and international organizations.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">April 3, 2026</div>
+<div class="timeline-event">
+<strong>Campaign scope quantified</strong>
+<p>Mandiant publishes analysis quantifying broader TeamPCP/Trivy campaign at 1,000+ SaaS environments compromised globally. Additional victims identified in technology, defense, and financial sectors.</p>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The European Commission breach and broader Trivy campaign reveal critical gaps in supply chain security practices and cloud infrastructure hardening. Organizations must implement comprehensive remediation across multiple domains:</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">CI/CD Pipeline Hardening</h3>
+<ul>
+<li><strong>Pin All Tool Versions:</strong> Replace mutable "latest" tags with specific verified digests and cryptographic hashes</li>
+<li><strong>Code Signing Verification:</strong> Implement mandatory verification of digital signatures on all CI/CD tools and dependencies</li>
+<li><strong>SBOM Tracking:</strong> Maintain Software Bill of Materials (SBOM) for all pipeline tools with version tracking</li>
+<li><strong>Artifact Attestation:</strong> Use tools like Sigstore and in-toto to cryptographically attest to build provenance</li>
+<li><strong>Pipeline Segmentation:</strong> Isolate security scanning tools in separate, restricted pipeline environments</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Cloud Credential Management</h3>
+<ul>
+<li><strong>Workload Identity:</strong> Replace long-lived cloud credentials with time-limited workload identity tokens</li>
+<li><strong>IAM Least Privilege:</strong> Apply strict least-privilege policies to all CI/CD tool access; avoid broad account-level permissions</li>
+<li><strong>Credential Rotation:</strong> Implement automatic rotation of cloud credentials with 24-48 hour lifetime limits</li>
+<li><strong>Session Isolation:</strong> Use distinct AWS accounts or resource groups for CI/CD pipelines to limit blast radius</li>
+<li><strong>Credential Monitoring:</strong> Monitor for unexpected credential usage patterns and large-scale data transfers</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Detection &amp; Response Capabilities</h3>
+<ul>
+<li><strong>Version Change Monitoring:</strong> Alert on unexpected version changes in security scanning tools and critical dependencies</li>
+<li><strong>Behavioral Analytics:</strong> Detect credential exfiltration patterns and unusual cloud API call sequences</li>
+<li><strong>Data Transfer Baselining:</strong> Alert on abnormal data volumes being exfiltrated from cloud infrastructure</li>
+<li><strong>Log Analysis:</strong> Implement centralized logging and analysis of CI/CD pipeline activities with 30+ day retention</li>
+<li><strong>Rapid Response Playbooks:</strong> Pre-develop incident response procedures for supply chain compromises affecting critical tools</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Supply Chain Risk Management</h3>
+<ul>
+<li><strong>Vendor Assessment:</strong> Evaluate security posture of all CI/CD tool vendors and open-source project maintainers</li>
+<li><strong>Threat Intelligence Sharing:</strong> Participate in industry-wide threat intelligence coordination on supply chain attacks</li>
+<li><strong>Dependency Audits:</strong> Conduct quarterly audits of all tools and dependencies in use across organization</li>
+<li><strong>Incident Coordination:</strong> Establish pre-agreed disclosure timelines and information sharing agreements with intelligence partners</li>
+</ul>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">supply-chain</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Government / International</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">EU (Brussels &amp; Multi-State)</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">TeamPCP</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="teampcp-supply-chain-attack.html">Teampcp Supply Chain Attack</a>
+            <a class="sidebar-link" href="axios-unc1069-compromise.html">Axios Unc1069 Compromise</a>
+            <a class="sidebar-link" href="trivy-cve-2026-33634.html">Trivy Cve 2026 33634</a>
+            <a class="sidebar-link" href="shiny-hunters-leak-site.html">Shiny Hunters Leak Site</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">cert.europa.eu</span> — CERT-EU - European Commission cloud breach
+              <br><a href="https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain" target="_blank" rel="noopener">https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Help Net Security</span> — Help Net Security - Trivy supply chain attack enabled EC breach
+              <br><a href="https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/" target="_blank" rel="noopener">https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">SecurityWeek</span> — SecurityWeek - EC Confirms Data Breach Linked to Trivy
+              <br><a href="https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/" target="_blank" rel="noopener">https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">csoonline.com</span> — CSO Online - CERT-EU blames Trivy supply chain attack
+              <br><a href="https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html" target="_blank" rel="noopener">https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cybersecuritynews.com</span> — CyberSecurity News - CERT-EU Confirms Trivy Supply Chain Attack
+              <br><a href="https://cybersecuritynews.com/european-commission-breach-trivy/" target="_blank" rel="noopener">https://cybersecuritynews.com/european-commission-breach-trivy/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

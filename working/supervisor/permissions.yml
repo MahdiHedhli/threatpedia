@@ -1,0 +1,144 @@
+# Threatpedia Agent Permissions
+# Owner: Kernel K (only Kernel K edits)
+# Read by: All agents at boot
+# Last updated: 2026-04-10T15:00:00Z (bootstrap)
+#
+# This file defines what each agent is permitted to read, write, and modify.
+# Permissions are advisory in the absence of enforcement infrastructure (we do
+# not yet have CI hooks that block based on this file). The honor system applies
+# until enforcement is built. Violations are filed in working/supervisor/conflicts.md.
+#
+# PATH FORMAT:
+#   - Paths are relative to the repo root.
+#   - Trailing slash means "directory and everything under it".
+#   - No trailing slash means "the file itself".
+#   - "*" wildcards are not supported (yet); list paths explicitly.
+#
+# PERMISSION LEVELS:
+#   read:    Agent may read the path
+#   write:   Agent may create new files in the path
+#   modify:  Agent may edit existing files in the path
+#   delete:  Agent may delete files in the path
+
+version: 1.0
+
+agents:
+  dangermouse-bot:
+    description: |
+      Claude (Anthropic). Implementation, schema work, normalization,
+      script generation, code review.
+    github_account: dangermouse-bot
+    github_email: dangermousebot@threatpedia.wiki
+    permissions:
+      read:
+        - "/"  # full repo read
+      write:
+        - working/inbox/penfold/
+        - working/inbox/kernel-k/
+        - working/outbox/dangermouse/
+        - working/decisions/
+        - working/scratchpad/
+        - working/editorial-pass/pending/
+        - working/editorial-pass/blocked/
+      modify:
+        - working/agent-notes/dangermouse-log.md
+        - working/supervisor/handoff-queue.md
+        - working/supervisor/conflicts.md
+        - working/supervisor/optimization-log.md
+        - working/scratchpad/
+      delete:
+        - working/scratchpad/
+    forbidden:
+      - working/agent-notes/penfold-log.md       # penfold's log only
+      - working/agent-notes/kernel-k-log.md      # kernel-k's log only
+      - working/supervisor/schedule.yml          # kernel-k only
+      - working/supervisor/permissions.yml       # kernel-k only
+      - incidents/                               # live corpus, kernel-k approves merges
+      - campaigns/                               # live corpus
+      - entities/                                # live corpus
+      - docs/                                    # locked schema
+      - .github/                                 # repo settings, kernel-k only
+
+  penfold-bot:
+    description: |
+      Gemini (Google). Architectural review, high-context analysis,
+      editorial pass, source synthesis.
+    github_account: penfold-bot  # to be created by Kernel K
+    github_email: penfold-bot@threatpedia.wiki  # to be created by Kernel K
+    permissions:
+      read:
+        - "/"  # full repo read
+      write:
+        - working/inbox/dangermouse/
+        - working/inbox/kernel-k/
+        - working/outbox/penfold/
+        - working/decisions/
+        - working/scratchpad/
+        - working/editorial-pass/in-review/
+        - working/editorial-pass/blocked/
+      modify:
+        - working/agent-notes/penfold-log.md
+        - working/supervisor/handoff-queue.md
+        - working/supervisor/conflicts.md
+        - working/supervisor/optimization-log.md
+        - working/scratchpad/
+      delete:
+        - working/scratchpad/
+    forbidden:
+      - working/agent-notes/dangermouse-log.md
+      - working/agent-notes/kernel-k-log.md
+      - working/supervisor/schedule.yml
+      - working/supervisor/permissions.yml
+      - incidents/
+      - campaigns/
+      - entities/
+      - docs/
+      - .github/
+      - working/editorial-pass/approved/         # only kernel-k advances to approved
+
+  kernel-k:
+    description: |
+      Mahdi Hedhli. Project lead. Final authority on all decisions.
+      Trust anchor for all merges to the live corpus.
+    permissions:
+      read:
+        - "/"
+      write:
+        - "/"
+      modify:
+        - "/"
+      delete:
+        - "/"
+    forbidden: []
+
+  dangermouse-bot-runtime:
+    description: |
+      The execution runtime that will eventually carry out scheduled jobs.
+      Not yet operational. Permissions defined here for when it goes live.
+      Decision on which runtime (Claude Code on VM, Antigravity, etc.) is
+      pending — see TASK-2026-0004.
+    github_account: dangermouse-bot
+    github_email: dangermousebot@threatpedia.wiki
+    permissions:
+      read:
+        - "/"
+      write:
+        - working/  # everything in working/
+      modify:
+        - working/
+      delete:
+        - working/scratchpad/
+    forbidden:
+      - incidents/
+      - campaigns/
+      - entities/
+      - docs/
+      - .github/
+      - working/agent-notes/penfold-log.md
+      - working/agent-notes/kernel-k-log.md
+      - working/supervisor/schedule.yml
+      - working/supervisor/permissions.yml
+    notes: |
+      Even when runtime is operational, the runtime CANNOT directly merge
+      to the live corpus. Editorial-pass items move from approved/ to
+      live corpus only by Kernel K's explicit action.

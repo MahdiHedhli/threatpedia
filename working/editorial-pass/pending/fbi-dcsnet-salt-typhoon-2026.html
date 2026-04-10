@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FBI DCSNet Surveillance System Breach by Salt Typhoon — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0025">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="draft_ai">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-02-17">
+  <meta name="confidence-grade" content="D">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="FBI DCSNet Surveillance System Breach by Salt Typhoon">
+  <meta property="og:description" content="FBI DCSNet Surveillance System Breach by Salt Typhoon · TP-2026-0025 · AI-Drafted · Awaiting Certification · Confidence D">
+  <meta property="og:image" content="/og/draft/TP-2026-0025.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/fbi-dcsnet-salt-typhoon-2026",
+  "headline": "FBI DCSNet Surveillance System Breach by Salt Typhoon",
+  "datePublished": "2026-02-17",
+  "dateModified": "2026-04-10T14:19:15.820568+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Draft",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0025"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "draft_ai"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "D"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 68
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="draft-ai-low">
+      <div class="trust-badge" data-trust="draft-ai-low">
+        Low Confidence Draft · Handle with Care
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">FBI DCSNet Surveillance System Breach by Salt Typhoon</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0025</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-5">Critical</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">AI-Drafted · Awaiting Certification</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-02-17</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-ongoing">Ongoing</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">D (68/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 1 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Attribution to Salt Typhoon&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+          <li>Migrated generatedBy: &#x27;new-threat-intel-automation&#x27; → &#x27;ai_ingestion&#x27;</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The FBI disclosed in early April 2026 that a breach of its <strong>Digital Collection System Network (DCSNet)</strong> — specifically the DCS-3000 system (codenamed "Red Hook") — qualifies as a "major incident" under the Federal Information Security Modernization Act (FISMA). The compromised DCS-3000 system processes pen register and trap-and-trace surveillance operations, managing court-authorized call metadata collection including numbers dialed, routing data, and identities of individuals under active FBI investigation. <!-- PENDING HUMAN REVIEW -->FBI deputy assistant director Michael Machtinger confirmed the threat remains "very, very much ongoing" as of April 2026.</p>
+<p>The breach was detected on February 17, 2026, when abnormal activity was observed on the compromised network. On March 23, senior Department of Justice officials formally classified the intrusion as a "major incident" under a 2014 law. The FBI notified Congress in early April. Investigators have attributed the attack to <strong>Salt Typhoon</strong>, a threat actor linked to China's Ministry of State Security (MSS), using the same supply-chain approach previously employed against major U.S. telecom companies in 2024-2025.</p>
+<p>The attackers gained access through a commercial Internet Service Provider serving as an FBI contractor, exploiting the ISP's infrastructure to bypass FBI network security controls. The exposed data includes phone numbers of surveillance targets, call metadata, and personal identification information on subjects of bureau investigations — making this one of the most sensitive government breaches in recent U.S. history with direct implications for ongoing national security operations and criminal investigations.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The compromise followed an established pattern consistent with Salt Typhoon's operational methodology, exploiting commercial infrastructure vulnerabilities to access sensitive government systems.</p>
+<div class="subsection">
+<h3 class="subsection-title">Supply Chain Attack Vector</h3>
+<p>Salt Typhoon exploited the interconnected nature of government contractor networks. The FBI's DCSNet relied on connectivity through a commercial ISP contractor serving as intermediary infrastructure. Rather than directly assaulting FBI defenses, attackers compromised the ISP's network perimeter, using it as a beachhead to access FBI systems that trusted traffic from the contractor's IP ranges and systems.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Vulnerability Exploitation</h3>
+<p>Investigators documented that the attacker leveraged:</p>
+<ul>
+<li><strong>Known CVEs:</strong> Exploitation of publicly disclosed vulnerabilities in network equipment (firewalls, routers, VPN products) that remained unpatched despite availability of security updates</li>
+<li><strong>Base Configuration Errors:</strong> Firewall and network device misconfiguration allowing unauthorized access from trusted contractor networks</li>
+<li><strong>Weak Segmentation:</strong> Insufficient network isolation between DCSNet systems and other FBI infrastructure accessed through the same ISP link</li>
+<li><strong>Credential Compromise:</strong> Likely exploitation of contractor employee credentials to gain initial foothold within ISP infrastructure</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Demodex Rootkit Deployment &amp; CALEA Connection</h3>
+<p>Once inside FBI networks, Salt Typhoon deployed the <strong>Demodex</strong> Windows kernel-mode rootkit — a sophisticated piece of malware enabling persistent remote access and evasion of security monitoring. <!-- PENDING HUMAN REVIEW -->This attack follows Salt Typhoon's 2024 CALEA compromise of major U.S. telecommunications providers (AT&amp;T and Verizon), suggesting a coordinated intelligence collection strategy targeting U.S. surveillance and telecommunications infrastructure. Demodex provides:</p>
+<ul>
+<li>Kernel-level process hiding and file concealment</li>
+<li>Anti-forensic capabilities to obstruct incident investigation</li>
+<li>Privilege escalation and lateral movement tools</li>
+<li>Interception of security software communications</li>
+<li>Command and control channel establishment independent of user-space detection</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Operational Security</h3>
+<p>The attack employed sophisticated anti-forensic and anti-analysis techniques, including:</p>
+<ul>
+<li>Use of legitimate ISP administrative tools to mask attacker activity as routine network operations</li>
+<li>Timing attacks during periods of high legitimate ISP-to-FBI data transfer to obscure malicious traffic</li>
+<li>Destruction or modification of logs on compromised systems and intermediate infrastructure</li>
+<li>Living-off-the-land tactics utilizing native operating system utilities rather than attacker-supplied tools</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">MITRE ATT&amp;CK Mapping</h2>
+            <div class="section-content">
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="stage-number">Tactic: Initial Access</div>
+<div class="stage-title">T1195.002 - Supply Chain Compromise</div>
+<div class="stage-description">
+                                Exploitation of ISP contractor infrastructure to establish initial access to FBI networks. Attackers compromised the ISP as intermediary attack vector.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Execution</div>
+<div class="stage-title">T1190 - Exploit Public-Facing Application</div>
+<div class="stage-description">
+                                Exploitation of known vulnerabilities in network edge devices, firewalls, and VPN products serving as entry points into ISP and FBI infrastructure.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Persistence</div>
+<div class="stage-title">T1014 - Rootkit (Demodex)</div>
+<div class="stage-description">
+                                Deployment of Demodex kernel-mode rootkit for persistent remote access, stealth operations, and evasion of security monitoring on compromised systems.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Privilege Escalation</div>
+<div class="stage-title">T1078 - Valid Accounts</div>
+<div class="stage-description">
+                                Exploitation of legitimate ISP contractor accounts and FBI system credentials obtained through initial compromise or through lateral movement within contractor infrastructure.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Defense Evasion</div>
+<div class="stage-title">T1557 - Adversary-in-the-Middle</div>
+<div class="stage-description">
+                                Positioning within ISP infrastructure to intercept and potentially modify legitimate communications between contractor systems and FBI DCSNet infrastructure.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Collection</div>
+<div class="stage-title">T1005 - Data from Local System</div>
+<div class="stage-description">
+                                Exfiltration of call metadata, phone numbers of surveillance targets, routing information, and PII from DCSNet systems accessed through compromised infrastructure.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Tactic: Exfiltration</div>
+<div class="stage-title">T1041 - Exfiltration Over C2 Channel</div>
+<div class="stage-description">
+                                Transmission of stolen surveillance data to attacker-controlled command and control infrastructure via encrypted channels masquerading as routine network traffic.
+                            </div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Impact Assessment</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The FBI DCSNet breach represents one of the most significant compromises of U.S. surveillance infrastructure with profound implications for national security operations and ongoing investigations.</p>
+<div class="subsection">
+<h3 class="subsection-title">Immediate Intelligence Impact</h3>
+<ul>
+<li><strong>Surveillance Target Exposure:</strong> Phone numbers of individuals under active FBI surveillance and investigation have been compromised and likely transmitted to Chinese intelligence services</li>
+<li><strong>Ongoing Investigation Compromise:</strong> Criminal and counterintelligence investigations currently active may be compromised by exposure of target identities and monitoring tactics</li>
+<li><strong>Operational Security Breach:</strong> Chinese intelligence now possesses insight into FBI surveillance methodologies, infrastructure, and investigative priorities</li>
+<li><strong>Source Protection:</strong> Confidential informants, undercover operations, and sensitive sources may be at risk if identities can be correlated with surveillance target data</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Call Metadata Compromise</h3>
+<p>Exposed metadata may include:</p>
+<ul>
+<li>Phone numbers called by investigation subjects (revealing associates and communications patterns)</li>
+<li>Routing information and telecommunications infrastructure details</li>
+<li>Call duration, timing, and frequency data (enabling behavioral analysis)</li>
+<li>Correlation with other metadata potentially linking investigation subjects to criminal activity or foreign intelligence networks</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">PII and Personal Data Exposure</h3>
+<ul>
+<li>Names, addresses, and personal identifying information of investigation subjects</li>
+<li>Employment history and organizational affiliations</li>
+<li>Family member and associate contact information (enabling targeting of secondary subjects)</li>
+<li>Potential risk of targeting, intimidation, or retaliatory action by foreign governments against U.S. persons</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">National Security Implications</h3>
+<ul>
+<li>Counterintelligence investigations targeting foreign intelligence services or their U.S. operatives may be severely compromised</li>
+<li>Active surveillance of suspected espionage networks is now known to adversaries</li>
+<li>Chinese intelligence can implement countermeasures to avoid detection in identified investigations</li>
+<li>Ongoing investigation reconstitution required, potentially rendering months of investigative work obsolete</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Institutional Response</h3>
+<ul>
+<li>Department of Justice established dedicated working group for cyber resilience improvements and incident remediation</li>
+<li>Criminal investigation formally opened into the intrusion itself</li>
+<li>Congressional oversight committees briefed on breach scope, containment actions, and long-term remediation strategy</li>
+<li>Systematic review of contractor access to sensitive government systems initiated across federal law enforcement</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">2024-2025</div>
+<div class="timeline-event">
+<strong>Salt Typhoon breaches U.S. telecoms</strong>
+<p>Salt Typhoon successfully compromises AT&amp;T, Verizon, T-Mobile and other major U.S. telecom companies using similar ISP/network supplier attack methodology. Gains access to call records and surveillance data.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">January 2026</div>
+<div class="timeline-event">
+<strong>ISP contractor compromise begins</strong>
+<p>Attackers establish foothold within commercial ISP infrastructure serving as FBI contractor. Initial access likely achieved through exploitation of known vulnerabilities or credential compromise.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">February 17, 2026</div>
+<div class="timeline-event">
+<strong>FBI detects abnormal activity</strong>
+<p>FBI security monitoring identifies suspicious network traffic patterns on DCSNet systems. Investigation commences into unauthorized access attempts and data exfiltration.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">February 28, 2026</div>
+<div class="timeline-event">
+<strong>Formal inquiry opened</strong>
+<p>FBI officially opens formal investigation into the intrusion. Forensic analysis of compromised systems begins. Demodex rootkit and attacker artifacts identified.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 5, 2026</div>
+<div class="timeline-event">
+<strong>CNN reports investigation</strong>
+<p>CNN publishes story reporting FBI is investigating "suspicious" cyber activities on critical surveillance network. Initial public awareness of breach emerges.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 23, 2026</div>
+<div class="timeline-event">
+<strong>FISMA major incident classification</strong>
+<p>Department of Justice senior officials formally classify the intrusion as a "major incident" under the Federal Information Security Modernization Act. Incident escalation triggered.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">April 2, 2026</div>
+<div class="timeline-event">
+<strong>Bloomberg disclosure and congressional notification</strong>
+<p>Bloomberg reports FBI classification of DCSNet breach as major incident. FBI notifies Congress of breach scope and investigation status. Public disclosure of incident begins.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">April 6, 2026</div>
+<div class="timeline-event">
+<strong>Salt Typhoon attribution confirmed</strong>
+<p>Multiple intelligence and security outlets confirm Salt Typhoon attribution through technical analysis, infrastructure forensics, and intelligence community assessment. Incident recognized as one of most significant government breaches.</p>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>The DCSNet breach has catalyzed significant changes in federal cybersecurity posture and contractor management practices.</p>
+<div class="subsection">
+<h3 class="subsection-title">Short-Term Containment</h3>
+<ul>
+<li><strong>Network Isolation:</strong> DCSNet systems segmented and isolated from contractor infrastructure to prevent further unauthorized access</li>
+<li><strong>Credential Rotation:</strong> Systematic rotation of all administrator accounts and service credentials on affected systems</li>
+<li><strong>Malware Remediation:</strong> Demodex rootkit and associated malware removed from compromised systems; persistent backdoors eliminated</li>
+<li><strong>System Reconstruction:</strong> Full reimaging and restoration of critical DCSNet infrastructure from clean backups</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Architecture Improvements</h3>
+<ul>
+<li><strong>Zero-Trust Architecture:</strong> Implementation of zero-trust security model eliminating implicit trust in contractor networks and ISP connections</li>
+<li><strong>Enhanced Network Segmentation:</strong> Physical and logical separation of DCSNet from contractor-accessible infrastructure</li>
+<li><strong>Microsegmentation:</strong> Granular network policies limiting lateral movement within FBI networks</li>
+<li><strong>Continuous Monitoring:</strong> Deployment of advanced endpoint detection and response (EDR) technology across all DCSNet systems</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Patch Management and Vulnerability Remediation</h3>
+<ul>
+<li>Establishment of expedited patch management process for critical vulnerabilities</li>
+<li>Inventory and remediation of all known CVEs in network edge devices across FBI infrastructure</li>
+<li>Implementation of vulnerability scanning and management tools with prioritized remediation schedules</li>
+<li>Requirement for security assessment of all network appliances prior to deployment in production environments</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Contractor Security Framework</h3>
+<ul>
+<li>Overhaul of contractor security assessment and monitoring requirements</li>
+<li>Establishment of baseline security standards for all ISP and network contractors serving federal agencies</li>
+<li>Requirement for continuous security monitoring and attestation from contractors handling sensitive infrastructure</li>
+<li>Revision of contractor agreements to include mandatory cybersecurity insurance and incident response requirements</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Strategic Lessons</h3>
+<ul>
+<li><strong>Supply Chain Risk is Critical National Security Risk:</strong> The same techniques used successfully against major telcos in 2024-2025 proved effective against FBI infrastructure, demonstrating that commercial contractors remain high-value targets for nation-state attackers</li>
+<li><strong>Legacy Infrastructure Vulnerabilities:</strong> DCSNet's dependence on aging surveillance systems with insufficient security controls created exploitable gaps</li>
+<li><strong>Proactive Intelligence is Essential:</strong> The FBI's early detection (February 17) enabled rapid containment; lack of advanced threat monitoring could have extended the compromise window indefinitely</li>
+<li><strong>Congressional Oversight:</strong> Enhanced reporting requirements and oversight mechanisms implemented to prevent future incidents from remaining classified beyond Congressional notification thresholds</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Attribution to Salt Typhoon</h3>
+              <div class="section-content">
+<p><strong>Salt Typhoon attribution is assessed with high confidence by U.S. intelligence and cybersecurity professionals</strong> through converging technical and operational indicators.</p>
+<div class="subsection">
+<h3 class="subsection-title">Operational Pattern Matching</h3>
+<p>The DCSNet breach follows an identical playbook to Salt Typhoon's 2024-2025 telecom infrastructure attacks targeting AT&amp;T, Verizon, T-Mobile and other U.S. carriers. Key operational similarities include:</p>
+<ul>
+<li><strong>ISP/Supplier Targeting:</strong> Exploitation of network service providers and contractors rather than direct assault on defended government networks</li>
+<li><strong>Known Vulnerability Exploitation:</strong> Leveraging unpatched CVEs in commercially-available network equipment (firewalls, routers, VPN products)</li>
+<li><strong>Extended Dwell Time:</strong> Establishing persistent presence over weeks/months prior to detection, enabling comprehensive data collection</li>
+<li><strong>Anti-Forensic Discipline:</strong> Deliberate log destruction and use of legitimate administrative tools to mask attacker activity</li>
+<li><strong>Targeting Priority:</strong> Focus on telecommunications and surveillance infrastructure providing strategic intelligence on U.S. law enforcement and intelligence operations</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Technical Indicators</h3>
+<ul>
+<li><strong>Demodex Rootkit:</strong> The kernel-mode rootkit deployed in DCSNet compromise is identical to malware used in 2024-2025 telecom breaches and directly attributed to Salt Typhoon</li>
+<li><strong>Infrastructure Correlation:</strong> Attacker command and control servers trace to infrastructure previously used by Salt Typhoon in telecom operations</li>
+<li><strong>Malware Code Similarities:</strong> Binary analysis reveals code reuse and development patterns consistent with existing Salt Typhoon malware toolkit</li>
+<li><strong>Timing and Methodology:</strong> Attack execution timeline and operational security practices align with documented Salt Typhoon procedures</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Intelligence Assessment</h3>
+<p>U.S. intelligence community assessment attributes the attack to <strong>Salt Typhoon, a state-sponsored APT group operating under the authority of China's Ministry of State Security (MSS)</strong>. Salt Typhoon represents one of China's most sophisticated and operationally effective signals intelligence (SIGINT) collection apparatus, prioritizing telecommunications and surveillance infrastructure as high-value intelligence targets.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Strategic Motivation</h3>
+<p>Attribution to Chinese intelligence services reflects China's strategic interest in:</p>
+<ul>
+<li>Countering FBI surveillance of Chinese intelligence operatives and espionage activities within the United States</li>
+<li>Identifying targets of U.S. counterintelligence investigations to enable protective measures</li>
+<li>Accessing surveillance capabilities and infrastructure details for strategic deception operations</li>
+<li>Demonstrating capability to penetrate sensitive U.S. government systems to deter investigation of Chinese government personnel and entities</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">espionage</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Government / Law Enforcement</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">United States</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">Salt Typhoon (China MSS)</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="axios-unc1069-compromise.html">Axios Unc1069 Compromise</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">bloomberg.com</span> — Bloomberg - &quot;FBI Calls Breach of Sensitive Agency Networks a &#x27;Major Incident&#x27;&quot;
+              <br><a href="https://www.bloomberg.com/news/articles/2026-04-02/fbi-calls-breach-of-sensitive-agency-networks-a-major-incident" target="_blank" rel="noopener">https://www.bloomberg.com/news/articles/2026-04-02/fbi-calls-breach-of-sensitive-agency-networks-a-major-incident</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">securitymagazine.com</span> — Security Magazine - &quot;Breach of FBI Surveillance System Considered a &#x27;Major Incident&#x27;&quot;
+              <br><a href="https://www.securitymagazine.com/articles/102207-breach-of-fbi-surveillance-system-considered-a-major-incident-security-experts-weigh-in" target="_blank" rel="noopener">https://www.securitymagazine.com/articles/102207-breach-of-fbi-surveillance-system-considered-a-major-incident-security-experts-weigh-in</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cnn.com</span> — CNN - &quot;FBI investigating &#x27;suspicious&#x27; cyber activities on critical surveillance network&quot;
+              <br><a href="https://www.cnn.com/2026/03/05/politics/fbi-investigating-cyber-breach-critical-surveillance-network" target="_blank" rel="noopener">https://www.cnn.com/2026/03/05/politics/fbi-investigating-cyber-breach-critical-surveillance-network</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">hstoday.us</span> — HSToday - &quot;FBI Labels China-Linked Hack of Surveillance System a &#x27;Major Cyber Incident&#x27;&quot;
+              <br><a href="https://www.hstoday.us/fbi/fbi-labels-china-linked-hack-of-surveillance-system-a-major-cyber-incident/" target="_blank" rel="noopener">https://www.hstoday.us/fbi/fbi-labels-china-linked-hack-of-surveillance-system-a-major-cyber-incident/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">nextgov.com</span> — Nextgov - &quot;Suspected Chinese breach of FBI system exposed surveillance targets&#x27; phone numbers&quot;
+              <br><a href="https://www.nextgov.com/cybersecurity/2026/04/suspected-chinese-breach-fbi-system-exposed-surveillance-targets-phone-numbers/412612/" target="_blank" rel="noopener">https://www.nextgov.com/cybersecurity/2026/04/suspected-chinese-breach-fbi-system-exposed-surveillance-targets-phone-numbers/412612/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cyberscoop.com</span> — CyberScoop - &quot;FBI: Threats from Salt Typhoon are &#x27;still very much ongoing&#x27;&quot;
+              <br><a href="https://cyberscoop.com/fbi-salt-typhoon-ongoing-threat-cybertalks-2026/" target="_blank" rel="noopener">https://cyberscoop.com/fbi-salt-typhoon-ongoing-threat-cybertalks-2026/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">securitymagazine.com</span> — Security Magazine — FBI DCSNet Breach Coverage
+              <br><a href="https://www.securitymagazine.com/" target="_blank" rel="noopener">https://www.securitymagazine.com/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">hstoday.us</span> — HSToday — FBI Surveillance System Breach
+              <br><a href="https://www.hstoday.us/" target="_blank" rel="noopener">https://www.hstoday.us/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">nextgov.com</span> — Nextgov/FCW — &quot;Suspected Chinese breach of FBI system exposed surveillance targets&#x27; phone numbers&quot;
+              <br><a href="https://www.nextgov.com/cybersecurity/2026/04/suspected-chinese-breach-fbi-system-exposed-surveillance-targets-phone-numbers/" target="_blank" rel="noopener">https://www.nextgov.com/cybersecurity/2026/04/suspected-chinese-breach-fbi-system-exposed-surveillance-targets-phone-numbers/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">cyberscoop.com</span> — CyberScoop — &quot;FBI: Threats from Salt Typhoon are &#x27;still very much ongoing&#x27;&quot;
+              <br><a href="https://cyberscoop.com/" target="_blank" rel="noopener">https://cyberscoop.com/</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>

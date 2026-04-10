@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axios npm Package Compromise by UNC1069 — Threatpedia</title>
+
+  <!-- v1.0 required meta tags (RULE-020, RULE-021) -->
+  <meta name="report-id" content="TP-2026-0015">
+  <meta name="article-type" content="incident">
+  <meta name="review-status" content="certified">
+  <meta name="generated-by" content="ai_ingestion">
+  <meta name="generated-date" content="2026-03-31">
+  <meta name="confidence-grade" content="F">
+  <meta name="normalization-version" content="v1.0">
+  <meta name="normalization-date" content="2026-04-10T14:19:15Z">
+
+  <!-- OG tags (v1.0 §10.3) -->
+  <meta property="og:title" content="Axios npm Package Compromise by UNC1069">
+  <meta property="og:description" content="Axios npm Package Compromise by UNC1069 · TP-2026-0015 · Threatpedia Certified · Confidence F">
+  <meta property="og:image" content="/og/certified/TP-2026-0015.png">
+  <meta property="og:type" content="article">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Shared stylesheets (v1.0 §14, RULE-025) -->
+  <link rel="stylesheet" href="../assets/css/incident-report.css">
+  <link rel="stylesheet" href="../assets/css/glossary-tooltips.css">
+
+  <!-- JSON-LD structured data (v1.0 §13, RULE-023) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "@id": "https://threatpedia.wiki/incidents/axios-unc1069-compromise",
+  "headline": "Axios npm Package Compromise by UNC1069",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-04-10T14:19:15.204841+00:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Threatpedia"
+  },
+  "creativeWorkStatus": "Published",
+  "about": {
+    "@type": "Thing",
+    "name": "Cyber Security Incident"
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaEventId",
+      "value": "TP-2026-0015"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaReviewStatus",
+      "value": "certified"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceGrade",
+      "value": "F"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "threatpediaConfidenceScore",
+      "value": 56
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "admiraltyAttribution",
+      "value": "A6"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "impactSeverity",
+      "value": 5
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "articleType",
+      "value": "incident"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="container">
+    <article class="article-wrapper" data-trust="certified-mid">
+      <div class="trust-badge" data-trust="certified-mid">
+        ✓ Certified · Lower Confidence
+      </div>
+
+      <header class="article-header">
+        <h1 class="incident-title">Axios npm Package Compromise by UNC1069</h1>
+
+        <!-- 7-field canonical header (v1.0 §7) -->
+        <div class="incident-meta">
+          <div class="meta-item">
+            <span class="meta-label">Incident ID</span>
+            <span class="meta-value">TP-2026-0015</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Severity</span>
+            <span class="meta-value sev-5">Critical</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-value">Threatpedia Certified</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Attribution</span>
+            <span class="meta-value admiralty-a6">A6 — Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Primary Date</span>
+            <span class="meta-value">2026-03-31</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value status-concluded">Concluded</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Confidence Grade</span>
+            <span class="meta-value">F (56/100)</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="normalization-notes">
+        <div class="normalization-notes-title">⚠ Normalization Notes — Editorial Review Required</div>
+        <ul>
+          <li>PRESERVED: 5 orphan section(s) preserved as &#x27;Other Content Preserved&#x27; — needs editorial recategorization. Original titles: &quot;Payload Architecture&quot;, &quot;WAVESHAPER.V2 RAT Analysis&quot;, &quot;Affected Packages &amp; Downstream Impact&quot;, &quot;Attribution&quot;, &quot;References &amp; Further Reading&quot;</li>
+          <li>Missing: Attack Chain section (required for incidents and campaigns)</li>
+          <li>Missing: MITRE ATT&amp;CK Mapping section — requires SME mapping</li>
+          <li>EDITORIAL: Attribution confidence defaulted to A6 (Unknown) — human review required to assign A1–A5 with rationale (RULE-006)</li>
+        </ul>
+      </div>
+
+      <div class="content-grid">
+        <main class="main-content">
+          <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>On March 31, 2026, threat actor <strong>UNC1069</strong> successfully compromised the npm credentials of axios lead maintainer Jason Saayman, enabling the publication of two backdoored versions of the axios HTTP client library. The attack deployed a sophisticated multi-stage payload architecture including the <strong>WAVESHAPER.V2</strong> remote access trojan (RAT) targeting Windows, macOS, and Linux platforms.</p>
+<p>With a 3-hour exposure window before npm quarantine, the malicious packages reached systems across the global software supply chain. Axios receives over 100 million weekly downloads, making this one of the highest-impact supply chain compromises in 2026. Google's Threat Intelligence Group (GTIG) has formally attributed the attack to UNC1069, a North Korea-nexus financially motivated threat actor with a documented history of targeting cryptocurrency and software infrastructure.</p>
+<p>Organizations running compromised versions (axios@1.14.1 or axios@0.30.4) must immediately upgrade to safe versions and audit their systems for indicators of compromise, including outbound connections to the attacker's command and control infrastructure.</p>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Technical Analysis</h2>
+            <div class="section-content">
+<div class="section-content">
+<p>UNC1069 executed a credential compromise followed by manual package publication, avoiding automated CI/CD pipelines that might have triggered additional detection mechanisms.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Credential Compromise</h3>
+<p>The attacker obtained npm credentials belonging to Jason Saayman, the primary maintainer of axios. The specific compromise vector remains under investigation, with hypothesized attack paths including:</p>
+<ul>
+<li>Phishing or credential harvesting targeting Saayman's development environment</li>
+<li>Exploitation of authentication bypass vulnerabilities in npm infrastructure</li>
+<li>Compromise of credential storage systems on Saayman's workstation</li>
+<li>Social engineering to obtain 2FA bypass codes</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Package Modification &amp; Publication</h3>
+<p>Once credentials were obtained, the attacker manually published two backdoored versions through legitimate npm accounts. The attack avoided automated detection by:</p>
+<ul>
+<li><strong>No repo commits:</strong> Packages were published directly to npm registry without corresponding GitHub commits</li>
+<li><strong>Minimal diff:</strong> Malicious changes were confined to package.json and a new setup.js file</li>
+<li><strong>Authentic metadata:</strong> Publish records appeared legitimate, matching historical publication patterns</li>
+<li><strong>Rapid spread:</strong> Leveraged axios's enormous ecosystem reach (100M+ weekly downloads)</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Phantom Dependency Mechanism</h3>
+<p>The attack employed a sophisticated obfuscation technique using a phantom dependency:</p>
+<div class="tech-box">
+dependencies: {
+  "plain-crypto-js": "4.2.1"
+}</div>
+<p>This package <span class="code-inline">plain-crypto-js@4.2.1</span> never existed on npm prior to this attack and was never actually imported by axios. The phantom dependency served as a secondary infection vector, ensuring that installations using npm's dependency resolution would fetch additional malicious code from attacker-controlled npm registries or mirrors.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Postinstall Script Execution</h3>
+<p>The malicious setup.js file was configured as a postinstall script, executing automatically upon package installation:</p>
+<div class="tech-box">"scripts": {
+  "postinstall": "node setup.js"
+}</div>
+<p>This design pattern ensures payload execution before any user code verification or dependency analysis occurs, maximizing success rates even on systems with basic npm security configurations.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Obfuscation &amp; Anti-Analysis</h3>
+<p>The malicious setup.js employed multiple obfuscation techniques:</p>
+<ul>
+<li><strong>XOR Encryption:</strong> Payload instructions encrypted with custom XOR cipher using static keys</li>
+<li><strong>Base64 Encoding:</strong> Multi-layer encoding to prevent string pattern matching</li>
+<li><strong>Runtime Decryption:</strong> Payload decoded in memory, leaving minimal artifacts on disk</li>
+<li><strong>Self-Cleanup:</strong> Script removes itself and temporary files after execution</li>
+<li><strong>Environment Detection:</strong> Platform detection logic to select appropriate payload</li>
+</ul>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Timeline</h2>
+            <div class="section-content">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">March 31, 2026<br/>~00:21 UTC</div>
+<div class="timeline-event">
+<strong>Malicious axios@1.14.1 published</strong>
+<p>Attacker publishes backdoored version tagged as "latest" release. Package immediately begins propagating to systems with automated dependency resolution.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 31, 2026<br/>~00:21 UTC</div>
+<div class="timeline-event">
+<strong>Malicious axios@0.30.4 published</strong>
+<p>Legacy version also backdoored and published with same payload architecture. Targets installations pinned to older axios versions.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 31, 2026<br/>~03:30 UTC</div>
+<div class="timeline-event">
+<strong>npm Security Team quarantines packages</strong>
+<p>npm Trust &amp; Safety team identifies malicious activity, removes packages from registry, and begins remediation. Exposure window: approximately 3 hours.</p>
+</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">March 31, 2026<br/>~06:00 UTC</div>
+<div class="timeline-event">
+<strong>Public disclosure and coordinated response</strong>
+<p>npm publishes incident notice. Security vendors, cloud platforms, and development teams initiate detection and mitigation efforts.</p>
+</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Remediation &amp; Mitigation</h2>
+            <div class="section-content">
+<div class="section-content">
+<div class="subsection">
+<h3 class="subsection-title">Immediate Actions</h3>
+<ul>
+<li><strong>Identify Compromised Installations:</strong> Search package.json, package-lock.json, and yarn.lock for axios@1.14.1 or axios@0.30.4</li>
+<li><strong>Upgrade to Safe Versions:</strong> Upgrade to axios ≤1.14.0 or ≥1.14.2</li>
+<li><strong>Remove Phantom Dependency:</strong> Search all package.json files for "plain-crypto-js" and remove any references</li>
+<li><strong>Rebuild Deployments:</strong> Rebuild and redeploy all affected applications from clean source</li>
+<li><strong>Container Registry Cleanup:</strong> Delete container images built during exposure window; rebuild from safe base layers</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Network Detection</h3>
+<ul>
+<li>Monitor for outbound connections to <span class="code-inline">sfrclak[.]com</span> or <span class="code-inline">142.11.206.73:8000</span></li>
+<li>Detect HTTP requests with User-Agent "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"</li>
+<li>Alert on regular 60-second beacon patterns to external IPs on port 8000</li>
+<li>Monitor AstrillVPN exit node connections from internal systems</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Host-Based Detection</h3>
+<ul>
+<li>Search for setup.js or .npm_* files in /tmp, /var/tmp, ~/.npm directories</li>
+<li>Check for suspicious postinstall scripts in installed packages</li>
+<li>Monitor for new process spawn from npm postinstall hooks</li>
+<li>macOS: Audit ~/Library/LaunchAgents/ for suspicious launch agents</li>
+<li>Windows: Inspect HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run for new entries created during exposure window</li>
+<li>Review security logs for UAC bypass attempts and privilege escalation indicators</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Incident Response</h3>
+<ul>
+<li><strong>Assume Compromise:</strong> Any system running axios@1.14.1 or @0.30.4 during exposure window should be considered compromised</li>
+<li><strong>Isolate Affected Systems:</strong> Disconnect from network pending forensic investigation</li>
+<li><strong>Credential Rotation:</strong> Rotate all credentials, SSH keys, API tokens on affected systems</li>
+<li><strong>Forensic Capture:</strong> Preserve memory dumps, process snapshots for threat hunting and attribution</li>
+<li><strong>Supply Chain Assessment:</strong> Audit dependencies for additional compromised packages</li>
+<li><strong>Notification:</strong> Notify customers, partners, regulators per incident response procedures</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Long-Term Hardening</h3>
+<ul>
+<li>Implement strict package version pinning in package-lock.json</li>
+<li>Disable postinstall scripts unless absolutely necessary: <span class="code-inline">npm install --ignore-scripts</span></li>
+<li>Use npm audit and supply chain security scanning (Snyk, Black Duck, etc.)</li>
+<li>Implement code signing verification for npm packages</li>
+<li>Consider private npm registry mirrors with content verification</li>
+<li>Maintain software bill of materials (SBOM) for all deployments</li>
+<li>Implement network egress controls to prevent unauthorized C2 communications</li>
+</ul>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section">
+            <h2 class="section-title">Indicators of Compromise</h2>
+            <div class="section-content">
+<div class="ioc-group">
+<div class="ioc-header">Command &amp; Control Infrastructure</div>
+<div class="ioc-item">
+<div class="ioc-label">C2 Domain</div>
+<div class="ioc-value">sfrclak[.]com</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">C2 IP Address</div>
+<div class="ioc-value">142.11.206.73</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">C2 Port</div>
+<div class="ioc-value">8000 (HTTP)</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Protocol</div>
+<div class="ioc-value">HTTP with Base64-encoded JSON</div>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-header">Network Indicators</div>
+<div class="ioc-item">
+<div class="ioc-label">VPN Infrastructure</div>
+<div class="ioc-value">AstrillVPN exit nodes (linked to UNC1069 previous operations)</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Beacon Interval</div>
+<div class="ioc-value">60-second check-in to C2</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">User-Agent String</div>
+<div class="ioc-value">Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko</div>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-header">Filesystem Indicators</div>
+<div class="ioc-item">
+<div class="ioc-label">macOS Temp Directory</div>
+<div class="ioc-value">/Library/Caches/com.apple.act.mond/</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Linux Temp Paths</div>
+<div class="ioc-value">/tmp/.npm_*, /var/tmp/.npm_*</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Windows Persistence</div>
+<div class="ioc-value">HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run</div>
+</div>
+</div>
+<div class="ioc-group">
+<div class="ioc-header">Package Indicators</div>
+<div class="ioc-item">
+<div class="ioc-label">Phantom Dependency</div>
+<div class="ioc-value">plain-crypto-js@4.2.1 in package.json</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Suspicious Setup Script</div>
+<div class="ioc-value">setup.js with postinstall hook in axios versions 1.14.1 and 0.30.4</div>
+</div>
+</div>
+            </div>
+          </section>
+          <section class="section orphan-content">
+            <h2 class="section-title">Other Content Preserved</h2>
+            <div class="section-content">
+              <!-- FIXME: P1 — Orphan sections preserved during normalization. -->
+              <!-- These H2s did not match the v1.0 controlled vocabulary. -->
+              <!-- Editor must recategorize content into appropriate canonical sections. -->
+              <p style="font-style: italic; color: var(--muted); border-left: 2px solid var(--trust-amber); padding-left: 12px; margin-bottom: 16px;">The following content was preserved from the original article. Its section titles did not match the v1.0 controlled vocabulary and need to be recategorized into one of the canonical sections (Executive Summary, Technical Analysis, Attack Chain, MITRE ATT&amp;CK Mapping, Impact Assessment, Timeline, Remediation &amp; Mitigation, Indicators of Compromise, Discrepancies Across Disclosures, Historical Context).</p>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Payload Architecture</h3>
+              <div class="section-content">
+<p>The attack implements a sophisticated 3-stage infection chain with platform-specific final payloads:</p>
+</div>
+<div class="attack-flow">
+<div class="attack-stage">
+<div class="stage-number">Stage 1</div>
+<div class="stage-title">Phantom Dependency Injection</div>
+<div class="stage-description">
+                                Package.json declares non-existent <span class="code-inline">plain-crypto-js@4.2.1</span> as dependency. npm's resolution mechanism attempts to fetch from registry, introducing second-stage dropper.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 2</div>
+<div class="stage-title">SILKBELL Dropper</div>
+<div class="stage-description">
+                                setup.js executes on postinstall. Decrypts and unpacks platform detection logic. Identifies host OS (Windows, macOS, Linux) and selects appropriate Stage 3 payload. Self-destructs after execution to minimize forensic evidence.
+                            </div>
+</div>
+<div class="attack-stage">
+<div class="stage-number">Stage 3</div>
+<div class="stage-title">Platform-Specific RAT Payloads</div>
+<div class="stage-description">
+<strong>Windows:</strong> PowerShell-based malware with in-memory PE injection<br/>
+<strong>macOS:</strong> Compiled C++ Mach-O binary with persistence mechanisms<br/>
+<strong>Linux:</strong> Python backdoor implementing WAVESHAPER.V2 RAT
+                            </div>
+</div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">WAVESHAPER.V2 RAT Analysis</h3>
+              <div class="section-content">
+<p>The Linux payload represents an evolved version of WAVESHAPER, a RAT attributed to UNC1069 in previous operations. WAVESHAPER.V2 introduces enhanced reconnaissance capabilities while maintaining backward compatibility with UNC1069's existing command and control infrastructure.</p>
+<div class="subsection">
+<h3 class="subsection-title">Reconnaissance Capabilities</h3>
+<p>Upon initial execution, WAVESHAPER.V2 performs comprehensive system enumeration:</p>
+<ul>
+<li><strong>System Information:</strong> Hostname, OS version, kernel details</li>
+<li><strong>User Context:</strong> Current username, UID, group memberships</li>
+<li><strong>Network Configuration:</strong> MAC addresses, IP configuration, routing tables</li>
+<li><strong>Process Enumeration:</strong> Running processes, child process trees, command lines</li>
+<li><strong>Boot Time:</strong> System uptime and installation timestamp</li>
+<li><strong>Software Inventory:</strong> Installed packages and versions (package manager enumeration)</li>
+<li><strong>Privilege Level Detection:</strong> Verification of sudo privileges and potential privilege escalation paths</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Command &amp; Control Beaconing</h3>
+<div class="tech-box">C2 Domain: sfrclak[.]com
+IP Address: 142.11.206.73
+Port: 8000 (HTTP)
+Beacon Interval: 60 seconds
+Protocol: HTTP with Base64-encoded JSON payloads</div>
+<p>WAVESHAPER.V2 establishes outbound HTTP connections to attacker-controlled C2 servers every 60 seconds, transmitting gathered system metadata in Base64-encoded JSON format. The User-Agent string mimics Internet Explorer 11 to blend with legitimate enterprise traffic patterns:</p>
+<div class="tech-box">User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Remote Code Execution</h3>
+<p>WAVESHAPER.V2 receives and executes arbitrary shell commands from C2:</p>
+<ul>
+<li>Commands decoded from Base64-encoded C2 instructions</li>
+<li>Execution context: inherited user privileges</li>
+<li>Output captured and transmitted back to C2 server</li>
+<li>Support for long-running processes and background execution</li>
+<li>Session management with unique beacon IDs</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Windows Compatibility Features</h3>
+<p>The Windows variant (PowerShell dropper) implements:</p>
+<ul>
+<li><strong>In-Memory PE Injection:</strong> Injects .NET assemblies directly into running processes</li>
+<li><strong>UAC Bypass:</strong> Attempts privilege escalation through UAC token duplication</li>
+<li><strong>Persistence:</strong> Registry Run keys, scheduled tasks, Windows Management Instrumentation (WMI) event subscriptions</li>
+<li><strong>Living-Off-The-Land:</strong> Abuse of native Windows utilities (wmiexec, psexec emulation)</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">macOS Capabilities</h3>
+<p>The macOS Mach-O binary variant includes:</p>
+<ul>
+<li>Persistence through launch agents in <span class="code-inline">~/Library/LaunchAgents/</span></li>
+<li>Kernel-level privilege escalation attempts</li>
+<li>Codesign bypass for native code execution</li>
+<li>Credential theft from macOS Keychain</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Evolution from Original WAVESHAPER</h3>
+<p>WAVESHAPER.V2 represents significant improvements over the original variant:</p>
+<ul>
+<li><strong>Enhanced Stealth:</strong> Reduced logging, improved anti-detection mechanisms</li>
+<li><strong>Better C2 Resilience:</strong> DNS-over-HTTPS support, proxy awareness</li>
+<li><strong>Expanded Reconnaissance:</strong> Additional system profiling for targeting decisions</li>
+<li><strong>Modular Architecture:</strong> Ability to load additional modules from C2</li>
+<li><strong>Cross-Platform Consistency:</strong> Unified command interface across Windows, macOS, Linux</li>
+</ul>
+</div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Affected Packages &amp; Downstream Impact</h3>
+              <div class="section-content">
+<p>The blast radius of this supply chain attack extends across virtually all modern web applications and services.</p>
+<div class="subsection">
+<h3 class="subsection-title">Directly Compromised Packages</h3>
+<div class="ioc-group">
+<div class="ioc-header">Malicious Versions</div>
+<div class="ioc-item">
+<div class="ioc-label">Package</div>
+<div class="ioc-value">axios@1.14.1</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Weekly Downloads (typical)</div>
+<div class="ioc-value">100+ million</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Exposure Window</div>
+<div class="ioc-value">~3 hours (00:21 - 03:30 UTC March 31)</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Package</div>
+<div class="ioc-value">axios@0.30.4</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Weekly Downloads (typical)</div>
+<div class="ioc-value">83+ million</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Package</div>
+<div class="ioc-value">plain-crypto-js@4.2.1</div>
+</div>
+<div class="ioc-item">
+<div class="ioc-label">Status</div>
+<div class="ioc-value">Phantom dependency (never legitimately published)</div>
+</div>
+</div>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Downstream Impact - Affected Frameworks &amp; Tools</h3>
+<p>Axios is a critical dependency for countless projects. Estimated affected categories include:</p>
+<ul>
+<li><strong>Web Frameworks:</strong> Next.js, Nuxt.js, React applications, Vue.js projects</li>
+<li><strong>Server-Side:</strong> Node.js APIs, Express middleware, Fastify applications</li>
+<li><strong>Development Tools:</strong> Webpack plugins, Vite plugins, Gulp/Grunt tasks</li>
+<li><strong>Cloud Platforms:</strong> AWS Lambda functions, Azure Functions, Google Cloud Functions</li>
+<li><strong>Desktop Applications:</strong> Electron applications</li>
+<li><strong>CI/CD Pipelines:</strong> GitHub Actions, GitLab CI, Jenkins automation</li>
+<li><strong>Container Orchestration:</strong> Docker images with Node.js base layers</li>
+<li><strong>Microservices:</strong> Service-to-service communication libraries</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Installation Vector Analysis</h3>
+<p>Because axios typically installs with <span class="code-inline">npm install --save</span> and <span class="code-inline">npm install</span> without version pinning (caret/tilde ranges), many organizations would have automatically pulled the malicious versions unless using strict version locking:</p>
+<div class="tech-box">"axios": "^1.14.0"  → pulls 1.14.1 (MALICIOUS)
+"axios": "~1.14.0"  → pulls 1.14.1 (MALICIOUS)
+"axios": "*"        → pulls latest (1.14.1 MALICIOUS)</div>
+<p>Only strict pinning prevented automatic compromise:</p>
+<div class="tech-box">"axios": "1.14.0"  → safe (no auto-update)</div>
+</div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">Attribution</h3>
+              <div class="section-content">
+<p><strong>Google Threat Intelligence Group (GTIG) has formally attributed this attack to UNC1069</strong> with high confidence through multiple independent indicators:</p>
+<div class="subsection">
+<h3 class="subsection-title">Formal Attribution &amp; Attack Details</h3>
+<p>On April 2, 2026, Google Cloud and GTIG formally attributed the axios npm supply chain attack to UNC1069, a North Korea-nexus threat actor with financial motivations active since 2018. The attack was executed via highly-targeted social engineering, with the attacker posing as the founder of a well-known company to compromise the axios maintainer's credentials. The malware deployed was identified as WAVESHAPER.V2, an evolved variant of the WAVESHAPER remote access trojan.</p>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Technical Attribution Vectors</h3>
+<ul>
+<li><strong>WAVESHAPER.V2 Malware:</strong> The deployed payload is WAVESHAPER.V2, a sophisticated RAT exclusively attributed to UNC1069 representing a clear evolution of WAVESHAPER variants documented in previous operations dating to 2023.</li>
+<li><strong>C2 Infrastructure Links:</strong> Domain sfrclak[.]com and IP 142.11.206.73 directly correlate with known UNC1069 infrastructure based on WHOIS data, SSL certificate chains, and passive DNS records.</li>
+<li><strong>VPN Node Reuse:</strong> Attacker egress through AstrillVPN nodes previously identified in UNC1069 campaigns (Lazarus Group VPN provider of choice for DPRK threat actors).</li>
+<li><strong>Payload Architecture:</strong> Three-stage infection chain, platform-specific payloads, and obfuscation techniques match UNC1069's established patterns.</li>
+<li><strong>Operational Security:</strong> Time zone indicators (UTC timing, 00:21 initial publication) align with known UNC1069 operational windows.</li>
+<li><strong>Social Engineering Methodology:</strong> Sophisticated credential compromise via targeted social engineering posing as corporate founder aligns with UNC1069's advanced operational tactics.</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Threat Actor Profile: UNC1069</h3>
+<ul>
+<li><strong>Nexus:</strong> North Korea-aligned, suspected Lazarus Group affiliate or subordinate element</li>
+<li><strong>Active Since:</strong> 2018, with campaigns documented across multiple industry verticals</li>
+<li><strong>Motivation:</strong> Financial cybercrime, cryptocurrency theft, intellectual property acquisition</li>
+<li><strong>Specialization:</strong> Supply chain attacks, software infrastructure targeting, cryptocurrency exchange operations</li>
+<li><strong>Notable Operations:</strong> Previous npm package compromises, PyPI attacks, enterprise software supply chain infiltration</li>
+<li><strong>Infrastructure Preference:</strong> Premium VPN services, bulletproof hosters, decentralized C2 patterns</li>
+<li><strong>Operational Sophistication:</strong> High (custom tools, evasion techniques, rapid iteration, targeted social engineering)</li>
+</ul>
+</div>
+<div class="subsection">
+<h3 class="subsection-title">Confidence Assessment</h3>
+<p><strong>Attribution Confidence: HIGH (&gt;90%)</strong></p>
+<p>Attribution is supported by direct technical connections (WAVESHAPER tooling, C2 infrastructure), behavioral patterns (VPN usage, timing), and corroborating intelligence from multiple security vendors independently reaching UNC1069 conclusions.</p>
+</div>
+</div>
+              <h3 style="color: var(--white); margin-top: 24px; margin-bottom: 12px;">References &amp; Further Reading</h3>
+              <div class="reference-item">
+<a class="reference-link" href="https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package">Google Cloud Blog: North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package</a>
+<span class="reference-source">Google Cloud Threat Intelligence, April 2, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/">Microsoft Security Blog: Mitigating the Axios npm supply chain compromise</a>
+<span class="reference-source">Microsoft Security Response Center, April 1, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.elastic.co/security-labs/axios-one-rat-to-rule-them-all">Elastic Security Labs: Inside the Axios supply chain compromise</a>
+<span class="reference-source">Elastic Security Research, April 3, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/">Snyk Blog: Axios npm Package Compromised</a>
+<span class="reference-source">Snyk Security Research, April 2, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.huntress.com/blog/supply-chain-compromise-axios-npm-package">Huntress: Supply Chain Compromise of axios npm Package</a>
+<span class="reference-source">Huntress Labs, April 1, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.tenable.com/blog/faq-about-the-axios-npm-supply-chain-attack-by-north-korea-nexus-threat-actor-unc1069">Tenable FAQ: Axios npm Supply Chain Attack FAQ</a>
+<span class="reference-source">Tenable Security Research, April 4, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://blog.google/threat-intelligence/unc1069-axios-npm-supply-chain/">Google Cloud Blog: UNC1069 npm Supply Chain Attack (Original)</a>
+<span class="reference-source">Google Threat Intelligence Group, March 31, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.npmjs.com/advisories/unc1069-axios">npm Security Advisory: axios Compromise</a>
+<span class="reference-source">npm Trust &amp; Safety Team, March 31, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.huntress.com/blog/axios-npm-unc1069-analysis">Huntress: Technical Analysis of Axios Compromise</a>
+<span class="reference-source">Huntress Labs, April 1, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://snyk.io/blog/axios-npm-supply-chain-attack/">Snyk: Supply Chain Risk Assessment</a>
+<span class="reference-source">Snyk Security Research, April 1, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.securityweek.com/unc1069-axios-npm-package-attack/">SecurityWeek: Axios Attack - Supply Chain Lessons</a>
+<span class="reference-source">SecurityWeek, April 2, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.elastic.co/security-labs/waveshaper-v2-analysis">Elastic Security Labs: WAVESHAPER.V2 Technical Deep Dive</a>
+<span class="reference-source">Elastic Security Research, April 2, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.mandiant.com/blog/unc1069-infrastructure-analysis">Mandiant: UNC1069 Infrastructure and Attribution</a>
+<span class="reference-source">Mandiant Threat Intelligence, April 3, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://github.com/axios/axios/security/advisories">Axios GitHub Security Advisory</a>
+<span class="reference-source">Axios Project Maintainers, March 31, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="https://www.cisa.gov/alerts/unc1069-npm-compromise">CISA Alert: UNC1069 npm Package Supply Chain Attack</a>
+<span class="reference-source">U.S. Cybersecurity &amp; Infrastructure Security Agency, April 1, 2026</span>
+</div>
+<div class="reference-item">
+<a class="reference-link" href="index.html">Related Incident: TeamPCP Cryptocurrency Theft Campaign</a>
+<span class="reference-source">Threatpedia Incident Database</span>
+</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Classification</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Type</span>
+              <span class="sidebar-row-value">supply-chain</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Sector</span>
+              <span class="sidebar-row-value">Technology / Open Source</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Geography</span>
+              <span class="sidebar-row-value">Global</span>
+            </div>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Threat Actor</h3>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Actor</span>
+              <span class="sidebar-row-value">UNC1069</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-row-label">Attribution</span>
+              <span class="sidebar-row-value">A6 — Unknown *</span>
+            </div>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">
+              * Admiralty confidence requires editorial review
+            </p>
+          </div>
+          <div class="sidebar-box">
+            <h3 class="sidebar-title">Related Incidents</h3>
+            <a class="sidebar-link" href="teampcp-supply-chain-attack.html">Teampcp Supply Chain Attack</a>
+            <a class="sidebar-link" href="european-commission-trivy-breach-2026.html">European Commission Trivy Breach 2026</a>
+            <a class="sidebar-link" href="trivy-cve-2026-33634.html">Trivy Cve 2026 33634</a>
+          </div>
+        </aside>
+      </div>
+
+      <section class="references">
+        <h2 class="references-title">Sources &amp; References</h2>
+        <div class="references-list">
+            <div class="reference-item">
+              <span class="reference-publisher">cloud.google.com</span> — Google Cloud Blog: North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package
+              <br><a href="https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package" target="_blank" rel="noopener">https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Microsoft</span> — Microsoft Security Blog: Mitigating the Axios npm supply chain compromise
+              <br><a href="https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/" target="_blank" rel="noopener">https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">elastic.co</span> — Elastic Security Labs: Inside the Axios supply chain compromise
+              <br><a href="https://www.elastic.co/security-labs/axios-one-rat-to-rule-them-all" target="_blank" rel="noopener">https://www.elastic.co/security-labs/axios-one-rat-to-rule-them-all</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">snyk.io</span> — Snyk Blog: Axios npm Package Compromised
+              <br><a href="https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/" target="_blank" rel="noopener">https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">huntress.com</span> — Huntress: Supply Chain Compromise of axios npm Package
+              <br><a href="https://www.huntress.com/blog/supply-chain-compromise-axios-npm-package" target="_blank" rel="noopener">https://www.huntress.com/blog/supply-chain-compromise-axios-npm-package</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Tenable</span> — Tenable FAQ: Axios npm Supply Chain Attack FAQ
+              <br><a href="https://www.tenable.com/blog/faq-about-the-axios-npm-supply-chain-attack-by-north-korea-nexus-threat-actor-unc1069" target="_blank" rel="noopener">https://www.tenable.com/blog/faq-about-the-axios-npm-supply-chain-attack-by-north-korea-nexus-threat-actor-unc1069</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">blog.google</span> — Google Cloud Blog: UNC1069 npm Supply Chain Attack (Original)
+              <br><a href="https://blog.google/threat-intelligence/unc1069-axios-npm-supply-chain/" target="_blank" rel="noopener">https://blog.google/threat-intelligence/unc1069-axios-npm-supply-chain/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">npmjs.com</span> — npm Security Advisory: axios Compromise
+              <br><a href="https://www.npmjs.com/advisories/unc1069-axios" target="_blank" rel="noopener">https://www.npmjs.com/advisories/unc1069-axios</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">huntress.com</span> — Huntress: Technical Analysis of Axios Compromise
+              <br><a href="https://www.huntress.com/blog/axios-npm-unc1069-analysis" target="_blank" rel="noopener">https://www.huntress.com/blog/axios-npm-unc1069-analysis</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">snyk.io</span> — Snyk: Supply Chain Risk Assessment
+              <br><a href="https://snyk.io/blog/axios-npm-supply-chain-attack/" target="_blank" rel="noopener">https://snyk.io/blog/axios-npm-supply-chain-attack/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">SecurityWeek</span> — SecurityWeek: Axios Attack - Supply Chain Lessons
+              <br><a href="https://www.securityweek.com/unc1069-axios-npm-package-attack/" target="_blank" rel="noopener">https://www.securityweek.com/unc1069-axios-npm-package-attack/</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">elastic.co</span> — Elastic Security Labs: WAVESHAPER.V2 Technical Deep Dive
+              <br><a href="https://www.elastic.co/security-labs/waveshaper-v2-analysis" target="_blank" rel="noopener">https://www.elastic.co/security-labs/waveshaper-v2-analysis</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">Mandiant</span> — Mandiant: UNC1069 Infrastructure and Attribution
+              <br><a href="https://www.mandiant.com/blog/unc1069-infrastructure-analysis" target="_blank" rel="noopener">https://www.mandiant.com/blog/unc1069-infrastructure-analysis</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">github.com</span> — Axios GitHub Security Advisory
+              <br><a href="https://github.com/axios/axios/security/advisories" target="_blank" rel="noopener">https://github.com/axios/axios/security/advisories</a>
+            </div>
+            <div class="reference-item">
+              <span class="reference-publisher">CISA</span> — CISA Alert: UNC1069 npm Package Supply Chain Attack
+              <br><a href="https://www.cisa.gov/alerts/unc1069-npm-compromise" target="_blank" rel="noopener">https://www.cisa.gov/alerts/unc1069-npm-compromise</a>
+            </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <!-- Required asset includes (v1.0 §14, RULE-025) -->
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+  <script src="../assets/js/glossary-tooltips.js" defer></script>
+</body>
+</html>
