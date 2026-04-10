@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>Medusa | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,30 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="medusaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- Snake/medusa tentacles -->
+                <path d="M 80 80 Q 60 50 50 60 Q 40 70 55 75" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <path d="M 100 70 Q 100 40 90 45 Q 80 50 90 60" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <path d="M 120 80 Q 140 50 150 60 Q 160 70 145 75" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <!-- Face/skull -->
+                <circle cx="100" cy="105" r="30" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="90" cy="98" r="5" fill="#e8a020" opacity="0.6"/>
+                <circle cx="110" cy="98" r="5" fill="#e8a020" opacity="0.6"/>
+                <!-- Lock symbol (ransomware) -->
+                <rect x="92" y="112" width="16" height="12" rx="2" fill="#e8a020" opacity="0.5"/>
+                <path d="M 95 112 L 95 107 Q 100 100 105 107 L 105 112" fill="none" stroke="#e8a020" stroke-width="1.5"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>Medusa</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                Storm-1175 (Microsoft), Medusa Ransomware Group
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +647,90 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>Medusa</strong> is a financially motivated ransomware group tracked by Microsoft as <strong>Storm-1175</strong>. Active since June 2021 with a significant operational spike beginning in 2023, Medusa operates a <strong>Ransomware-as-a-Service (RaaS)</strong> platform employing a <strong>double extortion</strong> model — encrypting victim data while simultaneously stealing it for leverage. The group maintains a dedicated dark web leak site where stolen data is published when ransom demands are not met.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>Medusa is notable for its <strong>rapid exploitation capability</strong>, with Microsoft reporting that the group can move from initial access to ransomware deployment within <strong>24 hours</strong>. The group aggressively targets N-day vulnerabilities during the patch adoption window, chaining exploits for persistence and lateral movement. Recent activity has been linked to China-based infrastructure, though the group's operational composition appears multinational.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>In 2026, Medusa has been particularly active in the healthcare and government sectors, executing high-impact attacks against <strong>Passaic County, New Jersey</strong> (demanding $800K ransom), the <strong>University of Mississippi Medical Center</strong> (causing a 20% revenue drop), and other critical organizations. CISA issued a dedicated advisory (AA25-071A) warning of Medusa's growing threat to critical infrastructure.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
+                                <span class="ttp-technique">T1566: Phishing</span>
                                 <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                                <span class="ttp-technique">T1133: External Remote Services</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                                <span class="ttp-technique">T1059.001: PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Windows Command Shell</span>
+                                <span class="ttp-technique">T1047: WMI</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1003: OS Credential Dumping (Mimikatz)</span>
+                                <span class="ttp-technique">T1110: Brute Force</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Discovery:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1135: Network Share Discovery</span>
+                                <span class="ttp-technique">T1047: WMI</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1021.001: Remote Desktop Protocol</span>
+                                <span class="ttp-technique">T1569.002: Service Execution (PsExec)</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
-                            </div>
-                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
-                            <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
+                                <span class="ttp-technique">T1562.001: Impair Defenses - Disable or Modify Tools</span>
+                                <span class="ttp-technique">T1548.002: UAC Bypass via COM</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1567.002: Exfiltration to Cloud Storage (Rclone)</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>Vulnerability Exploitation:</strong> Rapid exploitation of N-day vulnerabilities in web-facing applications, particularly during the patch adoption window. Known to chain multiple exploits for persistence.</li>
+                            <li><strong>Phishing Campaigns:</strong> Spear-phishing emails with malicious attachments or links targeting employees of healthcare, government, and education organizations.</li>
+                            <li><strong>RDP Brute Force:</strong> Large-scale credential brute force attacks against exposed Remote Desktop Protocol services.</li>
+                            <li><strong>Living-off-the-Land:</strong> Extensive use of native Windows tools (PowerShell, WMI, PsExec) for lateral movement and execution to avoid detection.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>Medusa Ransomware:</strong> Custom ransomware payload with AES-256 encryption. Deploys rapidly with the ability to go from initial access to full encryption within 24 hours.</li>
+                            <li><strong>Mimikatz:</strong> Credential dumping tool for extracting passwords, hashes, and Kerberos tickets from Windows systems.</li>
+                            <li><strong>PsExec:</strong> Microsoft Sysinternals tool used for remote command execution and lateral movement across Windows networks.</li>
+                            <li><strong>Rclone:</strong> Open-source cloud storage synchronization tool abused for large-scale data exfiltration to attacker-controlled cloud storage.</li>
+                            <li><strong>Bandizip:</strong> File archiving tool used to compress stolen data before exfiltration.</li>
+                            <li><strong>Encoded PowerShell Scripts:</strong> Obfuscated PowerShell for defense evasion and automated task execution.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>Dark Web Leak Site:</strong> Dedicated Tor-hosted platform for publishing stolen data from non-paying victims and managing extortion negotiations.</li>
+                            <li><strong>RaaS Infrastructure:</strong> Affiliate program providing ransomware payloads, negotiation portals, and operational support to partner operators.</li>
+                            <li><strong>Cloud Exfiltration Staging:</strong> Abuse of legitimate cloud storage services (via Rclone) for staging and transferring stolen data.</li>
+                            <li><strong>China-Linked Infrastructure:</strong> Recent operations linked to China-based IP addresses and infrastructure, per Microsoft threat intelligence.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +738,21 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>Medusa targets organizations across healthcare, government, and education — sectors with critical data and high ransom payment incentive:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Government / Municipal</td><td>Passaic County, NJ — $800K ransom demand, county services disrupted. <a href="../incidents/passaic-county-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Healthcare</td><td>University of Mississippi Medical Center — 20% revenue drop, clinic shutdowns, Epic EHR disrupted. <a href="../incidents/ummc-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Education</td><td>Minneapolis Public Schools — 100GB+ stolen, 189K files including sensitive student data leaked</td></tr>
+                            <tr><td>Financial Services</td><td>Multiple financial institutions targeted across US, UK, Australia</td></tr>
+                            <tr><td>Professional Services</td><td>Law firms, accounting firms, and consulting organizations</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +762,45 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">Jun 2021</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Group Emergence</div>
+                                <div class="timeline-event-detail">Medusa ransomware operations begin, initially with limited activity and a smaller victim count.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">2023</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Operational Spike</div>
+                                <div class="timeline-event-detail">Significant increase in activity. Minneapolis Public Schools attacked (100GB+ data leaked). Group establishes dedicated dark web leak site and scales RaaS operations.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
+<div class="timeline-item">
+                            <div class="timeline-date">2024</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Healthcare Focus</div>
+                                <div class="timeline-event-detail">Escalating attacks against healthcare organizations. Microsoft begins tracking as Storm-1175 and documents rapid 24-hour exploitation capability.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2025</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
+<div class="timeline-item">
                             <div class="timeline-date">Feb 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>UMMC Attack</div>
+                                <div class="timeline-event-detail">Compromises University of Mississippi Medical Center, causing 20% revenue drop, clinic shutdowns, and Epic EHR disruption. <a href="../incidents/ummc-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Passaic County Attack</div>
+                                <div class="timeline-event-detail">Attacks Passaic County, New Jersey demanding $800K ransom. County services severely disrupted. <a href="../incidents/passaic-county-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>CISA Advisory Issued</div>
+                                <div class="timeline-event-detail">CISA publishes advisory AA25-071A warning of Medusa ransomware threat to critical infrastructure, providing detection guidance and IOCs.</div>
                             </div>
                         </div>
                     </div>
@@ -845,10 +809,8 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -860,40 +822,22 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-10035" class="cve-link" target="_blank">CVE-2025-10035</a></td>
+                                <td>Remote Code Execution in GoAnywhere MFT</td>
+                                <td>Fortra GoAnywhere MFT</td>
                                 <td>9.8</td>
                             </tr>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-23760" class="cve-link" target="_blank">CVE-2026-23760</a></td>
+                                <td>Authentication Bypass in SmarterMail</td>
+                                <td>SmarterMail</td>
+                                <td>9.1</td>
                             </tr>
                             <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-31324" class="cve-link" target="_blank">CVE-2025-31324</a></td>
+                                <td>Remote Code Execution in SAP NetWeaver</td>
+                                <td>SAP NetWeaver</td>
                                 <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
                             </tr>
                         </tbody>
                     </table>
@@ -904,8 +848,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +857,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
-                            </tr>
-                            <tr>
                                 <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
+                                <td>Storm-1175</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
+                                <td class="vendor-name">CISA / US Government</td>
+                                <td>Medusa</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Symantec / Broadcom</td>
+                                <td>Medusa Ransomware</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
+                                <td class="vendor-name">Trend Micro</td>
+                                <td>Medusa</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Palo Alto Unit 42</td>
+                                <td>Medusa</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +886,37 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><a href="lockbit.html" class="actor-link"><strong>LockBit:</strong></a> Rival RaaS operation with overlapping target sectors. Some affiliate crossover has been observed.</li>
+                        <li><a href="cl0p-group.html" class="actor-link"><strong>Cl0p:</strong></a> Another ransomware group known for mass exploitation of file transfer vulnerabilities. Similar targeting of healthcare and government sectors.</li>
+                        <li><strong>MedusaLocker:</strong> Distinct ransomware family — NOT affiliated with Medusa despite the similar name. Different operational infrastructure and TTPs.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>Microsoft Security Blog: Storm-1175 Medusa Operations</strong>
+                            <a href="https://www.microsoft.com/en-us/security/blog/2026/04/06/storm-1175-focuses-gaze-on-vulnerable-web-facing-assets-in-high-tempo-medusa-ransomware-operations/" target="_blank">Microsoft Security</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>CISA Advisory AA25-071A: Medusa Ransomware</strong>
+                            <a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a" target="_blank">CISA</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>The Record: Medusa Ransomware Hits Mississippi Medical Center</strong>
+                            <a href="https://therecord.media/medusa-ransomware-mississippi-cyber" target="_blank">The Record</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
-                        </div>
-                        <div class="reference-item">
-                            <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>The Hacker News: Storm-1175 Zero-Day Exploitation</strong>
+                            <a href="https://thehackernews.com/2026/04/china-linked-storm-1175-exploits-zero.html" target="_blank">The Hacker News</a>
                         </div>
                     </div>
                 </div>
@@ -1003,29 +932,29 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🌐</span>
+                        Unknown (China-linked infrastructure)
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">No — Criminal Enterprise (RaaS)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Financial (Ransomware &amp; Double Extortion)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">June 2021</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Last Seen</div>
-                    <div class="fact-value">2026-Q1</div>
+                    <div class="fact-value">2026-Q2</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +964,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">Storm-1175</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">

@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salt Typhoon | Threatpedia</title>
+    <title>Handala | Threatpedia</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -609,34 +609,26 @@
         <div class="header-logo">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="saltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="handalaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
                         <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
                     </linearGradient>
                 </defs>
-                <!-- China map background -->
                 <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
-                <!-- Stylized China -->
-                <path d="M 70 60 Q 110 55 130 75 L 135 120 Q 120 130 90 135 Q 65 125 60 95 Z" fill="#e8a020" opacity="0.5"/>
-                <!-- Salt crystal pattern -->
-                <g fill="url(#saltGradient)">
-                    <polygon points="95,60 100,75 90,75"/>
-                    <polygon points="110,80 118,95 102,95"/>
-                    <polygon points="85,95 95,115 75,110"/>
-                    <polygon points="115,100 128,120 110,125"/>
-                </g>
-                <!-- Telecom tower concept -->
-                <line x1="100" y1="50" x2="100" y2="150" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
-                <circle cx="100" cy="75" r="8" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="100" r="12" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
-                <circle cx="100" cy="125" r="10" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.7"/>
+                <!-- Wiper/destruction symbol -->
+                <rect x="65" y="65" width="70" height="70" rx="8" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.6"/>
+                <line x1="75" y1="75" x2="125" y2="125" stroke="#e8a020" stroke-width="3" opacity="0.8"/>
+                <line x1="125" y1="75" x2="75" y2="125" stroke="#e8a020" stroke-width="3" opacity="0.8"/>
+                <!-- Iran map hint -->
+                <path d="M 45 95 Q 55 70 75 60" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.4"/>
+                <path d="M 155 95 Q 145 70 125 60" fill="none" stroke="#e8a020" stroke-width="1.5" opacity="0.4"/>
             </svg>
         </div>
         <div class="header-info">
-            <h1>Salt Typhoon</h1>
+            <h1>Handala</h1>
             <div class="header-aliases">
                 <strong>Also known as:</strong><br>
-                LUCKYDOOR, BRONZE CASUAL, Typhoon Serein
+                Void Manticore, Storm-0842, Banished Kitten, Homeland Justice, Karma
             </div>
             <div class="status-badge active">ACTIVE</div>
         </div>
@@ -651,84 +643,74 @@
             <div class="section">
                 <h2 class="section-title">Overview</h2>
                 <div class="section-content">
-                    <p><strong>Salt Typhoon</strong> is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.</p>
+                    <p><strong>Handala</strong> is an Iran-linked hacktivist and destructive cyber operations group attributed to <strong>Void Manticore</strong>, an operational unit within Iran's <strong>Ministry of Intelligence and Security (MOIS)</strong>. Microsoft tracks the underlying APT as <strong>Storm-0842</strong>. The group debuted its public persona in December 2023 and has since conducted over 85 claimed attacks, primarily targeting Israeli infrastructure, with expansion to US, Albanian, Jordanian, and Gulf State targets.</p>
 
-                    <p>Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.</p>
+                    <p>Handala is distinguished by its shift from traditional espionage to <strong>destructive operations</strong>, deploying custom wiper malware and abusing legitimate device management platforms for mass-scale attacks. In March 2026, the group executed its most significant operation — a wiper attack against <strong>Stryker Corporation</strong> that destroyed over 200,000 medical devices across 79 countries by weaponizing Microsoft Intune remote wipe capabilities. The attack was claimed as retaliation for a February 28 missile strike on an Iranian school that killed 175+ people.</p>
 
-                    <p>The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.</p>
+                    <p>The group was supervised by <strong>Seyed Yahya Hosseini Panjaki</strong>, who was killed in early March 2026. Despite this leadership disruption and FBI domain seizures on March 19, 2026, Handala continues operations, demonstrating MOIS institutional resilience. The group represents a significant escalation in Iran's cyber warfare capabilities, particularly the weaponization of enterprise management tools against civilian infrastructure.</p>
                 </div>
             </div>
 
             <!-- TTPs -->
             <div class="section">
-                <h2 class="section-title">Tactics, Techniques & Procedures (TTPs)</h2>
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
                 <div class="section-content">
                     <div class="subsection">
-                        <div class="subsection-title">MITRE ATT&CK Techniques</div>
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
                         <div class="ttp-box">
                             <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1566.002: Phishing - Spearphishing Link</span>
-                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
-                                <span class="ttp-technique">T1199: Trusted Relationship</span>
-                                <span class="ttp-technique">T1195: Supply Chain Compromise</span>
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1078: Valid Accounts</span>
+                                <span class="ttp-technique">T1110: Brute Force</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Persistence:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Privilege Escalation:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1098.001: Account Manipulation</span>
-                                <span class="ttp-technique">T1547.001: Boot or Logon Autostart Execution</span>
-                                <span class="ttp-technique">T1547.011: Plist Modification</span>
+                                <span class="ttp-technique">T1078: Valid Accounts (Compromised Admin Credentials)</span>
+                                <span class="ttp-technique">T1098: Account Manipulation</span>
                             </div>
                             <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1078: Valid Accounts</span>
-                                <span class="ttp-technique">T1562.008: Impair Defenses - Disable Logging</span>
-                                <span class="ttp-technique">T1140: Deobfuscate/Decode Files or Information</span>
+                                <span class="ttp-technique">T1562: Impair Defenses</span>
+                                <span class="ttp-technique">T1036: Masquerading (Hamsa wiper as system updates)</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Collection:</strong></div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
                             <div style="margin-bottom: 12px;">
-                                <span class="ttp-technique">T1557.002: ARP Cache Poisoning</span>
-                                <span class="ttp-technique">T1040: Network Sniffing</span>
-                                <span class="ttp-technique">T1123: Audio Capture</span>
+                                <span class="ttp-technique">T1021.001: Remote Desktop Protocol</span>
+                                <span class="ttp-technique">T1572: Protocol Tunneling</span>
                             </div>
-                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
-                            <div>
-                                <span class="ttp-technique">T1041: Exfiltration Over C2 Channel</span>
-                                <span class="ttp-technique">T1020: Automated Exfiltration</span>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1485: Data Destruction</span>
+                                <span class="ttp-technique">T1561: Disk Wipe (MBR Overwrite)</span>
+                                <span class="ttp-technique">T1529: System Shutdown/Reboot</span>
                             </div>
                         </div>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Common Attack Vectors</div>
                         <ul>
-                            <li><strong>ISP/Telecom Targeting:</strong> Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.</li>
-                            <li><strong>Vendor Relationship Exploitation:</strong> Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.</li>
-                            <li><strong>Credential Harvesting:</strong> Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.</li>
-                            <li><strong>Billing System Compromise:</strong> Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.</li>
-                            <li><strong>Network Access Device Exploitation:</strong> Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.</li>
+                            <li><strong>Device Management Platform Abuse:</strong> Compromised Microsoft 365 Global Admin accounts to weaponize Microsoft Intune for mass remote wipe operations across enterprise device fleets.</li>
+                            <li><strong>Credential Compromise:</strong> Brute force and credential reuse attacks targeting administrative accounts, particularly Global Admin roles in cloud environments.</li>
+                            <li><strong>Spear-Phishing:</strong> Targeted phishing campaigns against organizations in Israel, the US, and allied nations.</li>
+                            <li><strong>Supply Chain Targeting:</strong> Attacking managed service providers and contractors to reach downstream victims.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
-                        <div class="subsection-title">Tools & Malware</div>
+                        <div class="subsection-title">Tools &amp; Malware</div>
                         <ul>
-                            <li><strong>GhostSpider:</strong> Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.</li>
-                            <li><strong>Masol RAT:</strong> Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.</li>
-                            <li><strong>Custom Backdoors:</strong> Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.</li>
-                            <li><strong>Legitimate Remote Access Tools:</strong> Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.</li>
-                            <li><strong>Network Credential Harvesting:</strong> Mimikatz and similar tools for credential extraction from compromised telecom employee systems.</li>
-                            <li><strong>Data Exfiltration Tools:</strong> Custom tools designed to extract call detail records and customer location data from telecom databases.</li>
+                            <li><strong>Handala Wiper:</strong> Windows-based destructive malware that overwrites the Master Boot Record (MBR) and performs systematic file deletion to render systems unrecoverable.</li>
+                            <li><strong>Hamsa Wiper:</strong> Linux-focused wiper that masquerades as legitimate system updates with delayed execution to maximize impact before detection.</li>
+                            <li><strong>Microsoft Intune Weaponization:</strong> Abuse of legitimate enterprise device management to execute remote wipe commands at scale — the primary attack vector in the Stryker incident.</li>
+                            <li><strong>Basic Tunneling Tools:</strong> Standard tunneling and proxy tools for maintaining access and evading network monitoring.</li>
                         </ul>
                     </div>
-
                     <div class="subsection">
                         <div class="subsection-title">Infrastructure Patterns</div>
                         <ul>
-                            <li><strong>Compromised Telecom Infrastructure:</strong> Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.</li>
-                            <li><strong>Legitimate Cloud Services Abuse:</strong> Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.</li>
-                            <li><strong>Domain Hijacking:</strong> Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.</li>
-                            <li><strong>DNS Tunneling:</strong> Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.</li>
+                            <li><strong>Compromised Cloud Infrastructure:</strong> Abuse of legitimate Microsoft 365 and Azure AD environments for attack staging and execution.</li>
+                            <li><strong>Hacktivist Communication Channels:</strong> Public Telegram channels and social media for claiming operations and publishing stolen data.</li>
+                            <li><strong>Domains Seized by FBI:</strong> Multiple command-and-control domains were seized by the FBI on March 19, 2026, though the group has demonstrated ability to reconstitute infrastructure.</li>
                         </ul>
                     </div>
                 </div>
@@ -736,46 +718,22 @@
 
             <!-- Targeted Industries & Organizations -->
             <div class="section">
-                <h2 class="section-title">Targeted Industries & Organizations</h2>
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:</p>
-
+                    <p>Handala primarily targets Israeli and Western organizations, with a focus on critical infrastructure and high-visibility targets:</p>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Sector</th>
-                                <th>Notable Targets / Impact</th>
-                            </tr>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Telecommunications</td>
-                                <td>Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.</td>
-                            </tr>
-                            <tr>
-                                <td>Internet Service Providers</td>
-                                <td>Regional and national ISPs, backbone providers, network infrastructure companies.</td>
-                            </tr>
-                            <tr>
-                                <td>Equipment Vendors</td>
-                                <td>Telecom equipment manufacturers, managed service providers serving telecom sector.</td>
-                            </tr>
-                            <tr>
-                                <td>Government Communications</td>
-                                <td>US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.</td>
-                            </tr>
-                            <tr>
-                                <td>Defense Industrial Base</td>
-                                <td>Defense contractors relying on telecommunications infrastructure, secure communications providers.</td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services</td>
-                                <td>Financial institutions dependent on telecommunications networks for trading and transaction systems.</td>
-                            </tr>
+                            <tr><td>Healthcare / Medical Devices</td><td>Stryker Corporation — 200,000+ devices wiped across 79 countries, Lifenet ECG systems offline, surgical supply ordering disrupted. <a href="../incidents/stryker-handala-wiper-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Defense / Military</td><td>Israeli Defense Forces (IDF) — member data breach (March 2026), defense contractor targeting</td></tr>
+                            <tr><td>Government</td><td>Israeli government agencies, Albanian government (Homeland Justice persona)</td></tr>
+                            <tr><td>Energy / Oil &amp; Gas</td><td>Energy infrastructure targeting in Israel and Gulf States</td></tr>
+                            <tr><td>Telecommunications</td><td>Israeli telecom providers and IT services companies</td></tr>
+                            <tr><td>Transportation</td><td>Airlines, maritime, and transportation infrastructure</td></tr>
                         </tbody>
                     </table>
-
-                    <p><strong>Geographic Focus:</strong> Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.</p>
                 </div>
             </div>
 
@@ -785,58 +743,45 @@
                 <div class="section-content">
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">2022</div>
+                            <div class="timeline-date">2022+</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Initial ISP Targeting Campaign</div>
-                                <div class="timeline-event-detail">Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Void Manticore Operations Begin</div>
+                                <div class="timeline-event-detail">Iran MOIS cyber operations unit begins destructive campaigns under various personas, including Homeland Justice (targeting Albania).</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2022-2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Dec 2023</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Expansion to Major Telecom Carriers</div>
-                                <div class="timeline-event-detail">Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Handala Persona Debuts</div>
+                                <div class="timeline-event-detail">Public hacktivist persona launched, claiming pro-Palestinian motivation. Begins systematic targeting of Israeli organizations.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2023</div>
+<div class="timeline-item">
+                            <div class="timeline-date">2024-2025</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Call Detail Record Harvesting</div>
-                                <div class="timeline-event-detail">Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Sustained Campaign</div>
+                                <div class="timeline-event-detail">Over 85 claimed attacks against Israeli and Western targets, including defense contractors, government agencies, and critical infrastructure.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Oct 2024</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 6, 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Public Disclosure of Telecom Breach</div>
-                                <div class="timeline-event-detail">US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>IDF Data Breach</div>
+                                <div class="timeline-event-detail">Claims breach of Israeli Defense Forces member data, publishing personal information of military personnel.</div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Nov-Dec 2024</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 11, 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Continued Infrastructure Access</div>
-                                <div class="timeline-event-detail">Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.</div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Stryker Medical Device Wiper Attack</div>
+                                <div class="timeline-event-detail">Executes mass wiper attack via compromised Microsoft Intune, destroying 200,000+ Stryker devices across 79 countries. Claimed as retaliation for Feb 28 missile strike. <a href="../incidents/stryker-handala-wiper-2026.html" class="incident-link">Full Report →</a></div>
                             </div>
                         </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">2025</div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 19, 2026</div>
                             <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Ongoing Espionage Operations</div>
-                                <div class="timeline-event-detail">Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.</div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-date">Feb 2026</div>
-                            <div class="timeline-event">
-                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI DCSNet Surveillance System Breach</div>
-                                <div class="timeline-event-detail">Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. <a href="../incidents/fbi-dcsnet-salt-typhoon-2026.html" class="incident-link">Full Report →</a></div>
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>FBI Domain Seizures</div>
+                                <div class="timeline-event-detail">FBI seizes multiple Handala-associated command-and-control domains. Group reconstitutes infrastructure and continues operations.</div>
                             </div>
                         </div>
                     </div>
@@ -845,58 +790,9 @@
 
             <!-- Known Exploits & CVEs -->
             <div class="section">
-                <h2 class="section-title">Known Exploits & CVEs</h2>
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:</p>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>CVE</th>
-                                <th>Vulnerability</th>
-                                <th>Affected Product</th>
-                                <th>CVSS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21887" class="cve-link" target="_blank">CVE-2024-21887</a></td>
-                                <td>Authentication Bypass in Ivanti Connect Secure</td>
-                                <td>Ivanti Connect Secure VPN</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228" class="cve-link" target="_blank">CVE-2021-44228</a></td>
-                                <td>Remote Code Execution in Log4j</td>
-                                <td>Apache Log4j 2.0-2.14.1</td>
-                                <td>10.0</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-46805" class="cve-link" target="_blank">CVE-2023-46805</a></td>
-                                <td>Remote Code Execution in GE Devices</td>
-                                <td>GE Industrial Equipment</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3236" class="cve-link" target="_blank">CVE-2022-3236</a></td>
-                                <td>SQL Injection in Telecom Management Systems</td>
-                                <td>Multiple Telecom Vendors</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-21839" class="cve-link" target="_blank">CVE-2023-21839</a></td>
-                                <td>Remote Code Execution in Cisco IOS XE</td>
-                                <td>Cisco IOS XE Software</td>
-                                <td>9.8</td>
-                            </tr>
-                            <tr>
-                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21540" class="cve-link" target="_blank">CVE-2024-21540</a></td>
-                                <td>Privilege Escalation in Cisco Wireless Controllers</td>
-                                <td>Cisco Catalyst 9100 Series</td>
-                                <td>8.8</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>Handala primarily leverages compromised credentials and legitimate platform abuse rather than software vulnerability exploitation. Their most devastating attack (Stryker) used compromised Microsoft 365 Global Admin credentials to weaponize Microsoft Intune — no CVE exploitation was required.</p>
                 </div>
             </div>
 
@@ -904,8 +800,6 @@
             <div class="section">
                 <h2 class="section-title">Cross-Vendor Naming Reference</h2>
                 <div class="section-content">
-                    <p>Salt Typhoon is tracked by multiple security organizations:</p>
-
                     <table>
                         <thead>
                             <tr>
@@ -915,32 +809,28 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="vendor-name">CISA / US Government</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>Storm-0842</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Microsoft Threat Intelligence</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Check Point Research</td>
+                                <td>Void Manticore / Handala</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Unit 42</td>
+                                <td>Handala</td>
                             </tr>
                             <tr>
                                 <td class="vendor-name">CrowdStrike</td>
-                                <td>BRONZE CASUAL</td>
+                                <td>Banished Kitten</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Mandiant / Google</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">Fortinet FortiGuard</td>
+                                <td>Handala</td>
                             </tr>
                             <tr>
-                                <td class="vendor-name">Palo Alto Networks</td>
-                                <td>LUCKYDOOR</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">Recorded Future</td>
-                                <td>Chinese Ministry of State Security</td>
-                            </tr>
-                            <tr>
-                                <td class="vendor-name">FBI / NSA</td>
-                                <td>Salt Typhoon</td>
+                                <td class="vendor-name">FBI / US Government</td>
+                                <td>Handala</td>
                             </tr>
                         </tbody>
                     </table>
@@ -952,42 +842,43 @@
                 <h2 class="section-title">Related Threat Actors</h2>
                 <div class="section-content">
                     <ul>
-                        <li><strong>Volt Typhoon:</strong> Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.</li>
-                        <li><strong>APT40 (Leviathan):</strong> Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.</li>
-                        <li><strong>APT41:</strong> Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.</li>
+                        <li><strong>Void Manticore:</strong> The parent APT designation for the MOIS unit operating the Handala persona. Conducts both espionage and destructive operations.</li>
+                        <li><strong>Homeland Justice:</strong> Earlier persona used by the same MOIS unit for attacks against Albanian government infrastructure.</li>
+                        <li><strong>Karma:</strong> Additional hacktivist persona attributed to the same operational group.</li>
+                        <li><a href="sandworm.html" class="actor-link"><strong>Sandworm:</strong></a> Russian GRU unit with similar destructive cyber operations doctrine, though no direct collaboration is assessed.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- References -->
             <div class="section">
-                <h2 class="section-title">References & Sources</h2>
+                <h2 class="section-title">References &amp; Sources</h2>
                 <div class="section-content">
                     <div class="references-list">
                         <div class="reference-item">
                             <span class="reference-number">[1]</span>
-                            <strong>CISA & FBI Advisory:</strong> "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            <a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a>
+                            <strong>Check Point Research: Handala Hack — Unveiling the Group's Modus Operandi</strong>
+                            <a href="https://research.checkpoint.com/2026/handala-hack-unveiling-groups-modus-operandi/" target="_blank">Check Point Research</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[2]</span>
-                            <strong>FBI Public Service Announcement:</strong> "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            <a href="https://www.fbi.gov" target="_blank">FBI Public Affairs</a>
+                            <strong>Palo Alto Unit 42: Iranian Cyberattacks 2026</strong>
+                            <a href="https://unit42.paloaltonetworks.com/iranian-cyberattacks-2026/" target="_blank">Unit 42</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[3]</span>
-                            <strong>CrowdStrike Intelligence Report:</strong> "BRONZE CASUAL Telecom Infrastructure Operations"
-                            <a href="https://www.crowdstrike.com" target="_blank">CrowdStrike Threat Reports</a>
+                            <strong>Vectra AI: What the Stryker Incident Reveals About Handala's Attack Playbook</strong>
+                            <a href="https://www.vectra.ai/blog/what-the-stryker-incident-reveals-about-handalas-attack-playbook/" target="_blank">Vectra AI</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[4]</span>
-                            <strong>Mandiant Research:</strong> "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            <a href="https://www.mandiant.com" target="_blank">Mandiant Intelligence</a>
+                            <strong>SecurityWeek: MedTech Giant Stryker Crippled by Iran-Linked Hacker Attack</strong>
+                            <a href="https://www.securityweek.com/medtech-giant-stryker-crippled-by-iran-linked-hacker-attack/" target="_blank">SecurityWeek</a>
                         </div>
                         <div class="reference-item">
                             <span class="reference-number">[5]</span>
-                            <strong>NSA Cybersecurity Advisory:</strong> "Chinese MSS Targeting Telecom Infrastructure"
-                            <a href="https://www.nsa.gov" target="_blank">NSA Press Releases</a>
+                            <strong>Fortinet FortiGuard: Handala Threat Actor Profile</strong>
+                            <a href="https://www.fortiguard.com/threat-actor/6378/handala" target="_blank">FortiGuard Labs</a>
                         </div>
                     </div>
                 </div>
@@ -1003,24 +894,24 @@
                 <div class="fact-row">
                     <div class="fact-label">Country of Origin</div>
                     <div class="fact-value">
-                        <span class="fact-value flag">🇨🇳</span>
-                        China
+                        <span class="fact-value flag">🇮🇷</span>
+                        Iran
                     </div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Nation-State Sponsored</div>
-                    <div class="fact-value">Yes, Ministry of State Security (MSS)</div>
+                    <div class="fact-value">Yes — Ministry of Intelligence and Security (MOIS)</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Motivation</div>
-                    <div class="fact-value">Espionage, Signals Intelligence</div>
+                    <div class="fact-value">Hacktivism / Destructive Operations</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">First Seen</div>
-                    <div class="fact-value">2022</div>
+                    <div class="fact-value">December 2023</div>
                 </div>
 
                 <div class="fact-row">
@@ -1035,12 +926,12 @@
 
                 <div class="fact-row">
                     <div class="fact-label">Associated Groups</div>
-                    <div class="fact-value">LUCKYDOOR, BRONZE CASUAL</div>
+                    <div class="fact-value">Void Manticore, Storm-0842, Banished Kitten</div>
                 </div>
 
                 <div class="fact-row">
                     <div class="fact-label">Status</div>
-                    <div class="fact-value">Active</div>
+                    <div class="fact-value">ACTIVE</div>
                 </div>
 
                 <div class="fact-row">
