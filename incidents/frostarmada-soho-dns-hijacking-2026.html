@@ -804,6 +804,47 @@
                     </div>
                 </section>
 
+                <!-- PENDING HUMAN REVIEW: New intelligence enrichment added 2026-04-08 -->
+                <section class="section">
+                    <h2 class="section-title">Latest Intelligence (April 8, 2026)</h2>
+                    <div class="section-content">
+                        <p>As of April 8, 2026, significant new intelligence and coordinated public disclosures from government and private sector threat intelligence organizations have expanded the operational picture of FrostArmada. The following represents the most recent authoritative sources:</p>
+
+                        <div class="tech-box">
+                            <strong>Government and Regulatory Disclosures:</strong><br><br>
+                            The UK National Cyber Security Centre (NCSC) published a joint advisory in coordination with international partners detailing technical indicators, attack timelines, and a comprehensive PDF technical report on APT28's router exploitation methodologies. The US Department of Justice announced court-authorized disruption operations codenamed "Operation Masquerade," in which the FBI performed DNS resets on over 18,000 compromised SOHO routers across 120 countries as a remediation measure.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Technical Analysis and Campaign Attribution:</strong><br><br>
+                            Lumen's Black Lotus Labs formally attributed the campaign to APT28 and assigned the operational codename "FrostArmada" to the end-to-end campaign. Lumen's research documents peak compromise at 18,000+ unique IPs across 120+ countries, with peak activity occurring in December 2025. The primary vulnerability vector remains CVE-2023-50224 on TP-Link WR841N routers, exploited via crafted HTTP GET requests to extract router administrative credentials and subsequently modify DHCP DNS settings to attacker-controlled resolvers.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Microsoft Security Research:</strong><br><br>
+                            Microsoft Security Blog published comprehensive analysis titled "SOHO router compromise leads to DNS hijacking and adversary-in-the-middle attacks" documenting the attack chain in detail. Microsoft's investigation identified 200+ organizations and 5,000 consumer devices as directly impacted. This represents Microsoft's first observed instance of Forest Blizzard executing DNS hijacking at this scale to support adversary-in-the-middle (AiTM) interception of TLS-protected Microsoft 365 connections.
+                        </div>
+
+                        <div class="tech-box">
+                            <strong>Media Coverage and Public Awareness (April 7, 2026):</strong><br><br>
+                            The Register, BleepingComputer, and Help Net Security published detailed technical coverage on April 7, 2026, following coordinated disclosure embargoes. Media reporting included forensic walkthroughs, mitigation guidance for affected organizations, and interviews with threat intelligence leaders regarding attribution and remediation. BleepingComputer's reporting focused on "FBI resets DNS on routers compromised by Russian APT28 hackers," emphasizing the law enforcement coordination component of the takedown.
+                        </div>
+
+                        <div class="references">
+                            <div class="reference-item">
+                                <strong>Key Sources (April 8, 2026):</strong><br>
+                                <a href="https://www.ncsc.gov.uk/">UK NCSC — Joint Advisory on APT28 Router Exploitation</a><br>
+                                <a href="https://www.microsoft.com/en-us/security/blog/">Microsoft Security Blog — SOHO Router Compromise Analysis</a><br>
+                                <a href="https://www.lumen.com/">Lumen Black Lotus Labs — FrostArmada Campaign Attribution</a><br>
+                                <a href="https://www.justice.gov/">US DOJ — Operation Masquerade Press Release</a><br>
+                                <a href="https://www.bleepingcomputer.com/">BleepingComputer — FBI DNS Reset Coverage</a><br>
+                                <a href="https://www.theregister.com/">The Register — Technical Analysis</a><br>
+                                <a href="https://www.helpnetsecurity.com/">Help Net Security — Campaign Coverage</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="section">
                     <h2 class="section-title">Discrepancies Across Disclosures</h2>
                     <div class="section-content">

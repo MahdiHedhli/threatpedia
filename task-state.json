@@ -208,7 +208,7 @@
       "approved": 3,
       "referencedButMissing": 1,
       "lastNewReportDate": "2026-04-09",
-      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files \u2014 the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
+      "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files — the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
       "totalTerms": 1006,
@@ -298,8 +298,8 @@
       "lastCompleted": "2026-04-08T15:31:12Z"
     },
     "new-threat-intel": {
-      "locked": true,
-      "lockedAt": "2026-04-09T09:17:04Z",
+      "locked": false,
+      "lockedAt": null,
       "lastCompleted": "2026-04-09T00:35:44Z"
     },
     "incident-crosslink-gapfill": {

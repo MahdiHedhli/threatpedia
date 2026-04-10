@@ -819,6 +819,66 @@
                     </ul>
                 </section>
 
+                <!-- PENDING HUMAN REVIEW: New Intelligence Added April 8, 2026 -->
+                <!-- New Enrichment Section -->
+                <section>
+                    <h2 class="section-title">New Intelligence (April 8, 2026)</h2>
+
+                    <p>Recent investigative reporting and security analysis have provided additional context regarding the scope and implications of the LexisNexis breach:</p>
+
+                    <h3 class="section-subtitle">Media Coverage & Public Disclosure</h3>
+                    <ul class="tech-list">
+                        <li><strong>American Banker:</strong> Reported LexisNexis hit by second data breach in two years, underscoring systemic security concerns at the organization.</li>
+                        <li><strong>LawSites/LawNext:</strong> Confirmed LexisNexis claims breach was contained, while simultaneously reporting hacker claims of access to government and law firm user data.</li>
+                        <li><strong>IDStrong:</strong> Detailed analysis confirming approximately 400,000 cloud user profiles exposed, including 118 users with .gov email addresses (federal judges, DOJ attorneys, SEC staff).</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Detailed Exfiltration Breakdown</h3>
+                    <ul class="tech-list">
+                        <li><strong>536 Redshift tables</strong> from data warehouse infrastructure</li>
+                        <li><strong>430+ VPC database tables</strong> accessed through compromised cloud credentials</li>
+                        <li><strong>53 plaintext AWS Secrets Manager secrets</strong> containing database credentials, API keys, and authentication tokens</li>
+                        <li><strong>3.9 million database records</strong> from various Redshift and VPC tables</li>
+                        <li><strong>21,042 customer accounts</strong> with associated metadata</li>
+                        <li><strong>5,582 attorney survey respondents</strong> with IP address data</li>
+                        <li><strong>45 employee password hashes</strong> from internal systems</li>
+                        <li><strong>Complete VPC infrastructure map</strong> revealing network topology and resource configuration</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Vulnerability Timeline & Patch Status</h3>
+                    <ul class="tech-list">
+                        <li>React2Shell vulnerability was publicly disclosed and documented in <strong>early December 2025</strong></li>
+                        <li>CISA added the vulnerability to the Known Exploited Vulnerabilities (KEV) catalog on <strong>December 5, 2025</strong></li>
+                        <li>Despite public disclosure and CISA warning, LexisNexis remained unpatched for <strong>months</strong> prior to the February 2026 breach</li>
+                        <li>This represents a significant gap in security patching practices for a critical vulnerability affecting public-facing infrastructure</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">LexisNexis Containment Claims</h3>
+                    <p>LexisNexis has stated that the compromised data does NOT include:</p>
+                    <ul class="tech-list">
+                        <li>Social Security numbers (SSN)</li>
+                        <li>Driver's license numbers</li>
+                        <li>Financial account numbers or payment card data</li>
+                        <li>Active user passwords or session credentials</li>
+                        <li>Customer search queries or research histories</li>
+                    </ul>
+                    <p>The company claims all exfiltrated data was legacy or deprecated information predating 2020.</p>
+
+                    <h3 class="section-subtitle">Independent Security Analysis</h3>
+                    <ul class="tech-list">
+                        <li><strong>Paubox:</strong> Published analysis of breach scope and government sector implications</li>
+                        <li><strong>Rescana:</strong> Detailed threat intelligence on React2Shell exploitation and data exfiltration patterns</li>
+                        <li><strong>CyberNewsCenter:</strong> Comprehensive reporting on incident timeline and data classification</li>
+                    </ul>
+
+                    <h3 class="section-subtitle">Incident Response</h3>
+                    <ul class="tech-list">
+                        <li>LexisNexis engaged external cybersecurity experts and law enforcement for incident investigation</li>
+                        <li>Forensic analysis conducted to determine full scope of data access and exfiltration</li>
+                        <li>Customer notification process initiated to inform affected organizations and government agencies</li>
+                    </ul>
+                </section>
+
                 <!-- Sources & References -->
                 <section>
                     <h2 class="section-title">Sources & References</h2>
@@ -830,6 +890,11 @@
                         <li>CyberPress. <span class="reference-link">"LexisNexis Data Breach: Threat Actor Claims Theft of 2.04 GB of Data"</span> - https://cyberpress.org/lexisnexis-data-breach/</li>
                         <li>IDStrong. <span class="reference-link">"LexisNexis AWS Data Breach Exposes 400,000 Cloud User Profiles"</span> - https://www.idstrong.com/sentinel/lexisnexis-data-breach/</li>
                         <li>Rescana. <span class="reference-link">"LexisNexis AWS Data Breach 2026: React2Shell Exploit Exposes Legacy Data"</span> - https://www.rescana.com/post/lexisnexis-aws-data-breach-2026-react2shell-exploit-exposes-legacy-data-in-cloud-hack</li>
+                        <li>American Banker. <span class="reference-link">"LexisNexis hit by second data breach in two years"</span> (April 2026) - https://www.americanbanker.com/news/lexisnexis-second-breach</li>
+                        <li>LawNext. <span class="reference-link">"LexisNexis says breach contained; hackers claim access to government and law firm user data"</span> (April 2026) - https://www.lawnext.com/2026/04/lexisnexis-second-breach-analysis</li>
+                        <li>Paubox. <span class="reference-link">"LexisNexis Breach Analysis: Government Sector Impact"</span> - https://www.paubox.com/breach-analysis/lexisnexis-government</li>
+                        <li>CyberNewsCenter. <span class="reference-link">"LexisNexis React2Shell Breach Timeline and Data Classification"</span> - https://cybernewscenter.com/lexisnexis-breach-analysis</li>
+                        <li>CISA KEV Catalog. <span class="reference-link">"React2Shell Vulnerability (CVE reference)"</span> - https://www.cisa.gov/known-exploited-vulnerabilities-catalog</li>
                     </ol>
                 </section>
             </main>
