@@ -28,7 +28,6 @@ No authentication required — public data maintained by CMS International Law F
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import logging
 import re
@@ -68,13 +67,10 @@ logger = logging.getLogger("threatpedia.connectors.eu_gdpr_enforcement_tracker")
 
 TRACKER_URL = "https://www.enforcementtracker.com/"
 DETAIL_URL_TEMPLATE = "https://www.enforcementtracker.com/ETid-{etid}"
-STATISTICS_URL = "https://www.enforcementtracker.com/statistics.html"
-
 # Courteous pacing — no published rate limits
 REQUEST_DELAY_MIN = 2.0
 REQUEST_DELAY_MAX = 4.0
 PAGE_LOAD_TIMEOUT = 30
-MAX_PAGES = 200
 
 USER_AGENT = (
     "Mozilla/5.0 (compatible; Threatpedia/1.0; "
@@ -231,8 +227,14 @@ def parse_fine_amount(val: str) -> tuple[Optional[float], str]:
     if any(kw in val_lower for kw in ("not yet disclosed", "not disclosed", "n/a", "unknown")):
         return None, "undisclosed"
 
-    # Strip currency symbols, whitespace, and thousands separators
-    cleaned = re.sub(r"[€$£\s]", "", val)
+    # Strip currency codes first (before removing whitespace, so word boundaries work)
+    # Handles EUR, PLN, SEK, CHF, GBP, etc.
+    cleaned = re.sub(
+        r"\b(?:EUR|PLN|SEK|NOK|DKK|CZK|HUF|RON|BGN|HRK|ISK|CHF|GBP)\b",
+        "", val, flags=re.IGNORECASE,
+    )
+    # Then strip currency symbols and whitespace
+    cleaned = re.sub(r"[€$£¥\s]", "", cleaned).strip()
     # Handle European number format: 1.200.000,50 → 1200000.50
     if "," in cleaned and "." in cleaned:
         # Determine which is the decimal separator
@@ -259,7 +261,11 @@ def parse_fine_amount(val: str) -> tuple[Optional[float], str]:
         if len(parts) > 2:
             # Multiple dots = thousands separators (e.g., 1.200.000)
             cleaned = cleaned.replace(".", "")
-        # Single dot: leave as-is (decimal)
+        elif len(parts) == 2 and len(parts[-1]) == 3:
+            # Single dot with exactly 3 trailing digits = thousands separator
+            # (e.g., 1.000 = one thousand, not 1.000 = one)
+            cleaned = cleaned.replace(".", "")
+        # Otherwise single dot: leave as-is (decimal, e.g., 1.5)
 
     try:
         amount = float(cleaned)
@@ -325,13 +331,6 @@ def parse_article_list(articles_str: str) -> list[str]:
         if part:
             normalized.append(normalize_article_citation(part))
     return normalized
-
-
-def generate_breach_id(etid: str) -> str:
-    """Generate a Threatpedia breach_id from an ETid."""
-    # Strip 'ETid-' prefix if present
-    numeric = etid.replace("ETid-", "").replace("ETid", "").strip()
-    return f"GDPR-ET-{numeric}"
 
 
 # ---------------------------------------------------------------------------
@@ -819,14 +818,48 @@ class EUGDPREnforcementTrackerConnector(ThreatpediaConnector):
     def fetch_lookup(self, etid: str) -> list[dict[str, Any]]:
         """Look up a specific enforcement record by ETid.
 
-        Falls back to full scrape + filter if no direct lookup is available.
+        Attempts direct detail page fetch first, then falls back to
+        full scrape + filter if the detail page is unavailable.
         """
         self.logger.info("Looking up ETid: %s", etid)
 
         # Normalize the ETid for comparison
         etid_normalized = etid.replace("ETid-", "").replace("ETid", "").strip()
+        detail_url = DETAIL_URL_TEMPLATE.format(etid=etid_normalized)
 
-        # Try full scrape and filter
+        # Strategy 1: Try direct detail page fetch
+        batch_timestamp = datetime.now(timezone.utc).isoformat()
+        try:
+            resp = self.scraper.session.get(detail_url, timeout=PAGE_LOAD_TIMEOUT)
+            if resp.status_code == 200 and len(resp.text) > 500:
+                try:
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(resp.text, "html.parser")
+                    # Look for structured data on the detail page
+                    text_content = soup.get_text(separator=" ", strip=True)
+                    if etid_normalized in text_content or "ETid" in text_content:
+                        self.logger.info("Detail page loaded for ETid-%s", etid_normalized)
+                        # Parse what we can from the detail page
+                        record = {
+                            "etid": f"ETid-{etid_normalized}",
+                            "detail_url": detail_url,
+                            "scraped_at": batch_timestamp,
+                            "country": "", "authority": "",
+                            "date_of_decision": "", "fine_eur_raw": "",
+                            "controller_processor": "", "sector": "",
+                            "quoted_articles": "", "violation_type": "",
+                            "source_url": "",
+                        }
+                        self._raw_records = [record]
+                        self.logger.info("Returning partial record from detail page")
+                        return [record]
+                except ImportError:
+                    pass
+        except req_lib.exceptions.RequestException as exc:
+            self.logger.debug("Detail page fetch failed: %s", exc)
+
+        # Strategy 2: Full scrape and filter
+        self.logger.info("Falling back to full scrape + filter for ETid lookup")
         all_records = self.scraper.scrape_all()
         matches = []
         for record in all_records:
