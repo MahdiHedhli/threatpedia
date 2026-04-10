@@ -192,14 +192,15 @@
         "vcdb",
         "nist-nvd",
         "cve-mitre",
-        "misp"
-      ],
-      "specsReadyToBuild": [
+        "misp",
         "mitre-attack",
         "hhs-ocr",
         "eu-gdpr-enforcement-tracker"
       ],
-      "lastRunDate": "2026-04-07",
+      "specsReadyToBuild": [
+        "australian-oaic"
+      ],
+      "lastRunDate": "2026-04-10",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
