@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T09:17:04Z",
+  "lastUpdated": "2026-04-13T13:14:23Z",
   "schemaVersion": "1.0",
   "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
   "schedules": {
@@ -194,12 +194,13 @@
         "cve-mitre",
         "misp",
         "mitre-attack",
-        "hhs-ocr"
-      ],
-      "specsReadyToBuild": [
+        "hhs-ocr",
         "eu-gdpr-enforcement-tracker"
       ],
-      "lastRunDate": "2026-04-09",
+      "specsReadyToBuild": [
+        "australian-oaic"
+      ],
+      "lastRunDate": "2026-04-10",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
@@ -211,7 +212,7 @@
       "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files \u2014 the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
-      "totalTerms": 1006,
+      "totalTerms": 1023,
       "rolesTaxonomy": [
         "ciso",
         "soc",
@@ -224,7 +225,7 @@
         "threat-intel",
         "network-infra"
       ],
-      "lastRunDate": "2026-04-06",
+      "lastRunDate": "2026-04-13",
       "pendingBulkAggregation": false,
       "pendingTooltipModule": true,
       "bulkAggregationCompleted": "2026-04-06",
@@ -251,8 +252,8 @@
         "threat-actor-index.json": "Lightweight actor lookup index (78 actors, 224 alias keys) for quick queue-or-skip decisions by incident tasks",
         "threat-actor-queue.json": "Worklist \u2014 incident tasks queue 'create' or 'update-links' items, processed by threat-actor-updater Tue/Thu"
       },
-      "currentActorCount": 78,
-      "queueSize": 0
+      "currentActorCount": 84,
+      "queueSize": 8
     },
     "zeroDayPipeline": {
       "flow": "zero-day-tracker discovers new exploits from feeds/incidents \u2192 zero-days/manifest.json + zero-days/*.html \u2192 zero-day-enricher updates lifecycle, detection guidance, cross-links \u2192 bidirectional links verified with incidents and actors",
@@ -306,6 +307,16 @@
       "locked": false,
       "lockedAt": null,
       "lastCompleted": "2026-04-08T13:10:08Z"
+    },
+    "zero-day-tracker": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T07:00:00Z"
+    },
+    "threat-actor-updater": {
+      "locked": false,
+      "lockedAt": null,
+      "lastCompleted": "2026-04-09T15:00:00Z"
     }
   },
   "coordinationRules": {
