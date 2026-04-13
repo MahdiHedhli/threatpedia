@@ -13,10 +13,11 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#080b10" />
     <link rel="icon" type="image/svg+xml" href="/tp-favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <title>{title} — Threatpedia</title>
   </head>
   <body>
@@ -40,56 +41,74 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
 </html>
 
 <style is:global>
+  /* ── Variables ─────────────────────────────────────────────────────────── */
   :root {
-    --bg-primary: #0a0e17;
-    --bg-secondary: #111827;
-    --bg-surface: #1a2234;
-    --bg-elevated: #1f2b3d;
-    --border: #2a3650;
-    --border-subtle: #1e293b;
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --accent: #38bdf8;
-    --accent-hover: #7dd3fc;
-    --severity-critical: #ef4444;
-    --severity-high: #f97316;
-    --severity-medium: #eab308;
-    --severity-low: #22c55e;
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-    --max-width: 1200px;
+    --bg:        #080b10;
+    --surface:   #0d1117;
+    --border:    #1e2733;
+    --amber:     #e8a020;
+    --amber-dim: #a06a10;
+    --text:      #cdd5e0;
+    --muted:     #5a6a7e;
+    --white:     #f0f4f8;
+    --severity-critical: #ff4444;
+    --severity-high: #ffa500;
+    --severity-medium: #e8a020;
+    --severity-low: #51cf66;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --max-width: 1400px;
   }
 
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-  }
+  /* ── Reset ──────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
   body {
+    background: var(--bg);
+    color: var(--text);
     font-family: var(--font-sans);
-    background: var(--bg-primary);
-    color: var(--text-primary);
+    font-weight: 300;
     line-height: 1.7;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
 
-  /* — Navigation — */
+  /* ── Grid overlay ───────────────────────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Noise texture ──────────────────────────────────────────────────────── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Navigation ─────────────────────────────────────────────────────────── */
   header {
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
+    background: rgba(8, 11, 16, 0.85);
     backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
   }
 
   nav {
@@ -100,12 +119,15 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
+    position: relative;
+    z-index: 1;
   }
 
   .brand {
+    font-family: var(--font-serif);
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--accent) !important;
+    color: var(--amber) !important;
     text-decoration: none;
     letter-spacing: -0.02em;
   }
@@ -116,19 +138,24 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
   }
 
   .nav-links a {
-    color: var(--text-secondary);
+    color: var(--muted);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 500;
-    transition: color 0.15s;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
   }
 
   .nav-links a:hover {
-    color: var(--accent);
+    color: var(--amber);
   }
 
-  /* — Main content — */
+  /* ── Main content ───────────────────────────────────────────────────────── */
   main {
+    position: relative;
+    z-index: 1;
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 2rem 1.5rem;
@@ -136,186 +163,235 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     flex: 1;
   }
 
-  /* — Typography — */
+  /* ── Typography ─────────────────────────────────────────────────────────── */
   h1 {
-    font-size: 2rem;
+    font-family: var(--font-serif);
+    font-size: 48px;
     font-weight: 700;
-    letter-spacing: -0.03em;
+    color: var(--white);
     line-height: 1.2;
     margin-bottom: 1rem;
+    letter-spacing: -0.5px;
   }
 
   h2 {
-    font-size: 1.375rem;
+    font-family: var(--font-serif);
+    font-size: 24px;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    color: var(--white);
     margin-top: 2.5rem;
     margin-bottom: 0.75rem;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 0.5rem;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--amber);
+    letter-spacing: -0.3px;
   }
 
   h3 {
-    font-size: 1.125rem;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
     font-weight: 600;
+    color: var(--white);
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+    line-height: 1.2;
   }
 
   p {
     margin-bottom: 1rem;
-    color: var(--text-secondary);
+    color: var(--text);
+    line-height: 1.7;
   }
 
   a {
-    color: var(--accent);
+    color: var(--amber);
     text-decoration: none;
-    transition: color 0.15s;
+    transition: color 0.2s;
   }
 
   a:hover {
-    color: var(--accent-hover);
+    color: #f0b030;
     text-decoration: underline;
   }
 
-  strong { color: var(--text-primary); }
+  strong { color: var(--white); font-weight: 500; }
 
   code {
     font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--bg-elevated);
-    padding: 0.15em 0.4em;
-    border-radius: 4px;
-    color: var(--accent);
+    font-size: 13px;
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--amber);
   }
 
   pre {
-    background: var(--bg-surface) !important;
+    background: var(--surface) !important;
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 16px;
     overflow-x: auto;
-    margin: 1rem 0;
+    margin: 16px 0;
   }
 
   pre code {
     background: none;
     padding: 0;
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   blockquote {
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--amber);
     margin: 1rem 0;
     padding: 0.5rem 1rem;
-    background: var(--bg-surface);
-    border-radius: 0 6px 6px 0;
-    color: var(--text-secondary);
+    background: var(--surface);
+    border-radius: 0 4px 4px 0;
+    color: var(--text);
   }
 
   ul, ol {
     margin: 0.5rem 0 1rem 1.5rem;
-    color: var(--text-secondary);
+    color: var(--text);
   }
 
   li { margin-bottom: 0.25rem; }
 
-  /* — Tables — */
+  /* ── Tables ─────────────────────────────────────────────────────────────── */
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 1rem 0;
     font-size: 0.875rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
   }
 
   thead {
-    background: var(--bg-surface);
+    background: var(--bg);
   }
 
   th {
     text-align: left;
     padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--muted);
     text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
     border-bottom: 2px solid var(--border);
   }
 
   td {
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  tbody tr {
+    transition: background 0.15s;
   }
 
   tbody tr:hover {
-    background: var(--bg-surface);
+    background: rgba(232, 160, 32, 0.04);
   }
 
-  /* — Definition lists (article metadata) — */
+  /* ── Incident metadata grid ─────────────────────────────────────────────── */
+  .incident-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .meta-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  /* ── DL fallback (used by threat actors, zero-days) ─────────────────────── */
   dl {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0.5rem 1.5rem;
     margin: 1rem 0;
     padding: 1rem 1.25rem;
-    background: var(--bg-surface);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   dt {
+    font-family: var(--font-mono);
     font-weight: 600;
-    color: var(--text-muted);
-    font-size: 0.8125rem;
+    color: var(--muted);
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.5px;
   }
 
   dd {
-    color: var(--text-primary);
-    font-size: 0.9375rem;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 500;
   }
 
-  /* — Severity badges — */
+  /* ── Severity badges ────────────────────────────────────────────────────── */
   .severity {
     display: inline-block;
-    font-size: 0.6875rem;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.2em 0.6em;
-    border-radius: 4px;
-    line-height: 1;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
   }
 
   .severity.critical {
     color: var(--severity-critical);
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-color: var(--severity-critical);
+    background: rgba(255, 68, 68, 0.08);
   }
 
   .severity.high {
     color: var(--severity-high);
-    background: rgba(249, 115, 22, 0.12);
-    border: 1px solid rgba(249, 115, 22, 0.25);
+    border-color: var(--severity-high);
+    background: rgba(255, 165, 0, 0.08);
   }
 
   .severity.medium {
     color: var(--severity-medium);
-    background: rgba(234, 179, 8, 0.12);
-    border: 1px solid rgba(234, 179, 8, 0.25);
+    border-color: var(--severity-medium);
+    background: rgba(232, 160, 32, 0.08);
   }
 
   .severity.low {
     color: var(--severity-low);
-    background: rgba(34, 197, 94, 0.12);
-    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-color: var(--severity-low);
+    background: rgba(81, 207, 102, 0.08);
   }
 
-  /* — Incident / article headers — */
+  /* ── Incident / article headers ─────────────────────────────────────────── */
   .incident-header, article > header {
     display: flex;
     align-items: center;
@@ -326,62 +402,298 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
 
   .incident-id, .exploit-id {
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--accent);
-    background: rgba(56, 189, 248, 0.1);
+    color: var(--amber);
+    background: rgba(232, 160, 32, 0.1);
     padding: 0.25em 0.6em;
-    border-radius: 4px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(232, 160, 32, 0.25);
   }
 
   .cve {
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     color: var(--severity-high);
-    background: rgba(249, 115, 22, 0.1);
+    background: rgba(255, 165, 0, 0.1);
     padding: 0.25em 0.6em;
-    border-radius: 4px;
-    border: 1px solid rgba(249, 115, 22, 0.2);
+    border: 1px solid rgba(255, 165, 0, 0.2);
   }
 
   .review-status {
-    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
     font-weight: 500;
-    color: var(--text-muted);
-    background: var(--bg-elevated);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
     padding: 0.25em 0.6em;
-    border-radius: 4px;
     border: 1px solid var(--border);
   }
 
-  /* — Tags — */
+  /* ── Tags ────────────────────────────────────────────────────────────────── */
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border);
   }
 
   .tag {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    background: var(--bg-surface);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
     padding: 0.25em 0.6em;
-    border-radius: 4px;
     border: 1px solid var(--border);
   }
 
-  /* — Home page sections — */
+  /* ── Tech box (code highlights in articles) ─────────────────────────────── */
+  .tech-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  .tech-box strong { color: var(--white); }
+
+  /* ── Timeline ───────────────────────────────────────────────────────────── */
+  .timeline {
+    position: relative;
+    margin: 32px 0;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 32px;
+    width: 1px;
+    height: calc(100% + 24px);
+    background: var(--border);
+  }
+
+  .timeline-item:last-child::before { display: none; }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 0 0 3px var(--surface);
+  }
+
+  .timeline-content { padding-top: 2px; flex-grow: 1; }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .timeline-description {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── Attack flow ────────────────────────────────────────────────────────── */
+  .attack-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .attack-stage {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .attack-stage-title {
+    font-weight: 600;
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .attack-stage-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .attack-stage-content ul { margin-left: 20px; margin-top: 8px; }
+  .attack-stage-content li { margin-bottom: 6px; }
+
+  /* ── IOC groups ─────────────────────────────────────────────────────────── */
+  .ioc-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  .ioc-group-title {
+    font-weight: 600;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ioc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ioc-item {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+    word-break: break-all;
+    padding: 8px;
+    background: var(--bg);
+    border-radius: 2px;
+  }
+
+  /* ── References ─────────────────────────────────────────────────────────── */
+  .references {
+    margin: 48px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .references-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .references-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reference-item {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .reference-item a { color: var(--amber); word-break: break-all; }
+  .reference-item a:hover { text-decoration: underline; }
+
+  .reference-num {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--amber);
+    margin-right: 4px;
+  }
+
+  /* ── Sidebar ────────────────────────────────────────────────────────────── */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sidebar-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 4px;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.3px;
+  }
+
+  .sidebar-link {
+    display: block;
+    padding: 10px 0;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+
+  .sidebar-link:last-child { border-bottom: none; }
+  .sidebar-link:hover { color: var(--amber); }
+  .sidebar-link::before { content: '\2192 '; color: var(--amber); margin-right: 4px; }
+
+  .sidebar-content {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── Home page sections ─────────────────────────────────────────────────── */
   section {
     margin-bottom: 3rem;
   }
 
   section > p {
-    color: var(--text-muted);
-    font-size: 0.875rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin-bottom: 1rem;
   }
 
@@ -393,7 +705,7 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
 
   section > ul > li {
     padding: 0.625rem 0;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
@@ -405,13 +717,31 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
   }
 
   section > a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     margin-top: 0.75rem;
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    transition: color 0.2s;
   }
 
-  /* — Article content — */
+  section > a:hover { color: #f0b030; text-decoration: none; }
+
+  /* ── Content grid (article + sidebar) ───────────────────────────────────── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .main-content { min-width: 0; }
+
   .content {
     margin-top: 1.5rem;
   }
@@ -420,26 +750,67 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     margin-top: 0;
   }
 
-  /* — Footer — */
+  /* ── Section headers (mono eyebrow style) ───────────────────────────────── */
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Animations ─────────────────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────────────── */
   footer {
+    position: relative;
+    z-index: 1;
     border-top: 1px solid var(--border);
     padding: 1.5rem;
     text-align: center;
   }
 
   footer p {
-    color: var(--text-muted);
-    font-size: 0.8125rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
   }
 
-  /* — Responsive — */
+  /* ── Responsive ─────────────────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .incident-meta { grid-template-columns: repeat(2, 1fr); }
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { order: -1; }
+    h1 { font-size: 36px; }
+  }
+
   @media (max-width: 640px) {
     nav {
       flex-direction: column;
       align-items: flex-start;
       gap: 0.75rem;
     }
-    h1 { font-size: 1.5rem; }
+    h1 { font-size: 28px; }
+    .incident-meta { grid-template-columns: 1fr; }
     dl { grid-template-columns: 1fr; }
     dt { margin-top: 0.5rem; }
   }

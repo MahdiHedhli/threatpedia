@@ -23,30 +23,51 @@ const { frontmatter } = Astro.props;
 ---
 
 <Base title={frontmatter.title}>
-  <article>
-    <header class="incident-header">
-      <span class="incident-id">{frontmatter.eventId}</span>
-      <span class={`severity ${frontmatter.severity}`}>
-        {frontmatter.severity}
-      </span>
-      <span class="review-status">{frontmatter.reviewStatus}</span>
-    </header>
-
-    <h1>{frontmatter.title}</h1>
-
-    <div class="meta">
-      <dl>
-        <dt>Date</dt><dd>{new Date(frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</dd>
-        <dt>Attack Type</dt><dd>{frontmatter.attackType}</dd>
-        <dt>Sector</dt><dd>{frontmatter.sector}</dd>
-        <dt>Geography</dt><dd>{frontmatter.geography}</dd>
-        <dt>Threat Actor</dt><dd>{frontmatter.threatActor}</dd>
-        <dt>Attribution</dt><dd>{frontmatter.attributionConfidence}</dd>
+  <article class="container">
+    <header class="article-header">
+      <div class="incident-header">
+        <span class="incident-id">{frontmatter.eventId}</span>
+        <span class={`severity ${frontmatter.severity}`}>{frontmatter.severity}</span>
+        <span class="review-status">{frontmatter.reviewStatus}</span>
+      </div>
+      <h1>{frontmatter.title}</h1>
+      <div class="incident-meta">
+        <div class="meta-item">
+          <span class="meta-label">Date</span>
+          <span class="meta-value">{new Date(frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Attack Type</span>
+          <span class="meta-value">{frontmatter.attackType}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Sector</span>
+          <span class="meta-value">{frontmatter.sector}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Geography</span>
+          <span class="meta-value">{frontmatter.geography}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Threat Actor</span>
+          <span class="meta-value">{frontmatter.threatActor}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Attribution</span>
+          <span class="meta-value">{frontmatter.attributionConfidence}</span>
+        </div>
         {frontmatter.cves.length > 0 && (
-          <><dt>CVEs</dt><dd>{frontmatter.cves.join(', ')}</dd></>
+          <div class="meta-item">
+            <span class="meta-label">CVEs</span>
+            <span class="meta-value">{frontmatter.cves.join(', ')}</span>
+          </div>
         )}
-      </dl>
-    </div>
+        <div class="meta-item">
+          <span class="meta-label">Confidence</span>
+          <span class="meta-value">{frontmatter.confidenceGrade}</span>
+        </div>
+      </div>
+    </header>
 
     <div class="content">
       <slot />

@@ -11,53 +11,427 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
 ---
 
 <Base title="Home">
-  <h1>Threatpedia</h1>
-  <p>The Definitive Cyber Threat Encyclopedia</p>
-
-  <section>
-    <h2>Latest Incidents</h2>
-    <p>{incidents.length} incidents tracked</p>
-    <ul>
-      {incidents.slice(0, 10).map((incident) => (
-        <li>
-          <a href={`/incidents/${incident.id}/`}>
-            <strong>{incident.data.eventId}</strong> — {incident.data.title}
-          </a>
-          <span class={`severity ${incident.data.severity}`}>{incident.data.severity}</span>
-        </li>
-      ))}
-    </ul>
-    <a href="/incidents/">View all incidents →</a>
+  <!-- ── HERO ──────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-eyebrow">Threat Intelligence &middot; Historical Record &middot; Peer Reviewed</div>
+    <h1 class="hero-title">The <em>Definitive</em><br/>Cyber Threat<br/>Encyclopedia</h1>
+    <div class="hero-sub">Building the world's most authoritative open record of cyber history</div>
+    <p class="hero-desc">
+      <strong>Threatpedia</strong> is a Wikipedia-style platform documenting every significant
+      cyber event, attack campaign, and threat actor in history — peer-reviewed by a board of
+      cyber historians, intelligence analysts, and subject matter experts, and augmented by AI.
+    </p>
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value">{incidents.length}</div>
+        <div class="stat-label">Events Catalogued</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">{actors.length}</div>
+        <div class="stat-label">APT Groups Tracked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">{zeroDays.length}</div>
+        <div class="stat-label">Zero-Days Tracked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">20+</div>
+        <div class="stat-label">Frameworks Mapped</div>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Threat Actors</h2>
-    <p>{actors.length} profiles</p>
-    <ul>
-      {actors.slice(0, 10).map((actor) => (
-        <li>
-          <a href={`/threat-actors/${actor.id}/`}>
-            {actor.data.name}
-          </a>
-          — {actor.data.affiliation} ({actor.data.motivation})
-        </li>
-      ))}
-    </ul>
-    <a href="/threat-actors/">View all threat actors →</a>
+  <!-- ── TICKER ────────────────────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-item">Peer-Reviewed Articles</div>
+    <div class="ticker-item">MITRE ATT&CK Mapping</div>
+    <div class="ticker-item">APT Registry</div>
+    <div class="ticker-item">STIX/TAXII Support Planned</div>
+    <div class="ticker-item">AI-Augmented Review</div>
+    <div class="ticker-item">Open Research Access</div>
+  </div>
+
+  <!-- ── PILLARS ───────────────────────────────────────────────────────── -->
+  <section class="pillars">
+    <div class="section-hdr">
+      <span class="section-tag">What We're Building</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-num">// 01</div>
+        <h3>Incident Encyclopedia</h3>
+        <p>Every significant cyber event documented with standardized data points — TTPs, timeline, attribution, impact, affected sectors, and source citations.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 02</div>
+        <h3>APT Registry</h3>
+        <p>Current and historical Advanced Persistent Threat groups tracked with profiles, known campaigns, tooling, state affiliation, and activity timelines.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 03</div>
+        <h3>Framework Mapping</h3>
+        <p>Incidents mapped to MITRE ATT&CK, NIST, Cyber Kill Chain, and more — enabling cross-incident trend analysis and data-driven research.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 04</div>
+        <h3>Peer Review &amp; Certification</h3>
+        <p>A board of cyber historians, reporters, and SMEs reviews submissions. Approved articles earn the Threatpedia seal — a mark of verified accuracy.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 05</div>
+        <h3>Trend Analytics</h3>
+        <p>Structured data across all incidents enables trend analysis by sector, vector, actor type, geography, and time — powering original research.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">// 06</div>
+        <h3>AI-Augmented Workflow</h3>
+        <p>AI assists with aggregating news sources, flagging potential incidents, pre-screening articles, and surfacing related events — accelerating human reviewers.</p>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Zero-Days</h2>
-    <p>{zeroDays.length} exploits tracked</p>
-    <ul>
-      {zeroDays.map((zd) => (
-        <li>
-          <a href={`/zero-days/${zd.id}/`}>
-            {zd.data.cve} — {zd.data.title}
-          </a>
-          <span class={`severity ${zd.data.severity}`}>{zd.data.severity}</span>
-        </li>
+  <!-- ── LIVE RESOURCES ────────────────────────────────────────────────── -->
+  <section class="pillars" style="padding-top:0;">
+    <div class="section-hdr">
+      <span class="section-tag">Live Resources — Available Now</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="pillars-grid">
+      <a href="/incidents/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Incident Reports</h3>
+        <p>In-depth intelligence dossiers on major cyber incidents — from supply chain attacks to nation-state operations. Full IOCs, timelines, and remediation guidance.</p>
+      </a>
+      <a href="/threat-actors/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Threat Actor Registry</h3>
+        <p>{actors.length} tracked APT groups with cross-vendor naming, nation-state attribution, known campaigns, and associated tooling. Filterable and searchable.</p>
+      </a>
+      <a href="/zero-days/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Zero-Day Exploits</h3>
+        <p>{zeroDays.length} tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── RECENT INCIDENTS ──────────────────────────────────────────────── -->
+  <section class="recent-incidents">
+    <div class="section-hdr">
+      <span class="section-tag">Recent Incident Reports</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="incidents-grid">
+      {incidents.slice(0, 6).map((incident) => (
+        <a href={`/incidents/${incident.id}/`} class="incident-card">
+          <div class="incident-card-header">
+            <div class="incident-card-date">
+              {new Date(incident.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
+            <div class="incident-card-badges">
+              <span class={`badge badge-${incident.data.severity}`}>{incident.data.severity}</span>
+            </div>
+          </div>
+          <h3>{incident.data.title}</h3>
+          <div class="incident-card-meta">
+            <span class="incident-card-tag">{incident.data.attackType}</span>
+            <span class="incident-card-tag">{incident.data.sector}</span>
+            {incident.data.threatActor !== 'Unknown' && (
+              <span class="incident-card-tag">{incident.data.threatActor}</span>
+            )}
+          </div>
+        </a>
       ))}
-    </ul>
+    </div>
   </section>
 </Base>
+
+<style>
+  /* ── Hero ────────────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 0 80px;
+    max-width: 1200px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 8.5vw, 7.5rem);
+    line-height: 0.95;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    animation: fadeUp 0.7s 0.08s ease both;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .hero-title em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 44px;
+    animation: fadeUp 0.7s 0.16s ease both;
+  }
+
+  .hero-desc {
+    max-width: 560px;
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.85;
+    margin-bottom: 60px;
+    animation: fadeUp 0.7s 0.24s ease both;
+  }
+
+  /* ── Stats bar ──────────────────────────────────────────────────────── */
+  .stats-bar {
+    display: flex;
+    border: 1px solid var(--border);
+    max-width: 680px;
+    animation: fadeUp 0.7s 0.32s ease both;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 20px 22px;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── Ticker ─────────────────────────────────────────────────────────── */
+  .ticker {
+    position: relative; z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ticker-item::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--amber-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── Pillars ────────────────────────────────────────────────────────── */
+  .pillars {
+    position: relative; z-index: 1;
+    padding: 96px 0;
+    max-width: 1200px;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .pillar {
+    background: var(--bg);
+    padding: 36px 30px;
+    transition: background 0.2s;
+  }
+
+  .pillar:hover { background: var(--surface); }
+
+  .pillar-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    margin-bottom: 18px;
+  }
+
+  .pillar h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .pillar p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ── Recent incidents ───────────────────────────────────────────────── */
+  .recent-incidents {
+    position: relative; z-index: 1;
+    padding: 96px 0;
+    max-width: 1200px;
+  }
+
+  .incidents-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .incident-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .incident-card:hover {
+    background: rgba(232, 160, 32, 0.04);
+    border-color: var(--amber-dim);
+  }
+
+  .incident-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .incident-card-badges {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .incident-card-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--amber-dim);
+  }
+
+  .incident-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    line-height: 1.3;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin: 0;
+  }
+
+  .incident-card-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .incident-card-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .badge-critical { color: #ff4444; border-color: #ff4444; }
+  .badge-high { color: #ff8c00; border-color: #ff8c00; }
+  .badge-medium { color: #e8a020; border-color: #e8a020; background: rgba(232, 160, 32, 0.1); }
+  .badge-low { color: #51cf66; border-color: #51cf66; }
+
+  /* ── Responsive ─────────────────────────────────────────────────────── */
+  @media (max-width: 860px) {
+    .hero { padding: 120px 0 64px; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); flex-basis: 50%; }
+    .stat:nth-child(even) { border-right: none; }
+    .ticker { padding: 24px; gap: 16px; }
+    .pillars { padding: 64px 0; }
+    .pillars-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .incidents-grid { grid-template-columns: 1fr; }
+    .recent-incidents { padding: 64px 0; }
+  }
+</style>
