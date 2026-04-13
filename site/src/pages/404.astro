@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404">
+  <div class="error-page">
+    <div class="code">404</div>
+    <div class="label">Page Not Found</div>
+    <p class="msg">This incident has not been documented.<br/>Or this page doesn't exist.</p>
+    <a href="/">Return to Threatpedia</a>
+  </div>
+</Base>
+
+<style>
+  .error-page {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .code {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(6rem, 20vw, 12rem);
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0.15;
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .msg {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .error-page a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    transition: background 0.2s, color 0.2s;
+    text-transform: uppercase;
+  }
+
+  .error-page a:hover {
+    background: var(--amber);
+    color: var(--bg);
+  }
+</style>
