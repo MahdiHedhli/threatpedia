@@ -26,38 +26,53 @@ jobs:
 
       - name: Get open PRs and attempt merge
         env:
-          GH_TOKEN: ${{ secrets.DMBOT_PAT }}
+          DMBOT_PAT: ${{ secrets.DMBOT_PAT }}
           MAIN_SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
         run: |
+          set +e  # do not exit on error — we handle failures per-PR
+
           echo "Main advanced to ${MAIN_SHA:0:7}. Checking open PRs..."
 
-          # Get open PRs targeting main (non-draft, same-repo only)
-          prs=$(gh pr list --base main --state open --json number,headRefName,isDraft,labels,headRepositoryOwner --jq '
-            .[] | select(.isDraft == false)
-                | select(.headRepositoryOwner.login == "MahdiHedhli")
-                | select(([.labels[].name] | index("no-auto-rebase")) == null)
-                | "\(.number) \(.headRefName)"
-          ')
+          # Get open PRs targeting main via REST API (no org scope needed)
+          prs=$(curl -s -H "Authorization: token ${DMBOT_PAT}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/pulls?state=open&base=main&per_page=50" \
+            | python3 -c "
+          import sys, json
+          prs = json.load(sys.stdin)
+          for pr in prs:
+              if pr.get('draft', False):
+                  continue
+              if pr['head']['repo']['full_name'] != '${REPO}':
+                  continue
+              labels = [l['name'] for l in pr.get('labels', [])]
+              if 'no-auto-rebase' in labels:
+                  continue
+              print(f'{pr[\"number\"]} {pr[\"head\"][\"ref\"]}')
+          ")
 
           if [ -z "$prs" ]; then
             echo "No eligible open PRs found."
             exit 0
           fi
 
+          failed=0
+
           echo "$prs" | while read -r pr_number branch; do
             echo ""
             echo "=== PR #${pr_number} (${branch}) ==="
 
             # Fetch the PR branch
-            git fetch origin "${branch}" 2>/dev/null
-            if [ $? -ne 0 ]; then
+            if ! git fetch origin "${branch}" 2>/dev/null; then
               echo "  ⚠️ Could not fetch branch ${branch}, skipping."
               continue
             fi
 
             # Check if branch is already up to date with main
-            merge_base=$(git merge-base "origin/${branch}" "origin/main")
-            if [ "$merge_base" = "$(git rev-parse origin/main)" ]; then
+            merge_base=$(git merge-base "origin/${branch}" "origin/main" 2>/dev/null)
+            main_sha=$(git rev-parse origin/main)
+            if [ "$merge_base" = "$main_sha" ]; then
               echo "  ✅ Already up to date with main."
               continue
             fi
@@ -66,13 +81,22 @@ jobs:
             git checkout "origin/${branch}" 2>/dev/null
             if git merge --no-edit origin/main 2>/dev/null; then
               # Merge succeeded — push
-              git push origin HEAD:"${branch}" 2>/dev/null
-              if [ $? -eq 0 ]; then
+              if git push origin HEAD:"${branch}" 2>/dev/null; then
                 echo "  ✅ Merged main and pushed."
-                gh pr comment "${pr_number}" --body "✅ Auto-rebased against main (${MAIN_SHA:0:7}). No conflicts."
+                curl -s -X POST \
+                  -H "Authorization: token ${DMBOT_PAT}" \
+                  -H "Accept: application/vnd.github+json" \
+                  "https://api.github.com/repos/${REPO}/issues/${pr_number}/comments" \
+                  -d "{\"body\":\"✅ Auto-rebased against main (${MAIN_SHA:0:7}). No conflicts.\"}" \
+                  > /dev/null
               else
                 echo "  ⚠️ Merge succeeded but push failed."
-                gh pr comment "${pr_number}" --body "⚠️ Auto-rebase merged cleanly but push failed. Manual push needed."
+                curl -s -X POST \
+                  -H "Authorization: token ${DMBOT_PAT}" \
+                  -H "Accept: application/vnd.github+json" \
+                  "https://api.github.com/repos/${REPO}/issues/${pr_number}/comments" \
+                  -d "{\"body\":\"⚠️ Auto-rebase merged cleanly but push failed. Manual push needed.\"}" \
+                  > /dev/null
               fi
             else
               # Merge failed — extract conflicted files
@@ -81,21 +105,38 @@ jobs:
 
               echo "  ❌ Conflicts detected."
 
-              # Add needs-rebase label (create if it doesn't exist)
-              gh label create "needs-rebase" --description "PR has merge conflicts with main" --color "D93F0B" 2>/dev/null || true
-              gh pr edit "${pr_number}" --add-label "needs-rebase"
+              # Create needs-rebase label if it doesn't exist (ignore errors)
+              curl -s -X POST \
+                -H "Authorization: token ${DMBOT_PAT}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${REPO}/labels" \
+                -d '{"name":"needs-rebase","description":"PR has merge conflicts with main","color":"D93F0B"}' \
+                > /dev/null 2>&1
 
-              # Comment with conflict details
-              conflict_list=$(echo "$conflicts" | sed 's/^/- `/' | sed 's/$/`/')
-              gh pr comment "${pr_number}" --body "$(cat <<EOF
-          ⚠️ Merge conflicts detected after main advanced to ${MAIN_SHA:0:7}.
+              # Add label to PR
+              curl -s -X POST \
+                -H "Authorization: token ${DMBOT_PAT}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${REPO}/issues/${pr_number}/labels" \
+                -d '{"labels":["needs-rebase"]}' \
+                > /dev/null
 
-          **Conflicted files:**
-          ${conflict_list}
+              # Build conflict list for comment
+              conflict_list=$(echo "$conflicts" | sed 's/^/- \`/' | sed 's/$/\`/')
+              comment_body=$(printf "⚠️ Merge conflicts detected after main advanced to %s.\n\n**Conflicted files:**\n%s\n\nDangerMouse-Bot will resolve on next session, or resolve manually and remove the \`needs-rebase\` label." "${MAIN_SHA:0:7}" "$conflict_list")
 
-          DangerMouse-Bot will resolve on next session, or resolve manually and remove the \`needs-rebase\` label.
-          EOF
-              )"
+              # Post comment
+              python3 -c "
+          import json, urllib.request
+          data = json.dumps({'body': '''$comment_body'''}).encode()
+          req = urllib.request.Request(
+              'https://api.github.com/repos/${REPO}/issues/${pr_number}/comments',
+              data=data,
+              headers={'Authorization': 'token ${DMBOT_PAT}', 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json'},
+              method='POST'
+          )
+          urllib.request.urlopen(req)
+          " 2>/dev/null || echo "  ⚠️ Failed to post conflict comment"
             fi
 
             # Reset for next PR
