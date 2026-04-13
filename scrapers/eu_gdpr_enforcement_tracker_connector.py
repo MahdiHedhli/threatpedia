@@ -147,22 +147,6 @@ SECTOR_MAP = {
 }
 
 # ---------------------------------------------------------------------------
-# Nine GDPR Violation Categories (for validation)
-# ---------------------------------------------------------------------------
-
-VIOLATION_CATEGORIES = {
-    "Insufficient legal basis for data processing",
-    "Non-compliance with general data processing principles",
-    "Insufficient technical and organisational measures to ensure information security",
-    "Insufficient fulfilment of information obligations",
-    "Insufficient fulfilment of data subjects rights",
-    "Insufficient fulfilment of data subjects' rights",
-    "Insufficient fulfilment of data breach notification obligations",
-    "Insufficient cooperation with supervisory authority",
-    "Insufficient fulfilment of obligations related to data protection impact assessment",
-    "Non-compliance with data protection officer (DPO) requirements",
-}
-
 # ---------------------------------------------------------------------------
 # DPA Reference (Country → Primary DPA)
 # ---------------------------------------------------------------------------
@@ -233,8 +217,8 @@ def parse_fine_amount(val: str) -> tuple[Optional[float], str]:
         r"\b(?:EUR|PLN|SEK|NOK|DKK|CZK|HUF|RON|BGN|HRK|ISK|CHF|GBP)\b",
         "", val, flags=re.IGNORECASE,
     )
-    # Then strip currency symbols and whitespace
-    cleaned = re.sub(r"[€$£¥\s]", "", cleaned).strip()
+    # Strip all non-numeric characters except decimal/thousands separators
+    cleaned = re.sub(r"[^\d.,-]", "", cleaned)
     # Handle European number format: 1.200.000,50 → 1200000.50
     if "," in cleaned and "." in cleaned:
         # Determine which is the decimal separator
@@ -542,7 +526,7 @@ class GDPREnforcementRequestsScraper:
 
         # Positional fallback if header discovery fails
         if len(col_map) < 5:
-            logger.info(
+            logger.warning(
                 "Header discovery found %d cols; using positional fallback "
                 "(may be inaccurate if site structure changed)",
                 len(col_map),
@@ -820,6 +804,9 @@ class EUGDPREnforcementTrackerConnector(ThreatpediaConnector):
 
         Attempts direct detail page fetch first, then falls back to
         full scrape + filter if the detail page is unavailable.
+
+        TODO: Add LRU or time-based caching for repeated lookups to avoid
+              redundant detail page fetches and full scrapes.
         """
         self.logger.info("Looking up ETid: %s", etid)
 
