@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 const incidents = await getCollection('incidents');
+const campaigns = await getCollection('campaigns');
 const actors = await getCollection('threat-actors');
 const zeroDays = await getCollection('zero-days');
 
@@ -27,16 +28,16 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
         <div class="stat-label">Events Catalogued</div>
       </div>
       <div class="stat">
+        <div class="stat-value">{campaigns.length}</div>
+        <div class="stat-label">Campaigns Tracked</div>
+      </div>
+      <div class="stat">
         <div class="stat-value">{actors.length}</div>
         <div class="stat-label">APT Groups Tracked</div>
       </div>
       <div class="stat">
         <div class="stat-value">{zeroDays.length}</div>
         <div class="stat-label">Zero-Days Tracked</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">20+</div>
-        <div class="stat-label">Frameworks Mapped</div>
       </div>
     </div>
   </section>
@@ -102,6 +103,11 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
         <div class="pillar-num">// LIVE</div>
         <h3>Incident Reports</h3>
         <p>In-depth intelligence dossiers on major cyber incidents — from supply chain attacks to nation-state operations. Full IOCs, timelines, and remediation guidance.</p>
+      </a>
+      <a href="/campaigns/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Campaign Dossiers</h3>
+        <p>Ongoing multi-event operations and persistent threat campaigns — tracked with attribution, TTPs, related incidents, and timeline data.</p>
       </a>
       <a href="/threat-actors/" class="pillar" style="text-decoration:none; cursor:pointer;">
         <div class="pillar-num">// LIVE</div>

@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content';
+import Campaign from '../../layouts/Campaign.astro';
+
+export async function getStaticPaths() {
+  const campaigns = await getCollection('campaigns');
+  return campaigns.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Campaign frontmatter={entry.data}>
+  <Content />
+</Campaign>

@@ -1,7 +1,7 @@
 /**
  * Content collection definitions per DATA-STANDARDS v1.0.
  *
- * Three collections: incidents, threat-actors, zero-days.
+ * Four collections: incidents, campaigns, threat-actors, zero-days.
  * Each collection has a typed frontmatter schema that maps to the
  * corresponding manifest entry format from MANIFEST-SPEC v1.0.
  */
@@ -88,6 +88,50 @@ const incidents = defineCollection({
 });
 
 /**
+ * Campaigns collection — ongoing multi-event operations or patterns.
+ * Maps to campaigns/manifest.json entries.
+ */
+const campaigns = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/campaigns' }),
+  schema: z.object({
+    // Identity
+    campaignId: z.string().regex(/^TP-CAMP-\d{4}-\d{4}$/).optional(),
+    title: z.string(),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date().optional(),
+    ongoing: z.boolean().default(false),
+
+    // Classification
+    attackType: z.string(),
+    severity: severity,
+    sector: z.string(),
+    geography: z.string(),
+
+    // Attribution
+    threatActor: z.string().default('Unknown'),
+    attributionConfidence: attributionConfidence.default('A4'),
+
+    // Quality
+    reviewStatus: reviewStatus,
+    confidenceGrade: confidenceGrade.default('C'),
+    generatedBy: z.string(),
+    generatedDate: z.coerce.date(),
+
+    // References
+    cves: z.array(z.string()).default([]),
+    relatedIncidents: z.array(z.string()).default([]),
+    relatedSlugs: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+
+    // Sources
+    sources: z.array(sourceSchema).default([]),
+
+    // MITRE
+    mitreMappings: z.array(mitreMapping).default([]),
+  }),
+});
+
+/**
  * Threat actors collection — entity profiles.
  * Maps to threat-actor-index.json canonical entries.
  */
@@ -154,6 +198,7 @@ const zeroDays = defineCollection({
 
 export const collections = {
   incidents,
+  campaigns,
   'threat-actors': threatActors,
   'zero-days': zeroDays,
 };

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 
 export const GET: APIRoute = async () => {
   const incidents = await getCollection('incidents');
+  const campaigns = await getCollection('campaigns');
   const actors = await getCollection('threat-actors');
   const zeroDays = await getCollection('zero-days');
 
@@ -18,6 +19,20 @@ export const GET: APIRoute = async () => {
       sector: i.data.sector,
       threatActor: i.data.threatActor,
       date: i.data.date.toISOString().slice(0, 10),
+    });
+  }
+
+  for (const c of campaigns) {
+    index.push({
+      type: 'campaign',
+      title: c.data.title,
+      url: `/campaigns/${c.id}/`,
+      severity: c.data.severity,
+      attackType: c.data.attackType,
+      sector: c.data.sector,
+      threatActor: c.data.threatActor,
+      ongoing: c.data.ongoing,
+      startDate: c.data.startDate.toISOString().slice(0, 10),
     });
   }
 
