@@ -1550,6 +1550,85 @@
                 tools: ["Social engineering tactics"],
                 lastSeen: "2026-03",
                 description: "Microsoft's original designation for Scattered Spider"
+            },
+            // New actors added by threat-actor-updater 2026-04-09
+            {
+                id: 79,
+                name: "ShinyHunters",
+                aliases: ["UNC5537", "ShinyCorp", "SLSH Alliance"],
+                affiliation: "Criminal",
+                motivation: "Financial",
+                firstSeen: "2020",
+                status: "Active",
+                campaigns: "Snowflake 160+ customer breaches, Hims & Hers Zendesk/Okta breach, EU Commission breach, Salesforce vishing",
+                tools: ["Aurora Stealer", "Custom exfiltration scripts", "Vishing infrastructure"],
+                lastSeen: "2026-04",
+                description: "Prolific data theft and extortion group targeting SaaS/cloud platforms. Formed SLSH Alliance with Scattered Spider and Lapsus$"
+            },
+            {
+                id: 80,
+                name: "Handala",
+                aliases: ["Void Manticore", "Storm-0842", "Banished Kitten", "Homeland Justice", "Karma"],
+                affiliation: "Iran",
+                motivation: "Hacktivism / Destructive",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "Stryker 200K device wiper attack, IDF data breach, 85+ claimed attacks",
+                tools: ["Handala Wiper", "Hamsa Wiper", "Microsoft Intune weaponization"],
+                lastSeen: "2026-03",
+                description: "Iran MOIS-linked hacktivist group conducting destructive operations. Weaponized Microsoft Intune for mass device wipe attacks"
+            },
+            {
+                id: 81,
+                name: "TeamPCP",
+                aliases: ["UNC6780", "DeadCatx3", "PCPcat", "ShellForce"],
+                affiliation: "Criminal",
+                motivation: "Financial",
+                firstSeen: "2025",
+                status: "Active",
+                campaigns: "Trivy/KICS/LiteLLM/Telnyx supply chain, EU Commission breach, CanisterWorm npm campaign",
+                tools: ["CanisterWorm", "Credential infostealers", "Cloud lateral movement toolkit"],
+                lastSeen: "2026-04",
+                description: "Supply chain attack specialists. Cascading compromise of security tools affected 500K+ machines"
+            },
+            {
+                id: 82,
+                name: "Medusa",
+                aliases: ["Storm-1175"],
+                affiliation: "Criminal",
+                motivation: "Financial",
+                firstSeen: "2021",
+                status: "Active",
+                campaigns: "Passaic County NJ, UMMC Mississippi, Minneapolis Public Schools",
+                tools: ["Medusa Ransomware", "Mimikatz", "PsExec", "Rclone", "Bandizip"],
+                lastSeen: "2026-04",
+                description: "Aggressive RaaS group with 24-hour exploitation capability. Double extortion targeting healthcare and government"
+            },
+            {
+                id: 83,
+                name: "EvilTokens",
+                aliases: ["NOIRLEGACY GROUP"],
+                affiliation: "Criminal",
+                motivation: "Financial (PhaaS)",
+                firstSeen: "2026",
+                status: "Active",
+                campaigns: "M365 OAuth device code phishing targeting 340+ organizations across 9 countries",
+                tools: ["EvilTokens PhaaS platform", "OAuth device code kit", "SMTP mass sender"],
+                lastSeen: "2026-04",
+                description: "Phishing-as-a-Service platform exploiting OAuth device code flow. Used by Storm-2372, APT29, and other actors"
+            },
+            {
+                id: 84,
+                name: "DragonForce",
+                aliases: ["DragonForce RaaS"],
+                affiliation: "Criminal (Malaysian origin)",
+                motivation: "Financial",
+                firstSeen: "2023",
+                status: "Active",
+                campaigns: "13+ victims Apr 2026, UK retail (M&S, Co-op, Harrods), 363+ total victims",
+                tools: ["DragonForce Ransomware (AES-256)", "Cobalt Strike", "SystemBC", "Mimikatz"],
+                lastSeen: "2026-04",
+                description: "Malaysian-origin hacktivist group evolved into RaaS cartel. 650+ monthly victims with white-label affiliate model"
             }
         ];
 
@@ -1576,8 +1655,10 @@
         // These are the actors that have dedicated HTML pages in /threat-actors/
         const actorPages = new Set([
             'apt1', 'apt10', 'apt27', 'apt29', 'apt31', 'apt38', 'apt40', 'apt41',
-            'blackcat-alphv', 'cl0p-group', 'lazarus-group', 'lockbit',
-            'salt-typhoon', 'sandworm', 'scattered-spider', 'volt-typhoon'
+            'blackcat-alphv', 'cl0p-group', 'dragonforce', 'eviltokens',
+            'handala', 'lazarus-group', 'lockbit', 'medusa',
+            'salt-typhoon', 'sandworm', 'scattered-spider', 'shinyhunters',
+            'teampcp', 'volt-typhoon'
         ]);
 
         // Check if an actor has a dedicated page (checks name and all aliases)
