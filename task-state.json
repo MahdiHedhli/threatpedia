@@ -212,7 +212,7 @@
       "architectureNote": "IMPORTANT: incidents/index.html now loads dynamically from incidents/manifest.json via fetch(). Stats (total, critical, supply-chain, ransomware counts) are computed client-side. Tasks ONLY need to update manifest.json and individual incident HTML files \u2014 the index page auto-reflects changes. Do NOT embed hardcoded incident arrays in index.html."
     },
     "glossary": {
-      "totalTerms": 1024,
+      "totalTerms": 1023,
       "rolesTaxonomy": [
         "ciso",
         "soc",
