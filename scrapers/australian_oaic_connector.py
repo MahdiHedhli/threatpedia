@@ -45,35 +45,13 @@ from typing import Any, Optional
 from urllib.parse import urljoin
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-# Adjust import path for running as a module or standalone script
-try:
-    from base_connector import (
-        ThreatpediaConnector,
-        ThreatpediaRecord,
-        TokenBucketRateLimiter,
-        normalize_timestamp,
-        retry_with_backoff,
-        JSONSerializer,
-    )
-except ImportError:
-    try:
-        from scrapers.base_connector import (
-            ThreatpediaConnector,
-            ThreatpediaRecord,
-            TokenBucketRateLimiter,
-            normalize_timestamp,
-            retry_with_backoff,
-            JSONSerializer,
-        )
-    except ImportError:
-        # Minimal stubs if base_connector is unavailable (standalone mode)
-        ThreatpediaConnector = None
-        ThreatpediaRecord = None
-        TokenBucketRateLimiter = None
-        normalize_timestamp = None
-        retry_with_backoff = None
-        JSONSerializer = None
+# Note: base_connector imports are available but not directly used in this
+# connector because OAIC publishes aggregate statistics (not individual
+# ThreatpediaRecord entries). The base classes are retained as optional
+# imports for future integration with the unified ingestion pipeline.
 
 try:
     from bs4 import BeautifulSoup
@@ -277,14 +255,13 @@ def _build_session() -> requests.Session:
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-AU,en;q=0.9",
     })
-    adapter = requests.adapters.HTTPAdapter(
-        max_retries=requests.packages.urllib3.util.retry.Retry(
-            total=3,
-            backoff_factor=1,
-            status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=["GET"],
-        )
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
     )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
@@ -523,12 +500,22 @@ def _extract_tables(soup: "BeautifulSoup") -> list[dict[str, Any]]:
                 if ths:
                     headers = [th.get_text(strip=True) for th in ths]
 
-        # Extract data rows
-        for tr in table.find_all("tr"):
-            cells = tr.find_all(["td"])
+        # Extract data rows — include both td and th elements, since many
+        # government report tables use th for the first column of data rows.
+        # Skip the header row if it was already captured.
+        all_trs = table.find_all("tr")
+        for i, tr in enumerate(all_trs):
+            # Skip the first row if it was used for headers
+            if i == 0 and headers:
+                header_text = [th.get_text(strip=True) for th in tr.find_all(["th", "td"])]
+                if header_text == headers:
+                    continue
+            cells = tr.find_all(["td", "th"])
             if cells:
-                row = [td.get_text(strip=True) for td in cells]
-                rows.append(row)
+                row = [cell.get_text(strip=True) for cell in cells]
+                # Skip rows that exactly duplicate the headers
+                if row != headers:
+                    rows.append(row)
 
         if headers or rows:
             tables.append({"headers": headers, "rows": rows})
@@ -726,6 +713,10 @@ class AustralianOAICConnector:
             try:
                 logger.info("Parsing report: %s (%s)", period, meta["url"])
                 parsed = parse_report_page(self.session, meta["url"])
+                if "parse_error" in parsed:
+                    errors += 1
+                    logger.error("Parse error for %s: %s", period, parsed["parse_error"])
+                    continue
                 normalized = normalize_report(parsed, period, meta)
                 results.append(normalized)
                 logger.info(
@@ -768,6 +759,10 @@ class AustralianOAICConnector:
             try:
                 logger.info("Parsing report: %s (%s)", period, meta["url"])
                 parsed = parse_report_page(self.session, meta["url"])
+                if "parse_error" in parsed:
+                    errors += 1
+                    logger.error("Parse error for %s: %s", period, parsed["parse_error"])
+                    continue
                 normalized = normalize_report(parsed, period, meta)
                 results.append(normalized)
                 logger.info(
