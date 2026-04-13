@@ -1,10 +1,85 @@
 ---
+import { getCollection } from 'astro:content';
+
 interface Props {
   title: string;
   description?: string;
 }
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
+
+// Build ticker items from all collections
+interface TickerItem {
+  label: string;
+  href: string;
+  severity: string;
+  badge: string;
+}
+
+const tickerItems: TickerItem[] = [];
+
+const severityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+
+try {
+  const [incidents, campaigns, actors, zeroDays] = await Promise.all([
+    getCollection('incidents'),
+    getCollection('campaigns').catch(() => []),
+    getCollection('threat-actors'),
+    getCollection('zero-days'),
+  ]);
+
+  // Zero-days first (most urgent)
+  zeroDays
+    .sort((a, b) => (severityOrder[a.data.severity] ?? 9) - (severityOrder[b.data.severity] ?? 9))
+    .slice(0, 4)
+    .forEach((z) => {
+      tickerItems.push({
+        label: z.data.title,
+        href: `/zero-days/${z.id}/`,
+        severity: z.data.severity,
+        badge: z.data.status === 'active' ? '0-DAY' : z.data.severity.toUpperCase(),
+      });
+    });
+
+  // Recent incidents
+  incidents
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 5)
+    .forEach((i) => {
+      tickerItems.push({
+        label: i.data.title,
+        href: `/incidents/${i.id}/`,
+        severity: i.data.severity,
+        badge: i.data.severity.toUpperCase(),
+      });
+    });
+
+  // Active campaigns
+  campaigns
+    .filter((c) => c.data.ongoing)
+    .slice(0, 3)
+    .forEach((c) => {
+      tickerItems.push({
+        label: c.data.title,
+        href: `/campaigns/${c.id}/`,
+        severity: c.data.severity,
+        badge: 'CAMPAIGN',
+      });
+    });
+
+  // Notable threat actors
+  actors
+    .filter((a) => a.data.status === 'active')
+    .slice(0, 3)
+    .forEach((a) => {
+      tickerItems.push({
+        label: a.data.name,
+        href: `/threat-actors/${a.id}/`,
+        severity: 'high',
+        badge: 'APT',
+      });
+    });
+} catch { /* collections may be empty during build */ }
 ---
 
 <!doctype html>
@@ -26,10 +101,30 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
         <img class="nav-logo-icon" src="/tp-logo.svg" alt="TP" width="32" height="32" />
         <span class="nav-logo-text">Threat<span>pedia</span></span>
       </a>
-      <div class="nav-status">
-        <div class="status-dot"></div>
-        BUILDING IN PUBLIC
-      </div>
+      {tickerItems.length > 0 ? (
+        <div class="nav-ticker">
+          <div class="ticker-track">
+            {tickerItems.map((item) => (
+              <a class="ticker-item" href={item.href}>
+                <span class={`ticker-badge ticker-${item.severity}`}>{item.badge}</span>
+                <span>{item.label}</span>
+              </a>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {tickerItems.map((item) => (
+              <a class="ticker-item" href={item.href} aria-hidden="true">
+                <span class={`ticker-badge ticker-${item.severity}`}>{item.badge}</span>
+                <span>{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div class="nav-status">
+          <div class="status-dot"></div>
+          BUILDING IN PUBLIC
+        </div>
+      )}
       <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
@@ -89,6 +184,16 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
       btn.addEventListener('click', toggleMenu);
       overlay.addEventListener('click', closeMenu);
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+      // ── Ticker scroll speed ─────────────────────────────────────────────
+      const tickerTrack = document.querySelector('.ticker-track');
+      if (tickerTrack) {
+        requestAnimationFrame(() => {
+          const halfWidth = tickerTrack.scrollWidth / 2;
+          const duration = halfWidth / 40; // 40px/sec
+          tickerTrack.style.setProperty('--ticker-duration', duration + 's');
+        });
+      }
 
       // ── Highlight active nav link ───────────────────────────────────────
       document.querySelectorAll('.menu-links a').forEach((a) => {
@@ -315,6 +420,66 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
   }
 
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  /* ── Threat Ticker ─────────────────────────────────────────────────────── */
+  .nav-ticker {
+    display: none;
+    flex: 1;
+    margin: 0 24px;
+    overflow: hidden;
+    height: 22px;
+    align-items: center;
+    position: relative;
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+
+  @media (min-width: 768px) { .nav-ticker { display: flex; } }
+
+  .ticker-track {
+    display: flex;
+    gap: 32px;
+    white-space: nowrap;
+    animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
+  }
+
+  .ticker-track:hover { animation-play-state: paused; }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .ticker-item:hover { color: var(--white); text-decoration: none; }
+
+  .ticker-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    line-height: 1.4;
+  }
+
+  .ticker-critical { background: var(--severity-critical); color: #fff; }
+  .ticker-high { background: var(--amber); color: var(--bg); }
+  .ticker-medium { background: var(--muted); color: var(--white); }
+  .ticker-low { background: var(--border); color: var(--text); }
 
   /* ── Hamburger ──────────────────────────────────────────────────────────── */
   .hamburger {
