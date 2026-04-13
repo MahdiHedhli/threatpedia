@@ -289,7 +289,7 @@ class HHSOCRRequestsScraper:
 
         # If header discovery failed, use positional fallback
         if len(col_map) < 4:
-            logger.info("Header discovery found %d cols, using positional fallback", len(col_map))
+            logger.warning("Header discovery found %d cols, using positional fallback", len(col_map))
             col_map = {
                 "entity_name": 0,
                 "state": 1,
