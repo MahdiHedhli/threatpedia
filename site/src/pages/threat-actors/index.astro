@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const actors = await getCollection('threat-actors');
+actors.sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+
+<Base title="Threat Actors">
+  <h1>Threat Actors</h1>
+  <p>{actors.length} profiles</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Aliases</th>
+        <th>Affiliation</th>
+        <th>Motivation</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {actors.map((actor) => (
+        <tr>
+          <td><a href={`/threat-actors/${actor.id}/`}>{actor.data.name}</a></td>
+          <td>{actor.data.aliases.slice(0, 3).join(', ')}</td>
+          <td>{actor.data.affiliation}</td>
+          <td>{actor.data.motivation}</td>
+          <td>{actor.data.status}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Base>

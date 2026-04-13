@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const incidents = await getCollection('incidents');
+const actors = await getCollection('threat-actors');
+const zeroDays = await getCollection('zero-days');
+
+// Sort incidents by date (newest first)
+incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Base title="Home">
+  <h1>Threatpedia</h1>
+  <p>The Definitive Cyber Threat Encyclopedia</p>
+
+  <section>
+    <h2>Latest Incidents</h2>
+    <p>{incidents.length} incidents tracked</p>
+    <ul>
+      {incidents.slice(0, 10).map((incident) => (
+        <li>
+          <a href={`/incidents/${incident.id}/`}>
+            <strong>{incident.data.eventId}</strong> — {incident.data.title}
+          </a>
+          <span class={`severity ${incident.data.severity}`}>{incident.data.severity}</span>
+        </li>
+      ))}
+    </ul>
+    <a href="/incidents/">View all incidents →</a>
+  </section>
+
+  <section>
+    <h2>Threat Actors</h2>
+    <p>{actors.length} profiles</p>
+    <ul>
+      {actors.slice(0, 10).map((actor) => (
+        <li>
+          <a href={`/threat-actors/${actor.id}/`}>
+            {actor.data.name}
+          </a>
+          — {actor.data.affiliation} ({actor.data.motivation})
+        </li>
+      ))}
+    </ul>
+    <a href="/threat-actors/">View all threat actors →</a>
+  </section>
+
+  <section>
+    <h2>Zero-Days</h2>
+    <p>{zeroDays.length} exploits tracked</p>
+    <ul>
+      {zeroDays.map((zd) => (
+        <li>
+          <a href={`/zero-days/${zd.id}/`}>
+            {zd.data.cve} — {zd.data.title}
+          </a>
+          <span class={`severity ${zd.data.severity}`}>{zd.data.severity}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

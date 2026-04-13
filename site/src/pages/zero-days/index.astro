@@ -1,0 +1,34 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const zeroDays = await getCollection('zero-days');
+---
+
+<Base title="Zero-Days">
+  <h1>Zero-Day Exploits</h1>
+  <p>{zeroDays.length} exploits tracked</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>CVE</th>
+        <th>Title</th>
+        <th>Platform</th>
+        <th>Severity</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {zeroDays.map((zd) => (
+        <tr>
+          <td><a href={`/zero-days/${zd.id}/`}>{zd.data.cve}</a></td>
+          <td>{zd.data.title}</td>
+          <td>{zd.data.platform}</td>
+          <td><span class={`severity ${zd.data.severity}`}>{zd.data.severity}</span></td>
+          <td>{zd.data.status}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Base>
