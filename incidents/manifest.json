@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T09:17:04Z",
+  "lastUpdated": "2026-04-09T15:12:14Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
   "incidents": [
@@ -20,7 +20,9 @@
       "relatedSlugs": [
         "teampcp-supply-chain-attack",
         "european-commission-trivy-breach-2026",
-        "trivy-cve-2026-33634"
+        "trivy-cve-2026-33634",
+        "drift-protocol-dprk-exploit-2026",
+        "fbi-dcsnet-salt-typhoon-2026"
       ],
       "tags": [
         "npm",
@@ -50,7 +52,9 @@
         "axios-unc1069-compromise",
         "european-commission-trivy-breach-2026",
         "trivy-cve-2026-33634",
-        "shiny-hunters-leak-site"
+        "shiny-hunters-leak-site",
+        "drift-protocol-dprk-exploit-2026",
+        "cisco-trivy-supply-chain-breach-2026"
       ],
       "tags": [
         "github-actions",
@@ -87,7 +91,8 @@
         "teampcp-supply-chain-attack",
         "axios-unc1069-compromise",
         "trivy-cve-2026-33634",
-        "shiny-hunters-leak-site"
+        "shiny-hunters-leak-site",
+        "cisco-trivy-supply-chain-breach-2026"
       ],
       "tags": [
         "trivy",
@@ -113,7 +118,8 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "cegedim-sante-health-breach-2026"
+        "cegedim-sante-health-breach-2026",
+        "die-linke-qilin-ransomware-2026"
       ],
       "tags": [
         "ransomware",
@@ -122,13 +128,14 @@
         "europe",
         "louvre",
         "anssi"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "cegedim-sante-health-breach-2026",
       "incidentId": null,
-      "title": "Cegedim Sant\u00e9 Healthcare Data Breach",
-      "org": "Cegedim Sant\u00e9",
+      "title": "Cegedim Santé Healthcare Data Breach",
+      "org": "Cegedim Santé",
       "attackType": "data-breach",
       "threatActor": "Unknown",
       "sector": "Healthcare",
@@ -141,7 +148,10 @@
       "relatedSlugs": [
         "vivaticket-ransomhouse-2026",
         "stryker-handala-wiper-2026",
-        "conduent-data-breach-2026"
+        "conduent-data-breach-2026",
+        "chipsoft-ransomware-dutch-healthcare-2026",
+        "ummc-medusa-ransomware-2026",
+        "carecloud-healthcare-breach-2026"
       ],
       "tags": [
         "healthcare",
@@ -149,7 +159,8 @@
         "france",
         "social-security",
         "medical-records"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "stryker-handala-wiper-2026",
@@ -176,7 +187,8 @@
         "mdm",
         "handala",
         "intune"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "drift-protocol-dprk-exploit-2026",
@@ -194,7 +206,8 @@
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "axios-unc1069-compromise",
-        "teampcp-supply-chain-attack"
+        "teampcp-supply-chain-attack",
+        "fbi-dcsnet-salt-typhoon-2026"
       ],
       "tags": [
         "defi",
@@ -206,7 +219,8 @@
         "unc4736",
         "durable-nonce",
         "social-engineering"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "foster-city-ransomware-2026",
@@ -223,7 +237,9 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "passaic-county-medusa-ransomware-2026"
+        "passaic-county-medusa-ransomware-2026",
+        "winona-county-ransomware-2026",
+        "patriot-regional-emergency-comms-attack-2026"
       ],
       "tags": [
         "ransomware",
@@ -247,7 +263,10 @@
       "cves": [],
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
-      "relatedSlugs": [],
+      "relatedSlugs": [
+        "vivaticket-ransomhouse-2026",
+        "passaic-county-medusa-ransomware-2026"
+      ],
       "tags": [
         "ransomware",
         "qilin",
@@ -259,7 +278,7 @@
     {
       "slug": "trivy-cve-2026-33634",
       "incidentId": "TP-2026-0024",
-      "title": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
+      "title": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
       "org": "Aqua Security (Trivy)",
       "attackType": "supply-chain",
       "threatActor": "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
@@ -275,7 +294,9 @@
       "relatedSlugs": [
         "european-commission-trivy-breach-2026",
         "teampcp-supply-chain-attack",
-        "axios-unc1069-compromise"
+        "axios-unc1069-compromise",
+        "shiny-hunters-leak-site",
+        "cisco-trivy-supply-chain-breach-2026"
       ],
       "tags": [
         "trivy",
@@ -303,7 +324,11 @@
       "generatedBy": "incident-crosslink-gapfill",
       "relatedSlugs": [
         "european-commission-trivy-breach-2026",
-        "trivy-cve-2026-33634"
+        "trivy-cve-2026-33634",
+        "teampcp-supply-chain-attack",
+        "adobe-mr-raccoon-breach-2026",
+        "hims-hers-shinyhunters-breach-2026",
+        "cisco-trivy-supply-chain-breach-2026"
       ],
       "tags": [
         "shinyhunters",
@@ -330,7 +355,10 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "axios-unc1069-compromise"
+        "axios-unc1069-compromise",
+        "drift-protocol-dprk-exploit-2026",
+        "frostarmada-soho-dns-hijacking-2026",
+        "operation-truechaos-trueconf-zero-day-2026"
       ],
       "tags": [
         "espionage",
@@ -342,7 +370,8 @@
         "wiretap",
         "supply-chain",
         "law-enforcement"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "lexisnexis-react2shell-breach-2026",
@@ -359,7 +388,8 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
-        "adobe-mr-raccoon-breach-2026"
+        "adobe-mr-raccoon-breach-2026",
+        "conduent-data-breach-2026"
       ],
       "tags": [
         "cloud",
@@ -370,7 +400,8 @@
         "government",
         "secrets-exposure",
         "fulcrumsec"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "adobe-mr-raccoon-breach-2026",
@@ -388,7 +419,8 @@
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "shiny-hunters-leak-site",
-        "lexisnexis-react2shell-breach-2026"
+        "lexisnexis-react2shell-breach-2026",
+        "conduent-data-breach-2026"
       ],
       "tags": [
         "data-breach",
@@ -399,7 +431,8 @@
         "hackerone",
         "support-tickets",
         "adobe"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "conduent-data-breach-2026",
@@ -417,7 +450,12 @@
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "cegedim-sante-health-breach-2026",
-        "carecloud-healthcare-breach-2026"
+        "carecloud-healthcare-breach-2026",
+        "hims-hers-shinyhunters-breach-2026",
+        "adobe-mr-raccoon-breach-2026",
+        "lexisnexis-react2shell-breach-2026",
+        "ummc-medusa-ransomware-2026",
+        "docketwise-immigration-data-breach-2026"
       ],
       "tags": [
         "data-breach",
@@ -429,7 +467,8 @@
         "texas",
         "oregon",
         "largest-breach"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "hims-hers-shinyhunters-breach-2026",
@@ -447,7 +486,9 @@
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "shiny-hunters-leak-site",
-        "carecloud-healthcare-breach-2026"
+        "carecloud-healthcare-breach-2026",
+        "conduent-data-breach-2026",
+        "m365-oauth-device-code-phishing-2026"
       ],
       "tags": [
         "data-breach",
@@ -457,7 +498,8 @@
         "shinyhunters",
         "support-tickets",
         "healthcare"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "forticlient-ems-cve-2026-35616",
@@ -477,7 +519,9 @@
       "generatedBy": "new-threat-intel",
       "relatedSlugs": [
         "chrome-cve-2026-5281-zero-day",
-        "bluehammer-windows-defender-zero-day-2026"
+        "bluehammer-windows-defender-zero-day-2026",
+        "chrome-cve-2026-2441-css-zero-day",
+        "langflow-cve-2026-33017-rce-exploitation"
       ],
       "tags": [
         "zero-day",
@@ -488,7 +532,8 @@
         "pre-auth",
         "api-bypass",
         "cwe-284"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "m365-oauth-device-code-phishing-2026",
@@ -505,7 +550,8 @@
       "reviewStatus": "pending",
       "generatedBy": "new-threat-intel",
       "relatedSlugs": [
-        "frostarmada-soho-dns-hijacking-2026"
+        "frostarmada-soho-dns-hijacking-2026",
+        "hims-hers-shinyhunters-breach-2026"
       ],
       "tags": [
         "phishing",
@@ -518,7 +564,8 @@
         "credential-theft",
         "railway",
         "cloudflare-workers"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "carecloud-healthcare-breach-2026",
@@ -537,7 +584,8 @@
       "relatedSlugs": [
         "cegedim-sante-health-breach-2026",
         "conduent-data-breach-2026",
-        "hims-hers-shinyhunters-breach-2026"
+        "hims-hers-shinyhunters-breach-2026",
+        "docketwise-immigration-data-breach-2026"
       ],
       "tags": [
         "healthcare",
@@ -564,7 +612,9 @@
       "generatedBy": "new-threat-intel",
       "relatedSlugs": [
         "foster-city-ransomware-2026",
-        "die-linke-qilin-ransomware-2026"
+        "die-linke-qilin-ransomware-2026",
+        "ummc-medusa-ransomware-2026",
+        "winona-county-ransomware-2026"
       ],
       "tags": [
         "ransomware",
@@ -579,7 +629,7 @@
     {
       "slug": "chrome-cve-2026-5281-zero-day",
       "incidentId": "TP-2026-0034",
-      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) \u2014 Fourth Actively Exploited in 2026",
+      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) — Fourth Actively Exploited in 2026",
       "org": "Google (Chrome)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
@@ -594,7 +644,9 @@
       "generatedBy": "new-threat-intel",
       "relatedSlugs": [
         "forticlient-ems-cve-2026-35616",
-        "bluehammer-windows-defender-zero-day-2026"
+        "bluehammer-windows-defender-zero-day-2026",
+        "chrome-cve-2026-2441-css-zero-day",
+        "langflow-cve-2026-33017-rce-exploitation"
       ],
       "tags": [
         "zero-day",
@@ -625,7 +677,8 @@
       "generatedBy": "manual-intel-extraction",
       "relatedSlugs": [
         "fbi-dcsnet-salt-typhoon-2026",
-        "m365-oauth-device-code-phishing-2026"
+        "m365-oauth-device-code-phishing-2026",
+        "operation-truechaos-trueconf-zero-day-2026"
       ],
       "tags": [
         "dns-hijacking",
@@ -641,7 +694,8 @@
         "mikrotik",
         "nation-state",
         "fbi-takedown"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     },
     {
       "slug": "bluehammer-windows-defender-zero-day-2026",
@@ -659,7 +713,8 @@
       "generatedBy": "manual-zero-day-ingestion",
       "relatedSlugs": [
         "chrome-cve-2026-5281-zero-day",
-        "forticlient-ems-cve-2026-35616"
+        "forticlient-ems-cve-2026-35616",
+        "langflow-cve-2026-33017-rce-exploitation"
       ],
       "relatedExploits": [
         "bluehammer-windows-defender-lpe-2026"
@@ -941,7 +996,8 @@
       "generatedBy": "new-threat-intel-automation",
       "relatedSlugs": [
         "forticlient-ems-cve-2026-35616",
-        "chrome-cve-2026-5281-zero-day"
+        "chrome-cve-2026-5281-zero-day",
+        "bluehammer-windows-defender-zero-day-2026"
       ],
       "tags": [
         "zero-day",
@@ -954,7 +1010,8 @@
         "api-key-theft",
         "credential-theft",
         "rapid-exploitation"
-      ]
+      ],
+      "lastEnriched": "2026-04-09T15:12:14Z"
     }
   ],
   "referencedButMissing": [
