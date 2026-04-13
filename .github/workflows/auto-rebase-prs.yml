@@ -1,0 +1,106 @@
+name: Auto-rebase open PRs
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  rebase-open-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.DMBOT_PAT }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "dangermouse-bot"
+          git config user.email "dangermousebot@threatpedia.wiki"
+
+      - name: Get open PRs and attempt merge
+        env:
+          GH_TOKEN: ${{ secrets.DMBOT_PAT }}
+          MAIN_SHA: ${{ github.sha }}
+        run: |
+          echo "Main advanced to ${MAIN_SHA:0:7}. Checking open PRs..."
+
+          # Get open PRs targeting main (non-draft, same-repo only)
+          prs=$(gh pr list --base main --state open --json number,headRefName,isDraft,labels,headRepositoryOwner --jq '
+            .[] | select(.isDraft == false)
+                | select(.headRepositoryOwner.login == "MahdiHedhli")
+                | select(([.labels[].name] | index("no-auto-rebase")) == null)
+                | "\(.number) \(.headRefName)"
+          ')
+
+          if [ -z "$prs" ]; then
+            echo "No eligible open PRs found."
+            exit 0
+          fi
+
+          echo "$prs" | while read -r pr_number branch; do
+            echo ""
+            echo "=== PR #${pr_number} (${branch}) ==="
+
+            # Fetch the PR branch
+            git fetch origin "${branch}" 2>/dev/null
+            if [ $? -ne 0 ]; then
+              echo "  ⚠️ Could not fetch branch ${branch}, skipping."
+              continue
+            fi
+
+            # Check if branch is already up to date with main
+            merge_base=$(git merge-base "origin/${branch}" "origin/main")
+            if [ "$merge_base" = "$(git rev-parse origin/main)" ]; then
+              echo "  ✅ Already up to date with main."
+              continue
+            fi
+
+            # Attempt merge in a detached state
+            git checkout "origin/${branch}" 2>/dev/null
+            if git merge --no-edit origin/main 2>/dev/null; then
+              # Merge succeeded — push
+              git push origin HEAD:"${branch}" 2>/dev/null
+              if [ $? -eq 0 ]; then
+                echo "  ✅ Merged main and pushed."
+                gh pr comment "${pr_number}" --body "✅ Auto-rebased against main (${MAIN_SHA:0:7}). No conflicts."
+              else
+                echo "  ⚠️ Merge succeeded but push failed."
+                gh pr comment "${pr_number}" --body "⚠️ Auto-rebase merged cleanly but push failed. Manual push needed."
+              fi
+            else
+              # Merge failed — extract conflicted files
+              conflicts=$(git diff --name-only --diff-filter=U 2>/dev/null | head -20)
+              git merge --abort 2>/dev/null
+
+              echo "  ❌ Conflicts detected."
+
+              # Add needs-rebase label (create if it doesn't exist)
+              gh label create "needs-rebase" --description "PR has merge conflicts with main" --color "D93F0B" 2>/dev/null || true
+              gh pr edit "${pr_number}" --add-label "needs-rebase"
+
+              # Comment with conflict details
+              conflict_list=$(echo "$conflicts" | sed 's/^/- `/' | sed 's/$/`/')
+              gh pr comment "${pr_number}" --body "$(cat <<EOF
+          ⚠️ Merge conflicts detected after main advanced to ${MAIN_SHA:0:7}.
+
+          **Conflicted files:**
+          ${conflict_list}
+
+          DangerMouse-Bot will resolve on next session, or resolve manually and remove the \`needs-rebase\` label.
+          EOF
+              )"
+            fi
+
+            # Reset for next PR
+            git checkout --detach origin/main 2>/dev/null
+          done
+
+          echo ""
+          echo "Done processing all eligible PRs."
