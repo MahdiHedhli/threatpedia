@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-13T13:14:23Z",
+  "lastUpdated": "2026-04-13T14:15:00Z",
   "schemaVersion": "1.0",
   "description": "Coordination file for all Threatpedia scheduled tasks. Agents should read this file at the start of each run to understand the broader task landscape and avoid duplicate work. Update your section after completing a run.",
   "schedules": {
@@ -195,12 +195,11 @@
         "misp",
         "mitre-attack",
         "hhs-ocr",
-        "eu-gdpr-enforcement-tracker"
-      ],
-      "specsReadyToBuild": [
+        "eu-gdpr-enforcement-tracker",
         "australian-oaic"
       ],
-      "lastRunDate": "2026-04-10",
+      "specsReadyToBuild": [],
+      "lastRunDate": "2026-04-13",
       "status": "accelerated-daily-weekdays"
     },
     "incidentReports": {
