@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-09T15:00:00Z",
+  "lastUpdated": "2026-04-09T15:12:14Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
   "queue": [
@@ -97,13 +97,52 @@
       "priority": "high",
       "queuedBy": "new-threat-intel",
       "queuedDate": "2026-04-08"
+    },
+    {
+      "actorName": "UNC6783",
+      "action": "create",
+      "referencedFrom": [
+        "adobe-mr-raccoon-breach-2026"
+      ],
+      "context": "UNC6783 targets dozens of high-value corporate entities by compromising BPOs and helpdesk staff. Possible connection to Mr. Raccoon persona. Formally disclosed April 7, 2026.",
+      "suggestedAffiliation": "Criminal",
+      "suggestedMotivation": "Financial / Data Theft",
+      "priority": "normal",
+      "queuedBy": "daily-incident-updater",
+      "queuedDate": "2026-04-09"
+    },
+    {
+      "actorName": "Chaotic Eclipse",
+      "action": "create",
+      "referencedFrom": [
+        "bluehammer-windows-defender-zero-day-2026"
+      ],
+      "context": "Also known as Nightmare-Eclipse. Released BlueHammer Windows Defender zero-day PoC after dispute with MSRC disclosure process. Potentially a disgruntled security researcher persona.",
+      "suggestedAffiliation": "Unknown (Researcher)",
+      "suggestedMotivation": "Disclosure Dispute / Hacktivism",
+      "priority": "normal",
+      "queuedBy": "daily-incident-updater",
+      "queuedDate": "2026-04-09"
+    },
+    {
+      "actorName": "DragonForce",
+      "action": "create",
+      "referencedFrom": [
+        "dragonforce-ransomware-campaign-april-2026"
+      ],
+      "context": "DragonForce RaaS group claimed 13+ victims in early April 2026 across manufacturing, packaging, hospitality, and utilities. Malaysian hacktivist origins evolved into financially motivated cybercrime. Double extortion with data exfiltration up to 1TB per victim.",
+      "suggestedAffiliation": "Criminal (Malaysian origin)",
+      "suggestedMotivation": "Financial",
+      "priority": "high",
+      "queuedBy": "new-threat-intel",
+      "queuedDate": "2026-04-08"
     }
   ],
   "queueRules": {
     "actions": {
-      "create": "Threat actor not found in threat-actor-index.json \u2014 needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
-      "update-links": "Threat actor exists but a new incident report references them \u2014 update their campaigns/description and ensure bidirectional linking",
-      "enrich": "Threat actor exists but has thin data \u2014 research and expand their entry"
+      "create": "Threat actor not found in threat-actor-index.json — needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
+      "update-links": "Threat actor exists but a new incident report references them — update their campaigns/description and ensure bidirectional linking",
+      "enrich": "Threat actor exists but has thin data — research and expand their entry"
     },
     "priority": {
       "critical": "Actor tied to active/ongoing campaign affecting critical infrastructure",
