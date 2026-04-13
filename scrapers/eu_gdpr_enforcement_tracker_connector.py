@@ -540,12 +540,25 @@ class GDPREnforcementRequestsScraper:
                     col_map[field_name] = idx
                     break
 
+        # Validate header mapping — if we matched headers, verify essential
+        # columns are present. This catches silent schema drift where the site
+        # rearranges or renames columns without changing the table structure.
+        ESSENTIAL_FIELDS = {"etid", "date_of_decision", "fine_eur", "controller_processor"}
+        if col_map:
+            missing = ESSENTIAL_FIELDS - set(col_map.keys())
+            if missing:
+                logger.warning(
+                    "Header mapping incomplete — missing essential fields: %s. "
+                    "Discovered headers: %s. Site schema may have changed.",
+                    missing, headers,
+                )
+
         # Positional fallback if header discovery fails
         if len(col_map) < 5:
-            logger.info(
-                "Header discovery found %d cols; using positional fallback "
-                "(may be inaccurate if site structure changed)",
-                len(col_map),
+            logger.warning(
+                "Header discovery found only %d cols (expected >=5); using positional fallback. "
+                "Raw headers found: %s. This may produce incorrect data if site structure changed.",
+                len(col_map), headers,
             )
             col_map = {
                 "etid": 0,
