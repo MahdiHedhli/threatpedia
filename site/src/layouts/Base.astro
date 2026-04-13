@@ -21,22 +21,164 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     <title>{title} — Threatpedia</title>
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="/" class="brand">Threatpedia</a>
-        <div class="nav-links">
-          <a href="/incidents/">Incidents</a>
-          <a href="/threat-actors/">Threat Actors</a>
-          <a href="/zero-days/">Zero-Days</a>
-        </div>
-      </nav>
-    </header>
+    <nav>
+      <a class="nav-logo" href="/">
+        <img class="nav-logo-icon" src="/tp-logo.svg" alt="TP" width="32" height="32" />
+        <span class="nav-logo-text">Threat<span>pedia</span></span>
+      </a>
+      <div class="nav-status">
+        <div class="status-dot"></div>
+        BUILDING IN PUBLIC
+      </div>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+      <div class="menu-label">Search</div>
+      <div class="search-wrapper">
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <div class="menu-label">Navigate</div>
+      <div class="menu-links">
+        <a href="/">Home</a>
+        <a href="/incidents/">Incidents</a>
+        <a href="/threat-actors/">Threat Actors</a>
+        <a href="/zero-days/">Zero-Days</a>
+      </div>
+    </div>
+
     <main>
       <slot />
     </main>
+
     <footer>
-      <p>Threatpedia — The Definitive Cyber Threat Encyclopedia</p>
+      <div class="footer-logo">THREATPEDIA</div>
+      <div class="footer-domains">
+        <div class="footer-domain">threatpedia.wiki</div>
+        <div class="footer-domain">threatpedia.net</div>
+      </div>
+      <div class="footer-copy">&copy; 2026 — All Rights Reserved</div>
     </footer>
+
+    <script>
+      // ── Hamburger menu ──────────────────────────────────────────────────
+      const btn = document.getElementById('hamburger-btn');
+      const overlay = document.getElementById('menu-overlay');
+      const panel = document.getElementById('menu-panel');
+      const searchInput = document.getElementById('menu-search');
+
+      function toggleMenu() {
+        const isOpen = panel.classList.toggle('open');
+        overlay.classList.toggle('open');
+        btn.classList.toggle('open');
+        if (isOpen && searchInput) searchInput.focus();
+      }
+
+      function closeMenu() {
+        panel.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.classList.remove('open');
+      }
+
+      btn.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+      // ── Highlight active nav link ───────────────────────────────────────
+      document.querySelectorAll('.menu-links a').forEach((a) => {
+        if (window.location.pathname === a.getAttribute('href') ||
+            (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
+          a.classList.add('active');
+        }
+      });
+
+      // ── Sitewide search ─────────────────────────────────────────────────
+      let searchIndex = null;
+      const resultsEl = document.getElementById('search-results');
+      let searchTimeout;
+
+      async function loadSearchIndex() {
+        if (searchIndex) return searchIndex;
+        try {
+          const res = await fetch('/search-index.json');
+          searchIndex = await res.json();
+        } catch { searchIndex = []; }
+        return searchIndex;
+      }
+
+      function escapeHtml(t) {
+        const d = document.createElement('div');
+        d.textContent = t;
+        return d.innerHTML;
+      }
+
+      function doSearch(query) {
+        if (!searchIndex || !query) { resultsEl.style.display = 'none'; return; }
+        const q = query.toLowerCase();
+        const matches = searchIndex
+          .map((item) => {
+            let score = 0;
+            const title = (item.title || '').toLowerCase();
+            const name = (item.name || '').toLowerCase();
+            const label = title || name;
+            if (label.startsWith(q)) score += 100;
+            else if (label.includes(q)) score += 50;
+            if (item.aliases) {
+              for (const a of item.aliases) {
+                if (a.toLowerCase().includes(q)) score += 30;
+              }
+            }
+            if (item.attackType && item.attackType.toLowerCase().includes(q)) score += 20;
+            if (item.sector && item.sector.toLowerCase().includes(q)) score += 15;
+            if (item.cve && item.cve.toLowerCase().includes(q)) score += 40;
+            return { ...item, score };
+          })
+          .filter((r) => r.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 12);
+
+        if (matches.length === 0) { resultsEl.style.display = 'none'; return; }
+
+        const severityColor = { critical: '#ff4444', high: '#ffa500', medium: '#e8a020', low: '#51cf66' };
+        let html = '';
+        let lastType = '';
+        for (const m of matches) {
+          if (m.type !== lastType) {
+            lastType = m.type;
+            const label = m.type === 'incident' ? 'INCIDENTS' : m.type === 'threat-actor' ? 'THREAT ACTORS' : 'ZERO-DAYS';
+            html += `<div class="sr-category">${label}</div>`;
+          }
+          const title = escapeHtml(m.title || m.name || '');
+          const sev = m.severity ? `<span class="sr-severity" style="color:${severityColor[m.severity] || '#e8a020'}">${escapeHtml(m.severity)}</span>` : '';
+          const sub = m.type === 'threat-actor'
+            ? `${escapeHtml(m.affiliation || '')} &middot; ${escapeHtml(m.motivation || '')}`
+            : m.type === 'incident'
+            ? `${escapeHtml(m.sector || '')} &middot; ${escapeHtml(m.attackType || '')}`
+            : `${escapeHtml(m.cve || '')} &middot; ${escapeHtml(m.platform || '')}`;
+          html += `<a class="sr-item" href="${m.url}"><div class="sr-title">${title}${sev}</div><div class="sr-sub">${sub}</div></a>`;
+        }
+        resultsEl.innerHTML = html;
+        resultsEl.style.display = 'block';
+      }
+
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        const q = searchInput.value.trim();
+        if (!q) { resultsEl.style.display = 'none'; return; }
+        searchTimeout = setTimeout(async () => {
+          await loadSearchIndex();
+          doSearch(q);
+        }, 150);
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
+      });
+    </script>
   </body>
 </html>
 
@@ -102,55 +244,254 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
   }
 
   /* ── Navigation ─────────────────────────────────────────────────────────── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(8, 11, 16, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
   nav {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0.75rem 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
-    position: relative;
-    z-index: 1;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 11, 16, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
-  .brand {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--amber) !important;
-    text-decoration: none;
-    letter-spacing: -0.02em;
-  }
+  @media (min-width: 768px) { nav { padding: 20px 48px; } }
 
-  .nav-links {
+  .nav-logo {
     display: flex;
-    gap: 1.5rem;
-  }
-
-  .nav-links a {
-    color: var(--muted);
+    align-items: center;
     text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.2s;
+    gap: 10px;
+    flex-shrink: 0;
   }
 
-  .nav-links a:hover {
-    color: var(--amber);
+  .nav-logo:hover { text-decoration: none; }
+
+  .nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: block;
   }
+
+  .nav-logo-text {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .nav-logo-text span { color: var(--muted); }
+
+  @media (max-width: 767px) { .nav-logo-text { display: none; } }
+
+  .nav-status {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  @media (min-width: 768px) { .nav-status { display: flex; } }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  /* ── Hamburger ──────────────────────────────────────────────────────────── */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 5px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .hamburger:hover { border-color: var(--amber); }
+
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--amber);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+
+  /* ── Slide-out menu ─────────────────────────────────────────────────────── */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .menu-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 32px 32px;
+    overflow-y: auto;
+  }
+
+  .menu-panel.open { transform: translateX(0); }
+
+  .menu-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .menu-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  .menu-search::placeholder { color: var(--muted); }
+  .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+
+  .search-wrapper {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: none;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .sr-category {
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sr-item {
+    display: block;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .sr-item:hover { background: var(--surface); text-decoration: none; }
+
+  .sr-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sr-severity {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .sr-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .menu-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .menu-links a {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+
+  .menu-links a:first-child { border-top: 1px solid var(--border); }
+  .menu-links a:hover { color: var(--amber); padding-left: 8px; text-decoration: none; }
+  .menu-links a.active { color: var(--amber); }
 
   /* ── Main content ───────────────────────────────────────────────────────── */
   main {
@@ -159,6 +500,7 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 2rem 1.5rem;
+    padding-top: 104px;
     width: 100%;
     flex: 1;
   }
@@ -783,16 +1125,39 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
   footer {
     position: relative;
     z-index: 1;
-    border-top: 1px solid var(--border);
-    padding: 1.5rem;
     text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
   }
 
-  footer p {
-    color: var(--muted);
+  .footer-logo {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .footer-domains {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .footer-domain {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
     letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .footer-copy {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--muted);
   }
 
   /* ── Responsive ─────────────────────────────────────────────────────────── */
