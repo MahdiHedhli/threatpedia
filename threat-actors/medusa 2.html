@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/analytics.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medusa | Threatpedia</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b10;
+            --surface: #0d1117;
+            --border: #1e2733;
+            --amber: #e8a020;
+            --amber-dim: #a06a10;
+            --text: #cdd5e0;
+            --muted: #5a6a7e;
+            --white: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Grid Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Noise Texture */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-close {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .menu-close button {
+            background: none; border: none;
+            color: var(--text); font-size: 20px; cursor: pointer;
+        }
+
+        /* ── Header Section ── */
+        .header-section {
+            margin-top: 96px;
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .header-logo img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .header-aliases {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .header-aliases strong {
+            color: var(--text);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .status-badge.active {
+            background: rgba(68, 170, 68, 0.2);
+            color: #44aa44;
+            border: 1px solid #44aa44;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .status-badge.unknown {
+            background: rgba(160, 106, 16, 0.2);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* ── Content Layout ── */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            padding: 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            grid-column: 1;
+        }
+
+        .sidebar {
+            grid-column: 2;
+            position: sticky;
+            top: 96px;
+            height: fit-content;
+        }
+
+        /* ── Sidebar (Quick Facts) ── */
+        .quick-facts {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .quick-facts-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .fact-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fact-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .fact-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .fact-value {
+            font-size: 14px;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .fact-value.flag {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--amber);
+            letter-spacing: -0.5px;
+        }
+
+        .section-content {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+        }
+
+        .section-content strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .subsection-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: rgba(232, 160, 32, 0.03);
+        }
+
+        .cve-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cve-link:hover {
+            text-decoration: underline;
+        }
+
+        .vendor-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--white);
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--amber);
+        }
+
+        .timeline-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--amber);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-event {
+            color: var(--text);
+        }
+
+        .timeline-event-title {
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .timeline-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--amber);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .timeline-indicator.suspected {
+            background: none;
+            border: 2px dashed var(--amber);
+        }
+
+        .badge-suspected {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+            border: 1px dashed var(--amber);
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        /* ── Lists ── */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        /* ── Links ── */
+        a {
+            color: var(--amber);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .actor-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .incident-link {
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        /* ── TTPs Box ── */
+        .ttp-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--amber);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+        }
+
+        .ttp-technique {
+            display: inline-block;
+            background: rgba(232, 160, 32, 0.1);
+            border: 1px solid var(--amber-dim);
+            color: var(--amber);
+            padding: 4px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 32px;
+        }
+
+        .footer-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--amber);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .references-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .reference-item {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .reference-item a {
+            color: var(--amber);
+        }
+
+        .reference-number {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--amber);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
+
+            .header-section {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+                gap: 32px;
+            }
+
+            .header-logo {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .header-info h1 {
+                font-size: 36px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+                gap: 32px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .quick-facts {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .fact-row {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .timeline-date {
+                font-size: 11px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-info h1 {
+                font-size: 28px;
+            }
+
+            .quick-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                padding-left: 0;
+                border-left: none;
+                border-top: 2px solid var(--border);
+                padding-top: 16px;
+                margin-top: 16px;
+            }
+
+            .timeline-date {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="site-header"></div>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-logo">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="medusaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8a020;stop-opacity:0.9" />
+                        <stop offset="100%" style="stop-color:#a06a10;stop-opacity:0.7" />
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="rgba(13, 17, 23, 0.5)" stroke="#1e2733" stroke-width="2"/>
+                <!-- Snake/medusa tentacles -->
+                <path d="M 80 80 Q 60 50 50 60 Q 40 70 55 75" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <path d="M 100 70 Q 100 40 90 45 Q 80 50 90 60" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <path d="M 120 80 Q 140 50 150 60 Q 160 70 145 75" fill="none" stroke="#e8a020" stroke-width="2" opacity="0.7"/>
+                <!-- Face/skull -->
+                <circle cx="100" cy="105" r="30" fill="none" stroke="#e8a020" stroke-width="2"/>
+                <circle cx="90" cy="98" r="5" fill="#e8a020" opacity="0.6"/>
+                <circle cx="110" cy="98" r="5" fill="#e8a020" opacity="0.6"/>
+                <!-- Lock symbol (ransomware) -->
+                <rect x="92" y="112" width="16" height="12" rx="2" fill="#e8a020" opacity="0.5"/>
+                <path d="M 95 112 L 95 107 Q 100 100 105 107 L 105 112" fill="none" stroke="#e8a020" stroke-width="1.5"/>
+            </svg>
+        </div>
+        <div class="header-info">
+            <h1>Medusa</h1>
+            <div class="header-aliases">
+                <strong>Also known as:</strong><br>
+                Storm-1175 (Microsoft), Medusa Ransomware Group
+            </div>
+            <div class="status-badge active">ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-wrapper">
+        <!-- Main Content -->
+        <div class="main-content">
+
+            <!-- Bio / Overview -->
+            <div class="section">
+                <h2 class="section-title">Overview</h2>
+                <div class="section-content">
+                    <p><strong>Medusa</strong> is a financially motivated ransomware group tracked by Microsoft as <strong>Storm-1175</strong>. Active since June 2021 with a significant operational spike beginning in 2023, Medusa operates a <strong>Ransomware-as-a-Service (RaaS)</strong> platform employing a <strong>double extortion</strong> model — encrypting victim data while simultaneously stealing it for leverage. The group maintains a dedicated dark web leak site where stolen data is published when ransom demands are not met.</p>
+
+                    <p>Medusa is notable for its <strong>rapid exploitation capability</strong>, with Microsoft reporting that the group can move from initial access to ransomware deployment within <strong>24 hours</strong>. The group aggressively targets N-day vulnerabilities during the patch adoption window, chaining exploits for persistence and lateral movement. Recent activity has been linked to China-based infrastructure, though the group's operational composition appears multinational.</p>
+
+                    <p>In 2026, Medusa has been particularly active in the healthcare and government sectors, executing high-impact attacks against <strong>Passaic County, New Jersey</strong> (demanding $800K ransom), the <strong>University of Mississippi Medical Center</strong> (causing a 20% revenue drop), and other critical organizations. CISA issued a dedicated advisory (AA25-071A) warning of Medusa's growing threat to critical infrastructure.</p>
+                </div>
+            </div>
+
+            <!-- TTPs -->
+            <div class="section">
+                <h2 class="section-title">Tactics, Techniques &amp; Procedures (TTPs)</h2>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">MITRE ATT&amp;CK Techniques</div>
+                        <div class="ttp-box">
+                            <div style="margin-bottom: 12px;"><strong>Initial Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1566: Phishing</span>
+                                <span class="ttp-technique">T1190: Exploit Public-Facing Application</span>
+                                <span class="ttp-technique">T1133: External Remote Services</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Execution:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1059.001: PowerShell</span>
+                                <span class="ttp-technique">T1059.003: Windows Command Shell</span>
+                                <span class="ttp-technique">T1047: WMI</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Credential Access:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1003: OS Credential Dumping (Mimikatz)</span>
+                                <span class="ttp-technique">T1110: Brute Force</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Discovery:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1135: Network Share Discovery</span>
+                                <span class="ttp-technique">T1047: WMI</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Lateral Movement:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1021.001: Remote Desktop Protocol</span>
+                                <span class="ttp-technique">T1569.002: Service Execution (PsExec)</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Defense Evasion:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1562.001: Impair Defenses - Disable or Modify Tools</span>
+                                <span class="ttp-technique">T1548.002: UAC Bypass via COM</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Exfiltration:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1567.002: Exfiltration to Cloud Storage (Rclone)</span>
+                            </div>
+                            <div style="margin-bottom: 12px;"><strong>Impact:</strong></div>
+                            <div style="margin-bottom: 12px;">
+                                <span class="ttp-technique">T1486: Data Encrypted for Impact</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <div class="subsection-title">Common Attack Vectors</div>
+                        <ul>
+                            <li><strong>Vulnerability Exploitation:</strong> Rapid exploitation of N-day vulnerabilities in web-facing applications, particularly during the patch adoption window. Known to chain multiple exploits for persistence.</li>
+                            <li><strong>Phishing Campaigns:</strong> Spear-phishing emails with malicious attachments or links targeting employees of healthcare, government, and education organizations.</li>
+                            <li><strong>RDP Brute Force:</strong> Large-scale credential brute force attacks against exposed Remote Desktop Protocol services.</li>
+                            <li><strong>Living-off-the-Land:</strong> Extensive use of native Windows tools (PowerShell, WMI, PsExec) for lateral movement and execution to avoid detection.</li>
+                        </ul>
+                    </div>
+                    <div class="subsection">
+                        <div class="subsection-title">Tools &amp; Malware</div>
+                        <ul>
+                            <li><strong>Medusa Ransomware:</strong> Custom ransomware payload with AES-256 encryption. Deploys rapidly with the ability to go from initial access to full encryption within 24 hours.</li>
+                            <li><strong>Mimikatz:</strong> Credential dumping tool for extracting passwords, hashes, and Kerberos tickets from Windows systems.</li>
+                            <li><strong>PsExec:</strong> Microsoft Sysinternals tool used for remote command execution and lateral movement across Windows networks.</li>
+                            <li><strong>Rclone:</strong> Open-source cloud storage synchronization tool abused for large-scale data exfiltration to attacker-controlled cloud storage.</li>
+                            <li><strong>Bandizip:</strong> File archiving tool used to compress stolen data before exfiltration.</li>
+                            <li><strong>Encoded PowerShell Scripts:</strong> Obfuscated PowerShell for defense evasion and automated task execution.</li>
+                        </ul>
+                    </div>
+                    <div class="subsection">
+                        <div class="subsection-title">Infrastructure Patterns</div>
+                        <ul>
+                            <li><strong>Dark Web Leak Site:</strong> Dedicated Tor-hosted platform for publishing stolen data from non-paying victims and managing extortion negotiations.</li>
+                            <li><strong>RaaS Infrastructure:</strong> Affiliate program providing ransomware payloads, negotiation portals, and operational support to partner operators.</li>
+                            <li><strong>Cloud Exfiltration Staging:</strong> Abuse of legitimate cloud storage services (via Rclone) for staging and transferring stolen data.</li>
+                            <li><strong>China-Linked Infrastructure:</strong> Recent operations linked to China-based IP addresses and infrastructure, per Microsoft threat intelligence.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Targeted Industries & Organizations -->
+            <div class="section">
+                <h2 class="section-title">Targeted Industries &amp; Organizations</h2>
+                <div class="section-content">
+                    <p>Medusa targets organizations across healthcare, government, and education — sectors with critical data and high ransom payment incentive:</p>
+                    <table>
+                        <thead>
+                            <tr><th>Sector</th><th>Notable Targets / Impact</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Government / Municipal</td><td>Passaic County, NJ — $800K ransom demand, county services disrupted. <a href="../incidents/passaic-county-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Healthcare</td><td>University of Mississippi Medical Center — 20% revenue drop, clinic shutdowns, Epic EHR disrupted. <a href="../incidents/ummc-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></td></tr>
+                            <tr><td>Education</td><td>Minneapolis Public Schools — 100GB+ stolen, 189K files including sensitive student data leaked</td></tr>
+                            <tr><td>Financial Services</td><td>Multiple financial institutions targeted across US, UK, Australia</td></tr>
+                            <tr><td>Professional Services</td><td>Law firms, accounting firms, and consulting organizations</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attack Timeline -->
+            <div class="section">
+                <h2 class="section-title">Attributable Attacks Timeline</h2>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Jun 2021</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Group Emergence</div>
+                                <div class="timeline-event-detail">Medusa ransomware operations begin, initially with limited activity and a smaller victim count.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">2023</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Operational Spike</div>
+                                <div class="timeline-event-detail">Significant increase in activity. Minneapolis Public Schools attacked (100GB+ data leaked). Group establishes dedicated dark web leak site and scales RaaS operations.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">2024</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Healthcare Focus</div>
+                                <div class="timeline-event-detail">Escalating attacks against healthcare organizations. Microsoft begins tracking as Storm-1175 and documents rapid 24-hour exploitation capability.</div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Feb 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>UMMC Attack</div>
+                                <div class="timeline-event-detail">Compromises University of Mississippi Medical Center, causing 20% revenue drop, clinic shutdowns, and Epic EHR disruption. <a href="../incidents/ummc-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>Passaic County Attack</div>
+                                <div class="timeline-event-detail">Attacks Passaic County, New Jersey demanding $800K ransom. County services severely disrupted. <a href="../incidents/passaic-county-medusa-ransomware-2026.html" class="incident-link">Full Report →</a></div>
+                            </div>
+                        </div>
+<div class="timeline-item">
+                            <div class="timeline-date">Mar 2026</div>
+                            <div class="timeline-event">
+                                <div class="timeline-event-title"><span class="timeline-indicator"></span>CISA Advisory Issued</div>
+                                <div class="timeline-event-detail">CISA publishes advisory AA25-071A warning of Medusa ransomware threat to critical infrastructure, providing detection guidance and IOCs.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known Exploits & CVEs -->
+            <div class="section">
+                <h2 class="section-title">Known Exploits &amp; CVEs</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CVE</th>
+                                <th>Vulnerability</th>
+                                <th>Affected Product</th>
+                                <th>CVSS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-10035" class="cve-link" target="_blank">CVE-2025-10035</a></td>
+                                <td>Remote Code Execution in GoAnywhere MFT</td>
+                                <td>Fortra GoAnywhere MFT</td>
+                                <td>9.8</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-23760" class="cve-link" target="_blank">CVE-2026-23760</a></td>
+                                <td>Authentication Bypass in SmarterMail</td>
+                                <td>SmarterMail</td>
+                                <td>9.1</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-31324" class="cve-link" target="_blank">CVE-2025-31324</a></td>
+                                <td>Remote Code Execution in SAP NetWeaver</td>
+                                <td>SAP NetWeaver</td>
+                                <td>9.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cross-Vendor Naming -->
+            <div class="section">
+                <h2 class="section-title">Cross-Vendor Naming Reference</h2>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vendor / Organization</th>
+                                <th>Name Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vendor-name">Microsoft Threat Intelligence</td>
+                                <td>Storm-1175</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">CISA / US Government</td>
+                                <td>Medusa</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Symantec / Broadcom</td>
+                                <td>Medusa Ransomware</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Trend Micro</td>
+                                <td>Medusa</td>
+                            </tr>
+                            <tr>
+                                <td class="vendor-name">Palo Alto Unit 42</td>
+                                <td>Medusa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Related Threat Actors -->
+            <div class="section">
+                <h2 class="section-title">Related Threat Actors</h2>
+                <div class="section-content">
+                    <ul>
+                        <li><a href="lockbit.html" class="actor-link"><strong>LockBit:</strong></a> Rival RaaS operation with overlapping target sectors. Some affiliate crossover has been observed.</li>
+                        <li><a href="cl0p-group.html" class="actor-link"><strong>Cl0p:</strong></a> Another ransomware group known for mass exploitation of file transfer vulnerabilities. Similar targeting of healthcare and government sectors.</li>
+                        <li><strong>MedusaLocker:</strong> Distinct ransomware family — NOT affiliated with Medusa despite the similar name. Different operational infrastructure and TTPs.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="section">
+                <h2 class="section-title">References &amp; Sources</h2>
+                <div class="section-content">
+                    <div class="references-list">
+                        <div class="reference-item">
+                            <span class="reference-number">[1]</span>
+                            <strong>Microsoft Security Blog: Storm-1175 Medusa Operations</strong>
+                            <a href="https://www.microsoft.com/en-us/security/blog/2026/04/06/storm-1175-focuses-gaze-on-vulnerable-web-facing-assets-in-high-tempo-medusa-ransomware-operations/" target="_blank">Microsoft Security</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[2]</span>
+                            <strong>CISA Advisory AA25-071A: Medusa Ransomware</strong>
+                            <a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a" target="_blank">CISA</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[3]</span>
+                            <strong>The Record: Medusa Ransomware Hits Mississippi Medical Center</strong>
+                            <a href="https://therecord.media/medusa-ransomware-mississippi-cyber" target="_blank">The Record</a>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-number">[4]</span>
+                            <strong>The Hacker News: Storm-1175 Zero-Day Exploitation</strong>
+                            <a href="https://thehackernews.com/2026/04/china-linked-storm-1175-exploits-zero.html" target="_blank">The Hacker News</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar - Quick Facts -->
+        <div class="sidebar">
+            <div class="quick-facts">
+                <div class="quick-facts-title">Quick Facts</div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Country of Origin</div>
+                    <div class="fact-value">
+                        <span class="fact-value flag">🌐</span>
+                        Unknown (China-linked infrastructure)
+                    </div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Nation-State Sponsored</div>
+                    <div class="fact-value">No — Criminal Enterprise (RaaS)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Motivation</div>
+                    <div class="fact-value">Financial (Ransomware &amp; Double Extortion)</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">First Seen</div>
+                    <div class="fact-value">June 2021</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Last Seen</div>
+                    <div class="fact-value">2026-Q2</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Confidence Level</div>
+                    <div class="fact-value">High</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Associated Groups</div>
+                    <div class="fact-value">Storm-1175</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Status</div>
+                    <div class="fact-value">ACTIVE</div>
+                </div>
+
+                <div class="fact-row">
+                    <div class="fact-label">Review Status</div>
+                    <div class="fact-value" style="color: #e8a020;">⚠ Pending Human Review</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/site-chrome.js"></script>
+  <script src="../assets/universal-search.js"></script>
+  <script src="../assets/incident-ticker.js"></script>
+</body>
+
+</html>

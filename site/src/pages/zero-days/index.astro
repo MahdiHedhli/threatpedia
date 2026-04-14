@@ -3,32 +3,302 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 const zeroDays = await getCollection('zero-days');
+
+// Stats
+const activeCount = zeroDays.filter(z => z.data.status === 'active').length;
+const patchedCount = zeroDays.filter(z => z.data.status === 'patched').length;
+const kevCount = zeroDays.filter(z => z.data.cisaKev).length;
+const avgDays = zeroDays.filter(z => z.data.daysInTheWild != null).reduce((s, z) => s + (z.data.daysInTheWild ?? 0), 0) / (zeroDays.filter(z => z.data.daysInTheWild != null).length || 1);
+
+const severities = ['critical', 'high', 'medium', 'low'];
+const statuses = ['active', 'patched', 'mitigated', 'unknown'];
 ---
 
 <Base title="Zero-Days">
-  <h1>Zero-Day Exploits</h1>
-  <p>{zeroDays.length} exploits tracked</p>
+  <div class="index-page">
+    <div class="index-header">
+      <h1>Exploit &amp; Zero-Day Registry</h1>
+      <p class="index-count">{zeroDays.length} vulnerabilities tracked</p>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>CVE</th>
-        <th>Title</th>
-        <th>Platform</th>
-        <th>Severity</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {zeroDays.map((zd) => (
-        <tr>
-          <td><a href={`/zero-days/${zd.id}/`}>{zd.data.cve}</a></td>
-          <td>{zd.data.title}</td>
-          <td>{zd.data.platform}</td>
-          <td><span class={`severity ${zd.data.severity}`}>{zd.data.severity}</span></td>
-          <td>{zd.data.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+    <!-- Stats -->
+    <div class="zd-stats">
+      <div class="zd-stat">
+        <div class="zd-stat-value">{zeroDays.length}</div>
+        <div class="zd-stat-label">Total Exploits</div>
+      </div>
+      <div class="zd-stat">
+        <div class="zd-stat-value zd-val-active">{activeCount}</div>
+        <div class="zd-stat-label">Active Zero-Days</div>
+      </div>
+      <div class="zd-stat">
+        <div class="zd-stat-value">{Math.round(avgDays)}</div>
+        <div class="zd-stat-label">Avg Days in Wild</div>
+      </div>
+      <div class="zd-stat">
+        <div class="zd-stat-value">{kevCount}</div>
+        <div class="zd-stat-label">CISA KEV Listed</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <input type="text" class="filter-search" id="zd-search" placeholder="Search by CVE, title, or platform..." />
+
+      <div class="filter-group">
+        <span class="filter-label">Severity</span>
+        <div class="chip-row">
+          {severities.map(s => (
+            <button class="chip" data-filter="severity" data-value={s}>
+              <span class={`chip-dot severity-${s}`}></span>{s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Status</span>
+        <div class="chip-row">
+          {statuses.map(s => (
+            <button class="chip" data-filter="status" data-value={s}>{s}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="results-count" id="results-count"></div>
+
+    <div class="index-table-wrap">
+      <table id="zd-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>CVE</th>
+            <th>Title</th>
+            <th>Platform</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Days Wild</th>
+            <th>KEV</th>
+          </tr>
+        </thead>
+        <tbody>
+          {zeroDays.map((zd) => (
+            <tr
+              data-title={zd.data.title}
+              data-cve={zd.data.cve}
+              data-platform={zd.data.platform}
+              data-severity={zd.data.severity}
+              data-status={zd.data.status}
+            >
+              <td><span class="mono-id">{zd.data.exploitId || '—'}</span></td>
+              <td><a href={`/zero-days/${zd.id}/`} class="cve-link">{zd.data.cve}</a></td>
+              <td><a href={`/zero-days/${zd.id}/`}>{zd.data.title}</a></td>
+              <td>{zd.data.platform}</td>
+              <td><span class={`severity ${zd.data.severity}`}>{zd.data.severity}</span></td>
+              <td><span class={`status-badge-sm zd-status-${zd.data.status}`}>{zd.data.status}</span></td>
+              <td class="mono-val">{zd.data.daysInTheWild ?? '—'}</td>
+              <td>{zd.data.cisaKev ? '✓' : '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </Base>
+
+<style>
+  .index-page { max-width: 1200px; }
+  .index-header { margin-bottom: 2rem; }
+  .index-header h1 { border-bottom: none; padding-bottom: 0; margin-bottom: 0.5rem; }
+  .index-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .zd-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .zd-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .zd-stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .zd-val-active { color: #ff4444; }
+
+  .zd-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .filter-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    outline: none;
+    border-radius: 2px;
+  }
+  .filter-search::placeholder { color: var(--muted); }
+  .filter-search:focus { border-color: var(--amber); }
+
+  .filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
+  .chip.active { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .chip-dot.severity-critical { background: #ff4444; }
+  .chip-dot.severity-high { background: #ffa500; }
+  .chip-dot.severity-medium { background: #e8a020; }
+  .chip-dot.severity-low { background: #51cf66; }
+
+  .results-count {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .index-table-wrap { overflow-x: auto; }
+
+  .mono-id {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .cve-link {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .mono-val {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  .status-badge-sm {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .zd-status-active { background: rgba(255,68,68,0.15); color: #ff4444; border: 1px solid rgba(255,68,68,0.3); }
+  .zd-status-patched { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .zd-status-mitigated { background: rgba(232,160,32,0.15); color: var(--amber); border: 1px solid rgba(232,160,32,0.3); }
+  .zd-status-unknown { background: rgba(90,106,126,0.15); color: var(--muted); border: 1px solid var(--border); }
+
+  @media (max-width: 768px) {
+    .zd-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<script>
+  const searchInput = document.getElementById('zd-search') as HTMLInputElement;
+  const tbody = document.querySelector('#zd-table tbody')!;
+  const resultsEl = document.getElementById('results-count')!;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  const activeFilters: Record<string, string | null> = { severity: null, status: null };
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const key = (chip as HTMLElement).dataset.filter!;
+      const val = (chip as HTMLElement).dataset.value!;
+      if (activeFilters[key] === val) {
+        activeFilters[key] = null;
+        chip.classList.remove('active');
+      } else {
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(c => c.classList.remove('active'));
+        activeFilters[key] = val;
+        chip.classList.add('active');
+      }
+      filterRows();
+    });
+  });
+
+  searchInput.addEventListener('input', () => filterRows());
+
+  function filterRows() {
+    const q = searchInput.value.toLowerCase().trim();
+    const visible = rows.filter(row => {
+      const d = row.dataset;
+      if (q && !(d.title!.toLowerCase().includes(q) || d.cve!.toLowerCase().includes(q) || d.platform!.toLowerCase().includes(q))) return false;
+      if (activeFilters.severity && d.severity !== activeFilters.severity) return false;
+      if (activeFilters.status && d.status !== activeFilters.status) return false;
+      return true;
+    });
+
+    rows.forEach(r => r.style.display = 'none');
+    visible.forEach(r => { r.style.display = ''; tbody.appendChild(r); });
+    resultsEl.textContent = `Showing ${visible.length} of ${rows.length} exploits`;
+  }
+
+  filterRows();
+</script>

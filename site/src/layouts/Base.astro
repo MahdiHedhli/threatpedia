@@ -144,6 +144,7 @@ try {
         <a href="/campaigns/">Campaigns</a>
         <a href="/threat-actors/">Threat Actors</a>
         <a href="/zero-days/">Zero-Days</a>
+        <a href="/glossary/">Glossary</a>
         <a href="/roadmap/">Roadmap</a>
       </div>
     </div>
@@ -285,6 +286,333 @@ try {
       searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
       });
+
+      // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
+      (function enhanceContent() {
+        const content = document.querySelector('.content');
+        if (!content) return;
+
+        // ── Step 0: Promote section-like paragraphs to h2 BEFORE parsing ──
+        const h2Promotions = [
+          /^Sources?\s*[&+]\s*References?$/i,
+          /^MITRE\s+ATT&CK[\w\s]*$/i,
+          /^Attack\s+Chain$/i,
+          /^Attack\s+Methodology$/i,
+          /^Campaign\s+Timeline$/i,
+          /^Attack\s+Timeline$/i,
+          /^Indicators?\s+of\s+Compromise$/i,
+          /^Attack\s+Stages$/i,
+        ];
+        content.querySelectorAll('p').forEach(p => {
+          const t = p.textContent?.trim() || '';
+          // Exact match — entire paragraph is the section title
+          if (h2Promotions.some(re => re.test(t))) {
+            const h2 = document.createElement('h2');
+            h2.textContent = t;
+            p.replaceWith(h2);
+            return;
+          }
+          // Paragraph starts with "MITRE ATT&CK..." (with or without technique lines)
+          if (/^MITRE\s+ATT&CK/i.test(t) && !h2Promotions.some(re => re.test(t)) && /\n/.test(t)) {
+            const lines = t.split('\n').map(l => l.trim()).filter(Boolean);
+            const h2 = document.createElement('h2');
+            h2.textContent = lines[0];
+            const techP = document.createElement('p');
+            techP.textContent = lines.slice(1).join('\n');
+            p.replaceWith(h2, techP);
+          }
+        });
+
+        // Find all h2 elements (including newly promoted ones)
+        const h2s = content.querySelectorAll('h2');
+
+        h2s.forEach(h2 => {
+          const title = h2.textContent?.trim() || '';
+
+          // ── Attack Chain / Attack Methodology / Attack Stages section ──
+          if (/attack\s*(chain|methodology|stages)/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            // Find stage patterns in multiple formats:
+            // "Stage N: Title" / "Stage N — Title" / "Stage N\nTitle" (merged <p>)
+            const stages = [];
+            let currentStage = null;
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              // Format 1: "Stage N: Title" or "Stage N — Title"
+              const stageMatch = text.match(/^Stage\s+(\d+)\s*[:—–-]\s*(.+)/i);
+              if (stageMatch) {
+                if (currentStage) stages.push(currentStage);
+                currentStage = { num: stageMatch[1], title: stageMatch[2].trim(), content: [] };
+                continue;
+              }
+              // Format 2: "Stage N\nTitle\n..." (newline-separated in single <p>)
+              const stageNL = text.match(/^Stage\s+(\d+)\s*\n(.+)/i);
+              if (stageNL) {
+                if (currentStage) stages.push(currentStage);
+                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                currentStage = { num: stageNL[1], title: lines[1] || '', content: lines.slice(2).length ? [lines.slice(2).join(' ')] : [] };
+                continue;
+              }
+              // Format 3: Just "Stage N" alone
+              const stageAlone = text.match(/^Stage\s+(\d+)$/i);
+              if (stageAlone) {
+                if (currentStage) stages.push(currentStage);
+                currentStage = { num: stageAlone[1], title: '', content: [] };
+                continue;
+              }
+              // Content or title for current stage
+              if (currentStage) {
+                if (!currentStage.title && text.length < 80) {
+                  currentStage.title = text;
+                } else if (text) {
+                  currentStage.content.push(sib.innerHTML || text);
+                }
+              }
+            }
+            if (currentStage) stages.push(currentStage);
+
+            if (stages.length > 0) {
+              // Remove original elements
+              siblings.forEach(s => s.remove());
+
+              // Build attack flow
+              const flow = document.createElement('div');
+              flow.className = 'attack-flow';
+              stages.forEach(s => {
+                const stage = document.createElement('div');
+                stage.className = 'attack-stage';
+                stage.innerHTML = `<div class="attack-stage-title">STAGE ${s.num}: ${s.title}</div><div class="attack-stage-content">${s.content.map(c => `<p>${c}</p>`).join('')}</div>`;
+                flow.appendChild(stage);
+              });
+              h2.after(flow);
+            }
+          }
+
+          // ── MITRE ATT&CK Mapping section ──
+          if (/mitre\s*att/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            const techniques = [];
+            let frameworkLabel = '';
+            // Collect all text lines from siblings
+            const allLines = [];
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+              allLines.push(...lines);
+            }
+            // Try format 1: "T1234 — Description" or "T1234 - Description" or "T1234: Description"
+            for (const line of allLines) {
+              const techMatch = line.match(/^(T\d{4}(?:\.\d{3})?)\s*[—–\-:]\s*(.+)/);
+              if (techMatch) {
+                techniques.push({ id: techMatch[1], name: techMatch[2].trim() });
+              } else if (line && !frameworkLabel && /framework|enterprise|mobile/i.test(line)) {
+                frameworkLabel = line;
+              }
+            }
+            // Try format 2: Table-style (Tactic / T1234 / Name / Description on consecutive lines)
+            if (techniques.length === 0) {
+              for (let li = 0; li < allLines.length; li++) {
+                const idMatch = allLines[li].match(/^(T\d{4}(?:\.\d{3})?)$/);
+                if (idMatch && li + 1 < allLines.length) {
+                  const name = allLines[li + 1];
+                  const desc = (li + 2 < allLines.length && !/^T\d{4}/.test(allLines[li + 2]) && !/^(Initial|Credential|Defense|Lateral|Collection|Exfil|Persistence|Privilege|Discovery|Execution|Impact|Command|Resource|Reconnaissance)/.test(allLines[li + 2]))
+                    ? allLines[li + 2] : '';
+                  techniques.push({ id: idMatch[1], name: desc ? `${name} — ${desc}` : name });
+                }
+              }
+            }
+
+            if (techniques.length > 0) {
+              siblings.forEach(s => s.remove());
+
+              let html = '';
+              if (frameworkLabel) {
+                html += `<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">${frameworkLabel}</p>`;
+              }
+              html += '<div class="mitre-grid">';
+              techniques.forEach(t => {
+                html += `<div class="mitre-technique"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></div>`;
+              });
+              html += '</div>';
+
+              const wrapper = document.createElement('div');
+              wrapper.innerHTML = html;
+              while (wrapper.firstChild) h2.after(wrapper.lastChild);
+            }
+          }
+
+          // ── Timeline section (Campaign Timeline, Attack Timeline, Timeline) ──
+          if (/^(campaign\s+|attack\s+)?timeline$/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            // Each <p> may contain "Date\nTitle\nDescription" merged by markdown
+            const entries = [];
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+              if (lines.length >= 2) {
+                entries.push({
+                  date: lines[0],
+                  title: lines[1],
+                  desc: lines.slice(2).join(' ')
+                });
+              }
+            }
+
+            if (entries.length > 0) {
+              siblings.forEach(s => s.remove());
+
+              const timeline = document.createElement('div');
+              timeline.className = 'timeline-flow';
+              entries.forEach(e => {
+                const entry = document.createElement('div');
+                entry.className = 'timeline-entry';
+                entry.innerHTML = `<div class="timeline-date">${e.date}</div><div class="timeline-title">${e.title}</div>${e.desc ? `<div class="timeline-desc">${e.desc}</div>` : ''}`;
+                timeline.appendChild(entry);
+              });
+              h2.after(timeline);
+            }
+          }
+        });
+
+        // ── Promote sub-section labels to h3 ──
+        // Short paragraphs that end with ":" or are known sub-header patterns
+        const subHeaderPatterns = [
+          /^IOC Sources$/i,
+          /^Key Detection Signatures$/i,
+          /^Immediate Actions/i,
+          /^Enterprise.*Recommendations:?$/i,
+          /^Detection and Hunting:?$/i,
+          /^Post-Incident Actions:?$/i,
+          /^Post-Compromise/i,
+          /^Key Takeaways$/i,
+          /^Threat Actor Profile$/i,
+          /^Affected Hardware$/i,
+          /^Related Campaigns$/i,
+          /^Takedown Participants$/i,
+          /^Attack Class:?$/i,
+          /^Primary Vulnerability:?$/i,
+        ];
+        content.querySelectorAll('p').forEach(p => {
+          const t = p.textContent?.trim() || '';
+          if (t.length < 60 && subHeaderPatterns.some(re => re.test(t))) {
+            const h3 = document.createElement('h3');
+            h3.textContent = t.replace(/:$/, '');
+            p.replaceWith(h3);
+          }
+        });
+
+        // ── Style IOC sub-sections as cards ──
+        // Handles both "IOC Sources" and "Key Detection Signatures" h3s
+        content.querySelectorAll('h3').forEach(h3 => {
+          const isIOCSources = /ioc sources/i.test(h3.textContent || '');
+          const isDetection = /key detection/i.test(h3.textContent || '');
+          if (!isIOCSources && !isDetection) return;
+
+          const siblings = [];
+          let el = h3.nextElementSibling;
+          while (el && el.tagName !== 'H2' && el.tagName !== 'H3') {
+            siblings.push(el);
+            el = el.nextElementSibling;
+          }
+          // If a single <p> with newline-separated items
+          if (siblings.length === 1 && siblings[0].tagName === 'P') {
+            const lines = (siblings[0].textContent?.trim() || '').split('\n').map(l => l.trim()).filter(Boolean);
+            if (lines.length > 1) {
+              const grid = document.createElement('div');
+              grid.className = isDetection ? 'ioc-signatures' : 'ioc-sources';
+              lines.forEach(line => {
+                const item = document.createElement('div');
+                item.className = isDetection ? 'ioc-sig-item' : 'ioc-source-item';
+                // For IOC sources, split on em-dash to get source name + description
+                if (isIOCSources) {
+                  const parts = line.split(/\s*[—–]\s*/);
+                  if (parts.length >= 2) {
+                    item.innerHTML = `<span class="ioc-source-name">${parts[0]}</span><span class="ioc-source-desc">${parts.slice(1).join(' — ')}</span>`;
+                  } else {
+                    item.textContent = line;
+                  }
+                } else {
+                  item.textContent = line;
+                }
+                grid.appendChild(item);
+              });
+              siblings[0].replaceWith(grid);
+            }
+          }
+        });
+
+        // ── Style numbered sources/references ──
+        content.querySelectorAll('h2').forEach(h2 => {
+          if (!/sources?\s*[&+]\s*references?/i.test(h2.textContent || '')) return;
+          const siblings = [];
+          let el = h2.nextElementSibling;
+          while (el && el.tagName !== 'H2') {
+            siblings.push(el);
+            el = el.nextElementSibling;
+          }
+
+          // Pattern: <ol> (empty numbered item) then <p> (title + link), alternating
+          // Stop when we hit a <p> that doesn't follow an <ol> (non-reference content)
+          const refs = [];
+          let refNum = 0;
+          let expectingRef = true;
+          for (let i = 0; i < siblings.length; i++) {
+            const sib = siblings[i];
+            // Skip empty <ol> elements (markdown renders "1." as empty list)
+            if (sib.tagName === 'OL' && sib.textContent?.trim() === '') {
+              expectingRef = true;
+              continue;
+            }
+            // <p> immediately after <ol> is a reference; otherwise stop
+            if (sib.tagName === 'P' && expectingRef) {
+              refNum++;
+              const link = sib.querySelector('a');
+              const text = sib.textContent?.trim() || '';
+              const url = link ? link.href : '';
+              const title = url ? text.replace(new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$'), '').trim() : text;
+              refs.push({ num: refNum, title: title || text, url });
+              expectingRef = false;
+            } else if (sib.tagName === 'P' && !expectingRef) {
+              // Non-reference content — stop parsing sources
+              break;
+            }
+          }
+
+          if (refs.length > 0) {
+            siblings.forEach(s => s.remove());
+            const list = document.createElement('div');
+            list.className = 'sources-list';
+            refs.forEach(r => {
+              const item = document.createElement('div');
+              item.className = 'source-item';
+              let html = `<span class="source-num">${r.num}.</span><div class="source-content"><div class="source-title">${r.title}</div>`;
+              if (r.url) html += `<a href="${r.url}" class="source-url" target="_blank" rel="noopener">${new URL(r.url).hostname}${new URL(r.url).pathname.substring(0, 50)}${new URL(r.url).pathname.length > 50 ? '...' : ''}</a>`;
+              html += '</div>';
+              item.innerHTML = html;
+              list.appendChild(item);
+            });
+            h2.after(list);
+          }
+        });
+      })();
     </script>
   </body>
 </html>
@@ -1339,6 +1667,249 @@ try {
   .content img {
     max-width: 100%;
     height: auto;
+  }
+
+  /* ── Attack Chain Stages ──────────────────────────────────────────────── */
+  .attack-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .attack-stage {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .attack-stage-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .attack-stage-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .attack-stage-content ul {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+
+  .attack-stage-content li {
+    margin-bottom: 6px;
+  }
+
+  /* ── MITRE ATT&CK Technique Grid ─────────────────────────────────────── */
+  .mitre-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .mitre-technique {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.15s;
+  }
+
+  .mitre-technique:hover {
+    border-color: var(--amber);
+  }
+
+  .mitre-tid {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .mitre-name {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── Timeline entries ────────────────────────────────────────────────── */
+  .timeline-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+    border-left: 2px solid var(--border);
+    padding-left: 0;
+  }
+
+  .timeline-entry {
+    position: relative;
+    padding: 16px 0 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline-entry:last-child {
+    border-bottom: none;
+  }
+
+  .timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 500;
+    color: var(--white);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── IOC Signature Items ─────────────────────────────────────────────── */
+  .ioc-signatures {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .ioc-sig-item {
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--severity-high);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  /* ── IOC Source Items ──────────────────────────────────────────────── */
+  .ioc-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .ioc-source-item {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .ioc-source-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--amber);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ioc-source-desc {
+    color: var(--text);
+    font-size: 0.82rem;
+  }
+
+  /* ── Sources / References List ───────────────────────────────────────── */
+  .sources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .source-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    align-items: flex-start;
+  }
+
+  .source-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    flex-shrink: 0;
+    min-width: 24px;
+  }
+
+  .source-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .source-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .source-url {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    word-break: break-all;
+    transition: color 0.2s;
+  }
+
+  .source-url:hover {
+    color: var(--amber);
   }
 
   /* ── Section headers (mono eyebrow style) ───────────────────────────────── */

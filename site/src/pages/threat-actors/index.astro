@@ -4,32 +4,260 @@ import { getCollection } from 'astro:content';
 
 const actors = await getCollection('threat-actors');
 actors.sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const affiliations = [...new Set(actors.map(a => a.data.affiliation))].filter(a => a !== 'Unknown').sort();
+const motivations = [...new Set(actors.map(a => a.data.motivation))].filter(m => m !== 'Unknown').sort();
+const statuses = ['active', 'inactive', 'unknown'];
 ---
 
 <Base title="Threat Actors">
-  <h1>Threat Actors</h1>
-  <p>{actors.length} profiles</p>
+  <div class="index-page">
+    <div class="index-header">
+      <h1>Threat Actor Registry</h1>
+      <p class="index-count">{actors.length} APT groups and threat actors tracked</p>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Aliases</th>
-        <th>Affiliation</th>
-        <th>Motivation</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {actors.map((actor) => (
-        <tr>
-          <td><a href={`/threat-actors/${actor.id}/`}>{actor.data.name}</a></td>
-          <td>{actor.data.aliases.slice(0, 3).join(', ')}</td>
-          <td>{actor.data.affiliation}</td>
-          <td>{actor.data.motivation}</td>
-          <td>{actor.data.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+    <div class="filter-bar">
+      <input type="text" class="filter-search" id="actor-search" placeholder="Search by name, alias, or campaign..." />
+
+      <div class="filter-group">
+        <span class="filter-label">Affiliation</span>
+        <div class="chip-row" id="affiliation-chips">
+          {affiliations.map(a => (
+            <button class="chip" data-filter="affiliation" data-value={a}>{a}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Motivation</span>
+        <div class="chip-row" id="motivation-chips">
+          {motivations.map(m => (
+            <button class="chip" data-filter="motivation" data-value={m}>{m}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Status</span>
+        <div class="chip-row" id="status-chips">
+          {statuses.map(s => (
+            <button class="chip" data-filter="status" data-value={s}>
+              <span class={`chip-dot status-dot-${s}`}></span>{s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Sort</span>
+        <select class="filter-select" id="actor-sort">
+          <option value="name">Alphabetical</option>
+          <option value="affiliation">Affiliation</option>
+          <option value="status">Status</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="results-count" id="results-count"></div>
+
+    <div class="index-table-wrap">
+      <table id="actors-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Aliases</th>
+            <th>Affiliation</th>
+            <th>Motivation</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {actors.map((actor) => (
+            <tr
+              data-name={actor.data.name}
+              data-aliases={actor.data.aliases.join(',')}
+              data-affiliation={actor.data.affiliation}
+              data-motivation={actor.data.motivation}
+              data-status={actor.data.status}
+            >
+              <td><a href={`/threat-actors/${actor.id}/`}>{actor.data.name}</a></td>
+              <td class="aliases-cell">{actor.data.aliases.slice(0, 3).join(', ')}{actor.data.aliases.length > 3 ? ` +${actor.data.aliases.length - 3}` : ''}</td>
+              <td>{actor.data.affiliation}</td>
+              <td>{actor.data.motivation}</td>
+              <td><span class={`status-badge-sm status-${actor.data.status}`}>{actor.data.status}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </Base>
+
+<style>
+  .index-page { max-width: 1200px; }
+  .index-header { margin-bottom: 2rem; }
+  .index-header h1 { border-bottom: none; padding-bottom: 0; margin-bottom: 0.5rem; }
+  .index-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .filter-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+  .filter-search::placeholder { color: var(--muted); }
+  .filter-search:focus { border-color: var(--amber); }
+
+  .filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
+  .chip.active { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot-active { background: #22c55e; }
+  .status-dot-inactive { background: #5a6a7e; }
+  .status-dot-unknown { background: #e8a020; }
+
+  .filter-select {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--bg);
+    color: var(--white);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    outline: none;
+    border-radius: 2px;
+  }
+  .filter-select:focus { border-color: var(--amber); }
+
+  .results-count {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .index-table-wrap { overflow-x: auto; }
+  .aliases-cell { font-size: 0.82rem; color: var(--muted); }
+
+  .status-badge-sm {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .status-active { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .status-inactive { background: rgba(90,106,126,0.15); color: var(--muted); border: 1px solid var(--border); }
+  .status-unknown { background: rgba(232,160,32,0.15); color: var(--amber); border: 1px solid rgba(232,160,32,0.3); }
+</style>
+
+<script>
+  const searchInput = document.getElementById('actor-search') as HTMLInputElement;
+  const sortSelect = document.getElementById('actor-sort') as HTMLSelectElement;
+  const tbody = document.querySelector('#actors-table tbody')!;
+  const resultsEl = document.getElementById('results-count')!;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  const activeFilters: Record<string, string | null> = { affiliation: null, motivation: null, status: null };
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const key = (chip as HTMLElement).dataset.filter!;
+      const val = (chip as HTMLElement).dataset.value!;
+      if (activeFilters[key] === val) {
+        activeFilters[key] = null;
+        chip.classList.remove('active');
+      } else {
+        document.querySelectorAll(`.chip[data-filter="${key}"]`).forEach(c => c.classList.remove('active'));
+        activeFilters[key] = val;
+        chip.classList.add('active');
+      }
+      filterAndSort();
+    });
+  });
+
+  searchInput.addEventListener('input', () => filterAndSort());
+  sortSelect.addEventListener('change', () => filterAndSort());
+
+  function filterAndSort() {
+    const q = searchInput.value.toLowerCase().trim();
+
+    const visible = rows.filter(row => {
+      const d = row.dataset;
+      if (q && !(d.name!.toLowerCase().includes(q) || d.aliases!.toLowerCase().includes(q))) return false;
+      if (activeFilters.affiliation && d.affiliation !== activeFilters.affiliation) return false;
+      if (activeFilters.motivation && d.motivation !== activeFilters.motivation) return false;
+      if (activeFilters.status && d.status !== activeFilters.status) return false;
+      return true;
+    });
+
+    const sortBy = sortSelect.value;
+    visible.sort((a, b) => {
+      if (sortBy === 'affiliation') return a.dataset.affiliation!.localeCompare(b.dataset.affiliation!);
+      if (sortBy === 'status') {
+        const o: Record<string, number> = { active: 0, unknown: 1, inactive: 2 };
+        return (o[a.dataset.status!] ?? 9) - (o[b.dataset.status!] ?? 9);
+      }
+      return a.dataset.name!.localeCompare(b.dataset.name!);
+    });
+
+    rows.forEach(r => r.style.display = 'none');
+    visible.forEach(r => { r.style.display = ''; tbody.appendChild(r); });
+    resultsEl.textContent = `Showing ${visible.length} of ${rows.length} threat actors`;
+  }
+
+  filterAndSort();
+</script>
