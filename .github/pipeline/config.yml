@@ -1,0 +1,72 @@
+# Threatpedia Pipeline Configuration
+# ===================================
+# Central config for all pipeline workflows.
+# Referenced by dispatcher, discovery, and validation Actions.
+
+version: "1.0"
+
+# ── Queue Limits ──────────────────────────────────────────────────────────────
+queues:
+  editorial:
+    max_pending: 50          # Maximum drafts awaiting review
+    backpressure_resume: 40  # Resume discovery when queue drops below this
+  discovery:
+    max_candidates: 200      # Maximum unprocessed discovery candidates
+  draft_ready:
+    max_pending: 25          # Maximum triaged candidates awaiting draft generation
+
+# ── Scheduling ────────────────────────────────────────────────────────────────
+scheduling:
+  discovery_cron: "0 */6 * * *"    # Every 6 hours
+  dispatcher_cron: "30 */2 * * *"  # Every 2 hours (offset from discovery)
+  stale_lock_minutes: 30           # Locks older than this are auto-released
+
+# ── Circuit Breaker ──────────────────────────────────────────────────────────
+circuit_breaker:
+  failure_threshold: 3       # Consecutive failures before tripping
+  cooldown_minutes: 60       # How long to wait before retrying after trip
+  alert_channel: "issues"    # Where to alert (GitHub Issues)
+
+# ── Validation Gates ─────────────────────────────────────────────────────────
+validation:
+  min_sources: 3
+  min_h2_sections: 5
+  min_mitre_mappings: 1
+  required_review_status: "draft_ai"
+  build_must_pass: true
+  schema_must_pass: true
+
+# ── Article Generation ────────────────────────────────────────────────────────
+# Generation is agent-executed, not API-driven.
+# The pipeline creates tasks; agents (Claude Code, Gemini, humans) execute them
+# under their own subscriptions. No API key needed in the pipeline.
+generation:
+  mode: "agent-executed"    # Tasks are picked up by agents, not auto-generated
+  # Legacy API mode available via scripts/generate-article.mjs if API key is configured
+
+# ── Auto-Merge Policy ────────────────────────────────────────────────────────
+# When all validation gates pass, should the PR auto-merge?
+# Set to false to require Kernel K approval on every article.
+auto_merge:
+  enabled: false             # Manual approval required for now
+  require_label: "pipeline/validated"
+
+# ── Branch Naming ─────────────────────────────────────────────────────────────
+branches:
+  prefix: "pipeline"         # pipeline/TASK-2026-XXXX
+  protect_main: true         # Never push directly to main
+
+# ── Discovery Sources ─────────────────────────────────────────────────────────
+discovery_sources:
+  cisa_kev:
+    enabled: true
+    url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+  nvd:
+    enabled: true
+    base_url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    lookback_days: 7
+    min_cvss: 7.0            # Only high/critical CVEs
+  # Future sources:
+  # mitre_attack:
+  #   enabled: false
+  #   url: "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"

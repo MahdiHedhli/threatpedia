@@ -180,6 +180,7 @@ try {
         panel.classList.remove('open');
         overlay.classList.remove('open');
         btn.classList.remove('open');
+        document.body.style.overflow = '';
       }
 
       btn.addEventListener('click', toggleMenu);
@@ -468,7 +469,8 @@ try {
               }
               html += '<div class="mitre-grid">';
               techniques.forEach(t => {
-                html += `<div class="mitre-technique"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></div>`;
+                const attackUrl = `https://attack.mitre.org/techniques/${t.id.replace('.', '/')}/`;
+                html += `<a class="mitre-technique" href="${attackUrl}" target="_blank" rel="noopener"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></a>`;
               });
               html += '</div>';
 
@@ -834,7 +836,12 @@ try {
             for (const match of text.matchAll(MITRE_RE)) {
               const key = match[0].toLowerCase();
               if (linked.has(key)) continue;
-              if (!crossRef[key]) continue;
+              // If not in cross-ref, create a synthetic entry with ATT&CK link
+              if (!crossRef[key]) {
+                const tid = match[0];
+                const attackUrl = `https://attack.mitre.org/techniques/${tid.replace('.', '/')}/`;
+                crossRef[key] = { tier: 1, type: 'mitre', label: tid, external: attackUrl, articles: [] };
+              }
               replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
             }
 
@@ -2086,6 +2093,7 @@ try {
     margin: 16px 0;
   }
 
+  a.mitre-technique,
   .mitre-technique {
     display: flex;
     align-items: baseline;
@@ -2095,10 +2103,15 @@ try {
     border: 1px solid var(--border);
     border-radius: 4px;
     transition: border-color 0.15s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
 
+  a.mitre-technique:hover,
   .mitre-technique:hover {
     border-color: var(--amber);
+    text-decoration: none;
   }
 
   .mitre-tid {

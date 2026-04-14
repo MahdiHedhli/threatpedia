@@ -1,0 +1,205 @@
+name: "Pipeline: Validate Article PR"
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "site/src/content/**/*.md"
+      - "site/src/content/**/*.mdx"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: cd site && npm ci
+
+      - name: Identify changed articles
+        id: changed
+        run: |
+          FILES=$(git diff --name-only origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "count=$(echo "$FILES" | grep -c '.' || true)" >> $GITHUB_OUTPUT
+
+      - name: Validate frontmatter and structure
+        id: validate
+        if: steps.changed.outputs.count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = `${{ steps.changed.outputs.files }}`.trim().split('\n').filter(Boolean);
+            const results = [];
+
+            for (const file of files) {
+              if (!fs.existsSync(file)) continue;
+              const content = fs.readFileSync(file, 'utf8');
+              const checks = [];
+              let pass = true;
+
+              // ── Parse frontmatter ──────────────────────────────────────
+              const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+              if (!fmMatch) {
+                checks.push({ name: 'Frontmatter exists', pass: false, detail: 'No YAML frontmatter found' });
+                results.push({ file, checks, pass: false });
+                continue;
+              }
+              checks.push({ name: 'Frontmatter exists', pass: true });
+
+              const fm = fmMatch[1];
+
+              // ── Detect article type from path ──────────────────────────
+              let type = 'unknown';
+              if (file.includes('/incidents/')) type = 'incident';
+              else if (file.includes('/campaigns/')) type = 'campaign';
+              else if (file.includes('/threat-actors/')) type = 'threat-actor';
+              else if (file.includes('/zero-days/')) type = 'zero-day';
+
+              // ── Check reviewStatus ─────────────────────────────────────
+              const statusMatch = fm.match(/reviewStatus:\s*(\S+)/);
+              const reviewStatus = statusMatch ? statusMatch[1] : null;
+              checks.push({
+                name: 'reviewStatus is draft_ai',
+                pass: reviewStatus === 'draft_ai',
+                detail: reviewStatus || 'not found',
+              });
+              if (reviewStatus !== 'draft_ai') pass = false;
+
+              // ── Check required fields per type ─────────────────────────
+              const requiredFields = {
+                'incident': ['eventId', 'title', 'date', 'attackType', 'severity', 'sector', 'geography'],
+                'campaign': ['title', 'startDate', 'attackType', 'severity', 'sector', 'geography'],
+                'threat-actor': ['name', 'affiliation', 'motivation', 'status'],
+                'zero-day': ['title', 'cve', 'type', 'platform', 'severity', 'status'],
+              };
+
+              const fields = requiredFields[type] || [];
+              for (const field of fields) {
+                const has = new RegExp(`^${field}:`, 'm').test(fm);
+                checks.push({ name: `Field: ${field}`, pass: has });
+                if (!has) pass = false;
+              }
+
+              // ── Check H2 section count ─────────────────────────────────
+              const body = content.split('---').slice(2).join('---');
+              const h2Count = (body.match(/^## /gm) || []).length;
+              checks.push({
+                name: 'H2 sections >= 5',
+                pass: h2Count >= 5,
+                detail: `Found ${h2Count}`,
+              });
+              if (h2Count < 5) pass = false;
+
+              // ── Check sources section exists ───────────────────────────
+              const hasSources = /^## (?:Sources|References|Sources & References|Sources and References)/mi.test(body);
+              checks.push({ name: 'Sources section exists', pass: hasSources });
+              if (!hasSources) pass = false;
+
+              // ── EDIT-RULE-030: blank lines around headings ─────────────
+              const lines = content.split('\n');
+              let blankLineIssues = 0;
+              for (let i = 1; i < lines.length - 1; i++) {
+                if (/^#{1,3}\s/.test(lines[i])) {
+                  if (lines[i-1].trim() !== '' && !lines[i-1].startsWith('---')) blankLineIssues++;
+                  if (i + 1 < lines.length && lines[i+1].trim() === '' && i + 2 < lines.length) continue;
+                }
+              }
+              checks.push({
+                name: 'EDIT-RULE-030: blank lines around headings',
+                pass: blankLineIssues === 0,
+                detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
+              });
+
+              // ── MITRE mappings in frontmatter ──────────────────────────
+              const hasMitre = /mitreMappings:/m.test(fm);
+              const mitreCount = (fm.match(/techniqueId:/g) || []).length;
+              checks.push({
+                name: 'MITRE mappings >= 1',
+                pass: mitreCount >= 1,
+                detail: `Found ${mitreCount} in frontmatter`,
+              });
+              if (mitreCount < 1) pass = false;
+
+              results.push({ file, type, checks, pass });
+            }
+
+            // ── Build PR comment ─────────────────────────────────────────
+            let comment = '## Pipeline Validation Report\n\n';
+            let allPass = true;
+
+            for (const r of results) {
+              const icon = r.pass ? ':white_check_mark:' : ':x:';
+              comment += `### ${icon} \`${r.file}\` (${r.type || 'unknown'})\n\n`;
+              comment += '| Check | Result | Detail |\n|---|---|---|\n';
+              for (const c of r.checks) {
+                const ci = c.pass ? ':heavy_check_mark:' : ':x:';
+                comment += `| ${c.name} | ${ci} | ${c.detail || '-'} |\n`;
+              }
+              comment += '\n';
+              if (!r.pass) allPass = false;
+            }
+
+            if (results.length === 0) {
+              comment += '_No article files detected in this PR._\n';
+            } else {
+              comment += allPass
+                ? '\n**All validation checks passed.** :rocket:\n'
+                : '\n**Some checks failed.** Please fix the issues above before merge.\n';
+            }
+
+            // Post or update comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Pipeline Validation Report')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }
+
+            // ── Add/remove label ─────────────────────────────────────────
+            if (allPass) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['pipeline/validated'],
+              });
+            }
+
+            if (!allPass) {
+              core.setFailed('Article validation failed');
+            }
+
+      - name: Build check
+        run: |
+          cd site && npm run build

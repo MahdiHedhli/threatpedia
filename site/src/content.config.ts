@@ -139,6 +139,7 @@ const threatActors = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/threat-actors' }),
   schema: z.object({
     name: z.string(),
+    logo: z.string().optional(),
     aliases: z.array(z.string()).default([]),
     affiliation: z.string().default('Unknown'),
     motivation: z.string().default('Unknown'),

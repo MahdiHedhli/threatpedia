@@ -72,15 +72,22 @@ const statusClass = d.status === 'active' ? 'zd-active' : d.status === 'patched'
           </div>
         )}
         {d.researcher && (
-          <div class="meta-item">
+          <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.researcher)}`}>
             <span class="meta-label">Researcher</span>
             <span class="meta-value">{d.researcher}</span>
+          </a>
+        )}
+        {d.cisaKev ? (
+          <a class="meta-item meta-link meta-link-entity" href={`https://www.cisa.gov/known-exploited-vulnerabilities-catalog`} target="_blank" rel="noopener">
+            <span class="meta-label">CISA KEV</span>
+            <span class="meta-value">Listed</span>
+          </a>
+        ) : (
+          <div class="meta-item">
+            <span class="meta-label">CISA KEV</span>
+            <span class="meta-value">Not Listed</span>
           </div>
         )}
-        <div class="meta-item">
-          <span class="meta-label">CISA KEV</span>
-          <span class="meta-value">{d.cisaKev ? 'Listed' : 'Not Listed'}</span>
-        </div>
       </div>
     </header>
 
