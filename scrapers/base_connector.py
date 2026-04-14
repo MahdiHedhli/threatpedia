@@ -72,6 +72,14 @@ class TokenBucketRateLimiter:
     """
 
     def __init__(self, rate: int, per: float = 60.0) -> None:
+        if rate <= 0:
+            raise ValueError(
+                f"TokenBucketRateLimiter rate must be a positive integer; got {rate!r}"
+            )
+        if per <= 0:
+            raise ValueError(
+                f"TokenBucketRateLimiter per must be a positive number; got {per!r}"
+            )
         self.rate = rate
         self.per = per
         self.tokens = float(rate)

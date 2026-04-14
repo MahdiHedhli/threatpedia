@@ -61,6 +61,20 @@ except ImportError:
 
 logger = logging.getLogger("threatpedia.connectors.eu_gdpr_enforcement_tracker")
 
+
+# ---------------------------------------------------------------------------
+# Exceptions
+# ---------------------------------------------------------------------------
+
+class SchemaDriftError(RuntimeError):
+    """Raised when the upstream site's table schema cannot be safely parsed.
+
+    This is raised instead of silently falling back to a positional column
+    mapping, which would risk corrupting downstream data if the upstream
+    site ever reorders or renames its columns.
+    """
+
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -144,23 +158,6 @@ SECTOR_MAP = {
     "Not disclosed": "Unknown",
     "Not Disclosed": "Unknown",
     "": "Unknown",
-}
-
-# ---------------------------------------------------------------------------
-# Nine GDPR Violation Categories (for validation)
-# ---------------------------------------------------------------------------
-
-VIOLATION_CATEGORIES = {
-    "Insufficient legal basis for data processing",
-    "Non-compliance with general data processing principles",
-    "Insufficient technical and organisational measures to ensure information security",
-    "Insufficient fulfilment of information obligations",
-    "Insufficient fulfilment of data subjects rights",
-    "Insufficient fulfilment of data subjects' rights",
-    "Insufficient fulfilment of data breach notification obligations",
-    "Insufficient cooperation with supervisory authority",
-    "Insufficient fulfilment of obligations related to data protection impact assessment",
-    "Non-compliance with data protection officer (DPO) requirements",
 }
 
 # ---------------------------------------------------------------------------
@@ -543,33 +540,39 @@ class GDPREnforcementRequestsScraper:
         # Validate header mapping — if we matched headers, verify essential
         # columns are present. This catches silent schema drift where the site
         # rearranges or renames columns without changing the table structure.
+        #
+        # Per review feedback, we FAIL LOUDLY on header-discovery failure or
+        # missing essential fields rather than silently falling back to a
+        # positional mapping. A positional fallback risks data corruption if
+        # the upstream site ever reorders columns, and that corruption would
+        # flow downstream into every Threatpedia record. Raising here causes
+        # the scrape to fail in a clearly-attributable way so the issue is
+        # investigated before any bad data lands.
         ESSENTIAL_FIELDS = {"etid", "date_of_decision", "fine_eur", "controller_processor"}
-        if col_map:
-            missing = ESSENTIAL_FIELDS - set(col_map.keys())
-            if missing:
-                logger.warning(
-                    "Header mapping incomplete — missing essential fields: %s. "
-                    "Discovered headers: %s. Site schema may have changed.",
-                    missing, headers,
-                )
-
-        # Positional fallback if header discovery fails
-        if len(col_map) < 5:
-            logger.warning(
-                "Header discovery found only %d cols (expected >=5); using positional fallback. "
-                "Raw headers found: %s. This may produce incorrect data if site structure changed.",
-                len(col_map), headers,
+        if not col_map:
+            logger.error(
+                "Header discovery failed — no known column headers recognized. "
+                "Raw headers found: %s. Upstream site may have changed schema.",
+                headers,
             )
-            col_map = {
-                "etid": 0,
-                "country": 1,
-                "authority": 2,
-                "date_of_decision": 3,
-                "fine_eur": 4,
-                "controller_processor": 5,
-                "quoted_articles": 6,
-                "violation_type": 7,
-            }
+            raise SchemaDriftError(
+                "EU GDPR Enforcement Tracker: header discovery failed; "
+                f"got headers={headers!r}. Refusing to fall back to positional "
+                "mapping to prevent silent data corruption."
+            )
+        missing = ESSENTIAL_FIELDS - set(col_map.keys())
+        if missing:
+            logger.error(
+                "Header mapping incomplete — missing essential fields: %s. "
+                "Discovered headers: %s. Site schema may have changed.",
+                missing, headers,
+            )
+            raise SchemaDriftError(
+                "EU GDPR Enforcement Tracker: header mapping missing "
+                f"essential fields {sorted(missing)!r}. Discovered headers: "
+                f"{headers!r}. Refusing to proceed with partial mapping to "
+                "prevent silent data corruption."
+            )
 
         # Capture scrape timestamp once
         batch_timestamp = datetime.now(timezone.utc).isoformat()
