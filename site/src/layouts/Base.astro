@@ -752,10 +752,12 @@ try {
   blockquote {
     border-left: 3px solid var(--amber);
     margin: 1rem 0;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1.25rem;
     background: var(--surface);
     border-radius: 0 4px 4px 0;
     color: var(--text);
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   ul, ol {
@@ -805,11 +807,20 @@ try {
     background: rgba(232, 160, 32, 0.04);
   }
 
+  /* ── Article container ──────────────────────────────────────────────────── */
+  article {
+    max-width: 1000px;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+  }
+
   /* ── Incident metadata grid ─────────────────────────────────────────────── */
   .incident-meta {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: 16px;
     margin-bottom: 32px;
   }
 
@@ -1253,10 +1264,81 @@ try {
 
   .content {
     margin-top: 1.5rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .content h2:first-child {
     margin-top: 0;
+  }
+
+  .content p {
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .content ul, .content ol {
+    margin: 1rem 0 1.5rem 1.5rem;
+  }
+
+  .content blockquote {
+    border-left: 3px solid var(--amber);
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 0 4px 4px 0;
+    color: var(--text);
+    overflow-x: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .content blockquote p {
+    margin-bottom: 0.5rem;
+  }
+
+  .content blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .content pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .content pre code {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .content h3 {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .content table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .content img {
+    max-width: 100%;
+    height: auto;
   }
 
   /* ── Section headers (mono eyebrow style) ───────────────────────────────── */
@@ -1343,6 +1425,7 @@ try {
     }
     h1 { font-size: 28px; }
     .incident-meta { grid-template-columns: 1fr; }
+    .meta-item { padding: 12px; }
     dl { grid-template-columns: 1fr; }
     dt { margin-top: 0.5rem; }
   }
