@@ -18,15 +18,35 @@ targetGeographies:
   - "North America"
   - "South America"
   - "Europe"
-knownTools:
+tools:
   - "Play Ransomware"
   - "Cobalt Strike"
   - "SystemBC"
   - "Mimikatz"
+attributionConfidence: "A2"
+attributionRationale: "Assessed by CISA and the FBI as a distinct financial syndicate using a custom encryption algorithm and distinctive double-extortion tactics against critical infrastructure."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-352a"
+    publisher: "CISA"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2023-12-18"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.trendmicro.com/vinfo/us/security/news/ransomware-spotlight/ransomware-spotlight-play"
+    publisher: "Trend Micro"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2023-09-08"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

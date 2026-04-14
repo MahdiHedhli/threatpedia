@@ -16,15 +16,34 @@ targetGeographies:
   - "North America"
   - "Europe"
   - "Global"
-knownTools:
+tools:
   - "Cobalt Strike"
   - "Ryuk"
   - "Conti"
   - "Hive"
+attributionConfidence: "A2"
+attributionRationale: "Assessed with high confidence as a distinct Russian-nexus financial syndicate specialized in rapid, high-velocity ransomware deployment, often utilizing purchased initial access infrastructure."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://attack.mitre.org/groups/G0128/"
+    publisher: "MITRE ATT&CK"
+    publisherType: "research"
+    reliability: "R1"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.mandiant.com/resources/blog/fin12-ransomware-intrusion-analysis"
+    publisher: "Mandiant"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2021-10-07"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

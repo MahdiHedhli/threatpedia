@@ -243,6 +243,13 @@ try {
             if (item.attackType && item.attackType.toLowerCase().includes(q)) score += 20;
             if (item.sector && item.sector.toLowerCase().includes(q)) score += 15;
             if (item.cve && item.cve.toLowerCase().includes(q)) score += 40;
+            if (item.tags) {
+              for (const t of item.tags) {
+                if (t.toLowerCase() === q) { score += 60; break; }
+                else if (t.toLowerCase().includes(q)) { score += 25; break; }
+              }
+            }
+            if (item.threatActor && item.threatActor.toLowerCase().includes(q)) score += 35;
             return { ...item, score };
           })
           .filter((r) => r.score > 0)
@@ -257,7 +264,7 @@ try {
         for (const m of matches) {
           if (m.type !== lastType) {
             lastType = m.type;
-            const label = m.type === 'incident' ? 'INCIDENTS' : m.type === 'threat-actor' ? 'THREAT ACTORS' : 'ZERO-DAYS';
+            const label = m.type === 'incident' ? 'INCIDENTS' : m.type === 'campaign' ? 'CAMPAIGNS' : m.type === 'threat-actor' ? 'THREAT ACTORS' : 'ZERO-DAYS';
             html += `<div class="sr-category">${label}</div>`;
           }
           const title = escapeHtml(m.title || m.name || '');
@@ -286,6 +293,24 @@ try {
       searchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
       });
+
+      // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
+      const urlQ = new URLSearchParams(window.location.search).get('q');
+      if (urlQ) {
+        // Open hamburger menu, populate search, run query
+        if (!panel.classList.contains('open')) {
+          panel.classList.add('open');
+          overlay.classList.add('open');
+          btn.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+        searchInput.value = urlQ.replace(/-/g, ' ');
+        (async () => {
+          await loadSearchIndex();
+          doSearch(searchInput.value);
+          searchInput.focus();
+        })();
+      }
 
       // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
       (function enhanceContent() {
@@ -329,8 +354,8 @@ try {
         h2s.forEach(h2 => {
           const title = h2.textContent?.trim() || '';
 
-          // ── Attack Chain / Attack Methodology / Attack Stages section ──
-          if (/attack\s*(chain|methodology|stages)/i.test(title)) {
+          // ── Attack Chain / Exploit Chain / Attack Methodology / Attack Stages section ──
+          if (/(?:attack|exploit)\s*(chain|methodology|stages)/i.test(title)) {
             const siblings = [];
             let el = h2.nextElementSibling;
             while (el && el.tagName !== 'H2') {
@@ -612,6 +637,304 @@ try {
             h2.after(list);
           }
         });
+
+        // ══════════════════════════════════════════════════════════════════════
+        // SMART LINKING — Glossary Tooltips + Cross-Collection References
+        // ══════════════════════════════════════════════════════════════════════
+        (async () => {
+          // Skip on non-article pages (homepage, glossary, search)
+          if (!content || content.querySelectorAll('h2').length < 2) return;
+
+          // ── Load data sources in parallel ────────────────────────────────
+          const tryFetch = async (...urls) => {
+            for (const url of urls) {
+              try { const r = await fetch(url); if (r.ok) return r.json(); } catch {}
+            }
+            return null;
+          };
+          const [glossaryRes, crossRefRes] = await Promise.allSettled([
+            tryFetch('/glossary-data.json', '/src/data/glossary-index.json'),
+            tryFetch('/cross-ref-index.json'),
+          ]);
+
+          const glossary = glossaryRes.status === 'fulfilled' ? glossaryRes.value : [];
+          const crossRef = crossRefRes.status === 'fulfilled' ? crossRefRes.value : {};
+
+          // ── Build term lookup maps ───────────────────────────────────────
+          // Track which terms we've already linked (first-occurrence only)
+          const linked = new Set();
+
+          // Excluded zones: don't link inside these elements
+          const EXCLUDED_TAGS = new Set(['A', 'CODE', 'PRE', 'H1', 'H2', 'H3', 'SCRIPT', 'STYLE', 'BUTTON', 'INPUT']);
+          const EXCLUDED_CLASSES = ['attack-stage-title', 'mitre-tid', 'mitre-name', 'source-item', 'meta-value', 'meta-label', 'timeline-date', 'badge'];
+
+          function isExcluded(node) {
+            let el = node.nodeType === 3 ? node.parentElement : node;
+            while (el && el !== content) {
+              if (EXCLUDED_TAGS.has(el.tagName)) return true;
+              if (el.className && EXCLUDED_CLASSES.some(c => el.className.includes?.(c))) return true;
+              el = el.parentElement;
+            }
+            return false;
+          }
+
+          // ── Tier 1 & 2: Cross-reference patterns ────────────────────────
+          // Build patterns sorted by length (longest first to avoid partial matches)
+          const crossRefTerms = Object.keys(crossRef).sort((a, b) => b.length - a.length);
+
+          // CVE pattern: CVE-YYYY-NNNNN
+          const CVE_RE = /\bCVE-\d{4}-\d{4,7}\b/g;
+          // MITRE technique pattern: T followed by 4 digits, optional .NNN
+          const MITRE_RE = /\bT\d{4}(?:\.\d{3})?\b/g;
+
+          // ── Tier 3: Glossary — build regex from terms ────────────────────
+          // Filter: multi-word terms OR single words 8+ chars to avoid generic noise
+          // Stop list: common words that appear in glossary but are too generic
+          const GLOSSARY_STOP = new Set([
+            'threat', 'attack', 'incident', 'exploit', 'access', 'agent',
+            'asset', 'audit', 'breach', 'chain', 'cloud', 'control',
+            'data', 'event', 'hash', 'host', 'impact', 'integrity',
+            'network', 'patch', 'policy', 'port', 'risk', 'scan',
+            'script', 'server', 'session', 'shell', 'signal', 'system',
+            'token', 'trust', 'user', 'virus', 'worm', 'alert',
+            'block', 'proxy', 'relay', 'scope', 'state', 'vector',
+            'beacon', 'bridge', 'cipher', 'client', 'cookie', 'domain',
+            'driver', 'filter', 'header', 'kernel', 'module', 'object',
+            'packet', 'record', 'report', 'router', 'schema', 'socket',
+            'source', 'stream', 'switch', 'target', 'thread', 'tunnel',
+            'vendor', 'volume', 'backup', 'botnet', 'daemon', 'deploy',
+            'device', 'encode', 'entity', 'fabric', 'handle', 'hijack',
+            'inject', 'launch', 'malice', 'mirror', 'offset', 'parser',
+            'phishing', 'playbook', 'payload', 'sandbox', 'scanner',
+            'sniffer', 'spyware', 'stealth', 'surface', 'tactics',
+            'toolkit', 'tracker', 'trigger', 'variant',
+            'signature', 'indicator', 'credential', 'perimeter', 'protocol',
+          ]);
+          const glossaryMap = new Map();
+          for (const g of glossary) {
+            const term = g.t?.toLowerCase();
+            if (!term) continue;
+            // Include: multi-word terms (2+ words, 8+ chars total) OR single words 10+ chars
+            const wordCount = term.split(/\s+/).length;
+            const include = (wordCount >= 2 && term.length >= 8) || (wordCount === 1 && term.length >= 10);
+            if (include && !GLOSSARY_STOP.has(term)) glossaryMap.set(term, g);
+            // Aliases/acronyms: only if 4+ chars and multi-char (skip "AUP", "CIA" etc.)
+            if (g.a && g.a.length >= 5 && !GLOSSARY_STOP.has(g.a.toLowerCase())) glossaryMap.set(g.a.toLowerCase(), g);
+          }
+
+          // ── Tooltip HTML builder ─────────────────────────────────────────
+          function buildTooltipHTML(termKey, termData) {
+            const parts = [];
+            const entry = crossRef[termKey.toLowerCase()];
+
+            if (entry) {
+              // Tier 1 or 2: cross-reference tooltip
+              parts.push(`<div class="tp-tooltip-label">${entry.label}</div>`);
+
+              if (entry.external) {
+                const domain = new URL(entry.external).hostname.replace('www.', '');
+                parts.push(`<a href="${entry.external}" target="_blank" rel="noopener" class="tp-tooltip-link tp-tooltip-external">${domain} ↗</a>`);
+              }
+
+              if (entry.primary) {
+                parts.push(`<a href="${entry.primary}" class="tp-tooltip-link tp-tooltip-primary">View article →</a>`);
+              }
+
+              const articles = entry.articles.slice(0, 3);
+              if (articles.length > 0) {
+                parts.push(`<div class="tp-tooltip-divider"></div>`);
+                parts.push(`<div class="tp-tooltip-section">Referenced in:</div>`);
+                for (const a of articles) {
+                  const badge = a.type.replace('-', ' ');
+                  parts.push(`<a href="${a.url}" class="tp-tooltip-link tp-tooltip-ref"><span class="tp-tooltip-badge">${badge}</span>${a.title.length > 50 ? a.title.substring(0, 47) + '...' : a.title}</a>`);
+                }
+                if (entry.articles.length > 3) {
+                  parts.push(`<a href="/glossary.html?q=${encodeURIComponent(entry.label)}" class="tp-tooltip-link tp-tooltip-more">Search all ${entry.articles.length} references →</a>`);
+                }
+              }
+            }
+
+            if (termData) {
+              // Tier 3: glossary tooltip
+              if (parts.length > 0) parts.push(`<div class="tp-tooltip-divider"></div>`);
+              parts.push(`<div class="tp-tooltip-def">${termData.d.length > 160 ? termData.d.substring(0, 157) + '...' : termData.d}</div>`);
+              parts.push(`<a href="/glossary/#${termData.s}" class="tp-tooltip-link tp-tooltip-glossary">View in glossary →</a>`);
+            }
+
+            return parts.join('');
+          }
+
+          // ── Create tooltip element (singleton) ───────────────────────────
+          const tooltip = document.createElement('div');
+          tooltip.className = 'tp-tooltip';
+          tooltip.setAttribute('role', 'tooltip');
+          tooltip.style.display = 'none';
+          document.body.appendChild(tooltip);
+
+          let hideTimeout;
+          function showTooltip(anchor) {
+            clearTimeout(hideTimeout);
+            const html = anchor.getAttribute('data-tp-tooltip');
+            if (!html) return;
+            tooltip.innerHTML = html;
+            tooltip.style.display = 'block';
+
+            // Position below the anchor
+            const rect = anchor.getBoundingClientRect();
+            const ttRect = tooltip.getBoundingClientRect();
+            let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+            let top = rect.bottom + 8;
+
+            // Keep within viewport
+            if (left < 8) left = 8;
+            if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
+            if (top + ttRect.height > window.innerHeight - 8) {
+              top = rect.top - ttRect.height - 8; // flip above
+            }
+
+            tooltip.style.left = left + window.scrollX + 'px';
+            tooltip.style.top = top + window.scrollY + 'px';
+          }
+
+          function hideTooltip() {
+            hideTimeout = setTimeout(() => { tooltip.style.display = 'none'; }, 200);
+          }
+
+          tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+          tooltip.addEventListener('mouseleave', hideTooltip);
+
+          // ── Walk text nodes and apply linking ────────────────────────────
+          const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              if (isExcluded(node)) return NodeFilter.FILTER_REJECT;
+              if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+
+          const textNodes = [];
+          while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+          for (const textNode of textNodes) {
+            const text = textNode.textContent;
+            if (!text || text.length < 3) continue;
+
+            // Find all matches in this text node
+            const replacements = [];
+
+            // Check CVE patterns (Tier 1)
+            for (const match of text.matchAll(CVE_RE)) {
+              const key = match[0].toLowerCase();
+              if (linked.has(key)) continue;
+              if (!crossRef[key]) continue;
+              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+            }
+
+            // Check MITRE patterns (Tier 1)
+            for (const match of text.matchAll(MITRE_RE)) {
+              const key = match[0].toLowerCase();
+              if (linked.has(key)) continue;
+              if (!crossRef[key]) continue;
+              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+            }
+
+            // Check cross-ref entity names (Tier 2) — only terms 4+ chars
+            for (const crTerm of crossRefTerms) {
+              if (crTerm.length < 4) continue;
+              if (linked.has(crTerm)) continue;
+              const entry = crossRef[crTerm];
+              if (!entry || entry.tier !== 2) continue;
+
+              // Case-insensitive word-boundary search
+              const escaped = entry.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const re = new RegExp(`\\b${escaped}\\b`, 'i');
+              const m = text.match(re);
+              if (m) {
+                // Check no overlap with existing replacements
+                const start = m.index;
+                const end = start + m[0].length;
+                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                if (!overlaps) {
+                  replacements.push({ start, end, term: m[0], key: crTerm });
+                }
+              }
+            }
+
+            // Check glossary terms (Tier 3) — first occurrence only
+            for (const [gKey, gData] of glossaryMap) {
+              if (linked.has('g:' + gKey)) continue;
+              if (gKey.length < 4) continue;
+
+              const escaped = gKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const re = new RegExp(`\\b${escaped}\\b`, 'i');
+              const m = text.match(re);
+              if (m) {
+                const start = m.index;
+                const end = start + m[0].length;
+                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                if (!overlaps) {
+                  replacements.push({ start, end, term: m[0], key: 'g:' + gKey, glossary: gData });
+                }
+              }
+            }
+
+            if (replacements.length === 0) continue;
+
+            // Sort by position (left to right)
+            replacements.sort((a, b) => a.start - b.start);
+
+            // Build replacement fragment
+            const frag = document.createDocumentFragment();
+            let lastIdx = 0;
+
+            for (const rep of replacements) {
+              // Text before this match
+              if (rep.start > lastIdx) {
+                frag.appendChild(document.createTextNode(text.substring(lastIdx, rep.start)));
+              }
+
+              // Create linked span
+              const span = document.createElement('span');
+              span.className = 'tp-linked-term';
+              span.textContent = rep.term;
+
+              // Determine tooltip content
+              const crEntry = rep.key.startsWith('g:') ? null : crossRef[rep.key];
+              const gEntry = rep.glossary || (rep.key.startsWith('g:') ? null : glossaryMap.get(rep.key));
+              const tooltipHTML = buildTooltipHTML(rep.key.replace(/^g:/, ''), gEntry);
+
+              if (tooltipHTML) {
+                span.setAttribute('data-tp-tooltip', tooltipHTML);
+                span.setAttribute('tabindex', '0');
+                span.addEventListener('mouseenter', () => showTooltip(span));
+                span.addEventListener('mouseleave', hideTooltip);
+                span.addEventListener('focus', () => showTooltip(span));
+                span.addEventListener('blur', hideTooltip);
+
+                // Add tier-specific styling class
+                if (crEntry?.tier === 1) span.classList.add('tp-tier1');
+                else if (crEntry?.tier === 2) span.classList.add('tp-tier2');
+                else span.classList.add('tp-tier3');
+              }
+
+              frag.appendChild(span);
+              lastIdx = rep.end;
+
+              // Mark as linked (first occurrence only)
+              linked.add(rep.key);
+              if (!rep.key.startsWith('g:')) linked.add(rep.key);
+              else linked.add(rep.key);
+            }
+
+            // Remaining text after last match
+            if (lastIdx < text.length) {
+              frag.appendChild(document.createTextNode(text.substring(lastIdx)));
+            }
+
+            textNode.parentNode.replaceChild(frag, textNode);
+          }
+        })();
+
       })();
     </script>
   </body>
@@ -686,6 +1009,7 @@ try {
     right: 0;
     z-index: 100;
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
     padding: 14px 20px;
@@ -1159,6 +1483,41 @@ try {
     border-radius: 4px;
   }
 
+  /* ── Interactive meta boxes ────────────────────────────────────────────── */
+  a.meta-item.meta-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, outline-color 0.2s;
+    display: block;
+  }
+
+  a.meta-item.meta-link:hover {
+    border-color: var(--amber-dim);
+    outline: 1px solid var(--amber-dim);
+    outline-offset: -1px;
+  }
+
+  a.meta-item.meta-link:hover .meta-value {
+    color: var(--amber);
+  }
+
+  a.meta-item.meta-link-entity:hover {
+    border-color: var(--amber);
+    outline-color: var(--amber);
+  }
+
+  /* CVE links within meta boxes */
+  .meta-cve-link {
+    color: var(--amber);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .meta-cve-link:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
   .meta-label {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -1173,6 +1532,7 @@ try {
     font-size: 14px;
     font-weight: 500;
     color: var(--white);
+    transition: color 0.15s;
   }
 
   /* ── DL fallback (used by threat actors, zero-days) ─────────────────────── */
@@ -1298,6 +1658,14 @@ try {
     background: var(--surface);
     padding: 0.25em 0.6em;
     border: 1px solid var(--border);
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+    cursor: pointer;
+  }
+
+  a.tag:hover {
+    color: var(--amber);
+    border-color: var(--amber-dim);
   }
 
   /* ── Tech box (code highlights in articles) ─────────────────────────────── */
@@ -1989,15 +2357,147 @@ try {
   }
 
   @media (max-width: 640px) {
-    nav {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
     h1 { font-size: 28px; }
     .incident-meta { grid-template-columns: 1fr; }
     .meta-item { padding: 12px; }
     dl { grid-template-columns: 1fr; }
     dt { margin-top: 0.5rem; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     SMART LINKING — Linked Terms & Tooltip Styles
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── Linked term indicators ────────────────────────────────────────────── */
+  .tp-linked-term {
+    cursor: help;
+    position: relative;
+  }
+
+  .tp-linked-term.tp-tier1 {
+    border-bottom: 1px dashed var(--amber-dim);
+    color: var(--amber);
+  }
+
+  .tp-linked-term.tp-tier2 {
+    border-bottom: 1px dashed var(--amber-dim);
+  }
+
+  .tp-linked-term.tp-tier3 {
+    border-bottom: 1px dotted var(--muted);
+  }
+
+  .tp-linked-term:hover,
+  .tp-linked-term:focus {
+    color: var(--amber);
+    outline: none;
+  }
+
+  /* ── Tooltip container ─────────────────────────────────────────────────── */
+  .tp-tooltip {
+    position: absolute;
+    z-index: 9999;
+    max-width: 380px;
+    min-width: 240px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+  }
+
+  .tp-tooltip-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--amber);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .tp-tooltip-def {
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+
+  .tp-tooltip-divider {
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+  }
+
+  .tp-tooltip-section {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  /* ── Tooltip links ─────────────────────────────────────────────────────── */
+  .tp-tooltip-link {
+    display: block;
+    padding: 4px 0;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: color 0.15s;
+  }
+
+  .tp-tooltip-link:hover {
+    color: var(--amber);
+  }
+
+  .tp-tooltip-external {
+    color: var(--amber-dim);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+
+  .tp-tooltip-primary {
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  .tp-tooltip-ref {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 3px 0;
+  }
+
+  .tp-tooltip-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 5px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tp-tooltip-more {
+    font-size: 11.5px;
+    color: var(--amber-dim);
+    margin-top: 2px;
+  }
+
+  .tp-tooltip-glossary {
+    font-size: 11.5px;
+    color: var(--amber-dim);
   }
 </style>

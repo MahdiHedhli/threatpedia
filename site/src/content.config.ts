@@ -154,11 +154,16 @@ const threatActors = defineCollection({
     mitreMappings: z.array(mitreMapping).default([]),
 
     // Quality
+    attributionConfidence: attributionConfidence.optional(),
+    attributionRationale: z.string().max(500).optional(),
     reviewStatus: reviewStatus.default('draft_ai'),
     generatedBy: z.string().default('dangermouse-bot'),
     generatedDate: z.coerce.date().default(new Date()),
 
     tags: z.array(z.string()).default([]),
+
+    // References
+    sources: z.array(sourceSchema).default([]),
   }),
 });
 

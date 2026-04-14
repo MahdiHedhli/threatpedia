@@ -36,19 +36,19 @@ const statusClass = d.status === 'active' ? 'status-active' : d.status === 'inac
           <span class="meta-label">Affiliation</span>
           <span class="meta-value">{d.affiliation}</span>
         </div>
-        <div class="meta-item">
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.motivation)}`}>
           <span class="meta-label">Motivation</span>
           <span class="meta-value">{d.motivation}</span>
-        </div>
+        </a>
         <div class="meta-item">
           <span class="meta-label">Status</span>
           <span class={`meta-value ${statusClass}`}>{d.status}</span>
         </div>
         {d.country && (
-          <div class="meta-item">
+          <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.country)}`}>
             <span class="meta-label">Country</span>
             <span class="meta-value">{d.country}</span>
-          </div>
+          </a>
         )}
         {d.firstSeen && (
           <div class="meta-item">
@@ -63,10 +63,10 @@ const statusClass = d.status === 'active' ? 'status-active' : d.status === 'inac
           </div>
         )}
         {d.targetSectors.length > 0 && (
-          <div class="meta-item">
+          <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.targetSectors[0])}`}>
             <span class="meta-label">Target Sectors</span>
             <span class="meta-value">{d.targetSectors.join(', ')}</span>
-          </div>
+          </a>
         )}
         {d.targetGeographies.length > 0 && (
           <div class="meta-item">
@@ -95,7 +95,7 @@ const statusClass = d.status === 'active' ? 'status-active' : d.status === 'inac
     {d.tags.length > 0 && (
       <div class="tags">
         {d.tags.map((tag: string) => (
-          <span class="tag">{tag}</span>
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
         ))}
       </div>
     )}

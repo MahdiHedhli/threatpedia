@@ -17,15 +17,35 @@ targetGeographies:
   - "North America"
   - "Europe"
   - "Oceania"
-knownTools:
+tools:
   - "BlackBasta Ransomware"
   - "Qakbot"
   - "Cobalt Strike"
   - "PrintNightmare"
+attributionConfidence: "A2"
+attributionRationale: "Assessed by CISA and the FBI as a prominent Russian-nexus financial syndicate, technically linked to the Conti and FIN7 ecosystems, and known for aggressive double-extortion against global critical infrastructure."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a"
+    publisher: "CISA"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2024-05-10"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.elliptic.co/blog/black-basta-ransomware-tracing-100-million-in-stolen-funds"
+    publisher: "Elliptic"
+    publisherType: "research"
+    reliability: "R2"
+    publicationDate: "2023-11-20"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

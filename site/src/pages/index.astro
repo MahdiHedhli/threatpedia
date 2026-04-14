@@ -7,8 +7,69 @@ const campaigns = await getCollection('campaigns');
 const actors = await getCollection('threat-actors');
 const zeroDays = await getCollection('zero-days');
 
-// Sort incidents by date (newest first)
-incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+// Build unified "latest intel" feed from all collections, sorted by date (newest first)
+interface IntelItem {
+  title: string;
+  date: string;
+  href: string;
+  type: string;
+  severity?: string;
+  tags: string[];
+}
+
+const latestIntel: IntelItem[] = [];
+
+incidents.forEach((i) => {
+  const iDate = i.data.date || new Date();
+  latestIntel.push({
+    title: i.data.title,
+    date: iDate instanceof Date ? iDate.toISOString() : iDate,
+    href: `/incidents/${i.id}/`,
+    type: 'INCIDENT',
+    severity: i.data.severity,
+    tags: [i.data.attackType, i.data.sector].filter((t) => t && t.toLowerCase() !== 'unknown'),
+  });
+});
+
+campaigns.forEach((c) => {
+  const cDate = c.data.startDate || new Date();
+  latestIntel.push({
+    title: c.data.title,
+    date: cDate instanceof Date ? cDate.toISOString() : cDate,
+    href: `/campaigns/${c.id}/`,
+    type: 'CAMPAIGN',
+    severity: c.data.severity,
+    tags: [c.data.sector].filter((t) => t && t.toLowerCase() !== 'unknown'),
+  });
+});
+
+actors.forEach((a) => {
+  // lastSeen/firstSeen are strings like "2026" or "2026-01" — coerce to sortable date
+  const dateStr = a.data.lastSeen || a.data.firstSeen || '2000-01-01';
+  latestIntel.push({
+    title: a.data.name,
+    date: dateStr.length === 4 ? `${dateStr}-01-01` : dateStr.length === 7 ? `${dateStr}-01` : dateStr,
+    href: `/threat-actors/${a.id}/`,
+    type: 'THREAT ACTOR',
+    severity: 'high',
+    tags: [a.data.affiliation, a.data.motivation].filter((t) => t && t.toLowerCase() !== 'unknown'),
+  });
+});
+
+zeroDays.forEach((z) => {
+  // disclosedDate is a Date object; fall back to generatedDate
+  const zDate = z.data.disclosedDate || z.data.generatedDate || new Date();
+  latestIntel.push({
+    title: z.data.title,
+    date: zDate instanceof Date ? zDate.toISOString() : zDate,
+    href: `/zero-days/${z.id}/`,
+    type: 'ZERO-DAY',
+    severity: z.data.severity,
+    tags: [z.data.platform, z.data.status].filter((t) => t && t.toLowerCase() !== 'unknown'),
+  });
+});
+
+latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <Base title="Home">
@@ -18,9 +79,9 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
     <h1 class="hero-title">The <em>Definitive</em><br/>Cyber Threat<br/>Encyclopedia</h1>
     <div class="hero-sub">Building the world's most authoritative open record of cyber history</div>
     <p class="hero-desc">
-      <strong>Threatpedia</strong> is a Wikipedia-style platform documenting every significant
-      cyber event, attack campaign, and threat actor in history — peer-reviewed by a board of
-      cyber historians, intelligence analysts, and subject matter experts, and augmented by AI.
+      <strong>Threatpedia</strong> is a Wikipedia-style platform with the goal of documenting every significant
+      cyber event, attack campaign, and threat actor in history. Peer-reviewed by a board of
+      cyber historians, intelligence analysts, subject matter experts, and augmented by AI.
     </p>
     <div class="stats-bar">
       <div class="stat">
@@ -119,33 +180,44 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
         <h3>Zero-Day Exploits</h3>
         <p>{zeroDays.length} tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</p>
       </a>
+      <a href="/glossary/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Glossary</h3>
+        <p>1,000+ cybersecurity terms defined and tagged by role — from SOC analysts to CISOs. Searchable, filterable, and continuously expanding.</p>
+      </a>
+      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+        <div class="pillar-num">// LIVE</div>
+        <h3>Roadmap</h3>
+        <p>Where Threatpedia is headed — planned features, framework integrations, data pipeline milestones, and community tools. Updated in real time.</p>
+      </a>
     </div>
   </section>
 
-  <!-- ── RECENT INCIDENTS ──────────────────────────────────────────────── -->
+  <!-- ── LATEST THREAT INTEL ─────────────────────────────────────────── -->
   <section class="recent-incidents">
     <div class="section-hdr">
-      <span class="section-tag">Recent Incident Reports</span>
+      <span class="section-tag">Latest Threat Intel</span>
       <div class="section-line"></div>
     </div>
     <div class="incidents-grid">
-      {incidents.slice(0, 6).map((incident) => (
-        <a href={`/incidents/${incident.id}/`} class="incident-card">
+      {latestIntel.slice(0, 6).map((item) => (
+        <a href={item.href} class="incident-card">
           <div class="incident-card-header">
             <div class="incident-card-date">
-              {new Date(incident.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              {new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
             <div class="incident-card-badges">
-              <span class={`badge badge-${incident.data.severity}`}>{incident.data.severity}</span>
+              <span class={`badge badge-type-${item.type.toLowerCase().replace(/\s+/g, '-')}`}>{item.type}</span>
+              {item.severity && (
+                <span class={`badge badge-${item.severity}`}>{item.severity}</span>
+              )}
             </div>
           </div>
-          <h3>{incident.data.title}</h3>
+          <h3>{item.title}</h3>
           <div class="incident-card-meta">
-            <span class="incident-card-tag">{incident.data.attackType}</span>
-            <span class="incident-card-tag">{incident.data.sector}</span>
-            {incident.data.threatActor !== 'Unknown' && (
-              <span class="incident-card-tag">{incident.data.threatActor}</span>
-            )}
+            {item.tags.map((tag) => (
+              <span class="incident-card-tag">{tag}</span>
+            ))}
           </div>
         </a>
       ))}
@@ -310,7 +382,7 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
     transition: background 0.2s;
   }
 
-  .pillar:hover { background: var(--surface); }
+  .pillar:hover { background: rgba(232, 160, 32, 0.04); outline: 1px solid var(--amber-dim); outline-offset: -1px; z-index: 1; position: relative; }
 
   .pillar-num {
     font-family: 'IBM Plex Mono', monospace;
@@ -424,6 +496,11 @@ incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date)
   .badge-high { color: #ff8c00; border-color: #ff8c00; }
   .badge-medium { color: #e8a020; border-color: #e8a020; background: rgba(232, 160, 32, 0.1); }
   .badge-low { color: #51cf66; border-color: #51cf66; }
+
+  .badge-type-incident { color: var(--amber); border-color: var(--amber); }
+  .badge-type-campaign { color: #a78bfa; border-color: #a78bfa; }
+  .badge-type-threat-actor { color: #f87171; border-color: #f87171; }
+  .badge-type-zero-day { color: #ff4444; border-color: #ff4444; background: rgba(255, 68, 68, 0.1); }
 
   /* ── Responsive ─────────────────────────────────────────────────────── */
   @media (max-width: 860px) {

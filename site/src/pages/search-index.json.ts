@@ -19,6 +19,7 @@ export const GET: APIRoute = async () => {
       sector: i.data.sector,
       threatActor: i.data.threatActor,
       date: i.data.date.toISOString().slice(0, 10),
+      tags: i.data.tags || [],
     });
   }
 
@@ -33,6 +34,7 @@ export const GET: APIRoute = async () => {
       threatActor: c.data.threatActor,
       ongoing: c.data.ongoing,
       startDate: c.data.startDate.toISOString().slice(0, 10),
+      tags: c.data.tags || [],
     });
   }
 
@@ -44,6 +46,7 @@ export const GET: APIRoute = async () => {
       aliases: a.data.aliases,
       affiliation: a.data.affiliation,
       motivation: a.data.motivation,
+      tags: a.data.tags || [],
     });
   }
 
@@ -55,6 +58,7 @@ export const GET: APIRoute = async () => {
       cve: z.data.cve,
       platform: z.data.platform,
       severity: z.data.severity,
+      tags: z.data.tags || [],
     });
   }
 

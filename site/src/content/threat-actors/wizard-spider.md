@@ -17,15 +17,41 @@ targetSectors:
   - "Manufacturing"
 targetGeographies:
   - "Global"
-knownTools:
+tools:
   - "TrickBot"
   - "Ryuk"
   - "Conti"
   - "BazarLoader"
+attributionConfidence: "A1"
+attributionRationale: "High-fidelity attribution based on extensive tracking by CrowdStrike and US law enforcement, linking the group to the TrickBot malware botnet and the subsequent Ryuk/Conti ransomware ecosystems."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://attack.mitre.org/groups/G0102/"
+    publisher: "MITRE ATT&CK"
+    publisherType: "research"
+    reliability: "R1"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-137a"
+    publisher: "CISA"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2022-05-17"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.crowdstrike.com/blog/wizard-spider-adversary-update/"
+    publisher: "CrowdStrike"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2021-03-31"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

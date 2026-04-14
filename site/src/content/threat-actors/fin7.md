@@ -21,15 +21,41 @@ targetGeographies:
   - "United States"
   - "Europe"
   - "Global"
-knownTools:
+tools:
   - "Carbanak"
   - "GRIFFON"
   - "DICELOADER"
   - "DarkSide"
+attributionConfidence: "A1"
+attributionRationale: "High-fidelity attribution based on multi-government indictments and consistent technical overlaps between Combi Security front operations and FIN7/Indrik Spider infrastructure."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://attack.mitre.org/groups/G0046/"
+    publisher: "MITRE ATT&CK"
+    publisherType: "research"
+    reliability: "R1"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/high-level-organizer-fin7-hacking-group-sentenced-ten-years-prison"
+    publisher: "US Department of Justice"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2021-04-16"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.mandiant.com/resources/blog/fin7-restarting-the-engine"
+    publisher: "Mandiant"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2019-05-08"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

@@ -49,22 +49,29 @@ const formatDate = (d: Date) =>
             <span class="meta-value">{formatDate(frontmatter.endDate)}</span>
           </div>
         )}
-        <div class="meta-item">
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(frontmatter.attackType)}`}>
           <span class="meta-label">Attack Type</span>
           <span class="meta-value">{frontmatter.attackType}</span>
-        </div>
-        <div class="meta-item">
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(frontmatter.sector)}`}>
           <span class="meta-label">Sector</span>
           <span class="meta-value">{frontmatter.sector}</span>
-        </div>
+        </a>
         <div class="meta-item">
           <span class="meta-label">Geography</span>
           <span class="meta-value">{frontmatter.geography}</span>
         </div>
-        <div class="meta-item">
-          <span class="meta-label">Threat Actor</span>
-          <span class="meta-value">{frontmatter.threatActor}</span>
-        </div>
+        {frontmatter.threatActor && frontmatter.threatActor !== 'Unknown' ? (
+          <a class="meta-item meta-link meta-link-entity" href={`/threat-actors/${frontmatter.threatActor.toLowerCase().replace(/\s+/g, '-')}/`}>
+            <span class="meta-label">Threat Actor</span>
+            <span class="meta-value">{frontmatter.threatActor}</span>
+          </a>
+        ) : (
+          <div class="meta-item">
+            <span class="meta-label">Threat Actor</span>
+            <span class="meta-value">{frontmatter.threatActor}</span>
+          </div>
+        )}
         <div class="meta-item">
           <span class="meta-label">Attribution</span>
           <span class="meta-value">{frontmatter.attributionConfidence}</span>
@@ -72,7 +79,11 @@ const formatDate = (d: Date) =>
         {frontmatter.cves.length > 0 && (
           <div class="meta-item">
             <span class="meta-label">CVEs</span>
-            <span class="meta-value">{frontmatter.cves.join(', ')}</span>
+            <span class="meta-value">
+              {frontmatter.cves.map((cve: string, i: number) => (
+                <>{i > 0 && ', '}<a class="meta-cve-link" href={`https://nvd.nist.gov/vuln/detail/${cve}`} target="_blank" rel="noopener">{cve}</a></>
+              ))}
+            </span>
           </div>
         )}
         <div class="meta-item">
@@ -89,7 +100,7 @@ const formatDate = (d: Date) =>
     {frontmatter.tags.length > 0 && (
       <div class="tags">
         {frontmatter.tags.map((tag: string) => (
-          <span class="tag">{tag}</span>
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
         ))}
       </div>
     )}

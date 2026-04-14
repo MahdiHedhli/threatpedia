@@ -19,17 +19,43 @@ targetGeographies:
   - "United States"
   - "Europe"
   - "Global"
-knownTools:
+tools:
   - "Dridex"
   - "BitPaymer"
   - "WastedLocker"
   - "Hades"
   - "Macaw"
+attributionConfidence: "A1"
+attributionRationale: "High-fidelity attribution based on US Treasury (OFAC) sanctions and DOJ indictments against known leadership, linking the group directly to the Dridex and WastedLocker operations."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "russia"
   - "ransomware"
+sources:
+  - url: "https://attack.mitre.org/groups/G0096/"
+    publisher: "MITRE ATT&CK"
+    publisherType: "research"
+    reliability: "R1"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://home.treasury.gov/news/press-releases/sm845"
+    publisher: "US Department of the Treasury"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2019-12-05"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.crowdstrike.com/blog/indrik-spider-shifting-from-dridex-to-bitpaymer/"
+    publisher: "CrowdStrike"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2018-12-05"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

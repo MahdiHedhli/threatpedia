@@ -29,18 +29,18 @@ const statusClass = d.status === 'active' ? 'zd-active' : d.status === 'patched'
       </div>
       <h1>{d.title}</h1>
       <div class="incident-meta">
-        <div class="meta-item">
+        <a class="meta-item meta-link meta-link-entity" href={`https://nvd.nist.gov/vuln/detail/${d.cve}`} target="_blank" rel="noopener">
           <span class="meta-label">CVE</span>
           <span class="meta-value">{d.cve}</span>
-        </div>
-        <div class="meta-item">
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.platform)}`}>
           <span class="meta-label">Platform</span>
           <span class="meta-value">{d.platform}</span>
-        </div>
-        <div class="meta-item">
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.type)}`}>
           <span class="meta-label">Type</span>
           <span class="meta-value">{d.type}</span>
-        </div>
+        </a>
         <div class="meta-item">
           <span class="meta-label">Severity</span>
           <span class={`meta-value severity-color-${d.severity}`}>{d.severity.toUpperCase()}</span>
@@ -113,7 +113,7 @@ const statusClass = d.status === 'active' ? 'zd-active' : d.status === 'patched'
     {d.tags.length > 0 && (
       <div class="tags">
         {d.tags.map((tag: string) => (
-          <span class="tag">{tag}</span>
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
         ))}
       </div>
     )}

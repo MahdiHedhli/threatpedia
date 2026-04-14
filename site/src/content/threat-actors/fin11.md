@@ -16,15 +16,34 @@ targetSectors:
 targetGeographies:
   - "United States"
   - "Europe"
-knownTools:
+tools:
   - "FlawedAmmyy"
   - "CLOP Ransomware"
   - "Dewdrop"
   - "MIXLABEL"
+attributionConfidence: "A1"
+attributionRationale: "High-fidelity attribution based on distinctive and sustained use of CL0P ransomware and the unique tactic of orchestrating global zero-day exploitation campaigns against enterprise managed file transfer systems."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
+sources:
+  - url: "https://attack.mitre.org/groups/G0117/"
+    publisher: "MITRE ATT&CK"
+    publisherType: "research"
+    reliability: "R1"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.mandiant.com/resources/blog/fin11-emerges-from-the-shadows"
+    publisher: "Mandiant"
+    publisherType: "vendor"
+    reliability: "R1"
+    publicationDate: "2020-10-14"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary

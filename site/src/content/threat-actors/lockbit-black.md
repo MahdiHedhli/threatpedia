@@ -16,15 +16,35 @@ targetSectors:
   - "Manufacturing"
 targetGeographies:
   - "Global"
-knownTools:
+tools:
   - "LockBit 3.0 Ransomware"
   - "StealBit"
   - "Cobalt Strike"
+attributionConfidence: "A2"
+attributionRationale: "High-fidelity attribution based on CISA and FBI analysis of the LockBit 3.0 ecosystem, subsequent infrastructure seizures via Operation Cronos, and the unmasking of 'LockBitSupp' as a Russian national."
+reviewStatus: "under_review"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-14
 tags:
   - "financially-motivated"
   - "cybercrime"
   - "ransomware"
   - "raas"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-075a"
+    publisher: "CISA"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2023-03-16"
+    accessDate: "2026-04-14"
+    archived: false
+  - url: "https://www.ic3.gov/Media/News/2023/230615.pdf"
+    publisher: "FBI IC3"
+    publisherType: "government"
+    reliability: "R1"
+    publicationDate: "2023-06-15"
+    accessDate: "2026-04-14"
+    archived: false
 ---
 
 ## Executive Summary
