@@ -1,0 +1,76 @@
+{
+  "task_id": "TASK-2026-0005",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "complete",
+  "created": "2026-04-14T20:30:00Z",
+  "updated": "2026-04-15T00:14:17.997Z",
+  "source": "backfill",
+  "submitted_by": "pipeline-inventory",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Log4Shell — Apache Log4j2 Remote Code Execution (CVE-2021-44228) affecting virtually all Java applications",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-44228",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-356a",
+      "https://www.lunasec.io/docs/blog/log4j-zero-day/"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "cves": [
+        "CVE-2021-44228",
+        "CVE-2021-45046",
+        "CVE-2021-45105"
+      ],
+      "attack_type": "Code Execution"
+    },
+    "notes": "One of the most impactful zero-days in history. JNDI injection in Log4j2 allowed unauthenticated RCE on any Java application using the library. CVSS 10.0. Affected hundreds of millions of systems. CISA KEV listed. Multiple follow-on CVEs. Must be in the encyclopedia."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0005",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-14T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-inventory",
+      "note": "Backfill — most impactful zero-day in recent history"
+    },
+    {
+      "timestamp": "2026-04-15T00:07:48.483Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-15T00:14:17.981Z",
+      "from": "complete",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
+    }
+  ]
+}
