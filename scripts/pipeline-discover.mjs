@@ -134,7 +134,18 @@ async function fetchJSON(url, timeout = 30000) {
 // ── NVD CVSS enrichment ───────────────────────────────────────────────────
 async function fetchCvssScore(cveId) {
   try {
-    const data = await fetchJSON(`${FEEDS.NVD_CVE}?cveId=${cveId}`, 15000);
+    const res = await fetch(`${FEEDS.NVD_CVE}?cveId=${cveId}`, {
+      signal: AbortSignal.timeout(15000),
+    });
+
+    // Detect rate limiting and signal to caller
+    if (res.status === 403 || res.status === 429) {
+      return { rateLimited: true };
+    }
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
     const vuln = data?.vulnerabilities?.[0]?.cve;
     if (!vuln) return null;
 
@@ -154,7 +165,7 @@ async function fetchCvssScore(cveId) {
       version: v31 ? '3.1' : v30 ? '3.0' : '2.0',
     };
   } catch {
-    return null; // NVD rate limited or unavailable — not fatal
+    return null; // NVD unavailable — not fatal
   }
 }
 
@@ -177,8 +188,8 @@ function scoreCandidate(candidate) {
   }
 
   // Cross-source corroboration (15%): CWE data, notes with multiple URLs
-  const noteUrls = (candidate.notes || '').split(';').filter(s => s.trim().startsWith('http')).length;
-  const crossScore = Math.min((noteUrls + (candidate.cwes?.length || 0)) / 3, 1) * 100;
+  const noteUrls = (candidate.kev.notes || '').split(';').filter(s => s.trim().startsWith('http')).length;
+  const crossScore = Math.min((noteUrls + (candidate.kev.cwes?.length || 0)) / 3, 1) * 100;
   score += crossScore * WEIGHTS.CROSS_SOURCE;
 
   // Active exploitation (10%): KEV implies active exploitation
@@ -230,7 +241,7 @@ function generateExploitId(cveId, existingIds) {
 }
 
 // ── Build task JSON ────────────────────────────────────────────────────────
-function buildTask(candidate, taskId) {
+function buildTask(candidate, taskId, exploitId) {
   const slug = generateSlug(candidate.kev);
   const cveYear = candidate.kev.cveID.match(/CVE-(\d{4})/)?.[1] || '????';
 
@@ -269,6 +280,7 @@ function buildTask(candidate, taskId) {
       sources,
       candidate_data: {
         cve: candidate.kev.cveID,
+        exploitId: exploitId,
         type: guessVulnType(candidate.kev),
         platform: `${candidate.kev.vendorProject} ${candidate.kev.product}`,
         severity: candidate.cvss
@@ -425,6 +437,11 @@ async function main() {
     if (rateLimited) break;
 
     const cvss = await fetchCvssScore(candidate.kev.cveID);
+    if (cvss?.rateLimited) {
+      rateLimited = true;
+      console.log(`         ⚠ NVD rate limited — stopping enrichment early`);
+      break;
+    }
     if (cvss) {
       candidate.cvss = cvss;
       candidate.r1Sources = 2; // KEV + NVD = 2 R1 sources
@@ -435,7 +452,7 @@ async function main() {
     await new Promise(r => setTimeout(r, 6500));
   }
 
-  console.log(`         Enriched ${enriched}/${toEnrich.length} with CVSS data\n`);
+  console.log(`         Enriched ${enriched}/${toEnrich.length} with CVSS data${rateLimited ? ' (rate limited)' : ''}\n`);
 
   // ── Step 5: Score and rank ───────────────────────────────────────────────
   console.log('  [5/5] Scoring candidates...\n');
@@ -466,11 +483,13 @@ async function main() {
 
     for (const candidate of scored) {
       const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
-      const task = buildTask(candidate, taskId);
+      const exploitId = generateExploitId(candidate.kev.cveID, existingExploitIds);
+      existingExploitIds.push(exploitId); // Track to avoid collisions within this run
+      const task = buildTask(candidate, taskId, exploitId);
 
       const filePath = resolve(TASKS_DIR, `${taskId}.json`);
       writeFileSync(filePath, JSON.stringify(task, null, 2) + '\n');
-      console.log(`  ✓ ${taskId} — ${candidate.kev.cveID} (score: ${candidate.score}${candidate.autoCertify ? ', auto-certify' : ''})`);
+      console.log(`  ✓ ${taskId} — ${candidate.kev.cveID} → ${exploitId} (score: ${candidate.score}${candidate.autoCertify ? ', auto-certify' : ''})`);
 
       nextIdNum++;
     }
