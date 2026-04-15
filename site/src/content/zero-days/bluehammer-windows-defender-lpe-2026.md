@@ -1,5 +1,5 @@
 ---
-exploitId: TP-EXP-0001
+exploitId: TP-EXP-2026-0001
 title: BlueHammer — Windows Defender LPE via VSS Race Condition
 cve: UNASSIGNED
 type: LPE
