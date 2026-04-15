@@ -50,6 +50,18 @@ sources:
     publicationDate: "2018-08-22"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://trumpwhitehouse.archives.gov/briefings-statements/statement-press-secretary-attribution-notpetya/"
+    publisher: "The White House"
+    publisherType: government
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2017/06/27/new-ransomware-old-techniques-petya-adds-worm-capabilities/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
@@ -128,6 +140,6 @@ The US and UK governments officially attribute the attack to the Russian governm
 
 - [US Department of Justice: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — US Department of Justice, 2020-10-19
 - [NCSC UK: UK and allies attribute NotPetya cyber attack to Russian Government](https://www.ncsc.gov.uk/news/uk-and-allies-attribute-notpetya-cyber-attack-russian-government) — NCSC UK, 2018-02-15
-- White House Statement: Statement from the Press Secretary on the Attribution of the Cyber-Attack (2018)
+- [The White House: Statement from the Press Secretary on the Attribution of the NotPetya Cyber-Attack](https://trumpwhitehouse.archives.gov/briefings-statements/statement-press-secretary-attribution-notpetya/) — The White House, 2018
 - [Wired: The Untold Story of NotPetya, the Most Devastating Cyberattack in History](https://www.wired.com/story/notpetya-cyberattack-ukraine-russia-code-crashed-the-world/) — Wired, 2018-08-22
-- Microsoft Security: New ransomware, old techniques: Petya add-ons making it more dangerous (2017)
+- [Microsoft Security: New Ransomware, Old Techniques — Petya Adds Worm Capabilities](https://www.microsoft.com/en-us/security/blog/2017/06/27/new-ransomware-old-techniques-petya-adds-worm-capabilities/) — Microsoft Security, 2017

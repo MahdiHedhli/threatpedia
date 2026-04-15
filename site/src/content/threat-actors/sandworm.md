@@ -86,6 +86,24 @@ sources:
     publicationDate: "2024-04-18"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-exposed"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/"
+    publisher: "Wired"
+    publisherType: media
+    reliability: R2
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/"
+    publisher: "ESET Research"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
 ---
 
 ## Overview
@@ -142,7 +160,7 @@ Coinciding with the Russian invasion of Ukraine, Sandworm deployed the AcidRain 
 
 - [MITRE ATT&CK: Group G0034 (Sandworm Team)](https://attack.mitre.org/groups/G0034/) — MITRE ATT&CK
 - [US DOJ: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — US Department of Justice, 2020-10-19
-- NCSC UK: Reckless campaign of cyber attacks by Russian military intelligence Service (GTsST)
+- [NCSC UK: Reckless Campaign of Cyber Attacks by Russian Military Intelligence Service (GTsST)](https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-exposed) — NCSC UK, 2018
 - [CISA Alert (AA24-109A): Staying Ahead of Sandworm](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a) — CISA, 2024-04-18
-- Wired: Sandworm - A New Era of Cyberwar and the Hunt for the Kremlin's Most Dangerous Hackers
-- ESET Research: Industroyer- The Biggest Threat to Industrial Control Systems since Stuxnet
+- [Wired: Sandworm — A New Era of Cyberwar and the Hunt for the Kremlin's Most Dangerous Hackers](https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/) — Wired
+- [ESET Research: Industroyer — The Biggest Threat to Industrial Control Systems Since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) — ESET Research, 2017

@@ -51,6 +51,24 @@ sources:
     publicationDate: "2020-12-13"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.cisa.gov/news-events/directives/emergency-directive-21-01"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.solarwinds.com/trust-center"
+    publisher: "SolarWinds"
+    publisherType: vendor
+    reliability: R2
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
@@ -124,8 +142,8 @@ The United States officially attributes the SolarWinds campaign to the Russian S
 ## Sources & References
 
 - [The White House: Fact Sheet: Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) — The White House, 2021-04-15
-- CISA Emergency Directive 21-01: Mitigate SolarWinds Orion Code Compromise
+- [CISA: Emergency Directive 21-01 — Mitigate SolarWinds Orion Code Compromise](https://www.cisa.gov/news-events/directives/emergency-directive-21-01) — CISA, 2020-12-13
 - [MITRE ATT&CK: Campaign C0024 (SolarWinds Supply Chain Compromise)](https://attack.mitre.org/campaigns/C0024/) — MITRE ATT&CK
 - [Mandiant: Highly Evasive Attacker Leverages SolarWinds Supply Chain Compromises](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) — Mandiant, 2020-12-13
-- Microsoft Security: Analyzing Solorigate – The Compromised DLL File (2020)
-- SolarWinds Trust Center: Secure Software Outbreak Response
+- [Microsoft Security: Analyzing Solorigate — The Compromised DLL File](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) — Microsoft Security, 2020
+- [SolarWinds: Trust Center — Secure Software Outbreak Response](https://www.solarwinds.com/trust-center) — SolarWinds
