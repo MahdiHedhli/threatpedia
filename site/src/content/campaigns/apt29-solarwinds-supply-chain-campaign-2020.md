@@ -52,6 +52,18 @@ sources:
     publicationDate: "2020-12-13"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.ncsc.gov.uk/news/advisory-svr-activity-targeting-government-and-organisations"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
@@ -127,5 +139,5 @@ The White House issues an executive order formally attributing the campaign to t
 - [CISA: Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Entities](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a) — CISA, 2020-12-17
 - [The White House: Fact Sheet — Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) — The White House, 2021-04-15
 - [Mandiant: Highly Evasive Attacker Leverages SolarWinds Supply Chain Compromises with SUNBURST Backdoor](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) — Mandiant, 2020-12-13
-- [Microsoft: Analyzing Solorigate – The Compromised DLL File](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) — Microsoft, 2020
-- [NCSC UK: Advisory on SVR activity targeting government and organizations](https://www.ncsc.gov.uk/news/advisory-svr-activity-targeting-government-and-organisations) — NCSC UK, 2021
+- [Microsoft Security: Analyzing Solorigate — The Compromised DLL File](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) — Microsoft Security, 2020
+- [NCSC UK: Advisory on SVR Activity Targeting Government and Organizations](https://www.ncsc.gov.uk/news/advisory-svr-activity-targeting-government-and-organisations) — NCSC UK, 2021
