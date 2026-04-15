@@ -1,0 +1,45 @@
+{
+  "task_id": "TASK-2026-0068",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "Sandworm Ukraine Power Grid Attacks Campaign (2015-2016)",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure",
+      "https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/",
+      "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other"
+    ],
+    "candidate_data": {
+      "startDate": "2015-12-23",
+      "endDate": "2016-12-17",
+      "ongoing": false,
+      "attackType": "Sabotage",
+      "severity": "critical",
+      "sector": "Energy & Utilities",
+      "geography": "Ukraine",
+      "threatActor": "Sandworm"
+    },
+    "notes": "Two distinct attacks: Dec 2015 BlackEnergy3 attack on three Ukrainian power companies (first confirmed cyberattack on a power grid), Dec 2016 Industroyer/CrashOverride attack on Ukrenergo. Both attributed to GRU Unit 74455 (Sandworm). Landmark ICS/SCADA attacks."
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/sandworm-ukraine-power-grid-campaign-2015.md",
+    "branch": "penfold/TASK-2026-0068-ukraine-grid"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 2,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T16:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Campaign article — smoke test round 3"
+    }
+  ]
+}

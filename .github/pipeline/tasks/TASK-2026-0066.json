@@ -1,0 +1,45 @@
+{
+  "task_id": "TASK-2026-0066",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "Operation Aurora — Google and Fortune 100 Cyber Espionage Campaign (2009-2010)",
+    "sources": [
+      "https://googleblog.blogspot.com/2010/01/new-approach-to-china.html",
+      "https://www.cisa.gov/news-events/alerts/2010/01/14/google-china-cyber-attack",
+      "https://en.wikipedia.org/wiki/Operation_Aurora"
+    ],
+    "candidate_data": {
+      "startDate": "2009-06-01",
+      "endDate": "2010-01-12",
+      "attackType": "Espionage",
+      "severity": "critical",
+      "sector": "Technology",
+      "geography": "Global",
+      "threatActor": "APT1 / Comment Crew",
+      "cves": ["CVE-2010-0249"]
+    },
+    "notes": "Multi-month espionage campaign targeting Google, Adobe, Juniper, and ~30 other Fortune 100 companies. IE zero-day (CVE-2010-0249). Led to Google's partial withdrawal from China. Attributed to PLA Unit 61398."
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md",
+    "branch": "penfold/TASK-2026-0066-aurora"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 2,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T16:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Campaign article — smoke test round 3"
+    }
+  ]
+}

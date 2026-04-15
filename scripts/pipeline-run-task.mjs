@@ -84,7 +84,7 @@ ${SOURCE_SCHEMA}
   ## Attribution — evidence basis, confidence level, government statements
   ## Timeline — chronological using ### YYYY-MM-DD — Event format
   ## Remediation & Mitigation — patches, defensive measures, lessons learned
-  ## Sources & References — formatted list matching frontmatter sources`,
+  ## Sources & References — each source as a markdown hyperlink: [Publisher: Title](url). Must match frontmatter sources array. Example: - [CISA: Alert AA21-356A](https://www.cisa.gov/...) — CISA, 2021-12-22`,
     requiredFields: ['eventId', 'title', 'date', 'attackType', 'severity', 'sector', 'geography', 'reviewStatus', 'generatedBy', 'generatedDate'],
     idField: 'eventId',
     idPattern: /^TP-\d{4}-\d{4}$/,
@@ -121,7 +121,7 @@ ${SOURCE_SCHEMA}
   ## Impact Assessment — affected organizations, sectors, quantified damage
   ## Attribution — threat actor linkage and confidence
   ## Timeline — key events chronologically
-  ## Sources & References`,
+  ## Sources & References — each source as a markdown hyperlink: [Publisher: Title](url). Must match frontmatter sources array.`,
     requiredFields: ['title', 'startDate', 'attackType', 'severity', 'sector', 'geography', 'reviewStatus', 'generatedBy', 'generatedDate'],
     idField: 'campaignId',
     idPattern: /^TP-CAMP-\d{4}-\d{4}$/,
@@ -160,7 +160,7 @@ ${SOURCE_SCHEMA}`,
   ## Technical Capabilities — malware families, C2 infrastructure, exploitation patterns
   ## Attribution — evidence basis, government indictments, vendor assessments
   ## MITRE ATT&CK Profile — key techniques with operational context
-  ## Sources & References`,
+  ## Sources & References — each source as a markdown hyperlink: [Publisher: Title](url). Must match frontmatter sources array.`,
     requiredFields: ['name', 'aliases', 'affiliation', 'motivation', 'status', 'reviewStatus', 'generatedBy', 'generatedDate'],
     idField: null,
     idPattern: null,
@@ -204,7 +204,7 @@ ${SOURCE_SCHEMA}
   ## Detection Guidance — network signatures, host indicators, log patterns
   ## Indicators of Compromise — network, log, and host indicators
   ## Disclosure Timeline — chronological using ### YYYY-MM-DD — Event format
-  ## Sources & References`,
+  ## Sources & References — each source as a markdown hyperlink: [Publisher: Title](url). Must match frontmatter sources array.`,
     requiredFields: ['title', 'cve', 'type', 'platform', 'severity', 'reviewStatus', 'generatedBy', 'generatedDate'],
     idField: 'exploitId',
     idPattern: /^TP-EXP-\d{4}-\d{4}$/,
@@ -226,7 +226,10 @@ const RULES = `
      ${EDITORIAL_WORDS.join(', ')}
   6. Every H2 heading must have a blank line before it
   7. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
-  8. The Astro build must pass: cd site && npm run build`;
+  8. Sources & References body section must use markdown hyperlinks: [Title](url)
+     — Every frontmatter source URL must appear as a clickable link in the body
+     — Format: - [Publisher: Title](https://...) — Publisher, YYYY-MM-DD
+  9. The Astro build must pass: cd site && npm run build`;
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
 function parseArgs() {
@@ -580,8 +583,23 @@ function validateOutput(task, explicitFile) {
       }
 
       // ── 8. Sources section in body ────────────────────────────────────────
-      if (!body.match(/^## (?:Sources|References|Sources & References|Sources and References)/mi)) {
+      const sourcesHeadingMatch = body.match(/^## (?:Sources|References|Sources & References|Sources and References)/mi);
+      if (!sourcesHeadingMatch) {
         issues.push('Missing Sources/References section in body');
+      } else {
+        // Extract the Sources section text (from heading to next H2 or end)
+        const sourcesStart = body.indexOf(sourcesHeadingMatch[0]);
+        const afterSources = body.slice(sourcesStart + sourcesHeadingMatch[0].length);
+        const nextH2 = afterSources.search(/^## /m);
+        const sourcesBody = nextH2 === -1 ? afterSources : afterSources.slice(0, nextH2);
+
+        // Check for markdown links [text](url)
+        const markdownLinks = sourcesBody.match(/\[([^\]]+)\]\(https?:\/\/[^\)]+\)/g) || [];
+        if (markdownLinks.length === 0) {
+          issues.push(`Sources section has no hyperlinks. Each source must be a markdown link: [Title](url). The URLs from your frontmatter sources: array must appear as clickable links in the body.`);
+        } else if (sourceCount > 0 && markdownLinks.length < sourceCount) {
+          warnings.push(`Sources section has ${markdownLinks.length} link(s) but frontmatter has ${sourceCount} source(s). Each frontmatter source should have a corresponding markdown link in the body.`);
+        }
       }
 
       // ── 9. EDIT-RULE-030: editorial commentary words ──────────────────────

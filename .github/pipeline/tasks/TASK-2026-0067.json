@@ -1,0 +1,46 @@
+{
+  "task_id": "TASK-2026-0067",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "APT29 (Cozy Bear) SolarWinds Supply Chain Campaign (2019-2020)",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
+      "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html",
+      "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/"
+    ],
+    "candidate_data": {
+      "startDate": "2019-10-01",
+      "endDate": "2020-12-13",
+      "ongoing": false,
+      "attackType": "Supply Chain / Espionage",
+      "severity": "critical",
+      "sector": "Government",
+      "geography": "United States",
+      "threatActor": "APT29",
+      "cves": ["CVE-2020-10148"]
+    },
+    "notes": "Distinct from the SolarWinds incident article (which covers the breach event). This campaign article should cover the full multi-year APT29 operation: SUNSPOT implant in build pipeline, SUNBURST backdoor, TEARDROP loader, lateral movement into US government agencies (Treasury, Commerce, DHS). SVR attribution by US/UK governments."
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/apt29-solarwinds-supply-chain-campaign-2020.md",
+    "branch": "penfold/TASK-2026-0067-solarwinds-campaign"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T16:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Campaign article — smoke test round 3"
+    }
+  ]
+}

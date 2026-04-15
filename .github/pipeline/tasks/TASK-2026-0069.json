@@ -1,0 +1,44 @@
+{
+  "task_id": "TASK-2026-0069",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "Equifax Data Breach (2017)",
+    "sources": [
+      "https://www.ftc.gov/legal-library/browse/cases-proceedings/172-3203-equifax-inc",
+      "https://www.gao.gov/products/gao-18-559",
+      "https://nvd.nist.gov/vuln/detail/CVE-2017-5638"
+    ],
+    "candidate_data": {
+      "date": "2017-05-13",
+      "attackType": "Data Breach",
+      "severity": "critical",
+      "sector": "Financial Services",
+      "geography": "United States",
+      "cves": ["CVE-2017-5638"],
+      "threatActor": "Unknown (suspected Chinese state-sponsored)"
+    },
+    "notes": "Apache Struts vulnerability (CVE-2017-5638) exploited to steal PII of 147 million people. Resulted in $700M FTC settlement. Four PLA members indicted in 2020. Landmark case for corporate cybersecurity accountability."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/equifax-data-breach-2017.md",
+    "branch": "penfold/TASK-2026-0069-equifax"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 2,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T16:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Incident article — smoke test round 3"
+    }
+  ]
+}

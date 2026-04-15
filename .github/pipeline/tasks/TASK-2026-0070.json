@@ -1,0 +1,44 @@
+{
+  "task_id": "TASK-2026-0070",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "Stuxnet — Siemens SIMATIC WinCC/Step 7 Multiple Zero-Days (CVE-2010-2568)",
+    "sources": [
+      "https://www.cisa.gov/news-events/ics-advisories/icsa-10-272-01",
+      "https://nvd.nist.gov/vuln/detail/CVE-2010-2568",
+      "https://www.langner.com/wp-content/uploads/2017/03/to-kill-a-centrifuge.pdf"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2010-2568",
+      "type": "Remote Code Execution",
+      "platform": "Microsoft Windows / Siemens SIMATIC WinCC Step 7",
+      "severity": "critical",
+      "disclosedDate": "2010-07-16",
+      "patchDate": "2010-08-02",
+      "researcher": "VirusBlokAda (Sergey Ulasen)"
+    },
+    "notes": "First known cyber weapon. Used 4 Windows zero-days + Siemens PLC vulnerabilities to destroy Iranian uranium centrifuges at Natanz. Attributed to US/Israel (Operation Olympic Games). Focus this article on CVE-2010-2568 (LNK shortcut vulnerability) as the primary exploitation vector."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/stuxnet-lnk-shortcut-cve-2010-2568.md",
+    "branch": "penfold/TASK-2026-0070-stuxnet"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 2,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T16:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Zero-day article — smoke test round 3"
+    }
+  ]
+}
