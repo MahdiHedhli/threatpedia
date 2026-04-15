@@ -20,6 +20,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -29,19 +30,39 @@ function loadPat() {
   // Try environment variable first
   if (process.env.GITHUB_PAT) return process.env.GITHUB_PAT;
 
-  // Try .env.dmbot
-  const envPath = resolve(ROOT, '..', '.env.dmbot');
-  if (existsSync(envPath)) {
-    const content = readFileSync(envPath, 'utf8');
-    const match = content.match(/GITHUB_PAT=["']?([^\s"']+)/);
-    if (match) return match[1];
+  // Try .env.dmbot (one level above repo root, in THREATPEDIA-ROOT)
+  for (const envFile of ['.env.dmbot', '.env.epbot']) {
+    const envPath = resolve(ROOT, '..', envFile);
+    if (existsSync(envPath)) {
+      const content = readFileSync(envPath, 'utf8');
+      const match = content.match(/GITHUB_PAT=["']?([^\s"']+)/);
+      if (match) return match[1];
+    }
   }
 
   return null;
 }
 
+// Detect repo from git remote
+function detectRepo() {
+  try {
+    const remote = execSync('git remote get-url origin', { encoding: 'utf8', cwd: ROOT }).trim();
+    const match = remote.match(/github\.com[:/]([^/]+\/[^/.]+)/);
+    return match ? match[1] : 'MahdiHedhli/threatpedia';
+  } catch {
+    return 'MahdiHedhli/threatpedia';
+  }
+}
+
+// Detect repo owner for Kernel K identification
+function detectRepoOwner() {
+  const repo = REPO.split('/')[0];
+  return repo;
+}
+
 const PAT = loadPat();
-const REPO = 'MahdiHedhli/threatpedia';
+const REPO = detectRepo();
+const REPO_OWNER = detectRepoOwner();
 const API = 'https://api.github.com';
 
 // ── API helper ─────────────────────────────────────────────────────────────
@@ -102,8 +123,8 @@ function categorizeComment(comment) {
   if (author.includes('bot')) {
     return { source: 'bot', priority: 'low', icon: '⚙️' };
   }
-  if (author === 'MahdiHedhli') {
-    return { source: 'kernel-k', priority: 'high', icon: '👑' };
+  if (author === REPO_OWNER) {
+    return { source: 'repo-owner', priority: 'high', icon: '👑' };
   }
   return { source: 'collaborator', priority: 'medium', icon: '👤' };
 }
