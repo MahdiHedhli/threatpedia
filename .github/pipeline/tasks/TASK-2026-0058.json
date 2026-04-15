@@ -1,0 +1,47 @@
+{
+  "task_id": "TASK-2026-0058",
+  "type": "incident",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "WannaCry Ransomware Attack (May 2017)",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware",
+      "https://www.ncsc.gov.uk/news/uk-and-key-allies-say-north-korea-behind-wannacry-attack",
+      "https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and",
+      "https://attack.mitre.org/software/S0366/"
+    ],
+    "candidate_data": {
+      "event_date": "2017-05-12",
+      "severity": "critical",
+      "attack_type": "Ransomware",
+      "threat_actor": "Lazarus Group",
+      "cves": ["CVE-2017-0144", "CVE-2017-0145"]
+    },
+    "notes": "Pipeline capability test for Penfold-Bot. Foundational backfill article — one of the most significant cyber incidents in history."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/wannacry-ransomware-2017.md",
+    "branch": "penfold/TASK-2026-0058-wannacry",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T14:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline capability test — Penfold-Bot generation of incident article"
+    }
+  ]
+}

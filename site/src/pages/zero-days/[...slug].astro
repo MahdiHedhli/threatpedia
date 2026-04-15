@@ -1,0 +1,195 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const zeroDays = await getCollection('zero-days');
+  return zeroDays.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+const statusLabel = d.status === 'active' ? 'Active Exploitation' : d.status === 'patched' ? 'Patched' : d.status === 'mitigated' ? 'Mitigated' : 'Unknown';
+const statusClass = d.status === 'active' ? 'zd-active' : d.status === 'patched' ? 'zd-patched' : '';
+---
+
+<Base title={d.title}>
+  <article>
+    <header class="article-header">
+      <div class="incident-header">
+        {d.exploitId && <span class="exploit-id">{d.exploitId}</span>}
+        <span class="cve">{d.cve}</span>
+        <span class={`severity ${d.severity}`}>{d.severity}</span>
+        <span class={`zd-status ${statusClass}`}>{statusLabel}</span>
+      </div>
+      <h1>{d.title}</h1>
+      <div class="incident-meta">
+        <a class="meta-item meta-link meta-link-entity" href={`https://nvd.nist.gov/vuln/detail/${d.cve}`} target="_blank" rel="noopener">
+          <span class="meta-label">CVE</span>
+          <span class="meta-value">{d.cve}</span>
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.platform)}`}>
+          <span class="meta-label">Platform</span>
+          <span class="meta-value">{d.platform}</span>
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.type)}`}>
+          <span class="meta-label">Type</span>
+          <span class="meta-value">{d.type}</span>
+        </a>
+        <div class="meta-item">
+          <span class="meta-label">Severity</span>
+          <span class={`meta-value severity-color-${d.severity}`}>{d.severity.toUpperCase()}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Status</span>
+          <span class={`meta-value ${statusClass}`}>{statusLabel}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Zero-Day</span>
+          <span class="meta-value">{d.isZeroDay ? 'Confirmed' : 'No'}</span>
+        </div>
+        {d.disclosedDate && (
+          <div class="meta-item">
+            <span class="meta-label">Disclosed</span>
+            <span class="meta-value">{new Date(d.disclosedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+        )}
+        {d.patchDate && (
+          <div class="meta-item">
+            <span class="meta-label">Patched</span>
+            <span class="meta-value">{new Date(d.patchDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </div>
+        )}
+        {d.daysInTheWild != null && (
+          <div class="meta-item">
+            <span class="meta-label">Days in the Wild</span>
+            <span class="meta-value">{d.daysInTheWild}</span>
+          </div>
+        )}
+        {d.researcher && (
+          <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.researcher)}`}>
+            <span class="meta-label">Researcher</span>
+            <span class="meta-value">{d.researcher}</span>
+          </a>
+        )}
+        {d.cisaKev ? (
+          <a class="meta-item meta-link meta-link-entity" href={`https://www.cisa.gov/known-exploited-vulnerabilities-catalog`} target="_blank" rel="noopener">
+            <span class="meta-label">CISA KEV</span>
+            <span class="meta-value">Listed</span>
+          </a>
+        ) : (
+          <div class="meta-item">
+            <span class="meta-label">CISA KEV</span>
+            <span class="meta-value">Not Listed</span>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="content">
+      <Content />
+    </div>
+
+    {d.relatedActors.length > 0 && (
+      <div class="related-section">
+        <h3>Related Threat Actors</h3>
+        <div class="related-links">
+          {d.relatedActors.map((actor: string) => (
+            <a href={`/threat-actors/${actor}/`} class="related-link">{actor}</a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {d.relatedIncidents.length > 0 && (
+      <div class="related-section">
+        <h3>Related Incidents</h3>
+        <div class="related-links">
+          {d.relatedIncidents.map((inc: string) => (
+            <a href={`/incidents/${inc}/`} class="related-link">{inc}</a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {d.tags.length > 0 && (
+      <div class="tags">
+        {d.tags.map((tag: string) => (
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
+        ))}
+      </div>
+    )}
+  </article>
+</Base>
+
+<style>
+  .zd-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .zd-active {
+    background: rgba(255, 68, 68, 0.15);
+    color: #ff4444;
+    border: 1px solid rgba(255, 68, 68, 0.3);
+  }
+
+  .zd-patched {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .severity-color-critical { color: #ff4444; }
+  .severity-color-high { color: #ffa500; }
+  .severity-color-medium { color: #e8a020; }
+  .severity-color-low { color: #51cf66; }
+
+  .related-section {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .related-section h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  .related-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .related-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    background: rgba(232, 160, 32, 0.08);
+    border: 1px solid rgba(232, 160, 32, 0.2);
+    padding: 4px 12px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .related-link:hover {
+    background: rgba(232, 160, 32, 0.15);
+    text-decoration: none;
+  }
+</style>

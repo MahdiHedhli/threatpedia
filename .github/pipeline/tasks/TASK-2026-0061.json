@@ -1,0 +1,48 @@
+{
+  "task_id": "TASK-2026-0061",
+  "type": "incident",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "NotPetya Wiper Attack (June 2017)",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2017/07/01/petya-ransomware",
+      "https://attack.mitre.org/software/S0368/",
+      "https://www.wired.com/story/notpetya-cyberattack-ukraine-russia-code-crashed-the-world/",
+      "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and",
+      "https://www.microsoft.com/en-us/security/blog/2017/06/27/new-ransomware-old-techniques-petya-adds-worm-capabilities/"
+    ],
+    "candidate_data": {
+      "event_date": "2017-06-27",
+      "severity": "critical",
+      "attack_type": "Wiper/Destructive",
+      "threat_actor": "Sandworm",
+      "cves": ["CVE-2017-0144", "CVE-2017-0145"]
+    },
+    "notes": "Smoke test for tightened pipeline validator v2. Russian GRU-attributed wiper disguised as ransomware, spread via compromised M.E.Doc update mechanism. Estimated $10B+ in global damages."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/notpetya-wiper-attack-2017.md",
+    "branch": "penfold/TASK-2026-0061-notpetya",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T18:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline v2 smoke test — tightened validator"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content';
+import Incident from '../../layouts/Incident.astro';
+
+export async function getStaticPaths() {
+  const incidents = await getCollection('incidents');
+  return incidents.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Incident frontmatter={entry.data}>
+  <Content />
+</Incident>

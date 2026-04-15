@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-2026-0063",
+  "type": "threat-actor",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "Sandworm (Russian GRU Unit 74455)",
+    "sources": [
+      "https://attack.mitre.org/groups/G0034/",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a",
+      "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and",
+      "https://www.mandiant.com/resources/blog/sandworm-disrupts-power-ukraine-operational-technology",
+      "https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/"
+    ],
+    "candidate_data": {
+      "actor_name": "Sandworm",
+      "aliases": ["IRIDIUM", "TeleBots", "Voodoo Bear", "ELECTRUM", "Iron Viking"],
+      "origin": "Russia",
+      "affiliation": "GRU (Main Intelligence Directorate), Unit 74455",
+      "motivation": "Destructive / Espionage",
+      "active_since": "2009",
+      "mitre_group_id": "G0034"
+    },
+    "notes": "Smoke test for tightened pipeline validator v2. One of the most destructive state-sponsored threat actors, responsible for Ukraine power grid attacks (2015, 2016), NotPetya, Olympic Destroyer, and Cyclops Blink."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/sandworm.md",
+    "branch": "penfold/TASK-2026-0063-sandworm",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T18:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline v2 smoke test — tightened validator"
+    }
+  ]
+}

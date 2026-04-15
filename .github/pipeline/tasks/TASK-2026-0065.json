@@ -1,0 +1,52 @@
+{
+  "task_id": "TASK-2026-0065",
+  "type": "campaign",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "SolarWinds Supply Chain Campaign (2019–2021)",
+    "sources": [
+      "https://www.cisa.gov/news-events/directives/emergency-directive-21-01",
+      "https://attack.mitre.org/campaigns/C0024/",
+      "https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor",
+      "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/",
+      "https://www.solarwinds.com/trust-center/security-advisories/cve-2020-10148"
+    ],
+    "candidate_data": {
+      "campaignId": "TP-CAMP-2020-0001",
+      "campaign_name": "SolarWinds / SUNBURST",
+      "start_date": "2019-10",
+      "discovery_date": "2020-12-13",
+      "threat_actor": "APT29 (Cozy Bear)",
+      "attack_type": "Supply Chain Compromise / Espionage",
+      "scope": "~18,000 organizations received trojanized update; ~100 confirmed compromised",
+      "cves": ["CVE-2020-10148", "CVE-2021-35211"],
+      "malware_families": ["SUNBURST", "SUNSPOT", "TEARDROP", "Raindrop"]
+    },
+    "notes": "Smoke test for tightened pipeline validator v2. The broader SolarWinds campaign encompassing the supply chain compromise of Orion software, attributed to Russian SVR (APT29). One of the most significant cyber-espionage operations ever discovered, impacting US federal agencies and major corporations."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/solarwinds-supply-chain-campaign.md",
+    "branch": "penfold/TASK-2026-0065-solarwinds",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T18:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline v2 smoke test — tightened validator"
+    }
+  ]
+}

@@ -1,0 +1,2516 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
+
+// Build ticker items from all collections
+interface TickerItem {
+  label: string;
+  href: string;
+  severity: string;
+  badge: string;
+}
+
+const tickerItems: TickerItem[] = [];
+
+const severityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+
+try {
+  const [incidents, campaigns, actors, zeroDays] = await Promise.all([
+    getCollection('incidents'),
+    getCollection('campaigns').catch(() => []),
+    getCollection('threat-actors'),
+    getCollection('zero-days'),
+  ]);
+
+  // Zero-days first (most urgent)
+  zeroDays
+    .sort((a, b) => (severityOrder[a.data.severity] ?? 9) - (severityOrder[b.data.severity] ?? 9))
+    .slice(0, 4)
+    .forEach((z) => {
+      tickerItems.push({
+        label: z.data.title,
+        href: `/zero-days/${z.id}/`,
+        severity: z.data.severity,
+        badge: z.data.status === 'active' ? '0-DAY' : z.data.severity.toUpperCase(),
+      });
+    });
+
+  // Recent incidents
+  incidents
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 5)
+    .forEach((i) => {
+      tickerItems.push({
+        label: i.data.title,
+        href: `/incidents/${i.id}/`,
+        severity: i.data.severity,
+        badge: i.data.severity.toUpperCase(),
+      });
+    });
+
+  // Active campaigns
+  campaigns
+    .filter((c) => c.data.ongoing)
+    .slice(0, 3)
+    .forEach((c) => {
+      tickerItems.push({
+        label: c.data.title,
+        href: `/campaigns/${c.id}/`,
+        severity: c.data.severity,
+        badge: 'CAMPAIGN',
+      });
+    });
+
+  // Notable threat actors
+  actors
+    .filter((a) => a.data.status === 'active')
+    .slice(0, 3)
+    .forEach((a) => {
+      tickerItems.push({
+        label: a.data.name,
+        href: `/threat-actors/${a.id}/`,
+        severity: 'high',
+        badge: 'APT',
+      });
+    });
+} catch { /* collections may be empty during build */ }
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#080b10" />
+    <link rel="icon" type="image/svg+xml" href="/tp-favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <title>{title} — Threatpedia</title>
+  </head>
+  <body>
+    <nav>
+      <a class="nav-logo" href="/">
+        <img class="nav-logo-icon" src="/tp-logo.svg" alt="TP" width="32" height="32" />
+        <span class="nav-logo-text">Threat<span>pedia</span></span>
+      </a>
+      {tickerItems.length > 0 ? (
+        <div class="nav-ticker">
+          <div class="ticker-track">
+            {tickerItems.map((item) => (
+              <a class="ticker-item" href={item.href}>
+                <span class={`ticker-badge ticker-${item.severity}`}>{item.badge}</span>
+                <span>{item.label}</span>
+              </a>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {tickerItems.map((item) => (
+              <a class="ticker-item" href={item.href} aria-hidden="true">
+                <span class={`ticker-badge ticker-${item.severity}`}>{item.badge}</span>
+                <span>{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div class="nav-status">
+          <div class="status-dot"></div>
+          BUILDING IN PUBLIC
+        </div>
+      )}
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="menu-panel" id="menu-panel">
+      <div class="menu-label">Search</div>
+      <div class="search-wrapper">
+        <input class="menu-search" type="text" placeholder="Search Threatpedia..." id="menu-search" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <div class="menu-label">Navigate</div>
+      <div class="menu-links">
+        <a href="/">Home</a>
+        <a href="/incidents/">Incidents</a>
+        <a href="/campaigns/">Campaigns</a>
+        <a href="/threat-actors/">Threat Actors</a>
+        <a href="/zero-days/">Zero-Days</a>
+        <a href="/glossary/">Glossary</a>
+        <a href="/roadmap/">Roadmap</a>
+      </div>
+    </div>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <div class="footer-logo">THREATPEDIA</div>
+      <div class="footer-domains">
+        <div class="footer-domain">threatpedia.wiki</div>
+        <div class="footer-domain">threatpedia.net</div>
+      </div>
+      <div class="footer-copy">&copy; 2026 — All Rights Reserved</div>
+    </footer>
+
+    <script>
+      // ── Hamburger menu ──────────────────────────────────────────────────
+      const btn = document.getElementById('hamburger-btn');
+      const overlay = document.getElementById('menu-overlay');
+      const panel = document.getElementById('menu-panel');
+      const searchInput = document.getElementById('menu-search');
+
+      function toggleMenu() {
+        const isOpen = panel.classList.toggle('open');
+        overlay.classList.toggle('open');
+        btn.classList.toggle('open');
+        if (isOpen && searchInput) searchInput.focus();
+      }
+
+      function closeMenu() {
+        panel.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+      // ── Ticker scroll speed ─────────────────────────────────────────────
+      const tickerTrack = document.querySelector('.ticker-track');
+      if (tickerTrack) {
+        requestAnimationFrame(() => {
+          const halfWidth = tickerTrack.scrollWidth / 2;
+          const duration = halfWidth / 40; // 40px/sec
+          tickerTrack.style.setProperty('--ticker-duration', duration + 's');
+        });
+      }
+
+      // ── Highlight active nav link ───────────────────────────────────────
+      document.querySelectorAll('.menu-links a').forEach((a) => {
+        if (window.location.pathname === a.getAttribute('href') ||
+            (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
+          a.classList.add('active');
+        }
+      });
+
+      // ── Sitewide search ─────────────────────────────────────────────────
+      let searchIndex = null;
+      const resultsEl = document.getElementById('search-results');
+      let searchTimeout;
+
+      async function loadSearchIndex() {
+        if (searchIndex) return searchIndex;
+        try {
+          const res = await fetch('/search-index.json');
+          searchIndex = await res.json();
+        } catch { searchIndex = []; }
+        return searchIndex;
+      }
+
+      function escapeHtml(t) {
+        const d = document.createElement('div');
+        d.textContent = t;
+        return d.innerHTML;
+      }
+
+      function doSearch(query) {
+        if (!searchIndex || !query) { resultsEl.style.display = 'none'; return; }
+        const q = query.toLowerCase();
+        const matches = searchIndex
+          .map((item) => {
+            let score = 0;
+            const title = (item.title || '').toLowerCase();
+            const name = (item.name || '').toLowerCase();
+            const label = title || name;
+            if (label.startsWith(q)) score += 100;
+            else if (label.includes(q)) score += 50;
+            if (item.aliases) {
+              for (const a of item.aliases) {
+                if (a.toLowerCase().includes(q)) score += 30;
+              }
+            }
+            if (item.attackType && item.attackType.toLowerCase().includes(q)) score += 20;
+            if (item.sector && item.sector.toLowerCase().includes(q)) score += 15;
+            if (item.cve && item.cve.toLowerCase().includes(q)) score += 40;
+            if (item.tags) {
+              for (const t of item.tags) {
+                if (t.toLowerCase() === q) { score += 60; break; }
+                else if (t.toLowerCase().includes(q)) { score += 25; break; }
+              }
+            }
+            if (item.threatActor && item.threatActor.toLowerCase().includes(q)) score += 35;
+            return { ...item, score };
+          })
+          .filter((r) => r.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 12);
+
+        if (matches.length === 0) { resultsEl.style.display = 'none'; return; }
+
+        const severityColor = { critical: '#ff4444', high: '#ffa500', medium: '#e8a020', low: '#51cf66' };
+        let html = '';
+        let lastType = '';
+        for (const m of matches) {
+          if (m.type !== lastType) {
+            lastType = m.type;
+            const label = m.type === 'incident' ? 'INCIDENTS' : m.type === 'campaign' ? 'CAMPAIGNS' : m.type === 'threat-actor' ? 'THREAT ACTORS' : 'ZERO-DAYS';
+            html += `<div class="sr-category">${label}</div>`;
+          }
+          const title = escapeHtml(m.title || m.name || '');
+          const sev = m.severity ? `<span class="sr-severity" style="color:${severityColor[m.severity] || '#e8a020'}">${escapeHtml(m.severity)}</span>` : '';
+          const sub = m.type === 'threat-actor'
+            ? `${escapeHtml(m.affiliation || '')} &middot; ${escapeHtml(m.motivation || '')}`
+            : m.type === 'incident'
+            ? `${escapeHtml(m.sector || '')} &middot; ${escapeHtml(m.attackType || '')}`
+            : `${escapeHtml(m.cve || '')} &middot; ${escapeHtml(m.platform || '')}`;
+          html += `<a class="sr-item" href="${m.url}"><div class="sr-title">${title}${sev}</div><div class="sr-sub">${sub}</div></a>`;
+        }
+        resultsEl.innerHTML = html;
+        resultsEl.style.display = 'block';
+      }
+
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        const q = searchInput.value.trim();
+        if (!q) { resultsEl.style.display = 'none'; return; }
+        searchTimeout = setTimeout(async () => {
+          await loadSearchIndex();
+          doSearch(q);
+        }, 150);
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
+      });
+
+      // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
+      const urlQ = new URLSearchParams(window.location.search).get('q');
+      if (urlQ) {
+        // Open hamburger menu, populate search, run query
+        if (!panel.classList.contains('open')) {
+          panel.classList.add('open');
+          overlay.classList.add('open');
+          btn.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+        searchInput.value = urlQ.replace(/-/g, ' ');
+        (async () => {
+          await loadSearchIndex();
+          doSearch(searchInput.value);
+          searchInput.focus();
+        })();
+      }
+
+      // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
+      (function enhanceContent() {
+        const content = document.querySelector('.content');
+        if (!content) return;
+
+        // ── Step 0: Promote section-like paragraphs to h2 BEFORE parsing ──
+        const h2Promotions = [
+          /^Sources?\s*[&+]\s*References?$/i,
+          /^MITRE\s+ATT&CK[\w\s]*$/i,
+          /^Attack\s+Chain$/i,
+          /^Attack\s+Methodology$/i,
+          /^Campaign\s+Timeline$/i,
+          /^Attack\s+Timeline$/i,
+          /^Indicators?\s+of\s+Compromise$/i,
+          /^Attack\s+Stages$/i,
+        ];
+        content.querySelectorAll('p').forEach(p => {
+          const t = p.textContent?.trim() || '';
+          // Exact match — entire paragraph is the section title
+          if (h2Promotions.some(re => re.test(t))) {
+            const h2 = document.createElement('h2');
+            h2.textContent = t;
+            p.replaceWith(h2);
+            return;
+          }
+          // Paragraph starts with "MITRE ATT&CK..." (with or without technique lines)
+          if (/^MITRE\s+ATT&CK/i.test(t) && !h2Promotions.some(re => re.test(t)) && /\n/.test(t)) {
+            const lines = t.split('\n').map(l => l.trim()).filter(Boolean);
+            const h2 = document.createElement('h2');
+            h2.textContent = lines[0];
+            const techP = document.createElement('p');
+            techP.textContent = lines.slice(1).join('\n');
+            p.replaceWith(h2, techP);
+          }
+        });
+
+        // Find all h2 elements (including newly promoted ones)
+        const h2s = content.querySelectorAll('h2');
+
+        h2s.forEach(h2 => {
+          const title = h2.textContent?.trim() || '';
+
+          // ── Attack Chain / Exploit Chain / Attack Methodology / Attack Stages section ──
+          if (/(?:attack|exploit)\s*(chain|methodology|stages)/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            // Find stage patterns in multiple formats:
+            // "Stage N: Title" / "Stage N — Title" / "Stage N\nTitle" (merged <p>)
+            const stages = [];
+            let currentStage = null;
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              // Format 1: "Stage N: Title" or "Stage N — Title"
+              const stageMatch = text.match(/^Stage\s+(\d+)\s*[:—–-]\s*(.+)/i);
+              if (stageMatch) {
+                if (currentStage) stages.push(currentStage);
+                currentStage = { num: stageMatch[1], title: stageMatch[2].trim(), content: [] };
+                continue;
+              }
+              // Format 2: "Stage N\nTitle\n..." (newline-separated in single <p>)
+              const stageNL = text.match(/^Stage\s+(\d+)\s*\n(.+)/i);
+              if (stageNL) {
+                if (currentStage) stages.push(currentStage);
+                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                currentStage = { num: stageNL[1], title: lines[1] || '', content: lines.slice(2).length ? [lines.slice(2).join(' ')] : [] };
+                continue;
+              }
+              // Format 3: Just "Stage N" alone
+              const stageAlone = text.match(/^Stage\s+(\d+)$/i);
+              if (stageAlone) {
+                if (currentStage) stages.push(currentStage);
+                currentStage = { num: stageAlone[1], title: '', content: [] };
+                continue;
+              }
+              // Content or title for current stage
+              if (currentStage) {
+                if (!currentStage.title && text.length < 80) {
+                  currentStage.title = text;
+                } else if (text) {
+                  currentStage.content.push(sib.innerHTML || text);
+                }
+              }
+            }
+            if (currentStage) stages.push(currentStage);
+
+            if (stages.length > 0) {
+              // Remove original elements
+              siblings.forEach(s => s.remove());
+
+              // Build attack flow
+              const flow = document.createElement('div');
+              flow.className = 'attack-flow';
+              stages.forEach(s => {
+                const stage = document.createElement('div');
+                stage.className = 'attack-stage';
+                stage.innerHTML = `<div class="attack-stage-title">STAGE ${s.num}: ${s.title}</div><div class="attack-stage-content">${s.content.map(c => `<p>${c}</p>`).join('')}</div>`;
+                flow.appendChild(stage);
+              });
+              h2.after(flow);
+            }
+          }
+
+          // ── MITRE ATT&CK Mapping section ──
+          if (/mitre\s*att/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            const techniques = [];
+            let frameworkLabel = '';
+            // Collect all text lines from siblings
+            const allLines = [];
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+              allLines.push(...lines);
+            }
+            // Try format 1: "T1234 — Description" or "T1234 - Description" or "T1234: Description"
+            for (const line of allLines) {
+              const techMatch = line.match(/^(T\d{4}(?:\.\d{3})?)\s*[—–\-:]\s*(.+)/);
+              if (techMatch) {
+                techniques.push({ id: techMatch[1], name: techMatch[2].trim() });
+              } else if (line && !frameworkLabel && /framework|enterprise|mobile/i.test(line)) {
+                frameworkLabel = line;
+              }
+            }
+            // Try format 2: Table-style (Tactic / T1234 / Name / Description on consecutive lines)
+            if (techniques.length === 0) {
+              for (let li = 0; li < allLines.length; li++) {
+                const idMatch = allLines[li].match(/^(T\d{4}(?:\.\d{3})?)$/);
+                if (idMatch && li + 1 < allLines.length) {
+                  const name = allLines[li + 1];
+                  const desc = (li + 2 < allLines.length && !/^T\d{4}/.test(allLines[li + 2]) && !/^(Initial|Credential|Defense|Lateral|Collection|Exfil|Persistence|Privilege|Discovery|Execution|Impact|Command|Resource|Reconnaissance)/.test(allLines[li + 2]))
+                    ? allLines[li + 2] : '';
+                  techniques.push({ id: idMatch[1], name: desc ? `${name} — ${desc}` : name });
+                }
+              }
+            }
+
+            if (techniques.length > 0) {
+              siblings.forEach(s => s.remove());
+
+              let html = '';
+              if (frameworkLabel) {
+                html += `<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">${frameworkLabel}</p>`;
+              }
+              html += '<div class="mitre-grid">';
+              techniques.forEach(t => {
+                const attackUrl = `https://attack.mitre.org/techniques/${t.id.replace('.', '/')}/`;
+                html += `<a class="mitre-technique" href="${attackUrl}" target="_blank" rel="noopener"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></a>`;
+              });
+              html += '</div>';
+
+              const wrapper = document.createElement('div');
+              wrapper.innerHTML = html;
+              while (wrapper.firstChild) h2.after(wrapper.lastChild);
+            }
+          }
+
+          // ── Timeline section (Campaign Timeline, Attack Timeline, Timeline) ──
+          if (/^(campaign\s+|attack\s+)?timeline$/i.test(title)) {
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+
+            // Each <p> may contain "Date\nTitle\nDescription" merged by markdown
+            const entries = [];
+            for (const sib of siblings) {
+              const text = sib.textContent?.trim() || '';
+              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+              if (lines.length >= 2) {
+                entries.push({
+                  date: lines[0],
+                  title: lines[1],
+                  desc: lines.slice(2).join(' ')
+                });
+              }
+            }
+
+            if (entries.length > 0) {
+              siblings.forEach(s => s.remove());
+
+              const timeline = document.createElement('div');
+              timeline.className = 'timeline-flow';
+              entries.forEach(e => {
+                const entry = document.createElement('div');
+                entry.className = 'timeline-entry';
+                entry.innerHTML = `<div class="timeline-date">${e.date}</div><div class="timeline-title">${e.title}</div>${e.desc ? `<div class="timeline-desc">${e.desc}</div>` : ''}`;
+                timeline.appendChild(entry);
+              });
+              h2.after(timeline);
+            }
+          }
+        });
+
+        // ── Promote sub-section labels to h3 ──
+        // Short paragraphs that end with ":" or are known sub-header patterns
+        const subHeaderPatterns = [
+          /^IOC Sources$/i,
+          /^Key Detection Signatures$/i,
+          /^Immediate Actions/i,
+          /^Enterprise.*Recommendations:?$/i,
+          /^Detection and Hunting:?$/i,
+          /^Post-Incident Actions:?$/i,
+          /^Post-Compromise/i,
+          /^Key Takeaways$/i,
+          /^Threat Actor Profile$/i,
+          /^Affected Hardware$/i,
+          /^Related Campaigns$/i,
+          /^Takedown Participants$/i,
+          /^Attack Class:?$/i,
+          /^Primary Vulnerability:?$/i,
+        ];
+        content.querySelectorAll('p').forEach(p => {
+          const t = p.textContent?.trim() || '';
+          if (t.length < 60 && subHeaderPatterns.some(re => re.test(t))) {
+            const h3 = document.createElement('h3');
+            h3.textContent = t.replace(/:$/, '');
+            p.replaceWith(h3);
+          }
+        });
+
+        // ── Style IOC sub-sections as cards ──
+        // Handles both "IOC Sources" and "Key Detection Signatures" h3s
+        content.querySelectorAll('h3').forEach(h3 => {
+          const isIOCSources = /ioc sources/i.test(h3.textContent || '');
+          const isDetection = /key detection/i.test(h3.textContent || '');
+          if (!isIOCSources && !isDetection) return;
+
+          const siblings = [];
+          let el = h3.nextElementSibling;
+          while (el && el.tagName !== 'H2' && el.tagName !== 'H3') {
+            siblings.push(el);
+            el = el.nextElementSibling;
+          }
+          // If a single <p> with newline-separated items
+          if (siblings.length === 1 && siblings[0].tagName === 'P') {
+            const lines = (siblings[0].textContent?.trim() || '').split('\n').map(l => l.trim()).filter(Boolean);
+            if (lines.length > 1) {
+              const grid = document.createElement('div');
+              grid.className = isDetection ? 'ioc-signatures' : 'ioc-sources';
+              lines.forEach(line => {
+                const item = document.createElement('div');
+                item.className = isDetection ? 'ioc-sig-item' : 'ioc-source-item';
+                // For IOC sources, split on em-dash to get source name + description
+                if (isIOCSources) {
+                  const parts = line.split(/\s*[—–]\s*/);
+                  if (parts.length >= 2) {
+                    item.innerHTML = `<span class="ioc-source-name">${parts[0]}</span><span class="ioc-source-desc">${parts.slice(1).join(' — ')}</span>`;
+                  } else {
+                    item.textContent = line;
+                  }
+                } else {
+                  item.textContent = line;
+                }
+                grid.appendChild(item);
+              });
+              siblings[0].replaceWith(grid);
+            }
+          }
+        });
+
+        // ── Style numbered sources/references ──
+        content.querySelectorAll('h2').forEach(h2 => {
+          if (!/sources?\s*[&+]\s*references?/i.test(h2.textContent || '')) return;
+          const siblings = [];
+          let el = h2.nextElementSibling;
+          while (el && el.tagName !== 'H2') {
+            siblings.push(el);
+            el = el.nextElementSibling;
+          }
+
+          // Pattern: <ol> (empty numbered item) then <p> (title + link), alternating
+          // Stop when we hit a <p> that doesn't follow an <ol> (non-reference content)
+          const refs = [];
+          let refNum = 0;
+          let expectingRef = true;
+          for (let i = 0; i < siblings.length; i++) {
+            const sib = siblings[i];
+            // Skip empty <ol> elements (markdown renders "1." as empty list)
+            if (sib.tagName === 'OL' && sib.textContent?.trim() === '') {
+              expectingRef = true;
+              continue;
+            }
+            // <p> immediately after <ol> is a reference; otherwise stop
+            if (sib.tagName === 'P' && expectingRef) {
+              refNum++;
+              const link = sib.querySelector('a');
+              const text = sib.textContent?.trim() || '';
+              const url = link ? link.href : '';
+              const title = url ? text.replace(new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$'), '').trim() : text;
+              refs.push({ num: refNum, title: title || text, url });
+              expectingRef = false;
+            } else if (sib.tagName === 'P' && !expectingRef) {
+              // Non-reference content — stop parsing sources
+              break;
+            }
+          }
+
+          if (refs.length > 0) {
+            siblings.forEach(s => s.remove());
+            const list = document.createElement('div');
+            list.className = 'sources-list';
+            refs.forEach(r => {
+              const item = document.createElement('div');
+              item.className = 'source-item';
+              let html = `<span class="source-num">${r.num}.</span><div class="source-content"><div class="source-title">${r.title}</div>`;
+              if (r.url) html += `<a href="${r.url}" class="source-url" target="_blank" rel="noopener">${new URL(r.url).hostname}${new URL(r.url).pathname.substring(0, 50)}${new URL(r.url).pathname.length > 50 ? '...' : ''}</a>`;
+              html += '</div>';
+              item.innerHTML = html;
+              list.appendChild(item);
+            });
+            h2.after(list);
+          }
+        });
+
+        // ══════════════════════════════════════════════════════════════════════
+        // SMART LINKING — Glossary Tooltips + Cross-Collection References
+        // ══════════════════════════════════════════════════════════════════════
+        (async () => {
+          // Skip on non-article pages (homepage, glossary, search)
+          if (!content || content.querySelectorAll('h2').length < 2) return;
+
+          // ── Load data sources in parallel ────────────────────────────────
+          const tryFetch = async (...urls) => {
+            for (const url of urls) {
+              try { const r = await fetch(url); if (r.ok) return r.json(); } catch {}
+            }
+            return null;
+          };
+          const [glossaryRes, crossRefRes] = await Promise.allSettled([
+            tryFetch('/glossary-data.json', '/src/data/glossary-index.json'),
+            tryFetch('/cross-ref-index.json'),
+          ]);
+
+          const glossary = glossaryRes.status === 'fulfilled' ? glossaryRes.value : [];
+          const crossRef = crossRefRes.status === 'fulfilled' ? crossRefRes.value : {};
+
+          // ── Build term lookup maps ───────────────────────────────────────
+          // Track which terms we've already linked (first-occurrence only)
+          const linked = new Set();
+
+          // Excluded zones: don't link inside these elements
+          const EXCLUDED_TAGS = new Set(['A', 'CODE', 'PRE', 'H1', 'H2', 'H3', 'SCRIPT', 'STYLE', 'BUTTON', 'INPUT']);
+          const EXCLUDED_CLASSES = ['attack-stage-title', 'mitre-tid', 'mitre-name', 'source-item', 'meta-value', 'meta-label', 'timeline-date', 'badge'];
+
+          function isExcluded(node) {
+            let el = node.nodeType === 3 ? node.parentElement : node;
+            while (el && el !== content) {
+              if (EXCLUDED_TAGS.has(el.tagName)) return true;
+              if (el.className && EXCLUDED_CLASSES.some(c => el.className.includes?.(c))) return true;
+              el = el.parentElement;
+            }
+            return false;
+          }
+
+          // ── Tier 1 & 2: Cross-reference patterns ────────────────────────
+          // Build patterns sorted by length (longest first to avoid partial matches)
+          const crossRefTerms = Object.keys(crossRef).sort((a, b) => b.length - a.length);
+
+          // CVE pattern: CVE-YYYY-NNNNN
+          const CVE_RE = /\bCVE-\d{4}-\d{4,7}\b/g;
+          // MITRE technique pattern: T followed by 4 digits, optional .NNN
+          const MITRE_RE = /\bT\d{4}(?:\.\d{3})?\b/g;
+
+          // ── Tier 3: Glossary — build regex from terms ────────────────────
+          // Filter: multi-word terms OR single words 8+ chars to avoid generic noise
+          // Stop list: common words that appear in glossary but are too generic
+          const GLOSSARY_STOP = new Set([
+            'threat', 'attack', 'incident', 'exploit', 'access', 'agent',
+            'asset', 'audit', 'breach', 'chain', 'cloud', 'control',
+            'data', 'event', 'hash', 'host', 'impact', 'integrity',
+            'network', 'patch', 'policy', 'port', 'risk', 'scan',
+            'script', 'server', 'session', 'shell', 'signal', 'system',
+            'token', 'trust', 'user', 'virus', 'worm', 'alert',
+            'block', 'proxy', 'relay', 'scope', 'state', 'vector',
+            'beacon', 'bridge', 'cipher', 'client', 'cookie', 'domain',
+            'driver', 'filter', 'header', 'kernel', 'module', 'object',
+            'packet', 'record', 'report', 'router', 'schema', 'socket',
+            'source', 'stream', 'switch', 'target', 'thread', 'tunnel',
+            'vendor', 'volume', 'backup', 'botnet', 'daemon', 'deploy',
+            'device', 'encode', 'entity', 'fabric', 'handle', 'hijack',
+            'inject', 'launch', 'malice', 'mirror', 'offset', 'parser',
+            'phishing', 'playbook', 'payload', 'sandbox', 'scanner',
+            'sniffer', 'spyware', 'stealth', 'surface', 'tactics',
+            'toolkit', 'tracker', 'trigger', 'variant',
+            'signature', 'indicator', 'credential', 'perimeter', 'protocol',
+          ]);
+          const glossaryMap = new Map();
+          for (const g of glossary) {
+            const term = g.t?.toLowerCase();
+            if (!term) continue;
+            // Include: multi-word terms (2+ words, 8+ chars total) OR single words 10+ chars
+            const wordCount = term.split(/\s+/).length;
+            const include = (wordCount >= 2 && term.length >= 8) || (wordCount === 1 && term.length >= 10);
+            if (include && !GLOSSARY_STOP.has(term)) glossaryMap.set(term, g);
+            // Aliases/acronyms: only if 4+ chars and multi-char (skip "AUP", "CIA" etc.)
+            if (g.a && g.a.length >= 5 && !GLOSSARY_STOP.has(g.a.toLowerCase())) glossaryMap.set(g.a.toLowerCase(), g);
+          }
+
+          // ── Tooltip HTML builder ─────────────────────────────────────────
+          function buildTooltipHTML(termKey, termData) {
+            const parts = [];
+            const entry = crossRef[termKey.toLowerCase()];
+
+            if (entry) {
+              // Tier 1 or 2: cross-reference tooltip
+              parts.push(`<div class="tp-tooltip-label">${entry.label}</div>`);
+
+              if (entry.external) {
+                const domain = new URL(entry.external).hostname.replace('www.', '');
+                parts.push(`<a href="${entry.external}" target="_blank" rel="noopener" class="tp-tooltip-link tp-tooltip-external">${domain} ↗</a>`);
+              }
+
+              if (entry.primary) {
+                parts.push(`<a href="${entry.primary}" class="tp-tooltip-link tp-tooltip-primary">View article →</a>`);
+              }
+
+              const articles = entry.articles.slice(0, 3);
+              if (articles.length > 0) {
+                parts.push(`<div class="tp-tooltip-divider"></div>`);
+                parts.push(`<div class="tp-tooltip-section">Referenced in:</div>`);
+                for (const a of articles) {
+                  const badge = a.type.replace('-', ' ');
+                  parts.push(`<a href="${a.url}" class="tp-tooltip-link tp-tooltip-ref"><span class="tp-tooltip-badge">${badge}</span>${a.title.length > 50 ? a.title.substring(0, 47) + '...' : a.title}</a>`);
+                }
+                if (entry.articles.length > 3) {
+                  parts.push(`<a href="/glossary.html?q=${encodeURIComponent(entry.label)}" class="tp-tooltip-link tp-tooltip-more">Search all ${entry.articles.length} references →</a>`);
+                }
+              }
+            }
+
+            if (termData) {
+              // Tier 3: glossary tooltip
+              if (parts.length > 0) parts.push(`<div class="tp-tooltip-divider"></div>`);
+              parts.push(`<div class="tp-tooltip-def">${termData.d.length > 160 ? termData.d.substring(0, 157) + '...' : termData.d}</div>`);
+              parts.push(`<a href="/glossary/#${termData.s}" class="tp-tooltip-link tp-tooltip-glossary">View in glossary →</a>`);
+            }
+
+            return parts.join('');
+          }
+
+          // ── Create tooltip element (singleton) ───────────────────────────
+          const tooltip = document.createElement('div');
+          tooltip.className = 'tp-tooltip';
+          tooltip.setAttribute('role', 'tooltip');
+          tooltip.style.display = 'none';
+          document.body.appendChild(tooltip);
+
+          let hideTimeout;
+          function showTooltip(anchor) {
+            clearTimeout(hideTimeout);
+            const html = anchor.getAttribute('data-tp-tooltip');
+            if (!html) return;
+            tooltip.innerHTML = html;
+            tooltip.style.display = 'block';
+
+            // Position below the anchor
+            const rect = anchor.getBoundingClientRect();
+            const ttRect = tooltip.getBoundingClientRect();
+            let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+            let top = rect.bottom + 8;
+
+            // Keep within viewport
+            if (left < 8) left = 8;
+            if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
+            if (top + ttRect.height > window.innerHeight - 8) {
+              top = rect.top - ttRect.height - 8; // flip above
+            }
+
+            tooltip.style.left = left + window.scrollX + 'px';
+            tooltip.style.top = top + window.scrollY + 'px';
+          }
+
+          function hideTooltip() {
+            hideTimeout = setTimeout(() => { tooltip.style.display = 'none'; }, 200);
+          }
+
+          tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+          tooltip.addEventListener('mouseleave', hideTooltip);
+
+          // ── Walk text nodes and apply linking ────────────────────────────
+          const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              if (isExcluded(node)) return NodeFilter.FILTER_REJECT;
+              if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          });
+
+          const textNodes = [];
+          while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+          for (const textNode of textNodes) {
+            const text = textNode.textContent;
+            if (!text || text.length < 3) continue;
+
+            // Find all matches in this text node
+            const replacements = [];
+
+            // Check CVE patterns (Tier 1)
+            for (const match of text.matchAll(CVE_RE)) {
+              const key = match[0].toLowerCase();
+              if (linked.has(key)) continue;
+              if (!crossRef[key]) continue;
+              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+            }
+
+            // Check MITRE patterns (Tier 1)
+            for (const match of text.matchAll(MITRE_RE)) {
+              const key = match[0].toLowerCase();
+              if (linked.has(key)) continue;
+              // If not in cross-ref, create a synthetic entry with ATT&CK link
+              if (!crossRef[key]) {
+                const tid = match[0];
+                const attackUrl = `https://attack.mitre.org/techniques/${tid.replace('.', '/')}/`;
+                crossRef[key] = { tier: 1, type: 'mitre', label: tid, external: attackUrl, articles: [] };
+              }
+              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+            }
+
+            // Check cross-ref entity names (Tier 2) — only terms 4+ chars
+            for (const crTerm of crossRefTerms) {
+              if (crTerm.length < 4) continue;
+              if (linked.has(crTerm)) continue;
+              const entry = crossRef[crTerm];
+              if (!entry || entry.tier !== 2) continue;
+
+              // Case-insensitive word-boundary search
+              const escaped = entry.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const re = new RegExp(`\\b${escaped}\\b`, 'i');
+              const m = text.match(re);
+              if (m) {
+                // Check no overlap with existing replacements
+                const start = m.index;
+                const end = start + m[0].length;
+                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                if (!overlaps) {
+                  replacements.push({ start, end, term: m[0], key: crTerm });
+                }
+              }
+            }
+
+            // Check glossary terms (Tier 3) — first occurrence only
+            for (const [gKey, gData] of glossaryMap) {
+              if (linked.has('g:' + gKey)) continue;
+              if (gKey.length < 4) continue;
+
+              const escaped = gKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const re = new RegExp(`\\b${escaped}\\b`, 'i');
+              const m = text.match(re);
+              if (m) {
+                const start = m.index;
+                const end = start + m[0].length;
+                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                if (!overlaps) {
+                  replacements.push({ start, end, term: m[0], key: 'g:' + gKey, glossary: gData });
+                }
+              }
+            }
+
+            if (replacements.length === 0) continue;
+
+            // Sort by position (left to right)
+            replacements.sort((a, b) => a.start - b.start);
+
+            // Build replacement fragment
+            const frag = document.createDocumentFragment();
+            let lastIdx = 0;
+
+            for (const rep of replacements) {
+              // Text before this match
+              if (rep.start > lastIdx) {
+                frag.appendChild(document.createTextNode(text.substring(lastIdx, rep.start)));
+              }
+
+              // Create linked span
+              const span = document.createElement('span');
+              span.className = 'tp-linked-term';
+              span.textContent = rep.term;
+
+              // Determine tooltip content
+              const crEntry = rep.key.startsWith('g:') ? null : crossRef[rep.key];
+              const gEntry = rep.glossary || (rep.key.startsWith('g:') ? null : glossaryMap.get(rep.key));
+              const tooltipHTML = buildTooltipHTML(rep.key.replace(/^g:/, ''), gEntry);
+
+              if (tooltipHTML) {
+                span.setAttribute('data-tp-tooltip', tooltipHTML);
+                span.setAttribute('tabindex', '0');
+                span.addEventListener('mouseenter', () => showTooltip(span));
+                span.addEventListener('mouseleave', hideTooltip);
+                span.addEventListener('focus', () => showTooltip(span));
+                span.addEventListener('blur', hideTooltip);
+
+                // Add tier-specific styling class
+                if (crEntry?.tier === 1) span.classList.add('tp-tier1');
+                else if (crEntry?.tier === 2) span.classList.add('tp-tier2');
+                else span.classList.add('tp-tier3');
+              }
+
+              frag.appendChild(span);
+              lastIdx = rep.end;
+
+              // Mark as linked (first occurrence only)
+              linked.add(rep.key);
+              if (!rep.key.startsWith('g:')) linked.add(rep.key);
+              else linked.add(rep.key);
+            }
+
+            // Remaining text after last match
+            if (lastIdx < text.length) {
+              frag.appendChild(document.createTextNode(text.substring(lastIdx)));
+            }
+
+            textNode.parentNode.replaceChild(frag, textNode);
+          }
+        })();
+
+      })();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* ── Variables ─────────────────────────────────────────────────────────── */
+  :root {
+    --bg:        #080b10;
+    --surface:   #0d1117;
+    --border:    #1e2733;
+    --amber:     #e8a020;
+    --amber-dim: #a06a10;
+    --text:      #cdd5e0;
+    --muted:     #5a6a7e;
+    --white:     #f0f4f8;
+    --severity-critical: #ff4444;
+    --severity-high: #ffa500;
+    --severity-medium: #e8a020;
+    --severity-low: #51cf66;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --max-width: 1400px;
+  }
+
+  /* ── Reset ──────────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid overlay ───────────────────────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,32,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,32,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Noise texture ──────────────────────────────────────────────────────── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Navigation ─────────────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 11, 16, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  @media (min-width: 768px) { nav { padding: 20px 48px; } }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav-logo:hover { text-decoration: none; }
+
+  .nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .nav-logo-text {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .nav-logo-text span { color: var(--muted); }
+
+  @media (max-width: 767px) { .nav-logo-text { display: none; } }
+
+  .nav-status {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  @media (min-width: 768px) { .nav-status { display: flex; } }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  /* ── Threat Ticker ─────────────────────────────────────────────────────── */
+  .nav-ticker {
+    display: none;
+    flex: 1;
+    margin: 0 24px;
+    overflow: hidden;
+    height: 22px;
+    align-items: center;
+    position: relative;
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+
+  @media (min-width: 768px) { .nav-ticker { display: flex; } }
+
+  .ticker-track {
+    display: flex;
+    gap: 32px;
+    white-space: nowrap;
+    animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
+  }
+
+  .ticker-track:hover { animation-play-state: paused; }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .ticker-item:hover { color: var(--white); text-decoration: none; }
+
+  .ticker-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    line-height: 1.4;
+  }
+
+  .ticker-critical { background: var(--severity-critical); color: #fff; }
+  .ticker-high { background: var(--amber); color: var(--bg); }
+  .ticker-medium { background: var(--muted); color: var(--white); }
+  .ticker-low { background: var(--border); color: var(--text); }
+
+  /* ── Hamburger ──────────────────────────────────────────────────────────── */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 5px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .hamburger:hover { border-color: var(--amber); }
+
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--amber);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-3.25px) rotate(-45deg); }
+
+  /* ── Slide-out menu ─────────────────────────────────────────────────────── */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .menu-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .menu-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 32px 32px;
+    overflow-y: auto;
+  }
+
+  .menu-panel.open { transform: translateX(0); }
+
+  .menu-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .menu-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  .menu-search::placeholder { color: var(--muted); }
+  .menu-search:focus { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+
+  .search-wrapper {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: none;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .sr-category {
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sr-item {
+    display: block;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .sr-item:hover { background: var(--surface); text-decoration: none; }
+
+  .sr-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sr-severity {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .sr-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .menu-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .menu-links a {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+
+  .menu-links a:first-child { border-top: 1px solid var(--border); }
+  .menu-links a:hover { color: var(--amber); padding-left: 8px; text-decoration: none; }
+  .menu-links a.active { color: var(--amber); }
+
+  /* ── Main content ───────────────────────────────────────────────────────── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    padding-top: 104px;
+    width: 100%;
+    flex: 1;
+  }
+
+  /* ── Typography ─────────────────────────────────────────────────────────── */
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  h2 {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--amber);
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  a {
+    color: var(--amber);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #f0b030;
+    text-decoration: underline;
+  }
+
+  strong { color: var(--white); font-weight: 500; }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--amber);
+  }
+
+  pre {
+    background: var(--surface) !important;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  blockquote {
+    border-left: 3px solid var(--amber);
+    margin: 1rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 0 4px 4px 0;
+    color: var(--text);
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  ul, ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+    color: var(--text);
+  }
+
+  li { margin-bottom: 0.25rem; }
+
+  /* ── Tables ─────────────────────────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  thead {
+    background: var(--bg);
+  }
+
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  tbody tr {
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover {
+    background: rgba(232, 160, 32, 0.04);
+  }
+
+  /* ── Article container ──────────────────────────────────────────────────── */
+  article {
+    max-width: 1000px;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+  }
+
+  /* ── Incident metadata grid ─────────────────────────────────────────────── */
+  .incident-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .meta-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  /* ── Interactive meta boxes ────────────────────────────────────────────── */
+  a.meta-item.meta-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, outline-color 0.2s;
+    display: block;
+  }
+
+  a.meta-item.meta-link:hover {
+    border-color: var(--amber-dim);
+    outline: 1px solid var(--amber-dim);
+    outline-offset: -1px;
+  }
+
+  a.meta-item.meta-link:hover .meta-value {
+    color: var(--amber);
+  }
+
+  a.meta-item.meta-link-entity:hover {
+    border-color: var(--amber);
+    outline-color: var(--amber);
+  }
+
+  /* CVE links within meta boxes */
+  .meta-cve-link {
+    color: var(--amber);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .meta-cve-link:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    transition: color 0.15s;
+  }
+
+  /* ── DL fallback (used by threat actors, zero-days) ─────────────────────── */
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1.5rem;
+    margin: 1rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  dd {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── Severity badges ────────────────────────────────────────────────────── */
+  .severity {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .severity.critical {
+    color: var(--severity-critical);
+    border-color: var(--severity-critical);
+    background: rgba(255, 68, 68, 0.08);
+  }
+
+  .severity.high {
+    color: var(--severity-high);
+    border-color: var(--severity-high);
+    background: rgba(255, 165, 0, 0.08);
+  }
+
+  .severity.medium {
+    color: var(--severity-medium);
+    border-color: var(--severity-medium);
+    background: rgba(232, 160, 32, 0.08);
+  }
+
+  .severity.low {
+    color: var(--severity-low);
+    border-color: var(--severity-low);
+    background: rgba(81, 207, 102, 0.08);
+  }
+
+  /* ── Incident / article headers ─────────────────────────────────────────── */
+  .incident-header, article > header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .incident-id, .exploit-id {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    background: rgba(232, 160, 32, 0.1);
+    padding: 0.25em 0.6em;
+    border: 1px solid rgba(232, 160, 32, 0.25);
+  }
+
+  .cve {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--severity-high);
+    background: rgba(255, 165, 0, 0.1);
+    padding: 0.25em 0.6em;
+    border: 1px solid rgba(255, 165, 0, 0.2);
+  }
+
+  .review-status {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
+    padding: 0.25em 0.6em;
+    border: 1px solid var(--border);
+  }
+
+  /* ── Tags ────────────────────────────────────────────────────────────────── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
+    padding: 0.25em 0.6em;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+    cursor: pointer;
+  }
+
+  a.tag:hover {
+    color: var(--amber);
+    border-color: var(--amber-dim);
+  }
+
+  /* ── Tech box (code highlights in articles) ─────────────────────────────── */
+  .tech-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  .tech-box strong { color: var(--white); }
+
+  /* ── Timeline ───────────────────────────────────────────────────────────── */
+  .timeline {
+    position: relative;
+    margin: 32px 0;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 32px;
+    width: 1px;
+    height: calc(100% + 24px);
+    background: var(--border);
+  }
+
+  .timeline-item:last-child::before { display: none; }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 0 0 3px var(--surface);
+  }
+
+  .timeline-content { padding-top: 2px; flex-grow: 1; }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .timeline-description {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── Attack flow ────────────────────────────────────────────────────────── */
+  .attack-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .attack-stage {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .attack-stage-title {
+    font-weight: 600;
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .attack-stage-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .attack-stage-content ul { margin-left: 20px; margin-top: 8px; }
+  .attack-stage-content li { margin-bottom: 6px; }
+
+  /* ── IOC groups ─────────────────────────────────────────────────────────── */
+  .ioc-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  .ioc-group-title {
+    font-weight: 600;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ioc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ioc-item {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+    word-break: break-all;
+    padding: 8px;
+    background: var(--bg);
+    border-radius: 2px;
+  }
+
+  /* ── References ─────────────────────────────────────────────────────────── */
+  .references {
+    margin: 48px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .references-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .references-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .reference-item {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .reference-item a { color: var(--amber); word-break: break-all; }
+  .reference-item a:hover { text-decoration: underline; }
+
+  .reference-num {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--amber);
+    margin-right: 4px;
+  }
+
+  /* ── Sidebar ────────────────────────────────────────────────────────────── */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sidebar-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 4px;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.3px;
+  }
+
+  .sidebar-link {
+    display: block;
+    padding: 10px 0;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+
+  .sidebar-link:last-child { border-bottom: none; }
+  .sidebar-link:hover { color: var(--amber); }
+  .sidebar-link::before { content: '\2192 '; color: var(--amber); margin-right: 4px; }
+
+  .sidebar-content {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── Home page sections ─────────────────────────────────────────────────── */
+  section {
+    margin-bottom: 3rem;
+  }
+
+  section > p {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  section > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  section > ul > li {
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  section > ul > li .severity {
+    margin-left: auto;
+  }
+
+  section > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    transition: color 0.2s;
+  }
+
+  section > a:hover { color: #f0b030; text-decoration: none; }
+
+  /* ── Content grid (article + sidebar) ───────────────────────────────────── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .main-content { min-width: 0; }
+
+  .content {
+    margin-top: 1.5rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .content h2:first-child {
+    margin-top: 0;
+  }
+
+  .content p {
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .content ul, .content ol {
+    margin: 1rem 0 1.5rem 1.5rem;
+  }
+
+  .content blockquote {
+    border-left: 3px solid var(--amber);
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 0 4px 4px 0;
+    color: var(--text);
+    overflow-x: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .content blockquote p {
+    margin-bottom: 0.5rem;
+  }
+
+  .content blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .content pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .content pre code {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .content h3 {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .content table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .content img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Attack Chain Stages ──────────────────────────────────────────────── */
+  .attack-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .attack-stage {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .attack-stage-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .attack-stage-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .attack-stage-content ul {
+    margin-left: 20px;
+    margin-top: 8px;
+  }
+
+  .attack-stage-content li {
+    margin-bottom: 6px;
+  }
+
+  /* ── MITRE ATT&CK Technique Grid ─────────────────────────────────────── */
+  .mitre-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  a.mitre-technique,
+  .mitre-technique {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.15s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  a.mitre-technique:hover,
+  .mitre-technique:hover {
+    border-color: var(--amber);
+    text-decoration: none;
+  }
+
+  .mitre-tid {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .mitre-name {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── Timeline entries ────────────────────────────────────────────────── */
+  .timeline-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+    border-left: 2px solid var(--border);
+    padding-left: 0;
+  }
+
+  .timeline-entry {
+    position: relative;
+    padding: 16px 0 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline-entry:last-child {
+    border-bottom: none;
+  }
+
+  .timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 500;
+    color: var(--white);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── IOC Signature Items ─────────────────────────────────────────────── */
+  .ioc-signatures {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .ioc-sig-item {
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--severity-high);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  /* ── IOC Source Items ──────────────────────────────────────────────── */
+  .ioc-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .ioc-source-item {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .ioc-source-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--amber);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ioc-source-desc {
+    color: var(--text);
+    font-size: 0.82rem;
+  }
+
+  /* ── Sources / References List ───────────────────────────────────────── */
+  .sources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .source-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    align-items: flex-start;
+  }
+
+  .source-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    flex-shrink: 0;
+    min-width: 24px;
+  }
+
+  .source-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .source-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .source-url {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    word-break: break-all;
+    transition: color 0.2s;
+  }
+
+  .source-url:hover {
+    color: var(--amber);
+  }
+
+  /* ── Section headers (mono eyebrow style) ───────────────────────────────── */
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Animations ─────────────────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────────────── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .footer-domains {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .footer-domain {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .footer-copy {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .incident-meta { grid-template-columns: repeat(2, 1fr); }
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { order: -1; }
+    h1 { font-size: 36px; }
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 28px; }
+    .incident-meta { grid-template-columns: 1fr; }
+    .meta-item { padding: 12px; }
+    dl { grid-template-columns: 1fr; }
+    dt { margin-top: 0.5rem; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     SMART LINKING — Linked Terms & Tooltip Styles
+     ══════════════════════════════════════════════════════════════════════════ */
+
+  /* ── Linked term indicators ────────────────────────────────────────────── */
+  .tp-linked-term {
+    cursor: help;
+    position: relative;
+  }
+
+  .tp-linked-term.tp-tier1 {
+    border-bottom: 1px dashed var(--amber-dim);
+    color: var(--amber);
+  }
+
+  .tp-linked-term.tp-tier2 {
+    border-bottom: 1px dashed var(--amber-dim);
+  }
+
+  .tp-linked-term.tp-tier3 {
+    border-bottom: 1px dotted var(--muted);
+  }
+
+  .tp-linked-term:hover,
+  .tp-linked-term:focus {
+    color: var(--amber);
+    outline: none;
+  }
+
+  /* ── Tooltip container ─────────────────────────────────────────────────── */
+  .tp-tooltip {
+    position: absolute;
+    z-index: 9999;
+    max-width: 380px;
+    min-width: 240px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+  }
+
+  .tp-tooltip-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--amber);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .tp-tooltip-def {
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+
+  .tp-tooltip-divider {
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+  }
+
+  .tp-tooltip-section {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  /* ── Tooltip links ─────────────────────────────────────────────────────── */
+  .tp-tooltip-link {
+    display: block;
+    padding: 4px 0;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: color 0.15s;
+  }
+
+  .tp-tooltip-link:hover {
+    color: var(--amber);
+  }
+
+  .tp-tooltip-external {
+    color: var(--amber-dim);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+
+  .tp-tooltip-primary {
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  .tp-tooltip-ref {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 3px 0;
+  }
+
+  .tp-tooltip-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 5px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tp-tooltip-more {
+    font-size: 11.5px;
+    color: var(--amber-dim);
+    margin-top: 2px;
+  }
+
+  .tp-tooltip-glossary {
+    font-size: 11.5px;
+    color: var(--amber-dim);
+  }
+</style>

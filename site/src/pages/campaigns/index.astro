@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const campaigns = await getCollection('campaigns');
+campaigns.sort((a, b) => new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime());
+---
+
+<Base title="Campaigns">
+  <h1>Campaigns</h1>
+  <p>{campaigns.length} ongoing and historical cyber campaigns tracked</p>
+
+  {campaigns.length === 0 ? (
+    <div class="empty-state">
+      <p>No campaigns catalogued yet. Campaigns represent ongoing multi-event operations or patterns — distinct from bounded incidents.</p>
+    </div>
+  ) : (
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Start Date</th>
+          <th>Severity</th>
+          <th>Attack Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {campaigns.map((campaign) => (
+          <tr>
+            <td>{campaign.data.campaignId || '—'}</td>
+            <td><a href={`/campaigns/${campaign.id}/`}>{campaign.data.title}</a></td>
+            <td>{new Date(campaign.data.startDate).toLocaleDateString('en-US')}</td>
+            <td><span class={`severity ${campaign.data.severity}`}>{campaign.data.severity}</span></td>
+            <td>{campaign.data.attackType}</td>
+            <td>{campaign.data.ongoing ? 'Ongoing' : 'Concluded'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</Base>
+
+<style>
+  .empty-state {
+    border: 1px dashed var(--border);
+    padding: 48px 32px;
+    text-align: center;
+    margin-top: 32px;
+  }
+  .empty-state p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+</style>

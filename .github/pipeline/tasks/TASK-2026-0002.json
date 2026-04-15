@@ -1,0 +1,78 @@
+{
+  "task_id": "TASK-2026-0002",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-04-14T20:30:00Z",
+  "updated": "2026-04-15T00:10:33.565Z",
+  "source": "backfill",
+  "submitted_by": "pipeline-inventory",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "SolarWinds Orion supply chain compromise by Russian SVR (Cozy Bear/APT29) — SUNBURST backdoor affecting 18,000 organizations (December 2020)",
+    "sources": [
+      "https://www.cisa.gov/news-events/directives/emergency-directive-21-01",
+      "https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor",
+      "https://msrc.microsoft.com/blog/2020/12/microsoft-internal-solorigate-investigation-update/"
+    ],
+    "candidate_data": {
+      "date": "2020-12-13",
+      "severity": "critical",
+      "sector": "Government",
+      "geography": "United States",
+      "attack_type": "Supply Chain",
+      "threat_actor": "APT29",
+      "cves": [
+        "CVE-2020-10148"
+      ]
+    },
+    "notes": "Foundational supply chain incident. Must be in the encyclopedia. APT29 (Cozy Bear/Nobelium) compromised SolarWinds build pipeline, trojanized Orion updates with SUNBURST backdoor. Affected US Treasury, Commerce, DHS, DOE, and thousands of private organizations. Replace the existing legacy article if one exists."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0002",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-14T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-inventory",
+      "note": "Backfill — foundational supply chain incident"
+    },
+    {
+      "timestamp": "2026-04-15T00:06:46.345Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-15T00:10:33.548Z",
+      "from": "complete",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
+    }
+  ]
+}
