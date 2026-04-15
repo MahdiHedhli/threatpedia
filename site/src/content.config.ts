@@ -175,7 +175,7 @@ const threatActors = defineCollection({
 const zeroDays = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/zero-days' }),
   schema: z.object({
-    exploitId: z.string().regex(/^TP-EXP-\d{4}$/).optional(),
+    exploitId: z.string().regex(/^TP-EXP-\d{4}-\d{4}$/).optional(),
     title: z.string(),
     cve: z.string(),
     type: z.string(),
