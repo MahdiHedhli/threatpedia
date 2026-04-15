@@ -1,0 +1,47 @@
+{
+  "task_id": "TASK-2026-0060",
+  "type": "zero-day",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "EternalBlue — SMBv1 Remote Code Execution (CVE-2017-0144 / MS17-010)",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2017-0144",
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010",
+      "https://attack.mitre.org/techniques/T1210/"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2017-0144",
+      "severity": "critical",
+      "platform": "Microsoft Windows SMBv1",
+      "status": "patched",
+      "cisa_kev": true
+    },
+    "notes": "Pipeline capability test for Penfold-Bot. Pairs with WannaCry (TASK-2026-0058) to test cross-referencing between article types."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/eternalblue-ms17-010-cve-2017-0144.md",
+    "branch": "penfold/TASK-2026-0060-eternalblue",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T14:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline capability test — Penfold-Bot generation of zero-day article"
+    }
+  ]
+}
