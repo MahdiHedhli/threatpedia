@@ -1,0 +1,51 @@
+{
+  "task_id": "TASK-2026-0064",
+  "type": "zero-day",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "Heartbleed — OpenSSL TLS Heartbeat Buffer Over-read (CVE-2014-0160)",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2014-0160",
+      "https://heartbleed.com/",
+      "https://www.cisa.gov/news-events/alerts/2014/04/08/openssl-heartbleed-vulnerability",
+      "https://www.openssl.org/news/secadv/20140407.txt",
+      "https://www.mandiant.com/resources/blog/heartbleed-bug"
+    ],
+    "candidate_data": {
+      "exploitId": "TP-EXP-2014-0001",
+      "cve": "CVE-2014-0160",
+      "disclosure_date": "2014-04-07",
+      "severity": "critical",
+      "cvss_v3": 7.5,
+      "affected_software": "OpenSSL 1.0.1 through 1.0.1f",
+      "vulnerability_type": "Buffer Over-read",
+      "cwe": "CWE-126"
+    },
+    "notes": "Smoke test for tightened pipeline validator v2. Heartbleed allowed remote attackers to read up to 64KB of server memory per request, potentially exposing private keys, session tokens, and credentials. Affected an estimated 17% of TLS-enabled web servers at disclosure."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/heartbleed-openssl-cve-2014-0160.md",
+    "branch": "penfold/TASK-2026-0064-heartbleed",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T18:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline v2 smoke test — tightened validator"
+    }
+  ]
+}
