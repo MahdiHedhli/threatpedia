@@ -49,6 +49,20 @@ sources:
     publicationDate: "2010-01-14"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://attack.mitre.org/groups/G0025/"
+    publisher: "MITRE ATT&CK"
+    publisherType: research
+    reliability: R1
+    publicationDate: "2022-06-09"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.wired.com/2010/01/google-adobe-hack/"
+    publisher: "Wired"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2010-01-14"
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1190"
     techniqueName: "Exploit Public-Facing Application"

@@ -229,6 +229,8 @@ const RULES = `
   8. Sources & References body section must use markdown hyperlinks: [Title](url)
      — Every frontmatter source URL must appear as a clickable link in the body
      — Format: - [Publisher: Title](https://...) — Publisher, YYYY-MM-DD
+     — No orphan sources: every body source entry must have a matching frontmatter source object
+     — No plain-text sources: every body entry must be a markdown hyperlink
   9. The Astro build must pass: cd site && npm run build`;
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -477,6 +479,9 @@ function parseFrontmatterSources(fm) {
     const reliabilityMatch = block.match(/reliability:\s*["']?(R[1-4])/);
     if (reliabilityMatch) source.reliability = reliabilityMatch[1];
 
+    const pubDateMatch = block.match(/publicationDate:\s*["']?(\d{4}-\d{2}-\d{2})/);
+    if (pubDateMatch) source.publicationDate = pubDateMatch[1];
+
     sources.push(source);
   }
 
@@ -558,6 +563,7 @@ function validateOutput(task, explicitFile) {
         if (!s.publisher) warnings.push(`Source ${i + 1}: missing publisher`);
         if (!s.publisherType) issues.push(`Source ${i + 1}: missing publisherType`);
         if (!s.reliability) warnings.push(`Source ${i + 1}: missing reliability`);
+        if (!s.publicationDate) warnings.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate`);
       }
 
       // ── 6. MITRE mappings in frontmatter ──────────────────────────────────
@@ -599,6 +605,25 @@ function validateOutput(task, explicitFile) {
           issues.push(`Sources section has no hyperlinks. Each source must be a markdown link: [Title](url). The URLs from your frontmatter sources: array must appear as clickable links in the body.`);
         } else if (sourceCount > 0 && markdownLinks.length < sourceCount) {
           warnings.push(`Sources section has ${markdownLinks.length} link(s) but frontmatter has ${sourceCount} source(s). Each frontmatter source should have a corresponding markdown link in the body.`);
+        }
+
+        // Check for orphan sources (body entries not in frontmatter)
+        const bodySourceLines = sourcesBody.split('\n').filter(l => l.match(/^-\s/));
+        if (bodySourceLines.length > sourceCount) {
+          const orphanCount = bodySourceLines.length - sourceCount;
+          issues.push(`Sources section has ${bodySourceLines.length} entries but frontmatter has only ${sourceCount} source(s). ${orphanCount} orphan source(s) in body without frontmatter entry. Every body source must have a corresponding structured source object in frontmatter.`);
+        }
+
+        // Check for plain-text source entries (no hyperlink)
+        const plainTextSources = bodySourceLines.filter(l => !l.match(/\[.*\]\(https?:\/\//));
+        if (plainTextSources.length > 0) {
+          issues.push(`${plainTextSources.length} source(s) in body are plain text without hyperlinks:`);
+          for (const line of plainTextSources.slice(0, 3)) {
+            issues.push(`  → "${line.trim().substring(0, 80)}"`);
+          }
+          if (plainTextSources.length > 3) {
+            issues.push(`  → ...and ${plainTextSources.length - 3} more`);
+          }
         }
       }
 

@@ -52,6 +52,20 @@ sources:
     publicationDate: "2020-10-19"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.dragos.com/blog/crashoverride-analysising-the-threat-to-electric-grid-operations/"
+    publisher: "Dragos"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2017-06-12"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-gtsst"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-10-04"
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T0817"
     techniqueName: "Bravo Zulu: Industrial Control System (ICS) Impact"

@@ -66,6 +66,27 @@ tags:
   - "wiper"
   - "unit-74455"
 sources:
+  - url: "https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-gtsst"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-10-04"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/"
+    publisher: "Wired"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2019-11-15"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/"
+    publisher: "ESET Research"
+    publisherType: research
+    reliability: R1
+    publicationDate: "2017-06-12"
+    accessDate: "2026-04-15"
+    archived: false
   - url: "https://attack.mitre.org/groups/G0034/"
     publisher: "MITRE ATT&CK"
     publisherType: research

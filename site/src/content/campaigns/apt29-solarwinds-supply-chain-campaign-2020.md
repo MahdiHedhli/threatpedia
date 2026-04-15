@@ -52,6 +52,20 @@ sources:
     publicationDate: "2020-12-13"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2020-12-18"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.ncsc.gov.uk/news/advisory-svr-activity-targeting-government-and-organisations"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-04-15"
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"

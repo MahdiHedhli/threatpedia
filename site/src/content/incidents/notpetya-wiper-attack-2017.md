@@ -50,6 +50,20 @@ sources:
     publicationDate: "2018-08-22"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.whitehouse.gov/briefing-room/statements-releases/2018/02/15/statement-press-secretary-3/"
+    publisher: "White House"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-02-15"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2017/06/27/new-ransomware-old-techniques-petya-adds-worm-capabilities/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2017-06-27"
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"

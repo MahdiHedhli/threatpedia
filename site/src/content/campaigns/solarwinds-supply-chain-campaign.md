@@ -38,6 +38,27 @@ sources:
     publicationDate: "2021-04-15"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.cisa.gov/news-events/directives/emergency-directive-21-01"
+    publisher: "CISA Emergency Directive"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2020-12-13"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2020-12-18"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.solarwinds.com/trust-center"
+    publisher: "SolarWinds Trust Center"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2021-01-11"
+    accessDate: "2026-04-15"
+    archived: false
   - url: "https://attack.mitre.org/campaigns/C0024/"
     publisher: "MITRE ATT&CK"
     publisherType: research

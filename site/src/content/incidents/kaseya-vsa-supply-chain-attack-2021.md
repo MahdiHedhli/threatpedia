@@ -47,6 +47,20 @@ sources:
     publicationDate: "2021-07-03"
     accessDate: "2026-04-15"
     archived: false
+  - url: "https://www.justice.gov/opa/pr/department-justice-launches-global-action-against-netwalker-ransomware"
+    publisher: "US DOJ"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-11-08"
+    accessDate: "2026-04-15"
+    archived: false
+  - url: "https://www.kaseya.com/trust-center/"
+    publisher: "Kaseya Trust Center"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2021-07-05"
+    accessDate: "2026-04-15"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
