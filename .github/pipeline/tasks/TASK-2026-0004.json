@@ -1,0 +1,80 @@
+{
+  "task_id": "TASK-2026-0004",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-04-14T20:30:00Z",
+  "updated": "2026-04-15T00:14:17.490Z",
+  "source": "backfill",
+  "submitted_by": "pipeline-inventory",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "MOVEit Transfer mass exploitation by Cl0p ransomware group via CVE-2023-34362 SQL injection zero-day (May-June 2023)",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a",
+      "https://www.mandiant.com/resources/blog/zero-day-moveit-data-theft",
+      "https://www.progress.com/security/moveit-transfer-and-moveit-cloud-vulnerability"
+    ],
+    "candidate_data": {
+      "date": "2023-05-31",
+      "severity": "critical",
+      "sector": "Cross-sector",
+      "geography": "Global",
+      "attack_type": "Data Breach",
+      "threat_actor": "Cl0p Group",
+      "cves": [
+        "CVE-2023-34362",
+        "CVE-2023-35036",
+        "CVE-2023-35708"
+      ]
+    },
+    "notes": "Cl0p mass exploitation campaign affecting 2,500+ organizations and 60M+ individuals. SQL injection zero-day in Progress MOVEit Transfer. Cl0p had pre-positioned access weeks before mass exploitation. Victims include Shell, BBC, British Airways, US federal agencies. Cross-links to existing cl0p-group threat actor."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0004",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-14T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-inventory",
+      "note": "Backfill — mass exploitation campaign, cross-links to Cl0p actor"
+    },
+    {
+      "timestamp": "2026-04-15T00:07:48.398Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-15T00:14:17.473Z",
+      "from": "complete",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
+    }
+  ]
+}

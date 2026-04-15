@@ -1,0 +1,359 @@
+---
+import Base from '../layouts/Base.astro';
+import glossaryData from '../data/glossary-index.json';
+
+const terms = glossaryData as Array<{ t: string; d: string; r: string[]; s: string }>;
+
+const roleLabels: Record<string, string> = {
+  'ciso': 'CISO',
+  'soc': 'SOC Analyst',
+  'threat-hunter': 'Threat Hunter',
+  'threat-intel': 'Threat Intel',
+  'ir-forensics': 'IR / Forensics',
+  'pentest-red': 'Pentest / Red Team',
+  'appsec-devsecops': 'AppSec / DevSecOps',
+  'cloud-sec': 'Cloud Security',
+  'network-infra': 'Network / Infra',
+  'grc': 'GRC',
+};
+
+const roles = Object.keys(roleLabels);
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// Group terms by first letter
+const grouped: Record<string, typeof terms> = {};
+for (const term of terms) {
+  const letter = term.t.charAt(0).toUpperCase();
+  if (!grouped[letter]) grouped[letter] = [];
+  grouped[letter].push(term);
+}
+---
+
+<Base title="Glossary">
+  <div class="glossary-page">
+    <div class="glossary-header">
+      <h1>Cybersecurity Glossary</h1>
+      <p class="glossary-count">{terms.length} terms defined</p>
+    </div>
+
+    <!-- Search -->
+    <div class="filter-bar">
+      <div class="search-row">
+        <span class="search-label">SEARCH</span>
+        <input type="text" class="filter-search" id="glossary-search" placeholder="Search terms..." />
+      </div>
+
+      <!-- Alphabet -->
+      <div class="alphabet-bar" id="alphabet-bar">
+        <button class="letter-btn active" data-letter="all">ALL</button>
+        {letters.map(l => (
+          <button class="letter-btn" data-letter={l}>{l}</button>
+        ))}
+      </div>
+
+      <!-- Role Chips -->
+      <div class="filter-group">
+        <span class="filter-label">Role</span>
+        <div class="chip-row">
+          {roles.map(r => (
+            <button class="chip" data-filter="role" data-value={r}>{roleLabels[r]}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="results-count" id="results-count"></div>
+
+    <!-- Terms Grid -->
+    <div id="glossary-content">
+      {letters.map(letter => {
+        const group = grouped[letter];
+        if (!group || group.length === 0) return null;
+        return (
+          <div class="letter-section" data-letter={letter}>
+            <div class="letter-header">{letter}</div>
+            <div class="terms-grid">
+              {group.map(term => (
+                <div
+                  class="term-card"
+                  data-term={term.t.toLowerCase()}
+                  data-definition={term.d.toLowerCase()}
+                  data-roles={term.r.join(',')}
+                  data-letter={letter}
+                >
+                  <div class="term-name">{term.t}</div>
+                  <div class="term-roles">
+                    {term.r.map(r => (
+                      <span class="role-tag">{roleLabels[r] || r}</span>
+                    ))}
+                  </div>
+                  <div class="term-definition">{term.d}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .glossary-page { max-width: 1400px; }
+
+  .glossary-header { margin-bottom: 2rem; }
+  .glossary-header h1 { border-bottom: none; padding-bottom: 0; margin-bottom: 0.5rem; }
+
+  .glossary-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .filter-search {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+  .filter-search::placeholder { color: var(--muted); }
+  .filter-search:focus { border-color: var(--amber); }
+
+  .alphabet-bar {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .letter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    min-width: 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .letter-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .letter-btn.active { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+
+  .filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
+  .chip.active { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+
+  .results-count {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .letter-section {
+    margin-bottom: 32px;
+  }
+
+  .letter-header {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amber);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .terms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .term-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 4px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .term-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(232, 160, 32, 0.08);
+  }
+
+  .term-name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+    text-transform: capitalize;
+  }
+
+  .term-roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .role-tag {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: rgba(232, 160, 32, 0.08);
+    border: 1px solid rgba(232, 160, 32, 0.2);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .term-definition {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .terms-grid { grid-template-columns: 1fr; }
+    .alphabet-bar { gap: 2px; }
+    .letter-btn { min-width: 24px; padding: 3px 5px; font-size: 0.6rem; }
+  }
+</style>
+
+<script>
+  const searchInput = document.getElementById('glossary-search') as HTMLInputElement;
+  const resultsEl = document.getElementById('results-count')!;
+  const contentEl = document.getElementById('glossary-content')!;
+  const letterSections = Array.from(contentEl.querySelectorAll('.letter-section'));
+  const allCards = Array.from(contentEl.querySelectorAll('.term-card'));
+
+  let activeLetter: string | null = 'all';
+  let activeRole: string | null = null;
+
+  // Letter buttons
+  document.querySelectorAll('.letter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeLetter = (btn as HTMLElement).dataset.letter || 'all';
+      filterTerms();
+    });
+  });
+
+  // Role chips
+  document.querySelectorAll('.chip[data-filter="role"]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const val = (chip as HTMLElement).dataset.value!;
+      if (activeRole === val) {
+        activeRole = null;
+        chip.classList.remove('active');
+      } else {
+        document.querySelectorAll('.chip[data-filter="role"]').forEach(c => c.classList.remove('active'));
+        activeRole = val;
+        chip.classList.add('active');
+      }
+      filterTerms();
+    });
+  });
+
+  searchInput.addEventListener('input', () => filterTerms());
+
+  function filterTerms() {
+    const q = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    allCards.forEach(card => {
+      const el = card as HTMLElement;
+      const term = el.dataset.term || '';
+      const def = el.dataset.definition || '';
+      const roles = el.dataset.roles || '';
+      const letter = el.dataset.letter || '';
+
+      let show = true;
+
+      if (activeLetter && activeLetter !== 'all' && letter !== activeLetter) show = false;
+      if (q && !(term.includes(q) || def.includes(q))) show = false;
+      if (activeRole && !roles.split(',').includes(activeRole)) show = false;
+
+      el.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+
+    // Show/hide letter sections based on whether they have visible cards
+    letterSections.forEach(section => {
+      const cards = section.querySelectorAll('.term-card');
+      const hasVisible = Array.from(cards).some(c => (c as HTMLElement).style.display !== 'none');
+      (section as HTMLElement).style.display = hasVisible ? '' : 'none';
+    });
+
+    resultsEl.textContent = `Showing ${visibleCount} of ${allCards.length} terms`;
+  }
+
+  filterTerms();
+</script>

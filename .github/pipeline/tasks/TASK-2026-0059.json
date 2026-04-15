@@ -1,0 +1,46 @@
+{
+  "task_id": "TASK-2026-0059",
+  "type": "threat-actor",
+  "stage": "generation",
+  "status": "pending",
+  "priority": "P1",
+  "input": {
+    "topic": "APT28 (Fancy Bear / Forest Blizzard / GRU Unit 26165)",
+    "sources": [
+      "https://attack.mitre.org/groups/G0007/",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-108a",
+      "https://www.justice.gov/opa/pr/us-charges-russian-gru-officers-international-hacking-and-related-influence-and",
+      "https://www.mandiant.com/resources/apt28-a-window-into-russias-cyber-espionage-operations"
+    ],
+    "candidate_data": {
+      "affiliation": "Russia",
+      "motivation": "Espionage",
+      "status": "active",
+      "attribution_confidence": "A1"
+    },
+    "notes": "Pipeline capability test for Penfold-Bot. High-priority nation-state APT with extensive public reporting."
+  },
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "edit_rule_030": true,
+    "astro_build": true
+  },
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/apt28.md",
+    "branch": "penfold/TASK-2026-0059-apt28",
+    "pr": null
+  },
+  "lock": null,
+  "history": [
+    {
+      "timestamp": "2026-04-15T14:00:00Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "notes": "Pipeline capability test — Penfold-Bot generation of threat actor profile"
+    }
+  ]
+}

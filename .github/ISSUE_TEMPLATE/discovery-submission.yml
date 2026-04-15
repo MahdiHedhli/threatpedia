@@ -1,0 +1,121 @@
+name: "Submit Article Lead"
+description: "Submit a cybersecurity incident, threat actor, campaign, or zero-day for article creation."
+title: "[LEAD] "
+labels: ["pipeline/discovery", "pipeline/manual"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit a Lead to the Pipeline
+
+        Submit a link, tip, or topic for Threatpedia article creation. Your submission enters the discovery queue and will be triaged, drafted, validated, and published through the automated pipeline.
+
+        **You don't need to fill every field** — the minimum is a topic and at least one source URL. The more context you provide, the better the output.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Article Type
+      description: What kind of article should this produce?
+      options:
+        - incident
+        - campaign
+        - threat-actor
+        - zero-day
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this?
+      options:
+        - P0 — Active exploitation / breaking news
+        - P1 — High priority / recent event
+        - P2 — Normal / worth covering
+        - P3 — Low / historical backfill
+      default: 2
+    validations:
+      required: true
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic
+      description: "Brief description of the event, actor, campaign, or vulnerability."
+      placeholder: "e.g., Marks & Spencer ransomware attack by Scattered Spider (April 2025)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Source URLs
+      description: "One URL per line. Minimum 1 required. More is better."
+      placeholder: |
+        https://www.cisa.gov/...
+        https://www.bleepingcomputer.com/...
+        https://attack.mitre.org/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: "Estimated severity (if known)."
+      options:
+        - critical
+        - high
+        - medium
+        - low
+        - unknown
+      default: 4
+    validations:
+      required: false
+
+  - type: input
+    id: sector
+    attributes:
+      label: Sector
+      description: "Target sector (e.g., Financial Services, Healthcare, Government)."
+      placeholder: "e.g., Retail & Consumer"
+    validations:
+      required: false
+
+  - type: input
+    id: geography
+    attributes:
+      label: Geography
+      description: "Target geography (e.g., United States, Global)."
+      placeholder: "e.g., United Kingdom"
+    validations:
+      required: false
+
+  - type: input
+    id: threat_actor
+    attributes:
+      label: Threat Actor
+      description: "Known or suspected threat actor (if applicable)."
+      placeholder: "e.g., Scattered Spider"
+    validations:
+      required: false
+
+  - type: input
+    id: cves
+    attributes:
+      label: CVEs
+      description: "Comma-separated CVE IDs (if applicable)."
+      placeholder: "e.g., CVE-2024-3400, CVE-2024-3401"
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Context
+      description: "Anything else the pipeline should know — key details, related articles, analysis notes."
+      placeholder: "e.g., This is related to the broader Scattered Spider campaign against retail..."
+    validations:
+      required: false

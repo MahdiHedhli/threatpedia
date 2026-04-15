@@ -1,0 +1,241 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const actors = await getCollection('threat-actors');
+  return actors.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+const statusClass = d.status === 'active' ? 'status-active' : d.status === 'inactive' ? 'status-inactive' : '';
+---
+
+<Base title={d.name}>
+  <article>
+    <header class="article-header">
+      <div class="incident-header">
+        <span class="review-status">{d.reviewStatus}</span>
+        <span class={`status-badge ${statusClass}`}>{d.status.toUpperCase()}</span>
+      </div>
+      <div class="actor-title-row">
+        {d.logo && (
+          <img src={d.logo} alt={`${d.name} logo`} class="actor-logo" loading="lazy" />
+        )}
+        <div>
+          <h1>{d.name}</h1>
+          {d.aliases.length > 0 && (
+            <div class="actor-aliases">
+              <span class="aliases-label">Also known as:</span>
+              {d.aliases.join(', ')}
+            </div>
+          )}
+        </div>
+      </div>
+      <div class="incident-meta">
+        <div class="meta-item">
+          <span class="meta-label">Affiliation</span>
+          <span class="meta-value">{d.affiliation}</span>
+        </div>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(d.motivation)}`}>
+          <span class="meta-label">Motivation</span>
+          <span class="meta-value">{d.motivation}</span>
+        </a>
+        <div class="meta-item">
+          <span class="meta-label">Status</span>
+          <span class={`meta-value ${statusClass}`}>{d.status}</span>
+        </div>
+        {d.country && (
+          <div class="meta-item">
+            <span class="meta-label">Country</span>
+            <span class="meta-value">{d.country}</span>
+          </div>
+        )}
+        {d.firstSeen && (
+          <div class="meta-item">
+            <span class="meta-label">First Seen</span>
+            <span class="meta-value">{d.firstSeen}</span>
+          </div>
+        )}
+        {d.lastSeen && (
+          <div class="meta-item">
+            <span class="meta-label">Last Seen</span>
+            <span class="meta-value">{d.lastSeen}</span>
+          </div>
+        )}
+        {d.targetSectors.length > 0 && (
+          <div class="meta-item">
+            <span class="meta-label">Target Sectors</span>
+            <span class="meta-value sector-links">
+              {d.targetSectors.map((sector: string, i: number) => (
+                <>{i > 0 && ', '}<a class="meta-inline-link" href={`?q=${encodeURIComponent(sector)}`}>{sector}</a></>
+              ))}
+            </span>
+          </div>
+        )}
+        {d.targetGeographies.length > 0 && (
+          <div class="meta-item">
+            <span class="meta-label">Target Geographies</span>
+            <span class="meta-value">{d.targetGeographies.join(', ')}</span>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="content">
+      <Content />
+    </div>
+
+    {d.tools.length > 0 && (
+      <div class="tools-section">
+        <h3>Known Tools</h3>
+        <div class="tools-grid">
+          {d.tools.map((tool: string) => (
+            <a class="tool-tag" href={`?q=${encodeURIComponent(tool)}`}>{tool}</a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {d.tags.length > 0 && (
+      <div class="tags">
+        {d.tags.map((tag: string) => (
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
+        ))}
+      </div>
+    )}
+  </article>
+</Base>
+
+<style>
+  .actor-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .actor-title-row > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .actor-title-row h1 {
+    margin-top: 0;
+  }
+
+  .actor-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 6px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .actor-title-row {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .actor-logo {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .actor-aliases {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .aliases-label {
+    font-weight: 600;
+    color: var(--text);
+    margin-right: 8px;
+  }
+
+  .status-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .status-active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .status-inactive {
+    background: rgba(90, 106, 126, 0.15);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .tools-section {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tools-section h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tool-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .tool-tag:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    text-decoration: none;
+  }
+
+  .meta-inline-link {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(232, 160, 32, 0.3);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .meta-inline-link:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+    text-decoration: none;
+  }
+</style>

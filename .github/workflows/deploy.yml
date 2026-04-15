@@ -22,17 +22,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          source: ./
-          destination: ./_site
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build Astro site
+        working-directory: site
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
 
   deploy:
     environment:

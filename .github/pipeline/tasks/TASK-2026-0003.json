@@ -1,0 +1,75 @@
+{
+  "task_id": "TASK-2026-0003",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-04-14T20:30:00Z",
+  "updated": "2026-04-15T00:10:05.016Z",
+  "source": "backfill",
+  "submitted_by": "pipeline-inventory",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Colonial Pipeline ransomware attack by DarkSide causing US East Coast fuel shortage (May 2021)",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-131a",
+      "https://www.fbi.gov/news/press-releases/fbi-statement-on-compromise-of-colonial-pipeline-networks",
+      "https://www.bloomberg.com/news/articles/2021-06-04/hackers-breached-colonial-pipeline-using-compromised-password"
+    ],
+    "candidate_data": {
+      "date": "2021-05-07",
+      "severity": "critical",
+      "sector": "Energy & Utilities",
+      "geography": "United States",
+      "attack_type": "Ransomware",
+      "threat_actor": "DarkSide"
+    },
+    "notes": "Watershed moment for critical infrastructure cybersecurity. DarkSide ransomware shut down the largest US fuel pipeline. Led to Emergency Declaration, $4.4M ransom paid (partially recovered by FBI), and Executive Order 14028. Must be in the encyclopedia."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0003",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-14T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-inventory",
+      "note": "Backfill — watershed critical infrastructure ransomware incident"
+    },
+    {
+      "timestamp": "2026-04-15T00:06:46.433Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-15T00:10:05.000Z",
+      "from": "complete",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
+    }
+  ]
+}

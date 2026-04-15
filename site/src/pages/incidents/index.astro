@@ -1,0 +1,291 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const incidents = await getCollection('incidents');
+incidents.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Extract unique values for filter chips
+const attackTypes = [...new Set(incidents.map(i => i.data.attackType))].sort();
+const severities = ['critical', 'high', 'medium', 'low'];
+---
+
+<Base title="Incidents">
+  <div class="index-page">
+    <div class="index-header">
+      <h1>Incident Reports</h1>
+      <p class="index-count">{incidents.length} cybersecurity incidents tracked</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <input type="text" class="filter-search" id="incident-search" placeholder="Search incidents..." />
+
+      <div class="filter-group">
+        <span class="filter-label">Severity</span>
+        <div class="chip-row" id="severity-chips">
+          {severities.map(s => (
+            <button class="chip" data-filter="severity" data-value={s}>
+              <span class={`chip-dot severity-${s}`}></span>{s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Attack Type</span>
+        <div class="chip-row" id="attack-chips">
+          {attackTypes.map(t => (
+            <button class="chip" data-filter="attackType" data-value={t}>{t}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Sort</span>
+        <select class="filter-select" id="incident-sort">
+          <option value="date">Most Recent</option>
+          <option value="severity">Severity</option>
+          <option value="title">Alphabetical</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-count" id="results-count"></div>
+
+    <div class="index-table-wrap">
+      <table id="incidents-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Severity</th>
+            <th>Attack Type</th>
+            <th>Threat Actor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {incidents.map((incident) => (
+            <tr
+              data-title={incident.data.title}
+              data-severity={incident.data.severity}
+              data-attack-type={incident.data.attackType}
+              data-actor={incident.data.threatActor}
+              data-date={new Date(incident.data.date).toISOString()}
+              data-status={incident.data.reviewStatus}
+              data-id={incident.data.eventId}
+            >
+              <td><span class="mono-id">{incident.data.eventId}</span></td>
+              <td><a href={`/incidents/${incident.id}/`}>{incident.data.title}</a></td>
+              <td class="nowrap">{new Date(incident.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+              <td><span class={`severity ${incident.data.severity}`}>{incident.data.severity}</span></td>
+              <td>{incident.data.attackType}</td>
+              <td>{incident.data.threatActor}</td>
+              <td><span class="review-status">{incident.data.reviewStatus}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .index-page { max-width: 1200px; }
+
+  .index-header { margin-bottom: 2rem; }
+  .index-header h1 { border-bottom: none; padding-bottom: 0; margin-bottom: 0.5rem; }
+
+  .index-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .filter-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .filter-search::placeholder { color: var(--muted); }
+  .filter-search:focus { border-color: var(--amber); }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .chip-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
+
+  .chip.active {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--bg);
+  }
+
+  .chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chip-dot.severity-critical { background: #ff4444; }
+  .chip-dot.severity-high { background: #ffa500; }
+  .chip-dot.severity-medium { background: #e8a020; }
+  .chip-dot.severity-low { background: #51cf66; }
+
+  .filter-select {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--bg);
+    color: var(--white);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    outline: none;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  .filter-select:focus { border-color: var(--amber); }
+
+  .results-count {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .index-table-wrap {
+    overflow-x: auto;
+  }
+
+  .mono-id {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .nowrap { white-space: nowrap; }
+</style>
+
+<script>
+  const searchInput = document.getElementById('incident-search') as HTMLInputElement;
+  const sortSelect = document.getElementById('incident-sort') as HTMLSelectElement;
+  const table = document.getElementById('incidents-table') as HTMLTableElement;
+  const tbody = table.querySelector('tbody')!;
+  const resultsEl = document.getElementById('results-count')!;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  const activeFilters: Record<string, string | null> = { severity: null, attackType: null };
+
+  // Chip toggle
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const filterKey = (chip as HTMLElement).dataset.filter!;
+      const filterVal = (chip as HTMLElement).dataset.value!;
+      if (activeFilters[filterKey] === filterVal) {
+        activeFilters[filterKey] = null;
+        chip.classList.remove('active');
+      } else {
+        document.querySelectorAll(`.chip[data-filter="${filterKey}"]`).forEach(c => c.classList.remove('active'));
+        activeFilters[filterKey] = filterVal;
+        chip.classList.add('active');
+      }
+      filterAndSort();
+    });
+  });
+
+  searchInput.addEventListener('input', () => filterAndSort());
+  sortSelect.addEventListener('change', () => filterAndSort());
+
+  const sevOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+
+  function filterAndSort() {
+    const q = searchInput.value.toLowerCase().trim();
+
+    const visible = rows.filter(row => {
+      const d = row.dataset;
+      if (q && !(d.title!.toLowerCase().includes(q) || d.actor!.toLowerCase().includes(q) || d.id!.toLowerCase().includes(q))) return false;
+      if (activeFilters.severity && d.severity !== activeFilters.severity) return false;
+      if (activeFilters.attackType && d.attackType !== activeFilters.attackType) return false;
+      return true;
+    });
+
+    const sortBy = sortSelect.value;
+    visible.sort((a, b) => {
+      if (sortBy === 'severity') return (sevOrder[a.dataset.severity!] ?? 9) - (sevOrder[b.dataset.severity!] ?? 9);
+      if (sortBy === 'title') return a.dataset.title!.localeCompare(b.dataset.title!);
+      return new Date(b.dataset.date!).getTime() - new Date(a.dataset.date!).getTime();
+    });
+
+    // Re-render
+    rows.forEach(r => r.style.display = 'none');
+    visible.forEach(r => { r.style.display = ''; tbody.appendChild(r); });
+
+    resultsEl.textContent = `Showing ${visible.length} of ${rows.length} incidents`;
+  }
+
+  filterAndSort();
+</script>

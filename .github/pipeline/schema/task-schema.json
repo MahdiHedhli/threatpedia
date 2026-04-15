@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Threatpedia Pipeline Task",
+  "description": "Schema for pipeline task files. Agent-agnostic: any agent reads this file, reads the referenced specs, and produces the output.",
+  "type": "object",
+  "required": ["task_id", "stage", "type", "priority", "status", "input", "acceptance", "output"],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^TASK-\\d{4}-\\d{4}$",
+      "description": "Unique task identifier: TASK-YYYY-NNNN"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["discovery", "triage", "draft", "validation", "review", "revision", "approval", "publish"],
+      "description": "Current pipeline stage"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["incident", "campaign", "threat-actor", "zero-day"],
+      "description": "Article type per DATA-STANDARDS v1.0"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"],
+      "description": "P0=critical/active-exploit, P1=high, P2=normal, P3=low/backfill"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "locked", "complete", "failed", "blocked", "cancelled"],
+      "description": "Task execution status"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 creation timestamp"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 last update timestamp"
+    },
+    "locked_by": {
+      "type": ["string", "null"],
+      "description": "Agent or user who has locked this task"
+    },
+    "locked_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the lock was acquired"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["auto_discovery", "manual_submission", "enrichment", "backfill"],
+      "description": "How this task entered the pipeline"
+    },
+    "submitted_by": {
+      "type": "string",
+      "description": "GitHub username or bot identity that created this task"
+    },
+    "input": {
+      "type": "object",
+      "required": ["topic"],
+      "properties": {
+        "topic": {
+          "type": "string",
+          "description": "Article topic / event description — the core brief for the agent"
+        },
+        "sources": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" },
+          "description": "Seed URLs for research. Agent should find additional sources."
+        },
+        "candidate_data": {
+          "type": "object",
+          "description": "Structured data from discovery (date, severity, sector, geography, CVEs, etc.)",
+          "properties": {
+            "date": { "type": "string" },
+            "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+            "sector": { "type": "string" },
+            "geography": { "type": "string" },
+            "cves": { "type": "array", "items": { "type": "string" } },
+            "threat_actor": { "type": "string" },
+            "attack_type": { "type": "string" }
+          }
+        },
+        "related_tasks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Task IDs of related pipeline work (e.g., actor profile for an incident's threat actor)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form context from the submitter"
+        }
+      }
+    },
+    "specs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Spec sections the agent must follow. Defaults applied by dispatcher if omitted."
+    },
+    "acceptance": {
+      "type": "object",
+      "description": "Machine-checkable acceptance criteria. Validation Action checks these.",
+      "properties": {
+        "frontmatter_valid": { "type": "boolean", "default": true },
+        "min_sources": { "type": "integer", "default": 3 },
+        "min_h2_sections": { "type": "integer", "default": 5 },
+        "min_mitre_mappings": { "type": "integer", "default": 1 },
+        "review_status": { "type": "string", "default": "draft_ai" },
+        "schema_validation": { "type": "string", "enum": ["pass", "warn"], "default": "pass" },
+        "build_passes": { "type": "boolean", "default": true }
+      }
+    },
+    "depends_on": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Task IDs that must be complete before this task can start"
+    },
+    "preconditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Human-readable preconditions checked by dispatcher"
+    },
+    "output": {
+      "type": "object",
+      "required": ["file_pattern", "branch"],
+      "properties": {
+        "file_pattern": {
+          "type": "string",
+          "description": "Expected output path pattern, e.g. site/src/content/incidents/{slug}.md"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Git branch name for this task's work"
+        },
+        "pr": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to open a PR when draft is complete"
+        },
+        "actual_file": {
+          "type": "string",
+          "description": "Populated after generation — the actual file path written"
+        },
+        "pr_number": {
+          "type": "integer",
+          "description": "Populated after PR creation — the GitHub PR number"
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "description": "Append-only log of state transitions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "agent": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "Populated on failure",
+      "properties": {
+        "message": { "type": "string" },
+        "stage": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "retryable": { "type": "boolean" }
+      }
+    }
+  }
+}

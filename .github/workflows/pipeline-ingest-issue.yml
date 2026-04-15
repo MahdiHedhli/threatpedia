@@ -1,0 +1,196 @@
+name: "Pipeline: Ingest Manual Submission"
+
+# Triggers when a discovery submission Issue is opened
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ingest:
+    if: contains(github.event.issue.labels.*.name, 'pipeline/discovery')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse Issue and create task
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+
+            // ── Parse structured fields from Issue template ──────────────
+            function parseField(label) {
+              // GitHub Issue template renders as: ### Label\n\nValue
+              const re = new RegExp(`### ${label}\\s*\\n\\n([\\s\\S]*?)(?=\\n### |$)`, 'i');
+              const m = body.match(re);
+              return m ? m[1].trim() : '';
+            }
+
+            const type = parseField('Article Type') || 'incident';
+            const priorityRaw = parseField('Priority');
+            const priority = priorityRaw.match(/P[0-3]/)?.[0] || 'P2';
+            const topic = parseField('Topic');
+            const sourcesRaw = parseField('Source URLs');
+            const severity = parseField('Severity') || 'unknown';
+            const sector = parseField('Sector');
+            const geography = parseField('Geography');
+            const threatActor = parseField('Threat Actor');
+            const cvesRaw = parseField('CVEs');
+            const notes = parseField('Additional Context');
+
+            if (!topic) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '**Pipeline Error:** No topic provided. Please edit the issue and add a topic description.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
+
+            // Parse sources (one per line)
+            const sources = sourcesRaw
+              .split('\n')
+              .map(s => s.trim())
+              .filter(s => s.startsWith('http'));
+
+            // Parse CVEs
+            const cves = cvesRaw
+              ? cvesRaw.split(',').map(c => c.trim()).filter(c => /^CVE-\d{4}-\d{4,}$/.test(c))
+              : [];
+
+            // ── Generate task ID ─────────────────────────────────────────
+            const now = new Date();
+            const year = now.getFullYear();
+
+            // Find next available task number
+            const fs = require('fs');
+            const path = require('path');
+            const tasksDir = '.github/pipeline/tasks';
+
+            let maxNum = 0;
+            if (fs.existsSync(tasksDir)) {
+              const files = fs.readdirSync(tasksDir);
+              for (const f of files) {
+                const m = f.match(/^TASK-\d{4}-(\d{4})/);
+                if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
+              }
+            }
+            const taskNum = String(maxNum + 1).padStart(4, '0');
+            const taskId = `TASK-${year}-${taskNum}`;
+
+            // ── Build task YAML ──────────────────────────────────────────
+            const candidateData = {};
+            if (severity !== 'unknown') candidateData.severity = severity;
+            if (sector) candidateData.sector = sector;
+            if (geography) candidateData.geography = geography;
+            if (threatActor) candidateData.threat_actor = threatActor;
+            if (cves.length > 0) candidateData.cves = cves;
+
+            const task = {
+              task_id: taskId,
+              stage: 'draft',
+              type: type,
+              priority: priority,
+              status: 'pending',
+              created: now.toISOString(),
+              updated: now.toISOString(),
+              source: 'manual_submission',
+              submitted_by: issue.user.login,
+              locked_by: null,
+              locked_at: null,
+              input: {
+                topic: topic,
+                sources: sources,
+                candidate_data: Object.keys(candidateData).length > 0 ? candidateData : undefined,
+                notes: notes || undefined,
+              },
+              specs: [
+                'DATA-STANDARDS-v1.0.md',
+                'EDITORIAL-WORKFLOW-SPEC.md §14A',
+                'INGESTION-SPEC.md §2',
+              ],
+              acceptance: {
+                frontmatter_valid: true,
+                min_sources: 3,
+                min_h2_sections: 5,
+                min_mitre_mappings: 1,
+                review_status: 'draft_ai',
+                schema_validation: 'pass',
+                build_passes: true,
+              },
+              depends_on: [],
+              preconditions: [
+                'editorial queue depth < 50',
+              ],
+              output: {
+                file_pattern: `site/src/content/${type === 'threat-actor' ? 'threat-actors' : type + 's'}/{slug}.md`,
+                branch: `pipeline/${taskId}`,
+                pr: true,
+              },
+              history: [
+                {
+                  timestamp: now.toISOString(),
+                  from: 'none',
+                  to: 'pending',
+                  agent: issue.user.login,
+                  note: `Manual submission from Issue #${issue.number}`,
+                },
+              ],
+            };
+
+            // ── Write task file ──────────────────────────────────────────
+            // Write as JSON (easier for Actions to parse than YAML)
+            const taskPath = `${tasksDir}/${taskId}.json`;
+            fs.mkdirSync(tasksDir, { recursive: true });
+            fs.writeFileSync(taskPath, JSON.stringify(task, null, 2) + '\n');
+
+            // ── Comment on Issue with task ID ────────────────────────────
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: [
+                `**Pipeline Task Created:** \`${taskId}\``,
+                '',
+                '| Field | Value |',
+                '|---|---|',
+                `| Type | ${type} |`,
+                `| Priority | ${priority} |`,
+                `| Sources | ${sources.length} URL(s) |`,
+                `| Stage | draft (pending) |`,
+                `| Branch | \`pipeline/${taskId}\` |`,
+                '',
+                'The task is queued for the next dispatcher run. An agent will pick it up, generate the article, and open a PR for validation.',
+                '',
+                `Task file: [\`${taskPath}\`](/${taskPath})`,
+              ].join('\n'),
+            });
+
+            // ── Add tracking label ───────────────────────────────────────
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['pipeline/queued', `type/${type}`]
+            });
+
+      - name: Commit task file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/pipeline/tasks/
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore(pipeline): ingest manual submission from Issue #${{ github.event.issue.number }}"
+          git push

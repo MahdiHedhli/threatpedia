@@ -1,0 +1,121 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  frontmatter: {
+    campaignId?: string;
+    title: string;
+    startDate: Date;
+    endDate?: Date;
+    ongoing: boolean;
+    attackType: string;
+    severity: string;
+    sector: string;
+    geography: string;
+    threatActor: string;
+    attributionConfidence: string;
+    reviewStatus: string;
+    confidenceGrade: string;
+    cves: string[];
+    relatedIncidents: string[];
+    tags: string[];
+  };
+}
+
+const { frontmatter } = Astro.props;
+
+const formatDate = (d: Date) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base title={frontmatter.title}>
+  <article class="container">
+    <header class="article-header">
+      <div class="incident-header">
+        {frontmatter.campaignId && <span class="incident-id">{frontmatter.campaignId}</span>}
+        <span class={`severity ${frontmatter.severity}`}>{frontmatter.severity}</span>
+        <span class="review-status">{frontmatter.reviewStatus}</span>
+        {frontmatter.ongoing && <span class="ongoing-badge">ONGOING</span>}
+      </div>
+      <h1>{frontmatter.title}</h1>
+      <div class="incident-meta">
+        <div class="meta-item">
+          <span class="meta-label">Start Date</span>
+          <span class="meta-value">{formatDate(frontmatter.startDate)}</span>
+        </div>
+        {frontmatter.endDate && (
+          <div class="meta-item">
+            <span class="meta-label">End Date</span>
+            <span class="meta-value">{formatDate(frontmatter.endDate)}</span>
+          </div>
+        )}
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(frontmatter.attackType)}`}>
+          <span class="meta-label">Attack Type</span>
+          <span class="meta-value">{frontmatter.attackType}</span>
+        </a>
+        <a class="meta-item meta-link" href={`?q=${encodeURIComponent(frontmatter.sector)}`}>
+          <span class="meta-label">Sector</span>
+          <span class="meta-value">{frontmatter.sector}</span>
+        </a>
+        <div class="meta-item">
+          <span class="meta-label">Geography</span>
+          <span class="meta-value">{frontmatter.geography}</span>
+        </div>
+        {frontmatter.threatActor && frontmatter.threatActor !== 'Unknown' ? (
+          <a class="meta-item meta-link meta-link-entity" href={`/threat-actors/${frontmatter.threatActor.toLowerCase().replace(/\s+/g, '-')}/`}>
+            <span class="meta-label">Threat Actor</span>
+            <span class="meta-value">{frontmatter.threatActor}</span>
+          </a>
+        ) : (
+          <div class="meta-item">
+            <span class="meta-label">Threat Actor</span>
+            <span class="meta-value">{frontmatter.threatActor}</span>
+          </div>
+        )}
+        <div class="meta-item">
+          <span class="meta-label">Attribution</span>
+          <span class="meta-value">{frontmatter.attributionConfidence}</span>
+        </div>
+        {frontmatter.cves.length > 0 && (
+          <div class="meta-item">
+            <span class="meta-label">CVEs</span>
+            <span class="meta-value">
+              {frontmatter.cves.map((cve: string, i: number) => (
+                <>{i > 0 && ', '}<a class="meta-cve-link" href={`https://nvd.nist.gov/vuln/detail/${cve}`} target="_blank" rel="noopener">{cve}</a></>
+              ))}
+            </span>
+          </div>
+        )}
+        <div class="meta-item">
+          <span class="meta-label">Confidence</span>
+          <span class="meta-value">{frontmatter.confidenceGrade}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <slot />
+    </div>
+
+    {frontmatter.tags.length > 0 && (
+      <div class="tags">
+        {frontmatter.tags.map((tag: string) => (
+          <a class="tag" href={`?q=${encodeURIComponent(tag)}`}>{tag}</a>
+        ))}
+      </div>
+    )}
+  </article>
+</Base>
+
+<style>
+  .ongoing-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+  }
+</style>
