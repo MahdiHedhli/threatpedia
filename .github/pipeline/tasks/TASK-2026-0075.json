@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0075",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "input": {
+    "topic": "Microsoft Visual Basic for Applications Insecure Library Loading Vulnerability (CVE-2012-1854)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2012-1854",
+      "https://learn.microsoft.com/en-us/security-updates/securitybulletins/2012/ms12-046"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2012-1854",
+      "type": "Remote Code Execution",
+      "platform": "Microsoft Visual Basic for Applications (VBA)",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-13",
+      "cwes": [
+        "CWE-426"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-13. Required action by 2026-04-27. CVSS 3.1: 7.8 (HIGH) Discovery score: 82/100 (auto-certify eligible)."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/microsoft-visual-basic-for-applications-vba--cve-2012-1854.md",
+    "branch": "bot/discover-task-2026-0075"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 82,
+    "auto_certify": true,
+    "cvss": {
+      "score": 7.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-15T20:43:35.320Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T20:43:35.320Z",
+      "action": "created",
+      "agent": "pipeline-discover",
+      "note": "Auto-discovered from CISA KEV (score: 82)"
+    }
+  ]
+}

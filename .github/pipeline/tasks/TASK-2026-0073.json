@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0073",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "input": {
+    "topic": "Microsoft Exchange Server Deserialization of Untrusted Data Vulnerability (CVE-2023-21529)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-21529",
+      "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-21529"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2023-21529",
+      "type": "Remote Code Execution",
+      "platform": "Microsoft Exchange Server",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-13",
+      "cwes": [
+        "CWE-502"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-13. Required action by 2026-04-27. CVSS 3.1: 8.8 (HIGH) Discovery score: 83/100 (auto-certify eligible)."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/microsoft-exchange-server-cve-2023-21529.md",
+    "branch": "bot/discover-task-2026-0073"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 83,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-15T20:43:35.319Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T20:43:35.319Z",
+      "action": "created",
+      "agent": "pipeline-discover",
+      "note": "Auto-discovered from CISA KEV (score: 83)"
+    }
+  ]
+}
