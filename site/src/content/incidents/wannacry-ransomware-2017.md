@@ -8,7 +8,7 @@ sector: "Healthcare"
 geography: "Global"
 threatActor: "Lazarus Group"
 attributionConfidence: A2
-reviewStatus: "draft_ai"
+reviewStatus: "certified"
 confidenceGrade: B
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-15

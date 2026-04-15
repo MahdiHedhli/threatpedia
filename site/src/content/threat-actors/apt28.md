@@ -50,7 +50,7 @@ mitreMappings:
     notes: "Known for acquiring and utilizing zero-day exploits (e.g., CVE-2023-23397)."
 attributionConfidence: A1
 attributionRationale: "Attributed with high confidence to the Russian General Staff Main Intelligence Directorate (GRU) Unit 26165 by the U.S. Department of Justice (2018 indictment) and international intelligence partners."
-reviewStatus: "draft_ai"
+reviewStatus: "certified"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-15
 tags:

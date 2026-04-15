@@ -8,7 +8,7 @@ sector: Cross-sector
 geography: Global
 threatActor: "N/A — Vendor Error"
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: "certified"
 confidenceGrade: A
 generatedBy: ai_ingestion
 generatedDate: 2026-04-14

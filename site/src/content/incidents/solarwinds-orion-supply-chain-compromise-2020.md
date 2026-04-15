@@ -8,7 +8,7 @@ sector: Government
 geography: United States
 threatActor: APT29
 attributionConfidence: A2
-reviewStatus: draft_ai
+reviewStatus: "certified"
 confidenceGrade: A
 generatedBy: ai_ingestion
 generatedDate: 2026-04-14
