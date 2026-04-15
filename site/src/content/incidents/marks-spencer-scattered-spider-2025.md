@@ -8,7 +8,7 @@ sector: Retail & Consumer
 geography: United Kingdom
 threatActor: Scattered Spider
 attributionConfidence: A2
-reviewStatus: draft_ai
+reviewStatus: "certified"
 confidenceGrade: C
 generatedBy: ai_ingestion
 generatedDate: 2025-04-14

@@ -62,7 +62,7 @@ mitreMappings:
     techniqueName: Data Encrypted for Impact
     tactic: Impact
     notes: Deploys ransomware (ALPHV/BlackCat, DragonForce) for extortion
-reviewStatus: draft_ai
+reviewStatus: "certified"
 generatedBy: ai_ingestion
 generatedDate: 2025-04-14
 tags:

@@ -9,7 +9,7 @@ sector: Critical Infrastructure
 geography: United States
 threatActor: Volt Typhoon
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: "certified"
 confidenceGrade: B
 generatedBy: ai_ingestion
 generatedDate: 2025-04-14

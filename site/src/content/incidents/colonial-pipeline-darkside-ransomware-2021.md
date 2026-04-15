@@ -8,7 +8,7 @@ sector: Energy & Utilities
 geography: United States
 threatActor: DarkSide
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: "certified"
 confidenceGrade: A
 generatedBy: ai_ingestion
 generatedDate: 2026-04-14
