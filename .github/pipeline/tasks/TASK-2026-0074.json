@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0074",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "input": {
+    "topic": "Adobe Acrobat and Reader Prototype Pollution Vulnerability (CVE-2026-34621)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-34621",
+      "https://helpx.adobe.com/security/products/acrobat/apsb26-43.html"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-34621",
+      "type": "Remote Code Execution",
+      "platform": "Adobe Acrobat and Reader",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-13",
+      "cwes": [
+        "CWE-1321"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-13. Required action by 2026-04-27. CVSS 3.1: 8.6 (HIGH) Discovery score: 83/100 (auto-certify eligible)."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/adobe-acrobat-and-reader-cve-2026-34621.md",
+    "branch": "bot/discover-task-2026-0074"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 83,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.6,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-15T20:43:35.319Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T20:43:35.319Z",
+      "action": "created",
+      "agent": "pipeline-discover",
+      "note": "Auto-discovered from CISA KEV (score: 83)"
+    }
+  ]
+}

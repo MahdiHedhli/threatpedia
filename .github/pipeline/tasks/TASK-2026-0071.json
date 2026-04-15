@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0071",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "input": {
+    "topic": "Fortinet SQL Injection Vulnerability (CVE-2026-21643)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-21643",
+      "https://fortiguard.fortinet.com/psirt/FG-IR-25-1142"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-21643",
+      "type": "SQL Injection",
+      "platform": "Fortinet FortiClient EMS",
+      "severity": "critical",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-13",
+      "cwes": [
+        "CWE-89"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-13. Required action by 2026-04-16. CVSS 3.1: 9.8 (CRITICAL) Discovery score: 85/100 (auto-certify eligible)."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/fortinet-forticlient-ems-cve-2026-21643.md",
+    "branch": "bot/discover-task-2026-0071"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 85,
+    "auto_certify": true,
+    "cvss": {
+      "score": 9.8,
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-15T20:43:35.318Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-15T20:43:35.318Z",
+      "action": "created",
+      "agent": "pipeline-discover",
+      "note": "Auto-discovered from CISA KEV (score: 85)"
+    }
+  ]
+}
