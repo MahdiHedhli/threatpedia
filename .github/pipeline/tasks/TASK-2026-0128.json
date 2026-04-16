@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0128",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "locked",
+  "status": "complete",
   "input": {
     "topic": "APT40",
     "reprocess": true,
@@ -37,9 +37,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:25:16.234Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
   ],
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-16T04:24:49.510Z",
-  "updated": "2026-04-16T04:24:49.510Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:25:16.235Z"
 }
