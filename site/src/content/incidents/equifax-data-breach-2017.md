@@ -1,148 +1,189 @@
 ---
-eventId: "TP-2017-0005"
-title: "Equifax Data Breach"
+eventId: TP-2017-0003
+title: Equifax Data Breach
 date: 2017-05-13
-attackType: "Data Breach"
+attackType: Data Breach
 severity: critical
-sector: "Financial Services"
-geography: "United States"
-threatActor: "PLA Unit 54"
+sector: Financial Services
+geography: United States
+threatActor: PLA 54th Research Institute
 attributionConfidence: A1
-reviewStatus: "draft_ai"
+reviewStatus: draft_ai
 confidenceGrade: A
-generatedBy: "penfold-bot"
-generatedDate: 2026-04-15
+generatedBy: dangermouse-bot
+generatedDate: 2026-04-16
 cves:
-  - "CVE-2017-5638"
+  - CVE-2017-5638
+relatedSlugs: []
 tags:
-  - "equifax"
-  - "data-breach"
-  - "china"
-  - "pla"
-  - "unit-54"
-  - "apache-struts"
-  - "cve-2017-5638"
-  - "pii"
+  - data-breach
+  - equifax
+  - apache-struts
+  - pii
+  - china
+  - pla
+  - ftc
+  - cve-2017-5638
+  - financial-services
 sources:
-  - url: "https://www.ftc.gov/legal-library/browse/cases-proceedings/172-3203-equifax-inc"
-    publisher: "FTC"
+  - url: https://www.ftc.gov/legal-library/browse/cases-proceedings/172-3203-equifax-inc
+    publisher: Federal Trade Commission
     publisherType: government
     reliability: R1
     publicationDate: "2019-07-22"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.gao.gov/products/gao-18-559"
-    publisher: "GAO"
+  - url: https://www.gao.gov/products/gao-18-559
+    publisher: U.S. Government Accountability Office
     publisherType: government
     reliability: R1
     publicationDate: "2018-08-30"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://nvd.nist.gov/vuln/detail/CVE-2017-5638"
-    publisher: "NVD"
+  - url: https://nvd.nist.gov/vuln/detail/CVE-2017-5638
+    publisher: NIST NVD
     publisherType: government
     reliability: R1
     publicationDate: "2017-03-10"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.justice.gov/opa/pr/chinese-military-personnel-charged-computer-fraud-economic-espionage-and-wire-fraud-hacking"
-    publisher: "US Department of Justice"
+  - url: https://www.justice.gov/opa/pr/chinese-military-personnel-charged-computer-fraud-economic-espionage-and-wire-fraud-hacking
+    publisher: U.S. Department of Justice
     publisherType: government
     reliability: R1
     publicationDate: "2020-02-10"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.cisa.gov/news-events/alerts/2017/03/08/apache-releases-security-advisory-struts-2"
-    publisher: "CISA"
+  - url: https://oversight.house.gov/wp-content/uploads/2018/12/Equifax-Report.pdf
+    publisher: U.S. House Committee on Oversight and Reform
     publisherType: government
     reliability: R1
-    publicationDate: "2017-09-08"
-    accessDate: "2026-04-15"
+    publicationDate: "2018-12-10"
+    accessDate: "2026-04-16"
     archived: false
 mitreMappings:
-  - techniqueId: "T1190"
+  - techniqueId: T1190
     techniqueName: "Exploit Public-Facing Application"
-    tactic: "Initial Access"
-    notes: "Attackers exploited an unpatched Apache Struts vulnerability (CVE-2017-5638) in Equifax's online dispute portal."
-  - techniqueId: "T1005"
-    techniqueName: "Data from Local System"
-    tactic: "Collection"
-    notes: "The primary objective was the massive extraction of personally identifiable information (PII) from internal databases."
-  - techniqueId: "T1567"
-    techniqueName: "Exfiltration Over Web Service"
-    tactic: "Exfiltration"
-    notes: "Data was exfiltrated in small batches over several weeks to avoid detection."
+    tactic: Initial Access
+    notes: Apache Struts CVE-2017-5638 exploited on Equifax's consumer dispute portal
+  - techniqueId: T1083
+    techniqueName: "File and Directory Discovery"
+    tactic: Discovery
+    notes: Attackers surveyed internal file systems to locate databases containing PII
+  - techniqueId: T1041
+    techniqueName: "Exfiltration Over C2 Channel"
+    tactic: Exfiltration
+    notes: Data exfiltrated in small increments over encrypted channels to avoid detection
 ---
 
 ## Summary
 
-The Equifax data breach, disclosed in September 2017, was a catastrophic cybersecurity failure that exposed the personally identifiable information (PII) of approximately 147 million people, primarily in the United States. The exposed data included names, Social Security numbers, birth dates, addresses, and in some cases, driver's license numbers and credit card information. The breach resulted from Equifax’s failure to patch a known vulnerability in the Apache Struts web framework, despite being notified of the risk months earlier.
+Between May and July 2017, threat actors exploited CVE-2017-5638, a remote code execution vulnerability in the Apache Struts web framework, to breach Equifax, one of the three major U.S. consumer credit reporting agencies. The attackers gained access to an internet-facing consumer dispute portal running an unpatched version of Apache Struts and used that foothold to move laterally through Equifax's internal network over a period of 76 days.
 
-The incident is considered a watershed moment for corporate accountability and data privacy, lead to a $700 million settlement with the Federal Trade Commission (FTC), the Consumer Financial Protection Bureau (CFPB), and 50 U.S. states and territories. In February 2020, the U.S. Department of Justice formally indicted four members of the Chinese People's Liberation Army (PLA) Unit 54 for their roles in the hack, characterizing it as a state-sponsored campaign to harvest sensitive data on American citizens.
+The breach resulted in the theft of personally identifiable information (PII) for approximately 147.9 million U.S. consumers, 15.2 million U.K. citizens, and approximately 19,000 Canadian residents. Stolen data included names, Social Security numbers, dates of birth, addresses, and in some cases driver's license numbers and credit card numbers. It remains one of the largest data breaches by volume of sensitive PII compromised.
+
+Equifax publicly disclosed the breach on 7 September 2017. The incident triggered congressional hearings, a $700 million settlement with the Federal Trade Commission, and a landmark DOJ indictment of four members of the Chinese People's Liberation Army (PLA) in February 2020.
 
 ## Technical Analysis
 
-The initial entry point for the attack was a remote code execution (RCE) vulnerability in **Apache Struts (CVE-2017-5638)**. This vulnerability involved improper handling of the `Content-Type` header in HTTP requests, which allowed an attacker to execute arbitrary commands on the web server with the privileges of the web application. Although a patch was released on March 7, 2017, Equifax failed to identify and update all instances of the software within its infrastructure.
+The initial access vector was CVE-2017-5638, a critical remote code execution vulnerability in Apache Struts 2 (CVSS 10.0). The vulnerability existed in the Jakarta Multipart parser and allowed attackers to execute arbitrary commands on the server by sending a crafted HTTP Content-Type header. Apache Struts disclosed the vulnerability and released a patch on 6 March 2017. Equifax's vulnerable server remained unpatched for over two months.
 
-Once the attackers gained access to the web server, they identified sensitive credentials, including usernames and passwords, stored in plain text or easily accessible configuration files. These credentials allowed them to move laterally through the network and gain access to over 50 internal databases. The attackers used sophisticated techniques to blend their traffic with legitimate administrative activity, executing over 9,000 queries to exfiltrate data in small, fragmented encrypted batches over a period of 76 days.
+After gaining code execution on the dispute portal server, the attackers conducted reconnaissance and discovered that the server had access to other internal databases. Equifax's network architecture did not adequately segment the consumer-facing web application from backend systems containing consumer credit data.
+
+The attackers located and queried 48 databases containing consumer PII. Data was exfiltrated in small increments over 76 days, using encrypted connections that blended with normal network traffic. The exfiltration went undetected because Equifax's SSL certificate for inspecting encrypted traffic on the affected network segment had expired in January 2016 — 19 months before the breach — and had not been renewed. This lapse in SSL inspection rendered the organization's network monitoring tools blind to the encrypted exfiltration traffic.
+
+The U.S. House Oversight Committee's investigation identified numerous systemic security failures at Equifax, including: a lack of a comprehensive IT asset inventory, failure to implement timely patching, expired SSL certificates preventing traffic inspection, a flat network architecture without adequate segmentation, and storage of sensitive data in plaintext.
 
 ## Attack Chain
 
-### Stage 1: Reconnaissance and Initial Entry
-On May 13, 2017, the attackers identified a vulnerable Apache Struts installation on Equifax's legacy dispute portal and exploited CVE-2017-5638 to upload a web shell.
+### Stage 1: Exploitation of Apache Struts (CVE-2017-5638)
 
-### Stage 2: Lateral Movement and Escalation
-The attackers used the web shell to navigate the internal network, discovering unencrypted credentials that allowed them to jump from the web server to internal database clusters.
+Attackers sent crafted HTTP requests with malicious Content-Type headers to the Equifax consumer dispute portal, achieving remote code execution on the web server. The vulnerability had been publicly disclosed and patched 68 days earlier.
 
-### Stage 3: Persistent Data Collection
-For several weeks, the attackers ran queries against dozens of databases, systematically harvesting the PII of millions of consumers. They utilized internal file shares and staging servers to aggregate the data.
+### Stage 2: Web Shell Deployment
 
-### Stage 4: Exfiltration
-The harvested data was compressed and exfiltrated to offshore command-and-control servers. The attackers carefully managed the exfiltration rate to avoid triggering network anomaly detections.
+After achieving code execution, the attackers deployed web shells on the compromised server to maintain persistent access and enable interactive command execution.
+
+### Stage 3: Internal Reconnaissance and Lateral Movement
+
+The attackers discovered that the dispute portal server had network connectivity to internal databases. Using credentials found on the compromised server — including credentials stored in plaintext configuration files — they accessed additional systems and enumerated database contents.
+
+### Stage 4: Data Discovery and Staging
+
+Over 76 days, the attackers queried 48 internal databases containing consumer PII. Data was staged on compromised internal servers before exfiltration.
+
+### Stage 5: Data Exfiltration
+
+Stolen data was exfiltrated over encrypted channels in controlled volumes to avoid triggering data loss prevention alerts. The expired SSL inspection certificate on the affected network segment rendered encrypted traffic invisible to Equifax's monitoring infrastructure.
 
 ## Impact Assessment
 
-The scope of the Equifax breach remains one of the largest in history regarding the sensitivity of the data stolen. Access to Social Security numbers and birth dates provided the attackers (and potentially subsequent purchasers of the data) with the ability to facilitate long-term identity theft.
+The breach compromised PII for 147.9 million U.S. consumers — approximately 56% of all American adults at the time. Exposed data included Social Security numbers (145.5 million), dates of birth (99 million), addresses (209,000 with associated credit card numbers), and driver's license numbers (38,000).
 
-Financial and institutional impacts included:
-- **Financial Settlement:** A global settlement with U.S. regulators exceeding $700 million.
-- **Executive Turnover:** The retirement/resignation of the CEO, CIO, and CSO shortly after the disclosure.
-- **Legislative Action:** Prompted new state-level data protection laws and federal discussions on national data privacy standards.
+The direct financial impact to Equifax included a $700 million settlement with the FTC (including a $425 million consumer restitution fund), $100 million in penalties to the Consumer Financial Protection Bureau, $175 million in settlements with state attorneys general, and an estimated $1.4 billion in security remediation and technology upgrades.
+
+Equifax CEO Richard Smith, CIO David Webb, and CSO Susan Mauldin resigned or retired in the weeks following the public disclosure. The breach prompted congressional hearings in both the House and Senate, and the House Oversight Committee published a 96-page investigative report detailing systemic security failures.
+
+The breach had lasting effects on consumer credit monitoring regulation and corporate cybersecurity accountability standards. Multiple states enacted data breach notification laws, and Equifax was required to provide free credit monitoring and identity theft protection to affected consumers.
 
 ## Attribution
 
-The breach is attributed with high confidence to **PLA Unit 54** (the 54th Research Institute of the Chinese People's Liberation Army). In February 2020, the U.S. Department of Justice released an indictment naming Wang Qian, Xu Ke, Liu Lei, and Wu Zhiyong as the individuals responsible for the attack.
+In February 2020, the U.S. Department of Justice indicted four members of the Chinese People's Liberation Army's 54th Research Institute, part of the PLA's military intelligence apparatus. The four named defendants — Wu Zhiyong, Wang Qian, Xu Ke, and Liu Lei — were charged with computer fraud, economic espionage, and wire fraud.
 
-The attribution was supported by technical evidence including the use of specific hacking tools previously associated with Chinese state actors, the routing of traffic through compromised infrastructure in multiple countries, and the strategic alignment of the theft with other Chinese "big data" collection efforts (such as the OPM and Marriott breaches).
+The indictment detailed the attackers' operational security measures, including routing traffic through approximately 34 servers located in nearly 20 countries to obscure their origin, using encrypted communication channels, and wiping log files daily to hinder forensic investigation.
+
+Then-Attorney General William Barr characterized the breach as a state-sponsored intelligence operation, stating that the stolen data would be used to support Chinese intelligence collection and counterintelligence operations. The scale of the data theft — covering more than half the U.S. adult population — is consistent with the bulk data collection operations attributed to Chinese intelligence services.
 
 ## Timeline
 
-### 2017-03-07 — Vulnerability Disclosure
-Apache releases a security patch for CVE-2017-5638.
+### 2017-03-06 — Apache Struts Patch Released
 
-### 2017-05-13 — Breach Commences
-Attackers exploit the unpatched portal and establish initial persistence.
+Apache Software Foundation disclosed CVE-2017-5638 and released Apache Struts 2.3.32 and 2.5.10.1 to address the vulnerability.
 
-### 2017-07-29 — Discovery
-Equifax security personnel identify suspicious network traffic and shut down the affected portal.
+### 2017-03-09 — Equifax Notified of Vulnerability
+
+The U.S. Department of Homeland Security CERT disseminated a notification about CVE-2017-5638. Equifax's internal distribution of this notification failed to reach the team responsible for the vulnerable system.
+
+### 2017-05-13 — Initial Compromise
+
+Attackers exploited CVE-2017-5638 on Equifax's consumer dispute portal and established persistent access via web shells.
+
+### 2017-07-29 — Breach Detected
+
+Equifax's security team discovered suspicious network traffic after renewing the expired SSL inspection certificate on the affected network segment.
+
+### 2017-07-30 — Compromised Systems Taken Offline
+
+Equifax took the affected web application offline and began forensic investigation with the assistance of Mandiant.
 
 ### 2017-09-07 — Public Disclosure
-Equifax publicly announces the breach, leading to immediate public and regulatory backlash.
 
-### 2020-02-10 — DOJ Indictment
-The U.S. Department of Justice announces the indictment of four Chinese military hackers for the Equifax breach.
+Equifax publicly disclosed the breach, announcing that PII for approximately 143 million consumers had been compromised (later revised to 147.9 million).
+
+### 2019-07-22 — FTC Settlement
+
+The FTC announced a settlement requiring Equifax to pay up to $700 million, including a $425 million consumer restitution fund.
+
+### 2020-02-10 — DOJ Indictment of PLA Members
+
+The U.S. Department of Justice indicted four members of the Chinese PLA's 54th Research Institute for their roles in the breach.
 
 ## Remediation & Mitigation
 
-Following the breach, Equifax implemented a massive security overhaul, including the appointment of new leadership and a $1.25 billion investment in security technology. Key lessons learned for the industry included:
-- **Patch Management:** The critical necessity of automated asset discovery and rapid patching of third-party libraries.
-- **Encryption:** The importance of encrypting sensitive PII both at rest and in transit within internal networks.
-- **Detection:** Implementing behavioral analytics to detect unusual database query patterns and unauthorized exfiltration.
+Organizations should maintain comprehensive software asset inventories and implement automated patch management programs with defined SLA timelines for critical vulnerabilities. CVE-2017-5638 had a patch available 68 days before Equifax was compromised.
+
+Network segmentation should isolate internet-facing applications from backend databases and internal systems. The principle of least privilege should govern network connectivity between application tiers, with firewall rules restricting database access to authorized application servers.
+
+SSL/TLS inspection infrastructure requires monitoring to ensure certificates remain valid and inspection capabilities remain operational. Expired certificates should be automatically flagged through certificate management systems.
+
+Sensitive data should be encrypted at rest and in transit within internal networks. Data loss prevention (DLP) systems should monitor for anomalous data access patterns and large-volume data transfers from database servers.
+
+Organizations should implement web application firewalls (WAFs) in front of internet-facing applications and configure them to detect and block exploitation attempts against known framework vulnerabilities.
 
 ## Sources & References
 
-- [FTC: Equifax Data Breach Settlement Case Overview](https://www.ftc.gov/legal-library/browse/cases-proceedings/172-3203-equifax-inc) — FTC, 2019-07-22
-- [GAO: Actions Taken by Equifax and Federal Agencies in Response to the 2017 Breach](https://www.gao.gov/products/gao-18-559) — GAO, 2018-08-30
-- [NVD: CVE-2017-5638 Detail](https://nvd.nist.gov/vuln/detail/CVE-2017-5638) — NVD, 2017-03-10
-- [US Department of Justice: Chinese Military Personnel Charged with Computer Fraud, Economic Espionage, and Wire Fraud for Hacking Equifax](https://www.justice.gov/opa/pr/chinese-military-personnel-charged-computer-fraud-economic-espionage-and-wire-fraud-hacking) — US Department of Justice, 2020-02-10
-- [CISA: Apache Struts Vulnerability Advisory](https://www.cisa.gov/news-events/alerts/2017/09/08/apache-struts-vulnerability) — CISA, 2017
+- [FTC: Equifax Inc. Case Proceedings](https://www.ftc.gov/legal-library/browse/cases-proceedings/172-3203-equifax-inc) — Federal Trade Commission, 2019-07-22
+- [GAO: Report GAO-18-559 — Data Protection and Actions Taken](https://www.gao.gov/products/gao-18-559) — U.S. Government Accountability Office, 2018-08-30
+- [NIST NVD: CVE-2017-5638](https://nvd.nist.gov/vuln/detail/CVE-2017-5638) — NIST NVD, 2017-03-10
+- [DOJ: Chinese Military Personnel Charged for Equifax Hack](https://www.justice.gov/opa/pr/chinese-military-personnel-charged-computer-fraud-economic-espionage-and-wire-fraud-hacking) — U.S. Department of Justice, 2020-02-10
+- [U.S. House Oversight Committee: Equifax Data Breach Report](https://oversight.house.gov/wp-content/uploads/2018/12/Equifax-Report.pdf) — U.S. House Committee on Oversight and Reform, 2018-12-10

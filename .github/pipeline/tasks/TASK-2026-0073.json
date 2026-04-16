@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0073",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Microsoft Exchange Server Deserialization of Untrusted Data Vulnerability (CVE-2023-21529)",
     "sources": [
@@ -54,6 +54,13 @@
       "action": "created",
       "agent": "pipeline-discover",
       "note": "Auto-discovered from CISA KEV (score: 83)"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }

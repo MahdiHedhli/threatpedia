@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0058",
   "type": "incident",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "WannaCry Ransomware Attack (May 2017)",
@@ -17,9 +17,12 @@
       "severity": "critical",
       "attack_type": "Ransomware",
       "threat_actor": "Lazarus Group",
-      "cves": ["CVE-2017-0144", "CVE-2017-0145"]
+      "cves": [
+        "CVE-2017-0144",
+        "CVE-2017-0145"
+      ]
     },
-    "notes": "Pipeline capability test for Penfold-Bot. Foundational backfill article — one of the most significant cyber incidents in history."
+    "notes": "Pipeline capability test for Penfold-Bot. Foundational backfill article \u2014 one of the most significant cyber incidents in history."
   },
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -41,7 +44,14 @@
       "timestamp": "2026-04-15T14:00:00Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "notes": "Pipeline capability test — Penfold-Bot generation of incident article"
+      "notes": "Pipeline capability test \u2014 Penfold-Bot generation of incident article"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }

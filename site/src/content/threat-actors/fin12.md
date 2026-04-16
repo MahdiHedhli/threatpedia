@@ -35,6 +35,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: "research"
     reliability: "R1"
+    publicationDate: "2025-10-17"
     accessDate: "2026-04-14"
     archived: false
   - url: "https://www.mandiant.com/resources/blog/fin12-ransomware-intrusion-analysis"

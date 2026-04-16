@@ -199,6 +199,12 @@ const zeroDays = defineCollection({
     relatedIncidents: z.array(z.string()).default([]),
     relatedActors: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
+
+    // Sources
+    sources: z.array(sourceSchema).default([]),
+
+    // MITRE
+    mitreMappings: z.array(mitreMapping).default([]),
   }),
 });
 

@@ -2,10 +2,10 @@
   "task_id": "TASK-2026-0060",
   "type": "zero-day",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
-    "topic": "EternalBlue — SMBv1 Remote Code Execution (CVE-2017-0144 / MS17-010)",
+    "topic": "EternalBlue \u2014 SMBv1 Remote Code Execution (CVE-2017-0144 / MS17-010)",
     "sources": [
       "https://nvd.nist.gov/vuln/detail/CVE-2017-0144",
       "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
@@ -41,7 +41,14 @@
       "timestamp": "2026-04-15T14:00:00Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "notes": "Pipeline capability test — Penfold-Bot generation of zero-day article"
+      "notes": "Pipeline capability test \u2014 Penfold-Bot generation of zero-day article"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }

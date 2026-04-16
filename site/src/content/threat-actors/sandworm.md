@@ -91,6 +91,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: research
     reliability: R1
+    publicationDate: "2025-10-17"
     accessDate: "2026-04-15"
     archived: false
   - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other"
@@ -105,24 +106,6 @@ sources:
     publisherType: government
     reliability: R1
     publicationDate: "2024-04-18"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-exposed"
-    publisher: "NCSC UK"
-    publisherType: government
-    reliability: R1
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/"
-    publisher: "Wired"
-    publisherType: media
-    reliability: R2
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/"
-    publisher: "ESET Research"
-    publisherType: research
-    reliability: R1
     accessDate: "2026-04-15"
     archived: false
 ---
