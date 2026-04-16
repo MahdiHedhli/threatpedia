@@ -1,82 +1,130 @@
 ---
 name: "Turla"
 aliases:
-  - "Snake"
-  - "Uroboros"
-  - "Venomous Bear"
   - "Waterbug"
-  - "Iron Hunter"
+  - "Venomous Bear"
   - "KRYPTON"
+  - "Uroburos"
+  - "Group 88"
 affiliation: "Russia (FSB)"
 motivation: "Espionage"
-status: "active"
-firstSeen: "2004"
-lastSeen: "2024"
+status: active
 country: "Russia"
+firstSeen: "2004"
+lastSeen: "2026"
 targetSectors:
   - "Government"
-  - "Defense"
   - "Diplomatic"
+  - "Defense"
   - "Research"
   - "Education"
 targetGeographies:
   - "Global"
-  - "Europe"
   - "United States"
+  - "Europe"
+  - "Central Asia"
+  - "Middle East"
 tools:
-  - "Snake"
-  - "Uroboros"
+  - "Snake (Uroburos) Rootkit"
+  - "Agent.btz"
   - "Carbon"
+  - "Capitola"
   - "Gazer"
-  - "KopiLuwak"
-attributionConfidence: "A1"
-attributionRationale: "High-fidelity attribution based on multi-government advisories (CISA AA23-129A) linking the group to Cente 16 of the Russian Federal Security Service (FSB). Persistent use of the specialized Snake rootkit over two decades."
-reviewStatus: "under_review"
+mitreMappings:
+  - techniqueId: "T1014"
+    techniqueName: "Rootkit"
+    tactic: "Defense Evasion"
+    notes: "Utilizes the highly advanced Snake/Uroburos rootkit to provide stealthy, kernel-level persistence on high-value government and diplomatic targets."
+  - techniqueId: "T1071.001"
+    techniqueName: "Application Layer Protocol: Web Protocols"
+    tactic: "Command and Control"
+    notes: "Frequently utilizes satellite-based C2 links and multi-stage proxy servers to hide the origin of its communication infrastructure."
+  - techniqueId: "T1132.001"
+    techniqueName: "Data Encoding: Standard Encoding"
+    tactic: "Command and Control"
+    notes: "Employs custom encoding and encryption schemes within standard protocols to hide exfiltration and command traffic from deep packet inspection."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to the Russian Federal Security Service (FSB) by the U.S. government, the UK National Cyber Security Centre (NCSC), and several international partners, specifically following the disruption of the Snake malware in 2023."
+reviewStatus: "draft_ai"
 generatedBy: "penfold-bot"
-generatedDate: 2026-04-14
+generatedDate: 2026-04-16
 tags:
-  - "nation-state"
-  - "russia"
-  - "espionage"
+  - "turla"
+  - "waterbug"
   - "fsb"
+  - "espionage"
+  - "snake-rootkit"
+  - "satellite-c2"
 sources:
-  - url: "https://attack.mitre.org/groups/G0010/"
-    publisher: "MITRE ATT&CK"
-    publisherType: "research"
-    reliability: "R1"
-    accessDate: "2026-04-14"
-    archived: false
   - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-129a"
     publisher: "CISA"
-    publisherType: "government"
-    reliability: "R1"
+    publisherType: government
+    reliability: R1
     publicationDate: "2023-05-09"
-    accessDate: "2026-04-14"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.mandiant.com/resources/blog/turlas-advanced-stealth-mechanisms"
-    publisher: "Mandiant"
-    publisherType: "vendor"
-    reliability: "R1"
-    publicationDate: "2014-08-07"
-    accessDate: "2026-04-14"
+  - url: "https://www.fbi.gov/news/press-releases/justice-department-announces-court-authorized-disruption-of-snake-malware-network-controlled-by-russias-federal-security-service"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-05-09"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G0010/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.ncsc.gov.uk/news/turla-group-malware-advisory"
+    publisher: "UK National Cyber Security Centre"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-05-09"
+    accessDate: "2026-04-16"
     archived: false
 ---
 
 ## Executive Summary
-Turla (also tracked as Snake, Uroboros, and Venomous Bear) is a premier Russian state-sponsored espionage group that has been active since at least 2004. Attributed to Center 16 of the Russian Federal Security Service (FSB), Turla is renowned for its extreme technical sophistication, operational longevity, and focus on high-priority diplomatic and government intelligence requirements. The group is most famous for its eponymous **Snake** rootkit, a highly advanced implant that has infected sensitive government networks in over 50 countries for nearly two decades, serving as the flagship tool for Russian signal intelligence and cyber-espionage.
+
+Turla, also known as **Waterbug** and **Venomous Bear**, is an elite Russian state-sponsored espionage group that has been active for over two decades. Attributed to the **Federal Security Service (FSB)** of the Russian Federation, the group is widely considered one of the most technically sophisticated threat actors in operation. Turla's primary mandate is the collection of high-fidelity signals intelligence and the persistent compromise of diplomatic, government, and military targets globally.
+
+The group is famous for its pioneering use of satellite-based command-and-control (C2) infrastructure and its development of the **Snake/Uroburos** rootkit, a highly complex malware platform that remained undetected on some systems for nearly ten years. Turla's tradecraft is characterized by extreme stealth, a deep understanding of network architecture, and the ability to pivot across diverse operating systems and hardware platforms.
 
 ## Notable Campaigns
-- **Moonlight Maze (Pre-Turla Roots):** While the group name Turla emerged later, specialized investigators link its origins to Moonlight Maze, the first major, multi-year state-sponsored intrusion campaign against the US Department of Defense in the late 1990s.
-- **Global Snake Rootkit Deployment:** For nearly 20 years, Turla operated the Snake network, a global peer-to-peer (P2P) botnet consisting of infected high-value systems. This network allowed them to route commands and exfiltrate data through complex chains to hide the origin of their FSB-controlled infrastructure.
-- **European Diplomatic Missions:** Turla frequently targets European Ministries of Foreign Affairs (MFAs) and diplomatic missions using specialized implants (like Carbon and Gazer) to maintain multi-year persistence in highly sensitive communications networks.
+
+### The Agent.btz Intrusion (2008)
+Turla gained international recognition following the success of the **Agent.btz** worm, which successfully breached the classified networks of the U.S. Central Command (**CENTCOM**) in 2008. The malware spread via infected USB drives and forced a massive, years-long overhaul of Pentagon cybersecurity protocols (Operation Buckshot Yankee). This campaign demonstrated Turla's ability to cross "air-gapped" security boundaries and remains a foundational case study in modern cyber-warfare.
+
+### The Snake Malware Disruption (2023)
+In May 2023, the U.S. Department of Justice and the FBI announced **Operation Medusa**, which successfully disrupted the global network of computers infected with the Snake malware. For nearly 20 years, the FSB had used Snake to exfiltrate sensitive documents from hundreds of computer systems in at least 50 countries. The disruption was coordinated with international allies and involved the technical neutralization of the rootkit on infected hosts, representing a significant setback for Turla's global operational infrastructure.
 
 ## Technical Capabilities
-Turla is a Tier 1 adversary with deep expertise in custom rootkits and kernel-level exploitation. Their flagship tool, **Snake**, is a modular P2P implant designed for long-term stealth, utilizing custom network protocols to relay communications through a mesh of other infected systems. They are also known for "Hijacking Satellite Links," a technique where they would monitor unencrypted downstream satellite traffic and inject their own malicious responses to infect systems in remote regions. They rely heavily on **Carbon** (a second-stage backdoor) and **Gazer** (a C++ implant) for post-exploitation, frequently custom-tailoring their payloads for individual high-value targets.
+
+Turla's technical arsenal is centered on the **Snake (Uroburos)** rootkit, a modular implant that provides kernel-mode persistence and advanced exfiltration capabilities. The malware is designed to be virtually invisible to standard endpoint protection tools and utilizes an internal, encrypted P2P network for communication between infected nodes. They also utilize the **Carbon** and **Gazer** backdoors for secondary access and lateral movement.
+
+The group's operational tradecraft includes the exploitation of **satellite-based internet links** to hide the location of their C2 servers. By hijacking the downlink traffic of commercial satellite providers, Turla can receive data from infected hosts without exposing a stationary IP address on the public internet. They also demonstrate high proficiency in targeting Linux-based servers and enterprise networking hardware, ensuring their presence remains deep within the victim's core infrastructure.
 
 ## Attribution
-Turla is unequivocally attributed to the Russian Federal Security Service (FSB). Specifically, an international law enforcement operation led by the FBI in May 2023 (Operation MEDUSA) unmasked Turla's affiliation with Center 16 of the FSB, based in Ryazan, Russia. The group adheres to strict operational security, though their activities are consistently aligned with Russian strategic interests, particularly in the collection of political and diplomatic intelligence from NATO nations and former Soviet states.
+
+Turla is formally attributed to the Russian **FSB**, specifically to an operational unit known as **Center 16**. This attribution is supported by extensive technical analysis from the U.S. Intelligence Community, the UK's GCHQ, and private security research firms such as ESET, Kaspersky, and Mandiant. The group’s activities consistently align with Russian geopolitical priorities, particularly regarding NATO, the European Union, and the conflict in Ukraine.
+
+Law enforcement advisories issued in 2023 provided detailed evidence of the group's internal structure and its long-term management of global malware networks. While the group operates with high autonomy, their shared infrastructure and occasional coordination with other Russian-linked actors like **APT28** (linked to the GRU) underscore the integrated nature of Russian state-sponsored cyber-espionage.
+
+## MITRE ATT&CK Profile
+
+Turla tradecraft is focused on stealthy persistence and specialized C2:
+
+- **T1014 (Rootkit):** Usage of the Snake rootkit for kernel-level, long-term persistence.
+- **T1071.001 (Application Layer Protocol: Web Protocols):** Sophisticated use of standard web protocols for modular beaconing.
+- **T1102 (Web Service):** Leveraging legitimate cloud services and hijacked satellite links for C2 masquerading.
+- **T1059.006 (Python):** Frequent use of custom Python scripts for cross-platform lateral movement and exfiltration in heterogeneous environments.
 
 ## Sources & References
-- CISA Advisory AA23-129A: Hunting Russian FSB Snake Malware
-- MITRE ATT&CK Group G0010: Turla
-- Mandiant Analysis of Turla Stealth Mechanisms
+
+- [CISA: Advisory (AA23-129A) — Hunting Russian State-Sponsored Snake Malware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-129a) — CISA, 2023-05-09
+- [FBI: Justice Department Announces Disruption of Snake Malware Network Controlled by FSB](https://www.fbi.gov/news/press-releases/justice-department-announces-court-authorized-disruption-of-snake-malware-network-controlled-by-russias-federal-security-service) — FBI, 2023-05-09
+- [MITRE ATT&CK: Turla (Group G0010)](https://attack.mitre.org/groups/G0010/) — MITRE ATT&CK, 2023-10-21
+- [UK NCSC: Joint Advisory on Turla Group Malware and Infrastructure](https://www.ncsc.gov.uk/news/turla-group-malware-advisory) — UK NCSC, 2023-05-09
+- [ESET Research: Diplomatic Spectre — A decade of Turla's targeted attacks](https://www.welivesecurity.com/2020/03/12/turla-diplomatic-spectre-targeted-attacks/) — ESET, 2020-03-12

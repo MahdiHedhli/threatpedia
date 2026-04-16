@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0147",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Turla",
     "reprocess": true,
@@ -29,7 +29,24 @@
       "timestamp": "2026-04-16T04:00:00.000Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-16T04:34:45.832Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:35:14.419Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:35:14.420Z"
 }
