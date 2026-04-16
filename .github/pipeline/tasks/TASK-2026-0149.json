@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0149",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "locked",
+  "status": "complete",
   "input": {
     "topic": "Wizard Spider",
     "reprocess": true,
@@ -37,9 +37,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:36:21.521Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
   ],
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-16T04:35:47.491Z",
-  "updated": "2026-04-16T04:35:47.493Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:36:21.523Z"
 }
