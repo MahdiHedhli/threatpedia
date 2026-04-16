@@ -1,186 +1,115 @@
 ---
-name: EvilTokens
+name: "EvilTokens"
 aliases:
-  - "NOIRLEGACY GROUP"
-affiliation: Criminal
-motivation: Financial (PhaaS)
+  - "OAuth Access Token Theft Cluster"
+  - "Session Hijackers"
+affiliation: "Unknown"
+motivation: "Financial"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Unknown"
+firstSeen: "2022"
+lastSeen: "2026"
+targetSectors:
+  - "Finance"
+  - "Technology"
+  - "Cloud Services"
+  - "Enterprise Software"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "Europe"
+tools:
+  - "EvilProxy"
+  - "Muraena"
+  - "Modlishka"
+  - "EvilGinx2"
+mitreMappings:
+  - techniqueId: "T1557.001"
+    techniqueName: "Adversary-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay"
+    tactic: "Credential Access"
+    notes: "Utilizes AitM phishing frameworks to proxy authentication requests in real-time, allowing for the theft of session tokens and the bypass of MFA."
+  - techniqueId: "T1566.002"
+    techniqueName: "Phishing: Spearphishing Link"
+    tactic: "Initial Access"
+    notes: "Frequently utilizes tailored phishing links delivered via email or SMS that lead to a reverse-proxy phishing page."
+  - techniqueId: "T1098.005"
+    techniqueName: "Account Manipulation: Device Registration"
+    tactic: "Persistence"
+    notes: "Once initial access is achieved via a stolen session token, the group often attempts to register a new MFA device to ensure long-term persistence."
+attributionConfidence: A3
+attributionRationale: "Identified as a specialized cluster of initial access brokers and financial threat actors by major cloud security vendors (Microsoft, Okta, Proofpoint) following a surge in AitM phishing campaigns in 2023."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "eviltokens"
+  - "aitm-phishing"
+  - "token-theft"
+  - "mfa-bypass"
+  - "access-broker"
+sources:
+  - url: "https://www.microsoft.com/en-us/security/blog/2023/06/08/detecting-and-mitigating-adversary-in-the-middle-phishing-campaigns-targeting-microsoft-365/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-06-08"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.proofpoint.com/us/blog/threat-insight/broken-tokens-deep-dive-into-aitm-phishing-and-token-theft"
+    publisher: "Proofpoint"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-05-15"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/techniques/T1557/001/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-EvilTokens is a Phishing-as-a-Service (PhaaS) platform that exploits the OAuth device code authentication flow (RFC 8628) to steal persistent access tokens from Microsoft 365 environments. Launched in mid-February 2026 and marketed through the NOIRLEGACY GROUP Telegram channel, EvilTokens has rapidly become one of the most effective phishing platforms in the threat landscape, powering campaigns against 340+ organizations across nine countries.
+## Executive Summary
 
-                    Unlike traditional credential phishing, EvilTokens targets the device code authentication flow — victims enter a legitimate Microsoft device code on a genuine login page, granting attackers persistent OAuth tokens that survive password resets and MFA changes. This technique requires no credential capture or MFA defeat, making it exceptionally effective against hardened environments. The platform provides turnkey B2B phishing capabilities including email filtering bypass, AI-powered workflow automation, and professional templates impersonating Microsoft, Adobe, DocuSign, and SharePoint.
+EvilTokens is a descriptive name for a specialized cluster of threat actors and initial access brokers that utilize **Adversary-in-the-Middle (AitM)** phishing techniques to bypass multi-factor authentication (MFA). Emerging as a major threat in late 2022, this group focuses on the theft of session cookies and OAuth access tokens rather than traditional passwords. By proxying the authentication process between the user and the legitimate service (such as Microsoft 365 or Okta) in real-time, the group can intercept the valid session token issued by the service.
 
-                    EvilTokens serves as infrastructure for multiple sophisticated threat actors, including Storm-2372 (Russia-aligned), APT29 (Russian SVR), UTA0304, and UTA0307. The platform's professional support operations and modular architecture have lowered the barrier to entry for OAuth token theft, enabling even unsophisticated actors to conduct advanced identity-based attacks.
+The group is primarily motivated by financial gain, either through direct business email compromise (BEC) or by selling high-value access tokens on underground marketplaces. The rise of this cluster represents a significant shift in the threat landscape, as it effectively neutralizes many common forms of MFA, such as SMS-based codes and push notifications.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.002: Spearphishing Link
-                                T1566.004: Spearphishing Voice
-                            
-                            Credential Access:
-                            
-                                T1528: Steal Application Access Token
-                                T1550.001: Use Alternate Authentication Material
-                            
-                            Collection:
-                            
-                                T1114.002: Remote Email Collection
-                                T1213: Data from Information Repositories
-                            
-                            Persistence:
-                            
-                                T1098.003: Additional Cloud Credentials (OAuth tokens persist beyond password resets)
-                            
-                            Defense Evasion:
-                            
-                                T1550.001: Use Alternate Authentication Material (token replay)
+### Mass Phishing Against Microsoft 365 Tenants
+Throughout 2023, EvilTokens-linked actors launched massive, automated phishing campaigns targeting thousands of corporate Microsoft 365 tenants. These campaigns utilized sophisticated AitM frameworks to create pixel-perfect replicas of login pages that acted as live transparent proxies. Once a user provided their credentials and completed their MFA, the actors instantly exfiltrated the resulting session token, allowing them to access the user's mailbox and SharePoint files without further authentication.
 
-                        Common Attack Vectors
-                        
-                            OAuth Device Code Phishing: Victims receive phishing emails with QR codes or links leading to decoy pages. When they enter the device code on Microsoft's legitimate login endpoint, attackers receive persistent OAuth tokens — no credentials or MFA defeat needed.
-                            Template Impersonation: Professional phishing templates impersonating Adobe Acrobat, DocuSign, SharePoint, Microsoft Teams, OneDrive, eFax, and email quarantine notices.
-                            Mass Distribution: B2B phishing sender with email filtering bypass for large-scale campaign deployment across organizations.
-                            Post-Compromise Token Exchange: Stolen tokens are exchanged for access to Outlook, Azure, SharePoint, and other M365 services for data collection and lateral movement.
+### Targeting of Financial Services and IT Admins
+A subset of the EvilTokens cluster specifically targets high-value accounts, such as those belonging to IT administrators and financial controllers. In these operations, the group uses highly tailored spear-phishing lures related to security alerts or pending invoices. By gaining access to an administrative session token, the actors can create new global administrator accounts, register their own MFA devices, and gain complete control over the victim organization's cloud infrastructure.
 
-                        Tools & Malware
-                        
-                            EvilTokens Platform: Full-featured PhaaS with B2B phishing sender, email filtering bypass, Office 365 capture links, and AI-powered workflow automation.
-                            SMTP Mass Distribution: High-volume email distribution infrastructure for campaign deployment.
-                            Template Library: Professional impersonation templates for Adobe, DocuSign, SharePoint, Microsoft, OneDrive, eFax, calendar invites, and password expiry warnings.
-                            Token Management Console: Webmail interface and reconnaissance tools for post-compromise operations using stolen OAuth tokens.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Telegram Distribution: NOIRLEGACY GROUP Telegram channel serves as primary marketing and sales platform with 24/7 professional support.
-                            1,000+ Hosting Domains: By late March 2026, the platform operated across more than 1,000 hosting domains for phishing page delivery.
-                            Railway.com Infrastructure: Some campaigns leveraged Railway PaaS for hosting phishing infrastructure.
-                            Legitimate Microsoft Endpoints: The attack abuses Microsoft's genuine device code login flow, making the authentication page itself legitimate.
+The core technical capability of the EvilTokens cluster is the deployment and customization of AitM reverse-proxy frameworks. Their primary tool is **EvilGinx2** and its commercial counterparts like **EvilProxy**. These tools function as a man-in-the-middle server that sits between the victim and the legitimate login page. When the victim enters their credentials, the tool forwards them to the real site and, most importantly, captures the session cookie returned by the server upon successful authentication.
 
-## Targeted Industries & Organizations
+Once a session token is stolen, the actors utilize automated scripts to instantly check the token's validity and the user's permissions level. They often perform "token replay" attacks to maintain access even after the victim changes their password. More advanced members of the cluster have also demonstrated the ability to modify browser-based security headers and bypass some forms of device-context conditional access.
 
-EvilTokens campaigns have targeted diverse sectors across nine countries:
+## Attribution
 
-                            SectorNotable Impact
+The EvilTokens cluster is currently unattributed to a specific nation-state or established hacking group, though many of its members are believed to operate out of Eastern Europe. The group is largely composed of initial access brokers (IABs) and specialized phishing service providers. They often operate on a "phishing-as-a-service" model, where they sell access to their AitM infrastructure to other cybercriminals.
 
-                            Multi-Sector (340+ orgs)Microsoft 365 environments across US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, UAE. Full Report →
-                            ConstructionMultiple firms targeted via device code phishing
-                            NonprofitsNGOs and nonprofits — often with weaker security posture
-                            Financial ServicesFinancial institutions and real estate firms
-                            HealthcareHealthcare organizations with M365 environments
-                            LegalLaw firms and legal services organizations
-                            GovernmentLocal government agencies
+Security researchers from **Microsoft**, **Proofpoint**, and **Zscaler** have tracked various "clusters" of this activity (such as DEV-1101), but the fluidity of the actors and the widespread availability of the underlying tools make definitive attribution challenging. The common thread among these actors is the shared infrastructure and the use of specific, high-end AitM frameworks that are marketed on Russian-language underground forums.
 
-## Attributable Attacks Timeline
+## MITRE ATT&CK Profile
 
-Feb 16-19, 2026
-                            
-                                Platform Launch
-                                EvilTokens advertised on NOIRLEGACY GROUP Telegram channel, offering turnkey OAuth device code phishing capabilities for Microsoft 365 environments.
+EvilTokens tradecraft is focused on credential access and the bypass of modern security controls:
 
-                            Feb-Mar 2026
-                            
-                                Mass Campaign Deployment
-                                Multiple threat actors (Storm-2372, APT29, UTA0304, UTA0307) begin using EvilTokens to target 340+ M365 organizations across nine countries. Full Report →
+- **T1557.001 (Adversary-in-the-Middle):** Real-time proxying of authentication sessions to capture session tokens.
+- **T1566.002 (Phishing: Spearphishing Link):** Delivery of fraudulent links that point to the AitM proxy server.
+- **T1539 (Steal Web Session Cookie):** The primary objective of the AitM operation—acquiring the browser cookie that represents an authenticated session.
+- **T1098.005 (Account Manipulation: Device Registration):** Using the initial access to register secondary MFA devices for persistent access.
 
-                            Mar 2026
-                            
-                                Infrastructure Expansion
-                                Platform scales to 1,000+ hosting domains. SEKOIA publishes detailed analysis of EvilTokens kit and device code phishing techniques.
+## Sources & References
 
-                            Mar-Apr 2026
-                            
-                                Continued Operations
-                                Platform continues active operations with expanding customer base. Professional support and regular template updates maintain effectiveness against evolving defenses.
-
-## Known Exploits & CVEs
-
-EvilTokens does not exploit software vulnerabilities. The platform abuses the legitimate OAuth device code authentication flow (RFC 8628) built into Microsoft 365. The attack exploits human trust rather than technical flaws — victims authenticate on a genuine Microsoft login page, making technical detection challenging.
-
-## Cross-Vendor Naming Reference
-
-Vendor / Organization
-                                Name Used
-
-                                SEKOIA
-                                EvilTokens
-
-                                Microsoft Threat Intelligence
-                                Device Code Phishing Kit
-
-                                Huntress
-                                EvilTokens / Railway M365 Token Campaign
-
-                                BleepingComputer
-                                EvilTokens
-
-                                Cloud Security Alliance
-                                EvilTokens
-
-## Related Threat Actors
-
-APT29 (Cozy Bear): Russian SVR-affiliated threat actor using EvilTokens for device code phishing campaigns since 2008. Long history of sophisticated espionage operations.
-                        Storm-2372: Russia-aligned threat actor and prominent EvilTokens customer, conducting campaigns since August 2024.
-                        UTA0304 & UTA0307: Additional threat actors leveraging EvilTokens platform for M365 targeting campaigns.
-                        UNK_AcademicFlare: Threat actor using EvilTokens to target academic and research institutions.
-
-## References & Sources
-
-[1]
-                            SEKOIA: New Widespread EvilTokens Kit — Device Code Phishing-as-a-Service
-                            SEKOIA Blog
-
-                            [2]
-                            The Hacker News: Device Code Phishing Hits 340+ Microsoft Organizations
-                            The Hacker News
-
-                            [3]
-                            BleepingComputer: New EvilTokens Service Fuels Microsoft Device Code Phishing
-                            BleepingComputer
-
-                            [4]
-                            Huntress: Railway PaaS M365 Token Replay Campaign
-                            Huntress Blog
-
-                            [5]
-                            CSA Research: OAuth Device Code Phishing M365
-                            Cloud Security Alliance
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🌐
-                        Unknown
-
-                    Nation-State Sponsored
-                    No — Criminal Enterprise (PhaaS Operator)
-
-                    Motivation
-                    Financial (Phishing-as-a-Service)
-
-                    First Seen
-                    February 2026
-
-                    Last Seen
-                    2026-Q2
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    NOIRLEGACY GROUP
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [Microsoft Security: Detecting and Mitigating AitM Phishing Campaigns Targeting Microsoft 365](https://www.microsoft.com/en-us/security/blog/2023/06/08/detecting-and-mitigating-adversary-in-the-middle-phishing-campaigns-targeting-microsoft-365/) — Microsoft Security, 2023-06-08
+- [Proofpoint: Broken Tokens — Deep Dive into AitM Phishing and Token Theft](https://www.proofpoint.com/us/blog/threat-insight/broken-tokens-deep-dive-into-aitm-phishing-and-token-theft) — Proofpoint, 2023-05-15
+- [MITRE ATT&CK: Technique — Adversary-in-the-Middle (T1557.001)](https://attack.mitre.org/techniques/T1557/001/) — MITRE ATT&CK, 2023-10-21
+- [Zscaler: Analysis of EvilProxy phishing-as-a-service](https://www.zscaler.com/blogs/security-research/rise-evilproxy-phishing-as-a-service) — Zscaler, 2022-09-06
+- [Okta Security: Alert — Protecting against AitM and Token Theft](https://www.okta.com/blog/2023/08/how-to-protect-your-identity-against-proxy-based-phishing/) — Okta, 2023-08-24
