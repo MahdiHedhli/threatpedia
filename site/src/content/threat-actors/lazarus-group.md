@@ -1,276 +1,133 @@
 ---
-name: "Lazarus Group | Threatpedia"
-aliases: []
-affiliation: Unknown
-motivation: Unknown
-status: unknown
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+name: "Lazarus Group"
+aliases:
+  - "Hidden Cobra"
+  - "Guardians of Peace"
+  - "APT38"
+  - "BlueNoroff"
+  - "Zinc"
+affiliation: "North Korea (DPRK)"
+motivation: "Financial"
+status: active
+country: "North Korea"
+firstSeen: "2009"
+lastSeen: "2026"
+targetSectors:
+  - "Finance"
+  - "Blockchain"
+  - "Cryptocurrency"
+  - "Defense"
+  - "Government"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "South Korea"
+  - "Japan"
+  - "Vietnam"
+tools:
+  - "DTrack"
+  - "WannaCry Ransomware"
+  - "Manuscrypt"
+  - "TrickBot (affiliated)"
+  - "NukeSped"
+mitreMappings:
+  - techniqueId: "T1566.001"
+    techniqueName: "Phishing: Spearphishing Attachment"
+    tactic: "Initial Access"
+    notes: "Frequently utilizes tailored phishing lures (e.g., job descriptions, security alerts) to infect high-value targets in the defense and financial sectors."
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Attributed to the 2017 WannaCry ransomware attack, which utilized the EternalBlue exploit to cause global disruption."
+  - techniqueId: "T1557.001"
+    techniqueName: "Adversary-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay"
+    tactic: "Credential Access"
+    notes: "Utilizes AitM techniques to harvest credentials and move laterally toward systems that control financial transactions and SWIFT infrastructure."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to the North Korean Reconnaissance General Bureau (RGB) by the U.S. Department of Justice and various international intelligence agencies following several high-profile financial heists and the 2014 Sony Pictures hack."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "lazarus-group"
+  - "hidden-cobra"
+  - "dprk"
+  - "financial-crime"
+  - "wannacry"
+  - "heist"
+sources:
+  - url: "https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyberattacks-and"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-09-06"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2022-04-18"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G0032/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.mandiant.com/resources/blog/apt38-details-on-north-korean-financial-cyber-threat"
+    publisher: "Mandiant"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2018-10-03"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-Lazarus Group is the most prolific and dangerous threat actor attributed to North Korea's primary intelligence agency, the Reconnaissance General Bureau (RGB). Operating since at least 2009, Lazarus Group has perpetrated some of the most impactful and widely publicized cyber attacks globally, including the 2014 Sony Pictures Entertainment breach, the 2016 Bangladesh Bank heist (stealing $81 million), the WannaCry ransomware campaign (2017), and numerous attacks on cryptocurrency exchanges. The group operates with a primary motivation of generating revenue for the isolated North Korean regime while simultaneously conducting sophisticated espionage and sabotage operations.
-
-                    Lazarus Group's capabilities span the full spectrum of cyber warfare, from destructive attacks and financial theft to sophisticated supply chain compromises and espionage. The group demonstrates advanced programming expertise, rapid exploitation of zero-day vulnerabilities, and sophisticated anti-forensic and operational security practices. Lazarus maintains an extensive infrastructure of front companies, cryptocurrency exchanges, and shell organizations to launder stolen funds and evade international sanctions. Recent operations demonstrate the group's evolution toward more sophisticated persistent access techniques and supply chain compromise strategies.
-
-                    As of 2025, Lazarus Group remains highly active with documented ongoing operations targeting financial institutions, cryptocurrency exchanges, defense contractors, and technology companies worldwide. The group's attacks have directly resulted in billions of dollars in losses globally, making them arguably the most financially damaging threat actor to economic security. The group operates with minimal operational constraints due to North Korea's lack of extradition treaties and historical isolation from international cybersecurity enforcement mechanisms.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.001: Phishing - Spearphishing Attachment
-                                T1566.002: Phishing - Spearphishing Link
-                                T1190: Exploit Public-Facing Application
-                                T1199: Trusted Relationship
-                            
-                            Execution:
-                            
-                                T1059.001: Command and Scripting Interpreter - PowerShell
-                                T1059.003: Command and Scripting Interpreter - Windows Command Shell
-                                T1203: Exploitation for Client Execution
-                            
-                            Defense Evasion:
-                            
-                                T1036: Masquerading
-                                T1562.008: Impair Defenses - Disable Logging
-                                T1140: Deobfuscate/Decode Files or Information
-                            
-                            Impact:
-                            
-                                T1561: Disk Wipe
-                                T1486: Data Encrypted for Impact
-                                T1485: Data Destruction
-                            
-                            Exfiltration:
-                            
-                                T1005: Data Staged
-                                T1020: Automated Exfiltration
-                                T1041: Exfiltration Over C2 Channel
-
-                        Common Attack Vectors
-                        
-                            Spear-Phishing Campaigns: Highly targeted phishing emails with weaponized attachments (Office documents, archives) impersonating government agencies, financial institutions, or cryptocurrency exchanges.
-                            Zero-Day Exploitation: Rapid exploitation of previously unknown vulnerabilities in operating systems and applications, often within days or weeks of public disclosure.
-                            Watering Hole Attacks: Compromise of legitimate websites and software repositories frequented by target organizations to distribute malware.
-                            Supply Chain Compromise: Targeting of software developers and distribution platforms to compromise software before release (e.g., blockchain platforms, cryptocurrency exchange software).
-                            Financial Institution Targeting: Direct attacks on banking infrastructure, SWIFT systems, and ATM networks to steal funds directly from financial institutions.
-
-                        Tools & Malware
-                        
-                            WannaCry/WannaCrypt: Destructive ransomware leveraging EternalBlue exploit, deployed globally in May 2017. Infected hundreds of thousands of systems across 150+ countries.
-                            Destover: Custom malware used in Sony Pictures attack. Provides remote access, data destruction, and anti-forensic capabilities.
-                            MATA Framework: Sophisticated modular malware framework with multiple payload capabilities including espionage, destruction, and lateral movement.
-                            Hermes Ransomware: Ransomware variant used against financial institutions and cryptocurrency exchanges.
-                            Silent Chollima / Labyrinth Chollima: Advanced backdoor families used for persistent access and command execution.
-                            AppleJeus / Codenotary Backdoor: Supply chain attack malware targeting macOS systems and cryptocurrency developers.
-                            Malwarebytes Loader: Custom malware loader for initial access and persistence.
-
-                        Infrastructure Patterns
-                        
-                            Cryptocurrency Laundering: Extensive use of cryptocurrency exchanges and mixers to launder stolen funds. Operators often attempt to convert stolen funds to Bitcoin/Monero immediately.
-                            Compromised Infrastructure: Use of hacked servers and legitimate hosting providers to host malware and command-and-control infrastructure.
-                            Proxy Networks: Use of residential proxies and VPN services to obfuscate command-and-control communications and activity origins.
-                            Domain Registration Patterns: Use of legitimate registrars with privacy protection to register domains mimicking financial institutions and software companies.
-                            Front Company Networks: Extensive use of shell companies and fronts to operate cryptocurrency exchanges, exchange APIs, and trading platforms.
-
-## Targeted Industries & Organizations
-
-Lazarus Group targets a broad range of sectors aligned with revenue generation and strategic intelligence objectives:
-
-                                Sector
-                                Notable Targets / Impact
-
-                                Financial Services & Banking
-                                Central banks, commercial banks, payment processors. Bangladesh Bank ($81M theft), multiple other heists totaling billions.
-
-                                Cryptocurrency & Exchanges
-                                Cryptocurrency exchanges, blockchain platforms, DeFi protocols. Multiple exchange compromises, billions in crypto theft.
-
-                                Entertainment & Media
-                                Sony Pictures Entertainment (major destructive attack in 2014). Targeting of media production studios.
-
-                                Defense & Aerospace
-                                Defense contractors, military research institutions, aerospace companies.
-
-                                Technology & Software
-                                Software developers, blockchain platforms, open-source repositories, cryptocurrency wallets.
-
-                                Government Institutions
-                                US government agencies, international financial organizations, research institutions.
-
-                    Geographic Scope: Global targeting with particular focus on US, European, and Asian financial institutions and cryptocurrency exchanges. Recent activity shows expanding targeting of Ukraine, South Korea, and Japan.
-
-## Attributable Attacks Timeline
-
-2009
-                            
-                                Group Formation
-                                Lazarus Group begins operational activities, attributed to North Korea's Reconnaissance General Bureau (RGB). Early operations target South Korean government and military infrastructure.
 
-                            Nov 2014
-                            
-                                Sony Pictures Entertainment Breach
-                                Lazarus Group compromises Sony Pictures Entertainment through spear-phishing and exploit kit. Deploys Destover malware, destroys data, leaks unreleased films and executive communications. Widely attributed to North Korea as retaliation for "The Interview" film.
+## Executive Summary
 
-                            Feb 2016
-                            
-                                Bangladesh Bank Heist
-                                Lazarus Group steals $81 million from Bangladesh Bank's account at US Federal Reserve. Uses legitimate SWIFT credentials and knowledge of banking infrastructure. One of largest bank heists in history, demonstrating group's financial motivations.
+The Lazarus Group, also known as **Hidden Cobra**, is a sophisticated and prolific threat actor group attributed to the North Korean government's **Reconnaissance General Bureau (RGB)**. Active since at least 2009, the group is unique among state-sponsored entities for its heavy dual-focus on both espionage and large-scale financial crime. Their operations range from destructive sabotage against private corporations to the theft of hundreds of millions of dollars from central banks and cryptocurrency exchanges.
 
-                            May 2017
-                            
-                                WannaCry Global Ransomware Campaign
-                                Lazarus Group deploys WannaCry ransomware globally using EternalBlue SMB exploit. Infects 200,000+ computers across 150+ countries. Causes billions in damages, affects hospitals, transportation, and critical infrastructure. Represents watershed moment in global cyber attacks.
+The group possesses a vast array of custom-developed malware and has demonstrated the ability to conduct long-term, multi-stage operations that target high-security financial infrastructure, including the **SWIFT** international banking network. Their activities are a critical component of North Korea's strategy to bypass international sanctions and generate hard currency for the regime.
 
-                            2018-2019
-                            
-                                Cryptocurrency Exchange Hacks
-                                Lazarus Group targets multiple cryptocurrency exchanges including Bithumb and others, stealing millions in cryptocurrency assets. Demonstrates shift toward cryptocurrency-specific operations for sanctions evasion.
+## Notable Campaigns
 
-                            2020-2021
-                            
-                                Supply Chain Compromise Campaign
-                            Lazarus Group conducts AppleJeus campaign targeting cryptocurrency developers and blockchain platforms through supply chain compromise. Distributes malware-laden software updates and development tools.
+### The Sony Pictures Hack (2014)
+In late 2014, the Lazarus Group (operating under the alias "Guardians of Peace") launched a destructive cyberattack against Sony Pictures Entertainment in retaliation for the film *The Interview*. The attackers exfiltrated terabytes of sensitive data and deployed wiper malware that disabled significant portions of Sony's corporate network. This campaign remains one of the most high-profile examples of state-sponsored commercial sabotage.
 
-                            2022-2025
-                            
-                                Ongoing Financial & Espionage Operations
-                                Lazarus Group maintains active operations targeting financial institutions globally, with documented theft of billions from cryptocurrency exchanges and continued espionage against technology and defense sectors. Group demonstrates evolution toward more sophisticated persistent access techniques.
+### The Bangladesh Bank SWIFT Heist (2016)
+In one of the most daring financial heists in history, the Lazarus Group (tracked as **APT38** for this activity) compromised the Bangladesh Central Bank and attempted to steal nearly $1 billion via the SWIFT network. While the majority of the transactions were blocked, the group successfully laundered $81 million, highlighting their deep understanding of global financial protocols and money laundering networks.
 
-                            Apr 2026
-                            
-                                Drift Protocol $285M DeFi Exploit
-                                UNC4736 subgroup (Sapphire Sleet) attributed to the $285M Drift Protocol DeFi exploit on the Solana blockchain. A 6-month social engineering campaign used VSCode/Cursor vulnerability exploitation and a malicious TestFlight app to compromise developer wallets. A durable nonce attack mechanism bypassed multisig governance. Also linked to the $50M Radiant Capital hack. Full Report →
+### The WannaCry Ransomware Attack (2017)
+Lazarus is widely attributed to the development and initial distribution of the **WannaCry** ransomware, which utilized the leaked **EternalBlue** exploit to spread rapidly across the globe. The attack caused billions of dollars in damage, disrupting hospitals in the UK's National Health Service (NHS) and numerous commercial shipping and manufacturing operations.
 
-## Known Exploits & CVEs
+## Technical Capabilities
 
-Lazarus Group has demonstrated sophisticated zero-day exploitation capabilities and rapid adoption of public exploits:
+The Lazarus Group maintains one of the most diverse and frequently updated toolsets in the cyber-threat landscape. Their hallmark is the use of modular backdoors like **Manuscrypt** and **DTrack**, which are used for reconnaissance and persistent presence. They have also demonstrated elite-level capability in exploiting zero-day vulnerabilities in common software such as Chrome and Adobe Acrobat.
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+In recent years, the group has specialized in the targeting of **blockchain and cryptocurrency** infrastructure. They utilize highly tailored "social engineering" campaigns (dubbed **Operation Dream Job**) where they pose as recruiters on platforms like LinkedIn to deliver malicious payloads to developers and security professionals. Their technical tradecraft for laundering stolen cryptocurrency—utilizing "mixers" and "bridges"—is considered state-of-the-art in the cybercrime ecosystem.
 
-                                CVE-2017-0144
-                                EternalBlue SMB Remote Code Execution
-                                Microsoft Windows SMB
-                                10.0
+## Attribution
 
-                                CVE-2018-4878
-                                Use-After-Free in Adobe Flash
-                                Adobe Flash Player
-                                9.8
+Lazarus Group is formally attributed to the North Korean state, specifically the RGB, by the **U.S. Department of Justice**, the **FBI**, and numerous international allies. In 2018, the DOJ filed charges against **Park Jin Hyok**, a North Korean programmer allegedly involved in the Sony hack and the WannaCry attacks. Subsequent indictments have linked additional North Korean nationals to the group's financial heists.
 
-                                CVE-2020-0601
-                                Spoofing in Windows CryptoAPI
-                                Microsoft Windows
-                                9.8
+The attribution is based on a convergence of evidence, including C2 infrastructure overlaps, shared code blocks across different campaigns, and the group's consistent alignment with North Korean geopolitical and economic objectives. While the group occasionally utilizes infrastructure in other countries (such as China or Russia), their primary operational base is believed to be within North Korea or specialized units stationed abroad.
 
-                                CVE-2021-34527
-                                Print Spooler RCE
-                                Microsoft Windows Print Spooler
-                                10.0
+## MITRE ATT&CK Profile
 
-                                CVE-2021-26855
-                                Exchange Server SSRF
-                                Microsoft Exchange Server
-                                9.8
+Lazarus operations are characterized by their multi-stage nature and technical diversity:
 
-                                CVE-2022-21894
-                                Windows ALPC Privilege Escalation
-                                Microsoft Windows
-                                8.4
+- **T1566.001 (Spearphishing Attachment):** The primary method for initial access, often utilizing job-themed lures.
+- **T1486 (Data Encrypted for Impact):** Deployment of WannaCry or other custom ransomware to create global chaos or extort funds.
+- **T1003 (OS Credential Dumping):** Methodical harvesting of credentials to move toward financial systems or high-value intellectual property.
+- **T1571 (Non-Standard Port):** Using custom C2 protocols over non-standard ports to evade network security monitoring.
 
-## Cross-Vendor Naming Reference
+## Sources & References
 
-Lazarus Group is tracked under numerous designations by security vendors and government agencies:
-
-                                Vendor / Organization
-                                Name Used
-
-                                MITRE ATT&CK
-                                APT38, Group G0039
-
-                                CrowdStrike
-                                ZINC
-
-                                US Government (FBI/CISA)
-                                Hidden Cobra
-
-                                Mandiant / Google
-                                Lazarus Group, APT38
-
-                                Kaspersky
-                                Guardians of Peace
-
-                                Symantec
-                                Lazarus Group
-
-                                Palo Alto Networks
-                                Labyrinth Chollima
-
-                                Recorded Future
-                                Whiskeybravo, Whiskeyalfa
-
-## Related Threat Actors
-
-APT37 (ScarCruft): Fellow North Korean-attributed group with focus on South Korean government and defense targeting. Different operational patterns and targets suggest separate RGB operational divisions.
-                        Andariel: North Korean group with financial and espionage motivations. Suspected to be sub-unit or affiliated with Lazarus Group operations.
-                        Kimsuky: North Korean APT43 group focusing on government and research institution espionage. Different operational focus but similar national origin.
-
-## References & Sources
-
-[1]
-                            FBI Alert: "Lazarus Group / Hidden Cobra Activities"
-                            FBI Cyber Division
-
-                            [2]
-                            Mandiant APT Report: "Lazarus Group: Tracking the World's Most Prolific Threat Actor"
-                            Mandiant Intelligence Reports
-
-                            [3]
-                            CrowdStrike Intelligence: "ZINC: The North Korean Threat Actor"
-                            CrowdStrike Global Threat Report
-
-                            [4]
-                            Kaspersky Lab Research: "Lazarus Group: The Guardians of Peace"
-                            Kaspersky Securelist
-
-                            [5]
-                            CISA Alert: "WannaCry Ransomware Campaign Attribution"
-                            CISA Alerts & Advisories
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇰🇵
-                        North Korea
-
-                    Nation-State Sponsored
-                    Yes, RGB (Reconnaissance General Bureau)
-
-                    Motivation
-                    Financial Theft, Espionage, Sabotage
-
-                    First Seen
-                    2009
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    APT38, ZINC, Hidden Cobra
-
-                    Status
-                    Active
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [US Department of Justice: North Korean Regime-Backed Programmer Charged with Multiple Cyberattacks](https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyberattacks-and) — US Department of Justice, 2018-09-06
+- [CISA: Advisory (AA22-108a) — Cybersecurity Guidance for North Korean State-Sponsored Activity](https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a) — CISA, 2022-04-18
+- [MITRE ATT&CK: Lazarus Group (G0032)](https://attack.mitre.org/groups/G0032/) — MITRE ATT&CK, 2023-10-21
+- [Mandiant: APT38 — Details on North Korean Financial Cyber Threat](https://www.mandiant.com/resources/blog/apt38-details-on-north-korean-financial-cyber-threat) — Mandiant, 2018-10-03
+- [Microsoft: Analysis of Zinc (Lazarus) targeting of security researchers](https://www.microsoft.com/en-us/security/blog/2021/01/28/zinc-attacks-against-security-researchers/) — Microsoft Security, 2021-01-28
