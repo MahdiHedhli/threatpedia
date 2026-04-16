@@ -1,271 +1,127 @@
 ---
-name: LockBit
+name: "LockBit"
 aliases:
-  - "GOLD SOUTHFIELD"
-affiliation: Unknown
-motivation: Financial
+  - "LockBit 2.0"
+  - "LockBit 3.0 (LockBit Black)"
+  - "Bitwise Spider"
+affiliation: "Unknown (Russia-based)"
+motivation: "Financial"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Russia"
+firstSeen: "2019"
+lastSeen: "2026"
+targetSectors:
+  - "Finance"
+  - "Healthcare"
+  - "Manufacturing"
+  - "Government"
+  - "Critical Infrastructure"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "United Kingdom"
+  - "Germany"
+  - "Australia"
+tools:
+  - "LockBit Ransomware"
+  - "StealBit"
+  - "Cobalt Strike"
+  - "MimiKatz"
+  - "SoftPerfect Network Scanner"
+mitreMappings:
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Utilizes a highly optimized ransomware payload noted for its extremely fast encryption speed and its ability to target both Windows and Linux/ESXi environments."
+  - techniqueId: "T1133"
+    techniqueName: "External Remote Services"
+    tactic: "Initial Access"
+    notes: "Affiliates frequently gain initial access via compromised VPN and RDP credentials acquired from initial access brokers."
+  - techniqueId: "T1048.003"
+    techniqueName: "Exfiltration Over Alternative Protocol"
+    tactic: "Exfiltration"
+    notes: "Uses the custom StealBit tool to automatically exfiltrate large volumes of data to attacker-controlled storage before the encryption phase."
+attributionConfidence: A2
+attributionRationale: "Identified as a Russia-based cybercrime syndicate by international law enforcement (Operation Cronos). While multiple individuals have been indicted, the group operates as a large-scale ransomware-as-a-service (RaaS) platform with diverse affiliates."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "lockbit"
+  - "ransomware"
+  - "cybercrime"
+  - "raas"
+  - "operation-cronos"
+sources:
+  - url: "https://www.nationalcrimeagency.gov.uk/news/nca-leads-international-takedown-of-lockbit-ransomware-group"
+    publisher: "UK National Crime Agency"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-02-20"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-165a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-06-14"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/software/S0504/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.fbi.gov/news/press-releases/justice-department-announces-charges-against-russian-national-for-lockbit-ransomware-attacks"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-05-07"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-LockBit is a sophisticated ransomware-as-a-service (RaaS) criminal operation responsible for the most prolific global ransomware campaign in history. Believed to originate from Russian-speaking operators, LockBit has evolved from its initial launch in 2019 to become the dominant force in the ransomware ecosystem, with LockBit 3.0 (launched 2022) representing the most advanced variant. The group operates a managed affiliate program, managing hundreds of criminal affiliates who deploy LockBit ransomware against target organizations worldwide in exchange for a percentage of extortion proceeds.
-
-                    LockBit's impact is staggering: documented attacks on over 2,000 organizations globally, with collective extortion demands exceeding $120 million USD. The group has targeted every major industry vertical and geographic region, demonstrating a non-discriminatory approach to victim selection focused primarily on extortion profit. LockBit combines sophisticated encryption, data exfiltration, double-extortion tactics, and aggressive victim shaming campaigns on publicly accessible leak sites to coerce payment. The group operates with minimal operational constraints, advertising services openly on criminal forums and maintaining 24/7 customer support infrastructure.
-
-                    LockBit represents a watershed moment in cybercriminal professionalism, operating with business-like efficiency including marketing campaigns, affiliate recruitment, customer support, negotiation services, and technical innovation. The group has demonstrated ability to rapidly develop encryption weaknesses remediation when exploited, suggests access to sophisticated mathematics and cryptography expertise. As of 2025, LockBit remains the leading ransomware threat despite law enforcement disruption efforts in late 2024.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.001: Phishing - Spearphishing Attachment
-                                T1566.002: Phishing - Spearphishing Link
-                                T1190: Exploit Public-Facing Application
-                                T1199: Trusted Relationship
-                            
-                            Persistence:
-                            
-                                T1098.001: Account Manipulation
-                                T1547: Boot or Logon Autostart Execution
-                                T1547.001: Boot or Logon Autostart Execution - Registry Run Keys
-                            
-                            Defense Evasion:
-                            
-                                T1562.001: Impair Defenses - Disable or Modify Tools
-                                T1562.008: Impair Defenses - Disable Logging
-                                T1140: Deobfuscate/Decode Files or Information
-                            
-                            Lateral Movement:
-                            
-                                T1570: Lateral Tool Transfer
-                                T1570: Lateral Tool Transfer
-                                T1021.002: Remote Services - SSH
-                            
-                            Impact:
-                            
-                                T1486: Data Encrypted for Impact
-                                T1565.001: Data Destruction - Stored Data Manipulation
-                                T1561: Disk Wipe
-
-                        Common Attack Vectors
-                        
-                            Exploit Public-Facing Applications: Targeting of vulnerable web applications, VPNs, and remote access services to establish initial network access.
-                            Spear-Phishing Campaigns: Targeted phishing emails with weaponized attachments or links to infect target organizations with initial payload.
-                            Affiliate Network Distribution: Managed affiliate network of hundreds of criminal operators conducting initial access operations on LockBit's behalf, then deploying ransomware payload.
-                            Credential Theft & Brute Force: Large-scale credential harvesting and password spraying attacks against weak credentials in remote access services.
-                            Supply Chain Compromise: Targeting of managed service providers (MSPs) and IT contractors to gain access to multiple customer environments simultaneously.
-
-                        Tools & Malware
-                        
-                            LockBit 3.0 Ransomware: Advanced ransomware with multi-threaded encryption, optional data wiper, memory-only payloads, and sophisticated anti-recovery mechanisms.
-                            LockBit Locker: Lightweight encryption tool deployed for quick ransom deployment.
-                            StealBit Exfiltration Tool: Custom data exfiltration utility designed for rapid mass data theft before encryption deployment.
-                            Legitimate Tool Abuse: Extensive use of legitimate system administration tools (PsExec, WinRM, RDP) for lateral movement and command execution.
-                            Cobalt Strike: Commercial penetration testing tool widely abused for post-exploitation activities and lateral movement.
-                            Metasploit Framework: Use of open-source exploitation framework for initial access and payload delivery.
-
-                        Infrastructure Patterns
-                        
-                            Leak Site Operations: Publicly accessible dark web leak sites where LockBit publishes stolen data from non-paying victims to facilitate extortion.
-                            Cryptocurrency Infrastructure: Integration with cryptocurrency exchanges and mixers for anonymous ransom payment collection and money laundering.
-                            Multiple C2 Infrastructure: Distributed command-and-control infrastructure using compromised hosting providers, bulletproof hosting, and residential proxies.
-                            Customer Support Channels: Professional support infrastructure including helpdesk portals and encrypted messaging for victim negotiations.
-                            Ransom Negotiation Platform: Managed negotiation portal with chat functionality for ransom discussions and payment coordination with victims.
-
-## Targeted Industries & Organizations
-
-LockBit targets all industries without discrimination, but focuses on organizations with demonstrated ability to pay ransom:
-
-                                Sector
-                                Victims & Impact
-
-                                Healthcare & Hospitals
-                                Major hospital networks globally, impacting patient care, diagnostic systems, and emergency response capabilities.
-
-                                Manufacturing & Industrial
-                                Large manufacturing operations, automotive suppliers, industrial equipment companies. High-profile targets like John Deere equipment.
-
-                                Financial Services
-                                Banks, credit unions, financial service providers, insurance companies.
-
-                                Government & Law Enforcement
-                                Municipal governments, federal agencies, police departments, courts.
-
-                                Technology & Software
-                                Software companies, IT service providers, managed service providers (MSPs), cloud providers.
-
-                                Education
-                                Universities, school districts, research institutions.
-
-                                Critical Infrastructure
-                                Energy utilities, water treatment, transportation, telecommunications systems.
-
-                    Geographic Scope: Global targeting across all regions and countries. Documented operations in North America, Europe, Asia, Middle East, Africa, and Oceania with equal-opportunity approach.
-
-## Attributable Attacks Timeline
-
-Sep 2019
-                            
-                                LockBit v1 Launch
-                                LockBit ransomware first appears in criminal forums. Initial version operates with basic functionality but demonstrates sophisticated encryption and multi-threaded capabilities unavailable in contemporary ransomware.
 
-                            2020-2021
-                            
-                                LockBit v2 & Affiliate Network Launch
-                                LockBit operators launch managed affiliate program, recruiting hundreds of criminal operators for initial access operations. Introduction of double-extortion tactics combining encryption with data theft and leak site publication.
+## Executive Summary
 
-                            Jun 2022
-                            
-                                LockBit 3.0 Release - LockBit Black
-                                Launch of LockBit 3.0 (marketed as "LockBit Black"), representing significant technical advancement with memory-only execution, improved encryption, bug bounty programs, and aggressive marketing campaigns. Becomes dominant ransomware variant globally.
+LockBit is a prolific ransomware-as-a-service (RaaS) operation that surfaced in late 2019. It has since evolved into the world's most dominant ransomware family, accounting for an estimated 25% of all ransomware attacks globally at its peak in 2023. The group is characterized by its highly professionalized affiliate program, its relentless focus on technical innovation, and its aggressive "double-extortion" tactics.
 
-                            2023
-                            
-                                Peak LockBit Operations
-                                LockBit documented as responsible for record number of attacks. Leak site publishes data from hundreds of victims. Ransom demands reach historic highs with individual payments exceeding $10+ million. Group openly advertises services and conducts marketing campaigns.
+The group's operational model revolves around its automated leak site and administrative portal, which affiliates use to manage victims and negotiate ransoms. In February 2024, an international law enforcement coalition led by the **UK National Crime Agency (NCA)** and the **FBI** executed **Operation Cronos**, which successfully disrupted LockBit's core infrastructure. Despite this, the group's administrators have attempted to relaunch operations, demonstrating significant resilience.
 
-                            May 2024
-                            
-                                Law Enforcement Operation
-                                FBI, UK National Crime Agency, and international law enforcement conduct coordinated takedown operation against LockBit infrastructure. Multiple servers seized, encryption keys recovered, leak site taken offline. LockBit leadership claims continued operations despite disruption.
+## Notable Campaigns
 
-                            Jun-Dec 2024
-                            
-                                Post-Disruption Resurgence
-                                LockBit rapidly rebuilds operations following law enforcement takedown. New leak site launched, affiliate recruitment continues, attacks resume within weeks. Demonstrates resilience and redundancy of RaaS infrastructure.
+### The Attack on Royal Mail (2023)
+In January 2023, a LockBit affiliate launched a major attack on the **UK Royal Mail**, disrupting its international export services for several weeks. The group exfiltrated sensitive operational data and demanded a multi-million dollar ransom. Royal Mail's refusal to pay led to the publication of the stolen data, highlighting LockBit's willingness to target high-visibility critical infrastructure to gain leverage.
 
-                            2025-Present
-                            
-                                Ongoing Global RaaS Operations
-                                LockBit remains most active and prolific ransomware variant. Documented continued operations against Fortune 500 companies, government institutions, and critical infrastructure globally. Estimated $500M+ in total cumulative losses.
+### Multi-Sector Global Surge (2022-2024)
+Throughout late 2022 and 2023, LockBit targeted a series of high-profile global entities, including the **Industrial and Commercial Bank of China (ICBC)**, **Boeing**, and the **City of Oakland**. These attacks demonstrated the group's ability to compromise large-scale, well-defended networks across diverse sectors. The ICBC attack, in particular, disrupted the settlement of U.S. Treasury trades, illustrating the potential for ransomware to cause systemic financial instability.
 
-## Known Exploits & CVEs
+## Technical Capabilities
 
-LockBit affiliates have demonstrated rapid exploitation of critical vulnerabilities:
+LockBit is noted for its high-performance encryption engine, which the group claims is the fastest in the industry. The ransomware supports multiple platforms, including Windows, Linux, and VMware ESXi, and features advanced self-spreading capabilities via Group Policy Objects (GPOs) and the exploitation of common vulnerabilities. Their custom data exfiltration tool, **StealBit**, is designed to automatically identify and upload sensitive file types to the group's storage servers.
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+The group's technical innovation also extends to its "Bug Bounty" program—the first of its kind for a criminal organization—where they offered payments to security researchers for finding vulnerabilities in their ransomware code or infrastructure. In its latest iteration, **LockBit 3.0 (LockBit Black)**, the group utilized code shared with the now-defunct BlackMatter family, further enhancing its obfuscation and anti-analysis features.
 
-                                CVE-2023-21674
-                                Windows SmartScreen Security Feature Bypass
-                                Microsoft Windows
-                                9.8
+## Attribution
 
-                                CVE-2023-46805
-                                Remote Code Execution in GE Digital SRTP Webserver
-                                GE Industrial Equipment
-                                9.8
+LockBit is widely believed to be operated by a core team of Russian-language developers based in or around Russia. The group maintains strict rules prohibiting its affiliates from targeting organizations in the Commonwealth of Independent States (CIS), a common indicator of safe haven status within Russian borders. As part of **Operation Cronos**, the U.S. and UK identified the primary administrator of the group as **Dmitry Khoroshev** (alias "LockBitSupp").
 
-                                CVE-2024-21899
-                                Windows Privilege Escalation
-                                Microsoft Windows
-                                8.8
+Law enforcement efforts have also led to the arrests and indictments of several high-level affiliates and developers in the United States, Canada, and Europe. Despite these actions, the group's primary development team remains at large, continuing to update their software and infrastructure to evade ongoing disruption attempts by global security agencies.
 
-                                CVE-2023-3824
-                                ConnectWise ScreenConnect Authentication Bypass
-                                ConnectWise Control
-                                9.8
+## MITRE ATT&CK Profile
 
-                                CVE-2021-44228
-                                Log4Shell Remote Code Execution
-                                Apache Log4j
-                                10.0
+LockBit's RaaS model means that TTPs can vary by affiliate, but consistent patterns include:
 
-                                CVE-2022-41080
-                                Exchange Server Remote Code Execution
-                                Microsoft Exchange Server
-                                10.0
+- **T1486 (Data Encrypted for Impact):** The deployment of the optimized LockBit payload for rapid, large-scale encryption.
+- **T1048.003 (Exfiltration Over Alternative Protocol):** Use of the StealBit tool for automated data theft before encryption.
+- **T1562.001 (Impair Defenses: Disable or Modify Tools):** The malware's ability to automatically terminate over 1,000 security-related processes and services.
+- **T1133 (External Remote Services):** Exploiting unpatched vulnerabilities in VPNs and gaining access via compromised RDP credentials.
 
-## Cross-Vendor Naming Reference
+## Sources & References
 
-LockBit is tracked by security vendors and law enforcement:
-
-                                Vendor / Organization
-                                Name Used
-
-                                CrowdStrike
-                                GOLD SOUTHFIELD
-
-                                Mandiant / Google
-                                UNC2452, Lockbit Group
-
-                                Microsoft Threat Intelligence
-                                ALPHV, LockBit
-
-                                Palo Alto Networks
-                                UNC2985, Lockbit
-
-                                Kaspersky
-                                LockBit, LockBit Black
-
-                                FBI / CISA
-                                LockBit Ransomware
-
-                                UK National Crime Agency
-                                LockBit
-
-## Related Threat Actors
-
-BlackCat / ALPHV: Competing ransomware-as-a-service operation with similar business model. Both operate affiliate networks and maintain public leak sites.
-                        Cl0p (FIN11): Financial-motivated group with ransomware operations. Focuses on supply chain exploitation similar to LockBit tactics.
-                        Scattered Spider (UNC3944): Social engineering and credential theft focused group frequently enabling initial access for ransomware deployment.
-
-## References & Sources
-
-[1]
-                            FBI Alert: "LockBit Ransomware Operations"
-                            FBI Cyber Division
-
-                            [2]
-                            CISA Alert: "LockBit Ransomware Campaign"
-                            CISA Alerts & Advisories
-
-                            [3]
-                            CrowdStrike Intelligence Report: "GOLD SOUTHFIELD - The LockBit Threat"
-                            CrowdStrike Global Threat Report
-
-                            [4]
-                            UK National Crime Agency: "Operation Cronos - LockBit Takedown"
-                            NCA Press Release
-
-                            [5]
-                            Mandiant Research: "LockBit RaaS Operations & Affiliate Network"
-                            Mandiant Intelligence Reports
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🏴
-                        Unknown (Russian-speaking)
-
-                    Nation-State Sponsored
-                    No, Criminal Enterprise
-
-                    Motivation
-                    Financial Extortion
-
-                    First Seen
-                    Sep 2019
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    GOLD SOUTHFIELD, Multiple Affiliates
-
-                    Status
-                    Active
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [UK National Crime Agency: NCA Leads International Takedown of LockBit Ransomware Group](https://www.nationalcrimeagency.gov.uk/news/nca-leads-international-takedown-of-lockbit-ransomware-group) — UK National Crime Agency, 2024-02-20
+- [CISA: Advisory (AA23-165A) — StopRansomware: LockBit Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-165a) — CISA, 2023-06-14
+- [MITRE ATT&CK: LockBit (Software S0504)](https://attack.mitre.org/software/S0504/) — MITRE ATT&CK, 2023-10-21
+- [FBI: Justice Department Announces Charges Against Russian National for LockBit Attacks](https://www.fbi.gov/news/press-releases/justice-department-announces-charges-against-russian-national-for-lockbit-ransomware-attacks) — FBI, 2024-05-07
+- [Microsoft: Analysis of LockBit 3.0 and its technical evolution](https://www.microsoft.com/en-us/security/blog/2022/07/27/the-shifting-landscape-of-lockbit-3-0/) — Microsoft Security, 2022-07-27
