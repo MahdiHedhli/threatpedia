@@ -1,66 +1,127 @@
 ---
 name: "FIN11"
 aliases:
-  - "GOLD WELLINGTON"
-affiliation: "Unknown"
+  - "TA505"
+  - "Lace Tempest"
+  - "UNC1549"
+affiliation: "Unknown (Russia-based)"
 motivation: "Financial"
-status: "active"
-firstSeen: "2017"
-lastSeen: "2025"
-country: "Unknown"
+status: active
+country: "Russia"
+firstSeen: "2016"
+lastSeen: "2026"
 targetSectors:
-  - "Financial"
-  - "Retail"
+  - "Finance"
   - "Healthcare"
   - "Technology"
+  - "Pharmaceutical"
+  - "Legal"
 targetGeographies:
+  - "Global"
   - "United States"
+  - "Canada"
   - "Europe"
 tools:
+  - "ClOp Ransomware"
   - "FlawedAmmyy"
-  - "CLOP Ransomware"
-  - "Dewdrop"
-  - "MIXLABEL"
-attributionConfidence: "A1"
-attributionRationale: "High-fidelity attribution based on distinctive and sustained use of CL0P ransomware and the unique tactic of orchestrating global zero-day exploitation campaigns against enterprise managed file transfer systems."
-reviewStatus: "under_review"
+  - "FRIENDLYGUEST"
+  - "DEWMODE"
+  - "MINEBRIDGE"
+mitreMappings:
+  - techniqueId: "T1190"
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+    notes: "Frequently utilizes zero-day exploits in file transfer appliances, such as the Accellion FTA and GoAnywhere MFT, to gain widespread access."
+  - techniqueId: "T1566.001"
+    techniqueName: "Phishing: Spearphishing Attachment"
+    tactic: "Initial Access"
+    notes: "Maintains a high-volume email distribution infrastructure to deliver malicious documents containing macros that install second-stage loaders."
+  - techniqueId: "T1048.003"
+    techniqueName: "Exfiltration Over Alternative Protocol"
+    tactic: "Exfiltration"
+    notes: "Utilizes custom exfiltration tools like DEWMODE to steal volumes of sensitive data from compromised file transfer servers before extortion."
+attributionConfidence: A2
+attributionRationale: "Identified as a distinct Russia-based financial threat cluster by Mandiant (Google Cloud) following its evolution from a high-volume phishing actor to a specialized data extortion group."
+reviewStatus: "draft_ai"
 generatedBy: "penfold-bot"
-generatedDate: 2026-04-14
+generatedDate: 2026-04-16
 tags:
-  - "financially-motivated"
+  - "fin11"
+  - "ta505"
   - "cybercrime"
   - "ransomware"
+  - "extortion"
+  - "accellion-fta"
 sources:
+  - url: "https://www.mandiant.com/resources/blog/fin11-email-campaigns-to-ransomware"
+    publisher: "Mandiant"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2020-10-13"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-055a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-02-24"
+    accessDate: "2026-04-16"
+    archived: false
   - url: "https://attack.mitre.org/groups/G0117/"
     publisher: "MITRE ATT&CK"
-    publisherType: "research"
-    reliability: "R1"
-    accessDate: "2026-04-14"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.mandiant.com/resources/blog/fin11-emerges-from-the-shadows"
-    publisher: "Mandiant"
-    publisherType: "vendor"
-    reliability: "R1"
-    publicationDate: "2020-10-14"
-    accessDate: "2026-04-14"
+  - url: "https://www.microsoft.com/en-us/security/blog/2021/01/21/microsoft-365-defender-data-exfiltration-accellion-fta-vulnerability/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2021-01-21"
+    accessDate: "2026-04-16"
     archived: false
 ---
 
 ## Executive Summary
-FIN11 (also tracked as GOLD WELLINGTON) is a prolific, financially motivated threat actor active since at least 2017. Widely assessed to be operating out of the Commonwealth of Independent States (CIS), FIN11 originally functioned as a high-volume email distribution operator (often partnering with the TA505 ecosystem) to distribute point-of-sale malware and banking trojans. However, the group has since evolved into a highly mature cybercrime enterprise focused explicitly on high-value digital extortion. They are most notorious for orchestrating widespread zero-day exploitation campaigns against enterprise managed file transfer (MFT) systems to steal data and demand massive ransom payments, often operating in tandem with the CL0P ransomware cartel.
+
+FIN11 is a prolific Russia-based threat actor group that has been active since at least 2016. While historically associated with the broader **TA505** cluster, FIN11 is tracked as a distinct entity due to its specialized focus on high-volume email campaigns and its eventual transition into a double-extortion ransomware and data theft syndicate. The group is primarily motivated by financial gain and is the primary operator of the **ClOp ransomware** and its associated leak site.
+
+The group is characterized by its significant operational scale, at times delivering malicious emails to hundreds of thousands of recipients per day. Since 2020, FIN11 has shifted its focus toward the exploitation of zero-day vulnerabilities in Managed File Transfer (MFT) systems, allowing them to conduct massive data-theft operations that impact hundreds of organizations simultaneously across the legal, pharmaceutical, and financial sectors.
 
 ## Notable Campaigns
-- **Accellion FTA Exploitation (2020-2021):** FIN11 utilized zero-day vulnerabilities in the legacy Accellion File Transfer Appliance (FTA) to exfiltrate massive troves of sensitive data from over 100 global organizations. They subsequently attempted to extort the victims by publishing stolen data on the CL0P leak site.
-- **GoAnywhere MFT Mass Compromise (2023):** Executed a rapid mass-exploitation campaign using a zero-day in Fortra's GoAnywhere MFT, stealing data from over 130 organizations.
-- **MOVEit Transfer Exploitation (2023):** Leveraged a critical zero-day vulnerability (CVE-2023-34362) in Progress Software’s MOVEit Transfer to compromise thousands of organizations globally, representing one of the largest systemic extortion events in history.
+
+### Accellion FTA Exploitation (2020-2021)
+In late 2020, FIN11 leveraged several zero-day vulnerabilities (including CVE-2021-27101) in the **Accellion File Transfer Appliance (FTA)** to gain initial access to numerous high-profile organizations. The group utilized a specialized web shell dubbed **DEWMODE** to exfiltrate terabytes of sensitive data from these appliances. Victims who refused to pay the extortion demands had their stolen information published on the ClOp data leak site, marking a significant escalation in the group's "extortion-only" methodology.
+
+### High-Volume Dridex and FlawedAmmyy Campaigns
+Prior to its shift toward ransomware, FIN11 was one of the world's most active distributors of the **Dridex** banking trojan and the **FlawedAmmyy** remote access trojan (RAT). These massive phishing campaigns utilized thousands of diverse sender domains and frequently pivoted their lures to exploit current events, such as global tax seasons or the COVID-19 pandemic. These operations provided the group with a vast network of initial footholds that they later monetized via secondary access or ransomware deployment.
 
 ## Technical Capabilities
-FIN11 historically relied heavily on high-volume, generic spear-phishing campaigns delivering malicious macros that dropped the **FlawedAmmyy** remote access trojan (RAT) and **MIXLABEL**. In recent years, they have radically shifted their initial access strategy to focus almost entirely on the rapid weaponization and exploitation of zero-day vulnerabilities in secure file transfer appliances. Once they compromise an MFT appliance, they immediately deploy their custom **Dewdrop** web shell to export underlying database configurations and exfiltrate all tenant files directly to FIN11-controlled infrastructure.
+
+FIN11 maintains a versatile and evolving toolset. They are known for their use of custom second-stage loaders مانند **FRIENDLYGUEST** and **MINEBRIDGE**, which are designed to download and execute additional malware while bypassing modern EDR and antivirus products. Their primary exfiltration tool, **DEWMODE**, is a specialized PHP-based web shell capable of interacting directly with database files on compromised appliances to automate the extraction of specific high-value data types.
+
+The group's operational infrastructure is massive, involving thousands of compromised servers and domains. They frequently use **Cobalt Strike** for internal lateral movement and exhibit high technical proficiency in harvesting administrative credentials. FIN11 demonstrated a trailblazing ability to identify and weaponize appliance vulnerabilities at scale, a technique that has since been adopted by many other high-end ransomware groups.
 
 ## Attribution
-Mandiant and other threat intelligence firms attribute FIN11 to a financially motivated cybercrime syndicate operating out of the CIS. FIN11 exhibits significant historical overlap with the infrastructure and tooling of TA505; however, they are tracked as a distinct entity due to their specific pivot into MFT zero-day extortion and their specialized relationship with the CL0P ransomware operation.
+
+FIN11 is attributed with high confidence to Russia-based cybercriminals, though its core leadership remains unidentified. The group's activities align with business hours in the Russian time zones, and they actively avoid targeting organizations within the Commonwealth of Independent States (CIS). While some security firms treat FIN11 and TA505 as synonymous, most analysts distinguish FIN11 as the specific sub-cluster focused on the monetization of ClOp ransomware and MFT exploitation.
+
+Large-scale analysis by **Mandiant** and **Microsoft** indicates that FIN11 acts as a "monetization engine" for many of the access clusters managed by broader TA505 infrastructure. Despite various law enforcement efforts to disrupt their C2 servers and the arrest of some lower-level money launderers, the group has shown extreme resilience, repeatedly rebuilding its infrastructure and transitioning to new exploit chains.
+
+## MITRE ATT&CK Profile
+
+FIN11 techniques focus on high-volume initial access and specialized data extraction:
+
+- **T1190 (Exploit Public-Facing Application):** Mass-exploitation of zero-day vulnerabilities in enterprise storage and file transfer appliances.
+- **T1566.001 (Phishing: Spearphishing Attachment):** Using massive botnet-delivered email campaigns to gain initial footholds.
+- **T1048.003 (Exfiltration Over Alternative Protocol):** Rapid, script-based exfiltration of high-value documents to attacker-controlled storage buckets.
+- **T1486 (Data Encrypted for Impact):** Using ClOp ransomware to disable victim operations and force extortion payments.
 
 ## Sources & References
-- Mandiant Threat Intelligence: FIN11 Profile
-- CISA Advisories on Accellion and MOVEit Compromises
-- MITRE ATT&CK Group G0116
+
+- [Mandiant: FIN11 — Email Campaigns to Ransomware: Analysis of a Prolific Financial Threat Group](https://www.mandiant.com/resources/blog/fin11-email-campaigns-to-ransomware) — Mandiant, 2020-10-13
+- [CISA: Advisory (AA21-055A) — Exploitation of Accellion File Transfer Appliance](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-055a) — CISA, 2021-02-24
+- [MITRE ATT&CK: FIN11 (Group G0117)](https://attack.mitre.org/groups/G0117/) — MITRE ATT&CK, 2023-10-21
+- [Microsoft: Analysis of Data Exfiltration via Accellion FTA Vulnerabilities](https://www.microsoft.com/en-us/security/blog/2021/01/21/microsoft-365-defender-data-exfiltration-accellion-fta-vulnerability/) — Microsoft Security, 2021-01-21
+- [NCSC UK: Alert — TA505/FIN11 and the threat to the financial sector](https://www.ncsc.gov.uk/news/ta505-fin11-threat-financial-sector) — NCSC UK, 2020-10-13
