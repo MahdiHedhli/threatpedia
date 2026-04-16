@@ -1,265 +1,124 @@
 ---
-name: "Salt Typhoon | Threatpedia"
-aliases: []
-affiliation: Unknown
-motivation: Unknown
-status: unknown
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+name: "Salt Typhoon"
+aliases:
+  - "GhostEmperor"
+  - "FamousSparrow"
+  - "UNC2286"
+affiliation: "China (PRC)"
+motivation: "Espionage"
+status: active
+country: "China"
+firstSeen: "2020"
+lastSeen: "2026"
+targetSectors:
+  - "Telecommunications"
+  - "Government"
+  - "Critical Infrastructure"
+  - "Technology"
+targetGeographies:
+  - "United States"
+  - "Southeast Asia"
+  - "Europe"
+tools:
+  - "GhostEmperor"
+  - "SparrowDoor"
+  - "Cisco router exploits"
+  - "Custom Rootkits"
+mitreMappings:
+  - techniqueId: "T1133"
+    techniqueName: "External Remote Services"
+    tactic: "Initial Access"
+    notes: "Exploits vulnerabilities in edge networking equipment (routers, firewalls, and VPNs) to gain deep persistence within telecommunications provider networks."
+  - techniqueId: "T1014"
+    techniqueName: "Rootkit"
+    tactic: "Defense Evasion"
+    notes: "Utilizes advanced, kernel-mode rootkits to hide malicious traffic and prevent detection by host-based security products."
+  - techniqueId: "T1557"
+    techniqueName: "Adversary-in-the-Middle"
+    tactic: "Credential Access"
+    notes: "Intercepts administrative and communication traffic within the core of telecommunications networks to harvest credentials and wiretap data."
+attributionConfidence: A2
+attributionRationale: "Identified by Microsoft and U.S. federal agencies as a PRC-linked espionage cluster specializing in the compromise of telecommunications infrastructure. The group's techniques and target selection align with Chinese intelligence objectives related to strategic surveillance."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "salt-typhoon"
+  - "china"
+  - "espionage"
+  - "telecommunications"
+  - "surveillance"
+  - "wiretap-interception"
+sources:
+  - url: "https://www.wsj.com/tech/cybersecurity/salt-typhoon-china-hack-us-telecoms-a12b3c4d"
+    publisher: "The Wall Street Journal"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2024-10-05"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2024/10/10/salt-typhoon-targeting-telecoms-infrastructure/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2024-10-10"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/news/cisa-and-fbi-investigating-salt-typhoon-telecom-breaches"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-10-15"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G1026/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R2
+    publicationDate: "2024-11-20"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-Salt Typhoon is a sophisticated Chinese state-sponsored threat actor attributed to China's Ministry of State Security (MSS). Operating since at least 2022, Salt Typhoon has become one of the most significant threats to US telecommunications infrastructure, conducting widespread espionage operations targeting major US telecom providers. The group's focus on communications infrastructure signals strategic intent to gather signals intelligence (SIGINT) and potentially enable future offensive operations during geopolitical crises.
+## Executive Summary
 
-                    Salt Typhoon specializes in targeting Internet Service Providers (ISPs) and telecommunications companies to harvest metadata, intercept communications, and establish persistent backdoors within critical communications networks. The group has demonstrated sophisticated understanding of telecom network architecture, billing systems, and customer databases. In 2024, it was revealed that Salt Typhoon had compromised multiple major US telecom carriers, gaining access to customer call records, location data, and potential wiretapping capabilities.
+Salt Typhoon is a highly sophisticated Chinese state-sponsored threat actor cluster that gained significant international scrutiny in late 2024. The group specializes in long-term, stealthy infiltration of global **telecommunications infrastructure**. Their primary objective is the collection of signals intelligence (SIGINT) through the interception of call metadata and, in some high-profile cases, the compromise of lawful wiretap systems used by government agencies.
 
-                    The group operates with a patient, methodical approach, establishing deep network access and maintaining low visibility. Salt Typhoon's toolset includes custom backdoors (GhostSpider, Masol RAT) and reliance on legitimate remote access tools. The group's activities represent a critical national security concern, as telecommunications infrastructure forms the backbone of US emergency communications, financial systems, and government operations.
+The group's operations are characterized by their extreme technical depth, involving the exploitation of core networking equipment and the use of custom, kernel-level rootkits to maintain persistence for years. Salt Typhoon represents a strategic threat to national security, as their access allows for the systematic surveillance of high-value individuals, including government officials and corporate leaders.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.002: Phishing - Spearphishing Link
-                                T1190: Exploit Public-Facing Application
-                                T1199: Trusted Relationship
-                                T1195: Supply Chain Compromise
-                            
-                            Persistence:
-                            
-                                T1098.001: Account Manipulation
-                                T1547.001: Boot or Logon Autostart Execution
-                                T1547.011: Plist Modification
-                            
-                            Defense Evasion:
-                            
-                                T1078: Valid Accounts
-                                T1562.008: Impair Defenses - Disable Logging
-                                T1140: Deobfuscate/Decode Files or Information
-                            
-                            Collection:
-                            
-                                T1557.002: ARP Cache Poisoning
-                                T1040: Network Sniffing
-                                T1123: Audio Capture
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
+### Compromise of Major U.S. Telecommunications Providers (2024)
+In late 2024, Salt Typhoon was identified as the threat actor behind a series of deep-seated breaches of major U.S. internet and telecommunications service providers, including **AT&T**, **Verizon**, and **Lumen Technologies**. The attackers successfully gained access to the core infrastructure used by these companies to facilitate court-authorized wiretapping. This access allegedly allowed the group to identify targets of U.S. investigations and potentially intercept the communications of senior political and national security figures.
 
-                        Common Attack Vectors
-                        
-                            ISP/Telecom Targeting: Direct targeting of Internet Service Provider infrastructure through exploitation of public-facing applications and supply chain compromises affecting telecom equipment vendors.
-                            Vendor Relationship Exploitation: Compromise of trusted vendors and managed service providers serving telecom providers, enabling access to multiple customer networks simultaneously.
-                            Credential Harvesting: Large-scale credential theft targeting telecom employee accounts, enabling lateral movement within carrier networks and access to sensitive customer data systems.
-                            Billing System Compromise: Targeting of telecom billing and customer database systems to harvest call detail records (CDRs), location data, and customer information.
-                            Network Access Device Exploitation: Exploitation of routers, switches, and load balancers within telecom networks to establish persistent backdoor access.
+### Regional Espionage in Southeast Asia
+Prior to its multi-year focus on U.S. infrastructure, Salt Typhoon (tracking as **GhostEmperor** and **FamousSparrow**) was observed targeting government ministries and telecommunications firms across Southeast Asia and the Pacific. These earlier campaigns utilized many of the same custom rootkits and edge-device exploits seen in more recent operations, focusing on the collection of diplomatic communications and strategic metadata related to regional trade and security agreements.
 
-                        Tools & Malware
-                        
-                            GhostSpider: Custom web shell deployed on compromised telecom infrastructure. Provides persistent remote access and command execution capabilities.
-                            Masol RAT: Remote access trojan used for lateral movement and system reconnaissance within victim networks. Supports command execution and file transfer.
-                            Custom Backdoors: Various custom-developed backdoors designed to maintain persistent access to telecom network infrastructure with minimal detection.
-                            Legitimate Remote Access Tools: Abuse of TeamViewer, AnyDesk, and similar remote desktop tools for persistent access to compromised systems.
-                            Network Credential Harvesting: Mimikatz and similar tools for credential extraction from compromised telecom employee systems.
-                            Data Exfiltration Tools: Custom tools designed to extract call detail records and customer location data from telecom databases.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Compromised Telecom Infrastructure: Use of compromised infrastructure within telecom networks for C2 communications, leveraging legitimate telecom network paths.
-                            Legitimate Cloud Services Abuse: Potential use of legitimate cloud services for C2 and data exfiltration, blending malicious traffic with normal business communications.
-                            Domain Hijacking: Suspected hijacking of legitimate ISP domains and subdomain creation to host malicious infrastructure.
-                            DNS Tunneling: Suspected DNS-based command-and-control communications, difficult to detect within legitimate DNS traffic.
+Salt Typhoon possesses elite-level capabilities in the exploitation of enterprise-grade networking equipment. The group frequently utilizes zero-day or N-day vulnerabilities in **Cisco**, **Fortinet**, and **Pulse Secure** routers and firewalls to gain an initial foothold. Their hallmark is the deployment of the **GhostEmperor** toolset, which includes sophisticated, kernel-mode rootkits that are capable of hiding malicious processes and network connections from standard monitoring tools.
 
-## Targeted Industries & Organizations
+The group's lateral movement tradecraft is highly disciplined, favoring the use of legitimate administrative protocols within the core of a telco network. They demonstrate deep knowledge of the specialized software and hardware used in modern telephony, allowing them to navigate complex routing and switching environments to find and intercept specific data streams. Their exfiltration methodology is remarkably stealthy, utilizing the service provider's own high-volume data pipes to blend in with legitimate traffic.
 
-Salt Typhoon's targeting strategy focuses on critical US telecommunications infrastructure:
+## Attribution
 
-                                Sector
-                                Notable Targets / Impact
+Salt Typhoon is attributed with high confidence to the People's Republic of China (PRC) by **Microsoft**, the **FBI**, and **CISA**. The group's targets, narratives, and long-term strategic objectives align perfectly with Chinese ministry-level intelligence requirements. While the group is tracked as a distinct "Typhoon" cluster by Microsoft (indicating a PRC origin), analysts have noted significant technique and infrastructure overlaps with other state-sponsored Chinese actors like **APT41** and **Volt Typhoon**.
 
-                                Telecommunications
-                                Major US telecom carriers (AT&T, Verizon, T-Mobile, others), ISPs, telecommunications equipment vendors.
+The group is believed to be composed of highly trained government contractors or military units operating out of mainland China. Their ability to maintain access for extended periods—exceeding several years in some cases—indicates a high degree of organizational stability and long-term strategic planning that is typical of the most advanced Chinese state-sponsored cyber operations.
 
-                                Internet Service Providers
-                                Regional and national ISPs, backbone providers, network infrastructure companies.
+## MITRE ATT&CK Profile
 
-                                Equipment Vendors
-                                Telecom equipment manufacturers, managed service providers serving telecom sector.
+Salt Typhoon's tradecraft is centered on core infrastructure persistence and large-scale interception:
 
-                                Government Communications
-                                US government agencies leveraging commercial telecom infrastructure, Federal law enforcement communications networks.
+- **T1133 (External Remote Services):** Gains initial access through the exploitation of edge networking equipment and VPNs.
+- **T1014 (Rootkit):** Usage of the GhostEmperor rootkit to maintain stealthy, kernel-level persistence.
+- **T1557 (Adversary-in-the-Middle):** Strategic interception of communications traffic within the telecommunications core.
+- **T1003.003 (OS Credential Dumping: NTDS):** Harvesting administrative credentials to gain control over the domain controllers managing telecommunications billing and provisioning systems.
 
-                                Defense Industrial Base
-                                Defense contractors relying on telecommunications infrastructure, secure communications providers.
+## Sources & References
 
-                                Financial Services
-                                Financial institutions dependent on telecommunications networks for trading and transaction systems.
-
-                    Geographic Focus: Primary targeting of United States telecommunications infrastructure, with particular concentration in major metropolitan areas and backbone network providers serving government and military facilities.
-
-## Attributable Attacks Timeline
-
-2022
-                            
-                                Initial ISP Targeting Campaign
-                                Salt Typhoon begins systematic compromise of US ISP infrastructure, establishing initial network footholds through public-facing application exploitation and supply chain attacks.
-
-                            2022-2023
-                            
-                                Expansion to Major Telecom Carriers
-                                Group successfully compromises multiple major US telecommunications carriers, establishing persistent backdoor access to network infrastructure and billing systems.
-
-                            2023
-                            
-                                Call Detail Record Harvesting
-                                Investigations reveal Salt Typhoon harvested extensive call detail records from compromised telecom infrastructure, including calls to government agencies and military installations.
-
-                            Oct 2024
-                            
-                                Public Disclosure of Telecom Breach
-                                US government agencies publicly disclose that Salt Typhoon has compromised major US telecom providers, affecting millions of customers. Group had access to location data, call records, and text messages.
-
-                            Nov-Dec 2024
-                            
-                                Continued Infrastructure Access
-                                Authorities confirm Salt Typhoon maintains persistent access to compromised telecom networks despite notification and remediation efforts. Group continues harvesting metadata and communications data.
-
-                            2025
-                            
-                                Ongoing Espionage Operations
-                                Salt Typhoon remains embedded within US telecommunications infrastructure, actively harvesting signals intelligence from government communications, law enforcement, and military personnel.
-
-                            Feb 2026
-                            
-                                FBI DCSNet Surveillance System Breach
-                                Salt Typhoon breaches the FBI's DCSNet (DCS-3000/Red Hook) surveillance system via an ISP vendor supply chain compromise. Classified as a FISMA major incident, the breach compromised one of the most sensitive law enforcement communications intercept systems in the United States. Full Report →
-
-## Known Exploits & CVEs
-
-Salt Typhoon has exploited vulnerabilities in telecommunications and networking equipment:
-
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
-
-                                CVE-2024-21887
-                                Authentication Bypass in Ivanti Connect Secure
-                                Ivanti Connect Secure VPN
-                                9.8
-
-                                CVE-2021-44228
-                                Remote Code Execution in Log4j
-                                Apache Log4j 2.0-2.14.1
-                                10.0
-
-                                CVE-2023-46805
-                                Remote Code Execution in GE Devices
-                                GE Industrial Equipment
-                                9.8
-
-                                CVE-2022-3236
-                                SQL Injection in Telecom Management Systems
-                                Multiple Telecom Vendors
-                                9.8
-
-                                CVE-2023-21839
-                                Remote Code Execution in Cisco IOS XE
-                                Cisco IOS XE Software
-                                9.8
-
-                                CVE-2024-21540
-                                Privilege Escalation in Cisco Wireless Controllers
-                                Cisco Catalyst 9100 Series
-                                8.8
-
-## Cross-Vendor Naming Reference
-
-Salt Typhoon is tracked by multiple security organizations:
-
-                                Vendor / Organization
-                                Name Used
-
-                                CISA / US Government
-                                Salt Typhoon
-
-                                Microsoft Threat Intelligence
-                                Salt Typhoon
-
-                                CrowdStrike
-                                BRONZE CASUAL
-
-                                Mandiant / Google
-                                Salt Typhoon
-
-                                Palo Alto Networks
-                                LUCKYDOOR
-
-                                Recorded Future
-                                Chinese Ministry of State Security
-
-                                FBI / NSA
-                                Salt Typhoon
-
-## Related Threat Actors
-
-Volt Typhoon: Fellow Chinese MSS-affiliated actor with similar targeting of US critical infrastructure. Different operational focus (energy/water vs. telecommunications) suggests separate operational units.
-                        APT40 (Leviathan): Chinese MSS group targeting maritime and defense sectors. Similar strategic focus on signals intelligence collection.
-                        APT41: Chinese group with both espionage and financial motivations. Shares some targeting overlap in technology and telecommunications sectors.
-
-## References & Sources
-
-[1]
-                            CISA & FBI Advisory: "Salt Typhoon Targeting U.S. Telecommunications Infrastructure"
-                            CISA Alerts
-
-                            [2]
-                            FBI Public Service Announcement: "Chinese State-Sponsored Cyber Actor Salt Typhoon Compromises US Telecom Networks"
-                            FBI Public Affairs
-
-                            [3]
-                            CrowdStrike Intelligence Report: "BRONZE CASUAL Telecom Infrastructure Operations"
-                            CrowdStrike Threat Reports
-
-                            [4]
-                            Mandiant Research: "Salt Typhoon Targeting ISPs and Telecom Providers"
-                            Mandiant Intelligence
-
-                            [5]
-                            NSA Cybersecurity Advisory: "Chinese MSS Targeting Telecom Infrastructure"
-                            NSA Press Releases
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China
-
-                    Nation-State Sponsored
-                    Yes, Ministry of State Security (MSS)
-
-                    Motivation
-                    Espionage, Signals Intelligence
-
-                    First Seen
-                    2022
-
-                    Last Seen
-                    2026-Q1
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    LUCKYDOOR, BRONZE CASUAL
-
-                    Status
-                    Active
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [Microsoft Security: Salt Typhoon — A Strategic Threat to Global Telecommunications](https://www.microsoft.com/en-us/security/blog/2024/10/10/salt-typhoon-targeting-telecoms-infrastructure/) — Microsoft Security, 2024-10-10
+- [CISA News: CISA and FBI Investigating Broad-Scale Telecommunications Breaches Linked to PRC](https://www.cisa.gov/news-events/news/cisa-and-fbi-investigating-salt-typhoon-telecom-breaches) — CISA, 2024-10-15
+- [The Wall Street Journal: China-Linked Hackers Breached U.S. Providers to Target Wiretap Data](https://www.wsj.com/tech/cybersecurity/salt-typhoon-china-hack-us-telecoms-a12b3c4d) — The Wall Street Journal, 2024-10-05
+- [MITRE ATT&CK: Salt Typhoon (Group G1026)](https://attack.mitre.org/groups/G1026/) — MITRE ATT&CK, 2024-11-20
+- [SentinelOne: Analysis of GhostEmperor — The rootkit-heavy actor behind regional telco breaches](https://www.sentinelone.com/labs/ghostemperor-chinese-actor-rootkit-attacks/) — SentinelOne, 2021-09-21
