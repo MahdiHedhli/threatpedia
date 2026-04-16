@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0061",
   "type": "incident",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "NotPetya Wiper Attack (June 2017)",
@@ -18,7 +18,10 @@
       "severity": "critical",
       "attack_type": "Wiper/Destructive",
       "threat_actor": "Sandworm",
-      "cves": ["CVE-2017-0144", "CVE-2017-0145"]
+      "cves": [
+        "CVE-2017-0144",
+        "CVE-2017-0145"
+      ]
     },
     "notes": "Smoke test for tightened pipeline validator v2. Russian GRU-attributed wiper disguised as ransomware, spread via compromised M.E.Doc update mechanism. Estimated $10B+ in global damages."
   },
@@ -42,7 +45,14 @@
       "timestamp": "2026-04-15T18:00:00Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "notes": "Pipeline v2 smoke test — tightened validator"
+      "notes": "Pipeline v2 smoke test \u2014 tightened validator"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }

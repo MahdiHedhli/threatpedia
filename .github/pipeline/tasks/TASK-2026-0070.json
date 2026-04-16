@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0070",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
-    "topic": "Stuxnet — Siemens SIMATIC WinCC/Step 7 Multiple Zero-Days (CVE-2010-2568)",
+    "topic": "Stuxnet \u2014 Siemens SIMATIC WinCC/Step 7 Multiple Zero-Days (CVE-2010-2568)",
     "sources": [
       "https://www.cisa.gov/news-events/ics-advisories/icsa-10-272-01",
       "https://nvd.nist.gov/vuln/detail/CVE-2010-2568",
@@ -38,7 +38,14 @@
       "timestamp": "2026-04-15T16:00:00Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "note": "Zero-day article — smoke test round 3"
+      "note": "Zero-day article \u2014 smoke test round 3"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }

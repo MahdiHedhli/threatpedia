@@ -1,137 +1,189 @@
 ---
-eventId: "TP-2026-0020"
-title: "WannaCry Ransomware Global Outbreak"
+eventId: TP-2017-0001
+title: WannaCry Ransomware Global Outbreak
 date: 2017-05-12
-attackType: "Ransomware"
+attackType: Ransomware
 severity: critical
-sector: "Healthcare"
-geography: "Global"
-threatActor: "Lazarus Group"
-attributionConfidence: A2
-reviewStatus: "certified"
-confidenceGrade: B
-generatedBy: "penfold-bot"
-generatedDate: 2026-04-15
+sector: Healthcare
+geography: Global
+threatActor: Lazarus Group
+attributionConfidence: A1
+reviewStatus: draft_ai
+confidenceGrade: A
+generatedBy: dangermouse-bot
+generatedDate: 2026-04-16
 cves:
-  - "CVE-2017-0144"
-  - "CVE-2017-0145"
+  - CVE-2017-0144
+  - CVE-2017-0145
 relatedSlugs:
-  - "lazarus-group"
+  - eternalblue-ms17-010-cve-2017-0144
 tags:
-  - "ransomware"
-  - "wannacry"
-  - "eternalblue"
-  - "lazarus-group"
-  - "north-korea"
-  - "nhs"
-  - "smb"
-  - "ms17-010"
+  - ransomware
+  - wannacry
+  - lazarus-group
+  - north-korea
+  - eternalblue
+  - smb
+  - nhs
+  - worm
+  - cve-2017-0144
 sources:
-  - url: "https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware"
-    publisher: "CISA"
+  - url: https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware
+    publisher: CISA
     publisherType: government
     reliability: R1
     publicationDate: "2017-05-12"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.ncsc.gov.uk/news/uk-and-key-allies-say-north-korea-behind-wannacry-attack"
-    publisher: "NCSC UK"
+  - url: https://www.ncsc.gov.uk/news/uk-and-key-allies-say-north-korea-behind-wannacry-attack
+    publisher: UK NCSC
     publisherType: government
     reliability: R1
     publicationDate: "2017-12-19"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://learn.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010"
-    publisher: "Microsoft"
+  - url: https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and
+    publisher: U.S. Department of Justice
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-09-06"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: https://attack.mitre.org/software/S0366/
+    publisher: MITRE
+    publisherType: research
+    reliability: R1
+    publicationDate: "2019-01-16"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: https://www.microsoft.com/en-us/security/blog/2017/05/12/wannacrypt-ransomware-worm-targets-out-of-date-systems/
+    publisher: Microsoft
     publisherType: vendor
     reliability: R1
-    publicationDate: "2017-03-14"
-    accessDate: "2026-04-15"
+    publicationDate: "2017-05-12"
+    accessDate: "2026-04-16"
     archived: false
 mitreMappings:
-  - techniqueId: "T1210"
+  - techniqueId: T1210
     techniqueName: "Exploitation of Remote Services"
-    tactic: "Lateral Movement"
-    notes: "WannaCry used the EternalBlue exploit to target SMBv1 for lateral movement."
-  - techniqueId: "T1486"
+    tactic: Lateral Movement
+    notes: WannaCry exploited SMBv1 via EternalBlue to spread across networks
+  - techniqueId: T1486
     techniqueName: "Data Encrypted for Impact"
-    tactic: "Impact"
-    notes: "The primary goal of WannaCry was the encryption of user files and extortion."
+    tactic: Impact
+    notes: Encrypted user files and demanded Bitcoin ransom
+  - techniqueId: T1570
+    techniqueName: "Lateral Tool Transfer"
+    tactic: Lateral Movement
+    notes: Self-propagating worm component spread payloads to adjacent hosts
 ---
 
-## Executive Summary
+## Summary
 
-The WannaCry ransomware attack was a global cybersecurity incident that began on May 12, 2017. It represents one of the most significant coordinate cyberattacks in history, impacting over 200,000 systems in 150 countries within its first 72 hours. The campaign utilized the **EternalBlue** exploit, a sophisticated vulnerability in Microsoft's SMBv1 protocol that had been leaked by the "Shadow Brokers" group a month earlier.
+On 12 May 2017, the WannaCry ransomware worm began propagating across global networks, infecting an estimated 230,000 computers in over 150 countries within the first 24 hours. The malware exploited CVE-2017-0144 (EternalBlue), a vulnerability in the Microsoft Server Message Block version 1 (SMBv1) protocol, to achieve remote code execution on unpatched Windows systems. Once inside a network, WannaCry moved laterally without user interaction, encrypting files and displaying a ransom demand of $300-$600 in Bitcoin.
 
-The attack had a profound impact on critical infrastructure, crippling the United Kingdom's National Health Service (NHS), where it led to thousands of canceled appointments and the diversion of emergency services. While a "kill switch" was inadvertently activated by researcher Marcus Hutchins (MalwareTech) within 24 hours, the damage was extensive. The attack was subsequently attributed with high confidence to the **Lazarus Group**, a threat actor operating on behalf of the North Korean government.
+The outbreak caused widespread disruption across multiple sectors. The United Kingdom's National Health Service (NHS) was among the hardest-hit organizations: 80 of 236 NHS trusts in England were affected, leading to cancelled appointments, diverted ambulances, and disrupted patient care. Telefonica in Spain, Deutsche Bahn in Germany, FedEx in the United States, and Renault-Nissan's manufacturing plants were also affected. The attack persisted until security researcher Marcus Hutchins discovered and activated a kill switch domain hardcoded in the malware, which halted further propagation of the initial variant.
+
+The U.S. government, the UK National Cyber Security Centre (NCSC), and multiple allied nations formally attributed WannaCry to the Lazarus Group, a threat actor linked to North Korea's Reconnaissance General Bureau. In September 2018, the U.S. Department of Justice indicted North Korean programmer Park Jin Hyok for his role in the operation.
 
 ## Technical Analysis
 
-WannaCry is a multi-component malware consisting of a dropper, a worm for self-propagation, and a specialized ransomware module. Its primary infection vector was the **EternalBlue** (CVE-2017-0144) exploit. EternalBlue targets a buffer overflow vulnerability in the SMBv1 server service on legacy Windows operating systems. By sending a specially crafted packet to an unpatched system, the worm could achieve remote code execution (RCE) with System-level privileges.
+WannaCry combined a ransomware payload with a worm propagation mechanism. The worm component used the EternalBlue exploit (CVE-2017-0144) — a tool originally developed by the U.S. National Security Agency and leaked by the Shadow Brokers group in April 2017 — to target the SMBv1 service on TCP port 445. The exploit triggered a buffer overflow in the Windows SMB server, allowing arbitrary code execution at the kernel level.
 
-Once a single machine on a network was infected, WannaCry scanned the local network and the public internet for other vulnerable SMB ports (TCP 445). It would then use the EternalBlue exploit combined with the **DoublePulsar** backdoor to install itself on additional victims. This worm-like behavior allowed the malware to spread effortlessly across enterprise environments without any user interaction (phishing or link clicks).
+Upon successful exploitation, WannaCry installed the DoublePulsar backdoor (if not already present) to inject the ransomware DLL into the LSASS process. The ransomware component then encrypted files matching 176 file extensions using AES-128-CBC encryption, with per-file AES keys encrypted using a 2048-bit RSA public key. The private key was held by the attackers, making decryption without payment infeasible.
 
-The ransomware payload utilized RSA-2048 and AES-128-CBC encryption. It targeted over 170 different file extensions and provided a ransom note in 28 languages, demanding $300 (later $600) in Bitcoin.
+The malware generated random IP addresses and attempted SMB connections on port 445 to spread to other systems. It also scanned the local subnet for additional targets. Before encrypting, WannaCry attempted to contact the domain `iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea[.]com`. If the domain resolved, the malware halted execution — a kill switch mechanism that Marcus Hutchins later exploited by registering the domain on 12 May 2017.
+
+Microsoft had released security bulletin MS17-010 on 14 March 2017, patching the underlying SMBv1 vulnerability two months before the outbreak. Systems that had applied the patch were immune to the worm propagation mechanism.
 
 ## Attack Chain
 
-### Stage 1: Initial Entry
-The malware began spreading globally on May 12, 2017. While earlier theories suggested email delivery, investigation found that the initial infections likely occurred via direct exploitation of internet-facing SMB services on unpatched systems.
+### Stage 1: Initial Access via EternalBlue
 
-### Stage 2: Self-Propagation
-Once a host was compromised, the WannaCry worm component initiated a scanning process. It used a random IP generation algorithm to find new targets and used the DoublePulsar backdoor to deploy the ransomware payload.
+WannaCry scanned for internet-facing systems with SMBv1 (TCP port 445) exposed. The EternalBlue exploit sent crafted SMB transaction packets to trigger a heap overflow in the srv.sys driver, achieving kernel-level code execution on unpatched Windows systems ranging from XP through Server 2008 R2.
 
-### Stage 3: Encryption and Extortion
-The payload executed, encrypted local files, and deleted Volume Shadow Copies to prevent easy recovery. A desktop wallpaper was set, and a GUI window (WanaDecryptor) appeared to facilitate payment.
+### Stage 2: DoublePulsar Backdoor Installation
 
-## MITRE ATT&CK Mapping
+After exploitation, the worm installed the DoublePulsar implant, a kernel-mode backdoor that hooked the SMB transaction dispatch table. This implant provided a covert channel for injecting the ransomware payload into user-mode processes.
 
-| Tactic | Technique ID | Technique Name | Description |
-|---|---|---|---|
-| Initial Access | T1190 | Exploit Public-Facing Application | Target unpatched SMBv1 services on the internet. |
-| Lateral Movement | T1210 | Exploitation of Remote Services | use of EternalBlue across local networks. |
-| Impact | T1486 | Data Encrypted for Impact | Mandatory encryption of user data for financial gain. |
+### Stage 3: Kill Switch Check
+
+Before proceeding with encryption, the malware issued an HTTP request to a hardcoded domain. If the domain resolved (indicating analysis or sinkholing), the malware terminated. This mechanism was likely intended as an anti-sandbox technique.
+
+### Stage 4: File Encryption
+
+The ransomware enumerated local and mapped network drives, encrypting files matching target extensions. Each file was encrypted with a unique AES-128-CBC key, and the AES keys were encrypted with an embedded RSA-2048 public key. Encrypted files received a `.WNCRY` extension.
+
+### Stage 5: Lateral Movement
+
+Simultaneously with encryption, WannaCry's worm module scanned the local subnet and generated random external IP addresses, attempting EternalBlue exploitation against each reachable host on port 445. This dual scanning strategy enabled rapid propagation within networks and across the internet.
+
+### Stage 6: Ransom Demand
+
+A ransom note was displayed via a custom GUI application (`@WanaDecryptor@.exe`), demanding $300 in Bitcoin with a threat to double the amount after three days and permanently delete files after seven days. Three Bitcoin wallet addresses were hardcoded into the malware.
 
 ## Impact Assessment
 
-The scope of the WannaCry attack was unprecedented for a ransomware campaign. Estimated global losses vary, with some assessments reaching up to $4 billion due to lost productivity and remediation costs. 
+WannaCry infected approximately 230,000 systems across more than 150 countries. Financial damage estimates range from $4 billion to $8 billion globally.
 
-In the UK, the NHS was severely impacted; at least 80 of the 236 trusts were affected. Hospitals were forced to turn away patients, cancel surgeries, and revert to paper records for weeks. Other major victims included FedEx (TNT Express), Telefonica, Deutsche Bahn, and Renault.
+The UK NHS experienced the most visible impact: 80 NHS trusts and 595 GP practices in England were disrupted. Approximately 19,000 appointments were cancelled, and five hospitals diverted ambulances during the peak of the outbreak. The Department of Health and Social Care estimated the cost to the NHS at GBP 92 million.
+
+Renault-Nissan halted production at five manufacturing plants across Europe. FedEx subsidiary TNT Express sustained an estimated $300 million in losses due to operational disruption. Deutsche Bahn experienced failures in passenger information displays and ticketing systems across Germany. China National Petroleum Corporation disconnected 20,000 gas station payment systems as a precaution.
+
+Despite infecting hundreds of thousands of systems, the WannaCry operators collected only approximately $140,000 in Bitcoin ransom payments — a fraction of the total damage caused. The low ransom yield was attributed to the kill switch activation, rapid public awareness, and law enforcement advisories against payment.
+
+## Attribution
+
+The United States, the United Kingdom, Australia, Canada, Japan, and New Zealand jointly attributed WannaCry to North Korea in December 2017. The UK NCSC assessed with high confidence that the Lazarus Group, operating under the Reconnaissance General Bureau of North Korea, was responsible for the attack.
+
+In September 2018, the U.S. Department of Justice unsealed an indictment charging North Korean citizen Park Jin Hyok with conspiracy to conduct the WannaCry attack, the 2014 Sony Pictures hack, and the 2016 Bangladesh Bank heist. The indictment detailed Park's employment at Chosun Expo Joint Venture, a North Korean government front company, and provided technical evidence linking the WannaCry code to other Lazarus Group operations.
+
+Code analysis revealed shared code libraries, encryption implementations, and network infrastructure between WannaCry and earlier Lazarus Group tools, including the Destover wiper used against Sony Pictures and the malware used in the SWIFT banking attacks.
 
 ## Timeline
 
-### 2017-03-14 — Microsoft Patch Release
-Microsoft released MS17-010, a critical security update for the SMBv1 vulnerability, roughly one month before the exploit was leaked publicy.
+### 2017-03-14 — Microsoft Releases MS17-010
 
-### 2017-04-14 — Shadow Brokers Leak
-The Shadow Brokers group leaked a cache of NSA tools, including the EternalBlue exploit and DoublePulsar backdoor.
+Microsoft published security bulletin MS17-010, patching the SMBv1 vulnerability CVE-2017-0144 across supported Windows versions.
 
-### 2017-05-12 — Outbreak Begins
-WannaCry began spreading rapidly across Europe and Asia, peaking within 24 hours.
+### 2017-04-14 — Shadow Brokers Leak EternalBlue
 
-### 2017-05-13 — Kill Switch Discovery
-Researcher Marcus Hutchins registered a "sinkhole" domain found in the malware's code. This acted as a kill switch, preventing new infections from completing their execution.
+The Shadow Brokers group publicly released a collection of NSA exploitation tools, including EternalBlue and DoublePulsar.
+
+### 2017-05-12 — WannaCry Outbreak Begins
+
+The WannaCry worm began propagating globally, rapidly infecting systems with exposed SMBv1 services. The UK NHS, Telefonica, and other major organizations reported disruptions within hours.
+
+### 2017-05-12 — Kill Switch Activated
+
+Security researcher Marcus Hutchins registered the kill switch domain, halting propagation of the primary WannaCry variant.
+
+### 2017-05-13 — Microsoft Issues Emergency Patch for XP
+
+Microsoft released an emergency patch for Windows XP, Server 2003, and Windows 8 — operating systems that had reached end-of-life and were not covered by the original MS17-010 bulletin.
+
+### 2017-12-19 — Joint Government Attribution to North Korea
+
+The U.S., UK, Australia, Canada, Japan, and New Zealand publicly attributed WannaCry to the North Korean government.
+
+### 2018-09-06 — DOJ Indictment of Park Jin Hyok
+
+The U.S. Department of Justice unsealed charges against North Korean programmer Park Jin Hyok for his role in WannaCry, the Sony Pictures attack, and the Bangladesh Bank heist.
 
 ## Remediation & Mitigation
 
-The immediate response to WannaCry involved the deployment of the MS17-010 patch to all Windows systems. Microsoft took the extraordinary step of releasing patches for unsupported operating systems, including Windows XP and Windows Server 2003, acknowledging the systemic risk posed by the worm.
+Organizations should apply Microsoft security bulletin MS17-010, which patches CVE-2017-0144 and related SMBv1 vulnerabilities across all supported Windows versions. Microsoft also released emergency patches for end-of-life systems including Windows XP and Server 2003.
 
-Long-term mitigation strategies focused on the complete deactivation of SMBv1, which is now considered a legacy and insecure protocol. Organizations were advised to implement better network segmentation to prevent the spread of self-propagating threats and to maintain offline backups.
+Disabling SMBv1 is recommended for environments that do not require it. Microsoft has provided guidance on disabling SMBv1 via Group Policy, PowerShell, and registry modifications. Network segmentation and firewall rules should block SMB traffic (TCP port 445) from traversing between network segments and from reaching the internet.
 
-## Indicators of Compromise
+Maintaining offline backups protects against ransomware encryption. Organizations should test backup restoration procedures and ensure backup systems are isolated from production networks to prevent concurrent encryption of backup media.
 
-**Network Indicators:**
-- C2 Sinkhole Domain: `iuqerfsodp9ifjaposdfjhgosurijfaewrwergwea.com`
-- Scanning activity on TCP Port 445 (SMB)
-
-**Host Indicators:**
-- File Extension: `.WNCRY`, `.WNCRYT`, `.WNCYR`
-- Ransom Note: `@Please_Read_Me@.txt`
-- Dropper Mutex: `Global\MsWinZones\Microsoft.Windows.RemoteExplorer`
+Endpoint detection and response (EDR) solutions should be configured to detect EternalBlue exploitation attempts, DoublePulsar implant installation, and mass file encryption behavior. Network intrusion detection systems can identify SMB exploitation traffic using signatures published by Snort, Suricata, and vendor-specific rulesets.
 
 ## Sources & References
 
-- CISA Alert (AA17-132A): Indicators Associated with WannaCry Ransomware (2017)
-- NCSC UK: UK and key allies say North Korea behind WannaCry attack (2017)
-- US Department of Justice: North Korean Regime-Backed Programmer Charged with Conspiracy (2018)
-- Microsoft Security Bulletin MS17-010 - Critical (2017)
+- [CISA: Indicators Associated with WannaCry Ransomware](https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) — CISA, 2017-05-12
+- [UK NCSC: North Korea Behind WannaCry Attack](https://www.ncsc.gov.uk/news/uk-and-key-allies-say-north-korea-behind-wannacry-attack) — UK NCSC, 2017-12-19
+- [DOJ: North Korean Regime-Backed Programmer Charged](https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and) — U.S. Department of Justice, 2018-09-06
+- [MITRE ATT&CK: WannaCry (S0366)](https://attack.mitre.org/software/S0366/) — MITRE, 2019-01-16
+- [Microsoft: WannaCrypt Ransomware Worm Targets Out-of-Date Systems](https://www.microsoft.com/en-us/security/blog/2017/05/12/wannacrypt-ransomware-worm-targets-out-of-date-systems/) — Microsoft, 2017-05-12

@@ -1,142 +1,192 @@
 ---
-eventId: "TP-2026-0022"
-title: "Kaseya VSA Supply Chain Ransomware Attack"
+eventId: TP-2021-0001
+title: Kaseya VSA Supply Chain Ransomware Attack
 date: 2021-07-02
-attackType: "Supply Chain / Ransomware"
+attackType: Supply Chain / Ransomware
 severity: critical
-sector: "Technology"
-geography: "Global"
-threatActor: "REvil"
-attributionConfidence: A1
-reviewStatus: "certified"
-confidenceGrade: A
-generatedBy: "penfold-bot"
-generatedDate: 2026-04-15
+sector: Technology
+geography: Global
+threatActor: REvil (Sodinokibi)
+attributionConfidence: A2
+reviewStatus: draft_ai
+confidenceGrade: B
+generatedBy: dangermouse-bot
+generatedDate: 2026-04-16
 cves:
-  - "CVE-2021-30116"
-relatedSlugs:
-  - "revil"
+  - CVE-2021-30116
+  - CVE-2021-30119
+  - CVE-2021-30120
+relatedSlugs: []
 tags:
-  - "ransomware"
-  - "supply-chain"
-  - "kaseya"
-  - "vsa"
-  - "revil"
-  - "sodinokibi"
-  - "msp"
-  - "cve-2021-30116"
+  - supply-chain
+  - ransomware
+  - revil
+  - sodinokibi
+  - kaseya
+  - msp
+  - zero-day
+  - cve-2021-30116
 sources:
-  - url: "https://www.cisa.gov/news-events/alerts/2021/07/04/cisa-and-fbi-release-guidance-msps-and-their-customers-affected-kaseya-vsa"
-    publisher: "CISA"
+  - url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-188a
+    publisher: CISA
     publisherType: government
     reliability: R1
     publicationDate: "2021-07-04"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.fbi.gov/news/press-releases/press-releases/fbi-and-cisa-guidance-to-msps-and-their-customers-affected-by-the-kaseya-vsa-ransomware-attack"
-    publisher: "FBI"
+  - url: https://nvd.nist.gov/vuln/detail/CVE-2021-30116
+    publisher: NIST NVD
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-07-09"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: https://www.huntress.com/blog/rapid-response-kaseya-vsa-mass-msp-ransomware-incident
+    publisher: Huntress
+    publisherType: vendor
+    reliability: R2
+    publicationDate: "2021-07-02"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: https://helpdesk.kaseya.com/hc/en-gb/articles/4403440684689-Important-Notice-July-2nd-2021
+    publisher: Kaseya
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2021-07-02"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: https://www.fbi.gov/news/press-releases/fbi-statement-on-kaseya
+    publisher: FBI
     publisherType: government
     reliability: R1
     publicationDate: "2021-07-04"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.mandiant.com/resources/blog/kaseya-vsa-exploitation-initial-analysis"
-    publisher: "Mandiant"
-    publisherType: vendor
-    reliability: R1
-    publicationDate: "2021-07-03"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.justice.gov/opa/pr/department-justice-launches-global-action-against-netwalker-ransomware"
-    publisher: "US DOJ"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2021-11-08"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.kaseya.com/trust-center/"
-    publisher: "Kaseya Trust Center"
-    publisherType: vendor
-    reliability: R1
-    publicationDate: "2021-07-05"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
 mitreMappings:
-  - techniqueId: "T1195.002"
+  - techniqueId: T1195.002
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
-    tactic: "Initial Access"
-    notes: "Attacker exploited vulnerabilities in the Kaseya VSA software to distribute ransomware to downstream customers."
-  - techniqueId: "T1486"
+    tactic: Initial Access
+    notes: REvil exploited Kaseya VSA zero-days to push ransomware through MSP management infrastructure
+  - techniqueId: T1486
     techniqueName: "Data Encrypted for Impact"
-    tactic: "Impact"
-    notes: "The REvil ransomware encrypted data on thousands of endpoints belonging to MSP customers."
-  - techniqueId: "T1105"
-    techniqueName: "Ingress Tool Transfer"
-    tactic: "Command and Control"
-    notes: "The VSA agent was used to push malicious base64-encoded payloads to managed endpoints."
+    tactic: Impact
+    notes: REvil ransomware encrypted files on downstream customer systems
+  - techniqueId: T1059.001
+    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    tactic: Execution
+    notes: PowerShell used to disable Windows Defender before deploying ransomware payload
 ---
 
 ## Summary
 
-On July 2, 2021, the REvil (Sodinokibi) ransomware group launched a massive, automated supply chain attack by exploiting a zero-day vulnerability in **Kaseya VSA**, a popular remote monitoring and management (RMM) software used by Managed Service Providers (MSPs). By compromising the VSA server infrastructure, the attackers were able to bypass localized security controls and deploy ransomware directly to thousands of downstream endpoints managed by these MSPs.
+On 2 July 2021, the REvil (Sodinokibi) ransomware group executed a supply chain attack against Kaseya VSA, a remote monitoring and management (RMM) platform used by managed service providers (MSPs) worldwide. By exploiting a chain of zero-day vulnerabilities in the Kaseya VSA on-premises server, the attackers bypassed authentication and injected a malicious update that deployed REvil ransomware to the endpoints managed by each compromised MSP.
 
-The attack was specifically timed for the U.S. Independence Day holiday weekend to maximize the delay in response. An estimated 60 MSPs were directly compromised, leading to the encryption of over 1,500 downstream businesses worldwide, including supermarkets, schools, and small-to-medium enterprises. REvil initially demanded a record-breaking $70 million Bitcoin ransom for a universal decryptor.
+The attack affected approximately 60 MSPs and between 800 and 1,500 of their downstream customers. REvil initially demanded $70 million for a universal decryptor, later reducing the demand to $50 million. The attack was timed to coincide with the U.S. Independence Day holiday weekend, when IT staffing levels are typically reduced.
+
+Kaseya immediately shut down its VSA SaaS service and advised all on-premises VSA customers to power off their servers. The company worked with CISA, the FBI, and third-party security firms to investigate the incident and develop patches. On 22 July 2021, Kaseya obtained a universal decryptor through undisclosed means and began distributing it to affected customers.
 
 ## Technical Analysis
 
-The Kaseya VSA attack utilized a sophisticated multi-stage exploit chain targeting an authentication bypass vulnerability in the VSA web interface (**CVE-2021-30116**). This allowed the attackers to gain administrative access to the VSA server without valid credentials.
+The attack exploited three zero-day vulnerabilities in Kaseya VSA on-premises servers: CVE-2021-30116 (authentication bypass via credential leak in API endpoint), CVE-2021-30119 (cross-site scripting in the web interface), and CVE-2021-30120 (two-factor authentication bypass).
 
-Once administrative access was achieved, the attackers leveraged the legitimate VSA functionality—intended for software deployment and patch management—to distribute a malicious payload. The payload was a base64-encoded certificate file (`KuserDeploy.ps1`) that, when executed via the VSA agent, leveraged PowerShell to disable Windows Defender and drop the REvil encryptor.
+The Dutch Institute for Vulnerability Disclosure (DIVD) had discovered several of these vulnerabilities and reported them to Kaseya before the attack. Kaseya was in the process of developing patches when REvil independently discovered and weaponized the vulnerabilities.
 
-The encryption process used a specialized variant of the Sodinokibi ransomware that did not require a command-and-control connection to begin the encryption, as the keying material was embedded in the task push itself. This "offline" capability ensured that even machines without direct internet access were encrypted instantly once the task was received from the local VSA server.
+The attack chain began with an unauthenticated request to the Kaseya VSA API that leaked administrative credentials. Using these credentials, the attackers uploaded a malicious agent update package to the VSA server. The VSA platform's agent update mechanism — designed to push legitimate management software to endpoints — was used to distribute the REvil ransomware payload.
+
+On managed endpoints, the malicious update triggered a PowerShell command that disabled Windows Defender's real-time monitoring and then dropped the REvil ransomware DLL. The DLL was side-loaded using a legitimate copy of an older Microsoft Defender binary (MsMpEng.exe), a technique that exploited the trust relationship between the endpoint and the management platform.
+
+The ransomware encrypted files using Salsa20 for bulk data encryption and RSA-2048 for key wrapping. Each infected machine generated a unique encryption key, and the ransom note demanded payment in Monero cryptocurrency.
 
 ## Attack Chain
 
-### Stage 1: Authentication Bypass
-Attacker exploits CVE-2021-30116 on the internet-facing Kaseya VSA server to gain an authenticated session.
+### Stage 1: VSA Server Authentication Bypass
 
-### Stage 2: Payload Distribution
-The attacker uploads a malicious PowerShell script disguised as a deployment task. The VSA server pushes this task to all connected VSA agents (on-premise servers and managed endpoints).
+REvil exploited CVE-2021-30116 to bypass authentication on internet-facing Kaseya VSA on-premises servers. The vulnerability exposed administrative credentials through an API endpoint, granting the attackers full access to the VSA management console.
 
-### Stage 3: Endpoint Execution
-The VSA agent executes the PowerShell script with SYSTEM privileges. The script performs environment checks, bypasses AV, and executes the ransomware binary (`agent.exe`).
+### Stage 2: Malicious Agent Update Injection
+
+Using administrative access, the attackers uploaded a weaponized agent update package to the VSA server. The package contained the REvil ransomware payload, a legitimate Microsoft Defender binary for DLL side-loading, and a PowerShell script to disable endpoint security controls.
+
+### Stage 3: Distribution via MSP Infrastructure
+
+The VSA server's built-in agent management functionality pushed the malicious update to all endpoints managed by the compromised MSP. Each MSP's downstream customers received the payload through their trusted management channel.
+
+### Stage 4: Endpoint Security Bypass
+
+On each endpoint, a PowerShell command disabled Windows Defender's real-time monitoring. The legitimate MsMpEng.exe binary was used to side-load the REvil DLL, exploiting DLL search order hijacking to execute the ransomware in the context of a trusted process.
+
+### Stage 5: File Encryption and Ransom Demand
+
+The REvil payload encrypted files on local and network-accessible drives using Salsa20/RSA-2048 encryption. Ransom notes demanded payment in Monero, with amounts varying per victim. The group demanded $70 million for a universal decryptor.
 
 ## Impact Assessment
 
-The attack's scope was broad because of the "force multiplier" effect of targeting an MSP tool. Notable impacts included:
-- **Coop Supermarkets (Sweden):** Forced to close over 800 stores for several days because their point-of-sale systems were encrypted.
-- **Schools in New Zealand:** Multiple kindergartens and schools lost access to administrative and student data.
-- **MSP Paralysis:** Dozens of MSPs were forced to shut down their entire infrastructure to prevent further spread, leaving thousands of customers without IT support.
+The Kaseya VSA attack affected approximately 60 MSPs and between 800 and 1,500 downstream organizations across at least 17 countries. The attack represented one of the largest single ransomware events by victim count.
 
-Kaseya eventually obtained a universal decryptor from a "third party" on July 21, 2021, and worked with law enforcement to restore customer data without paying the ransom.
+Coop Sweden, a grocery chain with 800 stores, was forced to close most locations for nearly a week after its payment systems were encrypted through its MSP. Schools in New Zealand, accounting firms in the United States, and IT service providers across Europe were among the affected organizations.
+
+REvil's initial $70 million universal decryptor demand was the largest known ransomware demand at the time. Individual ransom demands ranged from $45,000 to $5 million based on the perceived size of each victim organization.
+
+On 13 July 2021, REvil's infrastructure went offline, and its dark web sites became unreachable. On 22 July, Kaseya announced it had obtained a universal decryptor and began distributing it to affected customers through Emsisoft. The source of the decryptor was not publicly disclosed, though media reports indicated it may have been obtained through law enforcement channels.
+
+In November 2021, the U.S. Department of Justice announced the arrest of Ukrainian national Yaroslav Vasinskyi and the seizure of $6.1 million in ransom proceeds from Russian national Yevgeniy Polyanin, both alleged REvil affiliates connected to the Kaseya attack.
 
 ## Attribution
 
-The attack is attributed with high confidence to **REvil** (also known as Sodinokibi), a Russia-linked Ransomware-as-a-Service (RaaS) group. This attribution is based on the specific ransomware code signatures, the use of the REvil leak site (Happy Blog) for negotiations, and technical indicators identified by the FBI and private sector firms like Mandiant and CrowdStrike.
+The REvil (Sodinokibi) ransomware-as-a-service operation claimed responsibility for the Kaseya attack on its dark web blog on 4 July 2021. REvil operated as a Russian-language ransomware affiliate program, providing ransomware tools and infrastructure to affiliates who conducted attacks and shared ransom proceeds with the REvil operators.
 
-In November 2021, the U.S. Department of Justice charged several individuals associated with REvil for their roles in the Kaseya attack and other campaigns, identifying them as part of a transnational criminal organization operating primarily from Russia.
+The FBI attributed the attack to REvil in a joint advisory with CISA published on 4 July 2021. In November 2021, Europol and the FBI arrested Yaroslav Vasinskyi, a Ukrainian national, at the Polish border in connection with the Kaseya attack. Vasinskyi was extradited to the United States and charged under the Computer Fraud and Abuse Act.
+
+U.S. President Biden raised the Kaseya attack in a phone call with Russian President Putin on 9 July 2021, warning that the U.S. would take action against ransomware groups operating from Russian territory. REvil's infrastructure went offline shortly thereafter on 13 July, though the extent of Russian government involvement in the takedown remains unclear.
 
 ## Timeline
 
-### 2021-04-02 — DIVD Disclosure
-Researchers at the Dutch Institute for Vulnerability Disclosure (DIVD) privately notified Kaseya of several zero-day vulnerabilities, including CVE-2021-30116.
+### 2021-07-02 — REvil Attacks Kaseya VSA
 
-### 2021-07-02 14:00 EST — Outbreak Begins
-REvil begins exploiting unpatched VSA servers to distribute the ransomware payload.
+REvil exploited zero-day vulnerabilities in Kaseya VSA on-premises servers, distributing ransomware to downstream MSP customers. The attack was timed for the U.S. Independence Day weekend.
 
-### 2021-07-02 16:00 EST — Kaseya Advisory
-Kaseya issues an "Immediate Advisory" instructing all customers to shut down their on-premise VSA servers and suspends its own SaaS infrastructure.
+### 2021-07-02 — Kaseya Shuts Down VSA
 
-### 2021-07-04 — CISA/FBI Guidance
-CISA and the FBI release joint technical guidance for MSPs and impacted businesses.
+Kaseya shut down its VSA SaaS platform and advised on-premises customers to immediately power off their VSA servers.
 
-### 2021-07-21 — Decryptor Obtained
-Kaseya announces it has obtained a universal decryptor and begins the restoration process.
+### 2021-07-04 — CISA and FBI Issue Joint Advisory
+
+CISA published advisory AA21-188A with indicators of compromise and mitigation guidance for affected organizations.
+
+### 2021-07-04 — REvil Demands $70 Million
+
+REvil posted on its dark web blog claiming responsibility and demanding $70 million in Bitcoin for a universal decryptor.
+
+### 2021-07-09 — Kaseya Releases Patches
+
+Kaseya released VSA version 9.5.7a, patching the three zero-day vulnerabilities exploited in the attack.
+
+### 2021-07-13 — REvil Infrastructure Goes Offline
+
+All REvil dark web sites and infrastructure went offline without public explanation.
+
+### 2021-07-22 — Universal Decryptor Obtained
+
+Kaseya announced it had obtained a universal decryptor from an undisclosed third party and began distributing it to affected customers.
+
+### 2021-11-08 — DOJ Announces Arrests
+
+The U.S. Department of Justice announced the arrest of Yaroslav Vasinskyi and the seizure of $6.1 million from Yevgeniy Polyanin in connection with REvil operations.
+
+## Remediation & Mitigation
+
+MSPs should ensure RMM platforms are patched to the latest available version and restrict management console access to trusted networks. Internet-facing RMM servers should be protected with network-level access controls, multi-factor authentication, and web application firewalls.
+
+MSPs should implement network segmentation between their management infrastructure and customer environments to limit the blast radius of a management platform compromise. Agent update mechanisms should be monitored for anomalous behavior, including unexpected update sizes, unusual deployment schedules, and modifications to security configurations.
+
+Downstream organizations using MSP services should establish contractual requirements for MSP security practices, including vulnerability management timelines, incident notification procedures, and security audit rights.
+
+Endpoint detection and response (EDR) solutions should monitor for indicators of RMM-based attacks, including DLL side-loading from management agent directories, PowerShell commands disabling security products, and unusual file encryption activity following management platform updates.
 
 ## Sources & References
 
-- [CISA Alert (AA21-187A): Guidance for MSPs and Customers Affected by Kaseya VSA](https://www.cisa.gov/news-events/alerts/2021/07/04/cisa-and-fbi-release-guidance-msps-and-their-customers-affected-kaseya-vsa) — CISA, 2021-07-04
-- [FBI News Release: FBI and CISA Guidance to MSPs and Customers](https://www.fbi.gov/news/press-releases/press-releases/fbi-and-cisa-guidance-to-msps-and-their-customers-affected-by-the-kaseya-vsa-ransomware-attack) — FBI, 2021-07-04
-- [US DOJ: Department of Justice Announces Charges Against REvil Ransomware Actors](https://www.justice.gov/opa/pr/department-justice-announces-charges-and-arrests-two-separate-major-ransomware-cases) — US Department of Justice, 2021
-- [Mandiant: Kaseya VSA Exploitation Initial Analysis](https://www.mandiant.com/resources/blog/kaseya-vsa-exploitation-initial-analysis) — Mandiant, 2021-07-03
-- [Kaseya: Trust Center — Incident Response Resources](https://www.kaseya.com/trust-center/) — Kaseya
+- [CISA: Advisory AA21-188A — Kaseya VSA Supply Chain Ransomware Attack](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-188a) — CISA, 2021-07-04
+- [NIST NVD: CVE-2021-30116](https://nvd.nist.gov/vuln/detail/CVE-2021-30116) — NIST NVD, 2021-07-09
+- [Huntress: Rapid Response — Kaseya VSA Mass MSP Ransomware Incident](https://www.huntress.com/blog/rapid-response-kaseya-vsa-mass-msp-ransomware-incident) — Huntress, 2021-07-02
+- [Kaseya: Important Notice — July 2nd, 2021](https://helpdesk.kaseya.com/hc/en-gb/articles/4403440684689-Important-Notice-July-2nd-2021) — Kaseya, 2021-07-02
+- [FBI: Statement on Kaseya](https://www.fbi.gov/news/press-releases/fbi-statement-on-kaseya) — FBI, 2021-07-04

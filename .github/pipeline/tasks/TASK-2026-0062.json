@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0062",
   "type": "incident",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "Kaseya VSA Supply Chain Attack (July 2021)",
@@ -18,7 +18,11 @@
       "severity": "critical",
       "attack_type": "Supply Chain/Ransomware",
       "threat_actor": "REvil (Sodinokibi)",
-      "cves": ["CVE-2021-30116", "CVE-2021-30119", "CVE-2021-30120"]
+      "cves": [
+        "CVE-2021-30116",
+        "CVE-2021-30119",
+        "CVE-2021-30120"
+      ]
     },
     "notes": "Smoke test for tightened pipeline validator v2. REvil exploited zero-day vulnerabilities in Kaseya VSA to push ransomware to ~1,500 downstream organizations via MSPs."
   },
@@ -42,7 +46,14 @@
       "timestamp": "2026-04-15T18:00:00Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "notes": "Pipeline v2 smoke test — tightened validator"
+      "notes": "Pipeline v2 smoke test \u2014 tightened validator"
+    },
+    {
+      "timestamp": "2026-04-16T00:30:00Z",
+      "action": "completed",
+      "agent": "dangermouse-bot",
+      "note": "Article generated and validated in batch 1 overnight run"
     }
-  ]
+  ],
+  "updated": "2026-04-16T00:30:00Z"
 }
