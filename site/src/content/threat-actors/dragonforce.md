@@ -1,202 +1,120 @@
 ---
-name: DragonForce
+name: "DragonForce"
 aliases:
-  - "DragonForce RaaS"
-affiliation: Criminal (Malaysian origin)
-motivation: Financial
+  - "DragonForce Malaysia"
+affiliation: "Cybercriminal"
+motivation: "Financial / Hacktivism"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Malaysia"
+firstSeen: "2023"
+lastSeen: "2025"
+targetSectors:
+  - "Healthcare"
+  - "Retail"
+  - "Government"
+  - "Manufacturing"
+  - "Technology"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "United Kingdom"
+  - "Saudi Arabia"
+tools:
+  - "DragonForce ransomware"
+  - "LockBit builder (modified)"
+  - "ContiV3 builder (modified)"
+  - "SystemBC"
+  - "Cobalt Strike"
+mitreMappings:
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Uses modified LockBit and Conti builders for ransomware deployment."
+  - techniqueId: "T1078"
+    techniqueName: "Valid Accounts"
+    tactic: "Initial Access"
+    notes: "Affiliates obtain access through purchased credentials from initial access brokers."
+  - techniqueId: "T1021.001"
+    techniqueName: "Remote Services: Remote Desktop Protocol"
+    tactic: "Lateral Movement"
+    notes: "Uses RDP for lateral movement within compromised environments."
+attributionConfidence: A3
+attributionRationale: "Assessed as Malaysian-origin based on early hacktivist activity and linguistic analysis. Evolved into a RaaS platform. FBI and CISA advisory AA25-071A documented operations."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "ransomware"
+  - "raas"
+  - "dragonforce"
+  - "malaysia"
+  - "double-extortion"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2025-03-12"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.ic3.gov/Media/News/2025/250312.pdf"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2025-03-12"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.group-ib.com/blog/dragonforce-ransomware/"
+    publisher: "Group-IB"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2024-11-18"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-DragonForce is a financially motivated ransomware group that evolved from Malaysian hacktivist origins into a sophisticated Ransomware-as-a-Service (RaaS) cartel. First observed in August 2023, the group initially positioned itself as a pro-Palestinian hacktivist collective before pivoting to profit-driven operations. By 2026, DragonForce operates one of the most aggressive RaaS platforms in the threat landscape, with monthly victim counts surging to 650+ — up from approximately 450 per month in 2024.
+## Executive Summary
 
-                    DragonForce employs a double extortion model, encrypting victim data with AES-256 while simultaneously exfiltrating up to 1TB per victim. The group operates "white-label" affiliate portals with customizable branding and payloads, and introduced a novel "data analysis service" in August 2025 that generates extortion call scripts and legal analysis reports to increase pressure on victims. By January 2026, DragonForce had claimed 363 victims across diverse sectors.
+DragonForce is a ransomware-as-a-service (RaaS) operation that emerged in 2023, believed to have originated from a Malaysian hacktivist group. The operation evolved from pro-Palestinian hacktivism into a financially motivated ransomware platform, offering affiliates modified versions of leaked LockBit and Conti ransomware builders. DragonForce targets organizations across healthcare, retail, government, and manufacturing sectors worldwide.
 
-                    In April 2026, DragonForce claimed 13+ victims across manufacturing, packaging, hospitality, and utilities sectors. The group's evolving tactics — from hacktivism to financial extortion to cartel-style operations — demonstrate a mature threat actor with significant operational capability. Notable earlier targets include UK retail giants Marks & Spencer, Co-op, and Harrods in 2025.
+By early 2025, DragonForce had claimed responsibility for attacks on over 100 organizations. The group operates a double-extortion model with a Tor-based data leak site. In March 2025, CISA and FBI published a joint advisory (AA25-071A) detailing DragonForce TTPs and providing indicators of compromise.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566: Phishing
-                                T1078: Valid Accounts
-                                T1133: External Remote Services
-                                T1190: Exploit Public-Facing Application
-                            
-                            Execution:
-                            
-                                T1059: Command and Scripting Interpreter
-                            
-                            Persistence:
-                            
-                                T1547: Boot or Logon Autostart Execution
-                                T1543: Create or Modify System Process
-                            
-                            Credential Access:
-                            
-                                T1003: OS Credential Dumping (Mimikatz)
-                            
-                            Lateral Movement:
-                            
-                                T1021: Remote Services (Cobalt Strike, SystemBC)
-                            
-                            Defense Evasion:
-                            
-                                T1027: Obfuscated Files or Information
-                                T1562: Impair Defenses (BYOVD)
-                            
-                            Impact:
-                            
-                                T1486: Data Encrypted for Impact (AES-256)
-                                T1567: Exfiltration Over Web Service
+### 2025 -- UK Retail Sector Attacks
 
-                        Common Attack Vectors
-                        
-                            Credential Theft & Social Engineering: Phishing campaigns and credential theft for initial access into victim environments.
-                            BYOVD (Bring Your Own Vulnerable Driver): Deployment of vulnerable kernel drivers to disable endpoint security products before ransomware execution.
-                            Exposed Remote Services: Exploitation of exposed RDP, VPN, and other remote access services with brute-forced or stolen credentials.
-                            Affiliate Model: White-label affiliate portals allow diverse operators to deploy DragonForce payloads with customized branding and negotiation infrastructure.
+DragonForce claimed responsibility for attacks against major UK retailers including Marks and Spencer, Co-op, and Harrods in April-May 2025. The M&S attack disrupted online ordering and in-store contactless payment systems for several weeks.
 
-                        Tools & Malware
-                        
-                            DragonForce Ransomware: Custom AES-256 encryption payload available through the RaaS platform with customizable branding via RansomBay builder service.
-                            Cobalt Strike: Command-and-control framework used for post-exploitation, lateral movement, and payload delivery.
-                            SystemBC: Backdoor proxy tool used for maintaining persistent access and facilitating C2 communications.
-                            Mimikatz: Credential harvesting tool for extracting passwords and authentication tokens from Windows systems.
-                            Data Analysis Service: Novel capability generating extortion call scripts and legal analysis reports to maximize victim compliance (launched August 2025).
+### 2024 -- Healthcare and Government Targeting
 
-                        Infrastructure Patterns
-                        
-                            RaaS Cartel Platform: White-label affiliate portals with customizable payloads, branding, and multi-extortion management.
-                            Dark Web Leak Site: Tor-hosted platform for publishing stolen data and managing victim negotiations.
-                            Bulletproof Hosting: Infrastructure designed to resist takedown efforts and law enforcement action.
+The group conducted multiple attacks against healthcare organizations and local government agencies, exfiltrating patient records and government documents.
 
-## Targeted Industries & Organizations
+### 2023 -- Transition from Hacktivism to RaaS
 
-DragonForce targets organizations across diverse sectors globally:
+DragonForce transitioned from DDoS attacks and website defacements as part of pro-Palestinian hacktivism (OpsPetir, OpsIsrael) to launching a ransomware affiliate program using leaked ransomware builders.
 
-                            SectorNotable Targets / Impact
+## Technical Capabilities
 
-                            RetailMarks & Spencer, Co-op, Harrods (UK, 2025) — high-profile attacks on major retailers
-                            Manufacturing13+ victims in April 2026 across manufacturing and packaging sectors
-                            HospitalityMultiple hotel and hospitality organizations targeted in 2026
-                            UtilitiesEnergy and utilities infrastructure targeted for high-value ransom demands
-                            Financial ServicesFinancial institutions across North America and Europe
-                            EducationFGV Brazil (March 2026) and other educational institutions
-                            HealthcareHealthcare organizations targeted for sensitive data value
+DragonForce's ransomware is built on modified versions of leaked LockBit 3.0 and Conti V3 source code. The ransomware supports Windows and Linux/ESXi targets using AES encryption. Affiliates gain initial access through purchased credentials from access brokers, exploitation of VPN vulnerabilities, or phishing.
 
-## Attributable Attacks Timeline
+Post-compromise activities include deployment of SystemBC for tunneling, Cobalt Strike for command and control, and credential harvesting for lateral movement. The group operates a web-based affiliate panel, automated negotiation system, and data leak site.
 
-Aug 2023
-                            
-                                Group Emergence
-                                DragonForce appears from Malaysian hacktivist origins, initially positioning as pro-Palestinian collective conducting website defacements and DDoS attacks.
+## Attribution
 
-                            2024
-                            
-                                Pivot to Ransomware
-                                Transitions from hacktivism to financially motivated ransomware operations. Scales to approximately 450 victims per month through growing affiliate network.
+DragonForce's origins in Malaysian hacktivism are assessed based on early operations, linguistic indicators, and self-identification. The transition to ransomware suggests either an evolution in objectives or adoption of the brand by financially motivated actors. CISA and FBI advisory AA25-071A documents the group's operations without identifying specific individuals.
 
-                            2025
-                            
-                                UK Retail Campaign
-                                Aggressive targeting of major UK retailers including Marks & Spencer, Co-op, and Harrods. Establishes reputation for high-profile attacks.
+## MITRE ATT&CK Profile
 
-                            Aug 2025
-                            
-                                Data Analysis Service
-                                Introduces novel 'data analysis service' generating extortion call scripts and legal analysis reports to increase victim pressure.
+**Initial Access**: Valid accounts from access brokers (T1078), exploitation of VPN appliances (T1190), and phishing (T1566).
 
-                            Jan 2026
-                            
-                                363+ Cumulative Victims
-                                Claims 363+ total victims. Monthly victim counts surge to 650+ as cartel model attracts more affiliates.
+**Lateral Movement**: RDP (T1021.001), SMB/Windows Admin Shares (T1021.002), and PsExec for ransomware distribution.
 
-                            Apr 2026
-                            
-                                April Campaign
-                                Claims 13+ new victims across manufacturing, packaging, hospitality, and utilities in early April 2026.
+**Exfiltration**: Data staged and exfiltrated to attacker infrastructure before encryption (T1567.002).
 
-## Known Exploits & CVEs
+**Impact**: File encryption (T1486), shadow copy deletion (T1490), and backup service disruption.
 
-DragonForce primarily relies on credential theft, social engineering, and BYOVD techniques rather than specific CVE exploitation. The group leverages Cobalt Strike and SystemBC for post-exploitation rather than targeting specific software vulnerabilities for initial access.
+## Sources & References
 
-## Cross-Vendor Naming Reference
-
-Vendor / Organization
-                                Name Used
-
-                                Trend Micro
-                                DragonForce Ransomware
-
-                                Group-IB
-                                DragonForce
-
-                                Bitdefender
-                                DragonForce Ransomware Cartel
-
-                                SentinelOne
-                                DragonForce
-
-                                CrowdStrike
-                                DragonForce
-
-## Related Threat Actors
-
-LockBit: Major RaaS competitor. Some DragonForce affiliates are suspected of cross-platform operations with LockBit infrastructure.
-                        BlackCat/ALPHV: Another RaaS operation with overlapping affiliate networks and similar targeting patterns.
-                        DragonForce Malaysia: Malaysian hacktivist group that denies involvement in ransomware operations, despite sharing the DragonForce name. Relationship disputed.
-
-## References & Sources
-
-[1]
-                            Trend Micro: Ransomware Spotlight — DragonForce
-                            Trend Micro
-
-                            [2]
-                            Group-IB: DragonForce Ransomware Analysis
-                            Group-IB
-
-                            [3]
-                            Bitdefender: DragonForce Ransomware Cartel
-                            Bitdefender
-
-                            [4]
-                            SentinelOne: From Hacktivists to High Street Extortionists
-                            SentinelOne
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇲🇾
-                        Malaysia (origin)
-
-                    Nation-State Sponsored
-                    No — Criminal Enterprise (RaaS Cartel)
-
-                    Motivation
-                    Financial (Ransomware & Double Extortion)
-
-                    First Seen
-                    August 2023
-
-                    Last Seen
-                    2026-Q2
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    DragonForce Malaysia (disputed)
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [CISA: Advisory AA25-071A - DragonForce](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a) -- CISA, 2025-03-12
+- [FBI: DragonForce Ransomware Indicators](https://www.ic3.gov/Media/News/2025/250312.pdf) -- FBI, 2025-03-12
+- [Group-IB: DragonForce Ransomware Analysis](https://www.group-ib.com/blog/dragonforce-ransomware/) -- Group-IB, 2024-11-18

@@ -1,264 +1,135 @@
 ---
-name: "Cl0p Group | Threatpedia"
-aliases: []
-affiliation: Unknown
-motivation: Unknown
-status: unknown
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+name: "Cl0p"
+aliases:
+  - "TA505 (overlapping)"
+  - "FIN11 (overlapping)"
+  - "CLOP"
+  - "Cl0p Gang"
+affiliation: "Cybercriminal (Russian-speaking)"
+motivation: "Financial"
+status: active
+country: "Russia"
+firstSeen: "2019"
+lastSeen: "2025"
+targetSectors:
+  - "Financial Services"
+  - "Healthcare"
+  - "Government"
+  - "Education"
+  - "Technology"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "Europe"
+tools:
+  - "Cl0p ransomware"
+  - "DEWMODE"
+  - "TrueBot"
+  - "FlawedAmmyy"
+  - "Cobalt Strike"
+mitreMappings:
+  - techniqueId: "T1190"
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+    notes: "Cl0p exploits zero-day vulnerabilities in file transfer appliances (MOVEit, GoAnywhere, Accellion)."
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Deploys Cl0p ransomware for file encryption, though recent campaigns focus on data theft only."
+  - techniqueId: "T1567.002"
+    techniqueName: "Exfiltration Over Web Service: Exfiltration to Cloud Storage"
+    tactic: "Exfiltration"
+    notes: "Mass data exfiltration from compromised file transfer platforms before disclosure."
+attributionConfidence: A2
+attributionRationale: "CISA and FBI attributed Cl0p as a Russian-speaking cybercriminal group. Ukrainian law enforcement arrested six suspected members in 2021, though the operation continued."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "ransomware"
+  - "cl0p"
+  - "zero-day"
+  - "file-transfer"
+  - "mass-exploitation"
+  - "double-extortion"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-06-07"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.ic3.gov/Media/News/2023/230607.pdf"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-06-07"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.mandiant.com/resources/blog/zero-day-moveit-data-theft"
+    publisher: "Mandiant"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-06-02"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.state.gov/rewards-for-justice-cl0p-ransomware/"
+    publisher: "US Department of State"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-06-16"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-Cl0p Group (also known as Cl0p) is a sophisticated financially motivated threat actor specializing in exploiting enterprise file transfer and collaboration platform vulnerabilities for data exfiltration and extortion. Operating since 2019, the group has become one of the most prolific data extortion operations globally, with a particular focus on zero-day exploitation of widely-deployed file transfer solutions. Cl0p is known for their high-impact supply chain compromises, rapid vulnerability exploitation, and aggressive extortion campaigns.
-
-                    The group gained widespread attention through their exploitation of MOVEit Transfer, a critical file transfer platform used by thousands of organizations worldwide. In a single coordinated campaign in 2023, Cl0p exploited MOVEit vulnerabilities to compromise government agencies, Fortune 500 companies, healthcare systems, and educational institutions across multiple countries. The group's operational model combines zero-day exploitation with swift exfiltration and double-extortion tactics, demanding millions in ransom payments.
-
-                    Cl0p's technical capabilities rival state-sponsored adversaries, with demonstrated expertise in vulnerability research, exploit development, and persistence mechanisms. The group maintains a professional public-facing leak site, publishes detailed extortion threats, and communicates directly with victims through customized messages. As of 2025, Cl0p continues active operations with refined tactics and expanded targeting across critical infrastructure, healthcare, and government sectors globally.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1190: Exploit Public-Facing Application
-                                T1195.002: Supply Chain Compromise - Software Supply Chain
-                                T1199: Trusted Relationship
-                            
-                            Execution & Persistence:
-                            
-                                T1059: Command and Scripting Interpreter
-                                T1570: Lateral Tool Transfer
-                                T1021: Remote Services
-                            
-                            Credential Access & Defense Evasion:
-                            
-                                T1110: Brute Force
-                                T1087: Account Discovery
-                                T1562: Impair Defenses
-                            
-                            Exfiltration:
-                            
-                                T1020: Automated Exfiltration
-                                T1030: Data Transfer Size Limits
-                                T1041: Exfiltration Over C2 Channel
-
-                        Common Attack Vectors
-                        
-                            Zero-Day Exploitation: Rapid discovery and weaponization of zero-day vulnerabilities in enterprise file transfer solutions. MOVEit Transfer CVEs exploited within days of discovery for large-scale impact.
-                            Unpatched Vulnerabilities: Exploitation of known but unpatched vulnerabilities in widely-deployed platforms. Extended targeting of systems running older versions after patches are released.
-                            Supply Chain Compromise: Direct compromise of file transfer platforms and collaboration tools used as trusted intermediaries between organizations, enabling access to customer environments.
-                            Web Shell Deployment: Installation of persistent web shells on compromised servers for long-term access and lateral movement.
-                            Aggressive Data Exfiltration: High-bandwidth bulk exfiltration of sensitive data from multiple departments and systems within hours of initial compromise.
-
-                        Tools & Malware
-                        
-                            Custom Web Shells: Proprietary web shells written in multiple languages (PHP, JSP, ASPX) for persistent access and file operations.
-                            ClZip: Custom compression tool used for rapid data packaging prior to exfiltration.
-                            Golang-based Utilities: Lightweight Go-compiled tools for credential harvesting, lateral movement, and system reconnaissance.
-                            Rclone/RSync: Legitimate data transfer tools weaponized for high-speed bulk exfiltration across networks.
-                            Custom Reconnaissance Scripts: Python and Bash scripts for network enumeration, privilege escalation, and active directory harvesting.
-                            Port Scanning Tools: Custom network mapping tools for identifying accessible systems and data repositories.
-
-                        Infrastructure Patterns
-                        
-                            Professional Leak Site: Maintains sophisticated, multi-language leak sites with organization lists, exfiltrated data samples, and negotiation portals.
-                            Bulletproof Hosting: Uses bulletproof hosting providers and privacy-focused infrastructure to evade takedowns.
-                            Tor & I2P Networks: Operates communication channels via Tor hidden services and I2P for anonymity.
-                            Cryptocurrency Mixing: Uses mixing services and tumblers to launder ransom payments and extortion proceeds.
-                            Compromised Infrastructure Reuse: Leverages compromised servers and hosting accounts for redundancy and persistence.
-
-## Targeted Industries & Organizations
-
-Cl0p targets high-value organizations across critical sectors with preference for large enterprises and public entities:
-
-                                Sector
-                                Notable Targets
-
-                                Government & Diplomacy
-                                US Federal agencies, State Department, international diplomatic missions, government contractors
-
-                                Healthcare & Pharmaceuticals
-                                Hospital systems, health insurance providers, pharmaceutical manufacturers, medical device companies
-
-                                Critical Infrastructure
-                                Electricity utilities, water systems, transportation authorities, telecommunications
-
-                                Finance & Banking
-                                Financial institutions, investment firms, insurance companies, payment processors
-
-                                Education
-                                Universities, research institutions, educational technology providers
-
-                                Technology & Manufacturing
-                                Software vendors, IT service providers, aerospace contractors, defense manufacturers
-
-                    Geographic Scope: Global operations with notable impact in USA, Europe, and Asia-Pacific regions. Targets multinational organizations with presence across multiple countries to maximize ransom leverage.
-
-## Attributable Attacks Timeline
-
-2019-2021
-                            
-                                Clop Ransomware Operations Begin
-                                Cl0p emerges as data extortion operator targeting file transfer platforms. Initial campaigns exploit FTA (File Transfer Appliance) vulnerabilities affecting enterprise environments worldwide.
-
-                            Jun 2021
-                            
-                                Accellion FTA Zero-Day Exploitation
-                                Cl0p exploits zero-day vulnerabilities in Accellion FTA file transfer appliance, compromising thousands of organizations globally. Attack impacts Shell, Stanford University, SolarWinds, and US government agencies.
-
-                            May 2023
-                            
-                                MOVEit Transfer Exploitation Campaign
-                                Cl0p exploits critical CVE-2023-34362 zero-day in MOVEit Transfer. Single campaign affects 2,000+ organizations within weeks, including US State Department, healthcare systems, Fortune 500 companies. Estimated 60+ million individuals affected by data theft.
 
-                            Aug 2023
-                            
-                                Progress Software GoAnywhere Exploitation
-                            Cl0p exploits zero-day vulnerabilities in Progress Software GoAnywhere secure file transfer solution. Targets government agencies and healthcare organizations across multiple countries.
+## Executive Summary
 
-                            Q4 2023 - Q1 2024
-                            
-                                Continued MOVEit & WebSocket Exploitation
-                                Cl0p continues targeting MOVEit instances and discovers WebSocket protocol vulnerabilities in file transfer systems. Secondary and tertiary wave of attacks against slower-patching organizations.
+Cl0p is a Russian-speaking cybercriminal group that has evolved from a traditional ransomware operation into one of the most prolific mass-exploitation threat actors. Active since 2019, Cl0p has pioneered a model of exploiting zero-day vulnerabilities in enterprise file transfer solutions to conduct mass data theft campaigns affecting thousands of organizations simultaneously.
 
-                            2024
-                            
-                                OpenText File Transfer Targeting
-                                Cl0p shifts focus to OpenText file transfer platforms and identifies new zero-days. Expands targeting to European government agencies and healthcare systems.
+The group's exploitation of vulnerabilities in Accellion FTA (2020-2021), Fortra GoAnywhere MFT (2023), and Progress MOVEit Transfer (2023) collectively compromised over 2,500 organizations. The MOVEit campaign alone affected over 2,000 organizations and exposed data belonging to more than 60 million individuals. The U.S. State Department's Rewards for Justice program has offered up to $10 million for information on Cl0p members.
 
-                            Q1 2025
-                            
-                                Advanced Persistent Infrastructure Likely
-                                Security researchers assess Cl0p has evolved beyond opportunistic exploitation to maintain persistent access in critical infrastructure environments for extended intelligence collection prior to data theft.
+## Notable Campaigns
 
-## Known Exploits & CVEs
+### 2023 -- MOVEit Transfer Mass Exploitation
 
-Cl0p specializes in rapid zero-day exploitation of enterprise file transfer platforms. The following CVEs have been directly attributed to Cl0p campaigns:
+Cl0p exploited CVE-2023-34362, a SQL injection zero-day in Progress MOVEit Transfer, to exfiltrate data from over 2,000 organizations worldwide. Victims included the U.S. Department of Energy, Shell, British Airways, and the BBC. The group used automated scripts to extract data from MOVEit instances before any patches were available.
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+### 2023 -- Fortra GoAnywhere MFT Exploitation
 
-                                CVE-2023-34362
-                                Arbitrary File Upload - MOVEit Transfer RCE
-                                MOVEit Transfer (all versions)
-                                9.8
+Cl0p exploited CVE-2023-0669 in Fortra GoAnywhere MFT, claiming to have compromised 130 organizations in the campaign. The group used the DEWMODE web shell to access and exfiltrate data from compromised GoAnywhere instances.
 
-                                CVE-2023-34539
-                                SQL Injection - MOVEit Transfer
-                                MOVEit Transfer
-                                9.8
+### 2020-2021 -- Accellion FTA Exploitation
 
-                                CVE-2023-38831
-                                Arbitrary Code Execution in WinRAR
-                                WinRAR (all versions before 6.23)
-                                8.8
+Cl0p exploited multiple vulnerabilities in the Accellion File Transfer Appliance to steal data from organizations including Shell, Bombardier, Morgan Stanley, and several U.S. universities. This campaign established the group's file-transfer-appliance exploitation model.
 
-                                CVE-2023-35078
-                                Authentication Bypass - Progress GoAnywhere
-                                Progress GoAnywhere Secure File Transfer
-                                9.8
+## Technical Capabilities
 
-                                CVE-2021-25282
-                                Remote Code Execution - Accellion FTA
-                                Accellion File Transfer Appliance
-                                9.8
+Cl0p specializes in identifying and exploiting zero-day vulnerabilities in enterprise file transfer platforms. The group appears to stockpile zero-days and deploy them in mass-exploitation campaigns, compromising hundreds of organizations in rapid succession before patches are available.
 
-                                CVE-2024-20669
-                                WebSocket Protocol Bypass - OpenText
-                                OpenText File Transfer
-                                9.6
+The Cl0p ransomware itself is a Windows-based encryptor that has been in development since 2019. However, in recent campaigns, the group has shifted to data-theft-only operations, exfiltrating data and threatening publication on their leak site without encrypting victim systems. This approach reduces operational complexity and incident response detection opportunities.
 
-## Cross-Vendor Naming Reference
+The group operates a Tor-based data leak site and uses a tiered extortion model: direct negotiation demands, followed by naming victims publicly, and finally publishing stolen data.
 
-Cl0p Group is tracked under multiple designations across the threat intelligence community:
+## Attribution
 
-                                Vendor / Organization
-                                Name Used
+CISA and FBI published joint advisories (AA23-158A) attributing the MOVEit exploitation to Cl0p. The U.S. State Department offered a $10 million reward for information leading to the identification of Cl0p members. In 2021, Ukrainian law enforcement arrested six individuals linked to the Cl0p operation, though the group continued operating, suggesting leadership remained at large.
 
-                                CrowdStrike
-                                GOLD WELLINGTON
+Cl0p has historical overlaps with the TA505/FIN11 threat clusters, sharing infrastructure, tooling, and operational patterns. The relationship suggests Cl0p is either a project of TA505 operators or draws from the same personnel pool.
 
-                                Mandiant / Google
-                                Cl0p Group
+## MITRE ATT&CK Profile
 
-                                Recorded Future
-                                Cl0p
+**Initial Access**: Exploitation of zero-day vulnerabilities in public-facing file transfer applications (T1190) is the primary and defining vector.
 
-                                Trend Micro
-                                Cl0p
+**Execution**: Web shells (T1505.003) deployed on compromised file transfer appliances enable command execution and data access. DEWMODE and custom web shells are used.
 
-                                Palo Alto Networks
-                                Cl0p Group
+**Exfiltration**: Automated data exfiltration scripts extract files from compromised platforms and transfer them to attacker-controlled infrastructure (T1567.002).
 
-                                CISA
-                                Cl0p Group
+**Impact**: Data encrypted for impact (T1486) in traditional ransomware deployments, though recent operations focus exclusively on data theft and extortion.
 
-                                Microsoft
-                                Cl0p Group
+## Sources & References
 
-                                Sophos
-                                Cl0p / CleverTouch
-
-## Related Threat Actors
-
-LockBit Gang: Similar financially motivated ransomware/extortion operations with overlapping victim selection and ransom negotiation tactics, though distinct operational infrastructure.
-                        BlackCat / ALPHV: Competing ransomware-as-a-service operation with comparable targeting profiles and technical sophistication in file transfer exploitation.
-                        FIN7: Financially motivated threat group with some tactical overlaps in data exfiltration approaches, though different tool preferences and targeting focuses.
-
-## References & Sources
-
-[1]
-                            Mandiant: Cl0p Group MOVEit Zero-Day Exploitation Analysis
-
-                            [2]
-                            CISA Alert: MOVEit Transfer Critical Vulnerabilities
-
-                            [3]
-                            BleepingComputer: Cl0p Ransomware Group Analysis
-
-                            [4]
-                            CrowdStrike: GOLD WELLINGTON (Cl0p) Campaign Deep Dive
-
-                            [5]
-                            Microsoft Security Blog: Cl0p Group MOVEit Exploitation Campaign
-
-                            [6]
-                            Check Point Research: Cl0p Group File Transfer Exploitation
-
-                            [7]
-                            Recorded Future: Cl0p Group Data Exfiltration Operations
-
-                            [8]
-                            Sophos: Cl0p Group Threat Analysis and Indicators
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🏴
-                        Unknown
-
-                    Nation-State Sponsored
-                    No
-
-                    Motivation
-                    Financial (Data Extortion)
-
-                    First Seen
-                    2019
-
-                    Last Seen
-                    2025 (Active)
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    CleverTouch (Variant)
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [CISA: Advisory AA23-158A - Cl0p MOVEit Exploitation](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a) -- CISA, 2023-06-07
+- [FBI: Cl0p Ransomware Gang Exploits MOVEit](https://www.ic3.gov/Media/News/2023/230607.pdf) -- FBI, 2023-06-07
+- [Mandiant: Zero-Day MOVEit Data Theft](https://www.mandiant.com/resources/blog/zero-day-moveit-data-theft) -- Mandiant, 2023-06-02
+- [US State Department: Rewards for Justice - Cl0p](https://www.state.gov/rewards-for-justice-cl0p-ransomware/) -- US Department of State, 2023-06-16

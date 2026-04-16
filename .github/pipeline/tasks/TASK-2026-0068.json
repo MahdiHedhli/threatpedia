@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0068",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Sandworm Ukraine Power Grid Attacks Campaign (2015-2016)",
     "sources": [
@@ -40,6 +40,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "note": "Campaign article — smoke test round 3"
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

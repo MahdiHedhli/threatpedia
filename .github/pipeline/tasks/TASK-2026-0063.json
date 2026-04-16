@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0063",
   "type": "threat-actor",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "Sandworm (Russian GRU Unit 74455)",
@@ -15,7 +15,13 @@
     ],
     "candidate_data": {
       "actor_name": "Sandworm",
-      "aliases": ["IRIDIUM", "TeleBots", "Voodoo Bear", "ELECTRUM", "Iron Viking"],
+      "aliases": [
+        "IRIDIUM",
+        "TeleBots",
+        "Voodoo Bear",
+        "ELECTRUM",
+        "Iron Viking"
+      ],
       "origin": "Russia",
       "affiliation": "GRU (Main Intelligence Directorate), Unit 74455",
       "motivation": "Destructive / Espionage",
@@ -45,6 +51,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "notes": "Pipeline v2 smoke test — tightened validator"
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

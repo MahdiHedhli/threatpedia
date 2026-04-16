@@ -1,254 +1,135 @@
 ---
-name: APT38
+name: "APT38"
 aliases:
   - "Bluenoroff"
-  - "Alluring Pisces"
-  - "BRONZE TEMPLE"
-affiliation: North Korea
-motivation: Financial
+  - "Stardust Chollima"
+  - "BeagleBoyz"
+  - "NICKEL GLADSTONE"
+affiliation: "North Korea (Reconnaissance General Bureau)"
+motivation: "Financial"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "North Korea"
+firstSeen: "2014"
+lastSeen: "2025"
+targetSectors:
+  - "Financial Services"
+  - "Cryptocurrency"
+  - "Banking"
+  - "Fintech"
+targetGeographies:
+  - "Global"
+  - "Southeast Asia"
+  - "Latin America"
+  - "Africa"
+  - "Europe"
+tools:
+  - "DYEPACK"
+  - "HERMES"
+  - "FASTCash"
+  - "NESTEGG"
+  - "KEYLIME"
+  - "MAPMAKER"
+  - "QUICKCAFE"
+mitreMappings:
+  - techniqueId: "T1657"
+    techniqueName: "Financial Theft"
+    tactic: "Impact"
+    notes: "APT38's primary objective is financial theft from banking and cryptocurrency targets."
+  - techniqueId: "T1059.001"
+    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    tactic: "Execution"
+    notes: "Uses PowerShell and custom scripts for payload delivery and post-exploitation."
+  - techniqueId: "T1485"
+    techniqueName: "Data Destruction"
+    tactic: "Impact"
+    notes: "APT38 deploys disk-wiping malware to destroy evidence after completing financial theft operations."
+attributionConfidence: A1
+attributionRationale: "Attributed to North Korea's Reconnaissance General Bureau by U.S. government advisories and a 2018 DOJ criminal complaint against a DPRK national (Park Jin Hyok)."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "nation-state"
+  - "north-korea"
+  - "financial"
+  - "apt38"
+  - "banking"
+  - "cryptocurrency"
+sources:
+  - url: "https://attack.mitre.org/groups/G0082/"
+    publisher: "MITRE ATT&CK"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-239a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2020-08-26"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-09-06"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://content.fireeye.com/apt/rpt-apt38"
+    publisher: "Mandiant"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2018-10-03"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-APT38 (Bluenoroff) is a financially-motivated North Korean threat actor attributed to the Reconnaissance General Bureau (RGB), North Korea's primary intelligence service. Identified as operating since at least 2014, APT38 specializes in targeting financial institutions, cryptocurrency exchanges, and banking infrastructure for direct monetary theft. The group is responsible for some of the largest financial cybercrimes in history, stealing billions of dollars in currency, cryptocurrency, and other assets.
+## Executive Summary
 
-                    APT38 represents a unique threat actor in that the group's primary motivation is financial gain rather than espionage, with the stolen funds supporting North Korea's regime and sanctions evasion. The group maintains sophisticated banking malware, exploits, and infrastructure to target SWIFT networks, ATM systems, and cryptocurrency exchanges. APT38 demonstrates deep knowledge of banking systems, financial protocols, and operational security measures implemented by financial institutions.
+APT38, also known as Bluenoroff and Stardust Chollima, is a North Korean state-sponsored threat actor attributed to the **Reconnaissance General Bureau (RGB)**. Active since at least 2014, APT38 focuses on financially motivated cyber operations to generate revenue for the North Korean regime. The group is distinct from other Lazarus-affiliated clusters in its specialization in financial institution targeting and SWIFT banking system manipulation.
 
-                    As of 2025, APT38 continues active financial theft operations with renewed focus on cryptocurrency theft, DeFi platform exploitation, and emerging financial technologies. The group maintains multiple operational teams targeting different financial verticals and demonstrates rapid adaptation to security controls and anti-fraud measures. Their operations remain a significant threat to global financial infrastructure and cryptocurrency ecosystems.
+APT38 is estimated to have attempted to steal over $1.1 billion from financial institutions worldwide and has successfully stolen hundreds of millions of dollars. The group targets banks, cryptocurrency exchanges, and financial technology companies across more than 30 countries. APT38's operations are characterized by extensive pre-operation reconnaissance, long dwell times within victim networks, and the use of destructive malware to cover tracks after theft operations.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1190: Exploit Public-Facing Application
-                                T1566: Phishing
-                                T1199: Trusted Relationship
-                                T1200: Hardware Additions
-                            
-                            Execution:
-                            
-                                T1059: Command and Scripting Interpreter
-                                T1203: Exploitation for Client Execution
-                                T1072: Software Deployment Tools
-                            
-                            Persistence:
-                            
-                                T1547: Boot or Logon Autostart Execution
-                                T1547.001: Registry Run Keys
-                                T1137: Office Application Startup
-                            
-                            Credential Access:
-                            
-                                T1056: Input Capture
-                                T1110: Brute Force
-                                T1056.001: Input Capture - Keylogging
-                            
-                            Discovery:
-                            
-                                T1087: Account Discovery
-                                T1010: Application Window Discovery
-                                T1120: Peripheral Device Discovery
-                            
-                            Impact:
-                            
-                                T1491: Defacement
-                                T1561: Disk Wipe
-                                T1570: Lateral Tool Transfer
+### 2016 -- Bangladesh Bank Heist
 
-                        Common Attack Vectors
-                        
-                            SWIFT Network Exploitation: Direct targeting of SWIFT interfaces and banking protocols to execute unauthorized transfers from high-value accounts.
-                            ATM Malware Deployment: Custom malware targeting ATM operating systems to enable unlimited cash extraction and transaction manipulation.
-                            Cryptocurrency Exchange Targeting: Focused operations against digital currency exchanges, hot wallets, and cryptocurrency trading platforms.
-                            Spear-phishing & Social Engineering: Highly targeted phishing campaigns against banking employees and cryptocurrency service providers.
-                            Vulnerability Exploitation: Rapid exploitation of zero-day and known vulnerabilities in banking systems, exchanges, and financial services.
+APT38 compromised Bangladesh Bank's SWIFT infrastructure and attempted to transfer $951 million from its account at the Federal Reserve Bank of New York. While most transfers were blocked, $81 million was successfully stolen through accounts in the Philippines. The operation revealed the group's deep understanding of SWIFT messaging and interbank transfer protocols.
 
-                        Tools & Malware
-                        
-                            SWIFT Malware: Custom tools designed to interact with SWIFT systems, enabling unauthorized fund transfers while evading detection.
-                            Fastpos: POS malware targeting point-of-sale systems in retail and hospitality sectors for payment card theft.
-                            Dolphin: Custom backdoor for banking network reconnaissance and credential harvesting.
-                            Riojatch: Loader malware used in early stages of compromise to stage additional tools and implants.
-                            Destover: Advanced RAT used for post-compromise network reconnaissance and lateral movement.
-                            Custom Cryptocurrency Stealers: Specialized malware targeting cryptocurrency wallets, exchanges, and DeFi platforms.
-                            ATM Withdrawal Tools: Custom utilities for ATM network access and cash extraction authorization.
+### 2018 -- Banco de Chile Attack
 
-                        Infrastructure Patterns
-                        
-                            Compromised Banking Networks: Operators maintain persistent access in compromised banking systems and use them as staging points.
-                            International Command-and-Control: Distributed C2 infrastructure across multiple countries to evade attribution and tracking.
-                            Cryptocurrency Mixing Services: Use of cryptocurrency tumblers and mixing services to launder stolen digital assets.
-                            Underground Banking Channels: Exploitation of underground banking networks and informal value transfer systems (hawala, etc.).
-                            Tor and VPN Infrastructure: Heavy use of anonymization services to mask communications and malware C2.
+The group compromised Banco de Chile, deploying destructive malware (HERMES variant) across approximately 9,000 workstations and 500 servers as a diversionary tactic while conducting unauthorized SWIFT transfers totaling $10 million.
 
-## Targeted Industries & Organizations
+### 2017-2022 -- Cryptocurrency Exchange Targeting
 
-Sector
-                                Notable Targets / Focus
+APT38 expanded operations to target cryptocurrency exchanges and DeFi protocols, stealing hundreds of millions in cryptocurrency. Operations included the theft of approximately $620 million from the Ronin Network bridge (attributed to Lazarus/APT38 cluster) in 2022.
 
-                                Banking & Financial Services
-                                Commercial banks, investment banks, central banks, SWIFT participants, ATM operators
+## Technical Capabilities
 
-                                Cryptocurrency & Digital Assets
-                                Cryptocurrency exchanges, crypto trading platforms, DeFi protocols, digital wallet providers
+APT38 conducts extensive reconnaissance within target financial networks, spending months understanding internal transaction systems, SWIFT configurations, and operational procedures. The group develops custom tools tailored to each financial institution's specific infrastructure.
 
-                                Payment Processing
-                                Payment processors, POS system providers, payment gateway operators, card networks
+**FASTCash** enables fraudulent ATM cash withdrawals by intercepting and modifying transaction authorization messages at the application server level. **DYEPACK** modifies SWIFT Alliance Lite2 software to delete transaction records and alter printed confirmations, hiding fraudulent transfers.
 
-                                Financial Technology
-                                Fintech startups, mobile banking apps, investment platforms, robo-advisors
+The group's operational model follows a distinctive pattern: initial compromise via spearphishing, extended reconnaissance and lateral movement (average 155 days), execution of financial theft, and deployment of disk-wiping malware to destroy forensic evidence.
 
-                                Money Services
-                                Money remittance services, currency exchange, international wire services
+## Attribution
 
-                                Cryptocurrency Services
-                                Mining operations, staking providers, NFT marketplaces, blockchain platforms
+The U.S. DOJ charged Park Jin Hyok, a North Korean national, in September 2018 for his role in APT38 operations including the Bangladesh Bank heist. CISA advisory AA20-239A (BeagleBoyz) detailed North Korean financial institution targeting with technical indicators. The U.S. Treasury Department has sanctioned multiple entities associated with APT38 operations, and the UN Panel of Experts on North Korea has documented the group's role in sanctions evasion.
 
-## Attributable Attacks Timeline
+## MITRE ATT&CK Profile
 
-2014-2015
-                            
-                                Early Banking Operations
-                                APT38 begins targeted operations against financial institutions in Asia-Pacific region using custom banking malware.
+**Initial Access**: Spearphishing attachments (T1566.001) targeting bank employees, watering hole attacks (T1189) on financial industry sites, and supply chain compromise of financial software.
 
-                            Feb 2016
-                            
-                                Bangladesh Bank SWIFT Heist
-                                Historic theft of $81 million from Bangladesh Bank central bank via SWIFT network manipulation, largest bank heist in history at the time.
+**Persistence**: The group maintains long-term access through scheduled tasks (T1053), registry modifications (T1547.001), and backdoors placed on critical financial infrastructure servers.
 
-                            2016-2017
-                            
-                                Global Bank Targeting Campaign
-                                Expansion to target financial institutions across multiple continents using similar SWIFT attack techniques.
+**Impact**: Financial theft (T1657) through SWIFT manipulation, cryptocurrency theft, and ATM cash-out schemes. Post-operation evidence destruction through data destruction (T1485) and disk wiping (T1561).
 
-                            2018-2019
-                            
-                                Cryptocurrency Exchange Targeting
-                                Shift toward cryptocurrency exchanges and digital asset theft with multiple high-value heists from major exchanges.
+**Defense Evasion**: Custom malware designed to evade financial sector security tools, timestomping (T1070.006), and indicator removal (T1070) are standard practices.
 
-                            2020-2021
-                            
-                                DeFi Platform Focus
-                                Operations targeting decentralized finance platforms, stealing tens of millions in cryptocurrency through exploit and theft.
+## Sources & References
 
-                            2022-2023
-                            
-                                Bridge Exploit Campaigns
-                                Operations targeting cross-chain bridge protocols, extracting hundreds of millions in cryptocurrency.
-
-                            2024-2025
-                            
-                                Continued Financial Targeting
-                            Ongoing operations against financial institutions and cryptocurrency platforms with updated malware toolkits.
-
-## Known Exploits & CVEs
-
-CVE ID
-                                Vulnerability
-                                Affected Product
-                                Year
-
-                                CVE-2013-4806
-                                Internet Explorer Use-After-Free
-                                Microsoft Internet Explorer
-                                2013
-
-                                CVE-2015-0566
-                                Adobe Flash Remote Code Execution
-                                Adobe Flash Player
-                                2015
-
-                                CVE-2016-3714
-                                ImageMagick Remote Code Execution
-                                ImageMagick
-                                2016
-
-                                CVE-2017-0290
-                                Windows OLE Remote Code Execution
-                                Microsoft Windows
-                                2017
-
-                                CVE-2021-21222
-                                Telegram Bot API RCE
-                                Telegram Platform
-                                2021
-
-## Cross-Vendor Naming Reference
-
-Vendor
-                                Attribution Name
-
-                                Mandiant
-                                APT38
-
-                                CrowdStrike
-                                STARDUST CHOLLIMA
-
-                                Kaspersky
-                                Bluenoroff
-
-                                Recorded Future
-                                BRONZE TEMPLE
-
-                                Symantec
-                                Alluring Pisces
-
-                                US-CERT
-                                Hidden Cobra
-
-## Related Threat Actors
-
-APT38 operates within the broader North Korean state-sponsored ecosystem. Related groups include:
-                    
-                        Lazarus Group (APT38 parent) - Broader NK threat actor group
-                        APT37 (REAPER) - North Korean espionage group
-                        Kimsuky (APT43) - North Korean defense research targeting
-                        Andariel - North Korean dual-purpose group
-                        Lazarus - Broader North Korean operations
-
-## References & Sources
-
-[1] US FBI/Treasury Report: "APT38 Financial Theft Operations" (2024)
-                        [2] Mandiant Intelligence Report: "APT38 - North Korean Financial Cybercrime Operations" (2023)
-                        [3] Kaspersky Securelist: "Bluenoroff - Banking Malware Attribution Report" (2022)
-                        [4] Recorded Future: "BRONZE TEMPLE Cryptocurrency Theft Campaign" (2021)
-                        [5] CrowdStrike Adversary Report: "STARDUST CHOLLIMA Banking Heists" (2020)
-                        [6] CISA Alert: "North Korean APT38 Targeting Financial Institutions" (2019)
-                        [7] Symantec Threat Report: "Alluring Pisces - Bangladesh Bank Heist Analysis" (2016)
-                        [8] Federal Reserve and BIS Report: "SWIFT Attack Methodologies and Attribution to APT38" (2017)
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇰🇵
-                        North Korea (RGB)
-
-                    Nation-State Sponsored
-                    Yes - RGB Intelligence
-
-                    Motivation
-                    Financial Theft
-
-                    First Seen
-                    2014
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    North Korean RGB
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [MITRE ATT&CK: APT38](https://attack.mitre.org/groups/G0082/) -- MITRE ATT&CK
+- [CISA: Advisory AA20-239A - BeagleBoyz](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-239a) -- CISA, 2020-08-26
+- [US DOJ: North Korean Programmer Charged](https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and) -- US Department of Justice, 2018-09-06
+- [Mandiant: APT38 Report](https://content.fireeye.com/apt/rpt-apt38) -- Mandiant, 2018-10-03

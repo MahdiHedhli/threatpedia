@@ -1,269 +1,140 @@
 ---
-name: APT10
+name: "APT10"
 aliases:
-  - "Stone Panda"
   - "MenuPass"
+  - "Stone Panda"
+  - "Red Apollo"
+  - "CVNX"
   - "POTASSIUM"
-affiliation: China
-motivation: Espionage
+  - "Cicada"
+affiliation: "China (Ministry of State Security)"
+motivation: "Espionage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "China"
+firstSeen: "2006"
+lastSeen: "2024"
+targetSectors:
+  - "Managed Service Providers"
+  - "Technology"
+  - "Healthcare"
+  - "Aerospace & Defense"
+  - "Government"
+  - "Telecommunications"
+targetGeographies:
+  - "Japan"
+  - "United States"
+  - "United Kingdom"
+  - "Global"
+tools:
+  - "PlugX"
+  - "QuasarRAT"
+  - "Poison Ivy"
+  - "ANEL"
+  - "ChChes"
+  - "LODEINFO"
+  - "SodaMaster"
+mitreMappings:
+  - techniqueId: "T1199"
+    techniqueName: "Trusted Relationship"
+    tactic: "Initial Access"
+    notes: "APT10 compromised managed service providers to gain access to downstream client networks."
+  - techniqueId: "T1560.001"
+    techniqueName: "Archive Collected Data: Archive via Utility"
+    tactic: "Collection"
+    notes: "Used RAR and custom tools to compress stolen data before exfiltration."
+  - techniqueId: "T1071.001"
+    techniqueName: "Application Layer Protocol: Web Protocols"
+    tactic: "Command and Control"
+    notes: "C2 communications conducted over HTTPS using PlugX and custom backdoors."
+attributionConfidence: A1
+attributionRationale: "Attributed to Chinese MSS-affiliated actors by a 2018 U.S. DOJ indictment of two MSS officers, supported by joint advisories from CISA, FBI, and international partners."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "nation-state"
+  - "china"
+  - "mss"
+  - "espionage"
+  - "apt10"
+  - "supply-chain"
+sources:
+  - url: "https://attack.mitre.org/groups/G0045/"
+    publisher: "MITRE ATT&CK"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/two-chinese-hackers-associated-ministry-state-security-charged-global-computer-intrusion"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2018-12-20"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/alerts/2019/04/03/apt10-targeting-managed-service-providers"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2019-04-03"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.pwc.co.uk/issues/cyber-security-data-privacy/insights/operation-cloud-hopper.html"
+    publisher: "PwC"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2017-04-03"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-APT10 (also known as Stone Panda, MenuPass, or POTASSIUM) is a Chinese state-sponsored advanced persistent threat group attributed to China's Ministry of State Security (MSS). Operating since at least 2009, APT10 is one of the most prolific and active Chinese APT groups, conducting widespread espionage campaigns targeting government agencies, managed service providers (MSPs), technology companies, and multinational corporations across global markets. The group gained significant notoriety through the "Cloud Hopper" campaign, which compromised managed service providers to gain indirect access to hundreds of downstream client organizations.
-
-                    APT10 is distinguished by their operational scale, targeting breadth, and strategic focus on supply chain compromise and managed service provider exploitation. The group demonstrates sophisticated technical capabilities, including custom malware development, command-and-control infrastructure sophistication, and ability to maintain persistence across complex network environments. APT10's campaigns have affected government organizations in dozens of countries and Fortune 500 companies across energy, aerospace, technology, finance, and healthcare sectors.
-
-                    As of 2025, APT10 continues active espionage operations with refined tactical approaches and expanded targeting against cloud service providers and modern IT infrastructure. The group's operational focus has evolved to include cloud-native targeting, SaaS platform compromise, and supply chain leverage for large-scale intelligence collection supporting Chinese state interests.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566: Phishing
-                                T1199: Trusted Relationship
-                                T1190: Exploit Public-Facing Application
-                                T1195.002: Supply Chain Compromise
-                            
-                            Execution & Persistence:
-                            
-                                T1059.001: PowerShell
-                                T1059.003: Windows Command Shell
-                                T1547.001: Registry Run Keys
-                                T1547.008: LSASS Driver
-                            
-                            Lateral Movement & Defense Evasion:
-                            
-                                T1570: Lateral Tool Transfer
-                                T1021: Remote Services
-                                T1036: Masquerading
-                                T1140: Deobfuscate/Decode
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
-
-                        Common Attack Vectors
-                        
-                            Managed Service Provider (MSP) Targeting: Compromise of MSP infrastructure and admin credentials to pivot to hundreds of downstream client organizations (Cloud Hopper campaign model).
-                            Spear-Phishing with Weaponized Attachments: Highly targeted spear-phishing emails to technical staff at organizations, with attachments containing exploit code or malware.
-                            Web Application Exploitation: Exploitation of known and zero-day vulnerabilities in web applications, remote access services, and infrastructure management tools.
-                            Credential Harvesting: Collection of credentials through phishing, credential stuffing, and password spraying to gain initial access and facilitate lateral movement.
-                            Living-off-the-Land Techniques: Extensive use of legitimate administrative tools (PowerShell, RDP, PsExec, WMI) to minimize malware footprint and avoid detection.
-
-                        Tools & Malware
-                        
-                            POISONPLUG Malware: Custom backdoor used for remote command execution and system access in victim environments.
-                            UPPERCUT Backdoor: Advanced multi-stage backdoor providing persistent access and lateral movement capabilities.
-                            Quasar RAT: Open-source remote access trojan modified and deployed by APT10 for command execution and data exfiltration.
-                            Cobalt Strike: Legitimate penetration testing framework weaponized for command execution and lateral movement post-compromise.
-                            Custom Encoding Tools: Proprietary tools for encoding/obfuscating communications and evading network-based detection systems.
-                            Droppers & Loaders: Multi-stage delivery mechanisms designed to bypass endpoint security controls and deploy second-stage payloads.
-
-                        Infrastructure Patterns
-                        
-                            Compromised Infrastructure Reuse: Leveraging of previously compromised servers and hosting accounts for command-and-control communications.
-                            Domain Hosting via China-based Registrars: Registration of C2 domains through Chinese registrars with minimal abuse response requirements.
-                            Bulletproof Hosting: Use of bulletproof hosting providers to maintain infrastructure resilience and evade takedown efforts.
-                            Dynamic DNS & Fast Flux: Rapid IP rotation and dynamic DNS to evade network-based blocking and signature detection.
-                            Legitimate Service Abuse: Abuse of legitimate cloud services and content delivery networks (CDNs) for C2 communications.
-
-## Targeted Industries & Organizations
-
-APT10 targets a diverse range of global organizations with strategic focus on supply chain and MSP leverage:
-
-                                Sector
-                                Notable Targets
-
-                                Managed Service Providers (MSPs)
-                                Cloud Hopper campaign targeting major MSPs and IT service providers worldwide. Downstream impact affecting 100+ client organizations per MSP.
-
-                                Government & Defense
-                                US federal agencies, Department of Defense contractors, military research institutions, allied government organizations
-
-                                Aerospace & Energy
-                                Aerospace contractors, energy companies, infrastructure operators, nuclear facility operators
-
-                                Technology
-                                Software vendors, semiconductor companies, cloud service providers, IT infrastructure vendors
-
-                                Finance & Banking
-                                Financial institutions, investment firms, banking infrastructure operators
-
-                                Healthcare & Pharmaceuticals
-                                Healthcare providers, pharmaceutical manufacturers, medical research institutions
-
-                    Geographic Scope: Global with particular focus on USA, Europe, Japan, South Korea, India, and Australia. Targets multinational organizations with presence across multiple continents for diversified intelligence collection.
-
-## Attributable Attacks Timeline
-
-2009-2012
-                            
-                                Early Operations - Infrastructure Targeting
-                                APT10 (Stone Panda/MenuPass) initiates espionage operations targeting Japanese and US organizations. Focuses on government and aerospace sectors with custom malware deployment.
-
-                            2013-2016
-                            
-                                Global Expansion & MSP Targeting
-                                APT10 expands operations globally, beginning targeted compromise of managed service providers. Identifies MSP supply chain model as effective leverage for multi-organization access.
 
-                            Oct 2017 - Mar 2018
-                            
-                                Operation Cloud Hopper - MSP Mega Breach
-                                APT10 launches "Operation Cloud Hopper" - coordinated compromise of multiple global managed service providers. Affects 100+ MSP client organizations in 41 countries. Targets include government agencies, Fortune 500 companies, technology firms. Estimated impact on thousands of downstream organizations.
+## Executive Summary
 
-                            2018-2019
-                            
-                                Post-Attribution Adaptation
-                            Following public Cloud Hopper attribution, APT10 refines tactics and infrastructure. Operations continue with evolved malware families and enhanced operational security practices.
+APT10, also known as MenuPass and Stone Panda, is a Chinese state-sponsored cyber-espionage group affiliated with the **Ministry of State Security (MSS)**. Active since at least 2006, the group is best known for its "Operation Cloud Hopper" campaign, which systematically targeted managed service providers (MSPs) worldwide to gain access to the networks of their clients. APT10 has targeted organizations across the technology, healthcare, aerospace, defense, and government sectors, with a sustained focus on Japan.
 
-                            2019-2021
-                            
-                                Cloud-Native & SaaS Targeting
-                                APT10 pivots to target cloud-native applications and SaaS platforms. Expands focus to include Office 365, Azure, and other cloud infrastructure commonly used by target organizations.
+The group's exploitation of trusted relationships between MSPs and their clients represented a strategic evolution in supply chain compromise tactics. In December 2018, the U.S. Department of Justice indicted two Chinese nationals associated with the MSS for their roles in APT10 operations, which compromised data from organizations in at least 12 countries.
 
-                            2021-2023
-                            
-                                Zero-Day Exploitation & Advanced Persistence
-                                APT10 exploits multiple zero-days in enterprise applications and develops advanced persistence mechanisms. Shifts to exploiting supply chain vulnerabilities in software development tools.
+## Notable Campaigns
 
-                            2023-2025
-                            
-                                Modern Cloud Infrastructure Campaigns
-                            APT10 continues active espionage against government and enterprise targets with focus on cloud infrastructure, identity and access management systems, and modern DevOps environments.
+### 2014-2017 -- Operation Cloud Hopper
 
-## Known Exploits & CVEs
+APT10 conducted a sustained campaign targeting multiple managed service providers globally. By compromising MSP networks, the group gained indirect access to the networks of hundreds of downstream client organizations across industries including healthcare, finance, biotechnology, and government. The campaign was disclosed jointly by PwC and BAE Systems in April 2017.
 
-APT10 has exploited numerous known and zero-day vulnerabilities across enterprise platforms:
+### 2009-2018 -- Technology Sector Theft
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+Over nearly a decade, APT10 targeted U.S. technology companies and the Jet Propulsion Laboratory (NASA JPL), exfiltrating personnel records and proprietary technology data. The 2018 DOJ indictment detailed the theft of data from over 45 technology companies and government agencies.
 
-                                CVE-2017-9822
-                                Remote Code Execution - Jira
-                                Atlassian Jira (versions 6.4-7.6)
-                                9.8
+### 2019-2024 -- LODEINFO Campaign Against Japan
 
-                                CVE-2018-15473
-                                OpenSSH User Enumeration
-                                OpenSSH (7.4p1 through 7.8p1)
-                                5.3
+APT10 deployed the LODEINFO backdoor in sustained campaigns against Japanese media, diplomatic, government, and defense organizations. The campaigns used spearphishing emails with Japanese-language lures and demonstrated ongoing evolution of the group's toolset.
 
-                                CVE-2017-10271
-                                Remote Code Execution - Oracle WebLogic
-                                Oracle WebLogic Server (multiple versions)
-                                9.8
+## Technical Capabilities
 
-                                CVE-2019-2725
-                                Remote Code Execution - Oracle WebLogic
-                                Oracle WebLogic Server 10.3.6 - 12.2.1
-                                9.8
+APT10 employs a combination of custom and publicly available malware. **PlugX** serves as a primary backdoor providing remote access, file manipulation, and keylogging capabilities. **LODEINFO** is a more recent fileless backdoor targeting Japanese organizations, loaded through malicious Word documents. **SodaMaster** provides additional C2 capabilities with DLL side-loading for execution.
 
-                                CVE-2021-1732
-                                Privilege Escalation - Windows Win32k
-                                Microsoft Windows (multiple versions)
-                                7.8
+The group excels at sustained, low-and-slow operations. After gaining access to MSP networks, APT10 operators use legitimate administrative tools (RDP, PsExec) to move laterally without deploying additional malware, making detection difficult. Data exfiltration involves staging in compressed archives and exfiltration during off-hours to avoid detection.
 
-                                CVE-2021-28476
-                                Authentication Bypass - Fortinet FortiOS
-                                Fortinet FortiGate Firewall
-                                9.8
+APT10's infrastructure relies on dynamic DNS services, compromised web servers for C2, and domain names mimicking legitimate services. The group regularly rotates infrastructure to evade blocking.
 
-## Cross-Vendor Naming Reference
+## Attribution
 
-APT10 is tracked under multiple designations across the threat intelligence community:
+The U.S. DOJ indicted Zhu Hua and Zhang Shilong, two Chinese nationals affiliated with the MSS Tianjin State Security Bureau, in December 2018. The indictment detailed APT10's operations targeting MSPs, technology companies, and government agencies. Multiple governments including the UK, Australia, Canada, and Japan issued statements supporting the attribution.
 
-                                Vendor / Organization
-                                Name Used
+CISA and FBI jointly published advisories on APT10 activity, providing technical indicators and TTPs. Private-sector firms including PwC, BAE Systems, and Symantec (now Broadcom) independently tracked APT10 operations and corroborated the MSS attribution based on infrastructure analysis and operational patterns.
 
-                                Mandiant / Google
-                                APT10
+## MITRE ATT&CK Profile
 
-                                CrowdStrike
-                                Stone Panda
+**Initial Access**: APT10 uses trusted relationships (T1199) through compromised MSPs and spearphishing attachments (T1566.001) with industry-relevant lures for direct targeting.
 
-                                Recorded Future
-                                MenuPass
+**Execution**: DLL side-loading (T1574.002) is a hallmark technique, used to execute PlugX, LODEINFO, and SodaMaster through legitimate applications. PowerShell (T1059.001) and Windows Command Shell (T1059.003) support post-compromise activities.
 
-                                Microsoft
-                                POTASSIUM
+**Persistence**: Scheduled tasks (T1053), registry run keys (T1547.001), and service creation (T1543.003) maintain persistent access.
 
-                                Symantec
-                                Passerby
+**Collection and Exfiltration**: Data is compressed using RAR (T1560.001), staged in temporary directories, and exfiltrated over C2 channels (T1041) or via alternative protocols during off-hours.
 
-                                MITRE ATT&CK
-                                Group G0045
+## Sources & References
 
-                                FireEye
-                                APT10 / Cloud Hopper
-
-                                Palo Alto Networks
-                                APT10 / Stone Panda
-
-## Related Threat Actors
-
-APT1 (Comment Crew): Fellow Chinese-attributed APT group operating with similar strategic objectives targeting defense industrial base and government sectors, though with distinct operational patterns and tool preferences.
-                        APT27 (Emissary Panda): Chinese-attributed APT group conducting parallel espionage operations. Some tactical overlap in targeting but different organizational focus and specialization areas.
-                        APT41: Chinese-attributed group conducting both state-sponsored espionage and financially motivated operations. May coordinate with APT10 on select campaigns.
-
-## References & Sources
-
-[1]
-                            FireEye: APT10 (Cloud Hopper) Campaign Analysis
-
-                            [2]
-                            Mandiant: APT10 Operations Targeting Cloud Infrastructure
-
-                            [3]
-                            MITRE ATT&CK: APT10 (Group G0045)
-
-                            [4]
-                            CrowdStrike: Stone Panda MSP Targeting Analysis
-
-                            [5]
-                            Recorded Future: MenuPass (APT10) Ongoing Operations
-
-                            [6]
-                            NCSC/NSA Joint Alert: APT10 Cloud Hopper Campaign
-
-                            [7]
-                            Microsoft Security Blog: POTASSIUM (APT10) Campaign Deep Dive
-
-                            [8]
-                            Symantec: Passerby (APT10) Threat Intelligence Report
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China (MSS)
-
-                    Nation-State Sponsored
-                    Yes
-
-                    Motivation
-                    Espionage
-
-                    First Seen
-                    2009
-
-                    Last Seen
-                    2025 (Active)
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    China MSS
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [MITRE ATT&CK: APT10](https://attack.mitre.org/groups/G0045/) -- MITRE ATT&CK
+- [US DOJ: Two Chinese Hackers Charged](https://www.justice.gov/opa/pr/two-chinese-hackers-associated-ministry-state-security-charged-global-computer-intrusion) -- US Department of Justice, 2018-12-20
+- [CISA: APT10 Targeting Managed Service Providers](https://www.cisa.gov/news-events/alerts/2019/04/03/apt10-targeting-managed-service-providers) -- CISA, 2019-04-03
+- [PwC: Operation Cloud Hopper](https://www.pwc.co.uk/issues/cyber-security-data-privacy/insights/operation-cloud-hopper.html) -- PwC, 2017-04-03
