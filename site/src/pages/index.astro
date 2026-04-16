@@ -230,11 +230,11 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   .hero {
     position: relative;
     z-index: 1;
-    min-height: 90vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 140px 0 80px;
+    padding: 60px 0 80px;
     max-width: 1200px;
   }
 
@@ -504,7 +504,7 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
 
   /* ── Responsive ─────────────────────────────────────────────────────── */
   @media (max-width: 860px) {
-    .hero { padding: 120px 0 64px; }
+    .hero { padding: 48px 0 64px; }
     .stats-bar { flex-wrap: wrap; }
     .stat { border-right: none; border-bottom: 1px solid var(--border); flex-basis: 50%; }
     .stat:nth-child(even) { border-right: none; }
