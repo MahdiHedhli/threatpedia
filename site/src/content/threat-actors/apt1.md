@@ -1,272 +1,128 @@
 ---
-name: APT1
+name: "APT1"
 aliases:
   - "Comment Crew"
+  - "Comment Group"
+  - "Comment Panda"
   - "PLA Unit 61398"
-  - "STUXNET"
-  - "GhostNet"
-affiliation: China
-motivation: Espionage
-status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+  - "Byzantine Candor"
+affiliation: "China"
+motivation: "Espionage"
+status: inactive
+country: "China"
+firstSeen: "2006"
+lastSeen: "2013"
+targetSectors:
+  - "Information Technology"
+  - "Aerospace"
+  - "Defense"
+  - "Government"
+  - "Energy"
+  - "Financial"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "United Kingdom"
+  - "Canada"
+tools:
+  - "Hydraq"
+  - "Trojan.Aurora"
+  - "GETMAIL"
+  - "MAPLE"
+  - "REASON"
+mitreMappings:
+  - techniqueId: "T1189"
+    techniqueName: "Drive-by Compromise"
+    tactic: "Initial Access"
+    notes: "Utilized extensively in Operation Aurora using the IE zero-day CVE-2010-0249."
+  - techniqueId: "T1059.003"
+    techniqueName: "Command and Scripting Interpreter: Windows Command Shell"
+    tactic: "Execution"
+    notes: "Standard usage of the Windows command shell for initial stage execution and reconnaissance."
+  - techniqueId: "T1005"
+    techniqueName: "Data from Local System"
+    tactic: "Collection"
+    notes: "Primary objective was exfiltration of source code and proprietary intellectual property from compromised hosts."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to PLA Unit 61398 by the U.S. Department of Justice (2014) and documented in the landmark Mandiant APT1 report (2013)."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "apt1"
+  - "china"
+  - "pla"
+  - "espionage"
+  - "comment-crew"
+sources:
+  - url: "https://www.mandiant.com/resources/reports/apt1-exposing-one-chinas-cyber-espionage-units"
+    publisher: "Mandiant"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2013-02-18"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2014-05-19"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G0006/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/alerts/2010/01/14/google-china-cyber-attack"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2010-01-14"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-APT1 is one of the earliest publicly attributed advanced persistent threat groups, publicly identified by Mandiant in February 2013 as being based in Shanghai, China and operating under the direct authority of China's People's Liberation Army (PLA) Unit 61398. The group represents the first major instance of a threat actor being unambiguously attributed to a specific country's military apparatus by a private security firm. APT1 operates with strategic focus on long-term espionage objectives against United States government agencies, defense contractors, and multinational corporations.
-
-                    Operating since at least 2006, APT1 has conducted some of the most extensive documented espionage campaigns targeting intellectual property theft, government secrets, and strategic business information. The group's campaigns have affected organizations in dozens of countries, with particular concentration on the US defense industrial base. APT1 is known for sophisticated operational security, use of public exploit code, and ability to maintain persistence in victim networks for extended periods (6+ months).
-
-                    As of 2025, APT1 continues active operations with evolved capabilities and refined operational tradecraft. The group has adapted to increased attribution and defensive measures, employing more sophisticated persistence mechanisms and lateral movement techniques. APT1 represents a sustained campaign of intelligence collection supporting China's military-industrial advancement and strategic competitive advantage against the United States.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.002: Phishing - Spearphishing Attachment
-                                T1566.001: Phishing - Spearphishing Link
-                                T1199: Trusted Relationship
-                                T1190: Exploit Public-Facing Application
-                            
-                            Execution & Persistence:
-                            
-                                T1059.001: Command Shell - PowerShell
-                                T1059.003: Command Shell - Windows Command Shell
-                                T1547.001: Boot Autostart - Registry Run Keys
-                                T1546.007: Hook Registry
-                            
-                            Defense Evasion & Credential Access:
-                            
-                                T1036: Masquerading
-                                T1110.001: Brute Force - Password Guessing
-                                T1055: Process Injection
-                                T1134: Process Hollowing
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
-                                T1030: Data Transfer Size Limits
-
-                        Common Attack Vectors
-                        
-                            Targeted Spear-Phishing: Highly personalized phishing emails to engineers, scientists, and executives. Attachments often exploit known vulnerabilities (CVE-2010-3740, CVE-2012-0003) in Office applications and PDF readers.
-                            Watering Hole Attacks: Compromise of industry-specific websites frequented by target organizations to distribute malware via drive-by downloads.
-                            VPN Exploitation: Targeting of remote access VPN solutions to gain foothold in corporate networks without requiring user interaction.
-                            Supply Chain Compromise: Compromise of software vendors and service providers to distribute malware to multiple target organizations.
-                            Exploitation of Public Vulnerabilities: Rapid weaponization of disclosed CVEs in widely-deployed enterprise software (Adobe Reader, Windows, Internet Explorer).
-
-                        Tools & Malware
-                        
-                            Poison Ivy RAT: Remote access trojan frequently deployed for command execution and interactive sessions with victim systems.
-                            Ghost RAT (Gh0st RAT): Chinese-developed remote access trojan providing extensive command execution and data exfiltration capabilities.
-                            Derusbi Backdoor: Sophisticated multi-platform malware providing rootkit-like capabilities and deep system access.
-                            3102 Malware: File transfer trojan used specifically for bulk data exfiltration from compromised systems.
-                            Custom Encoding/Decoding Tools: Proprietary tools for obfuscating malware communications and evading IDS detection.
-                            Web Shells: Custom-developed web shells for persistent access to compromised web servers and file transfer capabilities.
-
-                        Infrastructure Patterns
-                        
-                            Chinese-based Command & Control: C2 servers predominantly located in China or hosted by Chinese ISPs, registrations via Chinese registrars.
-                            Proxied Communications: Use of compromised third-party servers and proxies to obfuscate the origin of C2 traffic.
-                            Public Exploit Code: Leveraging of publicly available exploit code and publicly released malware families (rather than exclusively custom tools).
-                            Fast Flux Domains: Use of dynamic DNS and rapid IP rotation to evade network-based blocking and signature detection.
-                            SSL Certificate Abuse: Acquisition of valid SSL certificates for C2 domains to evade traffic inspection and content filtering.
-
-## Targeted Industries & Organizations
-
-APT1 targets organizations aligned with US government interests and strategic national security concerns:
-
-                                Sector
-                                Notable Targets
-
-                                Defense Industrial Base
-                                Lockheed Martin, Northrop Grumman, Raytheon, Boeing, General Dynamics, Booz Allen Hamilton
-
-                                Government Agencies
-                                US DoD, State Department, Commerce Department, FBI, diplomatic missions
-
-                                Aerospace & Satellite
-                                Space agencies, satellite manufacturers, launch providers, orbital mechanics companies
-
-                                Energy & Utilities
-                                Oil and gas companies, power generation facilities, grid operators
-
-                                Technology & IT
-                                Software vendors, semiconductor companies, IT service providers, research institutions
-
-                                International Organizations
-                                Companies and agencies in Europe, India, Canada, Australia, Japan, and South Korea
-
-                    Strategic Focus: Intellectual property theft supporting PLA Unit 61398's research priorities. Targeting designed to provide China with advanced technology insights and competitive intelligence across military-relevant sectors.
-
-## Attributable Attacks Timeline
-
-2006-2009
-                            
-                                Early Operations and Capability Development
-                                APT1 (Comment Crew) initiates targeted espionage operations. Group develops expertise in spear-phishing and malware deployment. Infrastructure established in Guangdong Province, Shanghai, China.
-
-                            2009-2010
-                            
-                                Lockheed Martin & Defense Contractor Targeting
-                                APT1 conducts extensive campaigns targeting Lockheed Martin, Northrop Grumman, and other defense contractors. Steals technical data on military systems, advanced weapons platforms, and cyber defense capabilities.
 
-                            2011-2012
-                            
-                                Global Expansion - Multi-Sector Targeting
-                                APT1 broadens operations to target multinational corporations, research institutions, and government agencies across Europe, Japan, South Korea, India, and Canada. Focusing on technology transfer and competitive intelligence.
+## Executive Summary
 
-                            Feb 2013
-                            
-                                Mandiant Attribution Report - Public Disclosure
-                                Mandiant publishes comprehensive attribution report formally identifying APT1 as PLA Unit 61398 based in Shanghai. Report details infrastructure, malware analysis, and operational patterns. Represents first major public attribution of cyber espionage to nation-state military unit.
+APT1 is one of the most historically significant nation-state threat actors, identified as **Unit 61398 of the Chinese People's Liberation Army (PLA)**. Operating out of a high-rise building in Shanghai, the group conducted a massive, sustained cyber-espionage campaign between at least 2006 and 2013, targeting over 140 organizations globally. The group's activities were brought to professional and public light by the landmark **Mandiant APT1 Report** in 2013, which provided unprecedented evidence of state-sponsored hacking.
 
-                            2013-2015
-                            
-                                Operational Adaptation Post-Attribution
-                            Following Mandiant attribution, APT1 evolves tactics and infrastructure. Operations continue but with refined operational security and new malware variants. Maintains persistent presence in compromised environments.
+The group's name, "Comment Crew," was derived from their practice of embedding malicious code in the comment sections of legitimate HTML pages to bypass security filters. APT1 focused heavily on the theft of intellectual property, proprietary technical data, and strategic corporate information from sectors critical to China's economic and military development, particularly in the United States.
 
-                            2015-2018
-                            
-                                Continued Strategic Espionage
-                                APT1 remains active targeting defense contractors and government agencies. Shifts some operations to use more sophisticated persistence mechanisms including kernel-level rootkits and legitimate administrative tools.
+## Notable Campaigns
 
-                            2018-2025
-                            
-                                Modern Era Operations - Continued Threat
-                            APT1 continues strategic espionage operations with evolved techniques. Integration of supply chain compromise, cloud targeting, and advanced persistence mechanisms. Remains one of most prolific state-sponsored espionage groups.
+### Operation Aurora (2009-2010)
+APT1 gained worldwide notoriety for its role in Operation Aurora, a coordinated attack against Google, Adobe, and dozens of other Fortune 100 companies. The campaign utilized a zero-day exploit in Internet Explorer (CVE-2010-0249) to steal source code and access the communications of human rights activists.
 
-## Known Exploits & CVEs
+### Multi-Sector Industrial Espionage
+Between 2006 and 2013, APT1 compromised 141 companies across 20 major industrial categories. Notable victims included large-scale engineering firms, energy grid operators, and aerospace manufacturers. The group was known to maintain access to victim networks for an average of 356 days, with the longest known intrusion lasting nearly five years.
 
-APT1 has exploited numerous known vulnerabilities, often rapidly weaponizing newly disclosed CVEs:
+## Technical Capabilities
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+APT1 utilized a modular and highly automated toolkit. Their primary malware was a series of custom backdoors dubbed the **"APT1 Malware Suite,"** including **Hydraq** (Trojan.Aurora), **GETMAIL**, and **MAPLE**. These tools were designed to blend into legitimate network traffic using common protocols like HTTP and HTTPS.
 
-                                CVE-2010-3740
-                                Stack Buffer Overflow in Adobe Reader
-                                Adobe Reader (versions 8.x through 10.x)
-                                9.3
+Once initial access was achieved through spear-phishing or drive-by downloads, the group used a wide array of utilities for lateral movement and data exfiltration. They frequently utilized the **Windows command shell** for reconnaissance and Batch scripts to automate the collection of specific file types. APT1's infrastructure was vast, utilizing over 900 C2 domains and thousands of IP addresses, with a significant portion of the traffic originating from the Pudong district in Shanghai.
 
-                                CVE-2012-0003
-                                MSXML Remote Code Execution
-                                Microsoft Windows, Internet Explorer
-                                9.3
+## Attribution
 
-                                CVE-2011-1255
-                                Unsafe HTML Parsing - Internet Explorer
-                                Internet Explorer 6-9
-                                9.3
+The attribution of APT1 to the Chinese military is among the most well-documented in cybersecurity history. In 2013, Mandiant published a technical dossier that precisely localized the source of APT1's activity to a specific PLA building in Shanghai. The report included screenshots of the attackers' desktops and identified specific social media accounts used by individual operators.
 
-                                CVE-2013-0156
-                                YAML Deserialization RCE - Ruby on Rails
-                                Ruby on Rails (versions 2.3-3.2)
-                                9.8
+Following the report, the **U.S. Department of Justice** issued a formal indictment in May 2014 against five officers of PLA Unit 61398—Wang Dong, Sun Kailiang, Wen Xinyu, Huang Zhenyu, and Gu Chunhui. The charges included computer hacking, economic espionage, and trade secret theft against U.S. companies. While the group became largely inactive following the indictment and public exposure, they set the precedent for how modern APT groups are investigated and attributed.
 
-                                CVE-2012-2109
-                                Privilege Escalation in Windows
-                                Microsoft Windows XP-7
-                                7.2
+## MITRE ATT&CK Profile
 
-                                CVE-2013-2465
-                                Arbitrary Code Execution in Java
-                                Java Runtime Environment (versions 6-7)
-                                10.0
+APT1's operations are characterized by a disciplined, "nine-to-five" work schedule that aided in their attribution. Their primary techniques involve:
 
-## Cross-Vendor Naming Reference
+- **T1189 (Drive-by Compromise):** Frequent use of malicious URLs in spear-phishing emails to deliver browser-based zero-day exploits.
+- **T1566.001 (Spear-phishing Attachment):** Utilizing malicious RAR archives and PDF documents as entry points.
+- **T1005 (Data from Local System):** Methodical search and collection of documents, source code, and strategic communications once administrative access is established.
+- **T1071.001 (Web Protocols):** C2 communication masquerading as standard web traffic to common public domains.
 
-APT1 is tracked under multiple designations across security vendors:
+## Sources & References
 
-                                Vendor / Organization
-                                Name Used
-
-                                Mandiant
-                                APT1
-
-                                FireEye
-                                APT1, Comment Crew
-
-                                Symantec
-                                Shifu
-
-                                Kaspersky
-                                APT1, Comment Crew
-
-                                CrowdStrike
-                                Comment Crew
-
-                                MITRE ATT&CK
-                                Group G0006
-
-                                US Government (DoD)
-                                PLA Unit 61398
-
-                                Palo Alto Networks
-                                APT1 / Comment Crew
-
-## Related Threat Actors
-
-APT10 (MenuPass): Fellow Chinese APT group attributed to PLA/MSS. Operates in parallel alongside APT1 with some tactical overlap but distinct organizational structures and specializations.
-                        APT27 (Emissary Panda): Chinese-attributed APT group operating with similar strategic objectives but different operational patterns and preferred targeting.
-                        APT31 (Zirconium): Chinese-attributed group conducting parallel espionage operations against overlapping target sets including US government and defense sectors.
-                        APT40 (Leviathan): MSS-affiliated Chinese APT group with similar targeting focus on critical infrastructure and strategic sectors.
-
-## References & Sources
-
-[1]
-                            Mandiant: APT1 - Exposing One of China's Cyber Espionage Units
-
-                            [2]
-                            MITRE ATT&CK: APT1 (Group G0006)
-
-                            [3]
-                            US Department of Justice: Indictment of PLA Unit 61398 Members
-
-                            [4]
-                            CrowdStrike: Comment Crew Analysis and Tactics
-
-                            [5]
-                            Kaspersky: APT1 Threat Research
-
-                            [6]
-                            FireEye: APT1 Comprehensive Report
-
-                            [7]
-                            Palo Alto Networks: APT1 Research Materials
-
-                            [8]
-                            White House: Statement on Chinese Military Hacking Indictment
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China (PLA Unit 61398)
-
-                    Nation-State Sponsored
-                    Yes
-
-                    Motivation
-                    Espionage
-
-                    First Seen
-                    2006
-
-                    Last Seen
-                    2025 (Active)
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    PLA Unit 61398
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [Mandiant: APT1 — Exposing One of China's Cyber Espionage Units (Full Report)](https://www.mandiant.com/resources/reports/apt1-exposing-one-chinas-cyber-espionage-units) — Mandiant, 2013-02-18
+- [US DOJ: U.S. Charges Five Chinese Military Hackers for Cyber Espionage Against U.S. Corporations](https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor) — US Department of Justice, 2014-05-19
+- [MITRE ATT&CK: APT1 (Group G0006)](https://attack.mitre.org/groups/G0006/) — MITRE ATT&CK, 2023-10-21
+- [CISA: Alert (TA10-014A) — Google and Microsoft Internet Explorer Hub](https://www.cisa.gov/news-events/alerts/2010/01/14/google-china-cyber-attack) — CISA, 2010-01-14
