@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0066",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Operation Aurora — Google and Fortune 100 Cyber Espionage Campaign (2009-2010)",
     "sources": [
@@ -18,7 +18,9 @@
       "sector": "Technology",
       "geography": "Global",
       "threatActor": "APT1 / Comment Crew",
-      "cves": ["CVE-2010-0249"]
+      "cves": [
+        "CVE-2010-0249"
+      ]
     },
     "notes": "Multi-month espionage campaign targeting Google, Adobe, Juniper, and ~30 other Fortune 100 companies. IE zero-day (CVE-2010-0249). Led to Google's partial withdrawal from China. Attributed to PLA Unit 61398."
   },
@@ -40,6 +42,23 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "note": "Campaign article — smoke test round 3"
+    },
+    {
+      "timestamp": "2026-04-16T04:19:31.310Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:20:03.892Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:20:03.893Z"
 }
