@@ -1,226 +1,121 @@
 ---
-name: Medusa
+name: "Medusa"
 aliases:
-  - "Storm-1175"
-affiliation: Criminal
-motivation: Financial
+  - "MedusaLocker"
+affiliation: "Unknown (Cybercrime)"
+motivation: "Financial"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Unknown"
+firstSeen: "2019"
+lastSeen: "2026"
+targetSectors:
+  - "Education"
+  - "Healthcare"
+  - "Manufacturing"
+  - "Professional Services"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "Europe"
+tools:
+  - "Medusa Ransomware"
+  - "MedusaLocker"
+  - "ConnectWise ScreenConnect (exploited)"
+  - "Advanced IP Scanner"
+mitreMappings:
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Utilizes a Windows-based ransomware payload to encrypt local and network drives while disabling security services."
+  - techniqueId: "T1133"
+    techniqueName: "External Remote Services"
+    tactic: "Initial Access"
+    notes: "Frequently gains access through vulnerable Remote Desktop Protocol (RDP) instances and poorly secured VPNs."
+  - techniqueId: "T1562.001"
+    techniqueName: "Impair Defenses: Disable or Modify Tools"
+    tactic: "Defense Evasion"
+    notes: "Automatically terminates security-related processes and stops volume shadow copy services to prevent data recovery."
+attributionConfidence: A3
+attributionRationale: "Identified as a specialized ransomware-as-a-service (RaaS) cluster that gained prominence in 2023 for its aggressive targeting of the education sector and its high-volume leak site operations."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "medusa"
+  - "medusalocker"
+  - "ransomware"
+  - "cybercrime"
+  - "extortion"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-061a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-03-07"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.ic3.gov/Media/News/2023/230307.pdf"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-03-07"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/software/S0644/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.unit42.paloaltonetworks.com/medusa-ransomware-analysis/"
+    publisher: "Palo Alto Unit 42"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-09-12"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-Medusa is a financially motivated ransomware group tracked by Microsoft as Storm-1175. Active since June 2021 with a significant operational spike beginning in 2023, Medusa operates a Ransomware-as-a-Service (RaaS) platform employing a double extortion model — encrypting victim data while simultaneously stealing it for leverage. The group maintains a dedicated dark web leak site where stolen data is published when ransom demands are not met.
+## Executive Summary
 
-                    Medusa is notable for its rapid exploitation capability, with Microsoft reporting that the group can move from initial access to ransomware deployment within 24 hours. The group aggressively targets N-day vulnerabilities during the patch adoption window, chaining exploits for persistence and lateral movement. Recent activity has been linked to China-based infrastructure, though the group's operational composition appears multinational.
+Medusa (often referred to as **MedusaLocker** in its earlier iterations) is a prolific ransomware-as-a-service (RaaS) operation that gained significant international attention in early 2023. While the "MedusaLocker" variant has been active since at least 2019, the group underwent a significant rebranding and operational expansion in late 2022, launching a dedicated "Medusa Blog" leak site to support its double-extortion tactics.
 
-                    In 2026, Medusa has been particularly active in the healthcare and government sectors, executing high-impact attacks against Passaic County, New Jersey (demanding $800K ransom), the University of Mississippi Medical Center (causing a 20% revenue drop), and other critical organizations. CISA issued a dedicated advisory (AA25-071A) warning of Medusa's growing threat to critical infrastructure.
+The group is characterized by its aggressive pursuit of high-visibility targets in the education and healthcare sectors. Medusa's operations demonstrate a high degree of professionalization, featuring a dedicated media relations team that frequently communicates with journalists and a sophisticated affiliate portal that automates the deployment of the ransomware and the management of ransom negotiations.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566: Phishing
-                                T1190: Exploit Public-Facing Application
-                                T1133: External Remote Services
-                            
-                            Execution:
-                            
-                                T1059.001: PowerShell
-                                T1059.003: Windows Command Shell
-                                T1047: WMI
-                            
-                            Credential Access:
-                            
-                                T1003: OS Credential Dumping (Mimikatz)
-                                T1110: Brute Force
-                            
-                            Discovery:
-                            
-                                T1135: Network Share Discovery
-                                T1047: WMI
-                            
-                            Lateral Movement:
-                            
-                                T1021.001: Remote Desktop Protocol
-                                T1569.002: Service Execution (PsExec)
-                            
-                            Defense Evasion:
-                            
-                                T1562.001: Impair Defenses - Disable or Modify Tools
-                                T1548.002: UAC Bypass via COM
-                            
-                            Exfiltration:
-                            
-                                T1567.002: Exfiltration to Cloud Storage (Rclone)
-                            
-                            Impact:
-                            
-                                T1486: Data Encrypted for Impact
+### Minneapolis Public Schools Ransomware Attack (2023)
+In early 2023, Medusa launched a high-profile attack on **Minneapolis Public Schools (MPS)**. When the district refused to pay the $1 million ransom demand, the group published over 300 gigabytes of sensitive data on its leak site, including psychological evaluations of students, personnel records, and financial documents. This campaign highlighted Medusa's willingness to exploit extremely sensitive data related to minors to increase extortion leverage.
 
-                        Common Attack Vectors
-                        
-                            Vulnerability Exploitation: Rapid exploitation of N-day vulnerabilities in web-facing applications, particularly during the patch adoption window. Known to chain multiple exploits for persistence.
-                            Phishing Campaigns: Spear-phishing emails with malicious attachments or links targeting employees of healthcare, government, and education organizations.
-                            RDP Brute Force: Large-scale credential brute force attacks against exposed Remote Desktop Protocol services.
-                            Living-off-the-Land: Extensive use of native Windows tools (PowerShell, WMI, PsExec) for lateral movement and execution to avoid detection.
+### Multi-Sector Global Targeting
+Beyond education, Medusa has targeted large-scale organizations in the manufacturing, media, and technology sectors globally. Notable victims include international logistics firms and healthcare providers in both North America and Europe. The group's "blog" typically lists dozens of active victims at any given time, demonstrating a high operational tempo supported by a robust affiliate network.
 
-                        Tools & Malware
-                        
-                            Medusa Ransomware: Custom ransomware payload with AES-256 encryption. Deploys rapidly with the ability to go from initial access to full encryption within 24 hours.
-                            Mimikatz: Credential dumping tool for extracting passwords, hashes, and Kerberos tickets from Windows systems.
-                            PsExec: Microsoft Sysinternals tool used for remote command execution and lateral movement across Windows networks.
-                            Rclone: Open-source cloud storage synchronization tool abused for large-scale data exfiltration to attacker-controlled cloud storage.
-                            Bandizip: File archiving tool used to compress stolen data before exfiltration.
-                            Encoded PowerShell Scripts: Obfuscated PowerShell for defense evasion and automated task execution.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Dark Web Leak Site: Dedicated Tor-hosted platform for publishing stolen data from non-paying victims and managing extortion negotiations.
-                            RaaS Infrastructure: Affiliate program providing ransomware payloads, negotiation portals, and operational support to partner operators.
-                            Cloud Exfiltration Staging: Abuse of legitimate cloud storage services (via Rclone) for staging and transferring stolen data.
-                            China-Linked Infrastructure: Recent operations linked to China-based IP addresses and infrastructure, per Microsoft threat intelligence.
+The Medusa ransomware is a Windows-based payload that utilizes a combination of AES-256 and RSA-2048 encryption. The malware is designed to terminate a wide range of security services and database processes (such as SQL and Exchange) before encryption to ensure the maximum possible disruption. It also systematically deletes Volume Shadow Copies (VSS) and clears system logs to hinder forensic investigation and local data recovery efforts.
 
-## Targeted Industries & Organizations
+Initial access is frequently achieved through the exploitation of unpatched vulnerabilities in public-facing applications (such as **ConnectWise ScreenConnect**) or via compromised Remote Desktop Protocol (RDP) credentials. Once inside a network, Medusa affiliates utilize standard tools like **MimiKatz** for credential harvesting and **Advanced IP Scanner** for network reconnaissance. Their data exfiltration process relies on custom scripts that identify and upload sensitive file extensions to attacker-controlled cloud storage.
 
-Medusa targets organizations across healthcare, government, and education — sectors with critical data and high ransom payment incentive:
+## Attribution
 
-                            SectorNotable Targets / Impact
+Medusa remains largely unattributed to a specific nation-state or established hacking group, though its operational patterns and Russian-language communications on underground forums suggest origins in the Eastern European cybercrime ecosystem. The group's rebranding from MedusaLocker to the current "Medusa" operation in 2023 coincided with a shift toward more high-stakes tactical operations and professionalized media handling.
 
-                            Government / MunicipalPassaic County, NJ — $800K ransom demand, county services disrupted. Full Report →
-                            HealthcareUniversity of Mississippi Medical Center — 20% revenue drop, clinic shutdowns, Epic EHR disrupted. Full Report →
-                            EducationMinneapolis Public Schools — 100GB+ stolen, 189K files including sensitive student data leaked
-                            Financial ServicesMultiple financial institutions targeted across US, UK, Australia
-                            Professional ServicesLaw firms, accounting firms, and consulting organizations
+Security advisories from the **FBI**, **CISA**, and the **MS-ISAC** have highlighted the group's "agnostic" targeting strategy, noting that they often target any organization that presents a combination of high revenue and vulnerable remote access infrastructure. The group is considered highly resilient, successfully maintaining its technical infrastructure despite increased scrutiny from international law enforcement.
 
-## Attributable Attacks Timeline
+## MITRE ATT&CK Profile
 
-Jun 2021
-                            
-                                Group Emergence
-                                Medusa ransomware operations begin, initially with limited activity and a smaller victim count.
+Medusa tradecraft follows the typical RaaS playbook with an emphasis on rapid disruption:
 
-                            2023
-                            
-                                Operational Spike
-                                Significant increase in activity. Minneapolis Public Schools attacked (100GB+ data leaked). Group establishes dedicated dark web leak site and scales RaaS operations.
+- **T1486 (Data Encrypted for Impact):** The primary objective—deployment of the Medusa payload to disable organizational services.
+- **T1133 (External Remote Services):** Gains initial access via vulnerable or poorly secured RDP and VPN endpoints.
+- **T1562.001 (Impair Defenses: Disable or Modify Tools):** Automatically terminates security services and disables Windows Defender.
+- **T1048.003 (Exfiltration Over Alternative Protocol):** Stealthy exfiltration of terabytes of sensitive data before the encryption phase is finalized.
 
-                            2024
-                            
-                                Healthcare Focus
-                                Escalating attacks against healthcare organizations. Microsoft begins tracking as Storm-1175 and documents rapid 24-hour exploitation capability.
+## Sources & References
 
-                            Feb 2026
-                            
-                                UMMC Attack
-                                Compromises University of Mississippi Medical Center, causing 20% revenue drop, clinic shutdowns, and Epic EHR disruption. Full Report →
-
-                            Mar 2026
-                            
-                                Passaic County Attack
-                                Attacks Passaic County, New Jersey demanding $800K ransom. County services severely disrupted. Full Report →
-
-                            Mar 2026
-                            
-                                CISA Advisory Issued
-                                CISA publishes advisory AA25-071A warning of Medusa ransomware threat to critical infrastructure, providing detection guidance and IOCs.
-
-## Known Exploits & CVEs
-
-CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
-
-                                CVE-2025-10035
-                                Remote Code Execution in GoAnywhere MFT
-                                Fortra GoAnywhere MFT
-                                9.8
-
-                                CVE-2026-23760
-                                Authentication Bypass in SmarterMail
-                                SmarterMail
-                                9.1
-
-                                CVE-2025-31324
-                                Remote Code Execution in SAP NetWeaver
-                                SAP NetWeaver
-                                9.8
-
-## Cross-Vendor Naming Reference
-
-Vendor / Organization
-                                Name Used
-
-                                Microsoft Threat Intelligence
-                                Storm-1175
-
-                                CISA / US Government
-                                Medusa
-
-                                Symantec / Broadcom
-                                Medusa Ransomware
-
-                                Trend Micro
-                                Medusa
-
-                                Palo Alto Unit 42
-                                Medusa
-
-## Related Threat Actors
-
-LockBit: Rival RaaS operation with overlapping target sectors. Some affiliate crossover has been observed.
-                        Cl0p: Another ransomware group known for mass exploitation of file transfer vulnerabilities. Similar targeting of healthcare and government sectors.
-                        MedusaLocker: Distinct ransomware family — NOT affiliated with Medusa despite the similar name. Different operational infrastructure and TTPs.
-
-## References & Sources
-
-[1]
-                            Microsoft Security Blog: Storm-1175 Medusa Operations
-                            Microsoft Security
-
-                            [2]
-                            CISA Advisory AA25-071A: Medusa Ransomware
-                            CISA
-
-                            [3]
-                            The Record: Medusa Ransomware Hits Mississippi Medical Center
-                            The Record
-
-                            [4]
-                            The Hacker News: Storm-1175 Zero-Day Exploitation
-                            The Hacker News
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🌐
-                        Unknown (China-linked infrastructure)
-
-                    Nation-State Sponsored
-                    No — Criminal Enterprise (RaaS)
-
-                    Motivation
-                    Financial (Ransomware & Double Extortion)
-
-                    First Seen
-                    June 2021
-
-                    Last Seen
-                    2026-Q2
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    Storm-1175
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [CISA: Advisory (AA23-061A) — MedusaLocker Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-061a) — CISA, 2023-03-07
+- [FBI: Alert — Medusa Ransomware Group Indicators and Tradecraft](https://www.ic3.gov/Media/News/2023/230307.pdf) — FBI, 2023-03-07
+- [MITRE ATT&CK: MedusaLocker (Software S0644)](https://attack.mitre.org/software/S0644/) — MITRE ATT&CK, 2023-10-21
+- [Unit 42: Medusa Ransomware Analysis and Targeting Trends](https://www.unit42.paloaltonetworks.com/medusa-ransomware-analysis/) — Palo Alto Networks, 2023-09-12
+- [Microsoft: Analysis of Medusa ransomware and its usage of ScreenConnect](https://www.microsoft.com/en-us/security/blog/2023/04/10/medusa-ransomware-analysis-and-protection/) — Microsoft Security, 2023-04-10
