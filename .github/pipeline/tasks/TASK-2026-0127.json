@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0127",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "APT38",
     "reprocess": true,
@@ -29,7 +29,17 @@
       "timestamp": "2026-04-16T04:00:00.000Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-16T04:24:23.165Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
-  ]
+  ],
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-16T04:24:23.164Z",
+  "updated": "2026-04-16T04:24:23.165Z"
 }

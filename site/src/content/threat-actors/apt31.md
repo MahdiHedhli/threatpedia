@@ -1,250 +1,132 @@
 ---
-name: APT31
+name: "APT31"
 aliases:
   - "Zirconium"
-  - "NOTROBIN"
-  - "Violet Typhoon"
-affiliation: China
-motivation: Espionage
+  - "Judgment Panda"
+  - "Red Keres"
+  - "Altair"
+  - "BRONZE VINEWOOD"
+affiliation: "China"
+motivation: "Espionage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "China"
+firstSeen: "2010"
+lastSeen: "2026"
+targetSectors:
+  - "Government"
+  - "Political Organizations"
+  - "Defense"
+  - "Aerospace"
+  - "Manufacturing"
+  - "Technology"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "Europe"
+  - "Vietnam"
+  - "Norway"
+tools:
+  - "SOGU"
+  - "DROPOUT"
+  - "Snappy"
+  - "Cobalt Strike"
+  - "MimiKatz"
+  - "ScanBox"
+mitreMappings:
+  - techniqueId: "T1566.002"
+    techniqueName: "Phishing: Spearphishing Link"
+    tactic: "Initial Access"
+    notes: "Frequently utilizes malicious links (sometimes disguised as Google Drive links) to deliver stage-one droppers like SOGU."
+  - techniqueId: "T1071.001"
+    techniqueName: "Application Layer Protocol: Web Protocols"
+    tactic: "Command and Control"
+    notes: "APT31 backdoors often utilize HTTP/S for C2 communication, sometimes leveraging legitimate cloud services to blend in with normal traffic."
+  - techniqueId: "T1027"
+    techniqueName: "Obfuscated Files or Information"
+    tactic: "Defense Evasion"
+    notes: "Extensive use of packing and custom encryption within the SOGU and DROPOUT malware families to evade automated detection."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to the Chinese Ministry of State Security (MSS) by the U.S. and UK governments following the indictment of seven hackers in March 2024."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "apt31"
+  - "zirconium"
+  - "china"
+  - "mss"
+  - "espionage"
+  - "election-targeting"
+sources:
+  - url: "https://www.justice.gov/opa/pr/seven-hackers-associated-chinese-government-charged-computer-intrusions-targeting-perceived"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-03-25"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.ncsc.gov.uk/news/uk-and-allies-expose-apt31-campaign-targeting-democracies"
+    publisher: "NCSC UK"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-03-25"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-085a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-03-25"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G0034/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-APT31 (Zirconium) is a sophisticated Chinese state-sponsored threat actor attributed to elements of the Chinese government, likely operating under direction from the Ministry of State Security (MSS). Active since at least 2012, APT31 specializes in targeted espionage operations against government agencies, technology companies, defense contractors, and telecommunications firms, with a particular focus on stealing sensitive intellectual property and enabling long-term persistent access to critical infrastructure.
+## Executive Summary
 
-                    The group is known for their advanced social engineering capabilities, custom malware development, and patient operational approach. APT31 conducts highly targeted campaigns using spear-phishing, watering hole attacks, and strategic supply chain compromises. Their operations have directly supported Chinese government strategic interests in geopolitics, technology competition, and industrial espionage.
+APT31, also known as **Zirconium** and **Judgment Panda**, is a prolific nation-state threat actor operating on behalf of the **Chinese Ministry of State Security (MSS)**, specifically the Hubei State Security Department. Active since at least 2010, the group focuses on high-level espionage targeting government officials, political organizations, and strategic industry sectors. Their mandate involves collecting intelligence that supports China's domestic security and foreign policy objectives.
 
-                    Microsoft and other security vendors have attributed APT31 to campaigns targeting government networks in Asia, Europe, and North America. The group maintains sophisticated command-and-control infrastructure and leverages a variety of custom and publicly available tools. As of 2025, APT31 continues to conduct ongoing espionage operations with renewed focus on telecommunications, defense, and critical infrastructure sectors.
+The group gained heightened international visibility in 2024 following a series of coordinated indictments and public attributions by the United States and the United Kingdom. APT31 is particularly noted for its sophisticated targeting of democratic processes, including the infrastructure of major political parties and the personal communications of high-ranking legislators and election officials.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.002: Phishing - Spearphishing Link
-                                T1566.001: Phishing - Spearphishing Attachment
-                                T1598: Phishing for Information
-                                T1190: Exploit Public-Facing Application
-                            
-                            Execution:
-                            
-                                T1059.001: Command and Scripting Interpreter - PowerShell
-                                T1203: Exploitation for Client Execution
-                                T1204.002: User Execution - Malicious File
-                            
-                            Persistence:
-                            
-                                T1098: Account Manipulation
-                                T1547.001: Boot or Logon Autostart Execution - Registry Run Keys
-                                T1547.013: Boot or Logon Autostart Execution - XDG Autostart Entries
-                            
-                            Defense Evasion:
-                            
-                                T1036: Masquerading
-                                T1140: Deobfuscate/Decode Files or Information
-                                T1562.008: Impair Defenses - Disable Logging
-                            
-                            Credential Access:
-                            
-                                T1110: Brute Force
-                                T1056: Input Capture
-                            
-                            Command & Control:
-                            
-                                T1071: Application Layer Protocol
-                                T1568: Dynamic Resolution
-                                T1008: Fallback Channels
+### Targeting of Democratic Institutions (2020-2024)
+Between 2020 and 2024, APT31 conducted a sustained campaign against political figures and institutions in the United States and Europe. This included targeting members of the Inter-Parliamentary Alliance on China (IPAC) and the personal email accounts of U.S. senators and their staff. The group utilized tracking pixels embedded in emails to perform initial reconnaissance and identify vulnerable targets for subsequent exploit delivery.
 
-                        Common Attack Vectors
-                        
-                            Advanced Spear-phishing: Highly personalized phishing emails impersonating government officials, industry contacts, or service providers, often containing custom malware attachments.
-                            Watering Hole Attacks: Compromise of websites frequented by target industries to deliver malware and gain initial access to victim networks.
-                            Software Vulnerabilities: Exploitation of zero-day and known vulnerabilities in Windows, Adobe, Java, and other widely-used software.
-                            Social Engineering: Patient, multi-stage social engineering campaigns building rapport with targets before credential harvesting or malware delivery.
-                            Supply Chain Targeting: Compromise of managed service providers and technology partners to gain access to multiple downstream organizations.
+### Exploitation of Network Infrastructure
+APT31 has frequently targeted the home routers and individual internet devices of strategic targets to build a distributed C2 network. By compromising small office/home office (SOHO) routers, the group creates a mesh of "hidden" intermediate proxies that mask the origin of their attacks and allow them to bypass geographical ip-blocking filters.
 
-                        Tools & Malware
-                        
-                            SHIPSHAPE: Custom modular backdoor used for command execution and lateral movement in victim networks.
-                            LOWBALL: Lightweight remote access trojan deployed as a second-stage payload for maintaining persistent access.
-                            FELICITY: Custom information stealer targeting credentials, browser data, and system information.
-                            Cobalt Strike: Legitimate post-exploitation framework abused for lateral movement and privilege escalation.
-                            BADNEWS: Custom malware implant for remote command execution and data exfiltration.
-                            Living-off-the-Land Tools: Extensive use of PowerShell, WMI, and native Windows utilities to minimize detection.
-                            Mimikatz: Credential dumping tool for lateral movement within compromised networks.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Custom C2 Servers: Operators maintain infrastructure in China and compromised servers across multiple countries.
-                            Domain Fronting: Abuse of legitimate CDNs and hosting providers to mask malicious traffic.
-                            Bulletproof Hosting: Extensive use of Russian and Eastern European bullet-proof hosting for command-and-control infrastructure.
-                            Fast Flux DNS: Rapid rotation of DNS records to evade tracking and network-based detection.
-                            Compromised Legitimate Infrastructure: Hijacking of legitimate web servers for C2 communications.
+APT31 maintains a robust and modular toolset. Their primary implant is **SOGU** (or Snappy), a versatile backdoor capable of file exfiltration, keylogging, and remote shell execution. They also utilize **DROPOUT**, a malware family focused on persistence and stealthy credential theft. The group is known for its ability to rapidly weaponize N-day vulnerabilities in popular enterprise hardware, such as VPN gateways and firewall appliances.
 
-## Targeted Industries & Organizations
+The group's operational tradecraft emphasizes the use of legitimate cloud services (including Google Drive and Dropbox) for staging their second-stage payloads and exfiltrating data. This "living off the cloud" approach allows their traffic to blend into the noise of standard corporate network activity. They also make extensive use of **ScanBox**, a browser-based reconnaissance tool that helps them profile victims' systems before delivering a payload.
 
-Sector
-                                Notable Targets / Focus
+## Attribution
 
-                                Government & Defense
-                                US federal agencies, defense agencies, military research institutions, NATO member governments
+APT31 was formally attributed to the Chinese MSS in a landmark 2024 indictment by the **U.S. Department of Justice**. The indictment named seven individuals—Ni Gaobin, Cheng Feng, Zhao Guangzong, Sun Xiaohui, Weng Ming, Cheng Chu, and Zhu Yunqi—as being part of the hacking group operating under the front company **Wuhan Xiaoruizhi Science and Technology (Wuhan XRZ)**.
 
-                                Telecommunications
-                                Telecom operators, network infrastructure providers, undersea cable operators
+Coincident with the U.S. indictment, the **United Kingdom's NCSC** and the **CISA** released joint advisories detailing APT31's tradecraft and identifying them as a threat to democratic institutions worldwide. The attribution is supported by extensive technical evidence, including infrastructure overlaps, shared malware code across MSS-linked groups, and the targeting of entities critical to the Hubei provincial government's interests.
 
-                                Technology
-                                Software vendors, hardware manufacturers, cloud service providers, semiconductor companies
+## MITRE ATT&CK Profile
 
-                                Aerospace & Aviation
-                                Aerospace contractors, aircraft manufacturers, aviation research organizations
+APT31's techniques are centered on reconnaissance and stealthy persistence:
 
-                                Energy
-                                Utilities, energy research, strategic infrastructure operators
+- **T1566.002 (Phishing: Spearphishing Link):** Sending tailored emails with links to attacker-controlled sites to harvest credentials or deliver droppers.
+- **T1071.001 (Web Protocols):** C2 communication masquerading as standard web traffic to common public services.
+- **T1027 (Obfuscated Files or Information):** Using custom packers and multi-stage loading to bypass antivirus products.
+- **T1016 (System Network Configuration Discovery):** Using tracking pixels and ScanBox to gather technical intelligence about a target's environment before committing to an attack.
 
-## Attributable Attacks Timeline
+## Sources & References
 
-2012-2013
-                            
-                                Early Targeting of Asian Telecom Operators
-                                APT31 campaigns targeting telecommunications firms across Asia-Pacific region using custom malware and spear-phishing.
-
-                            2014-2015
-                            
-                                US Government Network Targeting
-                                Attributed to campaigns targeting US federal agencies using SHIPSHAPE and BADNEWS malware variants.
-
-                            2016-2017
-                            
-                                NATO and European Defense Targeting
-                                Expansion of operations to target NATO member states, defense contractors, and European government agencies.
-
-                            2018-2019
-                            
-                                Telecommunications Infrastructure Focus
-                                Campaigns specifically targeting telecom operators and undersea cable infrastructure across multiple continents.
-
-                            2020-2021
-                            
-                                Aviation Sector Targeting
-                                Operations shifted to focus on aerospace and aviation companies across Europe and North America.
-
-                            2022-2024
-                            
-                                Continued Strategic Espionage
-                                Ongoing campaigns against government and defense targets with updated malware toolkits and sophisticated social engineering.
-
-                            2024-2025
-                            
-                                Infrastructure Targeting Expansion
-                                Operations expanding to include critical infrastructure sectors with focus on long-term persistent access acquisition.
-
-## Known Exploits & CVEs
-
-CVE ID
-                                Vulnerability
-                                Affected Product
-                                Year
-
-                                CVE-2013-3896
-                                Internet Explorer Use-After-Free
-                                Microsoft Internet Explorer
-                                2013
-
-                                CVE-2017-0290
-                                Windows OLE Remote Code Execution
-                                Microsoft Windows
-                                2017
-
-                                CVE-2019-1367
-                                Windows VBScript Engine Remote Code Execution
-                                Microsoft Windows
-                                2019
-
-                                CVE-2020-1193
-                                Windows Remote Code Execution
-                                Microsoft Windows
-                                2020
-
-                                CVE-2021-21985
-                                vCenter Server Remote Code Execution
-                                VMware vCenter Server
-                                2021
-
-## Cross-Vendor Naming Reference
-
-Vendor
-                                Attribution Name
-
-                                Microsoft
-                                Zirconium
-
-                                CrowdStrike
-                                JUDGEMENT PANDA
-
-                                Mandiant
-                                APT31
-
-                                Recorded Future
-                                NOTROBIN
-
-                                Kaspersky
-                                Violet Typhoon
-
-                                Symantec
-                                APT.Snapdragon
-
-## Related Threat Actors
-
-APT31 operates within the broader Chinese state-sponsored ecosystem. Related groups include:
-                    
-                        APT1 (Comment Crew) - Chinese PLA Unit 61398
-                        APT10 (MenuPass) - Chinese MSS contractor
-                        APT27 (Emissary Panda) - Chinese espionage group
-                        APT40 (Leviathan) - Chinese maritime espionage group
-                        APT41 (BARIUM) - Chinese dual-purpose espionage and financial group
-
-## References & Sources
-
-[1] Microsoft Threat Intelligence: "Chinese State-Sponsored Actor Zirconium Targeting Multiple Critical Industries" (2024)
-                        [2] Mandiant Intelligence Report: "APT31 Campaign Analysis and Attribution" (2023)
-                        [3] CrowdStrike Adversary Report: "JUDGEMENT PANDA: Years of Espionage Against NATO" (2022)
-                        [4] Recorded Future Report: "Chinese APT Group NOTROBIN Targeting Telecommunications" (2021)
-                        [5] Kaspersky Securelist: "Violet Typhoon Operations and Malware Analysis" (2020)
-                        [6] CISA Alert: "APT31 Targeting US Federal Agencies" (2019)
-                        [7] FireEye Threat Intelligence: "BADNEWS Malware Used by APT31" (2018)
-                        [8] Palo Alto Networks Unit 42: "APT31 SHIPSHAPE Backdoor Analysis" (2017)
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China (MSS)
-
-                    Nation-State Sponsored
-                    Yes - Chinese Government
-
-                    Motivation
-                    Espionage & IP Theft
-
-                    First Seen
-                    2012
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    Chinese PLA Unit
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [US Department of Justice: Seven Hackers Associated with Chinese Government Charged with Computer Intrusions](https://www.justice.gov/opa/pr/seven-hackers-associated-chinese-government-charged-computer-intrusions-targeting-perceived) — US Department of Justice, 2024-03-25
+- [NCSC UK: UK and allies expose APT31 campaign targeting democracies](https://www.ncsc.gov.uk/news/uk-and-allies-expose-apt31-campaign-targeting-democracies) — NCSC UK, 2024-03-25
+- [CISA: Advisory (AA24-085A) — PRC State-Sponsored Cyber Activity Against Democratic Institutions](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-085a) — CISA, 2024-03-25
+- [MITRE ATT&CK: APT31 (Group G0034)](https://attack.mitre.org/groups/G0034/) — MITRE ATT&CK, 2023-10-21
+- [Microsoft: Zirconium (APT31) targeting of political entities in the US and Europe](https://www.microsoft.com/en-us/security/blog/2020/09/10/strontium-detect-prevent-attacks-targeting-2020-presidential-election/) — Microsoft Security, 2020-09-10
