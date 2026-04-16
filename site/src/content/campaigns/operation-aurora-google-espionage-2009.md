@@ -135,5 +135,5 @@ Secretary of State Hillary Clinton delivers a major speech on internet freedom, 
 - [Google: A new approach to China](https://googleblog.blogspot.com/2010/01/new-approach-to-china.html) — Google, 2010-01-12
 - [CISA: Cyber Security Bulletin SB10-025](https://www.cisa.gov/news-events/bulletins/sb10-025) — CISA, 2010-01-25
 - [McAfee: Operation Aurora Hit Google and Others](https://www.mcafee.com/blogs/other-blogs/mcafee-labs/operation-aurora-hit-google-others/) — McAfee, 2010-01-14
-- [MITRE ATT&CK: APT17 (Elderwood) Threat Actor Profile](https://attack.mitre.org/groups/G0025/) — MITRE ATT&CK, 2015
-- [Wired: Google Hackers Also Hit Adobe, Rackspace and Many Others](https://www.wired.com/2010/01/google-adobe-hack/) — Wired, 2010
+- [MITRE ATT&CK: Operation Aurora Campaign (C0003)](https://attack.mitre.org/campaigns/C0003/) — MITRE ATT&CK
+- [Wired: Google Hackers Also Hit Adobe, Rackspace and Many Others](https://www.wired.com/2010/01/operation-aurora/) — Wired, 2010

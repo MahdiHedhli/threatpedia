@@ -145,4 +145,4 @@ Following the breach, Equifax implemented a massive security overhaul, including
 - [GAO: Actions Taken by Equifax and Federal Agencies in Response to the 2017 Breach](https://www.gao.gov/products/gao-18-559) — GAO, 2018-08-30
 - [NVD: CVE-2017-5638 Detail](https://nvd.nist.gov/vuln/detail/CVE-2017-5638) — NVD, 2017-03-10
 - [US Department of Justice: Chinese Military Personnel Charged with Computer Fraud, Economic Espionage, and Wire Fraud for Hacking Equifax](https://www.justice.gov/opa/pr/chinese-military-personnel-charged-computer-fraud-economic-espionage-and-wire-fraud-hacking) — US Department of Justice, 2020-02-10
-- [CISA: Analysis of the Apache Struts Vulnerability and its Impact](https://www.cisa.gov/news-events/alerts/2017/03/08/apache-releases-security-advisory-struts-2) — CISA, 2017
+- [CISA: Apache Struts Vulnerability Advisory](https://www.cisa.gov/news-events/alerts/2017/09/08/apache-struts-vulnerability) — CISA, 2017

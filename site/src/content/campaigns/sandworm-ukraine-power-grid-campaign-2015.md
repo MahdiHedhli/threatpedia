@@ -141,5 +141,5 @@ The U.S. Department of Justice charges six GRU officers specifically for their i
 - [CISA: Cyber-Attack Against Ukrainian Critical Infrastructure](https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure) — CISA, 2016-02-25
 - [ESET: Industroyer — The Biggest Threat to Industrial Control Systems since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) — ESET, 2017-06-12
 - [US Department of Justice: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — US Department of Justice, 2020-10-19
-- [Dragos: CrashOverride - Analysis of the Threat to Electric Grid Operations](https://www.dragos.com/blog/crashoverride-analysising-the-threat-to-electric-grid-operations/) — Dragos, 2017
-- [NCSC UK: Advisory on Sandworm activity targeting international organizations](https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-gtsst) — NCSC UK, 2018
+- [Dragos: CrashOverride — Analysis of the Threat to Electric Grid Operations](https://www.dragos.com/resource/crashoverride/) — Dragos, 2017
+- [NCSC UK: Reckless Campaign of Cyber Attacks by Russian Military Intelligence Service](https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-exposed) — NCSC UK, 2018

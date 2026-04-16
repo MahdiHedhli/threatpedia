@@ -137,6 +137,6 @@ Kaseya announces it has obtained a universal decryptor and begins the restoratio
 
 - [CISA Alert (AA21-187A): Guidance for MSPs and Customers Affected by Kaseya VSA](https://www.cisa.gov/news-events/alerts/2021/07/04/cisa-and-fbi-release-guidance-msps-and-their-customers-affected-kaseya-vsa) — CISA, 2021-07-04
 - [FBI News Release: FBI and CISA Guidance to MSPs and Customers](https://www.fbi.gov/news/press-releases/press-releases/fbi-and-cisa-guidance-to-msps-and-their-customers-affected-by-the-kaseya-vsa-ransomware-attack) — FBI, 2021-07-04
-- US DOJ: Department of Justice Announces Charges Against REvil Ransomware Actors (2021)
+- [US DOJ: Department of Justice Announces Charges Against REvil Ransomware Actors](https://www.justice.gov/opa/pr/department-justice-announces-charges-and-arrests-two-separate-major-ransomware-cases) — US Department of Justice, 2021
 - [Mandiant: Kaseya VSA Exploitation Initial Analysis](https://www.mandiant.com/resources/blog/kaseya-vsa-exploitation-initial-analysis) — Mandiant, 2021-07-03
-- Kaseya Trust Center: Incident Response Resources
+- [Kaseya: Trust Center — Incident Response Resources](https://www.kaseya.com/trust-center/) — Kaseya
