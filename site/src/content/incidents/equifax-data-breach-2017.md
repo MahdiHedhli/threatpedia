@@ -6,7 +6,7 @@ attackType: Data Breach
 severity: critical
 sector: Financial Services
 geography: United States
-threatActor: PLA Unit 54th Research Institute
+threatActor: PLA 54th Research Institute
 attributionConfidence: A1
 reviewStatus: draft_ai
 confidenceGrade: A

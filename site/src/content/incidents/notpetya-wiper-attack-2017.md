@@ -4,7 +4,7 @@ title: NotPetya Global Wiper Attack
 date: 2017-06-27
 attackType: Sabotage / Wiper
 severity: critical
-sector: Energy & Utilities
+sector: Cross-Sector
 geography: Global
 threatActor: Sandworm
 attributionConfidence: A1
