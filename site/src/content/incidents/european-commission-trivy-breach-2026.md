@@ -1,24 +1,20 @@
 ---
-eventId: TP-2026-0020
-title: European Commission Cloud Breach via Trivy Supply Chain
+eventId: "TP-2026-0020"
+title: "European Commission Cloud Breach via Trivy Supply Chain"
 date: 2026-03-19
-attackType: supply-chain
+attackType: "Supply Chain"
 severity: critical
-sector: Government / International
-geography: "EU (Brussels & Multi-State)"
-threatActor: TeamPCP
-attributionConfidence: A4
-reviewStatus: under_review
+sector: "Government"
+geography: "European Union"
+threatActor: "TeamPCP"
+attributionConfidence: A3
+reviewStatus: "draft_ai"
 confidenceGrade: C
-generatedBy: new-threat-intel-automation
-generatedDate: 2026-03-19
+generatedBy: "dangermouse-bot"
+generatedDate: 2026-04-16
 cves:
   - "CVE-2026-33634"
 relatedSlugs:
-  - "teampcp-supply-chain-attack"
-  - "axios-unc1069-compromise"
-  - "trivy-cve-2026-33634"
-  - "shiny-hunters-leak-site"
   - "cisco-trivy-supply-chain-breach-2026"
 tags:
   - "trivy"
@@ -27,269 +23,165 @@ tags:
   - "eu"
   - "data-exfiltration"
   - "shinyhunters"
+  - "supply-chain"
+  - "cicd"
+sources:
+  - url: "https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain"
+    publisher: "CERT-EU"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-04-02"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-03-25"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/"
+    publisher: "Help Net Security"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-03"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/"
+    publisher: "SecurityWeek"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-03"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html"
+    publisher: "CSO Online"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-03"
+    accessDate: "2026-04-16"
+    archived: false
+mitreMappings:
+  - techniqueId: "T1195.002"
+    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    tactic: "Initial Access"
+    notes: "CVE-2026-33634 exploitation via compromised Trivy GitHub Actions release pipeline."
+  - techniqueId: "T1078"
+    techniqueName: "Valid Accounts"
+    tactic: "Persistence"
+    notes: "Stolen AWS credentials used to authenticate and access EC cloud infrastructure."
+  - techniqueId: "T1530"
+    techniqueName: "Data from Cloud Storage Object"
+    tactic: "Collection"
+    notes: "340 GB exfiltrated from S3 buckets containing department communications and inter-institutional data."
+  - techniqueId: "T1567"
+    techniqueName: "Exfiltration Over Web Service"
+    tactic: "Exfiltration"
+    notes: "Data transferred to attacker-controlled infrastructure over web service channels."
 ---
-## Executive Summary
 
-On April 2, 2026, CERT-EU publicly disclosed that the European Commission's Europa web hosting platform on AWS had been breached through the Trivy supply chain compromise (CVE-2026-33634), making it the highest-profile governmental victim of the TeamPCP campaign. The attack, which gained initial access on March 19 and was detected on March 24, resulted in the exfiltration of 340 GB of data including approximately 52,000 email-related files affecting 71 clients: 42 internal European Commission departments plus 29 other EU entities.
-TeamPCP exploited a misconfiguration in Trivy's GitHub Actions environment to implant credential-stealing malware via manipulated version tags, forcing CI/CD pipelines to automatically pull compromised code. The stolen data, including 2.22 GB of outbound communications, was published by ShinyHunters on their dark web leak site on March 28—before the official public disclosure.
+## Summary
+
+On April 2, 2026, CERT-EU publicly disclosed that the European Commission's Europa web hosting platform on AWS had been breached through the Trivy supply chain compromise (CVE-2026-33634), making it the highest-profile governmental victim of the TeamPCP campaign. The attack gained initial access on March 19 and was detected on March 24, resulting in the exfiltration of 340 GB of data including approximately 52,000 email-related files affecting 71 clients: 42 internal European Commission departments plus 29 other EU entities.
+
+TeamPCP exploited a misconfiguration in Trivy's GitHub Actions environment to implant credential-stealing malware via manipulated version tags, forcing CI/CD pipelines to automatically pull compromised code. The stolen data, including 2.22 GB of outbound communications, was published by ShinyHunters on their dark web leak site on March 28, before the official public disclosure.
+
 Mandiant estimates the broader Trivy/TeamPCP campaign affected over 1,000 SaaS environments, with other confirmed victims including Cisco, Checkmarx, LiteLLM, and Sportradar AG. This incident represents one of the most consequential supply chain attacks targeting governmental infrastructure in recent years.
-
-## Attack Timeline
-
-February 2026
-
-CVE-2026-33634 exploitation begins
-TeamPCP begins exploiting misconfiguration in Trivy GitHub Actions environment. Attacker gains ability to manipulate version tags and inject malicious code into release pipelines.
-
-March 19, 2026~14:30 UTC
-
-Initial access via compromised Trivy supply chain
-European Commission's AWS infrastructure running compromised Trivy in container scanning pipeline becomes infected with credential-stealing malware. AWS API key stolen. TeamPCP gains access to AWS credentials and begins reconnaissance.
-
-March 19–24, 2026
-
-Data exfiltration phase using TruffleHog scanning
-Attacker exfiltrates 340 GB (uncompressed) of data from EC AWS account, including 52,000 email files representing 2.22 GB of outbound communications from 71 EU clients (42 EC departments + 29 other entities). Data includes names, emails, and usernames from EC websites. Attacker used TruffleHog to scan for additional secrets. 5-day detection gap allows extensive data collection.
-
-March 24, 2026~09:15 UTC
-
-Security Operations Center detects intrusion
-EC SOC fires critical alerts related to unusual AWS credential usage and large data exfiltration events. Incident response is activated and attacker access is revoked.
-
-March 25, 2026
-
-CERT-EU notified and CVE added to CISA KEV
-CERT-EU is notified and begins detailed forensic analysis. Root cause traced to CVE-2026-33634 in Trivy supply chain. CVE-2026-33634 added to CISA Known Exploited Vulnerabilities (KEV) catalog with remediation deadline April 8, 2026. Incident response efforts escalate to EU intelligence coordination.
-
-March 27, 2026
-
-European Commission public disclosure via press release
-European Commission issues official press release disclosing the breach and alerting EU institutions and international partners of the supply chain compromise.
-
-March 28, 2026
-
-ShinyHunters adds stolen data to Tor leak site
-The dark web leak site ShinyHunters publishes 340 GB of exfiltrated data from EC breach, making sensitive inter-departmental and inter-institutional communications irrecoverably public.
-
-April 2, 2026
-
-CERT-EU public disclosure
-CERT-EU publicly discloses the breach and attributes attack to TeamPCP via Trivy CVE-2026-33634. Incident details, scope, and recommendations shared with government partners and international organizations.
-
-April 3, 2026
-
-Campaign scope quantified
-Mandiant publishes analysis quantifying broader TeamPCP/Trivy campaign at 1,000+ SaaS environments compromised globally. Additional victims identified in technology, defense, and financial sectors.
 
 ## Technical Analysis
 
-The attack exploited CVE-2026-33634, a critical misconfiguration in Trivy's GitHub Actions environment that allowed unauthorized manipulation of release artifacts and version tags.
+CVE-2026-33634 stemmed from insufficient access controls on Trivy's GitHub Actions runner environment. The release CI/CD pipeline used overly permissive IAM policies granting broad repository access. GitHub Actions secrets were not properly rotated or scoped, and there was no code signing verification for version tags or runtime integrity checks for published container images.
 
-Vulnerability Details
-CVE-2026-33634 stemmed from insufficient access controls on Trivy's GitHub Actions runner environment:
+TeamPCP exploited the misconfiguration to inject credential-stealing malware into Trivy's release pipeline. The attacker created or modified version tags (e.g., v0.41.0 through v0.44.2) pointing to repositories containing malicious code. Organizations using Trivy in container scanning pipelines configured for automatic updates received compromised code. Malicious versions executed credential-harvesting scripts during initialization, targeting AWS credentials, GCP service accounts, and cloud environment variables.
 
-Release CI/CD pipeline used overly permissive IAM policies granting broad repository access
-GitHub Actions secrets not properly rotated or scoped to specific workflow requirements
-Lack of code signing verification for version tags and release artifacts
-No runtime integrity checks for published container images
-Insufficient audit logging of version tag modifications and release operations
+The European Commission's AWS infrastructure pulled the compromised Trivy version on March 19. The malware harvested AWS access keys, session tokens, and IAM role credentials. Using stolen credentials, the attacker enumerated and accessed EC AWS resources, downloading 340 GB from S3 buckets over a 5-day period before detection on March 24. The attacker also used TruffleHog to scan for additional secrets.
 
-Malware Implantation Mechanism
-TeamPCP exploited the misconfiguration to inject credential-stealing malware into Trivy's release pipeline:
+## Attack Chain
 
-Version Tag Manipulation: Attacker created or modified version tags (e.g., v0.41.0, v0.42.0) pointing to repositories containing malicious code
-Automated CI/CD Pull: Organizations using Trivy in container scanning pipelines configured to pull latest versions automatically received compromised code
-Postinstall Execution: Malicious Trivy versions executed credential-harvesting scripts during initialization
-Cloud Credential Theft: Malware specifically targeted AWS credentials, GCP service accounts, and cloud environment variables
+### Stage 1: Supply Chain Manipulation
 
-Impact on Europa Platform
-The European Commission's AWS infrastructure running Trivy in its container scanning pipeline became compromised with the following sequence:
+TeamPCP exploits CVE-2026-33634 in Trivy GitHub Actions to manipulate version tags and inject malicious code into the release pipeline.
 
-Automated Update: Europa's CI/CD configuration pulled latest Trivy version (compromised) on March 19
-Credential Exfiltration: Malware harvested AWS access keys, session tokens, and IAM role credentials from EC infrastructure
-Lateral Movement: Attacker used stolen credentials to enumerate and access EC AWS account resources
-Data Exfiltration: Large-scale download of 340 GB from S3 buckets containing department communications and cross-institutional data
-Minimal Detection: Attack evaded initial detection for 5 days due to legitimate-appearing credential usage patterns
+### Stage 2: Automated Distribution
 
-Affected Data Categories
-Analysis of the 340 GB exfiltrated from EC infrastructure:
+Organizations worldwide with automated Trivy updates pull compromised versions. European Commission's Europa platform integrates the malicious version on March 19.
 
-52,000 email-related files totaling 2.22 GB of outbound communications
-Internal departmental correspondence and meeting notes (42 EC departments)
-Inter-institutional communications with 29 other EU entities and agencies
-Sensitive policy documents and draft legislative materials
-Personnel records and administrative documentation
-Budget and resource allocation planning documents
+### Stage 3: Credential Harvesting
 
-## Attack Flow & Compromise Chain
+Malicious Trivy version executes postinstall scripts that harvest AWS access keys, session tokens, and IAM role credentials from EC infrastructure.
 
-Stage 1
-Supply Chain Manipulation
+### Stage 4: Cloud Infrastructure Access
 
-TeamPCP exploits CVE-2026-33634 in Trivy GitHub Actions to manipulate version tags and inject malicious code into release pipeline. Attacker gains ability to publish compromised versions that appear legitimate.
+Using stolen credentials, the attacker gains direct access to EC AWS account. S3 bucket enumeration and resource reconnaissance begins.
 
-Stage 2
-Automated Distribution
+### Stage 5: Data Exfiltration
 
-Organizations worldwide with automated Trivy updates in CI/CD pipelines pull compromised versions. European Commission's Europa platform automatically integrates malicious Trivy version on March 19.
+Attacker downloads 340 GB of sensitive data from EC AWS infrastructure over a 5-day period, including 52,000 email files from 71 EU clients.
 
-Stage 3
-Credential Harvesting
+### Stage 6: Public Leak
 
-Malicious Trivy version executes postinstall scripts that harvest cloud credentials. AWS access keys, session tokens, and IAM role credentials from EC infrastructure are exfiltrated to attacker-controlled servers.
-
-Stage 4
-Cloud Infrastructure Access
-
-Using stolen credentials, attacker gains direct access to European Commission AWS account. Infrastructure reconnaissance and enumeration of S3 buckets, EC2 instances, and other resources begins.
-
-Stage 5
-Data Exfiltration
-
-Attacker downloads 340 GB of sensitive data from EC AWS infrastructure over 5-day period. Includes 52,000 email files, policy documents, and inter-institutional communications from 71 EU clients.
-
-Stage 6
-Public Leak
-
-ShinyHunters publishes exfiltrated data on dark web leak site on March 28, before official disclosure. Data becomes irrecoverably public and available to threat actors and foreign intelligence services.
+ShinyHunters publishes exfiltrated data on dark web leak site on March 28, making the data irrecoverably public.
 
 ## Impact Assessment
 
-The Trivy supply chain compromise represents one of the most consequential attacks on governmental infrastructure in recent years, with cascading impacts across multiple dimensions:
+The 340 GB of exfiltrated data represents the largest known breach of EU institutional data. 71 EU entity clients were affected (42 EC departments plus 29 other organizations). The 52,000 email files (2.22 GB) of sensitive internal and inter-institutional communications were exposed, along with draft legislative materials and strategic policy documents.
 
-Direct Institutional Impact
+The intelligence value of stolen inter-institutional communications is substantial, providing strategic intelligence on EU decision-making processes. Compromised policy documents and draft materials could be exploited in international negotiations. Personnel records exposure creates vulnerabilities for coercion and insider recruitment.
 
-340 GB Data Exfiltrated: Largest known breach of EU institutional data
-71 EU Entity Clients: 42 European Commission departments + 29 other EU organizations compromised
-52,000 Email Files: 2.22 GB of sensitive internal and inter-institutional communications exposed
-Policy Exposure: Draft legislative materials and strategic policy documents exposed to threat actors
+ShinyHunters' publication on March 28 made the data irrecoverably public. The broader Trivy/TeamPCP campaign affected over 1,000 SaaS environments globally across technology, defense, financial services, and government sectors.
 
-Global Campaign Scale
+## Attribution
 
-1,000+ SaaS Environments: Mandiant estimates broader campaign affected over 1,000 organizations
-Multiple Victim Categories: Technology, defense, financial services, and government sectors
-Confirmed Additional Victims: Cisco (source code breach), Checkmarx, Sportradar AG, LiteLLM
-Ongoing Compromise Risk: Unknown number of environments may still be running compromised Trivy versions
+CERT-EU attributed the breach to TeamPCP via the Trivy CVE-2026-33634 supply chain compromise. ShinyHunters (affiliated with TeamPCP) published the stolen data on their dark web leak site. Attribution confidence is moderate (A3) based on CERT-EU official attribution, CVE correlation, and ShinyHunters' public claim.
 
-Diplomatic & National Security Implications
+TeamPCP is a supply chain attack group focused on CI/CD pipeline compromise and cloud credential harvesting. The relationship between TeamPCP and ShinyHunters suggests coordinated operations between supply chain compromise teams and data monetization operations.
 
-Intelligence Value: Stolen inter-institutional communications provide strategic intelligence on EU decision-making processes
-Negotiation Leverage: Compromised policy documents and draft materials could be exploited in international negotiations
-Espionage Exposure: Intelligence liaison communications and sensitive coordination details exposed
-Personnel Risk: Administrative data exposure creates vulnerabilities for coercion and insider recruitment
+## Timeline
 
-Data Irretrievability
+### 2026-02 — CVE-2026-33634 Exploitation Begins
 
-ShinyHunters publication on March 28 made data irrecoverably public
-Data available to threat actors, foreign intelligence services, and criminal organizations
-No containment possible after dark web publication
-Reputational and operational damage permanent and irreversible
+TeamPCP begins exploiting the Trivy GitHub Actions misconfiguration.
 
-MITRE ATT&CK Techniques
+### 2026-03-19 — EC Infrastructure Compromised
 
-T1195.002: Compromise Software Supply Chain — CVE-2026-33634 exploitation
-T1078: Valid Accounts — Use of stolen AWS credentials
-T1530: Data from Cloud Storage — S3 bucket enumeration and exfiltration
-T1567: Exfiltration Over Web Service — Data transfer to attacker-controlled infrastructure
-T1588.004: Obtain Capabilities: Digital Certificates — Credential harvesting and collection
+European Commission's AWS infrastructure pulls compromised Trivy version. AWS API keys stolen. Attacker begins reconnaissance.
 
-## Remediation & Lessons Learned
+### 2026-03-19 to 2026-03-24 — Data Exfiltration
 
-The European Commission breach and broader Trivy campaign reveal critical gaps in supply chain security practices and cloud infrastructure hardening. Organizations must implement comprehensive remediation across multiple domains:
+Attacker exfiltrates 340 GB from EC AWS account including 52,000 email files from 71 EU clients over a 5-day period.
 
-CI/CD Pipeline Hardening
+### 2026-03-24 — Intrusion Detected
 
-Pin All Tool Versions: Replace mutable "latest" tags with specific verified digests and cryptographic hashes
-Code Signing Verification: Implement mandatory verification of digital signatures on all CI/CD tools and dependencies
-SBOM Tracking: Maintain Software Bill of Materials (SBOM) for all pipeline tools with version tracking
-Artifact Attestation: Use tools like Sigstore and in-toto to cryptographically attest to build provenance
-Pipeline Segmentation: Isolate security scanning tools in separate, restricted pipeline environments
+EC SOC detects unusual AWS credential usage and data exfiltration. Incident response activated, attacker access revoked.
 
-Cloud Credential Management
+### 2026-03-25 — CERT-EU Notified, CISA KEV Updated
 
-Workload Identity: Replace long-lived cloud credentials with time-limited workload identity tokens
-IAM Least Privilege: Apply strict least-privilege policies to all CI/CD tool access; avoid broad account-level permissions
-Credential Rotation: Implement automatic rotation of cloud credentials with 24-48 hour lifetime limits
-Session Isolation: Use distinct AWS accounts or resource groups for CI/CD pipelines to limit blast radius
-Credential Monitoring: Monitor for unexpected credential usage patterns and large-scale data transfers
+CERT-EU begins forensic analysis. CVE-2026-33634 added to CISA KEV catalog with April 8 remediation deadline.
 
-Detection & Response Capabilities
+### 2026-03-27 — European Commission Press Release
 
-Version Change Monitoring: Alert on unexpected version changes in security scanning tools and critical dependencies
-Behavioral Analytics: Detect credential exfiltration patterns and unusual cloud API call sequences
-Data Transfer Baselining: Alert on abnormal data volumes being exfiltrated from cloud infrastructure
-Log Analysis: Implement centralized logging and analysis of CI/CD pipeline activities with 30+ day retention
-Rapid Response Playbooks: Pre-develop incident response procedures for supply chain compromises affecting critical tools
+EC issues official press release disclosing the breach.
 
-Supply Chain Risk Management
+### 2026-03-28 — ShinyHunters Leak
 
-Vendor Assessment: Evaluate security posture of all CI/CD tool vendors and open-source project maintainers
-Threat Intelligence Sharing: Participate in industry-wide threat intelligence coordination on supply chain attacks
-Dependency Audits: Conduct quarterly audits of all tools and dependencies in use across organization
-Incident Coordination: Establish pre-agreed disclosure timelines and information sharing agreements with intelligence partners
+ShinyHunters publishes 340 GB of exfiltrated data on Tor leak site.
 
-## References
+### 2026-04-02 — CERT-EU Public Disclosure
 
-CERT-EU - European Commission cloud breach
-https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain
+CERT-EU publicly discloses the breach and attributes it to TeamPCP.
 
-Help Net Security - Trivy supply chain attack enabled EC breach
-https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/
+## Remediation & Mitigation
 
-SecurityWeek - EC Confirms Data Breach Linked to Trivy
-https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/
+Organizations must pin all CI/CD tool versions using specific verified digests and cryptographic hashes rather than mutable "latest" tags. Implement mandatory code signing verification on all CI/CD tools and dependencies. Maintain Software Bill of Materials (SBOM) for all pipeline tools. Use Sigstore and in-toto for cryptographic attestation of build provenance.
 
-CSO Online - CERT-EU blames Trivy supply chain attack
-https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html
+Replace long-lived cloud credentials with time-limited workload identity tokens. Apply strict least-privilege IAM policies to all CI/CD tool access. Implement automatic credential rotation with 24-48 hour lifetime limits. Use distinct AWS accounts for CI/CD pipelines to limit blast radius.
 
-CyberSecurity News - CERT-EU Confirms Trivy Supply Chain Attack
-https://cybersecuritynews.com/european-commission-breach-trivy/
+Monitor for unexpected version changes in critical dependencies. Detect credential exfiltration patterns and unusual cloud API call sequences. Alert on abnormal data volumes being transferred from cloud infrastructure. Audit CI/CD pipelines for affected Trivy versions (v0.40.0 through v0.44.2) and upgrade to 0.45.0 or later.
 
-Related Incidents
+## Sources & References
 
-TeamPCP Supply Chain Campaign
-CVE-2026-33634 Analysis
-ShinyHunters Operations
-Axios Supply Chain Incident
-
-TeamPCP Supply Chain Attack Campaign
-
-Threat Actor
-
-TeamPCP
-Supply chain attack group with focus on CI/CD pipeline compromise and cloud credential harvesting. Estimated 1,000+ SaaS environment victims globally.
-Full Profile
-
-Detection Guidance
-
-Cloud Credential Theft:
-Monitor CloudTrail for API calls using non-standard user agents, unusual credential patterns, and large S3 ListBucket/GetObject operations.
-Tool Version Anomalies:
-Alert on CI/CD pipeline execution of Trivy versions outside expected version tags or from non-official registries.
-
-Affected Versions
-
-The following Trivy versions contain CVE-2026-33634 malicious code:
-
-v0.40.0 — v0.44.2 (affected range)
-
-Organizations must audit CI/CD pipelines for these versions and upgrade to 0.45.0+ which includes vulnerability patches.
-
-Key Statistics
-
-340 GB
-Data Exfiltrated
-
-52,000
-Email Files Stolen
-
-71
-EU Entities Affected
-
-1,000+
-Global SaaS Victims
-
-5 Days
-Detection Gap
-
-// Hamburger menu functionality
+- [CERT-EU: European Commission Cloud Breach via Trivy Supply Chain](https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain) — CERT-EU, 2026-04-02
+- [CISA: Known Exploited Vulnerabilities Catalog — CVE-2026-33634](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) — CISA, 2026-03-25
+- [Help Net Security: Trivy Supply Chain Attack Enabled EC Breach](https://www.helpnetsecurity.com/2026/04/03/european-commission-cloud-breach/) — Help Net Security, 2026-04-03
+- [SecurityWeek: EC Confirms Data Breach Linked to Trivy Supply Chain Attack](https://www.securityweek.com/european-commission-confirms-data-breach-linked-to-trivy-supply-chain-attack/) — SecurityWeek, 2026-04-03
+- [CSO Online: CERT-EU Blames Trivy Supply Chain Attack for Europa.eu Data Breach](https://www.csoonline.com/article/4154176/cert-eu-blames-trivy-supply-chain-attack-for-europa-eu-data-breach.html) — CSO Online, 2026-04-03
