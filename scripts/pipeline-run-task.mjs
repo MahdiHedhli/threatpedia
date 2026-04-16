@@ -33,6 +33,7 @@ const EDITORIAL_WORDS = [
   'notably', 'significantly', 'interestingly', 'importantly',
   'remarkably', 'unfortunately', 'surprisingly', 'crucially',
   'strikingly', 'alarmingly', 'disturbingly', 'fascinatingly',
+  'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 
@@ -42,7 +43,7 @@ const SOURCE_SCHEMA = `  Each source object requires:
     publisher: string (organization name)
     publisherType: enum — government | vendor | media | research | community
     reliability: enum — R1 (confirmed) | R2 (probably true) | R3 (possibly true) | R4 (doubtful)
-    publicationDate: string (optional, ISO 8601)
+    publicationDate: string (REQUIRED, ISO 8601) — for living resources (MITRE ATT&CK, NVD), use last-modified date or access date
     accessDate: string (optional, ISO 8601)
     archived: boolean (default false)
     archiveUrl: string (optional, valid URL)`;
@@ -221,6 +222,7 @@ const RULES = `
      — Minimum 3 source objects
      — At least 1 must have publisherType: "government"
      — URLs must be real and verifiable (never fabricate)
+     — Every source MUST have a publicationDate (for living resources like MITRE ATT&CK or NVD, use last-modified or access date)
   4. mitreMappings MUST be in frontmatter (not just mentioned in body text)
   5. EDIT-RULE-030: Do NOT use editorial commentary words:
      ${EDITORIAL_WORDS.join(', ')}
@@ -563,7 +565,7 @@ function validateOutput(task, explicitFile) {
         if (!s.publisher) warnings.push(`Source ${i + 1}: missing publisher`);
         if (!s.publisherType) issues.push(`Source ${i + 1}: missing publisherType`);
         if (!s.reliability) warnings.push(`Source ${i + 1}: missing reliability`);
-        if (!s.publicationDate) warnings.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate`);
+        if (!s.publicationDate) issues.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate — required for all sources (for living resources like MITRE ATT&CK or NVD, use last-modified or access date)`);
       }
 
       // ── 6. MITRE mappings in frontmatter ──────────────────────────────────
@@ -632,8 +634,10 @@ function validateOutput(task, explicitFile) {
       const editorialHits = [];
       for (let i = 0; i < bodyLines.length; i++) {
         const line = bodyLines[i];
-        // Skip headings, code blocks, and source URLs
+        // Skip headings, code blocks, source URLs, and markdown hyperlinks in Sources section
+        // (official source titles like FBI press releases may contain banned words)
         if (line.startsWith('#') || line.startsWith('```') || line.startsWith('  - url:')) continue;
+        if (/^\s*-\s*\[.*\]\(https?:\/\//.test(line)) continue;
         const match = line.match(EDITORIAL_RE);
         if (match) {
           editorialHits.push({ line: i + 1, word: match[0], context: line.trim().substring(0, 80) });
