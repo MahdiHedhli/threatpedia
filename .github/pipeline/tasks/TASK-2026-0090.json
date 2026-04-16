@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0090",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors",
     "reprocess": true,
@@ -31,6 +31,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "note": "Corpus reprocessing \u2014 source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-16T06:00:00.000Z",
+      "action": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Batch 2 overnight \u2014 full rewrite with sources, mitreMappings, and formatted body"
     }
-  ]
+  ],
+  "updated": "2026-04-16T06:00:00.000Z"
 }
