@@ -40,6 +40,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: "research"
     reliability: "R1"
+    publicationDate: "2025-10-17"
     accessDate: "2026-04-14"
     archived: false
   - url: "https://www.justice.gov/opa/pr/high-level-organizer-fin7-hacking-group-sentenced-ten-years-prison"

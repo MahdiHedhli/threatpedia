@@ -65,6 +65,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: research
     reliability: R1
+    publicationDate: "2025-10-17"
     accessDate: "2026-04-15"
     archived: false
   - url: "https://www.justice.gov/opa/pr/grand-jury-indicts-12-russian-intelligence-officers-conspiracy-conspire-aid-2016-presidential"
