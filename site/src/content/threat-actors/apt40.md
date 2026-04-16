@@ -1,257 +1,132 @@
 ---
-name: APT40
+name: "APT40"
 aliases:
-  - "TEMP.Periscope"
   - "Leviathan"
-  - "BRONZE MOHUR"
-affiliation: China
-motivation: Espionage
+  - "BRONZE MOHAWK"
+  - "TEMP.Periscope"
+  - "TEMP.Jumper"
+  - "Gingham Typhoon"
+affiliation: "China (Ministry of State Security, Hainan)"
+motivation: "Espionage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "China"
+firstSeen: "2009"
+lastSeen: "2024"
+targetSectors:
+  - "Maritime"
+  - "Defense"
+  - "Government"
+  - "Technology"
+  - "Transportation"
+  - "Research"
+targetGeographies:
+  - "South China Sea region"
+  - "United States"
+  - "Australia"
+  - "Southeast Asia"
+  - "Europe"
+tools:
+  - "BADFLICK"
+  - "ScanBox"
+  - "PHOTO"
+  - "MURKYTOP"
+  - "Derusbi"
+  - "China Chopper"
+mitreMappings:
+  - techniqueId: "T1190"
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+    notes: "Rapidly exploits newly disclosed vulnerabilities in web-facing applications within hours of publication."
+  - techniqueId: "T1505.003"
+    techniqueName: "Server Software Component: Web Shell"
+    tactic: "Persistence"
+    notes: "Deploys web shells including China Chopper on compromised web servers for persistent access."
+  - techniqueId: "T1003"
+    techniqueName: "OS Credential Dumping"
+    tactic: "Credential Access"
+    notes: "Uses credential harvesting tools for lateral movement within targeted networks."
+attributionConfidence: A1
+attributionRationale: "Attributed to MSS Hainan State Security Department by a July 2021 joint advisory from CISA, NSA, FBI, and international partners (AA21-200A), and a 2021 DOJ indictment of four MSS officers."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "nation-state"
+  - "china"
+  - "mss"
+  - "espionage"
+  - "apt40"
+  - "maritime"
+sources:
+  - url: "https://attack.mitre.org/groups/G0065/"
+    publisher: "MITRE ATT&CK"
+    publicationDate: "2025-10-17"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-07-19"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/four-chinese-nationals-working-ministry-state-security-charged-global-computer-intrusion"
+    publisher: "US Department of Justice"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-07-19"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-APT40 (Leviathan) is a Chinese state-sponsored threat actor linked to the Ministry of State Security (MSS) with a primary focus on maritime and naval intelligence collection. Identified as operating since at least 2009, APT40 conducts espionage operations targeting maritime industries, defense contractors, naval research institutions, and engineering firms across the United States, Asia-Pacific, and Europe.
+## Executive Summary
 
-                    The group is highly specialized in targeting industries directly related to Chinese strategic interests in naval power projection, advanced submarine technology, port infrastructure, and marine engineering. APT40 maintains sophisticated command-and-control infrastructure, uses custom malware, and demonstrates deep knowledge of their target industries. The group's operational security and technical sophistication have enabled them to maintain long-term presence within victim networks.
+APT40, also tracked as Leviathan and Gingham Typhoon, is a Chinese state-sponsored cyber-espionage group attributed to the **Ministry of State Security (MSS) Hainan State Security Department**. Active since at least 2009, the group conducts espionage operations targeting maritime industries, defense contractors, government agencies, and research institutions, with a geographic focus on countries surrounding the South China Sea.
 
-                    As of 2025, APT40 continues to conduct active espionage operations with renewed focus on emerging maritime technologies, unmanned underwater vehicles, and naval defense systems. The group combines targeted malware deployment with credential theft and infrastructure-level reconnaissance to establish persistent access for long-term intelligence collection.
+APT40's targeting aligns with Chinese strategic interests in the South China Sea, including maritime territorial disputes and naval modernization. The group demonstrates a rapid capability to exploit newly disclosed vulnerabilities in public-facing applications, often weaponizing proof-of-concept exploits within hours of public disclosure.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.001: Phishing - Spearphishing Attachment
-                                T1566.002: Phishing - Spearphishing Link
-                                T1190: Exploit Public-Facing Application
-                                T1195.002: Supply Chain Compromise - Compromise Software Supply Chain
-                            
-                            Execution:
-                            
-                                T1059.001: Command and Scripting Interpreter - PowerShell
-                                T1203: Exploitation for Client Execution
-                                T1204.002: User Execution - Malicious File
-                            
-                            Defense Evasion:
-                            
-                                T1140: Deobfuscate/Decode Files or Information
-                                T1036: Masquerading
-                                T1574.001: Hijack Execution Flow - DLL Search Order Hijacking
-                            
-                            Credential Access:
-                            
-                                T1110: Brute Force
-                                T1056: Input Capture
-                                T1056.001: Input Capture - Keylogging
-                            
-                            Discovery:
-                            
-                                T1087: Account Discovery
-                                T1010: Application Window Discovery
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
+### 2017-2018 -- Maritime and Defense Sector Targeting
 
-                        Common Attack Vectors
-                        
-                            Targeted Spear-phishing: Highly specific phishing emails impersonating engineering firms, industry partners, and government agencies, often containing custom malware attachments.
-                            Watering Hole Attacks: Compromise of maritime and defense industry websites to deliver malware to target organizations.
-                            Exploitation of Public Vulnerabilities: Rapid exploitation of zero-day and known vulnerabilities in software commonly used in target industries.
-                            Credential Harvesting: Use of keyloggers and form-grabbing techniques to capture credentials from victim systems.
-                            Naval and Engineering Industry Targeting: Specialized focus on organizations involved in submarine technology, naval engineering, and maritime defense systems.
+APT40 conducted sustained intrusions against maritime engineering companies, naval defense contractors, and research institutions in the United States and Southeast Asia. The group targeted proprietary naval technology, including submarine designs and undersea communications systems.
 
-                        Tools & Malware
-                        
-                            ScanBox: Reconnaissance framework used to gather information about target networks and employees before engagement.
-                            JSky: Custom implant for remote command execution and data exfiltration.
-                            Mimikatz: Legitimate credential dumping tool used for lateral movement within compromised networks.
-                            Custom Backdoors: Multiple proprietary backdoor families deployed for persistent access and command execution.
-                            Keyloggers: Custom and modified keylogging tools for credential capture.
-                            Living-off-the-Land Utilities: Extensive use of PowerShell, WMI, and Windows native tools for post-compromise activities.
-                            Webshells: Custom webshells for maintaining access to compromised web servers.
+### 2021 -- Microsoft Exchange Exploitation
 
-                        Infrastructure Patterns
-                        
-                            Dedicated Command-and-Control Servers: Operators maintain infrastructure hosted in China and compromised servers globally.
-                            Fast Flux DNS: Rapid rotation of DNS records and IP addresses to evade detection.
-                            Compromised Legitimate Infrastructure: Use of compromised web servers and legitimate hosting providers for command-and-control.
-                            Port Reuse: C2 communication on common ports (80, 443) to blend with legitimate traffic.
-                            Domain Generation Algorithms: Use of DGA for dynamic C2 domain generation.
+APT40 exploited ProxyLogon (CVE-2021-26855) and related Exchange vulnerabilities to compromise organizations in multiple countries. The July 2021 joint advisory attributed the Exchange exploitation campaign to APT40 alongside the DOJ indictment.
 
-## Targeted Industries & Organizations
+### 2024 -- SOHO Router Exploitation
 
-Sector
-                                Notable Targets / Focus
+The Australian Cyber Security Centre (ACSC) published an advisory detailing APT40's exploitation of end-of-life SOHO routers as operational relay boxes, enabling the group to proxy traffic through compromised devices and evade network-level detection.
 
-                                Maritime & Shipping
-                                Port authorities, shipping companies, maritime infrastructure operators, vessel management systems
+## Technical Capabilities
 
-                                Naval & Defense
-                                Navy research institutions, defense contractors, submarine technology firms, naval engineering companies
+APT40 maintains a rapid vulnerability exploitation capability, often deploying exploits for newly disclosed flaws in web-facing applications (Exchange, Apache, Atlassian products) before most organizations apply patches. The group combines this with web shell deployment (China Chopper) for persistent access.
 
-                                Aerospace & Aviation
-                                Aircraft manufacturers, aviation research, flight control systems, aerospace engineering
+Custom backdoors including **BADFLICK** and **MURKYTOP** provide full remote access capabilities. **ScanBox** serves as a reconnaissance framework deployed through watering hole attacks to profile targets before committing more advanced tools.
 
-                                Engineering & Manufacturing
-                                Naval shipbuilders, marine engineering firms, advanced manufacturing companies
+The group increasingly uses compromised small office/home office (SOHO) routers and IoT devices as operational relay infrastructure, making network-level attribution and blocking more difficult.
 
-                                Government & Military
-                                Naval agencies, defense departments, military research organizations
+## Attribution
 
-                                Oil & Gas
-                                Offshore drilling operators, platform operators, subsea engineering firms
+In July 2021, the U.S. DOJ indicted four MSS officers affiliated with the Hainan State Security Department for computer intrusions targeting organizations in the United States and abroad. Simultaneously, CISA, NSA, FBI, and international partners (UK, EU, NATO, Australia, New Zealand, Canada, Japan) published a joint advisory (AA21-200A) attributing APT40 activity to the MSS.
 
-## Attributable Attacks Timeline
+The advisory identified the Hainan Xiandun Technology Development Company as an MSS front company used to recruit hackers and manage operations. The unprecedented breadth of international attribution reinforced the confidence level.
 
-2009-2010
-                            
-                                Early Maritime Industry Targeting
-                                APT40 begins operations targeting maritime and shipping organizations across Asia-Pacific region.
+## MITRE ATT&CK Profile
 
-                            2011-2012
-                            
-                                Naval Defense Sector Focus
-                                Operations expand to target naval defense contractors and submarine technology firms.
+**Initial Access**: Exploitation of public-facing applications (T1190) is the primary vector, with spearphishing (T1566.001) and watering hole attacks (T1189) as secondary methods.
 
-                            2013-2014
-                            
-                                US Navy Contractor Campaigns
-                                Targeted campaigns against US naval contractors and defense research organizations.
+**Persistence**: Web shells (T1505.003), scheduled tasks (T1053), and valid accounts (T1078) maintain access.
 
-                            2015-2016
-                            
-                                Global Maritime Infrastructure Targeting
-                                Operations span multiple continents targeting port authorities and maritime infrastructure globally.
+**Defense Evasion**: Use of compromised SOHO routers as proxy infrastructure (T1090.002), living-off-the-land binaries, and DLL side-loading (T1574.002).
 
-                            2017-2018
-                            
-                                Advanced Submarine Technology Operations
-                                Specialized campaigns targeting advanced submarine and underwater vehicle research programs.
+**Credential Access**: OS credential dumping (T1003), credential harvesting from browsers, and pass-the-hash techniques enable lateral movement.
 
-                            2019-2021
-                            
-                                Offshore Engineering Focus
-                                Expanded targeting of offshore oil and gas engineering firms for platform design intelligence.
+## Sources & References
 
-                            2022-2024
-                            
-                                Autonomous Maritime Systems
-                                Operations targeting unmanned maritime vehicles, autonomous systems, and naval AI research.
-
-                            2024-2025
-                            
-                                Continued Maritime Intelligence Operations
-                                Ongoing sophisticated campaigns with updated toolsets targeting emerging maritime technologies.
-
-## Known Exploits & CVEs
-
-CVE ID
-                                Vulnerability
-                                Affected Product
-                                Year
-
-                                CVE-2010-2883
-                                Adobe PDF Remote Code Execution
-                                Adobe Reader
-                                2010
-
-                                CVE-2012-0158
-                                Windows ListBox Remote Code Execution
-                                Microsoft Windows
-                                2012
-
-                                CVE-2014-3153
-                                Linux Kernel Privilege Escalation
-                                Linux Kernel
-                                2014
-
-                                CVE-2017-0143
-                                Windows SMB Remote Code Execution (EternalBlue)
-                                Microsoft Windows
-                                2017
-
-                                CVE-2019-2725
-                                Oracle WebLogic Remote Code Execution
-                                Oracle WebLogic Server
-                                2019
-
-## Cross-Vendor Naming Reference
-
-Vendor
-                                Attribution Name
-
-                                Mandiant
-                                APT40
-
-                                CrowdStrike
-                                MUDCARP
-
-                                Recorded Future
-                                Leviathan
-
-                                FireEye
-                                TEMP.Periscope
-
-                                Symantec
-                                BRONZE MOHUR
-
-                                Kaspersky
-                                Periscope
-
-## Related Threat Actors
-
-APT40 operates within the broader Chinese state-sponsored ecosystem. Related groups include:
-                    
-                        APT1 (Comment Crew) - Chinese PLA Unit 61398
-                        APT10 (MenuPass) - Chinese contractor-based group
-                        APT27 (Emissary Panda) - Chinese espionage group
-                        APT31 (Zirconium) - Chinese government espionage
-                        APT41 (BARIUM) - Chinese dual-purpose group
-
-## References & Sources
-
-[1] Mandiant Intelligence Report: "APT40 - Leviathan Espionage Campaign Analysis" (2024)
-                        [2] CrowdStrike Adversary Report: "MUDCARP: Deep Dive into Maritime Industry Targeting" (2023)
-                        [3] FireEye Report: "TEMP.Periscope Operations Targeting US Defense Contractors" (2022)
-                        [4] Recorded Future: "Leviathan Naval Espionage Campaign Report" (2021)
-                        [5] Symantec Threat Report: "BRONZE MOHUR Maritime Targeting Analysis" (2020)
-                        [6] CISA Alert: "APT40 Targeting Naval and Maritime Industries" (2019)
-                        [7] Kaspersky Securelist: "Periscope - Advanced Maritime Espionage" (2018)
-                        [8] Palo Alto Unit 42: "APT40 ScanBox Reconnaissance Framework Analysis" (2017)
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China (MSS)
-
-                    Nation-State Sponsored
-                    Yes - Chinese Government
-
-                    Motivation
-                    Maritime Espionage
-
-                    First Seen
-                    2009
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    Chinese MSS
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [MITRE ATT&CK: APT40](https://attack.mitre.org/groups/G0065/) -- MITRE ATT&CK
+- [CISA: Advisory AA21-200A - Chinese State-Sponsored Cyber Operations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200a) -- CISA, 2021-07-19
+- [US DOJ: Four Chinese Nationals Charged](https://www.justice.gov/opa/pr/four-chinese-nationals-working-ministry-state-security-charged-global-computer-intrusion) -- US Department of Justice, 2021-07-19

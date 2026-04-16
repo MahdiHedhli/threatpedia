@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0067",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "APT29 (Cozy Bear) SolarWinds Supply Chain Campaign (2019-2020)",
     "sources": [
@@ -19,7 +19,9 @@
       "sector": "Government",
       "geography": "United States",
       "threatActor": "APT29",
-      "cves": ["CVE-2020-10148"]
+      "cves": [
+        "CVE-2020-10148"
+      ]
     },
     "notes": "Distinct from the SolarWinds incident article (which covers the breach event). This campaign article should cover the full multi-year APT29 operation: SUNSPOT implant in build pipeline, SUNBURST backdoor, TEARDROP loader, lateral movement into US government agencies (Treasury, Commerce, DHS). SVR attribution by US/UK governments."
   },
@@ -41,6 +43,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "note": "Campaign article — smoke test round 3"
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

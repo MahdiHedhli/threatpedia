@@ -1,254 +1,132 @@
 ---
-name: APT27
+name: "APT27"
 aliases:
   - "Emissary Panda"
+  - "TG-3390"
+  - "Iron Tiger"
+  - "Bronze Union"
   - "Lucky Mouse"
-  - "HIPPOs"
-affiliation: China
-motivation: Espionage
+  - "Group 35"
+affiliation: "China"
+motivation: "Espionage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "China"
+firstSeen: "2010"
+lastSeen: "2024"
+targetSectors:
+  - "Government"
+  - "Technology"
+  - "Aerospace & Defense"
+  - "Energy & Utilities"
+  - "Education"
+targetGeographies:
+  - "United States"
+  - "Middle East"
+  - "Southeast Asia"
+  - "Europe"
+tools:
+  - "HyperBro"
+  - "PlugX"
+  - "SysUpdate"
+  - "ZXShell"
+  - "China Chopper"
+  - "Gh0st RAT"
+mitreMappings:
+  - techniqueId: "T1190"
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+    notes: "APT27 exploits web-facing applications including SharePoint, Exchange, and MySQL servers."
+  - techniqueId: "T1505.003"
+    techniqueName: "Server Software Component: Web Shell"
+    tactic: "Persistence"
+    notes: "Deploys China Chopper and custom web shells on compromised web servers."
+  - techniqueId: "T1574.002"
+    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
+    tactic: "Defense Evasion"
+    notes: "Uses DLL side-loading with legitimate signed executables to load HyperBro and other backdoors."
+attributionConfidence: A3
+attributionRationale: "Attributed to China-nexus actors by multiple cybersecurity vendors including Secureworks, Trend Micro, and Mandiant, based on infrastructure, tooling, and targeting analysis. No government indictment to date."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "nation-state"
+  - "china"
+  - "espionage"
+  - "apt27"
+  - "emissary-panda"
+sources:
+  - url: "https://attack.mitre.org/groups/G0027/"
+    publisher: "MITRE ATT&CK"
+    publicationDate: "2025-10-17"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200b"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-07-19"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.secureworks.com/research/bronze-union"
+    publisher: "Secureworks"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2017-06-27"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-APT27 (also known as Emissary Panda, Lucky Mouse, or HIPPOs) is a Chinese state-sponsored advanced persistent threat group attributed to China's Ministry of State Security (MSS). Operating since at least 2010, APT27 conducts sophisticated, targeted espionage campaigns primarily focusing on foreign governments, aerospace contractors, energy companies, and defense establishments. The group is distinguished by their focus on specific high-value targets and their use of watering hole attacks combined with sophisticated exploitation techniques.
+## Executive Summary
 
-                    The group has gained notoriety for their involvement in multiple documented campaigns targeting U.S. government agencies, NATO allies, Indian government networks, and technology companies. APT27 demonstrates advanced tradecraft including custom malware development, zero-day exploitation, and sophisticated command-and-control infrastructure. The group operates with a strategic focus on aerospace, defense, energy, and political intelligence collection supporting China's strategic interests.
+APT27, also known as Emissary Panda and Lucky Mouse, is a China-nexus threat actor active since at least 2010. The group conducts cyber-espionage operations targeting government, technology, aerospace, energy, and educational organizations across multiple regions, with a focus on the United States, Middle East, and Southeast Asia.
 
-                    As of 2025, APT27 continues active operations against government and defense targets with particular focus on aviation, aerospace, and critical infrastructure sectors. The group has demonstrated willingness to adapt tactics in response to defensive measures and public exposure, remaining one of the most persistent and sophisticated Chinese-attributed APT threats.
+APT27 is distinguished by its preference for exploiting web-facing applications as an initial access vector rather than relying on spearphishing. The group maintains a diverse toolkit mixing custom malware (HyperBro, SysUpdate) with widely shared Chinese-origin tools (PlugX, China Chopper, Gh0st RAT). The group's operational mandate appears centered on strategic intelligence collection aligned with Chinese government priorities, including technology acquisition and geopolitical intelligence.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1583: Acquire Infrastructure
-                                T1589: Gather Victim Identity Information
-                                T1598: Phishing for Information
-                                T1190: Exploit Public-Facing Application
-                            
-                            Execution & Persistence:
-                            
-                                T1059.001: PowerShell
-                                T1053.005: Scheduled Task/Job
-                                T1547.001: Registry Run Keys
-                            
-                            Defense Evasion & Lateral Movement:
-                            
-                                T1036: Masquerading
-                                T1070: Indicator Removal
-                                T1570: Lateral Tool Transfer
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
+### 2015 -- Defense and Aerospace Targeting
 
-                        Common Attack Vectors
-                        
-                            Watering Hole Attacks: Compromise of industry-specific websites frequented by target organizations to deliver malware via drive-by downloads and exploit code.
-                            Spear-Phishing with Malicious Documents: Highly targeted phishing emails with weaponized Office documents exploiting known CVEs in Microsoft Office and Adobe products.
-                            Zero-Day Exploitation: Development and deployment of zero-day exploits against widely-deployed enterprise software to establish initial access.
-                            Supply Chain Targeting: Compromise of software vendors and service providers to distribute malware to multiple downstream organizations.
-                            VPN & Remote Access Exploitation: Targeting of VPN appliances and remote access solutions to gain network access without user interaction.
+APT27 conducted sustained intrusions against U.S. defense contractors and aerospace companies, exfiltrating technical documentation related to military systems and satellite communications. The group used China Chopper web shells deployed on vulnerable SharePoint servers for initial access.
 
-                        Tools & Malware
-                        
-                            ICEFOG Backdoor: Custom developed remote access trojan with extensive command execution and data exfiltration capabilities.
-                            ScanBox Framework: Reconnaissance framework for victim profiling and information gathering before actual exploitation.
-                            Backdoor.APT.C_36: Advanced multi-stage backdoor providing command execution and persistence mechanisms.
-                            Custom WebShells: Proprietary web shells deployed on compromised servers for persistent access and lateral movement.
-                            Mimikatz & Custom Tools: Credential harvesting and lateral movement tools for privilege escalation and network compromise.
+### 2020-2021 -- Microsoft Exchange Exploitation
 
-                        Infrastructure Patterns
-                        
-                            Bulletproof Hosting: Leased infrastructure from bulletproof hosting providers with minimal compliance requirements.
-                            Fast Flux Networks: Rapid DNS and IP rotation to evade network-based blocking and signature detection.
-                            Compromised Infrastructure: Leveraging of previously compromised servers for C2 communications and malware hosting.
-                            Domain Hosting via Chinese Registrars: Registration of C2 domains through Chinese registrars to minimize abuse response.
+Following the disclosure of ProxyLogon vulnerabilities (CVE-2021-26855 and related CVEs), APT27 was among multiple Chinese-nexus groups that exploited vulnerable Exchange servers globally. The group deployed HyperBro backdoors and SysUpdate RAT on compromised servers across government and corporate networks.
 
-## Targeted Industries & Organizations
+### 2021-2023 -- SysUpdate Linux Variant Deployment
 
-APT27 focuses on high-value government and strategic industry targets:
+APT27 expanded its targeting to Linux systems, deploying a Linux variant of the SysUpdate RAT. This development indicated an evolution in the group's capabilities to target cloud infrastructure and Linux-based server environments in addition to traditional Windows targets.
 
-                                Sector
-                                Notable Targets
+## Technical Capabilities
 
-                                Government & Diplomacy
-                                US federal agencies, Indian government networks, NATO allies, diplomatic missions, political parties
+APT27's preferred initial access method is exploitation of public-facing web applications, including Microsoft SharePoint, Microsoft Exchange, and MySQL database servers. After gaining access, the group deploys web shells (China Chopper, custom ASPX shells) for persistent access.
 
-                                Aerospace & Aviation
-                                Aircraft manufacturers, commercial airlines, aviation authorities, aerospace contractors
+**HyperBro** is a custom backdoor used by APT27 since at least 2018, providing remote access, keylogging, screen capture, and file management capabilities. It is typically loaded through DLL side-loading using signed legitimate executables. **SysUpdate** is a more recent custom RAT with cross-platform (Windows/Linux) capabilities, modular architecture, and encrypted C2 communications.
 
-                                Defense Industrial Base
-                                Defense contractors, military research institutions, weapons system manufacturers
+The group uses legitimate tools including ProcDump, Mimikatz, and Windows built-in utilities for credential harvesting and lateral movement. APT27 demonstrates proficiency in living-off-the-land techniques, using native Windows tools to blend in with normal administrative activity.
 
-                                Energy & Utilities
-                                Oil and gas companies, power generation operators, critical infrastructure
+## Attribution
 
-                                Technology
-                                Software vendors, IT service providers, semiconductor manufacturers
+APT27 is attributed to Chinese state-sponsored activity based on infrastructure analysis, tooling overlap with other Chinese-nexus groups, targeting alignment with Chinese strategic interests, and operational patterns consistent with MSS or PLA-affiliated units. Secureworks, Trend Micro, ESET, and Mandiant have independently tracked the group.
 
-## Attributable Attacks Timeline
+CISA advisory AA21-200B identified Chinese state-sponsored actors (including activity consistent with APT27) exploiting public-facing applications. While no government indictment specific to APT27 has been issued, the group's activity falls within the broader pattern of Chinese cyber-espionage operations documented in U.S.-China diplomatic engagements.
 
-2010-2013
-                            
-                                Early Operations & ICEFOG Development
-                                APT27 initiates targeted espionage campaigns against Indian government and aerospace organizations. Develops ICEFOG backdoor and establishes command-and-control infrastructure.
+## MITRE ATT&CK Profile
 
-                            2013-2015
-                            
-                                Aerospace & Defense Sector Targeting
-                                APT27 expands targeting to US aerospace contractors and NATO defense establishments. Conducts multiple watering hole attacks against industry-specific websites.
+**Initial Access**: Exploitation of public-facing applications (T1190) is the primary vector, targeting Exchange, SharePoint, and database servers. Spearphishing attachments (T1566.001) serve as a secondary vector.
 
-                            2015-2017
-                            
-                                ScanBox Framework Deployment
-                                APT27 develops and deploys ScanBox reconnaissance framework targeting diplomatic entities and government organizations. Gathers extensive victim intelligence before exploitation.
+**Persistence**: Web shells (T1505.003), scheduled tasks (T1053), and DLL side-loading (T1574.002) maintain persistent access. HyperBro and SysUpdate install as services or scheduled tasks.
 
-                            2017-2019
-                            
-                                Zero-Day Exploitation & Persistence
-                            APT27 exploits multiple zero-day vulnerabilities in enterprise applications. Develops advanced persistence mechanisms and command-and-control evasion techniques.
+**Credential Access**: The group uses OS credential dumping (T1003) via Mimikatz, ProcDump, and custom tools to harvest domain credentials.
 
-                            2019-2021
-                            
-                                Supply Chain & SaaS Targeting
-                                APT27 begins targeting software vendors and cloud service providers to gain leverage for downstream organization compromise. Expands focus to cloud infrastructure.
+**Defense Evasion**: DLL side-loading with signed binaries (T1574.002), process injection (T1055), and indicator removal (T1070) are used to evade security controls.
 
-                            2021-2023
-                            
-                                Modern Infrastructure Targeting
-                                APT27 adapts to cloud-native environments and modern IT infrastructure. Continues targeting diplomatic and government entities with refined techniques.
+**Exfiltration**: Data is compressed (T1560) and exfiltrated over C2 channels (T1041) using encrypted HTTPS communications.
 
-                            2023-2025
+## Sources & References
 
-                                Ongoing Aviation & Aerospace Campaigns Likely
-                                APT27 continues active operations against aviation and aerospace sectors. Maintains focus on government espionage with evolved techniques.
-
-## Known Exploits & CVEs
-
-APT27 has exploited numerous known vulnerabilities in enterprise applications:
-
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
-
-                                CVE-2012-1856
-                                RCE in SharePoint
-                                Microsoft SharePoint 2010
-                                9.3
-
-                                CVE-2013-1347
-                                Privilege Escalation in Windows
-                                Microsoft Windows XP-7
-                                7.2
-
-                                CVE-2014-1761
-                                RCE in Word
-                                Microsoft Office 2010-2013
-                                9.3
-
-                                CVE-2015-4902
-                                Flash Player RCE
-                                Adobe Flash (multiple versions)
-                                9.8
-
-                                CVE-2018-8373
-                                RCE in PowerPoint
-                                Microsoft Office 2010-2019
-                                8.8
-
-                                CVE-2020-0687
-                                Privilege Escalation in Windows
-                                Microsoft Windows 10
-                                7.8
-
-## Cross-Vendor Naming Reference
-
-Vendor / Organization
-                                Name Used
-
-                                Mandiant
-                                APT27
-
-                                CrowdStrike
-                                Emissary Panda
-
-                                Symantec
-                                Lucky Mouse
-
-                                Kaspersky
-                                APT27 / Emissary Panda
-
-                                MITRE ATT&CK
-                                Group G0027
-
-                                Palo Alto Networks
-                                APT27
-
-                                F-Secure
-                                HIPPOs
-
-## Related Threat Actors
-
-APT1, APT10, APT40, APT41: Other Chinese-attributed APT groups conducting parallel espionage operations with overlapping targeting profiles.
-                        APT31 (Zirconium): Operationally distinct Chinese APT group targeting similar government and defense sectors.
-
-## References & Sources
-
-[1]
-                            Mandiant: APT27 (Emissary Panda) Campaign Analysis
-
-                            [2]
-                            CrowdStrike: Emissary Panda Threat Intelligence
-
-                            [3]
-                            MITRE ATT&CK: APT27 (Group G0027)
-
-                            [4]
-                            Symantec: Lucky Mouse (APT27) Research
-
-                            [5]
-                            Kaspersky: APT27 Threat Intelligence
-
-                            [6]
-                            F-Secure: HIPPOs (APT27) Analysis
-
-                            [7]
-                            Palo Alto Networks: APT27 Research Materials
-
-                            [8]
-                            Australian ACSC: APT27 Targeting Defence Sector
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China (MSS)
-
-                    Nation-State Sponsored
-                    Yes
-
-                    Motivation
-                    Espionage
-
-                    First Seen
-                    2010
-
-                    Last Seen
-                    2025 (Active)
-
-                    Confidence Level
-                    Very High
-
-                    Associated Groups
-                    China MSS
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [MITRE ATT&CK: APT27](https://attack.mitre.org/groups/G0027/) -- MITRE ATT&CK
+- [CISA: Advisory AA21-200B](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200b) -- CISA, 2021-07-19
+- [Secureworks: Bronze Union](https://www.secureworks.com/research/bronze-union) -- Secureworks, 2017-06-27

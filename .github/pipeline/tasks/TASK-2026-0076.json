@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0076",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "assigned_to": "penfold-bot",
   "input": {
     "topic": "MCP Supply Chain Vulnerability Campaign — OX Security Disclosure of 10+ Critical CVEs Across 30+ AI/LLM Projects (2025-2026)",
@@ -30,33 +30,169 @@
       "type": "Supply Chain / Protocol-Level Vulnerability Campaign",
       "platform": "Model Context Protocol (MCP) ecosystem — Anthropic protocol specification",
       "affected_products": [
-        { "name": "Flowise", "cves": ["CVE-2025-59528", "CVE-2025-61687", "CVE-2025-34267"], "severity": "CRITICAL", "production_pwned": false },
-        { "name": "LiteLLM", "cves": ["CVE-2026-35029", "CVE-2026-40217"], "severity": "HIGH", "production_pwned": false },
-        { "name": "LangFlow", "cves": ["CVE-2024-37014", "CVE-2024-42835", "CVE-2026-0768"], "severity": "CRITICAL", "production_pwned": false },
-        { "name": "DocsGPT", "cves": [], "severity": "CRITICAL", "production_pwned": true },
-        { "name": "Upsonic", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "GPT-Researcher", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "LettaAI", "cves": [], "severity": "HIGH", "production_pwned": true },
-        { "name": "WindSurf", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "Agent Zero", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "BISHENG", "cves": [], "severity": "HIGH", "production_pwned": true },
-        { "name": "OpenHands", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "PromptFoo", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "LangChain ChatChat", "cves": [], "severity": "HIGH", "production_pwned": false },
-        { "name": "Jaaz", "cves": [], "severity": "HIGH", "production_pwned": false }
+        {
+          "name": "Flowise",
+          "cves": [
+            "CVE-2025-59528",
+            "CVE-2025-61687",
+            "CVE-2025-34267"
+          ],
+          "severity": "CRITICAL",
+          "production_pwned": false
+        },
+        {
+          "name": "LiteLLM",
+          "cves": [
+            "CVE-2026-35029",
+            "CVE-2026-40217"
+          ],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "LangFlow",
+          "cves": [
+            "CVE-2024-37014",
+            "CVE-2024-42835",
+            "CVE-2026-0768"
+          ],
+          "severity": "CRITICAL",
+          "production_pwned": false
+        },
+        {
+          "name": "DocsGPT",
+          "cves": [],
+          "severity": "CRITICAL",
+          "production_pwned": true
+        },
+        {
+          "name": "Upsonic",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "GPT-Researcher",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "LettaAI",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": true
+        },
+        {
+          "name": "WindSurf",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "Agent Zero",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "BISHENG",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": true
+        },
+        {
+          "name": "OpenHands",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "PromptFoo",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "LangChain ChatChat",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        },
+        {
+          "name": "Jaaz",
+          "cves": [],
+          "severity": "HIGH",
+          "production_pwned": false
+        }
       ],
       "key_cves": {
-        "CVE-2025-59528": { "product": "Flowise CustomMCP", "cvss": 10.0, "type": "RCE via Function() constructor", "cwe": "CWE-94" },
-        "CVE-2025-61687": { "product": "Flowise", "cvss": 8.8, "type": "Arbitrary file upload", "cwe": "CWE-434" },
-        "CVE-2025-34267": { "product": "Flowise", "cvss": 9.9, "type": "RCE via Puppeteer/Playwright", "cwe": "CWE-77" },
-        "CVE-2026-35029": { "product": "LiteLLM", "cvss": 8.8, "type": "Config endpoint RCE", "cwe": "CWE-862" },
-        "CVE-2026-40217": { "product": "LiteLLM", "cvss": 8.8, "type": "Bytecode rewriting RCE", "cwe": "CWE-94" },
-        "CVE-2025-53372": { "product": "node-code-sandbox-mcp", "cvss": 7.5, "type": "Command injection via child_process", "cwe": "CWE-78" },
-        "CVE-2025-53832": { "product": "Lara Translate MCP Server", "cvss": 7.5, "type": "Command injection", "cwe": "CWE-78" },
-        "CVE-2025-58358": { "product": "Markdownify MCP Server", "cvss": 7.5, "type": "Command injection via child_process", "cwe": "CWE-78" },
-        "CVE-2026-25546": { "product": "Godot MCP", "cvss": 7.8, "type": "Command injection via exec()", "cwe": "CWE-78" },
-        "CVE-2026-27825": { "product": "MCP Atlassian", "cvss": 9.0, "type": "Path traversal to code execution", "cwe": "CWE-22" },
-        "CVE-2025-68433": { "product": "Zed IDE MCP Config", "cvss": 7.5, "type": "Arbitrary shell command execution", "cwe": "CWE-78" }
+        "CVE-2025-59528": {
+          "product": "Flowise CustomMCP",
+          "cvss": 10,
+          "type": "RCE via Function() constructor",
+          "cwe": "CWE-94"
+        },
+        "CVE-2025-61687": {
+          "product": "Flowise",
+          "cvss": 8.8,
+          "type": "Arbitrary file upload",
+          "cwe": "CWE-434"
+        },
+        "CVE-2025-34267": {
+          "product": "Flowise",
+          "cvss": 9.9,
+          "type": "RCE via Puppeteer/Playwright",
+          "cwe": "CWE-77"
+        },
+        "CVE-2026-35029": {
+          "product": "LiteLLM",
+          "cvss": 8.8,
+          "type": "Config endpoint RCE",
+          "cwe": "CWE-862"
+        },
+        "CVE-2026-40217": {
+          "product": "LiteLLM",
+          "cvss": 8.8,
+          "type": "Bytecode rewriting RCE",
+          "cwe": "CWE-94"
+        },
+        "CVE-2025-53372": {
+          "product": "node-code-sandbox-mcp",
+          "cvss": 7.5,
+          "type": "Command injection via child_process",
+          "cwe": "CWE-78"
+        },
+        "CVE-2025-53832": {
+          "product": "Lara Translate MCP Server",
+          "cvss": 7.5,
+          "type": "Command injection",
+          "cwe": "CWE-78"
+        },
+        "CVE-2025-58358": {
+          "product": "Markdownify MCP Server",
+          "cvss": 7.5,
+          "type": "Command injection via child_process",
+          "cwe": "CWE-78"
+        },
+        "CVE-2026-25546": {
+          "product": "Godot MCP",
+          "cvss": 7.8,
+          "type": "Command injection via exec()",
+          "cwe": "CWE-78"
+        },
+        "CVE-2026-27825": {
+          "product": "MCP Atlassian",
+          "cvss": 9,
+          "type": "Path traversal to code execution",
+          "cwe": "CWE-22"
+        },
+        "CVE-2025-68433": {
+          "product": "Zed IDE MCP Config",
+          "cvss": 7.5,
+          "type": "Arbitrary shell command execution",
+          "cwe": "CWE-78"
+        }
       },
       "researcher": "OX Security Research Team (Nir Za, Mustafa Naamnih, Roni Bar)",
       "disclosure_type": "Coordinated responsible disclosure",
@@ -90,6 +226,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "note": "Manually queued from Kernel K LinkedIn feed submission. OX Security MCP coordinated disclosure."
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

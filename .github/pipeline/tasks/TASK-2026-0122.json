@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0122",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "APT1",
     "reprocess": true,
@@ -29,7 +29,14 @@
       "timestamp": "2026-04-16T04:00:00.000Z",
       "action": "created",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

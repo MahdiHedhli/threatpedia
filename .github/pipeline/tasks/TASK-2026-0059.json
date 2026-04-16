@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0059",
   "type": "threat-actor",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "APT28 (Fancy Bear / Forest Blizzard / GRU Unit 26165)",
@@ -41,6 +41,13 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "notes": "Pipeline capability test — Penfold-Bot generation of threat actor profile"
+    },
+    {
+      "timestamp": "2026-04-16T04:42:15Z",
+      "action": "completed",
+      "agent": "penfold-bot",
+      "notes": "EP batch overnight run — full article regeneration with structured sources, MITRE mappings, and publication-ready body."
     }
-  ]
+  ],
+  "updated": "2026-04-16T04:42:15Z"
 }

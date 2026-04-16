@@ -1,75 +1,123 @@
 ---
 name: "Wizard Spider"
 aliases:
-  - "UNC1878"
-  - "GOLD SPHINX"
   - "GRIM SPIDER"
-affiliation: "Unknown"
+  - "UNC1878"
+  - "TEMP.MixMaster"
+  - "Gold Blackburn"
+affiliation: "Cybercriminal (Russian)"
 motivation: "Financial"
-status: "active"
-firstSeen: "2015"
-lastSeen: "2026-03"
-country: "Unknown"
+status: inactive
+country: "Russia"
+firstSeen: "2016"
+lastSeen: "2024"
 targetSectors:
   - "Healthcare"
   - "Government"
-  - "Financial"
+  - "Education"
+  - "Financial Services"
   - "Manufacturing"
 targetGeographies:
   - "Global"
+  - "United States"
+  - "Europe"
 tools:
   - "TrickBot"
-  - "Ryuk"
   - "Conti"
+  - "Ryuk"
   - "BazarLoader"
-attributionConfidence: "A1"
-attributionRationale: "High-fidelity attribution based on extensive tracking by CrowdStrike and US law enforcement, linking the group to the TrickBot malware botnet and the subsequent Ryuk/Conti ransomware ecosystems."
-reviewStatus: "under_review"
+  - "Anchor"
+  - "Diavol"
+  - "Cobalt Strike"
+mitreMappings:
+  - techniqueId: "T1486"
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+    notes: "Operates Ryuk and Conti ransomware for file encryption and extortion."
+  - techniqueId: "T1059.001"
+    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    tactic: "Execution"
+    notes: "Uses PowerShell scripts for Cobalt Strike deployment and lateral movement."
+  - techniqueId: "T1055"
+    techniqueName: "Process Injection"
+    tactic: "Defense Evasion"
+    notes: "TrickBot and BazarLoader use process injection to evade detection."
+attributionConfidence: A1
+attributionRationale: "Multiple members indicted and sanctioned. The February 2022 Conti Leaks exposed internal communications confirming Russian-based operations. UK NCA and U.S. sanctions identified key members."
+reviewStatus: "draft_ai"
 generatedBy: "penfold-bot"
-generatedDate: 2026-04-14
+generatedDate: 2026-04-16
 tags:
-  - "financially-motivated"
-  - "cybercrime"
+  - "cybercriminal"
+  - "russia"
   - "ransomware"
+  - "wizard-spider"
+  - "trickbot"
+  - "conti"
 sources:
   - url: "https://attack.mitre.org/groups/G0102/"
     publisher: "MITRE ATT&CK"
-    publisherType: "research"
-    reliability: "R1"
     publicationDate: "2025-10-17"
-    accessDate: "2026-04-14"
+    publisherType: research
+    reliability: R1
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-137a"
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-265a"
     publisher: "CISA"
-    publisherType: "government"
-    reliability: "R1"
-    publicationDate: "2022-05-17"
-    accessDate: "2026-04-14"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-09-22"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.crowdstrike.com/blog/wizard-spider-adversary-update/"
-    publisher: "CrowdStrike"
-    publisherType: "vendor"
-    reliability: "R1"
-    publicationDate: "2021-03-31"
-    accessDate: "2026-04-14"
+  - url: "https://home.treasury.gov/news/press-releases/jy1256"
+    publisher: "US Department of the Treasury"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-02-09"
+    accessDate: "2026-04-16"
     archived: false
 ---
 
 ## Executive Summary
-Wizard Spider (also known as GOLD SPHINX and UNC1878) originated as the incredibly successful cybercrime group behind the **TrickBot** banking trojan. Active since at least 2015, the group evolved beyond wire fraud to become one of the most destructive and dominant forces in the ransomware-as-a-service (RaaS) market. Based primarily in Russia, Wizard Spider functioned as a sprawling corporate entity, employing developers, HR, and affiliates to run the highly lucrative **Conti** ransomware cartel until its implosion in 2022.
+
+Wizard Spider is a Russian cybercriminal group responsible for the TrickBot botnet, Conti ransomware, and Ryuk ransomware operations. Active since at least 2016, the group operated one of the most prolific and financially damaging cybercriminal enterprises until Conti's dissolution in mid-2022 following the leak of internal communications. Wizard Spider is estimated to have extorted hundreds of millions of dollars from victims worldwide.
+
+The group operated a sophisticated organizational structure with specialized teams for malware development, infrastructure management, negotiation, and money laundering. The February 2022 "Conti Leaks" -- triggered by a member's response to the Russia-Ukraine war -- exposed internal chat logs, source code, and operational details, providing unprecedented visibility into ransomware group operations.
 
 ## Notable Campaigns
-- **The TrickBot Botnet:** Operated the massive TrickBot botnet for years, infecting millions of devices globally, primarily used to steal financial credentials and, later, to sell initial access to other crime syndicates.
-- **The Conti Ransomware Cartel:** Wizard Spider developers created and managed Conti, which dominated the ransomware landscape from 2020 to 2022. Conti notorious attacked high-profile targets, including the government of Costa Rica, crippling the nation's critical infrastructure.
-- **BazarLoader Campaigns:** Deployed sophisticated BazarLoader campaigns to establish stealthy initial access into high-value enterprise targets specifically for follow-on ransomware operations.
+
+### 2018-2021 -- Ryuk Ransomware Operations
+
+Wizard Spider (operating as GRIM SPIDER) deployed Ryuk ransomware against enterprise and healthcare targets, demanding ransoms ranging from $200,000 to over $14 million. Ryuk was delivered through TrickBot infections and was among the first ransomware families to conduct targeted "big game hunting."
+
+### 2020-2022 -- Conti Ransomware Operations
+
+Conti replaced Ryuk as Wizard Spider's primary ransomware, operating as a RaaS with a large affiliate network. Conti accumulated over 700 victims and was one of the most active ransomware operations. The group targeted healthcare organizations during the COVID-19 pandemic and attacked the Costa Rican government (May 2022), which declared a national state of emergency.
+
+### 2016-2022 -- TrickBot Botnet
+
+The TrickBot botnet served as the primary distribution and access platform for Wizard Spider's operations, with an estimated 1 million infected devices at its peak. TrickBot evolved from a banking trojan into a modular malware platform used for reconnaissance, credential theft, and ransomware deployment.
 
 ## Technical Capabilities
-Wizard Spider's early technical dominance stemmed from **TrickBot**, an extremely modular malware family capable of web injection, lateral movement, and credential theft. As they transitioned to purely extortion-based operations, they developed **BazarLoader** to evade detection while setting up **Cobalt Strike** infrastructure. They are highly adept at identifying high-value data repositories within enterprise networks, utilizing custom exfiltration tools before deploying tailored, fast-encrypting ransomware variants (like Ryuk and later Conti) structured specifically to bypass endpoint security products.
+
+Wizard Spider maintained a mature malware development organization. **TrickBot** provided modular capabilities including banking credential theft, network reconnaissance, and ransomware deployment. **BazarLoader** served as a stealthier successor for high-value target access. **Anchor** framework provided an advanced persistent backdoor for longer-duration operations.
+
+**Conti** ransomware used multi-threaded AES encryption for fast network-wide deployment and operated with a dedicated negotiation team, data leak site, and cryptocurrency laundering infrastructure. The Conti Leaks revealed the group employed over 100 people in various roles.
 
 ## Attribution
-Wizard Spider is not directly affiliated with the Russian state apparatus, though they benefit from the tacit safe harbor provided by the Russian government to cybercriminals who abstain from targeting CIS nations. The group suffered a massive intelligence leak in early 2022 (the "Conti Leaks") when internal jabber communications were published online by a pro-Ukrainian researcher. These leaks revealed the internal corporate structure, operational playbook, and identities of key lieutenants within the Wizard Spider organization, leading to the dissolution of the Conti brand and the fracturing of the group into smaller successor syndicates.
+
+U.S. and UK authorities have identified and sanctioned multiple Wizard Spider members. The U.S. Treasury sanctioned TrickBot/Conti-associated individuals in February 2023, and the UK's NCA participated in the investigation. The Conti Leaks provided extensive evidence of Russian-based operations, including chat logs identifying members by pseudonym and real identity.
+
+## MITRE ATT&CK Profile
+
+**Initial Access**: TrickBot/BazarLoader infections via phishing (T1566.001), exploitation of public-facing applications (T1190), and access broker purchases (T1078).
+
+**Execution**: PowerShell (T1059.001), WMI (T1047), and Cobalt Strike beacons.
+
+**Impact**: Ransomware encryption (T1486), data theft for double extortion, shadow copy deletion (T1490), and service disruption (T1489).
 
 ## Sources & References
-- CISA Alerts on TrickBot and Conti Ransomware
-- Mandiant Threat Intelligence: UNC1878
-- MITRE ATT&CK Group G0102
+
+- [MITRE ATT&CK: Wizard Spider](https://attack.mitre.org/groups/G0102/) -- MITRE ATT&CK
+- [CISA: Advisory AA21-265A - Conti Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-265a) -- CISA, 2021-09-22
+- [US Treasury: TrickBot/Conti Sanctions](https://home.treasury.gov/news/press-releases/jy1256) -- US Department of the Treasury, 2023-02-09

@@ -1,170 +1,164 @@
 ---
 name: "Sandworm"
 aliases:
-  - "Unit 74455"
-  - "GTsST"
-  - "BlackEnergy Group"
-  - "Telebots"
+  - "IRIDIUM"
+  - "TeleBots"
   - "Voodoo Bear"
+  - "ELECTRUM"
   - "Iron Viking"
-  - "Iridium"
-  - "Wormwood"
   - "Seashell Blizzard"
 affiliation: "Russia (GRU Unit 74455)"
-motivation: "Sabotage / Espionage"
+motivation: "Destructive / Espionage"
 status: active
 country: "Russia"
 firstSeen: "2009"
 lastSeen: "2025"
 targetSectors:
-  - "Energy"
+  - "Energy & Utilities"
   - "Government"
-  - "Logistics"
-  - "Media"
-  - "Telecommunications"
+  - "Transportation"
   - "Financial Services"
+  - "Media"
 targetGeographies:
   - "Ukraine"
-  - "Global"
-  - "United States"
   - "Europe"
-  - "South Korea"
+  - "United States"
+  - "Global"
 tools:
   - "BlackEnergy"
   - "Industroyer"
-  - "KillDisk"
   - "NotPetya"
-  - "GreyEnergy"
   - "Olympic Destroyer"
+  - "Cyclops Blink"
   - "AcidRain"
   - "CaddyWiper"
+  - "GreyEnergy"
 mitreMappings:
   - techniqueId: "T1485"
     techniqueName: "Data Destruction"
     tactic: "Impact"
-    notes: "Sandworm is notorious for the frequent use of wiper malware to destroy data and sabotage critical infrastructure."
-  - techniqueId: "T0817"
-    techniqueName: "Bravo Zulu: Industrial Control System (ICS) Impact"
-    tactic: "Impact"
-    notes: "Specifically developed and deployed Industroyer/CrashOverride to target electrical grids."
-  - techniqueId: "T1059.003"
-    techniqueName: "Command and Scripting Interpreter: Windows Command Shell"
+    notes: "NotPetya and CaddyWiper were designed to irreversibly destroy data on targeted systems."
+  - techniqueId: "T1059.001"
+    techniqueName: "Command and Scripting Interpreter: PowerShell"
     tactic: "Execution"
-    notes: "Frequent use of cmd.exe and PowerShell for persistence and lateral movement."
+    notes: "PowerShell scripts used in multiple campaigns for lateral movement and payload delivery."
+  - techniqueId: "T1195.002"
+    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    tactic: "Initial Access"
+    notes: "NotPetya distributed via compromised M.E.Doc Ukrainian accounting software."
+  - techniqueId: "T1562.001"
+    techniqueName: "Impair Defenses: Disable or Modify Tools"
+    tactic: "Defense Evasion"
+    notes: "Industroyer manipulated ICS protocols to disable safety systems during power grid attacks."
 attributionConfidence: A1
-attributionRationale: "High confidence attribution to the Russian General Staff Main Intelligence Directorate (GRU) Unit 74455 (GTsST), supported by a 2020 U.S. Department of Justice indictment of six officers and consensus among Five Eyes intelligence agencies."
-reviewStatus: "certified"
+attributionRationale: "Attributed to GRU Unit 74455 by a 2020 U.S. DOJ indictment of six officers, corroborated by Five Eyes intelligence agencies and private-sector research from ESET, Mandiant, and Dragos."
+reviewStatus: "draft_ai"
 generatedBy: "penfold-bot"
-generatedDate: 2026-04-15
+generatedDate: 2026-04-16
 tags:
   - "nation-state"
   - "russia"
   - "gru"
-  - "sabotage"
+  - "destructive"
+  - "ics"
   - "sandworm"
-  - "ukraine"
-  - "wiper"
-  - "unit-74455"
+  - "notpetya"
 sources:
-  - url: "https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-gtsst"
-    publisher: "NCSC UK"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2018-10-04"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/"
-    publisher: "Wired"
-    publisherType: media
-    reliability: R1
-    publicationDate: "2019-11-15"
-    accessDate: "2026-04-15"
-    archived: false
-  - url: "https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/"
-    publisher: "ESET Research"
-    publisherType: research
-    reliability: R1
-    publicationDate: "2017-06-12"
-    accessDate: "2026-04-15"
-    archived: false
   - url: "https://attack.mitre.org/groups/G0034/"
     publisher: "MITRE ATT&CK"
+    publicationDate: "2025-10-17"
     publisherType: research
     reliability: R1
-    publicationDate: "2025-10-17"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other"
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2022-04-20"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and"
     publisher: "US Department of Justice"
     publisherType: government
     reliability: R1
     publicationDate: "2020-10-19"
-    accessDate: "2026-04-15"
+    accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a"
-    publisher: "CISA"
-    publisherType: government
+  - url: "https://www.mandiant.com/resources/blog/sandworm-disrupts-power-ukraine-operational-technology"
+    publisher: "Mandiant"
+    publisherType: vendor
     reliability: R1
-    publicationDate: "2024-04-18"
-    accessDate: "2026-04-15"
+    publicationDate: "2023-11-09"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/"
+    publisher: "ESET"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2017-06-30"
+    accessDate: "2026-04-16"
     archived: false
 ---
 
-## Overview
+## Executive Summary
 
-Sandworm (also known as Unit 74455 or GTsST) is a prominent Russian state-sponsored threat actor operating within the **General Staff Main Intelligence Directorate (GRU)**. Active since at least 2009, Sandworm is widely considered one of the most dangerous and aggressive cyber-warfare units in the world. Unlike traditional espionage-focused APTs, Sandworm frequently conducts high-impact sabotage operations intended to cause physical-world disruption and psychological impact.
+Sandworm is a Russian state-sponsored threat actor attributed to **GRU Unit 74455**, the Main Centre for Special Technologies (GTsST) of the Russian military intelligence service. Active since at least 2009, the group is one of the most destructive cyber threat actors documented to date. Sandworm conducts operations ranging from strategic espionage to large-scale destructive attacks against critical infrastructure, with a sustained operational focus on Ukraine.
 
-The group is primarily responsible for the most significant cyberattacks against Ukraine's critical infrastructure, including the first-ever cyber-induced power outages in 2015 and 2016, and the devastating NotPetya wiper campaign in 2017. Their mandate extends beyond regional conflict, encompassing global operations such as the targeting of the 2018 Winter Olympics and international investigation bodies like the OPCW.
+The group is responsible for the first confirmed cyberattacks against electrical power grids (Ukraine, 2015 and 2016), the NotPetya global wiper attack (2017) that caused an estimated $10 billion in damages, the Olympic Destroyer attack against the 2018 Pyeongchang Winter Olympics, and multiple destructive operations during Russia's 2022 invasion of Ukraine. Sandworm's readiness to deploy destructive capabilities against civilian infrastructure sets it apart from other state-sponsored groups.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-### Destructive Tradecraft
-Sandworm's signature is the development and deployment of bespoke wiper malware. Families like **KillDisk**, **NotPetya**, and **AcidRain** are designed to overwrite Master Boot Records (MBR) or specifically target the file systems of industrial controllers. They frequently use living-off-the-land techniques (LotL), leveraging legitimate administrative tools like PsExec and WMI to propagate destructive payloads rapidly across enterprise networks.
+### 2015 -- Ukraine Power Grid Attack (BlackEnergy3)
 
-### Industrial Control Systems (ICS) Focus
-The group possesses rare technical expertise in industrial protocols such as IEC 60870-5-104 and IEC 61850. Their **Industroyer** (CrashOverride) malware was the first to specifically automate the control of electrical circuit breakers, allowing for the remote disconnection of power grids without manual intervention.
+On December 23, 2015, Sandworm conducted the first confirmed cyberattack to cause a power outage. The group compromised three Ukrainian power distribution companies using BlackEnergy3 malware. Operators manually manipulated SCADA systems to open circuit breakers, cutting power to approximately 225,000 customers for up to six hours.
 
-### Supply Chain and Living-off-the-Land
-Sandworm utilizes supply chain compromises to gain initial access to high-value targets. The NotPetya outbreak was initiated via a trojanized update to the M.E.Doc accounting software. They also frequently exploit edge network devices, such as VPNs and routers, to maintain persistence and obfuscate their C2 infrastructure.
+### 2016 -- Ukraine Power Grid Attack (Industroyer/CrashOverride)
 
-## Targeted Industries & Organizations
+On December 17, 2016, Sandworm deployed Industroyer (CrashOverride), a modular ICS-specific malware framework targeting the Ukrenergo transmission substation in Kyiv. Industroyer directly interfaced with industrial control protocols (IEC 61850, IEC 104, OPC DA) to open circuit breakers, representing an advancement from manual SCADA manipulation to automated ICS exploitation.
 
-Sandworm's targeting is strategically aligned with Russian military and geopolitical objectives:
+### 2017 -- NotPetya Global Destructive Attack
 
-- **Energy & Utilities:** Repeated attacks on the Ukrainian electrical grid and energy providers.
-- **Government & Diplomacy:** Targeting of the French Presidential election (2017) and international sporting bodies.
-- **Logistics & Transportation:** Disruption of global shipping (Maersk) and Ukrainian transit systems.
-- **Media:** Sabotage of Ukrainian television and radio stations during conflict periods.
+In June 2017, Sandworm deployed the NotPetya wiper via a supply chain compromise of M.E.Doc, a Ukrainian tax accounting application. NotPetya spread globally via EternalBlue (CVE-2017-0144) and Mimikatz credential harvesting, causing an estimated $10 billion in damages to organizations including Maersk, Merck, FedEx/TNT Express, and Mondelez. The malware had no functional decryption mechanism despite appearing as ransomware.
 
-## Attributable Attacks Timeline
+### 2018 -- Olympic Destroyer
 
-### 2015-12-23 — Ukraine Power Grid Attack
-Sandworm used the BlackEnergy 3 malware to gain access to three regional power distribution companies in Ukraine, successfully disconnecting 30 substations and leaving 230,000 residents in the dark.
+Sandworm deployed Olympic Destroyer malware against the 2018 Pyeongchang Winter Olympics opening ceremony IT infrastructure. The attack incorporated multiple false flag indicators designed to mislead attribution toward North Korean or Chinese actors. It disrupted Wi-Fi, ticketing systems, and the official Olympics website.
 
-### 2017-06-27 — NotPetya Ransomware
-The group launched the NotPetya wiper attack via a supply chain compromise. Although it appeared to be ransomware, it was a destructive wiper that caused over $10 billion in global damage, the most in history for a single event.
+### 2022 -- AcidRain and Wiper Campaign
 
-### 2018-02-09 — Olympic Destroyer
-During the Pyeongchang Winter Olympics opening ceremony, Sandworm deployed the Olympic Destroyer malware, which disabled the official app, Wi-Fi at the stadium, and the media center's technological systems.
+In coordination with Russia's February 2022 invasion of Ukraine, Sandworm deployed AcidRain wiper malware against Viasat KA-SAT modems, disrupting satellite communications across Ukraine and parts of Europe. Throughout 2022, the group deployed multiple wiper variants (CaddyWiper, HermeticWiper, IsaacWiper) against Ukrainian government and infrastructure targets.
 
-### 2022-02-24 — AcidRain and Viasat
-Coinciding with the Russian invasion of Ukraine, Sandworm deployed the AcidRain wiper against Viasat's KA-SAT network, successfully bricking thousands of satellite modems and disrupting communications across Europe.
+## Technical Capabilities
 
-## Cross-Vendor Naming Reference
+Sandworm maintains advanced capabilities across both IT and operational technology (OT) environments. The group develops custom ICS-targeting malware, including **Industroyer/CrashOverride**, which contains modules for multiple industrial communication protocols. **BlackEnergy** evolved through three major versions, from a DDoS toolkit to a full-featured espionage and ICS attack platform.
 
-| Vendor | Name |
-|---|---|
-| CrowdStrike | Voodoo Bear |
-| Microsoft | Seashell Blizzard (formerly Iridium) |
-| Mandiant | Sandworm Team |
-| ESET | Telebots / BlackEnergy Group |
-| Secureworks | Iron Viking |
+The group's IT-focused tools include destructive malware (NotPetya, Olympic Destroyer, CaddyWiper), supply chain compromise techniques, and exploitation of network infrastructure. **Cyclops Blink**, disclosed by NCSC/CISA in 2022, was a modular botnet framework targeting WatchGuard and ASUS network devices, replacing the disrupted VPNFilter botnet.
 
-## References & Sources
+Sandworm employs advanced operational security including false flag techniques (Olympic Destroyer contained code artifacts intended to mislead attribution), living-off-the-land techniques, and multi-stage attack chains combining IT network compromise with OT-specific payloads.
 
-- [MITRE ATT&CK: Group G0034 (Sandworm Team)](https://attack.mitre.org/groups/G0034/) — MITRE ATT&CK
-- [US DOJ: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — US Department of Justice, 2020-10-19
-- [NCSC UK: Reckless Campaign of Cyber Attacks by Russian Military Intelligence Service (GTsST)](https://www.ncsc.gov.uk/news/reckless-campaign-cyber-attacks-russian-military-intelligence-service-exposed) — NCSC UK, 2018
-- [CISA Alert (AA24-109A): Staying Ahead of Sandworm](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a) — CISA, 2024-04-18
-- [Wired: Sandworm — A New Era of Cyberwar and the Hunt for the Kremlin's Most Dangerous Hackers](https://www.wired.com/story/sandworm-kremlin-most-dangerous-hackers/) — Wired
-- [ESET Research: Industroyer — The Biggest Threat to Industrial Control Systems Since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) — ESET Research, 2017
+## Attribution
+
+The U.S. Department of Justice indicted six GRU officers of Unit 74455 in October 2020, providing evidence linking Sandworm to the BlackEnergy Ukraine grid attacks, NotPetya, Olympic Destroyer, and operations against the OPCW and Georgian organizations. The named individuals were identified as members of the GTsST.
+
+CISA advisory AA22-110A (April 2022) and joint advisories from Five Eyes intelligence agencies corroborated the attribution. Private-sector research from ESET, Mandiant, Dragos, and Microsoft independently tracked the group's infrastructure, malware development patterns, and operational timelines. Sandworm's targeting patterns are consistent with Russian strategic military objectives.
+
+## MITRE ATT&CK Profile
+
+**Initial Access**: Sandworm uses spearphishing (T1566), supply chain compromise (T1195.002), and exploitation of public-facing applications (T1190) including VPN appliances and web servers.
+
+**Execution**: The group leverages PowerShell (T1059.001), Windows Management Instrumentation (T1047), and custom loaders. ICS-specific tools directly manipulate industrial protocols.
+
+**Persistence**: Scheduled tasks (T1053), web shells (T1505.003), and firmware-level implants on network devices (Cyclops Blink) maintain access.
+
+**Impact**: Sandworm's hallmark is destructive impact through data destruction (T1485), disk wiping (T1561), and manipulation of industrial control systems. NotPetya combined MBR corruption with file encryption using a non-functional key.
+
+**Defense Evasion**: False flag operations (Olympic Destroyer), timestomping, indicator removal, and process injection complicate attribution and evade detection.
+
+## Sources & References
+
+- [MITRE ATT&CK: Sandworm Team](https://attack.mitre.org/groups/G0034/) -- MITRE ATT&CK
+- [CISA: Advisory AA22-110A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a) -- CISA, 2022-04-20
+- [US DOJ: Six Russian GRU Officers Charged](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and) -- US Department of Justice, 2020-10-19
+- [Mandiant: Sandworm Disrupts Power in Ukraine](https://www.mandiant.com/resources/blog/sandworm-disrupts-power-ukraine-operational-technology) -- Mandiant, 2023-11-09
+- [ESET: TeleBots Supply Chain Attacks Against Ukraine](https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/) -- ESET, 2017-06-30
