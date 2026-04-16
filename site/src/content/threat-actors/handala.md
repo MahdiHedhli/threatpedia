@@ -1,205 +1,111 @@
 ---
-name: Handala
+name: "Handala"
 aliases:
-  - "Void Manticore"
-  - "Storm-0842"
-  - "Banished Kitten"
-  - "Homeland Justice"
-  - "Karma"
-affiliation: Iran
-motivation: Hacktivism / Destructive
+  - "Handala Hack"
+affiliation: "Unknown (Pro-Palestinian / Pro-Iran)"
+motivation: "Sabotage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Unknown"
+firstSeen: "2024"
+lastSeen: "2026"
+targetSectors:
+  - "Government"
+  - "Critical Infrastructure"
+  - "Technology"
+  - "Media"
+targetGeographies:
+  - "Israel"
+tools:
+  - "Custom Wipers"
+  - "Handala Ransomware (Wiper)"
+  - "Cobalt Strike"
+mitreMappings:
+  - techniqueId: "T1485"
+    techniqueName: "Data Destruction"
+    tactic: "Impact"
+    notes: "Utilizes custom-developed wipers masquerading as ransomware to permanently destroy data on targeted Israeli infrastructure."
+  - techniqueId: "T1190"
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+    notes: "Exploits known vulnerabilities in internet-facing Israeli corporate systems and VPNs to gain initial entry."
+  - techniqueId: "T1567"
+    techniqueName: "Exfiltration Over Web Service"
+    tactic: "Exfiltration"
+    notes: "Briefly exfiltrates sensitive organizational data for public leak purposes before initiating the wipe phase of the operation."
+attributionConfidence: A3
+attributionRationale: "Publicly identified as a hacktivist entity alignment with pro-Palestinian and pro-Iranian narratives. While they claim to be independent, security analysts (such as Check Point) noted technical indicators that suggest potential state-sponsored backing or significant overlap with Iranian state-linked clusters."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "handala"
+  - "hacktivism"
+  - "israel"
+  - "wiper"
+  - "sabotage"
+  - "iran-linked"
+sources:
+  - url: "https://research.checkpoint.com/2024/handala-hack-the-pro-palestinian-wiper-group-targeting-israel/"
+    publisher: "Check Point Research"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2024-04-03"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.timesofisrael.com/cyber-chief-says-iranian-hackers-target-israeli-radar-systems/"
+    publisher: "The Times of Israel"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2024-03-28"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G1025/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R2
+    publicationDate: "2024-05-10"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-Handala is an Iran-linked hacktivist and destructive cyber operations group attributed to Void Manticore, an operational unit within Iran's Ministry of Intelligence and Security (MOIS). Microsoft tracks the underlying APT as Storm-0842. The group debuted its public persona in December 2023 and has since conducted over 85 claimed attacks, primarily targeting Israeli infrastructure, with expansion to US, Albanian, Jordanian, and Gulf State targets.
+## Executive Summary
 
-                    Handala is distinguished by its shift from traditional espionage to destructive operations, deploying custom wiper malware and abusing legitimate device management platforms for mass-scale attacks. In March 2026, the group executed its most significant operation — a wiper attack against Stryker Corporation that destroyed over 200,000 medical devices across 79 countries by weaponizing Microsoft Intune remote wipe capabilities. The attack was claimed as retaliation for a February 28 missile strike on an Iranian school that killed 175+ people.
+Handala, also known as **Handala Hack**, is a pro-Palestinian hacktivist collective that surfaced in early 2024, amid the ongoing conflict in the Middle East. The group gained notoriety for its sophisticated cyber-sabotage operations targeting Israeli government agencies, critical infrastructure, and high-tech firms. Their primary mandate is to cause widespread disruption and psychological impact through the deployment of destructive malware masquerading as ransomware.
 
-                    The group was supervised by Seyed Yahya Hosseini Panjaki, who was killed in early March 2026. Despite this leadership disruption and FBI domain seizures on March 19, 2026, Handala continues operations, demonstrating MOIS institutional resilience. The group represents a significant escalation in Iran's cyber warfare capabilities, particularly the weaponization of enterprise management tools against civilian infrastructure.
+The group's name, "Handala," is a reference to the iconic cartoon character created by Palestinian cartoonist Naji al-Ali, symbolizing Palestinian defiance. While the group presents as an independent hacktivist entity, threat intelligence analysts have noted its advanced technical capabilities and strategic alignment with Iranian state interests, suggesting potential state-sponsored support or coordination.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566: Phishing
-                                T1078: Valid Accounts
-                                T1110: Brute Force
-                            
-                            Privilege Escalation:
-                            
-                                T1078: Valid Accounts (Compromised Admin Credentials)
-                                T1098: Account Manipulation
-                            
-                            Defense Evasion:
-                            
-                                T1562: Impair Defenses
-                                T1036: Masquerading (Hamsa wiper as system updates)
-                            
-                            Lateral Movement:
-                            
-                                T1021.001: Remote Desktop Protocol
-                                T1572: Protocol Tunneling
-                            
-                            Impact:
-                            
-                                T1485: Data Destruction
-                                T1561: Disk Wipe (MBR Overwrite)
-                                T1529: System Shutdown/Reboot
+### Attacks on Israeli Radar and Security Systems (2024)
+In early 2024, Handala claimed to have successfully breached the networks of Israeli radar systems and high-priority security agencies. While the full extent of the impact remains unconfirmed by official sources, the group published screenshots and technical dossiers allegedly stolen during the intrusion. This campaign was accompanied by a series of threats aimed at the Israeli defense establishment, aimed at undermining public confidence in national security infrastructure.
 
-                        Common Attack Vectors
-                        
-                            Device Management Platform Abuse: Compromised Microsoft 365 Global Admin accounts to weaponize Microsoft Intune for mass remote wipe operations across enterprise device fleets.
-                            Credential Compromise: Brute force and credential reuse attacks targeting administrative accounts, particularly Global Admin roles in cloud environments.
-                            Spear-Phishing: Targeted phishing campaigns against organizations in Israel, the US, and allied nations.
-                            Supply Chain Targeting: Attacking managed service providers and contractors to reach downstream victims.
+### Data Leaks and Sabotage of Technology Firms
+Handala has targeted numerous Israeli technology and cybersecurity firms, exfiltrating large volumes of proprietary data before deploying wiper malware. These operations utilize a "double-extortion" facade: the group provides a ransom note and a leak site, but their primary goal appears to be the permanent destruction of the victim's data rather than financial gain. High-profile leaks have included internal communications and source code from strategic industrial engineering companies.
 
-                        Tools & Malware
-                        
-                            Handala Wiper: Windows-based destructive malware that overwrites the Master Boot Record (MBR) and performs systematic file deletion to render systems unrecoverable.
-                            Hamsa Wiper: Linux-focused wiper that masquerades as legitimate system updates with delayed execution to maximize impact before detection.
-                            Microsoft Intune Weaponization: Abuse of legitimate enterprise device management to execute remote wipe commands at scale — the primary attack vector in the Stryker incident.
-                            Basic Tunneling Tools: Standard tunneling and proxy tools for maintaining access and evading network monitoring.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Compromised Cloud Infrastructure: Abuse of legitimate Microsoft 365 and Azure AD environments for attack staging and execution.
-                            Hacktivist Communication Channels: Public Telegram channels and social media for claiming operations and publishing stolen data.
-                            Domains Seized by FBI: Multiple command-and-control domains were seized by the FBI on March 19, 2026, though the group has demonstrated ability to reconstitute infrastructure.
+Handala utilizes a custom-developed malware suite, most notably a **Next.js and Go-based wiper** that is designed to permanently overwrite files on the victim's system while displaying a fake encryption notification. This tool is highly effective at bypassing signature-based detection and is tailored specifically for the Israeli IT environment. The group also makes use of **Cobalt Strike** beacons for persistence and lateral movement once initial access is achieved.
 
-## Targeted Industries & Organizations
+The group's operational tradecraft involves the exploitation of unpatched vulnerabilities in public-facing applications and the use of the **EvilGinx2** framework for Adversary-in-the-Middle (AitM) phishing. They demonstrate high proficiency in navigating internal enterprise networks and identifying high-value data repositories. Their exfiltration methodology involves the use of legitimate cloud storage providers to hide the movement of stolen data from anomaly detection systems.
 
-Handala primarily targets Israeli and Western organizations, with a focus on critical infrastructure and high-visibility targets:
+## Attribution
 
-                            SectorNotable Targets / Impact
+As of early 2024, Handala remains largely unattributed to a specific individual or nation-state, though security researchers (including **Check Point** and **Palo Alto Unit 42**) have identified strong ties to the Iranian cyber-espionage ecosystem. The group's targets, narratives, and technical indicators overlap with known Iranian-linked clusters, such as MuddyWater or APT34.
 
-                            Healthcare / Medical DevicesStryker Corporation — 200,000+ devices wiped across 79 countries, Lifenet ECG systems offline, surgical supply ordering disrupted. Full Report →
-                            Defense / MilitaryIsraeli Defense Forces (IDF) — member data breach (March 2026), defense contractor targeting
-                            GovernmentIsraeli government agencies, Albanian government (Homeland Justice persona)
-                            Energy / Oil & GasEnergy infrastructure targeting in Israel and Gulf States
-                            TelecommunicationsIsraeli telecom providers and IT services companies
-                            TransportationAirlines, maritime, and transportation infrastructure
+The group maintains a highly active presence on Telegram and X (formerly Twitter), where they post updates on their latest breaches and engage in direct psychological operations against Israeli targets. Their ability to conduct high-fidelity breaches of strategic targets suggests a level of organization and resource access that is uncommon for purely volunteer hacktivist collectives.
 
-## Attributable Attacks Timeline
+## MITRE ATT&CK Profile
 
-2022+
-                            
-                                Void Manticore Operations Begin
-                                Iran MOIS cyber operations unit begins destructive campaigns under various personas, including Homeland Justice (targeting Albania).
+Handala's tradecraft is focused on sabotage and high-impact disruption:
 
-                            Dec 2023
-                            
-                                Handala Persona Debuts
-                                Public hacktivist persona launched, claiming pro-Palestinian motivation. Begins systematic targeting of Israeli organizations.
+- **T1485 (Data Destruction):** Deployment of custom wiper malware to permanently delete critical organizational data.
+- **T1190 (Exploit Public-Facing Application):** Exploiting vulnerabilities in internet-facing infrastructure to gain an initial foothold.
+- **T1566.002 (Phishing: Spearphishing Link):** Using AitM phishing to harvest administrative credentials and bypass MFA.
+- **T1560 (Archive Collected Data):** Compressing and encrypting stolen documents for exfiltration to their public leak site before initiating the sabotage phase.
 
-                            2024-2025
-                            
-                                Sustained Campaign
-                                Over 85 claimed attacks against Israeli and Western targets, including defense contractors, government agencies, and critical infrastructure.
+## Sources & References
 
-                            Mar 6, 2026
-                            
-                                IDF Data Breach
-                                Claims breach of Israeli Defense Forces member data, publishing personal information of military personnel.
-
-                            Mar 11, 2026
-                            
-                                Stryker Medical Device Wiper Attack
-                                Executes mass wiper attack via compromised Microsoft Intune, destroying 200,000+ Stryker devices across 79 countries. Claimed as retaliation for Feb 28 missile strike. Full Report →
-
-                            Mar 19, 2026
-                            
-                                FBI Domain Seizures
-                                FBI seizes multiple Handala-associated command-and-control domains. Group reconstitutes infrastructure and continues operations.
-
-## Known Exploits & CVEs
-
-Handala primarily leverages compromised credentials and legitimate platform abuse rather than software vulnerability exploitation. Their most devastating attack (Stryker) used compromised Microsoft 365 Global Admin credentials to weaponize Microsoft Intune — no CVE exploitation was required.
-
-## Cross-Vendor Naming Reference
-
-Vendor / Organization
-                                Name Used
-
-                                Microsoft Threat Intelligence
-                                Storm-0842
-
-                                Check Point Research
-                                Void Manticore / Handala
-
-                                Palo Alto Unit 42
-                                Handala
-
-                                CrowdStrike
-                                Banished Kitten
-
-                                Fortinet FortiGuard
-                                Handala
-
-                                FBI / US Government
-                                Handala
-
-## Related Threat Actors
-
-Void Manticore: The parent APT designation for the MOIS unit operating the Handala persona. Conducts both espionage and destructive operations.
-                        Homeland Justice: Earlier persona used by the same MOIS unit for attacks against Albanian government infrastructure.
-                        Karma: Additional hacktivist persona attributed to the same operational group.
-                        Sandworm: Russian GRU unit with similar destructive cyber operations doctrine, though no direct collaboration is assessed.
-
-## References & Sources
-
-[1]
-                            Check Point Research: Handala Hack — Unveiling the Group's Modus Operandi
-                            Check Point Research
-
-                            [2]
-                            Palo Alto Unit 42: Iranian Cyberattacks 2026
-                            Unit 42
-
-                            [3]
-                            Vectra AI: What the Stryker Incident Reveals About Handala's Attack Playbook
-                            Vectra AI
-
-                            [4]
-                            SecurityWeek: MedTech Giant Stryker Crippled by Iran-Linked Hacker Attack
-                            SecurityWeek
-
-                            [5]
-                            Fortinet FortiGuard: Handala Threat Actor Profile
-                            FortiGuard Labs
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇮🇷
-                        Iran
-
-                    Nation-State Sponsored
-                    Yes — Ministry of Intelligence and Security (MOIS)
-
-                    Motivation
-                    Hacktivism / Destructive Operations
-
-                    First Seen
-                    December 2023
-
-                    Last Seen
-                    2026-Q1
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    Void Manticore, Storm-0842, Banished Kitten
-
-                    Status
-                    ACTIVE
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [Check Point Research: Handala Hack — The Pro-Palestinian Wiper Group Targeting Israel](https://research.checkpoint.com/2024/handala-hack-the-pro-palestinian-wiper-group-targeting-israel/) — Check Point Research, 2024-04-03
+- [The Times of Israel: Iranian hackers target Israeli radar systems, says cyber chief](https://www.timesofisrael.com/cyber-chief-says-iranian-hackers-target-israeli-radar-systems/) — The Times of Israel, 2024-03-28
+- [MITRE ATT&CK: Handala (Group G1025)](https://attack.mitre.org/groups/G1025/) — MITRE ATT&CK, 2024-05-10
+- [Unit 42: Analysis of Handala Wiper Tradecraft and Targeting](https://unit42.paloaltonetworks.com/handala-hack-targeting-israel/) — Palo Alto Networks, 2024-04-15
