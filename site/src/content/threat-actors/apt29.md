@@ -1,305 +1,131 @@
 ---
-name: APT29
+name: "APT29"
 aliases:
   - "Cozy Bear"
-  - "NOBELIUM"
+  - "The Dukes"
+  - "SVR"
+  - "Nobelium"
   - "Midnight Blizzard"
-  - "IRON HEMLOCK"
-  - "UNC2452"
-affiliation: Russia
-motivation: Espionage
+  - "Dark Halo"
+affiliation: "Russia"
+motivation: "Espionage"
 status: active
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+country: "Russia"
+firstSeen: "2008"
+lastSeen: "2026"
+targetSectors:
+  - "Government"
+  - "Diplomatic"
+  - "Think Tanks"
+  - "Technology"
+  - "Healthcare / Vaccine Research"
+targetGeographies:
+  - "Global"
+  - "United States"
+  - "Europe"
+  - "NATO Member States"
+tools:
+  - "SUNBURST"
+  - "TEARDROP"
+  - "WellMess"
+  - "GoldMax"
+  - "Cobalt Strike"
+  - "Envy Scout"
+mitreMappings:
+  - techniqueId: "T1195.002"
+    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    tactic: "Initial Access"
+    notes: "Utilized the SolarWinds build pipeline to distribute the SUNBURST backdoor."
+  - techniqueId: "T1484.002"
+    techniqueName: "Domain Policy Modification: Domain Trust Modification"
+    tactic: "Defense Evasion"
+    notes: "Pioneered the 'Golden SAML' technique to bypass MFA and access cloud resources via forged tokens."
+  - techniqueId: "T1071.001"
+    techniqueName: "Application Layer Protocol: Web Protocols"
+    tactic: "Command and Control"
+    notes: "Uses highly disciplined C2 infrastructure often masquerading as legitimate administrative services or utilizing look-alike domains."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to the Russian Foreign Intelligence Service (SVR) by the U.S. and UK governments in 2021 following the SolarWinds investigation."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "apt29"
+  - "cozy-bear"
+  - "svr"
+  - "russia"
+  - "solarwinds"
+  - "espionage"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-04-26"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/"
+    publisher: "The White House"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-04-15"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2021-01-20"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G0016/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
-
-APT29 is a sophisticated threat actor attributed to Russia's Foreign Intelligence Service (SVR) and has been operational since at least 2008. The group is known for targeting high-profile organizations across government, diplomatic, research, defense, and technology sectors, primarily in Europe and North America. APT29 is widely recognized for their advanced tradecraft, persistent engagement, and ability to remain undetected in victim environments for extended periods.
-
-                    The group operates with a strategic focus on espionage objectives, conducting long-term intelligence collection campaigns against NATO member states, European governments, diplomatic missions, think tanks, and research institutions. APT29 is particularly notable for their involvement in several major incidents, including the 2020 SolarWinds supply chain compromise (via the SUNBURST malware) and ongoing phishing campaigns targeting European diplomacy and cloud infrastructure.
-
-                    APT29's operational approach combines spear-phishing with weaponized attachments, supply chain compromises, cloud exploitation, and credential theft. The group is known for rapid adaptation of tactics, particularly in response to public disclosures of their tools and techniques. As of 2024-2025, APT29 continues to conduct high-volume phishing campaigns against European governments, with new malware families such as GRAPELOADER and WINELOADER emerging as part of their ongoing arsenal.
-
-## Tactics, Techniques & Procedures (TTPs)
-
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1566.002: Phishing - Spearphishing Link
-                                T1566.001: Phishing - Spearphishing Attachment
-                                T1199: Trusted Relationship
-                                T1195: Supply Chain Compromise
-                                T1078.004: Valid Accounts - Cloud Accounts
-                            
-                            Execution:
-                            
-                                T1059.001: Command and Scripting Interpreter - PowerShell
-                                T1059.003: Command and Scripting Interpreter - Windows Command Shell
-                                T1203: Exploitation for Client Execution
-                            
-                            Defense Evasion:
-                            
-                                T1550: Use Alternate Authentication Material
-                                T1656: Impersonation
-                                T1562.008: Impair Defenses - Disable Logging
-                                T1140: Deobfuscate/Decode Files or Information
-                            
-                            Credential Access:
-                            
-                                T1110.004: Brute Force - Credential Stuffing
-                                T1556: Modify Authentication Process
-                                T1187: Forced Authentication
-                            
-                            Exfiltration:
-                            
-                                T1041: Exfiltration Over C2 Channel
-                                T1020: Automated Exfiltration
-
-                        Common Attack Vectors
-                        
-                            Spear-phishing Campaigns: Highly targeted phishing emails impersonating government entities, diplomatic services, or trusted partners. Email attachments often contain weaponized documents (Office, PDF, WinRAR) or links to malicious infrastructure.
-                            Password Spraying & Credential Compromise: Large-scale password spray attacks against cloud environments (Azure, Office 365) to identify valid credentials and weak passwords, often combined with MFA bypass techniques.
-                            Supply Chain Exploitation: Compromise of software development pipelines and legitimate software vendors to distribute malware at scale (e.g., SolarWinds SUNBURST).
-                            Cloud Infrastructure Targeting: Exploitation of cloud tenant enumeration, device enrollment, federation services (ADFS), and token abuse to gain access to cloud environments.
-                            Exploitation of Public Vulnerabilities: Rapid exploitation of zero-days and publicly disclosed CVEs (ProxyLogon, ProxyShell, Exchange RCEs, WinRAR CVE-2023-38831).
-
-                        Tools & Malware
-                        
-                            SUNBURST: Sophisticated backdoor deployed via SolarWinds Orion updates. Designed for stealthy command-and-control communication and lateral movement.
-                            SUNSHELL/CORESHELL: Second-stage payloads deployed post-SUNBURST compromise for deeper access and data exfiltration.
-                            GRAPELOADER: New backdoor family identified in 2025 phishing campaigns targeting European diplomats. Delivered via weaponized attachments.
-                            WINELOADER: Infostealer malware used in recent campaigns to harvest credentials and system information.
-                            FOGGYWEB: Custom ADFS-focused malware for federation exploitation and token theft.
-                            MAGICWEB: Malware targeting Microsoft ADFS infrastructure to intercept and manipulate authentication tokens.
-                            Custom C# Backdoors: Lightweight, custom-compiled backdoors for command execution and lateral movement.
-                            Living-off-the-Land Tools: Extensive use of PowerShell, WMI, PsExec, and native Windows utilities for post-compromise activities.
-
-                        Infrastructure Patterns
-                        
-                            Residential Proxies: Use of residential proxy infrastructure to obfuscate command-and-control communications and make attribution more difficult.
-                            Legitimate Cloud Services: Abuse of Microsoft Teams, SharePoint, and other cloud collaboration platforms for C2 communications.
-                            Domain Fronting: Leveraging legitimate web services and CDNs to hide malicious traffic.
-                            Email-based C2: Use of compromised email accounts and OAuth application permissions for command-and-control.
-                            Fast Flux Networks: Rapid rotation of DNS records and IP addresses to evade network-based detection.
-
-## Targeted Industries & Organizations
-
-APT29 targets a broad range of sectors aligned with Russian strategic intelligence interests:
-
-                                Sector
-                                Notable Targets / Geographic Focus
-
-                                Government & Diplomacy
-                                European foreign ministries, NATO member states, US federal agencies, diplomatic missions. Heavy targeting of EU and NATO countries.
-
-                                Research & Academia
-                                Think tanks, universities, research institutions (particularly policy research focused on Russia, energy security, defense).
-
-                                Defense & Aerospace
-                                Defense contractors, military research institutions, aerospace companies.
-
-                                Energy
-                                Utilities, energy research organizations, strategic infrastructure.
-
-                                Technology & Cloud
-                                Cloud service providers, software vendors, SaaS platforms (Salesforce, Snowflake), open-source ecosystems.
-
-                                Healthcare
-                                Limited targeting; primarily during COVID-19 pandemic for intelligence on vaccine research.
-
-                    Geographic Preference: Primary targeting of NATO members and EU states (particularly Germany, Poland, Czech Republic), as well as North American government and research institutions.
-
-## Attributable Attacks Timeline
-
-Dec 2013
-                            
-                                US State Department Network Breach
-                                APT29 compromised US State Department networks, maintaining access for months. Significant espionage operation targeting diplomatic communications.
-
-                            2015-2016
-                            
-                                Democratic National Committee (DNC) Compromise
-                                APT29 breached DNC networks alongside APT28. Conducted targeted espionage of Democratic Party communications and opposition research.
-
-                            2019-2020
-                            
-                                COVID-19 Vaccine Research Targeting
-                                NCSC, CISA, and FBI confirmed APT29 targeted US and UK vaccine research institutions and health organizations during pandemic response.
-
-                            Mar 2020
-                            
-                                SolarWinds Supply Chain Compromise (SUNBURST)
-                                APT29 compromised SolarWinds software development pipeline, embedding SUNBURST backdoor in Orion updates. Affected 18,000+ customers including US government, Fortune 500 companies, and critical infrastructure. Described as "most sophisticated attack the world has ever seen."
-
-                            Oct 2024
-                            
-                                RDP Configuration Distribution Campaign
-                                Microsoft reported APT29 distributed signed Remote Desktop Protocol (RDP) configuration files to thousands of individuals across 100+ organizations in government, academia, defense, and NGOs.
 
-                            Jan-Mar 2025
-                            
-                                GRAPELOADER / WINELOADER Phishing Campaign
-                                Check Point Research identified new wave of targeted phishing attacks against European governments and diplomatic entities. Attackers impersonated major EU foreign ministry wine tasting invitations, leading to deployment of GRAPELOADER backdoor and WINELOADER infostealer.
+## Executive Summary
 
-                            Feb 2025 - Present
-                            
-                                European Government Cloud Infrastructure Targeting Suspected - Not Confirmed
-                                Based on tactics alignment and targeting patterns, APT29 is suspected of conducting ongoing campaigns to compromise European government cloud environments via token theft, MFA bypass, and federation exploitation techniques. Attribution pending official confirmation.
+APT29, widely known as **Cozy Bear** and **Midnight Blizzard**, is a premier nation-state threat actor operated by the **Russian Foreign Intelligence Service (SVR)**. Active since at least 2008, the group is tasked with collecting strategic intelligence from foreign governments, diplomatic entities, and technology sectors. APT29 is characterized by its extreme operational discipline, its focus on cloud identity exploitation, and its ability to conduct highly stealthy, multi-year campaigns.
 
-## Known Exploits & CVEs
+Unlike the Russian GRU (APT28), which often engages in loud, disruptive "hack-and-leak" operations, APT29 adheres to a traditional intelligence mandate. They prioritize persistent, undetected access over public signaling. The group gained global attention for its involvement in the **SolarWinds supply chain campaign** and its repeated targeting of the U.S. Democratic National Committee (DNC) and COVID-19 vaccine research facilities.
 
-APT29 has demonstrated rapid exploitation of both zero-days and publicly disclosed vulnerabilities:
+## Notable Campaigns
 
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
+### SolarWinds Supply Chain Campaign (2019-2021)
+In one of the most sophisticated cyber-espionage operations in history, APT29 compromised the software build pipeline of SolarWinds. By injecting the **SUNBURST** backdoor into digitally signed updates, the group achieved entry into approximately 18,000 organizations, including nine U.S. federal agencies. The campaign showcased the group's ability to operate undetected for over 18 months.
 
-                                CVE-2021-26855
-                                Server-Side Request Forgery (SSRF) in Exchange Server
-                                Microsoft Exchange Server 2010-2019
-                                9.8
+### Targeting of COVID-19 Research (2020)
+During the global pandemic, APT29 utilized the **WellMess** and **WellMail** malware families to target organizations involved in COVID-19 vaccine development in Canada, the United Kingdom, and the United States. The operation's objective was to steal proprietary research and clinical trial data, highlighting the group's role in supporting Russia's strategic scientific interests.
 
-                                CVE-2021-27065
-                                Remote Code Execution via Exchange Server
-                                Microsoft Exchange Server 2010-2019
-                                9.8
+## Technical Capabilities
 
-                                CVE-2021-34473
-                                ProxyShell: Remote Code Execution via Exchange
-                                Microsoft Exchange Server 2010-2019
-                                9.8
+APT29's technical arsenal is distinguished by its use of memory-only malware and cloud-native exploitation techniques. Their primary tools include **TEARDROP** (a custom memory-only Cobalt Strike loader) and **GoldMax** (a sophisticated C2 implant). The group has also mastered the extraction of SAML signing certificates from Active Directory Federation Services (AD FS), enabling the "Golden SAML" attack which allows for persistence in cloud environments (like Office 365) without needing user passwords.
 
-                                CVE-2021-34523
-                                ProxyShell: Elevation of Privilege in Exchange
-                                Microsoft Exchange Server 2010-2019
-                                9.8
+Their operational methodology involves highly curated C2 infrastructure. They frequently use legitimate but compromised websites and cloud services as staging areas for their malware, blending their traffic into normal administrative patterns. Their high degree of professionalization is reflected in the customized nature of their payloads, which are often tailored to the specific security environment of the target.
 
-                                CVE-2021-31207
-                                ProxyShell: RCE via Exchange Unauth
-                                Microsoft Exchange Server 2010-2019
-                                9.8
+## Attribution
 
-                                CVE-2023-38831
-                                Arbitrary Code Execution in WinRAR
-                                WinRAR (all versions before 6.23)
-                                8.8
+APT29 is formally attributed with high confidence to the **Russian Foreign Intelligence Service (SVR)**. In April 2021, the U.S. government, alongside the United Kingdom's NCSC, released a joint statement identifying the SVR as the entity behind the SolarWinds campaign and other malicious activities. Previously, the group was often referred to as "The Dukes" or "Cozy Bear" by the security community.
 
-                                CVE-2023-0640
-                                Remote Code Execution in Adobe Reader/Acrobat
-                                Adobe Acrobat Reader / Acrobat
-                                8.8
+The attribution is based on technical indicators such as the group's preference for cloud identity exploitation (a known SVR tradecraft), overlaps with legacy SVR infrastructure, and the strategic alignment of their targets with Russia's foreign intelligence requirements. The formal attribution was accompanied by significant diplomatic and economic sanctions against Russia.
 
-                                CVE-2023-42793
-                                Authentication Bypass in JetBrains TeamCity
-                                JetBrains TeamCity
-                                9.8
+## MITRE ATT&CK Profile
 
-                                CVE-2021-36934
-                                Elevation of Privilege in Windows SAM
-                                Microsoft Windows
-                                7.0
+APT29's techniques are centered on high-fidelity persistence and identity exploitation:
 
-## Cross-Vendor Naming Reference
+- **T1195.002 (Supply Chain Compromise):** Using trusted third-party software updates to gain widespread initial access.
+- **T1484.002 (Domain Trust Modification):** Forging SAML tokens to bypass multi-factor authentication in cloud environments.
+- **T1071.001 (Web Protocols):** C2 traffic designed to mimic legitimate HTTPS communication with trusted cloud providers.
+- **T1027 (Obfuscated Files or Information):** Extensive use of steganography and custom encryption to hide stage-two payloads and data exfiltration.
 
-APT29 is tracked by numerous threat intelligence vendors and government agencies under various designations:
+## Sources & References
 
-                                Vendor / Organization
-                                Name Used
-
-                                MITRE ATT&CK
-                                Group G0016
-
-                                CrowdStrike
-                                COZY BEAR
-
-                                Microsoft
-                                Midnight Blizzard, YTTRIUM
-
-                                Mandiant / Google
-                                APT29, Dark Halo
-
-                                Kaspersky
-                                The Dukes
-
-                                Symantec
-                                IRON RITUAL, IRON HEMLOCK
-
-                                F-Secure
-                                NobleBaron
-
-                                Recorded Future
-                                UNC2452, NOBELIUM
-
-                                Palo Alto Networks
-                                UNC3524
-
-                                Cybereason
-                                Blue Kitsune
-
-                                US Government (CISA/NSA)
-                                NOBELIUM
-
-## Related Threat Actors
-
-APT28 (Fancy Bear): Fellow Russian-attributed APT group. While operationally distinct, both groups have targeted overlapping victim sets (e.g., DNC in 2016). Different operational patterns and capabilities suggest separate organizational structures within Russian intelligence.
-                        Turla/Snake: Another Russian-attributed APT with similar strategic focus on government and research sectors. Less direct overlap in recent operations but comparable target profiles.
-
-## References & Sources
-
-[1]
-                            MITRE ATT&CK: APT29 (Group G0016)
-
-                            [2]
-                            Microsoft Security Blog: Midnight Blizzard (APT29) Guidance
-
-                            [3]
-                            CISA Advisory: SVR Cyber Actors Adapt Tactics for Initial Cloud Access
-
-                            [4]
-                            Check Point Research: APT29 Phishing Campaign Targeting European Diplomacy
-
-                            [5]
-                            Check Point Research: Renewed APT29 Phishing Campaign (2025)
-
-                            [6]
-                            Huntress: Cozy Bear (APT29) Threat Actor Profile
-
-                            [7]
-                            Picus Security: APT29 Evolution, Techniques, and Cyber Attacks
-
-                            [8]
-                            Dark Relay: APT29 Operations, IOCs, and Detection Strategies
-
-                            [9]
-                            Malpedia: APT29 Threat Actor Profile
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇷🇺
-                        Russia (SVR)
-
-                    Nation-State Sponsored
-                    Yes
-
-                    Motivation
-                    Espionage
-
-                    First Seen
-                    2008
-
-                    Last Seen
-                    2025 (Active)
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    NOBELIUM (Recorded Future)
-
-                    Status
-                    ACTIVE
+- [CISA: Advisory (AA21-116A) — Russian SVR Targets U.S. and Allied Networks](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-116a) — CISA, 2021-04-26
+- [The White House: Fact Sheet — Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) — The White House, 2021-04-15
+- [Microsoft: Deep Dive into SUNBURST, TEARDROP, and Raindrop](https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/) — Microsoft Security, 2021-01-20
+- [MITRE ATT&CK: APT29 (Group G0016)](https://attack.mitre.org/groups/G0016/) — MITRE ATT&CK, 2023-10-21
+- [NCSC UK: Advisory — SVR cyber actors adapt to move to cloud](https://www.ncsc.gov.uk/news/svr-cyber-actors-adapt-to-move-to-cloud) — NCSC UK, 2024-02-26
