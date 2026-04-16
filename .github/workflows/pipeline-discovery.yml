@@ -173,4 +173,5 @@ jobs:
           git add .github/pipeline/tasks/
           git diff --cached --quiet && echo "No new discoveries" && exit 0
           git commit -m "chore(pipeline): auto-discovery — $(date -u +%Y-%m-%d) — new CVEs from CISA KEV"
+          git pull --rebase origin main
           git push
