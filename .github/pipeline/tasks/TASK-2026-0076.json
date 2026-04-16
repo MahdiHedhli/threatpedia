@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0076",
   "type": "campaign",
   "priority": "P0",
-  "status": "locked",
+  "status": "complete",
   "assigned_to": "penfold-bot",
   "input": {
     "topic": "MCP Supply Chain Vulnerability Campaign — OX Security Disclosure of 10+ Critical CVEs Across 30+ AI/LLM Projects (2025-2026)",
@@ -233,9 +233,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:12:48.485Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
   ],
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-16T04:12:01.640Z",
-  "updated": "2026-04-16T04:12:01.648Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:12:48.487Z"
 }
