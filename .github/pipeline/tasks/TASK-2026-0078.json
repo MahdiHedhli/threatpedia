@@ -1,0 +1,35 @@
+{
+  "task_id": "TASK-2026-0078",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "input": {
+    "topic": "Axios npm Package Compromise by UNC1069",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/axios-unc1069-compromise.md",
+    "issues": [
+      "missing_sources"
+    ],
+    "notes": "No sources in frontmatter; No Sources/References section in body; Zero sources anywhere \u2014 needs full source reconstruction"
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/axios-unc1069-compromise.md",
+    "branch": "bot/reprocess-task-2026-0078"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-16T04:00:00.000Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Corpus reprocessing \u2014 source quality enforcement"
+    }
+  ]
+}

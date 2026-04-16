@@ -1,0 +1,36 @@
+{
+  "task_id": "TASK-2026-0091",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "European Commission Cloud Breach via Trivy Supply Chain",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/european-commission-trivy-breach-2026.md",
+    "issues": [
+      "missing_sources",
+      "plain_text_sources"
+    ],
+    "notes": "No sources in frontmatter; 5 bare URL(s) in body sources need markdown hyperlinks"
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/european-commission-trivy-breach-2026.md",
+    "branch": "bot/reprocess-task-2026-0091"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-16T04:00:00.000Z",
+      "action": "created",
+      "agent": "dangermouse-bot",
+      "note": "Corpus reprocessing \u2014 source quality enforcement"
+    }
+  ]
+}
