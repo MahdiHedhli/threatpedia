@@ -56,12 +56,14 @@ sources:
     publisher: "Microsoft Security"
     publisherType: vendor
     reliability: R1
+    publicationDate: "2020-12-18"
     accessDate: "2026-04-15"
     archived: false
   - url: "https://www.ncsc.gov.uk/news/advisory-svr-activity-targeting-government-and-organisations"
     publisher: "NCSC UK"
     publisherType: government
     reliability: R1
+    publicationDate: "2021-04-15"
     accessDate: "2026-04-15"
     archived: false
 mitreMappings:

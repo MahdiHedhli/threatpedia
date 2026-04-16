@@ -11,10 +11,14 @@
     "preview": "astro preview",
     "astro": "astro"
   },
+  "overrides": {
+    "yaml": "^2.8.3"
+  },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/mdx": "^5.0.3",
     "astro": "^6.1.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yaml": "^2.8.3"
   }
 }

@@ -52,10 +52,11 @@ sources:
     publicationDate: "2020-02-10"
     accessDate: "2026-04-15"
     archived: false
-  - url: "https://www.cisa.gov/news-events/alerts/2017/09/08/apache-struts-vulnerability"
+  - url: "https://www.cisa.gov/news-events/alerts/2017/03/08/apache-releases-security-advisory-struts-2"
     publisher: "CISA"
     publisherType: government
     reliability: R1
+    publicationDate: "2017-09-08"
     accessDate: "2026-04-15"
     archived: false
 mitreMappings:
