@@ -33,6 +33,7 @@ const EDITORIAL_WORDS = [
   'notably', 'significantly', 'interestingly', 'importantly',
   'remarkably', 'unfortunately', 'surprisingly', 'crucially',
   'strikingly', 'alarmingly', 'disturbingly', 'fascinatingly',
+  'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 
@@ -633,8 +634,10 @@ function validateOutput(task, explicitFile) {
       const editorialHits = [];
       for (let i = 0; i < bodyLines.length; i++) {
         const line = bodyLines[i];
-        // Skip headings, code blocks, and source URLs
+        // Skip headings, code blocks, source URLs, and markdown hyperlinks in Sources section
+        // (official source titles like FBI press releases may contain banned words)
         if (line.startsWith('#') || line.startsWith('```') || line.startsWith('  - url:')) continue;
+        if (/^\s*-\s*\[.*\]\(https?:\/\//.test(line)) continue;
         const match = line.match(EDITORIAL_RE);
         if (match) {
           editorialHits.push({ line: i + 1, word: match[0], context: line.trim().substring(0, 80) });
