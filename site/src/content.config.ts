@@ -32,7 +32,7 @@ const sourceSchema = z.object({
   publisher: z.string(),
   publisherType: z.enum(['government', 'vendor', 'media', 'research', 'community']),
   reliability: sourceReliability,
-  publicationDate: z.string(),  // Required — use last-modified date for living resources
+  publicationDate: z.string(),  // Required — for living resources (MITRE ATT&CK, NVD), use last-modified or access date
   accessDate: z.string().optional(),
   archived: z.boolean().default(false),
   archiveUrl: z.string().url().optional(),

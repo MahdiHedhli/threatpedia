@@ -565,7 +565,7 @@ function validateOutput(task, explicitFile) {
         if (!s.publisher) warnings.push(`Source ${i + 1}: missing publisher`);
         if (!s.publisherType) issues.push(`Source ${i + 1}: missing publisherType`);
         if (!s.reliability) warnings.push(`Source ${i + 1}: missing reliability`);
-        if (!s.publicationDate) issues.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate — required for all sources (use last-modified date for living resources like MITRE ATT&CK)`);
+        if (!s.publicationDate) issues.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate — required for all sources (for living resources like MITRE ATT&CK or NVD, use last-modified or access date)`);
       }
 
       // ── 6. MITRE mappings in frontmatter ──────────────────────────────────
