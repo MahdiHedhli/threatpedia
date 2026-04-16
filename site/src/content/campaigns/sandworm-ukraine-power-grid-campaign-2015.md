@@ -33,7 +33,7 @@ sources:
     publicationDate: "2016-02-25"
     accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and"
+  - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other"
     publisher: "US Department of Justice"
     publisherType: government
     reliability: R1
@@ -128,6 +128,6 @@ Six GRU officers indicted for Sandworm operations including both Ukraine power g
 ## Sources & References
 
 - [CISA: Cyber Attack Against Ukrainian Critical Infrastructure](https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure) -- CISA, 2016-02-25
-- [US DOJ: Six Russian GRU Officers Charged](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and) -- US Department of Justice, 2020-10-19
+- [US DOJ: Six Russian GRU Officers Charged](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) -- US Department of Justice, 2020-10-19
 - [ESET: Industroyer Analysis](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) -- ESET, 2017-06-12
 - [Dragos: CrashOverride Analysis](https://dragos.com/blog/industry-news/crashoverride-analysis-of-the-threat-to-electric-grid-operations/) -- Dragos, 2017-06-12

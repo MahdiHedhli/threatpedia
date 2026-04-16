@@ -41,7 +41,7 @@ sources:
     publicationDate: "2021-04-15"
     accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html"
+  - url: "https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor"
     publisher: "FireEye/Mandiant"
     publisherType: vendor
     reliability: R1
@@ -125,4 +125,4 @@ U.S. government attributes campaign to SVR and imposes sanctions.
 
 - [CISA: Advisory AA20-352A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a) -- CISA, 2020-12-17
 - [White House: Imposing Costs for Russian Activities](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) -- The White House, 2021-04-15
-- [FireEye: SUNBURST Backdoor Analysis](https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html) -- FireEye/Mandiant, 2020-12-13
+- [FireEye: SUNBURST Backdoor Analysis](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) -- FireEye/Mandiant, 2020-12-13
