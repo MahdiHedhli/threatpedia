@@ -15,10 +15,10 @@ import Base from '../layouts/Base.astro';
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 2 &mdash; 43%</span>
+        <span>Phase 2 &mdash; 48%</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" style="width: 43%"></div>
+        <div class="progress-fill" style="width: 48%"></div>
       </div>
     </div>
 
@@ -47,9 +47,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Cybersecurity Glossary</div>
-          <div class="item-desc">1,006 terms with definitions, cross-references, and framework mappings. Searchable and browsable with 10-role taxonomy filters.</div>
+          <div class="item-desc">1,023 terms with definitions, cross-references, and framework mappings. Searchable and browsable with role-based taxonomy filters.</div>
           <div class="item-meta">
-            <span class="item-tag">1,006 terms</span>
+            <span class="item-tag">1,023 terms</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -59,10 +59,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Threat Actor Registry</div>
-          <div class="item-desc">84 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. 244 alias keys for cross-referencing.</div>
+          <div class="item-desc">33 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. Cross-vendor alias normalization.</div>
           <div class="item-meta">
-            <span class="item-tag">84 actors</span>
-            <span class="item-tag">244 aliases</span>
+            <span class="item-tag">33 actors</span>
             <span class="item-tag">filterable</span>
             <span class="item-tag">live</span>
           </div>
@@ -73,9 +72,33 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">32 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 3 approved, 29 pending review.</div>
+          <div class="item-desc">55 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis.</div>
           <div class="item-meta">
-            <span class="item-tag">32 reports</span>
+            <span class="item-tag">55 reports</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Campaign Dossiers</div>
+          <div class="item-desc">7 ongoing multi-event operations and persistent threat campaigns — tracked with attribution, TTPs, related incidents, and timeline data.</div>
+          <div class="item-meta">
+            <span class="item-tag">7 campaigns</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Zero-Day Exploit Registry</div>
+          <div class="item-desc">18 tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</div>
+          <div class="item-meta">
+            <span class="item-tag">18 exploits</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -85,7 +108,7 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Universal Site Search</div>
-          <div class="item-desc">Cross-index search across glossary, threat actors, and incidents with keyboard navigation and categorized results.</div>
+          <div class="item-desc">Cross-index search across glossary, threat actors, campaigns, and incidents with keyboard navigation and categorized results.</div>
         </div>
       </div>
 
@@ -100,28 +123,32 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
-          <div class="item-title">Centralized Site Framework</div>
-          <div class="item-desc">Unified header, footer, nav, and analytics injection via site-chrome.js. One-file changes propagate to all pages.</div>
+          <div class="item-title">Astro Static Site</div>
+          <div class="item-desc">Migrated from vanilla HTML to Astro 5 with content collections, Zod schema validation, and GitHub Pages deployment. Unified layout and component system.</div>
+          <div class="item-meta">
+            <span class="item-tag">Astro 5</span>
+            <span class="item-tag">content collections</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- PHASE 2: SCALE -->
+    <!-- PHASE 2: PIPELINE & SOFT LAUNCH -->
     <div class="phase">
       <div class="phase-header">
         <span class="phase-badge building">Building</span>
-        <span class="phase-title">Phase 2 &mdash; Scale &amp; Automation</span>
+        <span class="phase-title">Phase 2 &mdash; Pipeline &amp; Soft Launch</span>
         <span class="phase-eta">Q2 2026</span>
       </div>
 
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Threat Actor Detail Pages</div>
-          <div class="item-desc">Individual deep-dive pages for each of the 84 tracked threat actors. 22 detail pages live; batch generation underway.</div>
+          <div class="item-title">Spec-Driven Content Pipeline</div>
+          <div class="item-desc">Rebuilding the article generation pipeline against a ratified spec suite — ingestion, source schema, editorial workflow, scraper contract, and coordination rules. Ensures every new article meets the DATA-STANDARDS v1.0 schema before publication.</div>
           <div class="item-meta">
-            <span class="item-tag">22 / 84 complete</span>
-            <span class="item-tag">batch generation</span>
+            <span class="item-tag">7 specs in flight</span>
+            <span class="item-tag">schema-validated</span>
           </div>
         </div>
       </div>
@@ -129,12 +156,13 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Automated Incident Ingestion</div>
-          <div class="item-desc">7 scrapers built (CISA KEV, HIBP, VCDB, NIST NVD, CVE MITRE, MISP, MITRE ATT&amp;CK). 2 more in review (HHS/OCR, EU GDPR Tracker). Threat intel feeds running 2x daily; scrapers on daily weekday schedule.</div>
+          <div class="item-title">Automated Discovery Pipeline</div>
+          <div class="item-desc">High-trust feed ingestion (CISA KEV, NVD/CVE, CISA Advisories, NCSC UK, vendor PSIRTs) with a confidence-scored triage layer. Above-threshold events auto-draft articles; below-threshold flagged for human review.</div>
           <div class="item-meta">
-            <span class="item-tag">7 scrapers live</span>
-            <span class="item-tag">2 in review</span>
-            <span class="item-tag">2x daily intel</span>
+            <span class="item-tag">CISA KEV</span>
+            <span class="item-tag">NVD</span>
+            <span class="item-tag">NCSC UK</span>
+            <span class="item-tag">confidence-scored</span>
           </div>
         </div>
       </div>
@@ -142,11 +170,11 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">External Data Source Integration</div>
-          <div class="item-desc">CISSM Cyber Events Database staged (16,532 records, 2014-2026). 233 sources catalogued across 16 categories. Awaiting web stack for full ingestion.</div>
+          <div class="item-title">MITRE ATT&amp;CK v19 Refresh</div>
+          <div class="item-desc">Update technique mappings to ATT&amp;CK v19 (releasing April 28, 2026). Key change: Defense Evasion tactic split. Additive update — existing articles declare their version so the migration is non-breaking.</div>
           <div class="item-meta">
-            <span class="item-tag">CISSM 16.5K staged</span>
-            <span class="item-tag">233 sources catalogued</span>
+            <span class="item-tag">Apr 28, 2026</span>
+            <span class="item-tag">non-breaking</span>
           </div>
         </div>
       </div>
@@ -154,8 +182,21 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Glossary-to-Report Linking</div>
-          <div class="item-desc">Pipeline active: incident reports feed glossary-candidates.json. Glossary updater processes terms. Tooltip module pending deployment.</div>
+          <div class="item-title">Framework Mapping Expansion</div>
+          <div class="item-desc">First-class schema support for NIST CSF, Lockheed Martin Cyber Kill Chain, and MITRE ATLAS (adversarial ML). Generic framework-mapping field so new frameworks can be added without schema migrations.</div>
+          <div class="item-meta">
+            <span class="item-tag">NIST CSF</span>
+            <span class="item-tag">Kill Chain</span>
+            <span class="item-tag">ATLAS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status wip">&#9673;</div>
+        <div class="item-body">
+          <div class="item-title">Glossary-to-Report Auto-linking</div>
+          <div class="item-desc">Inline tooltips surfacing glossary definitions on hover throughout incident, campaign, and actor pages. Candidate-term pipeline already active; tooltip UI pending deployment.</div>
           <div class="item-meta">
             <span class="item-tag">client-side</span>
             <span class="item-tag">hover previews</span>
@@ -164,26 +205,37 @@ import Base from '../layouts/Base.astro';
       </div>
 
       <div class="item">
-        <div class="item-status wip">&#9673;</div>
+        <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Source Expansion Pipeline</div>
-          <div class="item-desc">Running monthly. 233 sources catalogued across 16 categories. 10 / 34 deep-dive specs completed (Phase 1 done, Phase 2 in progress).</div>
+          <div class="item-title">X/Twitter Syndication</div>
+          <div class="item-desc">Automated social syndication of newly published incidents, campaigns, and zero-days to <a href="https://x.com/threatpedia" target="_blank" rel="noopener">@threatpedia</a>. Short-form threat intel posts with severity badges and direct article links. The signal channel for the soft launch.</div>
           <div class="item-meta">
-            <span class="item-tag">monthly</span>
-            <span class="item-tag">automated</span>
+            <span class="item-tag">@threatpedia</span>
+            <span class="item-tag">auto-syndication</span>
+            <span class="item-tag">soft launch</span>
           </div>
         </div>
       </div>
 
       <div class="item">
-        <div class="item-status done">&#10003;</div>
+        <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Exploit &amp; Zero-Day Registry</div>
-          <div class="item-desc">Live zero-day tracking with exploitation status lifecycle (PoC, Weaponized, Active, Patched, Historical), severity assessments, exploit chain documentation, detection guidance, and IOC tracking. 6 exploits tracked (3 active, 3 patched).</div>
+          <div class="item-title">Collection Index Filtering</div>
+          <div class="item-desc">Filter chips (sector, geography, attack type, severity), column sorting, and URL-parameter state across all collection index pages. Enables geography and sector-based navigation across the corpus.</div>
           <div class="item-meta">
-            <span class="item-tag">6 exploits tracked</span>
-            <span class="item-tag">live</span>
-            <span class="item-tag">TP-EXP-0001</span>
+            <span class="item-tag">filter chips</span>
+            <span class="item-tag">url state</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Soft Launch</div>
+          <div class="item-desc">Public milestone: reliable article generation + X syndication live. Threatpedia begins publishing new threat intelligence at cadence, syndicated to the security community via X.</div>
+          <div class="item-meta">
+            <span class="item-tag">milestone</span>
           </div>
         </div>
       </div>
@@ -228,11 +280,11 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Social Media Intelligence Feed</div>
-          <div class="item-desc">Automated monitoring and aggregation of threat intelligence from X/Twitter, RSS, and cybersecurity community channels.</div>
+          <div class="item-title">Threat Actor Lineage Graphs</div>
+          <div class="item-desc">Visual succession and heritage tracking for threat actors — e.g. Wizard Spider → Conti → Royal → Black Basta. Captures soft and hard splits, shared infrastructure, and tool inheritance.</div>
           <div class="item-meta">
-            <span class="item-tag">X/Twitter</span>
-            <span class="item-tag">RSS</span>
+            <span class="item-tag">d3 graphs</span>
+            <span class="item-tag">successorOf / precursorOf</span>
           </div>
         </div>
       </div>
@@ -254,7 +306,7 @@ import Base from '../layouts/Base.astro';
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
           <div class="item-title">Exploit &amp; Zero-Day Visualization Layer</div>
-          <div class="item-desc">Interactive visualizations for exploit and zero-day intelligence: ATT&amp;CK heatmaps per exploit family, exploit timeline graphs, weaponization funnel charts, and patch adoption tracking.</div>
+          <div class="item-desc">Interactive visualizations for exploit and zero-day intelligence: ATT&amp;CK heatmaps per exploit family, timeline graphs, weaponization funnel charts, and patch adoption tracking.</div>
           <div class="item-meta">
             <span class="item-tag">interactive</span>
             <span class="item-tag">ATT&amp;CK heatmaps</span>
@@ -264,13 +316,14 @@ import Base from '../layouts/Base.astro';
       </div>
 
       <div class="item">
-        <div class="item-status wip">&#9673;</div>
+        <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Malware &amp; Exploit Backfill Pipeline</div>
-          <div class="item-desc">Automated backfill queue scanning existing incidents for unregistered malware references. Malpedia API seeding for stub records, prioritized by incident count and APT attribution.</div>
+          <div class="item-title">Community Intelligence Aggregation</div>
+          <div class="item-desc">Inbound monitoring of threat intelligence from X/Twitter, RSS, and cybersecurity community channels — feeding leads into the discovery pipeline's scoring engine. Complements Phase 2's outbound X syndication.</div>
           <div class="item-meta">
-            <span class="item-tag">automated</span>
-            <span class="item-tag">backfill</span>
+            <span class="item-tag">inbound</span>
+            <span class="item-tag">X/Twitter</span>
+            <span class="item-tag">RSS</span>
           </div>
         </div>
       </div>
@@ -280,15 +333,20 @@ import Base from '../layouts/Base.astro';
     <div class="phase">
       <div class="phase-header">
         <span class="phase-badge future">Future</span>
-        <span class="phase-title">Phase 4 &mdash; Community &amp; Peer Review</span>
+        <span class="phase-title">Phase 4 &mdash; Community &amp; Hard Launch</span>
         <span class="phase-eta">Q4 2026 +</span>
       </div>
 
       <div class="item">
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Founding Member Program</div>
-          <div class="item-desc">Early access for cybersecurity professionals, researchers, and analysts. Contributor roles, editorial board, and recognition system.</div>
+          <div class="item-title">Contributor Portal</div>
+          <div class="item-desc">Submission interface for new incidents, corrections, and lead intake. GitHub OAuth login with MFA enforcement and role-based access. Contributors can claim articles from the review queue or submit leads (URLs, tips, observations) into the discovery pipeline.</div>
+          <div class="item-meta">
+            <span class="item-tag">GitHub OAuth</span>
+            <span class="item-tag">MFA required</span>
+            <span class="item-tag">role-based</span>
+          </div>
         </div>
       </div>
 
@@ -296,18 +354,19 @@ import Base from '../layouts/Base.astro';
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
           <div class="item-title">Peer Review Workflow</div>
-          <div class="item-desc">Structured review and approval pipeline for incident reports. Multi-reviewer sign-off with audit trail and version history.</div>
+          <div class="item-desc">Structured review and approval pipeline for AI-generated articles. Contributor accepts an article from the queue (72-hour claim window), submits structured verification, and signs off as reviewer of record. Multi-reviewer thresholds for certified status; full audit trail and version history.</div>
+          <div class="item-meta">
+            <span class="item-tag">72-hr claim</span>
+            <span class="item-tag">audit trail</span>
+          </div>
         </div>
       </div>
 
       <div class="item">
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Contributor Portal</div>
-          <div class="item-desc">Submission interface for new incidents, corrections, and enrichments. Role-based access with the 10-role taxonomy system.</div>
-          <div class="item-meta">
-            <span class="item-tag">10-role taxonomy</span>
-          </div>
+          <div class="item-title">Founding Member Program</div>
+          <div class="item-desc">Small cohort of vetted security professionals, researchers, and analysts — initially 2-3 trusted collaborators, growing to a broader editorial board. Contributor roles, recognition, and reviewed-by attribution on articles they certify.</div>
         </div>
       </div>
 
@@ -315,18 +374,30 @@ import Base from '../layouts/Base.astro';
         <div class="item-status todo">&#9675;</div>
         <div class="item-body">
           <div class="item-title">API &amp; Data Exports</div>
-          <div class="item-desc">Public REST API for programmatic access to threat intelligence data. Structured exports in STIX, CSV, and JSON formats.</div>
+          <div class="item-desc">Public REST API for programmatic access to threat intelligence data. Structured exports in STIX 2.1, CSV, and JSON formats. Rate-limited free tier plus programmatic bulk access for research use.</div>
           <div class="item-meta">
             <span class="item-tag">REST API</span>
-            <span class="item-tag">STIX</span>
+            <span class="item-tag">STIX 2.1</span>
             <span class="item-tag">JSON</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Hard Launch</div>
+          <div class="item-desc">Public milestone: contributor portal live, peer review battle-tested with founding members, historical backfill underway. Public call for volunteer reviewers and researchers. Threatpedia opens its doors as a community-curated encyclopedia.</div>
+          <div class="item-meta">
+            <span class="item-tag">milestone</span>
+            <span class="item-tag">volunteer call</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="last-updated">
-      Last updated: April 10, 2026 &mdash; This roadmap is a living document and subject to change.
+      Last updated: April 16, 2026 &mdash; This roadmap is a living document and subject to change.
     </div>
   </div>
 </Base>
