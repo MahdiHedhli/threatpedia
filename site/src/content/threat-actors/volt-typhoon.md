@@ -1,259 +1,126 @@
 ---
-name: "Volt Typhoon | Threatpedia"
-aliases: []
-affiliation: Unknown
-motivation: Unknown
-status: unknown
-reviewStatus: under_review
-generatedBy: dangermouse-bot
-generatedDate: 2026-04-13
+name: "Volt Typhoon"
+aliases:
+  - "Vanguard Panda"
+  - "BRONZE SILHOUETTE"
+  - "UNC3236"
+  - "Storm-0391"
+affiliation: "China (PRC)"
+motivation: "Sabotage"
+status: active
+country: "China"
+firstSeen: "2021"
+lastSeen: "2026"
+targetSectors:
+  - "Critical Infrastructure"
+  - "Communications"
+  - "Energy"
+  - "Transportation"
+  - "Water and Wastewater"
+  - "Government"
+targetGeographies:
+  - "United States"
+  - "Guam"
+tools:
+  - "KV-Botnet"
+  - "Living off the Land (LotL)"
+  - "FastReverseProxy (FRP)"
+  - "Impacket"
+mitreMappings:
+  - techniqueId: "T1059.005"
+    techniqueName: "Command and Scripting Interpreter: Visual Basic"
+    tactic: "Execution"
+    notes: "Frequently utilizes legitimate Windows binaries and scripts to execute commands without leaving a persistent file-based footprint."
+  - techniqueId: "T1562.001"
+    techniqueName: "Impair Defenses: Disable or Modify Tools"
+    tactic: "Defense Evasion"
+    notes: "Actively modifies host-based firewall and logging configurations to hide its presence while utilizing compromised SOHO routers as proxies."
+  - techniqueId: "T1133"
+    techniqueName: "External Remote Services"
+    tactic: "Initial Access"
+    notes: "Gains initial entry by exploiting vulnerabilities in edge devices such as Fortinet and Ivanti VPNs and firewalls."
+attributionConfidence: A1
+attributionRationale: "Formally attributed to the People's Republic of China (PRC) by the FBI, CISA, and several international intelligence partners (Five Eyes). The group's techniques and target selection align with Chinese strategic preparatory measures for potential future conflicts."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
+tags:
+  - "volt-typhoon"
+  - "china"
+  - "sabotage"
+  - "critical-infrastructure"
+  - "living-off-the-land"
+  - "soho-botnet"
+sources:
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-02-07"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.fbi.gov/news/press-releases/fbi-announces-disruption-of-kv-botnet-used-by-prc-state-sponsored-hackers"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-01-31"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2023/05/24/volt-typhoon-targets-us-critical-infrastructure-with-living-off-the-land-techniques/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-05-24"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G1017/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
 ---
-## Overview
 
-Volt Typhoon is a sophisticated Chinese state-sponsored threat actor attributed to the People's Republic of China's Ministry of State Security (MSS). The group has been operational since at least 2017 and represents one of the most significant threats to US critical infrastructure. Volt Typhoon specializes in establishing persistent footholds in critical infrastructure networks with the strategic goal of enabling potential disruptive or destructive attacks during geopolitical crises.
+## Executive Summary
 
-                    The group operates with extreme patience and operational security discipline, focusing on long-term reconnaissance and network positioning rather than immediate exploitation. Volt Typhoon's activities demonstrate sophisticated understanding of industrial control systems (ICS) and critical infrastructure operations, with targeting encompassing communications, energy, water, transportation, and other essential services across the United States. The CISA has characterized Volt Typhoon's approach as a "pre-positioning" strategy designed to establish command and control access before launching destructive attacks.
+Volt Typhoon is a sophisticated Chinese state-sponsored threat actor cluster that gained significant international attention in 2023. Unlike many espionage groups that focus on data theft, Volt Typhoon's primary mandate appears to be the **pre-positioning** on critical infrastructure for the purpose of potential future sabotage. The group specializes in maintaining persistent, stealthy access to the core networks managing power, water, transportation, and communication systems in the United States and strategic territories like Guam.
 
-                    Volt Typhoon employs living-off-the-land techniques, leveraging legitimate system administration tools and avoiding deployment of custom malware when possible. This approach provides exceptional stealth, as their activities blend with normal administrative traffic. The group has demonstrated willingness to exploit known vulnerabilities in networking equipment, particularly Fortinet FortiGate firewalls and other edge devices, to establish initial access to critical infrastructure networks.
+The group is distinguished by its heavy reliance on **"Living off the Land" (LotL)** techniques, which involve the use of legitimate system administration tools already present on a target network. This approach, combined with the use of a covert network of compromised Small Office/Home Office (SOHO) routers (referred to as the **KV-Botnet**), allows Volt Typhoon to blend into normal network activity and remain undetected by traditional security monitoring for years.
 
-## Tactics, Techniques & Procedures (TTPs)
+## Notable Campaigns
 
-MITRE ATT&CK Techniques
-                        
-                            Initial Access:
-                            
-                                T1190: Exploit Public-Facing Application
-                                T1566.002: Phishing - Spearphishing Link
-                                T1200: Hardware Additions
-                            
-                            Persistence:
-                            
-                                T1098.001: Account Manipulation - Additional Cloud Credentials
-                                T1098.002: Account Manipulation - Exchange Email Delegate Permissions
-                                T1547.001: Boot or Logon Autostart Execution
-                            
-                            Defense Evasion:
-                            
-                                T1078: Valid Accounts
-                                T1562.008: Impair Defenses - Disable Logging
-                                T1140: Deobfuscate/Decode Files or Information
-                            
-                            Credential Access:
-                            
-                                T1110.002: Brute Force - Password Guessing
-                                T1187: Forced Authentication
-                                T1556: Modify Authentication Process
-                            
-                            Lateral Movement:
-                            
-                                T1570: Lateral Tool Transfer
-                                T1570: Lateral Tool Transfer
-                                T1550.001: Use Alternate Authentication Material - Application Access Token
+### Pre-positioning on U.S. Critical Infrastructure (2021-Present)
+Since at least 2021, Volt Typhoon has conducted a broad-scale campaign to gain access to the operational technology (OT) and information technology (IT) networks of U.S. critical infrastructure providers. These operations have targeted diverse sectors, including aviation, rail, maritime, and public utilities. Strategic analysis from the **FBI** and **CISA** suggests that these breaches are intended to facilitate the disruption of U.S. military logistics and civil services in the event of a conflict in the Indo-Pacific region.
 
-                        Common Attack Vectors
-                        
-                            Exploitation of Edge Devices: Systematic exploitation of Fortinet FortiGate firewall vulnerabilities (CVE-2022-42991, CVE-2023-27997) to establish initial network access. These devices provide gateway access to critical infrastructure networks.
-                            Living-off-the-Land Techniques: Extensive use of legitimate utilities including SSH, PuTTY, WinSCP, and legitimate remote administration tools to avoid deployment of custom malware and detection by antivirus systems.
-                            Credential Harvesting: Use of credential harvesting tools to capture authentication material from compromised systems, enabling lateral movement through networks without suspicious network traffic patterns.
-                            HVAC/IT Equipment Access: Reported cases of physical access to HVAC (heating, ventilation, air conditioning) systems and IT equipment closets in critical infrastructure facilities, potentially enabling installation of network access devices.
-                            Supply Chain Compromise: Targeting of managed service providers (MSPs) and IT contractors to gain access to multiple critical infrastructure customers through trusted vendor relationships.
+### The KV-Botnet Infrastructure (2023)
+In early 2024, an international law enforcement operation led by the FBI successfully disrupted the **KV-Botnet**, a sprawling network of thousands of compromised, end-of-life SOHO routers (primarily Netgear and Cisco devices). Volt Typhoon used this botnet as a globally distributed proxy network to relay command-and-control (C2) traffic, significantly complicating the ability of security teams to attribute malicious activity to Chinese IP space.
 
-                        Tools & Malware
-                        
-                            Legitimate Administration Tools: PuTTY, WinSCP, SSH clients, PSExec, TeamViewer, and AnyDesk for remote administration and command execution.
-                            Living-off-the-Land Utilities: Windows PowerShell, WMI, Task Scheduler, Windows Registry modifications for persistence and lateral movement without custom malware.
-                            Credential Harvesting: Mimikatz and similar post-exploitation frameworks for extracting cached credentials and session tokens from compromised systems.
-                            Passive Reconnaissance Tools: Network mapping utilities including ping, ipconfig, nslookup, and tracert for network topology discovery.
-                            VPN Exploitation: Cisco VPN client exploitation and configuration modification for persistent remote access.
+## Technical Capabilities
 
-                        Infrastructure Patterns
-                        
-                            Legitimate Cloud Services: Abuse of Microsoft Teams for command-and-control communications and data exfiltration through normal business channels.
-                            SSH and Legitimate Protocols: Use of standard SSH and VPN protocols for command execution, making detection difficult without behavioral analysis.
-                            DNS Tunneling: Suspected use of DNS tunneling techniques to exfiltrate data and receive commands through DNS queries and responses.
-                            Compromised Legitimate Networks: Use of compromised hosting providers and legitimate cloud infrastructure for staging and intermediate command-and-control.
+Volt Typhoon possesses elite-level operational security (OPSEC) and technical depth. Their primary initial access vector is the exploitation of vulnerabilities in edge networking equipment and VPN services (such as **Ivanti Connect Secure** and **Fortinet FortiGate**). Once inside a network, they demonstrate a methodical and cautious approach, avoiding the use of custom malware that could trigger signature-based alerts.
 
-## Targeted Industries & Organizations
+The group's proficiency in **LotL** involves the expert use of tools like **PowerShell**, **WMIC**, **Netsh**, and binary file manipulation to navigate the network, escalate privileges, and exfiltrate credentials. They utilize these tools to create local administrative accounts and modify system configurations, effectively "becoming" legitimate administrators within the victim environment. Their persistence methodology involves the creation of scheduled tasks and the misuse of native remote management protocols.
 
-Volt Typhoon's targeting is strategically focused on US critical infrastructure sectors with potential impact during geopolitical crises:
+## Attribution
 
-                                Sector
-                                Notable Targets / Impact
+Volt Typhoon is attributed with high confidence to the People's Republic of China (PRC). This attribution is supported by concurrent advisories from the **FBI**, **CISA**, the **NSA**, and their "Five Eyes" partners in the UK, Canada, Australia, and New Zealand. The group's targets, narratives, and long-term strategic focus align perfectly with official Chinese military doctrine regarding "Active Defense" and the use of cyber disruption as a force multiplier in modern conflict.
 
-                                Communications
-                                Telecommunications infrastructure, wireless communications providers, backbone networks. Critical for emergency response coordination.
+Microsoft, which first publicly disclosed the group's activity in 2023, tracks the actor as a distinct PRC-linked cluster. While the group operates with high autonomy, analysts have noted technical overlaps in the exploit delivery chains used by other Chinese state-sponsored actors like **APT41** and **Salt Typhoon**, suggesting a coordinated ecosystem of PRC-supported cyber operations.
 
-                                Energy
-                                Electric utilities, power generation facilities, power transmission networks, oil and gas infrastructure.
+## MITRE ATT&CK Profile
 
-                                Water and Wastewater
-                                Water treatment facilities, water distribution networks, wastewater systems. Particularly vulnerable due to legacy ICS systems.
+Volt Typhoon's tradecraft is centered on stealth, persistence, and strategic access:
 
-                                Transportation
-                                Port operations, rail systems, pipeline control systems, aviation infrastructure.
+- **T1059 (Command and Scripting Interpreter):** Heavy reliance on PowerShell and CLI for all post-exploitation activity.
+- **T1562.001 (Impair Defenses):** Systematically disabling or modifying host-level security logging to evade detection.
+- **T1078 (Valid Accounts):** Extensive use of hijacked administrative credentials to maintain persistent, non-file-based access.
+- **T1133 (External Remote Services):** Gains initial access through the exploitation of unpatched edge networking devices.
 
-                                Government & Defense
-                                Federal civilian agencies, defense industrial base, military contractor networks, research institutions.
+## Sources & References
 
-                                Healthcare
-                                Healthcare facilities, hospital networks, pharmaceutical research institutions.
-
-                    Geographic Focus: Volt Typhoon primarily targets organizations within the United States, with particular concentration in major metropolitan areas and regions with critical infrastructure hubs.
-
-## Attributable Attacks Timeline
-
-2017-2019
-                            
-                                Initial US Communications Targeting
-                                Volt Typhoon begins systematic compromise of US communications infrastructure organizations, establishing initial network footholds through exploitation of edge devices and contractor access.
-
-                            2019-2021
-                            
-                                Expansion to Multiple Critical Infrastructure Sectors
-                                Group expands operations beyond communications to target water treatment, electric utilities, and transportation infrastructure. Demonstrates understanding of OT network architecture and operational constraints.
-
-                            Early 2021
-                            
-                                FortiGate Firewall Campaign
-                                Volt Typhoon exploits CVE-2022-42991 (pre-disclosure) in Fortinet FortiGate firewalls to gain access to critical infrastructure networks. Hundreds of organizations compromised through this vector.
-
-                            Oct 2023
-                            
-                                CISA Public Advisory
-                                CISA and NSA release joint advisory on Volt Typhoon activities, describing group's approach to critical infrastructure compromise and pre-positioning tactics. Attribution to Chinese MSS provided.
-
-                            Nov 2023
-                            
-                                Communications Infrastructure Deep Dive
-                                Investigations reveal Volt Typhoon has established persistent access to major US telecommunications providers, with potential to disrupt emergency communications during crisis scenarios.
-
-                            2024-2025
-                            
-                                Continued Lateral Movement and Reconnaissance
-                                Ongoing operations observed in critical infrastructure networks, with focus on network mapping, credential harvesting, and establishing additional persistence mechanisms. Group patience indicates preparation for future disruption operations.
-
-## Known Exploits & CVEs
-
-Volt Typhoon has demonstrated rapid exploitation of critical infrastructure equipment vulnerabilities:
-
-                                CVE
-                                Vulnerability
-                                Affected Product
-                                CVSS
-
-                                CVE-2022-42991
-                                Improper Input Validation in FortiGate
-                                Fortinet FortiGate Firewall
-                                9.6
-
-                                CVE-2023-27997
-                                Authentication Bypass in FortiGate
-                                Fortinet FortiGate Firewall
-                                9.6
-
-                                CVE-2023-21839
-                                Remote Code Execution in Cisco IOS XE
-                                Cisco IOS XE Software
-                                9.8
-
-                                CVE-2021-44228
-                                Log4Shell Remote Code Execution
-                                Apache Log4j 2.0-2.14.1
-                                10.0
-
-                                CVE-2021-26855
-                                SSRF in Exchange Server
-                                Microsoft Exchange Server
-                                9.8
-
-                                CVE-2023-46805
-                                Remote Code Execution in GE Devices
-                                GE Industrial Equipment
-                                9.8
-
-## Cross-Vendor Naming Reference
-
-Volt Typhoon is tracked by multiple security organizations and government agencies:
-
-                                Vendor / Organization
-                                Name Used
-
-                                CISA / NSA
-                                Volt Typhoon
-
-                                Microsoft Threat Intelligence
-                                Volt Typhoon
-
-                                Mandiant / Google
-                                Volt Typhoon
-
-                                CrowdStrike
-                                BRONZE SILHOUETTE
-
-                                Palo Alto Networks
-                                Volt Typhoon
-
-                                Splunk Threat Intelligence
-                                Volt Typhoon
-
-                                Recorded Future
-                                Chinese Ministry of State Security
-
-## Related Threat Actors
-
-Salt Typhoon: Fellow Chinese state-sponsored actor with similar targeting of US communications infrastructure. Different operational approach and toolsets suggest separate organizational units.
-                        APT40 (Leviathan): Chinese MSS-affiliated group with targeting of maritime and defense sectors. Similar strategic focus on critical infrastructure compromise.
-                        APT41: Chinese group conducting both espionage and financially-motivated operations. Different motivation set but shares targeting overlap in critical sectors.
-
-## References & Sources
-
-[1]
-                            CISA & NSA Advisory: "People's Republic of China State-Sponsored Cyber Actor Living off the Land to Evade Detection, Strategically Compromises U.S. and Allied Critical Infrastructure"
-                            CISA Alert
-
-                            [2]
-                            Microsoft Threat Intelligence: "Volt Typhoon targeting critical infrastructure"
-                            Microsoft Documentation
-
-                            [3]
-                            Mandiant Research: "Volt Typhoon: Deep Dive on Infrastructure Pre-positioning Tactics"
-                            Mandiant Intelligence
-
-                            [4]
-                            NSA Cybersecurity Advisory: "Volt Typhoon Targeting US Infrastructure"
-                            NSA Press Release
-
-                            [5]
-                            CrowdStrike Intelligence Report: "BRONZE SILHOUETTE Operations Against Critical Infrastructure"
-                            CrowdStrike Threat Reports
-
-                Quick Facts
-
-                    Country of Origin
-                    
-                        🇨🇳
-                        China
-
-                    Nation-State Sponsored
-                    Yes, Ministry of State Security (MSS)
-
-                    Motivation
-                    Espionage, Strategic Pre-positioning
-
-                    First Seen
-                    2017
-
-                    Last Seen
-                    2025-Q1
-
-                    Confidence Level
-                    High
-
-                    Associated Groups
-                    BRONZE SILHOUETTE
-
-                    Status
-                    Active
-
-                    Review Status
-                    ⚠ Pending Human Review
+- [CISA: Advisory (AA24-038A) — PRC State-Sponsored Actors Compromise and Maintain Persistent Access to U.S. Critical Infrastructure](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a) — CISA, 2024-02-07
+- [FBI: Press Release — FBI Disruption of the KV-Botnet and Volt Typhoon Infrastructure](https://www.fbi.gov/news/press-releases/fbi-announces-disruption-of-kv-botnet-used-by-prc-state-sponsored-hackers) — FBI, 2024-01-31
+- [Microsoft: Volt Typhoon Targets U.S. Critical Infrastructure with Living-off-the-Land Techniques](https://www.microsoft.com/en-us/security/blog/2023/05/24/volt-typhoon-targets-us-critical-infrastructure-with-living-off-the-land-techniques/) — Microsoft Security, 2023-05-24
+- [MITRE ATT&CK: Volt Typhoon (Group G1017)](https://attack.mitre.org/groups/G1017/) — MITRE ATT&CK, 2023-10-21
+- [Mandiant: Analysis of Volt Typhoon (UNC3236) Pre-positioning on U.S. Utility Networks](https://www.mandiant.com/resources/blog/volt-typhoon-infrastructure-compromise) — Mandiant, 2023-06-12
