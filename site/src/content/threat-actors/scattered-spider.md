@@ -1,168 +1,129 @@
 ---
-name: Scattered Spider
+name: "Scattered Spider"
 aliases:
-  - UNC3944
-  - Octo Tempest
-  - Muddled Libra
-  - Star Fraud
-  - Scatter Swine
-  - 0ktapus
-affiliation: Non-State (English-speaking cybercriminal collective)
-motivation: Financial
+  - "UNC3944"
+  - "Roasted 0ktapus"
+  - "Starfraud"
+  - "Scatter Swine"
+  - "Muddled Libra"
+affiliation: "Unknown (English-speaking / Western)"
+motivation: "Financial"
 status: active
-country: US
+country: "United States/United Kingdom (Multi-national)"
 firstSeen: "2022"
-lastSeen: "2025"
+lastSeen: "2026"
 targetSectors:
-  - Technology
-  - Telecommunications
-  - Financial Services
-  - Retail & Consumer
-  - Gaming
-  - Hospitality
+  - "Gaming"
+  - "Hospitality"
+  - "Technology"
+  - "Telecommunications"
+  - "Finance"
 targetGeographies:
-  - United States
-  - United Kingdom
-  - Canada
-  - Australia
-knownTools:
-  - ALPHV/BlackCat Ransomware
-  - DragonForce Ransomware
-  - Mimikatz
-  - Impacket
-  - ADRecon
-  - Raccoon Stealer
-  - ScreenConnect
-  - AnyDesk
-  - Splashtop
+  - "Global"
+  - "United States"
+  - "Western Europe"
 tools:
-  - ALPHV/BlackCat Ransomware
-  - DragonForce Ransomware
-  - Mimikatz
-  - Impacket
-  - ADRecon
+  - "EvilGinx2"
+  - "Mimecast (exploited)"
+  - "Okta (exploited)"
+  - "BlackCat Ransomware (Affiliate)"
+  - "Cobalt Strike"
 mitreMappings:
-  - techniqueId: T1566.004
-    techniqueName: Spearphishing Voice
-    tactic: Initial Access
-    notes: Core TTP - vishing help desk staff for credential resets
-  - techniqueId: T1621
-    techniqueName: Multi-Factor Authentication Request Generation
-    tactic: Credential Access
-    notes: MFA fatigue bombing of targeted employees
-  - techniqueId: T1078
-    techniqueName: Valid Accounts
-    tactic: Persistence
-    notes: Uses socially engineered credentials for persistent access
-  - techniqueId: T1219
-    techniqueName: Remote Access Software
-    tactic: Command and Control
-    notes: Deploys legitimate RMM tools (ScreenConnect, AnyDesk, Splashtop)
-  - techniqueId: T1486
-    techniqueName: Data Encrypted for Impact
-    tactic: Impact
-    notes: Deploys ransomware (ALPHV/BlackCat, DragonForce) for extortion
-reviewStatus: "certified"
-generatedBy: ai_ingestion
-generatedDate: 2025-04-14
+  - techniqueId: "T1566.003"
+    techniqueName: "Phishing: Spearphishing SMS"
+    tactic: "Initial Access"
+    notes: "Utilizes SMishing and SIM swapping to target employees of telecommunications and technology firms to harvest credentials and session tokens."
+  - techniqueId: "T1566.004"
+    techniqueName: "Phishing: Voice Phishing (Vishing)"
+    tactic: "Initial Access"
+    notes: "Masters of help desk impersonation, frequently calling victim IT staff to reset passwords or register new MFA devices."
+  - techniqueId: "T1539"
+    techniqueName: "Steal Web Session Cookie"
+    tactic: "Credential Access"
+    notes: "Utilizes Adversary-in-the-Middle (AitM) phishing frameworks to capture valid session tokens, effectively bypassing traditional MFA."
+attributionConfidence: A2
+attributionRationale: "Identified as a specialized, English-speaking cybercrime cluster by Microsoft and Mandiant (Google Cloud). The group is noted for its high degree of native English fluency and its deep familiarity with Western corporate IT processes, distinct from typical Russian-speaking ransomware gangs."
+reviewStatus: "draft_ai"
+generatedBy: "penfold-bot"
+generatedDate: 2026-04-16
 tags:
-  - financial
-  - social-engineering
-  - vishing
-  - ransomware
-  - english-speaking
-  - mfa-bypass
-  - sim-swapping
+  - "scattered-spider"
+  - "unc3944"
+  - "social-engineering"
+  - "vishing"
+  - "ransomware"
+  - "blackcat"
+  - "mgm-hack"
+sources:
+  - url: "https://www.fbi.gov/news/press-releases/fbi-announces-joint-advisory-on-scattered-spider-threat-actors"
+    publisher: "FBI"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-11-16"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-11-16"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2023/10/25/tracking-unc3944-scattered-spider-and-their-evolving-tradecraft/"
+    publisher: "Microsoft Security"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-10-25"
+    accessDate: "2026-04-16"
+    archived: false
+  - url: "https://attack.mitre.org/groups/G1015/"
+    publisher: "MITRE ATT&CK"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2023-10-21"
+    accessDate: "2026-04-16"
+    archived: false
 ---
 
-## Overview
+## Executive Summary
 
-Scattered Spider is a financially motivated, English-speaking cybercriminal collective that emerged in mid-2022 and rapidly became one of the most prolific and impactful threat groups in the cybercrime ecosystem. Unlike traditional advanced persistent threat (APT) groups backed by nation-states, Scattered Spider's membership consists primarily of young adults and teenagers based in the United States, United Kingdom, and other English-speaking countries. Many members are associated with the broader "Com" (community) subculture of online cybercriminals.
+Scattered Spider, also known as **UNC3944** or **Roasted 0ktapus**, is a highly aggressive and technically proficient cybercrime cluster composed primarily of native English speakers. Emerging in 2022, the group has gained global notoriety for its mastery of social engineering and its ability to bypass sophisticated multi-factor authentication (MFA). Unlike many traditional ransomware gangs, Scattered Spider focuses on identity manipulation and the exploitation of corporate help desk processes to gain deep access to enterprise networks.
 
-The group is distinguished by its mastery of social engineering — particularly voice phishing (vishing) attacks targeting corporate help desks — and its ability to bypass multi-factor authentication (MFA) through a combination of SIM swapping, MFA fatigue attacks, and direct social engineering of help desk staff. Scattered Spider has partnered with ransomware-as-a-service (RaaS) operations, notably ALPHV/BlackCat and more recently DragonForce, to monetize their access through encryption and data extortion.
+The group is characterized by its high operational tempo and its evolution from an initial access brokerage to a full-scale ransomware affiliate. In 2023, they became a primary affiliate for the **BlackCat (ALPHV)** ransomware-as-a-service (RaaS) platform, launching some of the most visible and disruptive cyberattacks of the year.
 
-The FBI and CISA issued a joint advisory on Scattered Spider in November 2023, and multiple members have been arrested and charged by the US Department of Justice, though the group continues to operate.
+## Notable Campaigns
 
-## Tactics, Techniques & Procedures (TTPs)
+### MGM Resorts and Caesars Entertainment Breaches (2023)
+In September 2023, Scattered Spider targeted two of the world's largest gaming and hospitality corporations. The group successfully compromised **Caesars Entertainment** (reportedly receiving a multi-million dollar ransom payment) and subsequently launched a massive, destructive attack against **MGM Resorts**. The MGM attack caused a multi-day shutdown of hotel and casino operations across the United States, illustrating the group's ability to transition from credential theft to massive operational disruption.
 
-**Social Engineering (Primary Attack Vector):**
-Scattered Spider's core capability is voice phishing. Operatives call corporate help desks impersonating employees, using OSINT-gathered personal information to pass identity verification. They request password resets and MFA device enrollment, granting them legitimate credentials. The group also conducts SMS phishing (smishing) campaigns directing employees to credential harvesting sites that mimic corporate SSO portals.
+### The "0ktapus" Campaign Against Technology Firms (2022)
+In late 2022, the group (then tracked as "Roasted 0ktapus") launched a massive phishing campaign targeting over 130 organizations, including **Okta**, **Twilio**, and **Cloudflare**. By utilizing targeted SMS-based phishing (SMishing) and transparent reverse-proxies, they successfully harvested thousands of administrative credentials and session tokens, allowing them to compromise downstream clients through the exploited identity providers.
 
-**MFA Bypass Methods:**
-- SIM swapping to intercept SMS-based MFA codes
-- MFA fatigue bombing (repeated push notification approval requests)
-- Social engineering help desk staff to enroll attacker-controlled MFA devices
-- Targeting Okta and other identity providers directly
+## Technical Capabilities
 
-**Post-Access Operations:**
-Once inside, the group uses:
+Scattered Spider's technical edge lies in its **social engineering** tradecraft. They specialize in "Vishing" (voice phishing), where they call corporate IT help desks pretending to be employees who have lost access to their accounts. Due to their native English fluency and deep knowledge of Western corporate culture, they are uniquely effective at convincing IT staff to reset passwords or register new MFA devices under the attacker's control.
 
-T1078 — Valid Accounts: Maintains access through legitimately obtained credentials
+Once initial access is achieved, the group demonstrates elite lateral movement capabilities within cloud environments, specifically targeting **Azure** and **AWS** infrastructure. They frequently utilize legitimate administrative tools and "Living off the Land" (LotL) techniques to evade detection. For exfiltration, they often leverage the victim's own cloud backup or file-sharing solutions (such as SharePoint or Google Drive) to move terabytes of data with minimal anomaly detection.
 
-T1219 — Remote Access Software: Deploys ScreenConnect, AnyDesk, and Splashtop for persistent remote access
+## Attribution
 
-T1003.001 — LSASS Memory: Extracts credentials from memory using Mimikatz
+Scattered Spider is a descentralized cluster of English-speaking individuals, many of whom are believed to be part of the "Com" (a diverse community of young cybercriminals active on platforms like Telegram and Discord). Unlike the structured hierarchies of Russian state-sponsored groups, Scattered Spider is composed of loosely affiliated nodes that share tools, techniques, and targets.
 
-T1087.002 — Domain Account: Enumerates Active Directory using ADRecon and native tools
+In late 2023 and 2024, international law enforcement agencies, including the **FBI** and the **UK National Crime Agency**, announced several arrests of individuals linked to the group in both the United States and the United Kingdom. Despite these arrests, the group's decentralized nature and the widespread availability of its core TTPs within the "Com" community mean that the threat remains highly active and continues to evolve.
 
-**Ransomware Partnerships:**
-Scattered Spider became an affiliate of the ALPHV/BlackCat ransomware operation in 2023 and has more recently been associated with DragonForce ransomware. The group handles initial access and lateral movement, then deploys the partner's ransomware payload for double extortion (encryption + data theft).
+## MITRE ATT&CK Profile
 
-## Targeted Industries & Organizations
+Scattered Spider tradecraft is centered on identity exploitation and social manipulation:
 
-Scattered Spider targets large enterprises with extensive help desk operations and identity infrastructure, including:
+- **T1566.004 (Phishing: Voice Phishing):** Impersonating employees during calls to IT help desks to gain initial access.
+- **T1098.005 (Account Manipulation: Device Registration):** Registering new attacker-controlled MFA devices to ensure persistent access.
+- **T1539 (Steal Web Session Cookie):** Utilizing AitM frameworks to capture session tokens and bypass modern MFA.
+- **T1486 (Data Encrypted for Impact):** Deployment of BlackCat (ALPHV) ransomware for final-stage extortion and disruption.
 
-- **Technology**: MGM Resorts International (September 2023), Caesars Entertainment (September 2023), Twilio (August 2022), Mailchimp (August 2022)
-- **Telecommunications**: Multiple telecom providers targeted for SIM swapping access
-- **Financial Services**: Multiple financial institutions targeted for credential harvesting
-- **Retail**: Marks & Spencer (April 2025), Co-op (April 2025)
-- **Gaming/Hospitality**: Extensive targeting of Las Vegas casino and hotel operators
+## Sources & References
 
-The group preferentially targets organizations using Okta for identity management, exploiting the centralized trust model of SSO platforms.
-
-## Attributable Attacks Timeline
-
-### 2022-03 — 0ktapus Campaign Begins
-
-Scattered Spider launched a large-scale phishing campaign targeting over 130 organizations using Okta for identity management. The campaign used fake Okta login pages sent via SMS to harvest credentials and MFA tokens.
-
-### 2022-08 — Twilio and Mailchimp Compromises
-
-The group compromised Twilio via SMS phishing, then leveraged Twilio's access to target downstream customers including Signal and Mailchimp. This supply-chain approach demonstrated early operational sophistication.
-
-### 2023-09 — MGM Resorts Attack
-
-Scattered Spider compromised MGM Resorts International through a vishing attack on the company's IT help desk. The attack deployed ALPHV/BlackCat ransomware, shutting down slot machines, hotel check-in systems, and digital room keys across Las Vegas properties for over a week. Estimated financial impact exceeded 100 million USD.
-
-### 2023-09 — Caesars Entertainment
-
-Shortly before or concurrent with the MGM attack, the group compromised Caesars Entertainment through similar social engineering. Caesars reportedly paid approximately 15 million USD in ransom to prevent data release.
-
-### 2023-11 — FBI/CISA Joint Advisory
-
-The FBI and CISA released Joint Cybersecurity Advisory AA23-320A detailing Scattered Spider's TTPs, marking the group as a priority threat.
-
-### 2024-2025 — Arrests and Continued Operations
-
-Multiple alleged Scattered Spider members were arrested and charged by the US DOJ, including individuals in the United States and United Kingdom. Despite arrests, the group continued operations, demonstrating organizational resilience.
-
-### 2025-04 — Marks & Spencer and UK Retail Attacks
-
-Scattered Spider compromised Marks & Spencer and the Co-operative Group in the UK, deploying DragonForce ransomware. The M&S attack disrupted online ordering and payment systems for several weeks.
-
-## Cross-Vendor Naming Reference
-
-- **CrowdStrike**: Scattered Spider
-- **Mandiant/Google**: UNC3944
-- **Microsoft**: Octo Tempest
-- **Palo Alto Unit 42**: Muddled Libra
-- **Okta**: Scatter Swine, 0ktapus (campaign name)
-- **MITRE ATT&CK**: Not yet assigned a G-code as of April 2025
-
-## References & Sources
-
-1. [Scattered Spider cybercriminal group](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a) — CISA, 2023-11-16
-2. [Octo Tempest crosses boundaries to facilitate extortion, encryption, and destruction](https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction/) — Microsoft Threat Intelligence, 2023-10-25
-3. [Scattered Spider: The Modus Operandi](https://www.trellix.com/blogs/research/scattered-spider-the-modus-operandi/) — Trellix, 2023-11-20
-4. [0ktapus: 130+ organizations targeted in advanced phishing campaign](https://blog.group-ib.com/0ktapus) — Group-IB, 2022-08-25
-5. [Five alleged members of Scattered Spider cybercrime group charged](https://www.justice.gov/usao-cdca/pr/five-alleged-members-scattered-spider-cybercrime-group-charged) — US Department of Justice, 2024-11-20
+- [FBI: Joint Advisory on Scattered Spider Threat Actors](https://www.fbi.gov/news/press-releases/fbi-announces-joint-advisory-on-scattered-spider-threat-actors) — FBI, 2023-11-16
+- [CISA: Advisory (AA23-320A) — Scattered Spider Tradecraft](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a) — CISA, 2023-11-16
+- [Microsoft: Tracking UNC3944 (Scattered Spider) and Their Evolving Tradecraft](https://www.microsoft.com/en-us/security/blog/2023/10/25/tracking-unc3944-scattered-spider-and-their-evolving-tradecraft/) — Microsoft Security, 2023-10-25
+- [MITRE ATT&CK: Scattered Spider (Group G1015)](https://attack.mitre.org/groups/G1015/) — MITRE ATT&CK, 2023-10-21
+- [Palo Alto Unit 42: Muddled Libra (Scattered Spider) — A deep dive into help desk social engineering](https://unit42.paloaltonetworks.com/muddled-libra-social-engineering-tactics/) — Palo Alto Networks, 2023-06-15
