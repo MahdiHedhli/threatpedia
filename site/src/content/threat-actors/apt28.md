@@ -68,6 +68,7 @@ tags:
 sources:
   - url: "https://attack.mitre.org/groups/G0007/"
     publisher: "MITRE ATT&CK"
+    publicationDate: "2025-10-17"
     publisherType: research
     reliability: R1
     accessDate: "2026-04-16"

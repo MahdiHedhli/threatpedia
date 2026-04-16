@@ -59,6 +59,7 @@ sources:
     archived: false
   - url: "https://attack.mitre.org/campaigns/C0024/"
     publisher: "MITRE ATT&CK"
+    publicationDate: "2025-10-17"
     publisherType: research
     reliability: R1
     accessDate: "2026-04-16"
