@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0065",
   "type": "campaign",
   "stage": "generation",
-  "status": "pending",
+  "status": "complete",
   "priority": "P1",
   "input": {
     "topic": "SolarWinds Supply Chain Campaign (2019–2021)",
@@ -21,8 +21,16 @@
       "threat_actor": "APT29 (Cozy Bear)",
       "attack_type": "Supply Chain Compromise / Espionage",
       "scope": "~18,000 organizations received trojanized update; ~100 confirmed compromised",
-      "cves": ["CVE-2020-10148", "CVE-2021-35211"],
-      "malware_families": ["SUNBURST", "SUNSPOT", "TEARDROP", "Raindrop"]
+      "cves": [
+        "CVE-2020-10148",
+        "CVE-2021-35211"
+      ],
+      "malware_families": [
+        "SUNBURST",
+        "SUNSPOT",
+        "TEARDROP",
+        "Raindrop"
+      ]
     },
     "notes": "Smoke test for tightened pipeline validator v2. The broader SolarWinds campaign encompassing the supply chain compromise of Orion software, attributed to Russian SVR (APT29). One of the most significant cyber-espionage operations ever discovered, impacting US federal agencies and major corporations."
   },
@@ -47,6 +55,23 @@
       "action": "created",
       "agent": "dangermouse-bot",
       "notes": "Pipeline v2 smoke test — tightened validator"
+    },
+    {
+      "timestamp": "2026-04-16T04:18:36.660Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-16T04:19:03.823Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-16T04:19:03.824Z"
 }
