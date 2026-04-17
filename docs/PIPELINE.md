@@ -54,14 +54,30 @@ for the pipeline.
 ## The lifecycle of a single task
 
 1. **Discovery** (6h cron, `pipeline-discovery.yml`)
+   - Prepares the long-lived branch `pipeline/discovery`. Three cases:
+     - **Branch doesn't exist** → create from `main`
+     - **Branch exists + open PR from it** → accumulate onto the existing branch
+       (merge latest `main` in so task files stay compatible with the live schema)
+     - **Branch exists + NO open PR** → the previous batch was either **merged**
+       (tasks now on `main`) or **closed-without-merging** (rejection). Both
+       cases collapse to: **reset the branch to `origin/main`** so rejected
+       tasks do not silently resurface on the next run, and merged tasks aren't
+       counted as new. Force-push the reset.
    - Calls `node scripts/pipeline-discover.mjs --days 14 --limit 5 --execute`
    - Script fetches CISA KEV (+ NVD CVSS enrichment), builds dedup indexes
      against the live corpus and existing tasks, scores candidates per
      ROAD-011, allocates a year-namespaced exploitId per ADR 0007, and
      writes one `TASK-2026-NNNN.json` per surviving candidate to
-     `.github/pipeline/tasks/`.
-   - Workflow commits those new task files to `main` with message
-     `chore(pipeline): auto-discovery — ...`.
+     `.github/pipeline/tasks/` **on the branch** (not `main`).
+   - Commits and pushes the branch. **Branch protection on `main` is
+     respected** — nothing pushes directly to `main`.
+   - Opens or updates a PR from `pipeline/discovery` to `main` with the
+     `pipeline/discovery` label. The PR body enumerates every task on the
+     branch with task ID, type, priority, score, auto-cert eligibility,
+     CVE, and topic. **Merge** to accept the whole batch; **close without
+     merging** to reject all staged tasks — the branch-reset logic above
+     ensures rejection is durable.
+   - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
    - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks at
@@ -119,6 +135,8 @@ for the pipeline.
 | Corpus + task CVE dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks | Script |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
+| Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Editorial queue backpressure | `pipeline-dispatcher.yml` | 50 pending / resume at 40 | `config.yml` |
 | Stale-lock timeout | `pipeline-dispatcher.yml` | 30 minutes | `config.yml` |
 | Circuit breaker | `pipeline-dispatcher.yml` | 3 failures in 2h → Issue + halt | `config.yml` |
