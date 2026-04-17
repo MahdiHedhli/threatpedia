@@ -8,10 +8,21 @@ name: "Pipeline: Automated Discovery"
 # dispatcher-compatible task shape come from there.
 #
 # Execution model stays subscription-backed and agent-agnostic:
-#   - this workflow creates tasks only
-#   - pipeline-dispatcher.yml hands tasks to agents
+#   - this workflow creates tasks only, on a long-lived branch
+#   - a PR is opened/updated from that branch (branch protection on main
+#     requires PRs — direct pushes are rejected)
+#   - pipeline-dispatcher.yml hands merged tasks to agents
 #   - agents execute under their own subscriptions via
 #     scripts/pipeline-run-task.mjs (no API key required on this path)
+#
+# Publishing model:
+#   - Branch: `pipeline/discovery` (long-lived until merged or closed)
+#   - One PR open at a time from that branch. Subsequent runs push
+#     additional task files to the same branch and update the PR body;
+#     new PR is only opened when no open one exists (first run, or
+#     after the previous one was merged/closed).
+#   - Merge PR to accept the whole batch; close PR (without merging)
+#     to reject all staged tasks. Nothing auto-merges.
 #
 # See docs/PIPELINE.md for the end-to-end flow.
 
@@ -37,21 +48,78 @@ on:
           - "true"
           - "false"
 
+env:
+  DISCOVERY_BRANCH: pipeline/discovery
+  DISCOVERY_LABEL: pipeline/discovery
+
 jobs:
   discover:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
 
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: Configure git
+        if: ${{ inputs.execute != 'false' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout discovery branch
+        if: ${{ inputs.execute != 'false' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          BRANCH="${DISCOVERY_BRANCH}"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Branch $BRANCH exists on remote — checking open PR state"
+            # An open PR from this branch means the previous batch is still pending
+            # human review — accumulate onto it. No open PR means the previous batch
+            # was either merged (tasks now on main) or closed-without-merging
+            # (rejection). Both cases collapse to "reset to main" so rejected tasks
+            # do not silently resurface on the next run.
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+
+            if [ "$OPEN_PRS" = "0" ]; then
+              echo "No open PR on $BRANCH — previous batch was merged or closed."
+              echo "Resetting branch to origin/main (drops any stale rejected tasks)."
+              git fetch origin main
+              git checkout -B "$BRANCH" origin/main
+              git push --force-with-lease origin "$BRANCH"
+            else
+              echo "Open PR exists on $BRANCH — accumulating onto existing branch"
+              git fetch origin "$BRANCH"
+              git checkout -B "$BRANCH" "origin/$BRANCH"
+              echo "Merging latest main into $BRANCH"
+              if ! git merge --no-edit origin/main; then
+                echo "::error::Merge conflict between $BRANCH and main. Human resolution required."
+                git merge --abort || true
+                exit 1
+              fi
+            fi
+          else
+            echo "Branch $BRANCH does not exist — creating from main"
+            git checkout -b "$BRANCH"
+          fi
 
       - name: Run discovery
         id: discover
@@ -70,16 +138,157 @@ jobs:
 
           node scripts/pipeline-discover.mjs ${ARGS}
 
-      - name: Commit new tasks
+      - name: Commit new tasks to branch
+        id: commit
         if: ${{ inputs.execute != 'false' }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          set -euo pipefail
           git add .github/pipeline/tasks/
           if git diff --cached --quiet; then
-            echo "No new discoveries this run."
+            echo "No new discoveries this run — branch unchanged."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "chore(pipeline): auto-discovery — $(date -u +%Y-%m-%d) — new candidates from pipeline-discover.mjs"
-          git pull --rebase origin main
-          git push
+          git commit -m "chore(pipeline): auto-discovery $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push --force-with-lease origin "${DISCOVERY_BRANCH}"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update discovery PR
+        if: ${{ inputs.execute != 'false' && steps.commit.outputs.has_changes == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+
+            const BRANCH = process.env.DISCOVERY_BRANCH;
+            const LABEL = process.env.DISCOVERY_LABEL;
+            const { owner, repo } = context.repo;
+
+            // ── Enumerate task files currently on the branch but not on main
+            //    These are the tasks pending human review in this PR.
+            let taskPaths = [];
+            try {
+              const diffOut = execSync(
+                `git diff --name-only origin/main...HEAD -- '.github/pipeline/tasks/*.json'`,
+                { encoding: 'utf8' },
+              );
+              taskPaths = diffOut.split('\n').map(s => s.trim()).filter(Boolean);
+            } catch (e) {
+              console.log(`Failed to enumerate branch-only task files: ${e.message}`);
+              return;
+            }
+
+            if (taskPaths.length === 0) {
+              console.log('No branch-only task files detected. Skipping PR update.');
+              return;
+            }
+
+            // ── Read each task to extract the display metadata
+            const tasks = [];
+            for (const p of taskPaths) {
+              try {
+                const t = JSON.parse(fs.readFileSync(p, 'utf8'));
+                const cd = (t.input && t.input.candidate_data) || {};
+                const cve = cd.cve || (Array.isArray(cd.cves) && cd.cves[0]) || '—';
+                const topic = (t.input && t.input.topic) || '—';
+                tasks.push({
+                  task_id: t.task_id,
+                  type: t.type || '—',
+                  priority: t.priority || '—',
+                  score: (t.discovery && t.discovery.score) ?? null,
+                  auto_certify: !!(t.discovery && t.discovery.auto_certify),
+                  cve,
+                  topic,
+                });
+              } catch (e) {
+                console.log(`Failed to parse ${p}: ${e.message}`);
+              }
+            }
+
+            if (tasks.length === 0) {
+              console.log('No parseable tasks found on branch. Skipping PR update.');
+              return;
+            }
+
+            tasks.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+
+            // ── Ensure the label exists (best-effort)
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: LABEL });
+            } catch (e) {
+              if (e.status === 404) {
+                try {
+                  await github.rest.issues.createLabel({
+                    owner, repo,
+                    name: LABEL,
+                    color: 'f9d71c',
+                    description: 'Automated discovery pipeline — scheduled runs open and update PRs with this label',
+                  });
+                  console.log(`Created label ${LABEL}`);
+                } catch (e2) {
+                  console.log(`Could not create label ${LABEL}: ${e2.message} — continuing without label`);
+                }
+              }
+            }
+
+            // ── Format PR body
+            const nowIso = new Date().toISOString();
+            const title = `Pipeline discovery — ${tasks.length} task${tasks.length === 1 ? '' : 's'} pending`;
+
+            let body = `## Automated Discovery — pending queue\n\n`;
+            body += `This PR accumulates task candidates produced by the scheduled discovery workflow `;
+            body += `(\`.github/workflows/pipeline-discovery.yml\`). Tasks here are staged for your review `;
+            body += `on the \`${BRANCH}\` branch before landing on \`main\`.\n\n`;
+            body += `**Merge** to accept the whole batch. **Close** (without merging) to reject all staged tasks.\n`;
+            body += `Nothing auto-merges from this PR.\n\n`;
+            body += `---\n\n`;
+            body += `**${tasks.length} task${tasks.length === 1 ? '' : 's'}** currently pending review.\n\n`;
+            body += `| Task | Type | Pri | Score | Auto-cert | CVE | Topic |\n`;
+            body += `|---|---|---|---:|:-:|---|---|\n`;
+            for (const t of tasks) {
+              const scoreCell = t.score == null ? '—' : String(t.score);
+              const certCell = t.auto_certify ? '✓' : '—';
+              const topicCell = t.topic.length > 80 ? t.topic.slice(0, 77) + '…' : t.topic;
+              body += `| \`${t.task_id}\` | ${t.type} | ${t.priority} | ${scoreCell} | ${certCell} | \`${t.cve}\` | ${topicCell.replace(/\|/g, '\\|')} |\n`;
+            }
+            body += `\n---\n\n`;
+            body += `_Last updated: ${nowIso} · Run [${context.runId}](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}) · See [docs/PIPELINE.md](${context.serverUrl}/${owner}/${repo}/blob/main/docs/PIPELINE.md) for the end-to-end flow._\n`;
+
+            // ── Find existing open PR from our branch
+            const { data: existing } = await github.rest.pulls.list({
+              owner, repo,
+              state: 'open',
+              head: `${owner}:${BRANCH}`,
+              per_page: 5,
+            });
+
+            if (existing.length > 0) {
+              const pr = existing[0];
+              console.log(`Updating existing PR #${pr.number}`);
+              await github.rest.pulls.update({
+                owner, repo,
+                pull_number: pr.number,
+                title,
+                body,
+              });
+            } else {
+              console.log('Creating new discovery PR');
+              const { data: pr } = await github.rest.pulls.create({
+                owner, repo,
+                head: BRANCH,
+                base: 'main',
+                title,
+                body,
+              });
+              try {
+                await github.rest.issues.addLabels({
+                  owner, repo,
+                  issue_number: pr.number,
+                  labels: [LABEL],
+                });
+              } catch (e) {
+                console.log(`Could not add label ${LABEL} to PR #${pr.number}: ${e.message}`);
+              }
+              console.log(`Opened PR #${pr.number}: ${pr.html_url}`);
+            }
