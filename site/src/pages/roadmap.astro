@@ -1,5 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import glossaryData from '../data/glossary-index.json';
+
+// Sourced at build time from the Astro content collections so the roadmap
+// never drifts from the corpus. Glossary count comes from the static data
+// file (site/src/data/glossary-index.json) which is the canonical source for
+// the glossary page's runtime rendering.
+const [incidents, campaigns, actors, zeroDays] = await Promise.all([
+  getCollection('incidents'),
+  getCollection('campaigns'),
+  getCollection('threat-actors'),
+  getCollection('zero-days'),
+]);
+
+const counts = {
+  incidents: incidents.length,
+  campaigns: campaigns.length,
+  actors: actors.length,
+  zeroDays: zeroDays.length,
+  glossaryTerms: Array.isArray(glossaryData) ? glossaryData.length : Object.keys(glossaryData).length,
+};
+
+// Format for rendering (commas in large numbers)
+const fmt = (n: number) => n.toLocaleString('en-US');
 ---
 
 <Base title="Roadmap" description="Threatpedia public roadmap. Track our progress building the definitive cyber threat encyclopedia.">
@@ -106,9 +130,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Cybersecurity Glossary</div>
-          <div class="item-desc">1,023 terms with definitions, cross-references, and framework mappings. Searchable and browsable with role-based taxonomy filters.</div>
+          <div class="item-desc">{fmt(counts.glossaryTerms)} terms with definitions, cross-references, and framework mappings. Searchable and browsable with role-based taxonomy filters.</div>
           <div class="item-meta">
-            <span class="item-tag">1,023 terms</span>
+            <span class="item-tag">{fmt(counts.glossaryTerms)} terms</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -118,9 +142,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Threat Actor Registry</div>
-          <div class="item-desc">33 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. Cross-vendor alias normalization.</div>
+          <div class="item-desc">{counts.actors} tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. Cross-vendor alias normalization.</div>
           <div class="item-meta">
-            <span class="item-tag">33 actors</span>
+            <span class="item-tag">{counts.actors} actors</span>
             <span class="item-tag">filterable</span>
             <span class="item-tag">live</span>
           </div>
@@ -131,9 +155,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">55 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis.</div>
+          <div class="item-desc">{counts.incidents} documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis.</div>
           <div class="item-meta">
-            <span class="item-tag">55 reports</span>
+            <span class="item-tag">{counts.incidents} reports</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -143,9 +167,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Campaign Dossiers</div>
-          <div class="item-desc">7 ongoing multi-event operations and persistent threat campaigns — tracked with attribution, TTPs, related incidents, and timeline data.</div>
+          <div class="item-desc">{counts.campaigns} ongoing multi-event operations and persistent threat campaigns — tracked with attribution, TTPs, related incidents, and timeline data.</div>
           <div class="item-meta">
-            <span class="item-tag">7 campaigns</span>
+            <span class="item-tag">{counts.campaigns} campaigns</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -155,9 +179,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Zero-Day Exploit Registry</div>
-          <div class="item-desc">18 tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</div>
+          <div class="item-desc">{counts.zeroDays} tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</div>
           <div class="item-meta">
-            <span class="item-tag">18 exploits</span>
+            <span class="item-tag">{counts.zeroDays} exploits</span>
             <span class="item-tag">live</span>
           </div>
         </div>
