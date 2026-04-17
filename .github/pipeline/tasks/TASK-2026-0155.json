@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0155",
+  "stage": "review",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — incident batch 3/6: 2025-2026 ransomware and extortion cluster",
+    "sources": [
+      "https://threatpedia.wiki/incidents/"
+    ],
+    "candidate_data": {
+      "collection": "incidents",
+      "batch_index": 3,
+      "batch_total": 6,
+      "batch_size": 10,
+      "review_scope": "schema compliance, technical accuracy, historical accuracy, actor linkage, source quality"
+    },
+    "notes": "Review the scoped live incident articles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- chipsoft-ransomware-dutch-healthcare-2026.md\n- die-linke-qilin-ransomware-2026.md\n- docketwise-immigration-data-breach-2026.md\n- dragonforce-ransomware-campaign-april-2026.md\n- foster-city-ransomware-2026.md\n- marks-spencer-scattered-spider-2025.md\n- passaic-county-medusa-ransomware-2026.md\n- ummc-medusa-ransomware-2026.md\n- vivaticket-ransomhouse-2026.md\n- winona-county-ransomware-2026.md\n\nRequired outcome:\n- correct schema drift, source drift, section drift, ATT&CK mapping issues, attribution overreach, and factual inaccuracies\n- ensure actor linkage, ransomware naming, and cluster boundaries are historically defensible\n- if any live article must be removed, merged, or reclassified, create a follow-on pipeline reprocess task before merge so the content is not lost"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any article that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0155",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — incident batch 3 of 6"
+    }
+  ]
+}

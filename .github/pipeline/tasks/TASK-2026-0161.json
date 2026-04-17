@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0161",
+  "stage": "review",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — threat actor batch 3/4: DPRK and ransomware-core actors",
+    "sources": [
+      "https://threatpedia.wiki/threat-actors/"
+    ],
+    "candidate_data": {
+      "collection": "threat-actors",
+      "batch_index": 3,
+      "batch_total": 4,
+      "batch_size": 8,
+      "review_scope": "schema compliance, attribution quality, alias normalization, targeting history, source quality"
+    },
+    "notes": "Review the scoped live threat actor profiles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- apt38.md\n- blackbasta.md\n- blackcat-alphv.md\n- fin7.md\n- fin11.md\n- fin12.md\n- lazarus-group.md\n- lockbit.md\n\nRequired outcome:\n- correct alias drift, attribution overreach, target-sector drift, tool overlap confusion, and source-quality gaps\n- ensure financially motivated, DPRK-linked, and ransomware ecosystem boundaries are historically defensible\n- if any actor profile must be merged, split, or reclassified, create a follow-on pipeline reprocess task before merge so the content is not lost"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any actor profile that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/{slug}.md",
+    "branch": "pipeline/TASK-2026-0161",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — threat actor batch 3 of 4"
+    }
+  ]
+}

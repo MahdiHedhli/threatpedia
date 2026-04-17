@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0158",
+  "stage": "review",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — incident batch 6/6: taxonomy and canonicalization edge cases",
+    "sources": [
+      "https://threatpedia.wiki/incidents/"
+    ],
+    "candidate_data": {
+      "collection": "incidents",
+      "batch_index": 6,
+      "batch_total": 6,
+      "batch_size": 7,
+      "review_scope": "schema compliance, technical accuracy, historical accuracy, taxonomy, canonicalization"
+    },
+    "notes": "Review the scoped live incident articles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- ransomhouse-operations.md\n- shiny-hunters-leak-site.md\n- tp-article-qilin-edr-killer.md\n- trivy-cve-2026-33634.md\n- twitter-bitcoin-scam-hack-2020.md\n- twitter-social-engineering-attack-2020.md\n- wannacry-ransomware-2017.md\n\nRequired outcome:\n- resolve taxonomy mistakes, canonical duplication, incomplete editorial placeholders, and historical framing drift\n- if an article belongs in a different collection or should collapse into another canonical entry, create a follow-on pipeline reprocess task before merge so the content is not lost\n- keep shared schema or validator fixes in the same branch only when needed to make the reviewed corpus valid"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "build_passes": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any article that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0158",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — incident batch 6 of 6"
+    }
+  ]
+}
