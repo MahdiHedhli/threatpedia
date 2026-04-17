@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import TrustBadge from '../../components/TrustBadge.astro';
 
 export async function getStaticPaths() {
   const actors = await getCollection('threat-actors');
@@ -21,7 +22,7 @@ const statusClass = d.status === 'active' ? 'status-active' : d.status === 'inac
   <article>
     <header class="article-header">
       <div class="incident-header">
-        <span class="review-status">{d.reviewStatus}</span>
+        <TrustBadge status={d.reviewStatus} confidence={d.confidenceGrade} />
         <span class={`status-badge ${statusClass}`}>{d.status.toUpperCase()}</span>
       </div>
       <div class="actor-title-row">
