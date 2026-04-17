@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import TrustBadge from '../../components/TrustBadge.astro';
 
 export async function getStaticPaths() {
   const zeroDays = await getCollection('zero-days');
@@ -26,6 +27,7 @@ const statusClass = d.status === 'active' ? 'zd-active' : d.status === 'patched'
         <span class="cve">{d.cve}</span>
         <span class={`severity ${d.severity}`}>{d.severity}</span>
         <span class={`zd-status ${statusClass}`}>{statusLabel}</span>
+        <TrustBadge status={d.reviewStatus} confidence={d.confidenceGrade} />
       </div>
       <h1>{d.title}</h1>
       <div class="incident-meta">
