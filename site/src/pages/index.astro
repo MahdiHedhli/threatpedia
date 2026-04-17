@@ -76,8 +76,8 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   <!-- ── HERO ──────────────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-eyebrow">Threat Intelligence &middot; Historical Record &middot; Peer Reviewed</div>
-    <h1 class="hero-title">The <em>Definitive</em><br/>Cyber Threat<br/>Encyclopedia</h1>
-    <div class="hero-sub">Building the world's most authoritative open record of cyber history</div>
+    <h1 class="hero-title">The <em>Cyber Threat</em><br/>Encyclopedia</h1>
+    <div class="hero-sub">Building an open, structured record of cyber history</div>
     <p class="hero-desc">
       <strong>Threatpedia</strong> is a Wikipedia-style platform with the goal of documenting every significant
       cyber event, attack campaign, and threat actor in history. Peer-reviewed by a board of
@@ -105,11 +105,13 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
 
   <!-- ── PHASE 0 DISCLOSURE ────────────────────────────────────────────── -->
   <div class="phase-disclosure">
-    <span class="phase-disclosure-dot" aria-hidden="true"></span>
-    <span class="phase-disclosure-text">
+    <div class="phase-disclosure-headline">
+      <span class="phase-disclosure-dot" aria-hidden="true"></span>
       <strong>Phase 0 &mdash; in active development.</strong>
+    </div>
+    <div class="phase-disclosure-body">
       Every article carries its review status. New entries are AI-drafted and peer-reviewed before certification.
-    </span>
+    </div>
     <a class="phase-disclosure-link" href="/roadmap/#how-we-verify">How we verify &rarr;</a>
   </div>
 
@@ -342,17 +344,26 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   .phase-disclosure {
     position: relative; z-index: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding: 14px 24px;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 24px;
     background: rgba(232, 160, 32, 0.04);
-    border-top: 1px solid rgba(232, 160, 32, 0.2);
-    border-bottom: 1px solid rgba(232, 160, 32, 0.2);
+    border: 1px solid rgba(232, 160, 32, 0.2);
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--text);
-    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .phase-disclosure-headline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
   }
 
   .phase-disclosure-dot {
@@ -363,23 +374,21 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     flex-shrink: 0;
   }
 
-  .phase-disclosure-text {
-    flex: 1;
-    min-width: 0;
-    color: var(--muted);
-  }
-
-  .phase-disclosure-text strong {
+  .phase-disclosure-headline strong {
     color: var(--amber);
     font-weight: 500;
-    margin-right: 4px;
+  }
+
+  .phase-disclosure-body {
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 720px;
   }
 
   .phase-disclosure-link {
     color: var(--amber);
     text-decoration: none;
     font-weight: 500;
-    flex-shrink: 0;
     transition: opacity 0.15s;
   }
 
