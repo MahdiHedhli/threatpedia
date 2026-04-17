@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0164",
+  "stage": "review",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — zero-day batch 2/2: historical and canonicalization set",
+    "sources": [
+      "https://threatpedia.wiki/zero-days/"
+    ],
+    "candidate_data": {
+      "collection": "zero-days",
+      "batch_index": 2,
+      "batch_total": 2,
+      "batch_size": 9,
+      "review_scope": "schema compliance, technical accuracy, exploit chronology, canonicalization, source quality"
+    },
+    "notes": "Review the scoped live zero-day articles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- apache-struts-rce-cve-2017-5638.md\n- eternalblue-ms17-010-cve-2017-0144.md\n- heartbleed-openssl-cve-2014-0160.md\n- heartbleed-openssl-tls-cve-2014-0160.md\n- log4shell-apache-log4j-cve-2021-44228.md\n- microsoft-exchange-server-cve-2023-21529.md\n- microsoft-office-cve-2009-0238.md\n- microsoft-visual-basic-for-applications-vba--cve-2012-1854.md\n- stuxnet-lnk-shortcut-cve-2010-2568.md\n\nRequired outcome:\n- correct schema drift, exploit chronology errors, CVE and KEV status drift, ATT&CK mapping issues, and factual inaccuracies\n- explicitly check canonical duplication and naming drift, especially where multiple live articles may describe the same vulnerability family or disclosure event\n- if any live article must be removed, merged, or reclassified, create a follow-on pipeline reprocess task before merge so the content is not lost"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any zero-day article that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0164",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — zero-day batch 2 of 2"
+    }
+  ]
+}

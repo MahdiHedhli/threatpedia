@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0163",
+  "stage": "review",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — zero-day batch 1/2: modern active exploitation set",
+    "sources": [
+      "https://threatpedia.wiki/zero-days/"
+    ],
+    "candidate_data": {
+      "collection": "zero-days",
+      "batch_index": 1,
+      "batch_total": 2,
+      "batch_size": 9,
+      "review_scope": "schema compliance, technical accuracy, exploit chronology, KEV status, source quality"
+    },
+    "notes": "Review the scoped live zero-day articles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- adobe-acrobat-and-reader-cve-2026-34621.md\n- bluehammer-windows-defender-lpe-2026.md\n- chrome-dawn-cve-2026-5281.md\n- cisco-fmc-cve-2026-20131.md\n- forticlient-ems-cve-2026-35616.md\n- fortinet-forticlient-ems-cve-2026-21643.md\n- ivanti-epmm-cve-2026-1340.md\n- palo-alto-pan-os-cve-2024-3400.md\n- trueconf-cve-2026-3502.md\n\nRequired outcome:\n- correct schema drift, exploit chronology errors, CVE and KEV status drift, ATT&CK mapping issues, and factual inaccuracies\n- ensure disclosure date, patch date, days-in-the-wild, and exploitation claims are all defensible from primary evidence\n- if any live article must be removed, merged, or reclassified, create a follow-on pipeline reprocess task before merge so the content is not lost"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any zero-day article that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0163",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — zero-day batch 1 of 2"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0153",
+  "stage": "review",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-17T20:30:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Soft-launch corpus review — incident batch 1/6: modern exploit-driven incidents",
+    "sources": [
+      "https://threatpedia.wiki/incidents/"
+    ],
+    "candidate_data": {
+      "collection": "incidents",
+      "batch_index": 1,
+      "batch_total": 6,
+      "batch_size": 10,
+      "review_scope": "schema compliance, technical accuracy, historical accuracy, attribution, ATT&CK mappings, source quality"
+    },
+    "notes": "Review the scoped live incident articles against the latest Astro schema in `site/src/content.config.ts`, the ratified private specs, and primary-source technical and historical evidence.\n\nScoped files:\n- adobe-mr-raccoon-breach-2026.md\n- axios-unc1069-compromise.md\n- bluehammer-windows-defender-zero-day-2026.md\n- chrome-cve-2026-2441-css-zero-day.md\n- chrome-cve-2026-5281-zero-day.md\n- drift-protocol-dprk-exploit-2026.md\n- forticlient-ems-cve-2026-35616.md\n- langflow-cve-2026-33017-rce-exploitation.md\n- operation-truechaos-trueconf-zero-day-2026.md\n- trueconf-cve-2026-3502-zero-day.md\n\nRequired outcome:\n- correct schema drift, source drift, section drift, ATT&CK mapping issues, attribution overreach, and factual inaccuracies\n- keep fixes within this batch unless a shared schema or validator issue must be corrected centrally\n- if any live article must be removed, merged, or reclassified, create a follow-on pipeline reprocess task before merge so the content is not lost"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "MANIFEST-SPEC.md",
+    "ADR 0007 — Entity ID Format Convention",
+    "site/src/content.config.ts"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "Work from a dedicated review branch and keep changes scoped to the batch unless a shared validator or schema fix is required.",
+    "Queue follow-on reprocess tasks for any article that must be removed, merged, or reclassified."
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0153",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T20:30:00Z",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Soft-launch corpus review queue — incident batch 1 of 6"
+    }
+  ]
+}
