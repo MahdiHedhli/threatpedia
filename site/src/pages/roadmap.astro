@@ -1,5 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import glossaryData from '../data/glossary-index.json';
+
+const incidents = await getCollection('incidents');
+const campaigns = await getCollection('campaigns');
+const actors = await getCollection('threat-actors');
+const zeroDays = await getCollection('zero-days');
+
+const phaseProgress = 48;
+const incidentCount = incidents.length;
+const campaignCount = campaigns.length;
+const actorCount = actors.length;
+const zeroDayCount = zeroDays.length;
+const glossaryCount = glossaryData.length;
 ---
 
 <Base title="Roadmap" description="Threatpedia public roadmap. Track our progress building the definitive cyber threat encyclopedia.">
@@ -74,10 +88,10 @@ import Base from '../layouts/Base.astro';
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 2 &mdash; 43%</span>
+        <span>Phase 2 &mdash; {phaseProgress}%</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" style="width: 43%"></div>
+        <div class="progress-fill" style={`width: ${phaseProgress}%`}></div>
       </div>
     </div>
 
@@ -106,9 +120,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Cybersecurity Glossary</div>
-          <div class="item-desc">1,006 terms with definitions, cross-references, and framework mappings. Searchable and browsable with 10-role taxonomy filters.</div>
+          <div class="item-desc">{glossaryCount} terms with definitions, cross-references, and framework mappings. Searchable and browsable with role-based taxonomy filters.</div>
           <div class="item-meta">
-            <span class="item-tag">1,006 terms</span>
+            <span class="item-tag">{glossaryCount} terms</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -118,10 +132,9 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Threat Actor Registry</div>
-          <div class="item-desc">84 tracked APT groups and threat actors with attribution, affiliation, motivation, tools, and campaign history. 244 alias keys for cross-referencing.</div>
+          <div class="item-desc">{actorCount} tracked threat actors with cross-vendor alias normalization, attribution, sector targeting, and linked campaign history.</div>
           <div class="item-meta">
-            <span class="item-tag">84 actors</span>
-            <span class="item-tag">244 aliases</span>
+            <span class="item-tag">{actorCount} actors</span>
             <span class="item-tag">filterable</span>
             <span class="item-tag">live</span>
           </div>
@@ -132,9 +145,33 @@ import Base from '../layouts/Base.astro';
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Incident Report Archive</div>
-          <div class="item-desc">32 documented security incidents with threat actor profiles, attack vectors, MITRE ATT&amp;CK mapping, and impact analysis. 3 approved, 29 pending review.</div>
+          <div class="item-desc">{incidentCount} documented security incidents with attack vectors, MITRE ATT&amp;CK mappings, source-backed timelines, and impact analysis.</div>
           <div class="item-meta">
-            <span class="item-tag">32 reports</span>
+            <span class="item-tag">{incidentCount} reports</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Campaign Dossiers</div>
+          <div class="item-desc">{campaignCount} multi-event operations and persistent threat campaigns tracked with attribution, TTPs, related incidents, and timeline data.</div>
+          <div class="item-meta">
+            <span class="item-tag">{campaignCount} campaigns</span>
+            <span class="item-tag">live</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Zero-Day Exploit Registry</div>
+          <div class="item-desc">{zeroDayCount} tracked zero-days and exploit entries with CVEs, platform data, patch status, and links to related incidents and actors.</div>
+          <div class="item-meta">
+            <span class="item-tag">{zeroDayCount} exploits</span>
             <span class="item-tag">live</span>
           </div>
         </div>
@@ -159,28 +196,33 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
-          <div class="item-title">Centralized Site Framework</div>
-          <div class="item-desc">Unified header, footer, nav, and analytics injection via site-chrome.js. One-file changes propagate to all pages.</div>
+          <div class="item-title">Astro Static Site</div>
+          <div class="item-desc">Migrated from legacy static HTML to Astro 6 with content collections, schema validation, unified layouts, and GitHub Pages deployment.</div>
+          <div class="item-meta">
+            <span class="item-tag">Astro 6</span>
+            <span class="item-tag">content collections</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- PHASE 2: SCALE -->
+    <!-- PHASE 2: PIPELINE & SOFT LAUNCH -->
     <div class="phase">
       <div class="phase-header">
         <span class="phase-badge building">Building</span>
-        <span class="phase-title">Phase 2 &mdash; Scale &amp; Automation</span>
+        <span class="phase-title">Phase 2 &mdash; Pipeline &amp; Soft Launch</span>
         <span class="phase-eta">Q2 2026</span>
       </div>
 
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Threat Actor Detail Pages</div>
-          <div class="item-desc">Individual deep-dive pages for each of the 84 tracked threat actors. 22 detail pages live; batch generation underway.</div>
+          <div class="item-title">Spec-Driven Content Pipeline</div>
+          <div class="item-desc">The private working repo now runs on a ratified seven-spec contract with a validation-first reset. Phase 0 testing is merged; the next step is trusted ingestion and editorial promotion without reintroducing control-plane drift.</div>
           <div class="item-meta">
-            <span class="item-tag">22 / 84 complete</span>
-            <span class="item-tag">batch generation</span>
+            <span class="item-tag">7 specs ratified</span>
+            <span class="item-tag">Phase 0 merged</span>
+            <span class="item-tag">validation-first</span>
           </div>
         </div>
       </div>
@@ -188,12 +230,12 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Automated Incident Ingestion</div>
-          <div class="item-desc">7 scrapers built (CISA KEV, HIBP, VCDB, NIST NVD, CVE MITRE, MISP, MITRE ATT&amp;CK). 2 more in review (HHS/OCR, EU GDPR Tracker). Threat intel feeds running 2x daily; scrapers on daily weekday schedule.</div>
+          <div class="item-title">Automated Discovery Pipeline</div>
+          <div class="item-desc">ROAD-011 is the immediate build target: ingest high-trust feeds, confidence-score new leads, and draft incidents, campaigns, and zero-days into the editorial queue with human review intact.</div>
           <div class="item-meta">
-            <span class="item-tag">7 scrapers live</span>
-            <span class="item-tag">2 in review</span>
-            <span class="item-tag">2x daily intel</span>
+            <span class="item-tag">ROAD-011</span>
+            <span class="item-tag">high-trust feeds</span>
+            <span class="item-tag">confidence-scored</span>
           </div>
         </div>
       </div>
@@ -201,11 +243,12 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">External Data Source Integration</div>
-          <div class="item-desc">CISSM Cyber Events Database staged (16,532 records, 2014-2026). 233 sources catalogued across 16 categories. Awaiting web stack for full ingestion.</div>
+          <div class="item-title">Framework Mapping Expansion</div>
+          <div class="item-desc">Broaden article-level mappings beyond ATT&amp;CK to NIST CSF, Lockheed Martin Cyber Kill Chain, and MITRE ATLAS without forcing schema churn or breaking existing corpus entries.</div>
           <div class="item-meta">
-            <span class="item-tag">CISSM 16.5K staged</span>
-            <span class="item-tag">233 sources catalogued</span>
+            <span class="item-tag">ATT&amp;CK</span>
+            <span class="item-tag">NIST CSF</span>
+            <span class="item-tag">ATLAS</span>
           </div>
         </div>
       </div>
@@ -213,8 +256,8 @@ import Base from '../layouts/Base.astro';
       <div class="item">
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
-          <div class="item-title">Glossary-to-Report Linking</div>
-          <div class="item-desc">Pipeline active: incident reports feed glossary-candidates.json. Glossary updater processes terms. Tooltip module pending deployment.</div>
+          <div class="item-title">Glossary-to-Report Auto-linking</div>
+          <div class="item-desc">Inline glossary tooltips for incidents, campaigns, threat actors, and zero-days. Candidate-term extraction is already in place; the public-facing hover layer is the remaining step.</div>
           <div class="item-meta">
             <span class="item-tag">client-side</span>
             <span class="item-tag">hover previews</span>
@@ -223,26 +266,37 @@ import Base from '../layouts/Base.astro';
       </div>
 
       <div class="item">
-        <div class="item-status wip">&#9673;</div>
+        <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Source Expansion Pipeline</div>
-          <div class="item-desc">Running monthly. 233 sources catalogued across 16 categories. 10 / 34 deep-dive specs completed (Phase 1 done, Phase 2 in progress).</div>
+          <div class="item-title">Collection Index Filtering</div>
+          <div class="item-desc">Filter chips, sorting, and URL-state across collection index pages so researchers can pivot by sector, geography, severity, and attack type without leaving the corpus.</div>
           <div class="item-meta">
-            <span class="item-tag">monthly</span>
-            <span class="item-tag">automated</span>
+            <span class="item-tag">filter chips</span>
+            <span class="item-tag">url state</span>
           </div>
         </div>
       </div>
 
       <div class="item">
-        <div class="item-status done">&#10003;</div>
+        <div class="item-status todo">&#9675;</div>
         <div class="item-body">
-          <div class="item-title">Exploit &amp; Zero-Day Registry</div>
-          <div class="item-desc">Live zero-day tracking with exploitation status lifecycle (PoC, Weaponized, Active, Patched, Historical), severity assessments, exploit chain documentation, detection guidance, and IOC tracking. 6 exploits tracked (3 active, 3 patched).</div>
+          <div class="item-title">X/Twitter Syndication</div>
+          <div class="item-desc">Automated social syndication of newly published incidents, campaigns, and zero-days to <a href="https://x.com/threatpedia" target="_blank" rel="noopener">@threatpedia</a>. Short-form threat intel posts will serve as the signal channel for soft launch.</div>
           <div class="item-meta">
-            <span class="item-tag">6 exploits tracked</span>
-            <span class="item-tag">live</span>
-            <span class="item-tag">TP-EXP-0001</span>
+            <span class="item-tag">@threatpedia</span>
+            <span class="item-tag">auto-syndication</span>
+            <span class="item-tag">soft launch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status todo">&#9675;</div>
+        <div class="item-body">
+          <div class="item-title">Soft Launch</div>
+          <div class="item-desc">The public soft launch begins once the discovery pipeline, editorial review lane, and outbound syndication are stable enough to publish at a regular cadence without manual firefighting.</div>
+          <div class="item-meta">
+            <span class="item-tag">milestone</span>
           </div>
         </div>
       </div>
@@ -385,7 +439,7 @@ import Base from '../layouts/Base.astro';
     </div>
 
     <div class="last-updated">
-      Last updated: April 10, 2026 &mdash; This roadmap is a living document and subject to change.
+      Last updated: April 17, 2026 &mdash; This roadmap is a living document and subject to change.
     </div>
   </div>
 </Base>
