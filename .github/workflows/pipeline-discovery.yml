@@ -1,15 +1,41 @@
 name: "Pipeline: Automated Discovery"
 
-# Scans external sources for new CVEs and incidents
+# Scans external sources for new CVEs and incidents and creates pipeline tasks.
+#
+# This workflow is a thin wrapper around scripts/pipeline-discover.mjs —
+# the single source of truth for discovery logic (feed fetch, scoring,
+# dedup, task emission). All ROAD-011 scoring, ADR 0007 ID allocation, and
+# dispatcher-compatible task shape come from there.
+#
+# Execution model stays subscription-backed and agent-agnostic:
+#   - this workflow creates tasks only
+#   - pipeline-dispatcher.yml hands tasks to agents
+#   - agents execute under their own subscriptions via
+#     scripts/pipeline-run-task.mjs (no API key required on this path)
+#
+# See docs/PIPELINE.md for the end-to-end flow.
+
 on:
   schedule:
     - cron: "0 */6 * * *"   # Every 6 hours
   workflow_dispatch:
     inputs:
-      source:
-        description: "Which source to scan (all, cisa_kev, nvd)"
+      days:
+        description: "Lookback window in days (default: 14)"
         required: false
-        default: "all"
+        default: "14"
+      limit:
+        description: "Max tasks to create per run (default: 5)"
+        required: false
+        default: "5"
+      execute:
+        description: "Write task files (true) or dry-run (false)"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
 
 jobs:
   discover:
@@ -23,155 +49,37 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Scan CISA KEV for new entries
-        id: kev
-        if: inputs.source == 'all' || inputs.source == 'cisa_kev' || inputs.source == ''
-        uses: actions/github-script@v7
+      - uses: actions/setup-node@v4
         with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
+          node-version: "22"
 
-            const TASKS_DIR = '.github/pipeline/tasks';
-            fs.mkdirSync(TASKS_DIR, { recursive: true });
+      - name: Run discovery
+        id: discover
+        env:
+          DAYS: ${{ inputs.days || '14' }}
+          LIMIT: ${{ inputs.limit || '5' }}
+          EXECUTE: ${{ inputs.execute || 'true' }}
+        run: |
+          set -euo pipefail
+          echo "Running pipeline-discover.mjs (days=${DAYS}, limit=${LIMIT}, execute=${EXECUTE})"
 
-            // ── Fetch CISA KEV catalog ────────────────────────────────────
-            const response = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json');
-            if (!response.ok) {
-              console.log(`::warning::CISA KEV fetch failed: ${response.status}`);
-              return;
-            }
-            const kev = await response.json();
+          ARGS="--days ${DAYS} --limit ${LIMIT}"
+          if [ "${EXECUTE}" = "true" ]; then
+            ARGS="${ARGS} --execute"
+          fi
 
-            // ── Get existing task topics to deduplicate ───────────────────
-            const existingTopics = new Set();
-            const existingCVEs = new Set();
-            if (fs.existsSync(TASKS_DIR)) {
-              for (const f of fs.readdirSync(TASKS_DIR).filter(f => f.endsWith('.json'))) {
-                try {
-                  const task = JSON.parse(fs.readFileSync(path.join(TASKS_DIR, f), 'utf8'));
-                  if (task.input?.topic) existingTopics.add(task.input.topic.toLowerCase());
-                  const cves = task.input?.candidate_data?.cves || [];
-                  cves.forEach(c => existingCVEs.add(c.toUpperCase()));
-                } catch {}
-              }
-            }
-
-            // ── Also check existing articles for CVEs already covered ─────
-            const contentDirs = [
-              'site/src/content/incidents',
-              'site/src/content/zero-days',
-              'site/src/content/campaigns',
-            ];
-            for (const dir of contentDirs) {
-              if (!fs.existsSync(dir)) continue;
-              for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.md'))) {
-                const content = fs.readFileSync(path.join(dir, f), 'utf8');
-                const cveMatches = content.match(/CVE-\d{4}-\d{4,}/g) || [];
-                cveMatches.forEach(c => existingCVEs.add(c.toUpperCase()));
-              }
-            }
-
-            // ── Find new high-severity KEV entries from last 14 days ──────
-            const cutoff = new Date();
-            cutoff.setDate(cutoff.getDate() - 14);
-
-            const newEntries = kev.vulnerabilities
-              .filter(v => {
-                const added = new Date(v.dateAdded);
-                return added >= cutoff && !existingCVEs.has(v.cveID.toUpperCase());
-              })
-              .slice(0, 5); // Cap at 5 per run to avoid flooding
-
-            console.log(`CISA KEV: ${kev.vulnerabilities.length} total, ${newEntries.length} new in last 14 days`);
-
-            // ── Create tasks for new entries ──────────────────────────────
-            let maxNum = 0;
-            if (fs.existsSync(TASKS_DIR)) {
-              for (const f of fs.readdirSync(TASKS_DIR)) {
-                const m = f.match(/TASK-\d{4}-(\d{4})/);
-                if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
-              }
-            }
-
-            const now = new Date();
-            const year = now.getFullYear();
-            let created = 0;
-
-            for (const entry of newEntries) {
-              maxNum++;
-              const taskId = `TASK-${year}-${String(maxNum).padStart(4, '0')}`;
-
-              const task = {
-                task_id: taskId,
-                stage: 'draft',
-                type: 'zero-day',
-                priority: 'P1',
-                status: 'pending',
-                created: now.toISOString(),
-                updated: now.toISOString(),
-                source: 'auto_discovery',
-                submitted_by: 'pipeline-discovery',
-                locked_by: null,
-                locked_at: null,
-                input: {
-                  topic: `${entry.vendorProject} ${entry.product}: ${entry.vulnerabilityName} (${entry.cveID})`,
-                  sources: [
-                    `https://nvd.nist.gov/vuln/detail/${entry.cveID}`,
-                    `https://www.cisa.gov/known-exploited-vulnerabilities-catalog`,
-                  ],
-                  candidate_data: {
-                    severity: 'high',
-                    cves: [entry.cveID],
-                    attack_type: entry.vulnerabilityName,
-                  },
-                  notes: `Auto-discovered from CISA KEV. Added ${entry.dateAdded}. Required action: ${entry.requiredAction || 'Apply vendor patch'}. Due date: ${entry.dueDate || 'N/A'}.`,
-                },
-                specs: [
-                  'DATA-STANDARDS-v1.0.md',
-                  'EDITORIAL-WORKFLOW-SPEC.md §14A',
-                ],
-                acceptance: {
-                  frontmatter_valid: true,
-                  min_sources: 3,
-                  min_h2_sections: 5,
-                  min_mitre_mappings: 1,
-                  review_status: 'draft_ai',
-                  schema_validation: 'pass',
-                  build_passes: true,
-                },
-                depends_on: [],
-                preconditions: ['editorial queue depth < 50'],
-                output: {
-                  file_pattern: 'site/src/content/zero-days/{slug}.md',
-                  branch: `pipeline/${taskId}`,
-                  pr: true,
-                },
-                history: [{
-                  timestamp: now.toISOString(),
-                  from: 'none',
-                  to: 'pending',
-                  agent: 'pipeline-discovery',
-                  note: `Auto-discovered from CISA KEV (added ${entry.dateAdded})`,
-                }],
-              };
-
-              fs.writeFileSync(
-                path.join(TASKS_DIR, `${taskId}.json`),
-                JSON.stringify(task, null, 2) + '\n'
-              );
-              created++;
-            }
-
-            console.log(`Created ${created} new tasks from CISA KEV`);
-            core.setOutput('kev_created', created);
+          node scripts/pipeline-discover.mjs ${ARGS}
 
       - name: Commit new tasks
+        if: ${{ inputs.execute != 'false' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/pipeline/tasks/
-          git diff --cached --quiet && echo "No new discoveries" && exit 0
-          git commit -m "chore(pipeline): auto-discovery — $(date -u +%Y-%m-%d) — new CVEs from CISA KEV"
+          if git diff --cached --quiet; then
+            echo "No new discoveries this run."
+            exit 0
+          fi
+          git commit -m "chore(pipeline): auto-discovery — $(date -u +%Y-%m-%d) — new candidates from pipeline-discover.mjs"
           git pull --rebase origin main
           git push

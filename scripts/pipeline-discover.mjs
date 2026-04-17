@@ -270,16 +270,31 @@ function buildTask(candidate, taskId, exploitId) {
     `Discovery score: ${candidate.score}/100${candidate.autoCertify ? ' (auto-certify eligible)' : ''}.`,
   ].filter(Boolean).join(' ');
 
+  // Task shape aligned with dispatcher expectations (stage-based filtering,
+  // stale-lock fields, history transitions). Matches the structure the
+  // pre-convergence inline workflow in .github/workflows/pipeline-discovery.yml
+  // produced, so tasks emitted by this script are pickable by the dispatcher
+  // without any dispatcher-side changes.
+  const nowIso = new Date().toISOString();
+
   return {
     task_id: taskId,
+    stage: 'draft',
     type: 'zero-day',
     priority: candidate.score >= 80 ? 'P0' : candidate.score >= 60 ? 'P1' : 'P2',
     status: 'pending',
+    created: nowIso,
+    updated: nowIso,
+    source: 'auto_discovery',
+    submitted_by: 'pipeline-discovery',
+    locked_by: null,
+    locked_at: null,
     input: {
       topic: `${candidate.kev.vulnerabilityName} (${candidate.kev.cveID})`,
       sources,
       candidate_data: {
         cve: candidate.kev.cveID,
+        cves: [candidate.kev.cveID],
         exploitId: exploitId,
         type: guessVulnType(candidate.kev),
         platform: `${candidate.kev.vendorProject} ${candidate.kev.product}`,
@@ -293,30 +308,40 @@ function buildTask(candidate, taskId, exploitId) {
       },
       notes,
     },
-    output: {
-      file_pattern: `site/src/content/zero-days/${slug}.md`,
-      branch: `bot/discover-${taskId.toLowerCase()}`,
-    },
-    acceptance_criteria: {
+    specs: [
+      'DATA-STANDARDS-v1.0.md',
+      'EDITORIAL-WORKFLOW-SPEC.md §14A',
+    ],
+    acceptance: {
+      frontmatter_valid: true,
       min_sources: 3,
       min_h2_sections: 5,
       min_mitre_mappings: 1,
       review_status: 'draft_ai',
-      frontmatter_valid: true,
+      schema_validation: 'pass',
       astro_build: true,
+    },
+    depends_on: [],
+    preconditions: ['editorial queue depth < 50'],
+    output: {
+      file_pattern: `site/src/content/zero-days/${slug}.md`,
+      branch: `pipeline/${taskId}`,
+      pr: true,
     },
     discovery: {
       feed: 'CISA_KEV',
       score: candidate.score,
       auto_certify: candidate.autoCertify,
       cvss: candidate.cvss,
-      discovered_at: new Date().toISOString(),
+      discovered_at: nowIso,
     },
     history: [
       {
-        timestamp: new Date().toISOString(),
+        timestamp: nowIso,
         action: 'created',
-        agent: 'pipeline-discover',
+        from: 'none',
+        to: 'pending',
+        agent: 'pipeline-discovery',
         note: `Auto-discovered from CISA KEV (score: ${candidate.score})`,
       },
     ],
