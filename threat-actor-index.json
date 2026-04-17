@@ -1,4 +1,8 @@
 {
+  "_deprecated": true,
+  "_deprecatedAt": "2026-04-17",
+  "_deprecationNote": "This legacy root index is NO LONGER AUTHORITATIVE and is not deployed to threatpedia.wiki. The live threat-actor registry is built from site/src/content/threat-actors/ (Astro content collection). This file is kept as a historical artifact. Do not write to it; do not read it as truth.",
+  "_authoritativeSource": "site/src/content/threat-actors/",
   "generatedAt": "2026-04-09T15:00:00Z",
   "actorCount": 84,
   "actors": {

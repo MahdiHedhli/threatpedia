@@ -1,4 +1,8 @@
 {
+  "_deprecated": true,
+  "_deprecatedAt": "2026-04-17",
+  "_deprecationNote": "This legacy root manifest is NO LONGER AUTHORITATIVE and is not deployed to threatpedia.wiki. The live site is built from the Astro content collection at site/src/content/. This manifest is kept in the repo as a historical artifact. Do not write to it; do not read it as truth. See working/decisions/0007-entity-id-format.md (private repo) for the current ID-format convention.",
+  "_authoritativeSource": "site/src/content/",
   "lastUpdated": "2026-04-09T07:00:00Z",
   "schemaVersion": "1.0",
   "description": "Zero-day and exploit index for Threatpedia. All zero-day-related agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying exploits.",
@@ -6,7 +10,7 @@
     {
       "slug": "bluehammer-windows-defender-lpe-2026",
       "exploitId": "TP-EXP-0001",
-      "title": "BlueHammer — Windows Defender LPE via VSS Race Condition",
+      "title": "BlueHammer \u2014 Windows Defender LPE via VSS Race Condition",
       "cve": "UNASSIGNED",
       "type": "LPE",
       "platform": "Windows 10 / 11",
@@ -52,7 +56,7 @@
     {
       "slug": "cisco-fmc-cve-2026-20131",
       "exploitId": "TP-EXP-0002",
-      "title": "Cisco FMC Insecure Deserialization — Interlock Ransomware Zero-Day",
+      "title": "Cisco FMC Insecure Deserialization \u2014 Interlock Ransomware Zero-Day",
       "cve": "CVE-2026-20131",
       "type": "RCE",
       "platform": "Cisco Secure FMC",
@@ -69,15 +73,27 @@
       "generatedBy": "zero-day-tracker",
       "relatedIncidents": [],
       "relatedActors": [],
-      "tags": ["zero-day", "cisco-fmc", "insecure-deserialization", "rce", "root-access", "interlock-ransomware", "java-deserialization", "cisa-kev", "screenconnect", "ransomware", "enterprise-firewall"]
+      "tags": [
+        "zero-day",
+        "cisco-fmc",
+        "insecure-deserialization",
+        "rce",
+        "root-access",
+        "interlock-ransomware",
+        "java-deserialization",
+        "cisa-kev",
+        "screenconnect",
+        "ransomware",
+        "enterprise-firewall"
+      ]
     },
     {
       "slug": "ivanti-epmm-cve-2026-1340",
       "exploitId": "TP-EXP-0003",
-      "title": "Ivanti EPMM Code Injection — Bash Arithmetic Expansion RCE",
+      "title": "Ivanti EPMM Code Injection \u2014 Bash Arithmetic Expansion RCE",
       "cve": "CVE-2026-1340",
       "type": "RCE",
-      "platform": "Ivanti EPMM ≤ 12.7.0.0",
+      "platform": "Ivanti EPMM \u2264 12.7.0.0",
       "severity": "Critical",
       "status": "Active Exploitation",
       "isZeroDay": true,
@@ -91,15 +107,27 @@
       "generatedBy": "zero-day-tracker",
       "relatedIncidents": [],
       "relatedActors": [],
-      "tags": ["zero-day", "ivanti-epmm", "code-injection", "rce", "bash-injection", "mdm", "mobile-device-management", "cisa-kev", "mass-exploitation", "web-shell", "cryptominer"]
+      "tags": [
+        "zero-day",
+        "ivanti-epmm",
+        "code-injection",
+        "rce",
+        "bash-injection",
+        "mdm",
+        "mobile-device-management",
+        "cisa-kev",
+        "mass-exploitation",
+        "web-shell",
+        "cryptominer"
+      ]
     },
     {
       "slug": "forticlient-ems-cve-2026-35616",
       "exploitId": "TP-EXP-0004",
-      "title": "FortiClient EMS API Authentication Bypass — Pre-Auth RCE",
+      "title": "FortiClient EMS API Authentication Bypass \u2014 Pre-Auth RCE",
       "cve": "CVE-2026-35616",
       "type": "RCE",
-      "platform": "FortiClient EMS 7.4.5–7.4.6",
+      "platform": "FortiClient EMS 7.4.5\u20137.4.6",
       "severity": "Critical",
       "status": "Active Exploitation",
       "isZeroDay": true,
@@ -111,14 +139,27 @@
       "cisaKev": true,
       "reviewStatus": "pending",
       "generatedBy": "zero-day-tracker",
-      "relatedIncidents": ["forticlient-ems-cve-2026-35616"],
+      "relatedIncidents": [
+        "forticlient-ems-cve-2026-35616"
+      ],
       "relatedActors": [],
-      "tags": ["zero-day", "fortinet", "forticlient-ems", "rce", "api-bypass", "authentication-bypass", "cisa-kev", "pre-auth", "cwe-284", "enterprise-management"]
+      "tags": [
+        "zero-day",
+        "fortinet",
+        "forticlient-ems",
+        "rce",
+        "api-bypass",
+        "authentication-bypass",
+        "cisa-kev",
+        "pre-auth",
+        "cwe-284",
+        "enterprise-management"
+      ]
     },
     {
       "slug": "trueconf-cve-2026-3502",
       "exploitId": "TP-EXP-0005",
-      "title": "TrueConf Update Integrity Bypass — Supply Chain Code Execution",
+      "title": "TrueConf Update Integrity Bypass \u2014 Supply Chain Code Execution",
       "cve": "CVE-2026-3502",
       "type": "Code Execution",
       "platform": "TrueConf Windows Client < 8.5.3",
@@ -135,12 +176,24 @@
       "generatedBy": "zero-day-tracker",
       "relatedIncidents": [],
       "relatedActors": [],
-      "tags": ["zero-day", "trueconf", "supply-chain", "update-hijack", "dll-sideloading", "havoc-c2", "chinese-nexus", "government", "southeast-asia", "cisa-kev", "cwe-494"]
+      "tags": [
+        "zero-day",
+        "trueconf",
+        "supply-chain",
+        "update-hijack",
+        "dll-sideloading",
+        "havoc-c2",
+        "chinese-nexus",
+        "government",
+        "southeast-asia",
+        "cisa-kev",
+        "cwe-494"
+      ]
     },
     {
       "slug": "chrome-dawn-cve-2026-5281",
       "exploitId": "TP-EXP-0006",
-      "title": "Chrome Dawn WebGPU Use-After-Free — Fourth Chrome Zero-Day of 2026",
+      "title": "Chrome Dawn WebGPU Use-After-Free \u2014 Fourth Chrome Zero-Day of 2026",
       "cve": "CVE-2026-5281",
       "type": "RCE",
       "platform": "Google Chrome < 146.0.7680.177",
@@ -155,9 +208,23 @@
       "cisaKev": true,
       "reviewStatus": "pending",
       "generatedBy": "zero-day-tracker",
-      "relatedIncidents": ["chrome-cve-2026-5281-zero-day"],
+      "relatedIncidents": [
+        "chrome-cve-2026-5281-zero-day"
+      ],
       "relatedActors": [],
-      "tags": ["zero-day", "chrome", "webgpu", "dawn", "use-after-free", "browser", "cisa-kev", "drive-by", "memory-corruption", "google", "sandbox-escape"]
+      "tags": [
+        "zero-day",
+        "chrome",
+        "webgpu",
+        "dawn",
+        "use-after-free",
+        "browser",
+        "cisa-kev",
+        "drive-by",
+        "memory-corruption",
+        "google",
+        "sandbox-escape"
+      ]
     }
   ],
   "referencedButMissing": []

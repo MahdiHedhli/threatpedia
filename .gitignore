@@ -21,6 +21,18 @@ Icon
 .fseventsd
 .TemporaryItems
 .VolumeIcon.icns
+
+# Finder / iCloud / Dropbox duplicate artifacts — files created with " 2"/" 3"
+# suffixes when a sibling with the same name already exists. Never intentional.
+* 2.*
+* 3.*
+* 2
+* 3
+* 2/
+* 3/
+
+# Claude Code session artifacts
+.claude/
 .com.apple.timemachine.donotpresent
 .AppleDB
 .AppleDesktop
