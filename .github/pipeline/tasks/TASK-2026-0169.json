@@ -1,0 +1,82 @@
+{
+  "task_id": "TASK-2026-0169",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-17T23:57:32.652Z",
+  "updated": "2026-04-17T23:57:32.652Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Microsoft SharePoint Server Improper Input Validation Vulnerability (CVE-2026-32201)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-32201",
+      "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-32201"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-32201",
+      "cves": [
+        "CVE-2026-32201"
+      ],
+      "exploitId": "TP-EXP-2026-0010",
+      "type": "Unclassified",
+      "platform": "Microsoft SharePoint Server",
+      "severity": "medium",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-14",
+      "cwes": [
+        "CWE-20"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-14. Required action by 2026-04-28. CVSS 3.1: 6.5 (MEDIUM) Discovery score: 95/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/microsoft-sharepoint-server-cve-2026-32201.md",
+    "branch": "pipeline/TASK-2026-0169",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 95,
+    "auto_certify": true,
+    "cvss": {
+      "score": 6.5,
+      "severity": "MEDIUM",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-17T23:57:32.652Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T23:57:32.652Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 95)"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "task_id": "TASK-2026-0168",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-17T23:57:32.652Z",
+  "updated": "2026-04-17T23:57:32.652Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Adobe Acrobat Use-After-Free Vulnerability (CVE-2020-9715)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-9715",
+      "https://helpx.adobe.com/security/products/acrobat/apsb20-48.html"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2020-9715",
+      "cves": [
+        "CVE-2020-9715"
+      ],
+      "exploitId": "TP-EXP-2020-0001",
+      "type": "Memory Corruption",
+      "platform": "Adobe Acrobat",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-13",
+      "cwes": [
+        "CWE-416"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-13. Required action by 2026-04-27. CVSS 3.1: 7.8 (HIGH) Discovery score: 97/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/adobe-acrobat-cve-2020-9715.md",
+    "branch": "pipeline/TASK-2026-0168",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 97,
+    "auto_certify": true,
+    "cvss": {
+      "score": 7.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-17T23:57:32.652Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T23:57:32.652Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 97)"
+    }
+  ]
+}
