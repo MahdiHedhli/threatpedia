@@ -9,11 +9,11 @@ bulk-support lanes are out of scope here (see ADR 0009).
 ## TL;DR
 
 ```
-┌─────────────────┐   ┌────────────────┐   ┌──────────────┐   ┌──────────┐
-│ pipeline-       │──▶│ .github/       │──▶│ pipeline-    │──▶│ PR on    │
-│ discovery.yml   │   │ pipeline/      │   │ dispatcher   │   │ main for │
-│ (6h cron)       │   │ tasks/*.json   │   │ .yml (2h cron)│   │ KK review│
-└─────────────────┘   └────────────────┘   └──────────────┘   └──────────┘
+┌─────────────────┐   ┌────────────────┐   ┌────────────────┐   ┌──────────┐
+│ pipeline-       │──▶│ .github/       │──▶│ pipeline-      │──▶│ PR on    │
+│ discovery.yml   │   │ pipeline/      │   │ dispatcher     │   │ main for │
+│ (6h cron)       │   │ tasks/*.json   │   │ .yml (2h cron) │   │ KK review│
+└─────────────────┘   └────────────────┘   └────────────────┘   └──────────┘
         │                      │                    │
    invokes                 consumed by          invokes
    scripts/                 dispatcher           agent via

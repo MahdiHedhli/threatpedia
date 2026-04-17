@@ -319,7 +319,7 @@ function buildTask(candidate, taskId, exploitId) {
       min_mitre_mappings: 1,
       review_status: 'draft_ai',
       schema_validation: 'pass',
-      build_passes: true,
+      astro_build: true,
     },
     depends_on: [],
     preconditions: ['editorial queue depth < 50'],
@@ -338,6 +338,7 @@ function buildTask(candidate, taskId, exploitId) {
     history: [
       {
         timestamp: nowIso,
+        action: 'created',
         from: 'none',
         to: 'pending',
         agent: 'pipeline-discovery',
