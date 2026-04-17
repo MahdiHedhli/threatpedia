@@ -1,4 +1,8 @@
 {
+  "_deprecated": true,
+  "_deprecatedAt": "2026-04-17",
+  "_deprecationNote": "This legacy root manifest is NO LONGER AUTHORITATIVE and is not deployed to threatpedia.wiki. The live site is built from the Astro content collection at site/src/content/. This manifest is kept in the repo as a historical artifact. Do not write to it; do not read it as truth. See working/decisions/0007-entity-id-format.md (private repo) for the current ID-format convention.",
+  "_authoritativeSource": "site/src/content/incidents/",
   "lastUpdated": "2026-04-09T15:12:14Z",
   "schemaVersion": "1.0",
   "description": "Incident index for Threatpedia. All scheduled agents MUST read this file first for dedup and cross-referencing. Update this file when adding or modifying incidents.",
@@ -134,8 +138,8 @@
     {
       "slug": "cegedim-sante-health-breach-2026",
       "incidentId": null,
-      "title": "Cegedim Santé Healthcare Data Breach",
-      "org": "Cegedim Santé",
+      "title": "Cegedim Sant\u00e9 Healthcare Data Breach",
+      "org": "Cegedim Sant\u00e9",
       "attackType": "data-breach",
       "threatActor": "Unknown",
       "sector": "Healthcare",
@@ -278,7 +282,7 @@
     {
       "slug": "trivy-cve-2026-33634",
       "incidentId": "TP-2026-0024",
-      "title": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
+      "title": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
       "org": "Aqua Security (Trivy)",
       "attackType": "supply-chain",
       "threatActor": "TeamPCP (DeadCatx3 / PCPcat / ShellForce)",
@@ -629,7 +633,7 @@
     {
       "slug": "chrome-cve-2026-5281-zero-day",
       "incidentId": "TP-2026-0034",
-      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) — Fourth Actively Exploited in 2026",
+      "title": "Chrome WebGPU Zero-Day (CVE-2026-5281) \u2014 Fourth Actively Exploited in 2026",
       "org": "Google (Chrome)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
@@ -828,7 +832,7 @@
     {
       "slug": "chrome-cve-2026-2441-css-zero-day",
       "incidentId": "TP-2026-0044",
-      "title": "Chrome CSS Font Feature Zero-Day (CVE-2026-2441) — Actively Exploited RCE",
+      "title": "Chrome CSS Font Feature Zero-Day (CVE-2026-2441) \u2014 Actively Exploited RCE",
       "org": "Google (Chrome/Chromium)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Unknown",
@@ -981,7 +985,7 @@
     {
       "slug": "langflow-cve-2026-33017-rce-exploitation",
       "incidentId": "TP-2026-0049",
-      "title": "Langflow AI Platform Unauthenticated RCE (CVE-2026-33017) — Exploited Within 20 Hours",
+      "title": "Langflow AI Platform Unauthenticated RCE (CVE-2026-33017) \u2014 Exploited Within 20 Hours",
       "org": "Langflow (DataStax)",
       "attackType": "zero-day-exploitation",
       "threatActor": "Multiple (6 unique source IPs)",
@@ -1020,7 +1024,7 @@
       "referencedFrom": [
         "vivaticket-ransomhouse-2026"
       ],
-      "suggestedTitle": "RansomHouse Ransomware Group — Operations & Campaigns"
+      "suggestedTitle": "RansomHouse Ransomware Group \u2014 Operations & Campaigns"
     }
   ]
 }

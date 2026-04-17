@@ -1,4 +1,8 @@
 {
+  "_deprecated": true,
+  "_deprecatedAt": "2026-04-17",
+  "_deprecationNote": "This legacy root index is NO LONGER AUTHORITATIVE and is not deployed to threatpedia.wiki. The live threat-actor registry is built from site/src/content/threat-actors/ (Astro content collection). This file is kept as a historical artifact. Do not write to it; do not read it as truth.",
+  "_authoritativeSource": "site/src/content/threat-actors/",
   "lastUpdated": "2026-04-09T15:12:14Z",
   "schemaVersion": "1.0",
   "description": "Worklist for the threat-actor-updater task. Other tasks queue items here when they encounter threat actors that need new pages or linkage updates. The updater processes this queue on Tue/Thu.",
@@ -140,9 +144,9 @@
   ],
   "queueRules": {
     "actions": {
-      "create": "Threat actor not found in threat-actor-index.json — needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
-      "update-links": "Threat actor exists but a new incident report references them — update their campaigns/description and ensure bidirectional linking",
-      "enrich": "Threat actor exists but has thin data — research and expand their entry"
+      "create": "Threat actor not found in threat-actor-index.json \u2014 needs a new entry in threat-actors.html with full research (aliases, affiliation, motivation, tools, campaigns, description)",
+      "update-links": "Threat actor exists but a new incident report references them \u2014 update their campaigns/description and ensure bidirectional linking",
+      "enrich": "Threat actor exists but has thin data \u2014 research and expand their entry"
     },
     "priority": {
       "critical": "Actor tied to active/ongoing campaign affecting critical infrastructure",
