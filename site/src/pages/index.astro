@@ -103,17 +103,6 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     </div>
   </section>
 
-  <!-- ── TICKER ────────────────────────────────────────────────────────── -->
-  <div class="ticker">
-    <div class="ticker-item">Peer-Reviewed Articles</div>
-    <div class="ticker-item">MITRE ATT&CK Mapping</div>
-    <div class="ticker-item">APT Registry</div>
-    <div class="ticker-break"></div>
-    <div class="ticker-item">STIX/TAXII Support (Soon)</div>
-    <div class="ticker-item">AI-Augmented Review</div>
-    <div class="ticker-item">Open Research Access</div>
-  </div>
-
   <!-- ── PHASE 0 DISCLOSURE ────────────────────────────────────────────── -->
   <div class="phase-disclosure">
     <div class="phase-disclosure-headline">
@@ -124,6 +113,17 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
       Every article carries its review status. New entries are AI-drafted and peer-reviewed before certification.
     </div>
     <a class="phase-disclosure-link" href="/roadmap/#how-we-verify">How we verify &rarr;</a>
+  </div>
+
+  <!-- ── TICKER ────────────────────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-item">Peer-Reviewed Articles</div>
+    <div class="ticker-item">MITRE ATT&CK Mapping</div>
+    <div class="ticker-item">APT Registry</div>
+    <div class="ticker-break"></div>
+    <div class="ticker-item">STIX/TAXII Support (Soon)</div>
+    <div class="ticker-item">AI-Augmented Review</div>
+    <div class="ticker-item">Open Research Access</div>
   </div>
 
   <!-- ── PILLARS ───────────────────────────────────────────────────────── -->
@@ -345,21 +345,24 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     position: relative; z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
     max-width: 1200px;
     margin: 32px auto 0;
-    padding: 20px 24px;
+    padding: 24px;
     background: rgba(232, 160, 32, 0.04);
     border: 1px solid rgba(232, 160, 32, 0.2);
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--text);
+    text-align: center;
   }
 
   .phase-disclosure-headline {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
   }
 
@@ -379,13 +382,10 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   .phase-disclosure-body {
     color: var(--muted);
     line-height: 1.6;
-    padding-left: 20px;
+    max-width: 720px;
   }
 
   .phase-disclosure-link {
-    align-self: flex-start;
-    margin-top: 4px;
-    padding-left: 20px;
     color: var(--amber);
     text-decoration: none;
     font-weight: 500;
