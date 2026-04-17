@@ -10,166 +10,185 @@ sector: "Government"
 geography: "Global"
 threatActor: "APT29"
 attributionConfidence: A1
-reviewStatus: "draft_ai"
+reviewStatus: "draft_human"
 confidenceGrade: A
-generatedBy: "penfold-bot"
-generatedDate: 2026-04-16
-cves:
-  - "CVE-2020-10148"
-  - "CVE-2021-35211"
+generatedBy: "kernel-k"
+generatedDate: 2026-04-17
+cves: []
 relatedIncidents:
   - "solarwinds-orion-supply-chain-compromise-2020"
-relatedSlugs:
-  - "apt29"
 tags:
   - "solarwinds"
   - "supply-chain"
   - "apt29"
   - "sunburst"
-  - "espionage"
   - "svr"
+  - "espionage"
 sources:
+  - url: "https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2020-12-13"
+    accessDate: "2026-04-17"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2020-12-17"
+    accessDate: "2026-04-17"
+    archived: false
   - url: "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/"
     publisher: "The White House"
     publisherType: government
     reliability: R1
     publicationDate: "2021-04-15"
-    accessDate: "2026-04-16"
-    archived: false
-  - url: "https://www.cisa.gov/news-events/directives/emergency-directive-21-01"
-    publisher: "CISA"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2020-12-13"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-17"
     archived: false
   - url: "https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor"
     publisher: "Mandiant"
     publisherType: vendor
     reliability: R1
     publicationDate: "2020-12-13"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-17"
     archived: false
   - url: "https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/"
     publisher: "Microsoft Security"
     publisherType: vendor
     reliability: R1
     publicationDate: "2020-12-18"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-17"
     archived: false
   - url: "https://attack.mitre.org/campaigns/C0024/"
     publisher: "MITRE ATT&CK"
-    publicationDate: "2025-10-17"
     publisherType: research
     reliability: R1
-    accessDate: "2026-04-16"
+    publicationDate: "2025-09-19"
+    accessDate: "2026-04-17"
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
     tactic: "Initial Access"
-    notes: "SUNSPOT implant injected SUNBURST backdoor into SolarWinds Orion build pipeline."
+    notes: "APT29 inserted SUNBURST into signed SolarWinds Orion builds distributed through the normal update channel."
   - techniqueId: "T1071.001"
     techniqueName: "Application Layer Protocol: Web Protocols"
     tactic: "Command and Control"
-    notes: "SUNBURST C2 mimicked legitimate Orion Improvement Program traffic."
+    notes: "SUNBURST blended its C2 into Orion Improvement Program HTTP traffic."
+  - techniqueId: "T1098.001"
+    techniqueName: "Account Manipulation: Additional Cloud Credentials"
+    tactic: "Persistence"
+    notes: "Operators added credentials to OAuth applications and service principals during follow-on cloud exploitation."
   - techniqueId: "T1484.002"
-    techniqueName: "Domain Policy Modification: Domain Trust Modification"
+    techniqueName: "Domain or Tenant Policy Modification: Trust Modification"
     tactic: "Defense Evasion"
-    notes: "Attackers forged SAML tokens to access cloud resources via modified AD FS trust."
+    notes: "APT29 modified federation trust settings to abuse forged SAML tokens in victim cloud environments."
+  - techniqueId: "T1114.002"
+    techniqueName: "Email Collection: Remote Email Collection"
+    tactic: "Collection"
+    notes: "High-value targets had mailboxes collected after the Orion compromise was used as initial access."
 ---
 
-## Summary
+## Executive Summary
 
-The SolarWinds supply chain campaign was a cyber-espionage operation attributed to Russia's SVR (APT29/Cozy Bear), discovered in December 2020. The attackers compromised the build environment of SolarWinds' Orion IT management platform and embedded the SUNBURST backdoor into legitimate software updates distributed between March and June 2020. Approximately 18,000 organizations installed the trojanized update; fewer than 100 were selected for follow-on exploitation.
+The SolarWinds campaign was a multi-stage espionage operation conducted by Russia's SVR, tracked publicly as APT29. The operators compromised the SolarWinds Orion software build pipeline, implanted the SUNBURST backdoor into signed updates, and distributed those updates to roughly 18,000 customers between March and June 2020. Only a much smaller subset of victims were selected for hands-on follow-on exploitation, but those targets included U.S. federal agencies, consultancies, and major technology providers.
 
-Confirmed victims included U.S. federal agencies (Departments of Treasury, Commerce, Homeland Security, State, Justice, and Energy), FireEye (Mandiant), Microsoft, and other technology companies. The campaign demonstrated exceptional tradecraft including a two-week dormancy period, environment-aware execution, and C2 traffic designed to mimic legitimate Orion telemetry.
-
-In April 2021, the U.S. government formally attributed the campaign to the SVR and imposed sanctions and diplomatic expulsions.
+What made the campaign exceptional was not just the build-system compromise itself, but the disciplined follow-on tradecraft. Once inside selected environments, the operators abused identity infrastructure, cloud application permissions, and mail systems to conduct long-dwell intelligence collection while blending into legitimate administrative activity. The operation remained publicly unknown until FireEye disclosed its own breach in December 2020, triggering a government-wide response and later formal U.S. and U.K. attribution in April 2021.
 
 ## Technical Analysis
 
-The campaign's success depended on a persistent compromise of SolarWinds' build infrastructure dating to at least October 2019. The attackers deployed **SUNSPOT**, a specialized implant that monitored the Orion build process and injected SUNBURST source code into the `SolarWinds.Orion.Core.BusinessLayer.dll` file during compilation. The modified DLL was signed with SolarWinds' legitimate code-signing certificate.
+The campaign hinged on a compromise of SolarWinds' Orion build environment no later than fall 2019. The operators used SUNSPOT to watch the Orion build process and inject SUNBURST into the `SolarWinds.Orion.Core.BusinessLayer.dll` component during compilation. Because the malicious code moved through the legitimate build and signing pipeline, downstream customers received a trusted SolarWinds update that executed in a normal product context.
 
-**SUNBURST** (the backdoor in the trojanized DLL) remained dormant for 12-14 days after installation, then performed extensive environment checks including domain name verification, running process enumeration, and security tool detection. If the environment was deemed valuable, SUNBURST initiated C2 communications using a custom steganographic DNS protocol followed by HTTPS callbacks to C2 domains that matched the pattern `*.avsvmcloud.com`.
+SUNBURST used delay and environment-aware logic to reduce the chance of early discovery. After installation it waited through a dormancy window, profiled the host and domain, and then initiated staged beaconing through attacker-controlled infrastructure masquerading as Orion telemetry. This allowed the operators to separate mass distribution from selective exploitation: the backdoor gave broad reach, but the human operators only escalated on organizations that matched intelligence priorities.
 
-For high-value targets, the attackers deployed secondary payloads: **TEARDROP** (a memory-only dropper for Cobalt Strike) and **Raindrop** (an alternative loader). Post-exploitation activities focused on lateral movement to cloud environments using forged SAML tokens, compromised OAuth applications, and stolen Azure AD credentials.
+For those selected targets, the campaign quickly became an identity and cloud access operation. Public reporting tied the activity to additional credential theft, mailbox collection, OAuth application abuse, federation-trust manipulation, and forged SAML token use. Secondary tools such as TEARDROP and RAINDROP appeared in some environments, but the strategic value of the campaign came from abusing trusted enterprise control planes rather than deploying noisy malware at scale.
 
 ## Attack Chain
 
-### Stage 1: Build Environment Compromise
+### Stage 1: Build Pipeline Compromise
 
-APT29 gained access to SolarWinds' development environment no later than October 2019. The SUNSPOT implant was installed to monitor the Orion build pipeline and inject malicious code during compilation.
+APT29 obtained access to SolarWinds' development or build environment and positioned SUNSPOT to tamper with Orion builds.
 
-### Stage 2: Trojanized Update Distribution
+### Stage 2: Trusted Software Distribution
 
-Between March and June 2020, SolarWinds distributed Orion updates containing the SUNBURST backdoor through its standard patch management system. Approximately 18,000 organizations installed the compromised update.
+Trojanized Orion releases were signed and delivered through SolarWinds' standard update mechanism, giving the campaign broad reach across government and enterprise networks.
 
-### Stage 3: Dormancy and Target Selection
+### Stage 3: Dormant Beaconing and Victim Profiling
 
-SUNBURST remained inactive for a randomized dormancy period, then performed environment reconnaissance. The backdoor communicated target information to C2 infrastructure, and operators selected high-value targets for further exploitation.
+SUNBURST delayed execution, profiled host environments, and beaconed through infrastructure designed to resemble legitimate Orion traffic so operators could identify high-value victims.
 
-### Stage 4: Secondary Payload Deployment
+### Stage 4: Selective Follow-on Exploitation
 
-For selected targets, TEARDROP or Raindrop loaded Cobalt Strike beacons into memory, providing interactive access for operators.
+Operators deployed additional tooling only into chosen environments, preserving stealth and reducing the forensic footprint across the broader 18,000-install population.
 
-### Stage 5: Lateral Movement to Cloud
+### Stage 5: Identity and Cloud Abuse
 
-Operators moved laterally from on-premises networks to cloud environments by compromising AD FS servers, forging SAML authentication tokens, and creating or hijacking OAuth applications in Azure AD.
+Within priority victims, the campaign shifted to credential theft, OAuth and service principal abuse, federation trust changes, and mailbox collection to sustain intelligence access.
 
-### Stage 6: Data Exfiltration
+### Stage 6: Intelligence Collection
 
-Targeted email collections and document repositories were accessed and exfiltrated. The focus was on policy documents, intelligence assessments, and communications related to Russia.
+The final objective was long-dwell access to executive communications, policy documents, cloud-hosted content, and other strategic material aligned with SVR collection priorities.
 
-## Impact Assessment
+## MITRE ATT&CK Mapping
 
-The campaign affected U.S. national security at the highest levels. Confirmed compromises included:
+### Initial Access
 
-- **U.S. Department of the Treasury**: Email accounts of senior officials accessed
-- **U.S. Department of Commerce (NTIA)**: Internal email monitoring systems compromised
-- **U.S. Department of Homeland Security**: Senior leadership email accessed
-- **U.S. Department of State**: Email systems compromised
-- **FireEye/Mandiant**: Red team tools stolen and publicly disclosed
-- **Microsoft**: Source code repositories accessed
+T1195.002 - Supply Chain Compromise: Compromise Software Supply Chain: The campaign's defining access vector was the insertion of SUNBURST into signed Orion software releases.
 
-The incident prompted Emergency Directive 21-01 requiring all federal agencies to disconnect SolarWinds Orion products. The total remediation cost across all affected organizations is estimated in the billions of dollars.
+### Command and Control
 
-## Attribution
+T1071.001 - Application Layer Protocol: Web Protocols: SUNBURST used web traffic patterns that mimicked Orion telemetry to hide C2.
 
-The U.S. government formally attributed the campaign to the SVR in April 2021, accompanied by Executive Order 14024 imposing sanctions and expelling Russian diplomats. The UK's NCSC concurrently attributed the activity to APT29/SVR. The attribution was based on intelligence community assessment, technical analysis of the campaign's tradecraft, and the strategic alignment of targets with SVR collection priorities.
+### Persistence
 
-Mandiant, Microsoft, CrowdStrike, and Volexity independently tracked the campaign and corroborated the SVR attribution through infrastructure analysis, malware analysis, and operational pattern matching.
+T1098.001 - Account Manipulation: Additional Cloud Credentials: Follow-on activity included adding or hijacking credentials on cloud application objects.
+
+### Defense Evasion
+
+T1484.002 - Domain or Tenant Policy Modification: Trust Modification: Operators modified federation trust material to support forged SAML token abuse.
+
+### Collection
+
+T1114.002 - Email Collection: Remote Email Collection: Mailbox access and export were central to the intelligence objective of the campaign.
 
 ## Timeline
 
-### 2019-10 -- Build Environment Compromise
-APT29 gained access to SolarWinds' Orion build environment.
+### 2019-10-01 - Build Environment Access Established
 
-### 2020-02-20 -- SUNBURST Injection Begins
-SUNSPOT begins injecting SUNBURST into Orion builds.
+Public reporting places attacker access to SolarWinds systems by fall 2019, giving the operators time to study and tamper with the Orion build process.
 
-### 2020-03-26 -- First Trojanized Update Distributed
-SolarWinds Orion 2019.4 HF 5 containing SUNBURST is released.
+### 2020-03-26 - First Trojanized Orion Update Released
 
-### 2020-06 -- Trojanized Updates End
-The last compromised Orion update is distributed.
+SolarWinds began distributing compromised Orion releases that contained the SUNBURST backdoor.
 
-### 2020-12-08 -- FireEye Discovers Breach
-FireEye publicly discloses it was breached and red team tools were stolen.
+### 2020-06-01 - Compromised Update Window Closes
 
-### 2020-12-13 -- SUNBURST Publicly Identified
-FireEye/Mandiant and Microsoft jointly disclose the SolarWinds supply chain compromise. CISA issues Emergency Directive 21-01.
+The known SUNBURST distribution period ended after the affected Orion releases had been pushed to customers.
 
-### 2021-01-11 -- SUNSPOT Disclosed
-CrowdStrike identifies the SUNSPOT implant used to inject SUNBURST into the build process.
+### 2020-12-08 - FireEye Detects Its Own Intrusion
 
-### 2021-04-15 -- U.S. Government Attribution
-The White House formally attributes the campaign to SVR and imposes sanctions.
+FireEye's investigation into stolen red-team tooling set off the chain of disclosure that exposed the SolarWinds intrusion set.
+
+### 2020-12-13 - SolarWinds Compromise Publicly Identified
+
+Mandiant and Microsoft published early technical reporting, while CISA issued Emergency Directive 21-01 for federal agencies.
+
+### 2021-04-15 - U.S. and U.K. Governments Attribute the Campaign to SVR
+
+The White House and the U.K. NCSC publicly linked the campaign to Russia's Foreign Intelligence Service and imposed costs in response.
+
+## Remediation & Mitigation
+
+Organizations affected by the campaign had to treat the issue as both a software supply chain compromise and an identity compromise. Immediate actions included isolating affected Orion infrastructure, hunting for SUNBURST and follow-on indicators, and determining whether post-compromise abuse extended into Active Directory, AD FS, Azure AD, Exchange, or Microsoft 365.
+
+The campaign underscored several durable defensive priorities: harden build pipelines, monitor privileged identity changes, restrict service-principal and federation-trust modifications, alert on unexpected mailbox export activity, and require stronger review around third-party software trust. For cloud-facing environments, remediation had to include certificate rotation, credential rotation, OAuth application review, and validation that no unauthorized trust material remained in place.
 
 ## Sources & References
 
-- [White House: Imposing Costs for Russian Activities](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) -- The White House, 2021-04-15
-- [CISA: Emergency Directive 21-01](https://www.cisa.gov/news-events/directives/emergency-directive-21-01) -- CISA, 2020-12-13
-- [Mandiant: SUNBURST Backdoor Disclosure](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) -- Mandiant, 2020-12-13
-- [Microsoft: Analyzing Solorigate](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) -- Microsoft Security, 2020-12-18
-- [MITRE ATT&CK: SolarWinds Compromise](https://attack.mitre.org/campaigns/C0024/) -- MITRE ATT&CK
+1. [CISA: ED 21-01 - Mitigate SolarWinds Orion Code Compromise](https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise) - CISA, 2020-12-13
+2. [CISA: AA20-352A - Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a) - CISA, 2020-12-17
+3. [The White House: Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) - The White House, 2021-04-15
+4. [Mandiant: Highly Evasive Attacker Leverages SolarWinds Supply Chain to Compromise Multiple Global Victims With SUNBURST Backdoor](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) - Mandiant, 2020-12-13
+5. [Microsoft Security: Analyzing Solorigate, the Compromised DLL File That Started a Sophisticated Cyberattack](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) - Microsoft Security, 2020-12-18
+6. [MITRE ATT&CK: SolarWinds Compromise (C0024)](https://attack.mitre.org/campaigns/C0024/) - MITRE ATT&CK, 2025-09-19

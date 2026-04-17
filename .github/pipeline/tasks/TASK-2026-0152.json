@@ -1,0 +1,37 @@
+{
+  "task_id": "TASK-2026-0152",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "input": {
+    "topic": "MCP ecosystem coordinated vulnerability disclosure",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/mcp-ecosystem-vulnerability-disclosure-2026.md",
+    "issues": [
+      "reclassified_from_campaign",
+      "taxonomy_mismatch"
+    ],
+    "notes": "Removed site/src/content/campaigns/mcp-supply-chain-vulnerability-campaign-2025.md from the campaign corpus. Reprocess as a bounded incident or disclosure-focused article rather than an actor-centric campaign."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/mcp-ecosystem-vulnerability-disclosure-2026.md",
+    "branch": "bot/reprocess-task-2026-0152"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T19:00:00Z",
+      "action": "created",
+      "agent": "kernel-k",
+      "note": "Campaign corpus review - removed MCP campaign article and queued reprocessing under a non-campaign taxonomy."
+    }
+  ],
+  "updated": "2026-04-17T19:00:00Z"
+}

@@ -1,0 +1,37 @@
+{
+  "task_id": "TASK-2026-0151",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "input": {
+    "topic": "Operation Aurora campaign canonical reconciliation",
+    "reprocess": true,
+    "target_file": "site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md",
+    "issues": [
+      "removed_duplicate_campaign_variant",
+      "attribution_normalization_required"
+    ],
+    "notes": "Removed duplicate Operation Aurora article at site/src/content/campaigns/operation-aurora-google-espionage-2009.md. Future reprocessing should enrich only the canonical Operation Aurora campaign file and preserve the more conservative attribution posture."
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md",
+    "branch": "bot/reprocess-task-2026-0151"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T19:00:00Z",
+      "action": "created",
+      "agent": "kernel-k",
+      "note": "Campaign corpus review - removed duplicate Operation Aurora campaign variant and queued canonical reprocessing."
+    }
+  ],
+  "updated": "2026-04-17T19:00:00Z"
+}
