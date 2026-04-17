@@ -78,19 +78,43 @@ jobs:
 
       - name: Checkout discovery branch
         if: ${{ inputs.execute != 'false' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
         run: |
           set -euo pipefail
           BRANCH="${DISCOVERY_BRANCH}"
 
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-            echo "Branch $BRANCH exists on remote — checking out"
-            git fetch origin "$BRANCH"
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-            echo "Merging latest main into $BRANCH"
-            if ! git merge --no-edit origin/main; then
-              echo "::error::Merge conflict between $BRANCH and main. Human resolution required."
-              git merge --abort || true
-              exit 1
+            echo "Branch $BRANCH exists on remote — checking open PR state"
+            # An open PR from this branch means the previous batch is still pending
+            # human review — accumulate onto it. No open PR means the previous batch
+            # was either merged (tasks now on main) or closed-without-merging
+            # (rejection). Both cases collapse to "reset to main" so rejected tasks
+            # do not silently resurface on the next run.
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+
+            if [ "$OPEN_PRS" = "0" ]; then
+              echo "No open PR on $BRANCH — previous batch was merged or closed."
+              echo "Resetting branch to origin/main (drops any stale rejected tasks)."
+              git fetch origin main
+              git checkout -B "$BRANCH" origin/main
+              git push --force-with-lease origin "$BRANCH"
+            else
+              echo "Open PR exists on $BRANCH — accumulating onto existing branch"
+              git fetch origin "$BRANCH"
+              git checkout -B "$BRANCH" "origin/$BRANCH"
+              echo "Merging latest main into $BRANCH"
+              if ! git merge --no-edit origin/main; then
+                echo "::error::Merge conflict between $BRANCH and main. Human resolution required."
+                git merge --abort || true
+                exit 1
+              fi
             fi
           else
             echo "Branch $BRANCH does not exist — creating from main"
