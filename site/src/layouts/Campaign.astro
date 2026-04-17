@@ -1,5 +1,6 @@
 ---
 import Base from './Base.astro';
+import TrustBadge from '../components/TrustBadge.astro';
 
 interface Props {
   frontmatter: {
@@ -34,7 +35,7 @@ const formatDate = (d: Date) =>
       <div class="incident-header">
         {frontmatter.campaignId && <span class="incident-id">{frontmatter.campaignId}</span>}
         <span class={`severity ${frontmatter.severity}`}>{frontmatter.severity}</span>
-        <span class="review-status">{frontmatter.reviewStatus}</span>
+        <TrustBadge status={frontmatter.reviewStatus} confidence={frontmatter.confidenceGrade} />
         {frontmatter.ongoing && <span class="ongoing-badge">ONGOING</span>}
       </div>
       <h1>{frontmatter.title}</h1>
