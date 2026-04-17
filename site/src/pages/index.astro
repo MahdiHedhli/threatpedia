@@ -103,6 +103,16 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     </div>
   </section>
 
+  <!-- ── PHASE 0 DISCLOSURE ────────────────────────────────────────────── -->
+  <div class="phase-disclosure">
+    <span class="phase-disclosure-dot" aria-hidden="true"></span>
+    <span class="phase-disclosure-text">
+      <strong>Phase 0 &mdash; in active development.</strong>
+      Every article carries its review status. New entries are AI-drafted and peer-reviewed before certification.
+    </span>
+    <a class="phase-disclosure-link" href="/roadmap/#how-we-verify">How we verify &rarr;</a>
+  </div>
+
   <!-- ── TICKER ────────────────────────────────────────────────────────── -->
   <div class="ticker">
     <div class="ticker-item">Peer-Reviewed Articles</div>
@@ -326,6 +336,56 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     letter-spacing: 0.15em;
     color: var(--muted);
     text-transform: uppercase;
+  }
+
+  /* ── Phase 0 disclosure banner ──────────────────────────────────────── */
+  .phase-disclosure {
+    position: relative; z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: rgba(232, 160, 32, 0.04);
+    border-top: 1px solid rgba(232, 160, 32, 0.2);
+    border-bottom: 1px solid rgba(232, 160, 32, 0.2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    flex-wrap: wrap;
+  }
+
+  .phase-disclosure-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 8px rgba(232, 160, 32, 0.5);
+    flex-shrink: 0;
+  }
+
+  .phase-disclosure-text {
+    flex: 1;
+    min-width: 0;
+    color: var(--muted);
+  }
+
+  .phase-disclosure-text strong {
+    color: var(--amber);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+
+  .phase-disclosure-link {
+    color: var(--amber);
+    text-decoration: none;
+    font-weight: 500;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+  }
+
+  .phase-disclosure-link:hover {
+    opacity: 0.75;
+    text-decoration: underline;
   }
 
   /* ── Ticker ─────────────────────────────────────────────────────────── */
