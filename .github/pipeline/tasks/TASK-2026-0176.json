@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0176",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T09:25:00Z",
+  "updated": "2026-04-18T09:25:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Heartbleed zero-day canonical merge and legacy reference cleanup",
+    "reprocess": true,
+    "target_file": "site/src/content/zero-days/heartbleed-openssl-tls-cve-2014-0160.md",
+    "issues": [
+      "duplicate_canonical_entry",
+      "legacy_slug_redirect_required",
+      "downstream_reference_cleanup"
+    ],
+    "notes": "Corpus review confirmed that `heartbleed-openssl-tls-cve-2014-0160.md` duplicated the canonical Heartbleed zero-day entry for CVE-2014-0160. The duplicate article was retired in favor of `heartbleed-openssl-cve-2014-0160.md` and a legacy redirect was added. Follow up by checking for any downstream references, manifests, or validators that should explicitly enforce a single canonical zero-day page per CVE family."
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0176"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T09:25:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on cleanup after corpus review collapsed duplicate Heartbleed zero-day coverage into a single canonical article with a legacy redirect."
+    }
+  ]
+}

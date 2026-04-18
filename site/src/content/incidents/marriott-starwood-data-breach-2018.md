@@ -6,9 +6,9 @@ attackType: Data Breach
 severity: critical
 sector: Hospitality
 geography: Global
-threatActor: "Chinese State-Sponsored Actors"
+threatActor: "China-linked espionage operators"
 attributionConfidence: A2
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: C
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -71,7 +71,7 @@ mitreMappings:
     notes: "Remote access trojan communicated using web-based protocols to blend with normal traffic."
 ---
 
-## Summary
+## Executive Summary
 
 On November 30, 2018, Marriott International disclosed that the Starwood guest reservation database had been subject to unauthorized access since 2014, affecting up to 500 million guest records. The initial compromise predated Marriott's $13.6 billion acquisition of Starwood Hotels & Resorts in September 2016, meaning the attackers were embedded in Starwood's systems for approximately two years before the merger and continued operating within the combined entity for an additional two years.
 
@@ -125,7 +125,7 @@ Financial consequences for Marriott included regulatory fines in multiple jurisd
 
 The breach highlighted acquisition-related cybersecurity risk. Marriott inherited the compromised Starwood infrastructure as part of the acquisition without conducting sufficient cybersecurity due diligence to detect the ongoing intrusion prior to completing the transaction.
 
-## Attribution
+## Historical Context
 
 Attribution for the Marriott breach has been linked to Chinese state-sponsored intelligence gathering by multiple sources, though with varying degrees of specificity. The New York Times reported in December 2018, citing U.S. intelligence officials, that the breach was part of a Chinese intelligence-gathering effort to compile data on U.S. government officials and intelligence officers who traveled internationally.
 

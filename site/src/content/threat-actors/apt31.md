@@ -43,7 +43,7 @@ mitreMappings:
     notes: "Uses legitimate cloud services (Dropbox, Yandex) for encrypted C2 communications."
 attributionConfidence: A1
 attributionRationale: "Attributed to MSS Hubei State Security Department by a March 2024 U.S. DOJ indictment of seven Chinese nationals, supported by joint Five Eyes advisories."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

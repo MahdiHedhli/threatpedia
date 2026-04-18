@@ -44,8 +44,8 @@ mitreMappings:
     tactic: "Impact"
     notes: "APT38 deploys disk-wiping malware to destroy evidence after completing financial theft operations."
 attributionConfidence: A1
-attributionRationale: "Attributed to North Korea's Reconnaissance General Bureau by U.S. government advisories and a 2018 DOJ criminal complaint against a DPRK national (Park Jin Hyok)."
-reviewStatus: "draft_ai"
+attributionRationale: "U.S. government reporting and Mandiant research consistently place APT38/Bluenoroff financial intrusions inside the DPRK Lazarus/RGB ecosystem, while still treating the cluster as the regime's dedicated financial theft arm rather than a fully separate state actor."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -88,7 +88,7 @@ sources:
 
 ## Executive Summary
 
-APT38, also known as Bluenoroff and Stardust Chollima, is a North Korean state-sponsored threat actor attributed to the **Reconnaissance General Bureau (RGB)**. Active since at least 2014, APT38 focuses on financially motivated cyber operations to generate revenue for the North Korean regime. The group is distinct from other Lazarus-affiliated clusters in its specialization in financial institution targeting and SWIFT banking system manipulation.
+APT38, also known as Bluenoroff and Stardust Chollima, is a North Korean financially motivated intrusion cluster attributed to the **Reconnaissance General Bureau (RGB)** and commonly treated as part of the broader Lazarus ecosystem. Active since at least 2014, APT38 specializes in revenue-generating operations against banks, payment systems, and cryptocurrency services rather than the wider espionage mission usually associated with Lazarus umbrella reporting.
 
 APT38 is estimated to have attempted to steal over $1.1 billion from financial institutions worldwide and has successfully stolen hundreds of millions of dollars. The group targets banks, cryptocurrency exchanges, and financial technology companies across more than 30 countries. APT38's operations are characterized by extensive pre-operation reconnaissance, long dwell times within victim networks, and the use of destructive malware to cover tracks after theft operations.
 
@@ -104,7 +104,7 @@ The group compromised Banco de Chile, deploying destructive malware (HERMES vari
 
 ### 2017-2022 -- Cryptocurrency Exchange Targeting
 
-APT38 expanded operations to target cryptocurrency exchanges and DeFi protocols, stealing hundreds of millions in cryptocurrency. Operations included the theft of approximately $620 million from the Ronin Network bridge (attributed to Lazarus/APT38 cluster) in 2022.
+APT38-adjacent financial intrusion activity expanded into cryptocurrency theft as the broader Lazarus ecosystem shifted toward exchanges, wallet services, and cross-chain infrastructure. Public reporting frequently discusses these thefts alongside APT38 because of the shared financial mission, but the largest cases are often attributed to the wider Lazarus/Bluenoroff ecosystem rather than to APT38 alone.
 
 ## Technical Capabilities
 

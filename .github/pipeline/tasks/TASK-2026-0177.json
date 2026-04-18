@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0177",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T10:05:00Z",
+  "updated": "2026-04-18T10:05:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Twitter 2020 incident canonical merge and legacy redirect cleanup",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/twitter-bitcoin-scam-hack-2020.md",
+    "issues": [
+      "duplicate_canonical_entry",
+      "historical_merge_cleanup",
+      "legacy_slug_redirect_required"
+    ],
+    "notes": "Corpus review confirmed that `twitter-bitcoin-scam-hack-2020.md` and `twitter-social-engineering-attack-2020.md` described the same July 15, 2020 Twitter compromise. The duplicate slug was retired in favor of the broader social-engineering canonical article. Follow up by checking internal references, search snippets, and any residual wording drift introduced by the merge."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0177"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T10:05:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on cleanup after duplicate Twitter 2020 incident coverage was collapsed into a single canonical article with a legacy redirect."
+    }
+  ]
+}

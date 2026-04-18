@@ -4,11 +4,11 @@ aliases:
   - "Handala Hack Team"
   - "Handala Group"
 affiliation: "Pro-Palestinian Hacktivist"
-motivation: "Hacktivism"
+motivation: "Hacktivism / Disruption"
 status: active
-country: "Iran"
+country: "Unknown"
 firstSeen: "2023"
-lastSeen: "2025"
+lastSeen: "2026"
 targetSectors:
   - "Government"
   - "Technology"
@@ -35,13 +35,12 @@ mitreMappings:
     tactic: "Impact"
     notes: "Conducts website defacements with pro-Palestinian messaging."
 attributionConfidence: A4
-attributionRationale: "Self-identified hacktivist group with assessed links to Iranian state-sponsored operations based on infrastructure overlap and timing coordination with other Iran-nexus threat actors."
-reviewStatus: "draft_ai"
+attributionRationale: "Handala publicly presents as a pro-Palestinian hacktivist persona. Vendors and journalists have described Iran-linked overlaps and broader proxy patterns, but the strongest public evidence supports a cautious Iran-aligned or Iran-linked framing rather than confirmed state control."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
   - "hacktivist"
-  - "iran"
   - "pro-palestinian"
   - "wiper"
   - "israel"
@@ -53,27 +52,27 @@ sources:
     publicationDate: "2024-10-16"
     accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.dni.gov/files/ODNI/documents/assessments/ATA-2024-Unclassified-Report.pdf"
-    publisher: "Office of the Director of National Intelligence"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2024-02-05"
-    accessDate: "2026-04-16"
-    archived: false
   - url: "https://www.sentinelone.com/labs/handala-hacktivism-iran-israel/"
     publisher: "SentinelOne"
     publisherType: vendor
     reliability: R2
     publicationDate: "2024-04-22"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-18"
+    archived: false
+  - url: "https://techcrunch.com/2026/03/11/stryker-hack-pro-iran-hacktivist-group-handala-says-it-is-behind-attack/"
+    publisher: "TechCrunch"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-03-11"
+    accessDate: "2026-04-18"
     archived: false
 ---
 
 ## Executive Summary
 
-Handala (named after the Palestinian cartoon character by Naji al-Ali) is a hacktivist group that emerged in late 2023 in the context of the Israel-Hamas conflict. The group claims to conduct operations in support of the Palestinian cause, targeting Israeli organizations and their international partners. Security researchers have identified infrastructure and operational overlaps suggesting coordination with or direction by Iranian state-sponsored threat actors.
+Handala (named after the Palestinian cartoon character by Naji al-Ali) is a pro-Palestinian hacktivist persona that emerged in late 2023 in the context of the Israel-Hamas conflict. The group claims operations in support of the Palestinian cause and has targeted Israeli organizations and international partners. Public reporting frequently describes Handala as Iran-linked or Iran-aligned, but the strongest public record still supports a cautious proxy or persona framing rather than a fully confirmed state command relationship.
 
-Handala operations include data theft and leaking, website defacements, wiper malware deployment, and DDoS attacks against Israeli government and commercial targets. The group amplifies its operations through social media channels, publishing stolen data and claiming credit for disruptions.
+Handala-linked operations include data theft, leaking, destructive endpoint wipe or remote-wipe claims, website defacements, and DDoS activity against Israeli and related targets. The group amplifies operations through social media and Telegram-style channels, using public claims and leaked material to shape the information impact of each intrusion.
 
 ## Notable Campaigns
 
@@ -89,11 +88,11 @@ Handala claimed to have compromised Israeli cybersecurity firms, stealing and le
 
 Handala employs a mix of hacktivist and state-level capabilities. The group conducts phishing campaigns impersonating security advisories (including fake CrowdStrike and radar system updates) to deliver wiper malware and backdoors. DDoS attacks use both rented botnet infrastructure and volunteer-based tools.
 
-The group's wiper malware demonstrates a level of sophistication beyond typical hacktivist operations, leading researchers to assess possible Iranian state sponsorship or at minimum, shared tooling with known Iranian APTs.
+Some public reporting describes destructive capabilities that go beyond typical low-skill defacement crews, including incidents involving rapid, organization-wide endpoint impact through Microsoft management tooling. That has contributed to assessments that Handala may overlap with or benefit from broader Iran-aligned tradecraft, even though public proof of direct state tasking remains incomplete.
 
 ## Attribution
 
-Handala presents itself as an independent hacktivist group, but multiple security vendors have identified infrastructure and tooling overlaps with known Iranian state-sponsored operations. CISA advisory AA24-290A documented Iranian cyber operations using hacktivist personas, consistent with the pattern of Iranian intelligence using proxy hacktivist groups. The ODNI 2024 Annual Threat Assessment identified Iran as using cyber proxies to target Israel and its allies.
+Handala presents itself as an independent hacktivist group, but multiple vendors and journalists have described Iran-linked overlaps, and CISA has separately documented Iranian cyber operations that make use of hacktivist personas. That broader context supports a cautious Iran-aligned assessment, but the open-source record for Handala remains stronger on claimed operations and destructive impact than on a fully validated state-command chain.
 
 ## MITRE ATT&CK Profile
 
@@ -106,5 +105,5 @@ Handala presents itself as an independent hacktivist group, but multiple securit
 ## Sources & References
 
 - [CISA: Advisory AA24-290A - Iranian Cyber Operations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-290a) -- CISA, 2024-10-16
-- [ODNI: 2024 Annual Threat Assessment](https://www.dni.gov/files/ODNI/documents/assessments/ATA-2024-Unclassified-Report.pdf) -- ODNI, 2024-02-05
 - [SentinelOne: Handala Hacktivism Analysis](https://www.sentinelone.com/labs/handala-hacktivism-iran-israel/) -- SentinelOne, 2024-04-22
+- [TechCrunch: Pro-Iran Hacktivist Group Says It Is Behind Attack on Medical Tech Giant Stryker](https://techcrunch.com/2026/03/11/stryker-hack-pro-iran-hacktivist-group-handala-says-it-is-behind-attack/) -- TechCrunch, 2026-03-11

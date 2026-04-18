@@ -8,7 +8,7 @@ sector: "Healthcare"
 geography: "Netherlands"
 threatActor: "Unknown"
 attributionConfidence: A4
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -77,7 +77,7 @@ mitreMappings:
     notes: "Likely VPN credential compromise or web application exploitation for initial access."
 ---
 
-## Summary
+## Executive Summary
 
 ChipSoft BV, a Dutch healthcare software provider whose electronic patient record (EPD) system serves approximately 80% of all Dutch hospitals, suffered a critical ransomware attack on April 7, 2026. The attack disrupted clinical operations across 11 hospitals, with 9 identified as heavy users of ChipSoft systems. The company's website was taken offline, and all clinical staff were forced to revert to manual, paper-based operations for patient record-keeping.
 
@@ -119,7 +119,7 @@ Paper-based operations eliminated automated drug interaction checking, real-time
 
 The EPD system contains full patient medical histories, diagnoses, treatment plans, medications, lab results, imaging records, and personal identifiers. If exfiltrated, this data enables identity theft, insurance fraud, targeted social engineering, and blackmail. ChipSoft and affected hospitals face mandatory GDPR breach notification to the Autoriteit Persoonsgegevens and IGJ, with potential penalties up to 4% of global revenue or 20 million EUR.
 
-## Attribution
+## Historical Context
 
 As of April 8, 2026, no threat actor has publicly claimed responsibility. No ransom note, extortion message, or leak site post has been publicly attributed. The attack vector, initial access mechanism, and attacker identity remain unknown pending forensic investigation.
 

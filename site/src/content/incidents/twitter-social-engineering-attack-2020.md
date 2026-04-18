@@ -1,14 +1,14 @@
 ---
-eventId: TP-2020-0001
+eventId: TP-2020-0002
 title: "Twitter High-Profile Account Takeover via Social Engineering"
 date: 2020-07-15
 attackType: Financial
 severity: high
 sector: Technology
 geography: United States
-threatActor: Unknown
+threatActor: "Graham Ivan Clark, Mason Sheppard, Nima Fazeli"
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -58,7 +58,7 @@ mitreMappings:
     notes: "Attackers used phone-based social engineering (vishing) to trick Twitter employees into providing credentials."
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
-    tactic: "Persistence"
+    tactic: "Initial Access"
     notes: "Compromised employee credentials provided access to Twitter's internal administration tools."
   - techniqueId: T1098
     techniqueName: "Account Manipulation"
@@ -66,13 +66,13 @@ mitreMappings:
     notes: "Attackers modified account settings including email addresses and two-factor authentication to take over verified accounts."
 ---
 
-## Summary
+## Executive Summary
 
 On July 15, 2020, a coordinated social engineering attack compromised 130 Twitter accounts, including high-profile verified accounts belonging to Barack Obama, Joe Biden, Elon Musk, Bill Gates, Jeff Bezos, Apple, Uber, and numerous cryptocurrency organizations. The attackers used the compromised accounts to post messages promoting a Bitcoin scam, directing victims to send Bitcoin to a specified wallet address with the promise of receiving double the amount in return.
 
 The attack was enabled by a phone-based social engineering (vishing) campaign targeting Twitter employees. The attackers impersonated IT department staff and convinced employees to provide their credentials to a phishing site that mimicked Twitter's internal VPN login page. With these credentials, the attackers accessed Twitter's internal administration tools, which allowed them to reset email addresses, disable two-factor authentication, and post tweets from any account.
 
-Within hours of the fraudulent tweets being posted, the Bitcoin wallet associated with the scam received approximately $120,000 in Bitcoin from victims. Twitter responded by temporarily disabling the ability for all verified accounts to tweet, an emergency action that highlighted the severity of the compromise. Three individuals were subsequently arrested and charged by the U.S. Department of Justice.
+Within hours of the fraudulent tweets being posted, the Bitcoin wallet associated with the scam received approximately $120,000 in Bitcoin from victims. Twitter responded by temporarily disabling the ability for all verified accounts to tweet, an emergency action that highlighted the severity of the compromise. Three individuals were subsequently identified and charged, with Graham Ivan Clark later pleading guilty in Florida state court.
 
 ## Technical Analysis
 
@@ -84,7 +84,7 @@ Once the attackers obtained credentials for employees with administration tool a
 
 Twitter's internal tools, designed for legitimate support operations such as assisting users locked out of their accounts, provided extensive access to account settings without requiring additional authorization or approval workflows for sensitive operations. The absence of additional access controls on high-value operations like email changes and two-factor authentication disablement enabled the attack to proceed rapidly.
 
-The attackers targeted 130 accounts, successfully tweeted from 45, accessed the direct message inbox of 36, and downloaded the Twitter data archive of 7 accounts.
+The attackers targeted 130 accounts, successfully tweeted from 45, and accessed the direct message inbox of up to 36 accounts. Twitter said that up to eight non-verified accounts had their "Your Twitter Data" archives downloaded, while the later NYDFS investigation documented seven confirmed downloads. That discrepancy does not materially change the incident scope but is worth preserving for historical accuracy.
 
 ## Attack Chain
 
@@ -124,7 +124,7 @@ Twitter's stock price declined approximately 4% following the disclosure. The in
 
 The attack demonstrated the risk posed by insider-access social engineering and the potential consequences when administrative tools lack adequate access controls and audit mechanisms for sensitive operations.
 
-## Attribution
+## Historical Context
 
 The U.S. Department of Justice charged three individuals in connection with the Twitter attack. Graham Ivan Clark, a 17-year-old from Tampa, Florida, was identified as the primary organizer. Mason John Sheppard, 19, of Bognor Regis, United Kingdom, and Nima Fazeli, 22, of Orlando, Florida, were also charged.
 

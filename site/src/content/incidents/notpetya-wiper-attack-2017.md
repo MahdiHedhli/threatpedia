@@ -8,7 +8,7 @@ sector: Cross-Sector
 geography: Global
 threatActor: Sandworm
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -83,7 +83,7 @@ mitreMappings:
     notes: Used modified Mimikatz to extract credentials from LSASS for lateral movement
 ---
 
-## Summary
+## Executive Summary
 
 On 27 June 2017, a destructive malware operation disguised as ransomware struck organizations across Ukraine and rapidly spread worldwide. The malware, designated NotPetya (also tracked as Nyetya, ExPetr, and Diskcoder.C), was distributed through a compromised software update mechanism belonging to M.E.Doc, a Ukrainian tax accounting application used by an estimated 80% of Ukrainian businesses. Within hours of the initial deployment, the malware had propagated to multinational corporations operating in Ukraine and beyond.
 
@@ -135,7 +135,7 @@ FedEx subsidiary TNT Express reported $400 million in losses. Mondelez Internati
 
 In Ukraine, the primary target, government ministries, banks, energy companies, and Kyiv's Boryspil International Airport were affected. The Chernobyl nuclear power plant's radiation monitoring system was taken offline, forcing a switch to manual monitoring.
 
-## Attribution
+## Historical Context
 
 The United States, the United Kingdom, Australia, Canada, and the European Union attributed NotPetya to the Russian Federation's Main Intelligence Directorate (GRU), Unit 74455 — the threat actor known as Sandworm.
 

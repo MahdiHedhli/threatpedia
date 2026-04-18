@@ -2,104 +2,112 @@
 name: "TeamPCP"
 aliases:
   - "Team PCP"
-affiliation: "Cybercriminal"
-motivation: "Financial / Hacktivism"
+  - "DeadCatx3"
+  - "PCPcat"
+  - "ShellForce"
+affiliation: "Cybercriminal (cloud-native / supply-chain intrusion)"
+motivation: "Financial / Extortion"
 status: active
 country: "Unknown"
-firstSeen: "2024"
-lastSeen: "2025"
+firstSeen: "2026"
+lastSeen: "2026"
 targetSectors:
+  - "Technology"
+  - "Cloud Services"
   - "Government"
-  - "Healthcare"
-  - "Education"
+  - "Software Supply Chain"
 targetGeographies:
   - "Global"
-  - "Asia"
 tools:
-  - "Web exploitation tools"
-  - "DDoS tools"
-  - "Custom defacement scripts"
+  - "TeamPCP Cloud Stealer"
+  - "Malicious GitHub Actions"
+  - "Trojanized PyPI packages"
+  - "CanisterWorm"
 mitreMappings:
-  - techniqueId: "T1190"
-    techniqueName: "Exploit Public-Facing Application"
+  - techniqueId: "T1195.002"
+    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
     tactic: "Initial Access"
-    notes: "Exploits vulnerabilities in web applications for unauthorized access."
-  - techniqueId: "T1491.002"
-    techniqueName: "Defacement: External Defacement"
-    tactic: "Impact"
-    notes: "Conducts website defacements as part of hacktivist operations."
-  - techniqueId: "T1498"
-    techniqueName: "Network Denial of Service"
-    tactic: "Impact"
-    notes: "Conducts DDoS attacks against targeted organizations."
-attributionConfidence: A5
-attributionRationale: "Limited public reporting. Tracked through hacktivist forums and claimed operations. No government attribution issued."
-reviewStatus: "draft_ai"
+    notes: "Compromises trusted CI/CD tooling and package release paths to distribute credential-stealing payloads."
+  - techniqueId: "T1552.001"
+    techniqueName: "Unsecured Credentials: Credentials In Files"
+    tactic: "Credential Access"
+    notes: "Harvests credentials and secrets exposed in runner environments, workflow logs, and build artifacts."
+  - techniqueId: "T1199"
+    techniqueName: "Trusted Relationship"
+    tactic: "Initial Access"
+    notes: "Abuses trust in widely used security tooling and downstream dependencies to cascade access across victim environments."
+attributionConfidence: A4
+attributionRationale: "The malware and campaign infrastructure self-identify as TeamPCP, and Aqua, Microsoft, Akamai, and Wiz all described a coherent March 2026 campaign spanning Trivy, KICS, LiteLLM, and Telnyx. Individual operators and any national nexus remain unknown."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
-  - "hacktivist"
-  - "defacement"
-  - "ddos"
+  - "supply-chain"
+  - "github-actions"
+  - "pypi"
+  - "credential-theft"
+  - "cicd"
   - "teampcp"
 sources:
-  - url: "https://www.ic3.gov/Media/Y2024/PSA241030.pdf"
-    publisher: "FBI"
-    publisherType: government
-    reliability: R2
-    publicationDate: "2024-10-30"
-    accessDate: "2026-04-16"
-    archived: false
-  - url: "https://www.cisa.gov/news-events/alerts/2024/03/15/hacktivist-activity"
-    publisher: "CISA"
-    publisherType: government
-    reliability: R2
-    publicationDate: "2024-03-15"
-    accessDate: "2026-04-16"
-    archived: false
-  - url: "https://www.radware.com/cyberpedia/ddos-attacks/hacktivist-groups-2024/"
-    publisher: "Radware"
+  - url: "https://www.microsoft.com/en-us/security/blog/2026/03/24/detecting-investigating-defending-against-trivy-supply-chain-compromise/"
+    publisher: "Microsoft Security Blog"
     publisherType: vendor
-    reliability: R3
-    publicationDate: "2024-06-15"
-    accessDate: "2026-04-16"
+    reliability: R1
+    publicationDate: "2026-03-24"
+    accessDate: "2026-04-18"
+    archived: false
+  - url: "https://www.akamai.com/blog/security-research/2026/mar/telnyx-pypi-2026-teampcp-supply-chain-attacks"
+    publisher: "Akamai Security Intelligence Group"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-03-27"
+    accessDate: "2026-04-18"
+    archived: false
+  - url: "https://www.wiz.io/blog/tracking-teampcp-investigating-post-compromise-attacks-seen-in-the-wild"
+    publisher: "Wiz"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-03-30"
+    accessDate: "2026-04-18"
     archived: false
 ---
 
 ## Executive Summary
 
-TeamPCP is a hacktivist group that emerged in 2024, conducting website defacements, DDoS attacks, and limited data theft against government and institutional targets. The group operates through hacktivist forums and social media, claiming ideological motivations while also engaging in opportunistic attacks for reputation building.
+TeamPCP is a cloud-native intrusion and supply-chain compromise actor that emerged publicly in 2026 during a cascading campaign against trusted developer tooling. The group, also tracked under labels such as DeadCatx3, PCPcat, and ShellForce, compromised CI/CD infrastructure and package-release channels for Trivy, KICS, LiteLLM, Telnyx, and related ecosystems to harvest cloud credentials and secrets from downstream build environments.
 
-Limited public reporting exists on TeamPCP's operations. The group's technical capabilities appear modest compared to state-sponsored actors, focusing on exploitation of known vulnerabilities in web applications and volumetric DDoS attacks.
+Rather than behaving like a low-signal hacktivist crew, TeamPCP's public tradecraft centers on trusted software relationships, poisoned GitHub Actions or package releases, credential harvesting from automation runners, and follow-on extortion or monetization opportunities. The campaign showed a clear understanding of CI/CD environments, dependency trust, and cross-ecosystem propagation.
 
 ## Notable Campaigns
 
-### 2024-2025 -- Website Defacement Campaign
+### 2026 -- Trivy, KICS, LiteLLM, and Telnyx Supply-Chain Cascade
 
-TeamPCP conducted a series of website defacements against government and educational institution websites, replacing content with hacktivist messaging. The defacements exploited known vulnerabilities in content management systems.
+Beginning with the March 2026 compromise of Aqua Security's Trivy ecosystem, TeamPCP hijacked trusted version tags, poisoned GitHub Actions, and later weaponized related software supply chain components such as Checkmarx KICS, LiteLLM, and Telnyx. The attack path was designed to harvest cloud credentials, SSH keys, secrets, and tokens from downstream CI/CD environments.
 
-### 2024 -- DDoS Attacks
+### 2026 -- European Commission and Cisco Follow-on Victimization
 
-The group conducted DDoS attacks against government web portals and commercial websites, using both rented botnet infrastructure and open-source DDoS tools.
+The same TeamPCP campaign was tied to major downstream victimization at the European Commission, Cisco, Mercor, and other organizations whose pipelines or dependencies consumed compromised artifacts. In several cases, later extortion or publication activity was carried out under related criminal branding such as ShinyHunters or partner groups rather than under the TeamPCP name alone.
 
 ## Technical Capabilities
 
-TeamPCP operates at a lower sophistication level, exploiting known vulnerabilities in web applications (WordPress, Joomla, and other CMS platforms) for website defacements. DDoS capabilities rely on commercial booter/stresser services and publicly available tools.
+TeamPCP's technical profile is centered on CI/CD trust abuse. Public reporting describes malicious force-pushes to version tags, poisoned GitHub Actions, trojanized PyPI packages, and credential-stealing payloads that target AWS, GCP, Azure, Kubernetes, SSH, and developer secrets present in runner environments.
 
-The group does not appear to develop custom malware. Operations focus on maximizing public visibility through defacements and service disruptions rather than sustained network compromise.
+The actor's malware has been described as "TeamPCP Cloud Stealer" and in some cases as part of the broader CanisterWorm propagation chain. Its value proposition is not loud website disruption but silent, high-leverage credential theft that lets the attackers pivot from one trusted software component to the next.
 
 ## Attribution
 
-No government attribution has been issued for TeamPCP. The group is tracked through hacktivist forums, Telegram channels, and claimed operations. Attribution confidence is low due to the distributed and anonymous nature of hacktivist operations.
+The strongest public attribution evidence comes from the malware's self-identification, repeated reuse of infrastructure and cryptographic patterns across multiple supply-chain incidents, and consistent vendor reporting from Microsoft, Akamai, Wiz, Aqua, and others. That is strong enough to treat TeamPCP as a coherent criminal intrusion cluster, but not strong enough to claim specific named operators or a state nexus.
 
 ## MITRE ATT&CK Profile
 
-**Initial Access**: Exploitation of public-facing web applications (T1190) using known CVEs.
+**Initial Access**: TeamPCP weaponizes trusted software relationships and release channels through supply-chain compromise (T1195.002) and trust abuse (T1199).
 
-**Impact**: Website defacement (T1491.002) and network denial of service (T1498).
+**Credential Access**: The campaign repeatedly harvested secrets from build environments and workflow artifacts, including credentials stored in files or exposed in automation contexts (T1552.001).
+
+**Impact / Follow-on Access**: Stolen secrets enabled broader downstream compromise, cloud access, extortion, and publication activity against organizations that consumed poisoned developer tooling.
 
 ## Sources & References
 
-- [FBI: Hacktivist Activity PSA](https://www.ic3.gov/Media/Y2024/PSA241030.pdf) -- FBI, 2024-10-30
-- [CISA: Hacktivist Activity Alert](https://www.cisa.gov/news-events/alerts/2024/03/15/hacktivist-activity) -- CISA, 2024-03-15
-- [Radware: Hacktivist Groups 2024](https://www.radware.com/cyberpedia/ddos-attacks/hacktivist-groups-2024/) -- Radware, 2024-06-15
+- [Microsoft Security Blog: Guidance for Detecting, Investigating, and Defending Against the Trivy Supply Chain Compromise](https://www.microsoft.com/en-us/security/blog/2026/03/24/detecting-investigating-defending-against-trivy-supply-chain-compromise/) -- Microsoft Security Blog, 2026-03-24
+- [Akamai: The Telnyx PyPI Compromise and the 2026 TeamPCP Supply Chain Attacks](https://www.akamai.com/blog/security-research/2026/mar/telnyx-pypi-2026-teampcp-supply-chain-attacks) -- Akamai, 2026-03-27
+- [Wiz: Tracking TeamPCP: Investigating Post-Compromise Attacks Seen in the Wild](https://www.wiz.io/blog/tracking-teampcp-investigating-post-compromise-attacks-seen-in-the-wild) -- Wiz, 2026-03-30

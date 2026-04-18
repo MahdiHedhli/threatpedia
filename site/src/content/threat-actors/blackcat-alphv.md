@@ -7,7 +7,7 @@ aliases:
 affiliation: "Cybercriminal (Russian-speaking)"
 motivation: "Financial"
 status: inactive
-country: "Russia"
+country: "Unknown"
 firstSeen: "2021"
 lastSeen: "2024"
 targetSectors:
@@ -42,7 +42,7 @@ mitreMappings:
     notes: "Stops database services, backup applications, and security tools before encryption."
 attributionConfidence: A2
 attributionRationale: "FBI and CISA attributed BlackCat/ALPHV as a Russian-speaking ransomware-as-a-service operation. Law enforcement disruption in December 2023 confirmed identity of operators."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -85,7 +85,7 @@ sources:
 
 ## Executive Summary
 
-BlackCat (also known as ALPHV and Noberus) was a ransomware-as-a-service (RaaS) operation active from November 2021 until early 2024. The group was the first major ransomware operation to use the Rust programming language, which provided cross-platform capabilities (Windows, Linux, VMware ESXi) and hindered reverse engineering. BlackCat employed a triple-extortion model: data theft, file encryption, and DDoS threats.
+BlackCat (also known as ALPHV and Noberus) was a ransomware-as-a-service (RaaS) operation active from November 2021 until early 2024. The group was the first major ransomware operation to use the Rust programming language, which provided cross-platform capabilities (Windows, Linux, VMware ESXi) and hindered reverse engineering. Public reporting consistently describes the operation as Russian-speaking, but the cited sources do not justify a specific country field beyond that criminal ecosystem context.
 
 The operation accumulated over 1,000 victims globally before an FBI-led disruption in December 2023. BlackCat's affiliates targeted high-value sectors including healthcare, with the February 2024 attack on Change Healthcare (UnitedHealth Group) disrupting healthcare claims processing across the United States. The group is assessed to include former members of the DarkSide/BlackMatter ransomware operations.
 

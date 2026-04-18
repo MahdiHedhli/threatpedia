@@ -9,7 +9,7 @@ aliases:
 affiliation: "Cybercriminal (Eastern European)"
 motivation: "Financial"
 status: active
-country: "Russia"
+country: "Unknown"
 firstSeen: "2013"
 lastSeen: "2025"
 targetSectors:
@@ -46,7 +46,7 @@ mitreMappings:
     notes: "Steals payment card data from point-of-sale systems and conducts direct financial theft from banking systems."
 attributionConfidence: A1
 attributionRationale: "Multiple DOJ indictments of FIN7 members including a 2018 indictment of three Ukrainian nationals and the 2021 arrest and conviction of a high-level manager."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -81,7 +81,7 @@ sources:
 
 ## Executive Summary
 
-FIN7 (also known as Carbanak and Carbon Spider) is a financially motivated cybercriminal group that has been active since at least 2013. The group initially focused on stealing payment card data from point-of-sale (POS) systems at restaurant, hospitality, and retail companies in the United States. FIN7 subsequently expanded to direct financial theft from banking systems (the Carbanak campaigns) and more recently to ransomware affiliate operations.
+FIN7 (also known as Carbon Spider and frequently referred to in vendor reporting as Carbanak Group) is a financially motivated cybercriminal group that has been active since at least 2013. The group initially focused on stealing payment card data from point-of-sale (POS) systems at restaurant, hospitality, and retail companies in the United States. Public reporting often uses the Carbanak label in overlapping ways for the malware, campaigns, and operators, so the safest framing is that FIN7 is the primary criminal cluster behind much of that activity rather than that every "Carbanak" reference is a perfect one-to-one alias.
 
 FIN7 is estimated to have stolen over $1 billion and compromised payment card data from over 1,000 restaurants, hotels, and retailers. Multiple members have been arrested and convicted, including three Ukrainian nationals indicted in 2018 and a high-level manager convicted in 2021. Despite law enforcement actions, the group has continued operations and evolved its tactics.
 
@@ -91,9 +91,9 @@ FIN7 is estimated to have stolen over $1 billion and compromised payment card da
 
 FIN7 compromised over 100 U.S. restaurant chains, hotels, and retailers by deploying POS malware through carefully crafted spearphishing campaigns. The group stole millions of payment card numbers, which were sold on underground markets.
 
-### 2013-2016 -- Carbanak Banking Operations
+### 2013-2016 -- Carbanak-Linked Banking Operations
 
-Operating as Carbanak, FIN7 conducted direct attacks on financial institutions, manipulating ATM systems and internal banking applications to steal funds. The campaign affected over 100 banks in 40 countries with estimated losses exceeding $1 billion.
+FIN7 activity has long overlapped with reporting on the broader Carbanak intrusion set, which targeted financial institutions, ATM infrastructure, and internal banking systems. Because the Carbanak label has been used for malware, campaigns, and operators, the precise boundary varies by source even though FIN7 is consistently central to the tradecraft.
 
 ### 2022-2025 -- Ransomware Operations
 
@@ -107,7 +107,7 @@ The group's operational model includes a structured organization with specialize
 
 ## Attribution
 
-Three FIN7 members (Dmytro Fedorov, Fedir Hladyr, and Andrii Kolpakov) were indicted by the U.S. DOJ in 2018. Hladyr was sentenced to 10 years in prison in 2021, and Kolpakov to seven years. A high-level FIN7 manager, Denys Iarmak, was arrested and convicted in 2021. Despite these arrests, FIN7 operations have continued under evolved tactics.
+Three FIN7 members (Dmytro Fedorov, Fedir Hladyr, and Andrii Kolpakov) were charged by the U.S. DOJ in 2018. Hladyr was sentenced to 10 years in prison in 2021, and Kolpakov to seven years. These prosecutions materially strengthen attribution to the criminal organization, but they do not support the stronger claim that FIN7 should be assigned to Russia specifically rather than to a broader Eastern European criminal ecosystem.
 
 ## MITRE ATT&CK Profile
 

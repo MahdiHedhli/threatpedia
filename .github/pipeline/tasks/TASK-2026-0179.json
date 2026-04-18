@@ -1,0 +1,44 @@
+{
+  "task_id": "TASK-2026-0179",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-18T10:10:00Z",
+  "updated": "2026-04-18T10:10:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Qilin canonical actor/campaign rebuild from placeholder incident stub",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/tp-article-qilin-edr-killer.md",
+    "issues": [
+      "placeholder_stub",
+      "wrong_collection",
+      "actor_or_campaign_rebuild_required",
+      "legacy_slug_redirect_required"
+    ],
+    "notes": "Corpus review confirmed that `tp-article-qilin-edr-killer.md` was a placeholder-grade stub with no substantive content. The legacy slug now redirects to the existing Die Linke incident as the nearest live Qilin coverage. Follow up by creating a proper canonical Qilin actor or campaign article and then update the redirect target if a better destination exists."
+  },
+  "output": {
+    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "branch": "pipeline/TASK-2026-0179"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T10:10:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued rebuild after removing a placeholder Qilin incident stub from the live incidents collection."
+    }
+  ]
+}

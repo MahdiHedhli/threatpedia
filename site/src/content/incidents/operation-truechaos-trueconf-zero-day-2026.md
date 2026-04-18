@@ -64,7 +64,7 @@ Check Point Research publishes Operation TrueChaos analysis detailing TTPs, IOCs
 TrueConf v8.5.3 Patch Release
 TrueConf releases patch version 8.5.3 remediating CVE-2026-3502. Users advised to update immediately.
 
-## Technical Details
+## Technical Analysis
 
 Vulnerability Overview: CVE-2026-3502 represents a critical gap in the TrueConf update client's handling of signed packages. The vulnerability permits elevation of privilege and arbitrary code execution when processing crafted update packages delivered through the standard update mechanism.
 
@@ -125,7 +125,7 @@ Lateral Movement Potential: Havoc implants operating at System privilege level c
 
 Supply-Chain Implications: Successful compromise of TrueConf server infrastructure and update mechanisms demonstrates a complete breach of the software supply chain. Organizations relying on TrueConf for secure government communications face the risk that any future update could be weaponized, requiring out-of-band verification procedures and increased supply-chain security scrutiny.
 
-## Attribution Analysis
+## Historical Context
 
 Primary Attribution: Check Point Research attributes Operation TrueChaos to a Chinese-nexus threat actor with moderate confidence. The attribution is based on operational tempo, targeting patterns (Southeast Asian governments), capabilities (Havoc C2 deployment), and overlaps with documented Chinese state-sponsored cyber operations.
 
@@ -135,7 +135,7 @@ Regional Context: Southeast Asian government entities are consistent targets for
 
 Caveats: Definitive attribution requires additional intelligence not disclosed in public reporting. Threat actors routinely implement OPSEC measures, false-flag operations, and misdirection. The assessment should be treated as "likely responsible" rather than definitive, and updated as additional evidence emerges.
 
-## Mitigations & Defenses
+## Remediation & Mitigation
 
 Immediate Actions:
 1. Update TrueConf to version 8.5.3 or later immediately. Prioritize government and critical infrastructure organizations.
@@ -165,7 +165,7 @@ Long-Term Supply-Chain Security:
 4. Consider software composition analysis (SCA) tools to track third-party component vulnerabilities.
 5. Require out-of-band verification of critical security updates before deployment to critical systems.
 
-## Operational Context
+### Operational Context
 
 Operation TrueChaos represents a continuation of Chinese state-sponsored cyber operations targeting Southeast Asian governments for espionage purposes. Similar patterns have been observed in prior campaigns including: APT1 (Comment Crew) targeting of US federal agencies, Axiom targeting of NATO members, and ongoing operations against regional governments in Southeast Asia.
 

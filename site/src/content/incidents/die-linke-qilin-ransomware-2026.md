@@ -8,7 +8,7 @@ sector: "Government"
 geography: "Germany"
 threatActor: "Qilin"
 attributionConfidence: A3
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -78,7 +78,7 @@ mitreMappings:
     notes: "Typical Qilin initial access via credential-based attacks or exploitation of unpatched systems."
 ---
 
-## Summary
+## Executive Summary
 
 On March 26, 2026, the Russian-speaking ransomware group Qilin compromised the network of Die Linke (The Left Party), a political party represented in the German Bundestag with 64 members of parliament and approximately 123,000 registered members. The attackers exfiltrated sensitive internal party data and employee personal information before the party disclosed the incident the following day.
 
@@ -124,7 +124,7 @@ The attack on an elected parliamentary party raises concerns about coordinated c
 
 Qilin's activity context shows escalation: January 2026 saw 100-plus victims, February 115-plus, and March 131-plus including Die Linke. The escalation to political party targeting indicates willingness to accept higher-profile victims and potential state-level coordination.
 
-## Attribution
+## Historical Context
 
 Multiple threat intelligence firms have attributed this attack to Qilin, a Russian-speaking RaaS group. Attribution confidence is moderate (A3) based on Qilin's public claim of responsibility, technical indicators consistent with known Qilin operational patterns, and timing correlation with the group's established operational tempo.
 

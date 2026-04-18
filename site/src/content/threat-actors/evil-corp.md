@@ -44,8 +44,8 @@ mitreMappings:
     tactic: "Defense Evasion"
     notes: "Dridex and subsequent tools use process injection to evade security controls."
 attributionConfidence: A1
-attributionRationale: "U.S. DOJ indicted Maksim Yakubets and Igor Turashev in 2019. U.S. Treasury sanctioned Evil Corp members and identified Yakubets as working for Russia's FSB."
-reviewStatus: "draft_ai"
+attributionRationale: "U.S. DOJ indicted Maksim Yakubets and Igor Turashev in 2019. U.S. Treasury sanctioned Evil Corp members and stated Yakubets had provided direct assistance to the Russian FSB."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -90,7 +90,7 @@ sources:
 
 Evil Corp (also tracked as Indrik Spider) is a Russian cybercriminal organization led by Maksim Yakubets, who was indicted by the U.S. Department of Justice in 2019 and sanctioned by the U.S. Treasury Department. Active since at least 2014, the group was initially responsible for the Dridex banking trojan, which caused over $100 million in financial losses. Evil Corp subsequently transitioned to ransomware operations, deploying a succession of ransomware families.
 
-The U.S. Treasury identified Yakubets as having provided direct assistance to the Russian Federal Security Service (FSB), adding a state-nexus dimension to the group's criminal activities. U.S. sanctions against Evil Corp created complications for victims seeking to pay ransoms, leading the group to rebrand its ransomware repeatedly to circumvent sanctions compliance programs.
+The U.S. Treasury identified Yakubets as having provided direct assistance to the Russian Federal Security Service (FSB), adding a state-nexus dimension to the group's criminal activities without converting Evil Corp into a formal state unit. U.S. sanctions against Evil Corp created complications for victims seeking to pay ransoms, leading the group to rebrand its ransomware repeatedly to circumvent sanctions compliance programs.
 
 ## Notable Campaigns
 

@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0173",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-18T07:25:00Z",
+  "updated": "2026-04-18T07:25:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "FrostArmada campaign reclassification and canonicalization",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/frostarmada-soho-dns-hijacking-2026.md",
+    "issues": [
+      "incident_campaign_taxonomy_drift",
+      "multi_victim_cluster_requires_campaign_handling",
+      "collection_reclassification"
+    ],
+    "notes": "The live `frostarmada-soho-dns-hijacking-2026.md` article describes a named, multi-victim espionage campaign spanning many months and should be reprocessed into the campaign collection with campaign semantics. Preserve any incident-level details that belong in downstream victim articles and retire or redirect the legacy incident slug according to site conventions."
+  },
+  "output": {
+    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "branch": "pipeline/TASK-2026-0173"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T07:25:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on reclassification after corpus review confirmed FrostArmada is campaign-shaped coverage living in the incidents collection."
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 ---
-eventId: TP-2021-0001
+eventId: TP-2021-0004
 title: Kaseya VSA Supply Chain Ransomware Attack
 date: 2021-07-02
 attackType: Supply Chain / Ransomware
@@ -8,7 +8,7 @@ sector: Technology
 geography: Global
 threatActor: REvil (Sodinokibi)
 attributionConfidence: A2
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: B
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -77,7 +77,7 @@ mitreMappings:
     notes: PowerShell used to disable Windows Defender before deploying ransomware payload
 ---
 
-## Summary
+## Executive Summary
 
 On 2 July 2021, the REvil (Sodinokibi) ransomware group executed a supply chain attack against Kaseya VSA, a remote monitoring and management (RMM) platform used by managed service providers (MSPs) worldwide. By exploiting a chain of zero-day vulnerabilities in the Kaseya VSA on-premises server, the attackers bypassed authentication and injected a malicious update that deployed REvil ransomware to the endpoints managed by each compromised MSP.
 
@@ -131,7 +131,7 @@ On 13 July 2021, REvil's infrastructure went offline, and its dark web sites bec
 
 In November 2021, the U.S. Department of Justice announced the arrest of Ukrainian national Yaroslav Vasinskyi and the seizure of $6.1 million in ransom proceeds from Russian national Yevgeniy Polyanin, both alleged REvil affiliates connected to the Kaseya attack.
 
-## Attribution
+## Historical Context
 
 The REvil (Sodinokibi) ransomware-as-a-service operation claimed responsibility for the Kaseya attack on its dark web blog on 4 July 2021. REvil operated as a Russian-language ransomware affiliate program, providing ransomware tools and infrastructure to affiliates who conducted attacks and shared ransom proceeds with the REvil operators.
 

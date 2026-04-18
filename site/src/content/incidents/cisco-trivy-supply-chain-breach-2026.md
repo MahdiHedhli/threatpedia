@@ -8,7 +8,7 @@ sector: "Technology"
 geography: "Global"
 threatActor: "TeamPCP / ShinyHunters (UNC5537)"
 attributionConfidence: A3
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -77,7 +77,7 @@ mitreMappings:
     notes: "300+ internal Cisco GitHub repositories systematically cloned using stolen credentials."
 ---
 
-## Summary
+## Executive Summary
 
 Cisco Systems suffered a supply chain attack when threat actors compromised the Trivy GitHub Actions repository (aquasecurity/trivy-action) and used stolen CI/CD credentials to breach Cisco's internal development environment. The attack chain originated with TeamPCP's March 19, 2026 compromise of Trivy, where malicious code was force-pushed to 76 of 77 version tags. This malicious code executed during Cisco's CI/CD pipeline, exfiltrating development credentials that granted access to internal infrastructure.
 
@@ -127,7 +127,7 @@ Multiple AWS access keys provided direct cloud infrastructure access. If product
 
 The attack originated from Trivy, a widely-used open-source vulnerability scanner. Any organization using Trivy GitHub Actions during March 19-25, 2026 executed the malicious code, creating compounded downstream risk.
 
-## Attribution
+## Historical Context
 
 The attack was perpetrated by TeamPCP in the initial Trivy compromise, with ShinyHunters (affiliated threat group, tracked as UNC5537 by Mandiant) conducting extortion operations against Cisco. Both are known threat actors with histories of supply chain attacks, data theft, and extortion campaigns.
 
