@@ -151,6 +151,77 @@ propagates to the dispatcher. Not in scope for the initial convergence.
 
 ---
 
+## Validation rules — `reviewStatus`
+
+`reviewStatus` validation is **stage-aware** in two different places, each
+with its own contract. Both paths agree on the same schema enum:
+
+```
+draft_ai | draft_human | under_review | certified | disputed | deprecated
+```
+
+The authoritative source of this enum is
+[`site/src/content.config.ts`](../site/src/content.config.ts). The workflow
+and the runner each keep a local copy to avoid requiring Zod in the
+Actions environment; a future task-shape-formalization slice will
+consolidate.
+
+### Path A — `pipeline-validate.yml` (file-state rule)
+
+Fires on every PR that touches `site/src/content/**/*.md[x]`. It has no
+task-id context, so it distinguishes intent from what the git diff shows:
+
+| File state on this PR | Required `reviewStatus` | Rationale |
+|---|---|---|
+| **New** (added, not on `main` before) | Must be `draft_ai` | Draft-generation — new articles begin as AI drafts awaiting review. |
+| **Edited** (existed on `main`, modified) | Any schema-enum value | Review / backfill / reprocess work is allowed to preserve live states. No forced downgrade. |
+
+This is the hard gate a PR must pass before it can merge to `main`. It
+covers both pipeline-driven PRs (discovery branch, corpus-review queue)
+and manual human edits.
+
+### Path B — `pipeline-run-task.mjs` (declarative rule from task file)
+
+When an agent runs a pipeline task, the runner's `--validate` checks the
+frontmatter's `reviewStatus` against the rule declared in the task's
+`acceptance.review_status` field:
+
+| Task rule form | Meaning | When to use |
+|---|---|---|
+| String, e.g. `"draft_ai"` | Exact match required | Discovery / ingest / draft-generation tasks |
+| `"*"` (wildcard) | Any schema-enum value accepted | Review / backfill / reprocess tasks that shouldn't force downgrade |
+| Array, e.g. `["draft_ai","under_review"]` | Any-of (must also be in the schema enum) | Constrained allow-lists for specific task types |
+| Missing / `null` | Defaults to `"draft_ai"` (exact match) | Safe legacy fallback for older task files |
+
+The runner's task-brief output renders the rule it will enforce for the
+current task, so agents always see what's expected before they start.
+
+### Two paths, one intent
+
+Path A (workflow) and Path B (runner) are complementary, not redundant:
+
+- **Path B** is what the agent experiences while executing a task — it
+  reads the task's declared rule and validates against it locally.
+- **Path A** is the final gate at merge time. It doesn't see tasks, only
+  files and their git-state, and applies the new-vs-edit rule.
+
+Both paths agree on the end state for draft-generation (must be
+`draft_ai`) and both allow review/reprocess work to preserve live
+statuses. A PR that satisfies Path B will satisfy Path A as long as the
+task's rule is honest about whether the output is new or edited.
+
+### Worked examples
+
+| Scenario | Path A (workflow) | Path B (runner) |
+|---|---|---|
+| Discovery creates a new zero-day article with `reviewStatus: draft_ai` | File is new → PASS (must be `draft_ai`, and it is) | Task rule is `"draft_ai"` → PASS (exact match) |
+| Review task leaves a certified incident at `reviewStatus: certified` | File existed on main → PASS (any schema-enum) | Task rule is `"*"` → PASS (any schema-enum) |
+| Review task accidentally changes a certified incident to `reviewStatus: draft_ai` | File existed on main → PASS (still schema-enum) | Task rule is `"*"` → PASS (but this is a semantic downgrade — caught in human review, not validator) |
+| Someone submits a new article with `reviewStatus: certified` | File is new → **FAIL** (new must be `draft_ai`) | N/A (no task context) |
+| Task file omits `acceptance.review_status` entirely | N/A | Defaults to `"draft_ai"` → exact match required (safe legacy behavior) |
+
+---
+
 ## How to invoke manually
 
 **Dry-run discovery** (does not write tasks or commit):
