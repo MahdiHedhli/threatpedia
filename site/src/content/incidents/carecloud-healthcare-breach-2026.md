@@ -8,7 +8,7 @@ sector: "Healthcare"
 geography: "United States"
 threatActor: "Unknown"
 attributionConfidence: A4
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -75,7 +75,7 @@ mitreMappings:
     notes: "Data suspected exfiltrated over web service channels during 8-hour intrusion window."
 ---
 
-## Summary
+## Executive Summary
 
 On March 16, 2026, CareCloud, a Somerset, New Jersey-based healthcare software company, detected unauthorized access to one of its six electronic health record (EHR) environments. The intrusion lasted approximately 8 hours before detection and containment. During this window, an unknown threat actor accessed and potentially exfiltrated sensitive patient health records from the compromised environment.
 
@@ -117,7 +117,7 @@ Exposed patient data categories may include names, dates of birth, medical recor
 
 The 45,000-plus healthcare providers using CareCloud may face their own regulatory notification requirements and liability exposure. Financial exposure includes incident response costs, forensic investigation fees, mandatory notification and credit monitoring services, potential regulatory fines, and litigation costs. Federal law enforcement has been notified and the company's cyber insurance provider has been engaged.
 
-## Attribution
+## Historical Context
 
 No threat actor has claimed responsibility for the CareCloud breach as of April 2026. The identity and motivation of the attacker remain unknown pending completion of the forensic investigation. The credential-based or application exploitation access pattern is consistent with both financially motivated cybercriminal groups and opportunistic attackers targeting healthcare sector systems.
 

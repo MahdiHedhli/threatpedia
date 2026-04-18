@@ -98,7 +98,7 @@ Unsecured Credentials - Plaintext secrets in Secrets Manager
 T1005
 Data from Local System - Database access and enumeration
 
-## Incident Timeline
+## Timeline
 
 February 24, 2026
 Initial Exploitation - FulcrumSec exploits React2Shell vulnerability in LexisNexis React frontend application, gaining remote code execution on web server.
@@ -158,7 +158,7 @@ Customer search queries or research histories
 
 However, the combination of exposed data (user profiles, infrastructure maps, secrets) still presents significant operational risk to affected organizations and government agencies.
 
-## Remediation & Lessons Learned
+## Remediation & Mitigation
 
 Immediate Actions Taken
 

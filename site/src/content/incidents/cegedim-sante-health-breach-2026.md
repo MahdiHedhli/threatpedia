@@ -8,7 +8,7 @@ sector: "Healthcare"
 geography: "France"
 threatActor: "Unknown"
 attributionConfidence: A4
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -87,7 +87,7 @@ mitreMappings:
     notes: "Local system data including doctor clinical notes and administrative records accessed."
 ---
 
-## Summary
+## Executive Summary
 
 Cegedim Santé, a major French healthcare technology company, suffered a critical data breach of its MonLogicielMedical (MLM) electronic health record platform that resulted in the theft of 15.8 million patient records. The breach occurred in late 2025 but was not publicly disclosed until February 27, 2026, by France24. It represents one of the largest healthcare data breaches in European history.
 
@@ -129,7 +129,7 @@ Medical identity theft risk is substantial, enabling fraudulent healthcare servi
 
 The prior CNIL fine of 800,000 EUR in September 2024 for data protection violations, combined with delayed disclosure (October 2025 criminal complaint to February 2026 public reporting), could trigger additional GDPR penalties under Article 83(6). CNIL opened a formal investigation into the breach notification timeline and potential GDPR Article 33 violations in March 2026.
 
-## Attribution
+## Historical Context
 
 The threat actor responsible for the Cegedim Santé breach has not been identified. Cegedim filed a criminal complaint with French authorities in October 2025, and the investigation remains ongoing. No ransomware group or threat actor has publicly claimed responsibility for the breach.
 
