@@ -95,7 +95,7 @@ const campaigns = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/campaigns' }),
   schema: z.object({
     // Identity
-    campaignId: z.string().regex(/^TP-CAMP-\d{4}-\d{4}$/).optional(),
+    campaignId: z.string().regex(/^TP-CAMP-\d{4}-\d{4}$/),
     title: z.string(),
     startDate: z.coerce.date(),
     endDate: z.coerce.date().optional(),
@@ -120,14 +120,45 @@ const campaigns = defineCollection({
     // References
     cves: z.array(z.string()).default([]),
     relatedIncidents: z.array(z.string()).default([]),
-    relatedSlugs: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
 
     // Sources
-    sources: z.array(sourceSchema).default([]),
+    sources: z.array(sourceSchema).min(3),
 
     // MITRE
-    mitreMappings: z.array(mitreMapping).default([]),
+    mitreMappings: z.array(mitreMapping).min(1),
+  }).superRefine((data, ctx) => {
+    if (data.ongoing && data.endDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['endDate'],
+        message: 'Ongoing campaigns must not specify endDate.',
+      });
+    }
+
+    if (!data.ongoing && !data.endDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['endDate'],
+        message: 'Concluded campaigns must specify endDate.',
+      });
+    }
+
+    if (data.endDate && data.endDate < data.startDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['endDate'],
+        message: 'endDate must be on or after startDate.',
+      });
+    }
+
+    if (!data.sources.some((source) => source.publisherType === 'government')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['sources'],
+        message: 'Campaigns require at least one government source.',
+      });
+    }
   }),
 });
 

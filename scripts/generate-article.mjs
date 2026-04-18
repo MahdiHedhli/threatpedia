@@ -170,7 +170,7 @@ Numbered markdown list (EDIT-RULE-042):
     dir: 'campaigns',
     frontmatterSpec: `
 YAML frontmatter fields (all required unless marked optional):
-  campaignId: string (optional) — format TP-CAMP-YYYY-NNNN
+  campaignId: string — format TP-CAMP-YYYY-NNNN
   title: string — campaign name, max 80 chars
   startDate: date — ISO 8601 YYYY-MM-DD
   endDate: date (optional) — null if ongoing
@@ -186,10 +186,9 @@ YAML frontmatter fields (all required unless marked optional):
   generatedBy: must be "ai_ingestion"
   generatedDate: date — today's date
   cves: array of strings (optional)
-  relatedIncidents: array of strings (optional) — linked incident slugs
-  relatedSlugs: array of strings (optional)
+  relatedIncidents: array of strings (optional) — linked incident slugs; campaigns should reference confirmed constituent incidents where available
   tags: array of strings
-  sources: array of source objects (minimum 3, same schema as incidents)
+  sources: array of source objects (minimum 3, same schema as incidents; at least 1 government source)
   mitreMappings: array of MITRE objects (minimum 1, same schema as incidents)`,
     bodySpec: `
 Required H2 sections IN THIS ORDER:
@@ -207,18 +206,12 @@ Typical attack pattern used across campaign events.
 ## MITRE ATT&CK Mapping
 Campaign-level techniques. Same format as incidents.
 
-## Impact Assessment
-Aggregate impact across all campaign events.
-
 ## Timeline
 Major events/shifts over the campaign duration.
 ### YYYY-MM-DD — Title format.
 
 ## Remediation & Mitigation
 Detection rules, defensive measures.
-
-## Indicators of Compromise
-IOCs seen across campaign events. Grouped by type.
 
 ## Sources & References
 Numbered list, minimum 3.`
