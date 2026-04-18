@@ -33,6 +33,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const TASKS_DIR = resolve(ROOT, '.github/pipeline/tasks');
 const CONTENT_DIR = resolve(ROOT, 'site/src/content');
+const REJECTION_FILE = resolve(ROOT, '.github/pipeline/rejected-candidates.json');
 
 // ── Feed URLs ──────────────────────────────────────────────────────────────
 const FEEDS = {
@@ -101,6 +102,36 @@ function buildTaskCveIndex() {
     for (const m of topicCves) cves.add(m[0]);
   }
 
+  return cves;
+}
+
+// ── Rejection memory (operator-vetoed CVEs) ────────────────────────────────
+// Compatibility-safe: missing or malformed file → warning + empty set.
+// Never hard-fails discovery. Operator workflow manages the file via
+// .github/workflows/pipeline-reject.yml. Re-eligibility = remove entry via PR.
+// See docs/PIPELINE.md — Rejection memory. TASK-2026-0067 / Slice 4c.
+function buildRejectionCveIndex() {
+  const cves = new Set();
+  if (!existsSync(REJECTION_FILE)) {
+    console.log('::warning::rejected-candidates.json not found; proceeding with empty rejection set');
+    return cves;
+  }
+  let data;
+  try {
+    data = JSON.parse(readFileSync(REJECTION_FILE, 'utf8'));
+  } catch (err) {
+    console.log(`::warning::rejected-candidates.json parse error (${err.message}); proceeding with empty rejection set`);
+    return cves;
+  }
+  if (!data || !Array.isArray(data.rejected)) {
+    console.log('::warning::rejected-candidates.json malformed (missing rejected[] array); proceeding with empty rejection set');
+    return cves;
+  }
+  for (const entry of data.rejected) {
+    if (entry && typeof entry.cve === 'string') {
+      cves.add(entry.cve.toUpperCase());
+    }
+  }
   return cves;
 }
 
@@ -407,9 +438,11 @@ async function main() {
   console.log('  [1/5] Building corpus CVE index...');
   const corpusCves = buildCorpusCveIndex();
   const taskCves = buildTaskCveIndex();
+  const rejectedCves = buildRejectionCveIndex();
   const allKnownCves = new Set([...corpusCves, ...taskCves]);
   console.log(`         ${corpusCves.size} CVEs in corpus, ${taskCves.size} in pending tasks`);
-  console.log(`         ${allKnownCves.size} unique CVEs total (dedup set)\n`);
+  console.log(`         ${rejectedCves.size} operator-rejected CVEs (rejection memory)`);
+  console.log(`         ${allKnownCves.size} unique CVEs in corpus+tasks (existing dedup set)\n`);
 
   // ── Step 2: Fetch CISA KEV ───────────────────────────────────────────────
   console.log('  [2/5] Fetching CISA KEV catalog...');
@@ -429,9 +462,19 @@ async function main() {
   cutoffDate.setDate(cutoffDate.getDate() - opts.days);
   const cutoffStr = cutoffDate.toISOString().split('T')[0];
 
+  // Tally and log rejection skips separately for auditability.
+  let rejectedSkipped = 0;
   const candidates = kevData.vulnerabilities
     .filter(v => v.dateAdded >= cutoffStr)
     .filter(v => !allKnownCves.has(v.cveID))
+    .filter(v => {
+      if (rejectedCves.has(String(v.cveID || '').toUpperCase())) {
+        console.log(`::notice::Skipped ${v.cveID} (in rejection memory)`);
+        rejectedSkipped++;
+        return false;
+      }
+      return true;
+    })
     .map(v => ({
       kev: v,
       inKev: true,
@@ -442,9 +485,10 @@ async function main() {
     }));
 
   const recentTotal = kevData.vulnerabilities.filter(v => v.dateAdded >= cutoffStr).length;
-  const dupes = recentTotal - candidates.length;
+  const dupes = recentTotal - candidates.length - rejectedSkipped;
   console.log(`         ${recentTotal} entries in last ${opts.days} days`);
   console.log(`         ${dupes} already in corpus/tasks (deduped)`);
+  console.log(`         ${rejectedSkipped} skipped via rejection memory`);
   console.log(`         ${candidates.length} new candidates\n`);
 
   if (candidates.length === 0) {
