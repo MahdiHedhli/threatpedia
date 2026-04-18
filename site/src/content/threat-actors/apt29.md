@@ -54,7 +54,7 @@ mitreMappings:
     notes: "Leveraged forged SAML tokens and OAuth tokens to access cloud resources without credentials."
 attributionConfidence: A1
 attributionRationale: "Attributed to Russia's SVR by joint U.S./UK government statements (April 2021), supported by NSA/FBI/CISA advisory, and multiple private-sector research confirming SVR affiliation."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

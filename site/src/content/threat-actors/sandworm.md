@@ -52,7 +52,7 @@ mitreMappings:
     notes: "Industroyer manipulated ICS protocols to disable safety systems during power grid attacks."
 attributionConfidence: A1
 attributionRationale: "Attributed to GRU Unit 74455 by a 2020 U.S. DOJ indictment of six officers, corroborated by Five Eyes intelligence agencies and private-sector research from ESET, Mandiant, and Dragos."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
