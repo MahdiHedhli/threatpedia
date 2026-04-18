@@ -255,6 +255,22 @@ entry (via PR edit) restores discovery eligibility.
    **No direct push to `main`** — Kernel K reviews and merges.
 4. Next discovery run honors the new entry.
 
+**Durable retry path.** The workflow handles pre-existing remote branches
+for the same CVE without operator cleanup:
+
+- If no branch `pipeline/reject-<CVE>` exists on the remote → clean start.
+- If the branch exists and has an **open** rejection PR → the workflow
+  errors out with a clear message; the operator resolves that PR (merge
+  or close) and re-dispatches.
+- If the branch exists but has **no open PR** (previous attempt was
+  merged or closed without merge, and the branch was never deleted) →
+  the workflow deletes the stale remote ref and creates a fresh branch
+  from `main`. No force-push semantics required.
+
+This mirrors the spirit of the stale-branch handling in the discovery
+workflow: prior state gets collapsed to a clean starting point before
+push.
+
 ### How discovery honors the file
 
 `pipeline-discover.mjs` builds a `Set<string>` of rejected CVEs at startup,
