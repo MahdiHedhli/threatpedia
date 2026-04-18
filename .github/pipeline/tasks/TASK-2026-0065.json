@@ -53,6 +53,8 @@
     {
       "timestamp": "2026-04-15T18:00:00Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "notes": "Pipeline v2 smoke test — tightened validator"
     },

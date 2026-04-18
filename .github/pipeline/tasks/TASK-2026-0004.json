@@ -57,6 +57,7 @@
   "history": [
     {
       "timestamp": "2026-04-14T20:30:00Z",
+      "action": "created",
       "from": "none",
       "to": "pending",
       "agent": "pipeline-inventory",

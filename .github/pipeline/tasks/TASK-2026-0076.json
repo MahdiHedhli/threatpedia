@@ -224,6 +224,8 @@
     {
       "timestamp": "2026-04-16T03:20:00.000Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Manually queued from Kernel K LinkedIn feed submission. OX Security MCP coordinated disclosure."
     },

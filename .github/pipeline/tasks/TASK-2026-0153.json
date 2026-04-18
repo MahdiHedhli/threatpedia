@@ -53,6 +53,7 @@
   "history": [
     {
       "timestamp": "2026-04-17T20:30:00Z",
+      "action": "created",
       "from": "none",
       "to": "pending",
       "agent": "kernel-k",

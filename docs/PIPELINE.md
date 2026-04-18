@@ -186,7 +186,17 @@ compatibility — no existing task file on disk fails to load.
 |---|---|---|---|
 | Top-level acceptance block | `acceptance_criteria` | `acceptance` | Runner's `getAcceptance()` reads canonical first, falls back to alias. Dispatcher's Issue-body renderer does the same. |
 | Build-pass field (inside acceptance block) | `astro_build` | `build_passes` | Runner displays whichever is present; validator workflow does not key on it. All 112 tasks migrated to canonical (TASK-2026-0066). |
-| History creation entry | `action: 'created'` AND `{from: 'none', to: 'pending'}` (both fields on the first entry) | `action`-only (95 legacy tasks), `{from, to}`-only (17 legacy tasks) | Runner's "Created" display finds `h.action === 'created'`; transition rendering uses `{from, to}`. Both alias shapes remain fully readable; no data migration. |
+| History creation entry | `action: 'created'` AND `{from: 'none', to: 'pending'}` (both fields on the first entry) | `action`-only, `{from, to}`-only (transition entries only; see below) | Runner's "Created" display finds `h.action === 'created'`; transition rendering uses `{from, to}`. Creation entries migrated to canonical across all 112 task files in Slice 4d; readers still accept legacy shapes on transition entries. |
+
+### Transition history stays legacy-tolerant
+
+Creation entries (`history[0]`) are canonical across the entire corpus
+as of Slice 4d. **Transition entries (`history[1..]`) are deliberately
+left alone** — readers have always been tolerant of their mixed shapes
+(47 × `completed`, 14 × `complete`, 10 × from/to-only across the
+corpus), and there is no operator-visible benefit to rewriting them.
+Normalizing transition entries is a candidate for a future slice if
+there's a forcing function.
 
 ### Schema enum authority
 
@@ -204,6 +214,7 @@ authoritative schema changes. There is no automated sync.
 | `.github/workflows/pipeline-ingest-issue.yml` | `acceptance_criteria` · `astro_build` |
 | `.github/pipeline/tasks/*` (corpus, 112 files) | `acceptance_criteria` · `astro_build` |
 | `scripts/pipeline-reject.mjs` (via `pipeline-reject.yml`) | `.github/pipeline/rejected-candidates.json` entries — see Rejection memory |
+| `scripts/pipeline-history-backfill.mjs` (Slice 4d one-shot migration) | Canonical creation entry on existing `.github/pipeline/tasks/*.json` |
 
 If a new writer lands that emits the legacy alias, readers will still
 work — but it should be updated to the canonical form in the same PR.
