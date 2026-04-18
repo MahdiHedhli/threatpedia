@@ -34,14 +34,14 @@
     "DATA-STANDARDS-v1.0.md",
     "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
-  "acceptance": {
+  "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
     "min_h2_sections": 5,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
-    "build_passes": true
+    "astro_build": true
   },
   "depends_on": [],
   "preconditions": [

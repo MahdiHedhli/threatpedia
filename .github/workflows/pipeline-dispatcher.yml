@@ -328,7 +328,11 @@ jobs:
                 '### Acceptance Criteria',
                 '',
                 '```json',
-                JSON.stringify(task.acceptance, null, 2),
+                // Tolerant read: accept canonical `acceptance_criteria` or
+                // legacy `acceptance`. New task writers always emit
+                // `acceptance_criteria` per TASK-2026-0066 / Slice 4b; older
+                // task files on disk may still carry the legacy alias.
+                JSON.stringify(task.acceptance_criteria || task.acceptance || {}, null, 2),
                 '```',
                 '',
                 '### Source URLs',
