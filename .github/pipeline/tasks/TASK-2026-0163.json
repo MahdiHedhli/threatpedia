@@ -31,7 +31,7 @@
     "ADR 0007 — Entity ID Format Convention",
     "site/src/content.config.ts"
   ],
-  "acceptance": {
+  "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
     "min_h2_sections": 7,

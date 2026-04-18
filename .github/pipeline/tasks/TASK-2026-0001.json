@@ -32,7 +32,7 @@
     "EDITORIAL-WORKFLOW-SPEC.md §14A",
     "INGESTION-SPEC.md §2"
   ],
-  "acceptance": {
+  "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
     "min_h2_sections": 5,
