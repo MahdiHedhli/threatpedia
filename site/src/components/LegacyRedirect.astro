@@ -1,0 +1,32 @@
+---
+interface Props {
+  destination: string;
+  label: string;
+}
+
+const { destination, label } = Astro.props;
+const canonical = new URL(destination, Astro.site ?? 'https://threatpedia.wiki').toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Campaign Redirect</title>
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ destination }}>
+      window.location.replace(destination);
+    </script>
+  </head>
+  <body>
+    <main>
+      <p>
+        This campaign has been consolidated into
+        <a href={destination}>{label}</a>.
+      </p>
+    </main>
+  </body>
+</html>
