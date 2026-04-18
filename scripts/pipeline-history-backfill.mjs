@@ -114,12 +114,42 @@ export function migrateCreationEntry(entry, kind) {
 }
 
 /**
- * Serialize the task JSON back to disk. Matches the existing corpus style:
- * 2-space indent, trailing newline, no ASCII escaping (so em-dashes and
- * section signs survive round-trip, per Slice 3 learning).
+ * Escape non-ASCII chars as `\uXXXX` sequences. Matches Python's
+ * default `json.dumps(ensure_ascii=True)` output, which is how most of
+ * the legacy corpus was originally written. Without this, a mixed
+ * corpus (some files with literal em-dashes, some with `\u2014`) would
+ * get inconsistently rewritten by the migration, inflating the diff
+ * with unrelated encoding flips.
+ *
+ * Files that were originally written by the JS canonical writers have
+ * no non-ASCII chars in their fields (agents, topics, notes are all
+ * ASCII), so this pass is a no-op for them. Files that had `\u2014`
+ * etc. keep them. Net result: the only diff per file is the added
+ * canonical field(s) on history[0].
  */
-function serialize(task) {
-  return JSON.stringify(task, null, 2) + '\n';
+function escapeNonAscii(s) {
+  return s.replace(/[\u0080-\uffff]/g, (ch) =>
+    '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')
+  );
+}
+
+/**
+ * Serialize the task JSON back to disk preserving the file's original
+ * encoding style. 2-space indent, trailing newline.
+ *
+ * The corpus has mixed encoding: early Python-written files use
+ * `\uXXXX` escapes for non-ASCII (Python ensure_ascii=True default),
+ * while newer JS-written files keep literal chars. Forcing either
+ * direction universally would flip encoding on half the corpus —
+ * not what this slice is about. Instead we detect the original file's
+ * style (by checking for any `\uXXXX` escape sequence in the raw
+ * input) and match it on write.
+ */
+function serialize(task, originalRaw) {
+  const hasUnicodeEscapes = /\\u[0-9a-fA-F]{4}/.test(originalRaw);
+  const base = JSON.stringify(task, null, 2);
+  const out = hasUnicodeEscapes ? escapeNonAscii(base) : base;
+  return out + '\n';
 }
 
 function processFile(path) {
@@ -139,7 +169,7 @@ function processFile(path) {
 
   const migrated = migrateCreationEntry(task.history[0], classification.kind);
   const newTask = { ...task, history: [migrated, ...task.history.slice(1)] };
-  const newRaw = serialize(newTask);
+  const newRaw = serialize(newTask, raw);
   const changed = newRaw !== raw;
   return { path, kind: classification.kind, changed, newRaw };
 }
@@ -186,14 +216,30 @@ function selfTest() {
     throw new Error(`selfTest migrate B key order: ${Object.keys(mB).join(',')}`);
   }
 
-  // Unicode round-trip — ensure em-dash survives a typical task note.
+  // Unicode escape — non-ASCII is written as `\uXXXX` to match the
+  // dominant corpus style (Python ensure_ascii=True). Round-trip via
+  // JSON.parse still yields the original chars.
   const sample = {
     task_id: 'TASK-T',
     history: [{ timestamp: 't', action: 'created', agent: 'a', note: 'em—dash §' }],
   };
   const migrated = migrateCreationEntry(sample.history[0], 'action-only');
-  const out = JSON.stringify({ ...sample, history: [migrated] }, null, 2);
-  if (!out.includes('em—dash §')) throw new Error('selfTest: unicode escape drift');
+  // Original style = escaped → output escaped, round-trip recovers chars.
+  const outEscaped = serialize({ ...sample, history: [migrated] }, 'prev \\u2014 prev');
+  if (!outEscaped.includes('\\u2014') || !outEscaped.includes('\\u00a7')) {
+    throw new Error(`selfTest: expected \\u-escaped output, got ${outEscaped}`);
+  }
+  if (JSON.parse(outEscaped).history[0].note !== 'em—dash §') {
+    throw new Error('selfTest: escaped round-trip failed');
+  }
+  // Original style = literal → output literal.
+  const outLiteral = serialize({ ...sample, history: [migrated] }, 'prev — prev');
+  if (outLiteral.includes('\\u2014')) {
+    throw new Error(`selfTest: expected literal output, got escaped: ${outLiteral}`);
+  }
+  if (!outLiteral.includes('em—dash §')) {
+    throw new Error('selfTest: literal round-trip failed');
+  }
 }
 selfTest();
 
