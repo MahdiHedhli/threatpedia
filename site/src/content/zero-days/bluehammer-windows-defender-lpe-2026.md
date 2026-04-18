@@ -8,7 +8,7 @@ severity: critical
 status: active
 isZeroDay: true
 cisaKev: false
-reviewStatus: certified
+reviewStatus: under_review
 generatedBy: manual-zero-day-ingestion
 generatedDate: 2026-04-03
 relatedIncidents:
