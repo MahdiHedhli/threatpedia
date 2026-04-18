@@ -29,6 +29,8 @@
     {
       "timestamp": "2026-04-17T19:00:00Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "kernel-k",
       "note": "Campaign corpus review - removed duplicate Operation Aurora campaign variant and queued canonical reprocessing."
     }

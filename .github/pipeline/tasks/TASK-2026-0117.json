@@ -28,6 +28,8 @@
     {
       "timestamp": "2026-04-16T04:00:00.000Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Corpus reprocessing \u2014 source quality enforcement"
     }
