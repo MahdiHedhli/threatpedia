@@ -151,6 +151,13 @@ at the top of the step output (including the `_source` — `file` or
 single-knob edit in `config.yml` propagates to the dispatcher on the
 next run, no code change required.
 
+**Shared schema enum authority:** JavaScript-side schema enums (currently
+`SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
+single source of truth for the pipeline scripts. The runner imports it
+directly; the validator workflow loads it via a small shell-out step.
+The ultimate schema authority remains `site/src/content.config.ts` — the
+JS mirror must be updated in the same PR when the Zod schema changes.
+
 **Backpressure hysteresis:** the dispatcher pauses draft dispatch when
 the editorial queue hits `max_pending` and stays paused until the queue
 drains below `backpressure_resume`. State is tracked via a labeled
@@ -167,6 +174,40 @@ in `config.yml` if the dispatch volume pattern changes.
 
 ---
 
+## Task JSON — canonical shape
+
+Tasks in `.github/pipeline/tasks/` follow a canonical shape. **Writers**
+(discovery, ingest-issue, any future task emitter) must emit the
+canonical form. **Readers** tolerate named legacy aliases for backward
+compatibility — no existing task file on disk fails to load.
+
+| Field | Canonical | Tolerated legacy alias | Enforcement |
+|---|---|---|---|
+| Top-level acceptance block | `acceptance_criteria` | `acceptance` | Runner's `getAcceptance()` reads canonical first, falls back to alias. Dispatcher's Issue-body renderer does the same. |
+| Build-pass field (inside acceptance block) | `astro_build` | `build_passes` | Runner displays whichever is present; validator workflow does not key on it. All 112 tasks migrated to canonical (TASK-2026-0066). |
+| History creation entry | `action: 'created'` AND `{from: 'none', to: 'pending'}` (both fields on the first entry) | `action`-only (95 legacy tasks), `{from, to}`-only (17 legacy tasks) | Runner's "Created" display finds `h.action === 'created'`; transition rendering uses `{from, to}`. Both alias shapes remain fully readable; no data migration. |
+
+### Schema enum authority
+
+JS-side schema enums (currently `SCHEMA_REVIEW_STATUSES`) live in
+`scripts/pipeline-schema.mjs` as the single source of truth. The
+authoritative schema definition remains `site/src/content.config.ts`
+(Zod) — the JS mirror must be updated in the same PR when the
+authoritative schema changes. There is no automated sync.
+
+### Writer paths (all emit canonical post-Slice 4b)
+
+| Path | Emits |
+|---|---|
+| `scripts/pipeline-discover.mjs` | `acceptance_criteria` · `astro_build` |
+| `.github/workflows/pipeline-ingest-issue.yml` | `acceptance_criteria` · `astro_build` |
+| `.github/pipeline/tasks/*` (corpus, 112 files) | `acceptance_criteria` · `astro_build` |
+
+If a new writer lands that emits the legacy alias, readers will still
+work — but it should be updated to the canonical form in the same PR.
+
+---
+
 ## Validation rules — `reviewStatus`
 
 `reviewStatus` validation is **stage-aware** in two different places, each
@@ -177,10 +218,14 @@ draft_ai | draft_human | under_review | certified | disputed | deprecated
 ```
 
 The authoritative source of this enum is
-[`site/src/content.config.ts`](../site/src/content.config.ts). The workflow
-and the runner each keep a local copy to avoid requiring Zod in the
-Actions environment; a future task-shape-formalization slice will
-consolidate.
+[`site/src/content.config.ts`](../site/src/content.config.ts). The shared
+JS-side mirror lives in
+[`scripts/pipeline-schema.mjs`](../scripts/pipeline-schema.mjs) and is
+consumed by both the runner (`import`) and the validator workflow (CLI
+shell-out via `--key reviewStatuses`). The validator workflow keeps a
+local fallback constant only as a safety net in case the shared module
+fails to load, with an Actions-level `::warning::` annotation when the
+fallback fires. There is no duplicated primary constant.
 
 ### Path A — `pipeline-validate.yml` (file-state rule)
 

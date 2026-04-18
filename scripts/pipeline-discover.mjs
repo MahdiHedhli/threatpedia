@@ -312,7 +312,9 @@ function buildTask(candidate, taskId, exploitId) {
       'DATA-STANDARDS-v1.0.md',
       'EDITORIAL-WORKFLOW-SPEC.md §14A',
     ],
-    acceptance: {
+    // Canonical write shape: `acceptance_criteria` (not `acceptance`) per
+    // TASK-2026-0066 / Slice 4b. Readers tolerate both via getAcceptance().
+    acceptance_criteria: {
       frontmatter_valid: true,
       min_sources: 3,
       min_h2_sections: 5,

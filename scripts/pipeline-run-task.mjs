@@ -23,6 +23,11 @@ import { resolve, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 
+// Shared schema enums (single source of truth — see scripts/pipeline-schema.mjs).
+// The validator workflow loads the same enum via its CLI. Both track the
+// authoritative definitions in site/src/content.config.ts manually.
+import { SCHEMA_REVIEW_STATUSES } from './pipeline-schema.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const TASKS_DIR = resolve(ROOT, '.github/pipeline/tasks');
@@ -36,19 +41,6 @@ const EDITORIAL_WORDS = [
   'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
-
-// ── reviewStatus schema enum ───────────────────────────────────────────────
-// Authoritative source: site/src/content.config.ts. Kept as a local constant
-// here to avoid requiring Zod / content-collection imports in the Actions
-// environment. Task-shape-formalization slice will consolidate.
-const SCHEMA_REVIEW_STATUSES = [
-  'draft_ai',
-  'draft_human',
-  'under_review',
-  'certified',
-  'disputed',
-  'deprecated',
-];
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator

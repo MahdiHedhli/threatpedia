@@ -46,10 +46,23 @@ jobs:
             echo "count=$(echo "$ALL" | grep -c '.' || true)"
           } >> "$GITHUB_OUTPUT"
 
+      - name: Load pipeline schema (review-status enum)
+        id: schema
+        if: steps.changed.outputs.count != '0'
+        run: |
+          set -euo pipefail
+          # Shell out to the shared schema module. On failure, emit an
+          # empty value — the github-script step falls back to a safe
+          # local default and logs a ::warning:: so the fallback is visible.
+          REVIEW_STATUSES_JSON="$(node scripts/pipeline-schema.mjs --key reviewStatuses 2>/dev/null || echo '')"
+          echo "review_statuses=${REVIEW_STATUSES_JSON}" >> "$GITHUB_OUTPUT"
+
       - name: Validate frontmatter and structure
         id: validate
         if: steps.changed.outputs.count != '0'
         uses: actions/github-script@v7
+        env:
+          REVIEW_STATUSES_JSON: ${{ steps.schema.outputs.review_statuses }}
         with:
           script: |
             const fs = require('fs');
@@ -59,14 +72,28 @@ jobs:
             );
             const results = [];
 
-            // ── reviewStatus schema enum ───────────────────────────────
-            // Authoritative source: site/src/content.config.ts. Hardcoded
-            // here to avoid Zod imports in the Actions environment. A
-            // future task-shape-formalization slice will consolidate.
-            const SCHEMA_REVIEW_STATUSES = [
+            // ── reviewStatus schema enum (from scripts/pipeline-schema.mjs) ──
+            // Loaded via the previous step's shell-out, same pattern as
+            // the dispatcher's config load. Falls back to a local default
+            // if the shared-module load failed, with an Actions-level warning
+            // so the degradation is visible.
+            const FALLBACK_REVIEW_STATUSES = [
               'draft_ai', 'draft_human', 'under_review',
               'certified', 'disputed', 'deprecated',
             ];
+            let SCHEMA_REVIEW_STATUSES;
+            try {
+              const raw = process.env.REVIEW_STATUSES_JSON || '';
+              const parsed = raw ? JSON.parse(raw) : null;
+              if (Array.isArray(parsed) && parsed.length > 0 && parsed.every(v => typeof v === 'string')) {
+                SCHEMA_REVIEW_STATUSES = parsed;
+              } else {
+                throw new Error(`unexpected shape: ${raw || '(empty)'}`);
+              }
+            } catch (e) {
+              console.warn(`::warning::Could not load review-status enum from scripts/pipeline-schema.mjs (${e.message}); falling back to hardcoded default.`);
+              SCHEMA_REVIEW_STATUSES = FALLBACK_REVIEW_STATUSES;
+            }
 
             for (const file of files) {
               if (!fs.existsSync(file)) continue;
