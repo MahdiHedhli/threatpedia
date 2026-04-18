@@ -6,7 +6,7 @@ aliases:
 affiliation: "Cybercriminal (Russian-speaking)"
 motivation: "Financial"
 status: active
-country: "Russia"
+country: "Unknown"
 firstSeen: "2018"
 lastSeen: "2024"
 targetSectors:
@@ -41,7 +41,7 @@ mitreMappings:
     notes: "Purchases access from initial access brokers to expedite intrusion timelines."
 attributionConfidence: A3
 attributionRationale: "Tracked by Mandiant as a distinct intrusion cluster specializing in rapid ransomware deployment. Linked to the Conti/TrickBot ecosystem through shared infrastructure."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -77,7 +77,7 @@ sources:
 
 ## Executive Summary
 
-FIN12 is a financially motivated threat actor that specializes in rapid ransomware deployment, often completing intrusions from initial access to encryption in under two days. Tracked by Mandiant since 2018, the group is distinguished by its willingness to target healthcare organizations, including during the COVID-19 pandemic, and its reliance on initial access brokers rather than conducting its own phishing campaigns.
+FIN12 is a financially motivated threat actor that specializes in rapid ransomware deployment, often completing intrusions from initial access to encryption in under two days. Tracked by Mandiant since 2018, the group is distinguished by its willingness to target healthcare organizations, including during the COVID-19 pandemic, and its reliance on initial access brokers rather than running its own large phishing program.
 
 FIN12 has deployed Ryuk and Conti ransomware and operates within the broader TrickBot/Conti ecosystem. The group's operations prioritize speed over data exfiltration, frequently encrypting systems without first stealing data -- a departure from the double-extortion model adopted by most ransomware groups.
 

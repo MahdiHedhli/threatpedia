@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0175",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T07:27:00Z",
+  "updated": "2026-04-18T07:27:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "FBI DCSNet incident canonical slug and redirect cleanup",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/fbi-dcsnet-salt-typhoon-2026.md",
+    "issues": [
+      "slug_encodes_unconfirmed_attribution",
+      "canonicalization_cleanup",
+      "redirect_required"
+    ],
+    "notes": "Corpus review lowered the live article to suspected China-linked activity and removed confirmed Salt Typhoon attribution from the body and title. Reprocess the incident into a canonical slug that does not encode unconfirmed actor attribution, and add a redirect from the legacy `fbi-dcsnet-salt-typhoon-2026` path according to site conventions."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0175"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T07:27:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on canonicalization after corpus review removed confirmed Salt Typhoon attribution from the FBI DCSNet article but the legacy slug still encodes that claim."
+    }
+  ]
+}

@@ -48,7 +48,7 @@ mitreMappings:
     notes: "C2 communications conducted over HTTPS using PlugX and custom backdoors."
 attributionConfidence: A1
 attributionRationale: "Attributed to Chinese MSS-affiliated actors by a 2018 U.S. DOJ indictment of two MSS officers, supported by joint advisories from CISA, FBI, and international partners."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

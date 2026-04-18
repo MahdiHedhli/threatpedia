@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0170",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-18T04:55:00Z",
+  "updated": "2026-04-18T04:55:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "TrueConf incident canonical reconciliation",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/operation-truechaos-trueconf-zero-day-2026.md",
+    "issues": [
+      "duplicate_live_incident_variant",
+      "canonical_incident_reconciliation",
+      "trueconf_cve_2026_3502_overlap"
+    ],
+    "notes": "Two live incident articles currently describe the same underlying TrueConf / Operation TrueChaos campaign and CVE chain from different angles: `operation-truechaos-trueconf-zero-day-2026.md` and `trueconf-cve-2026-3502-zero-day.md`. Reprocess into one canonical incident article, preserve any non-duplicative details, and then retire or redirect the duplicate slug path according to the site’s incident-handling conventions."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0170"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T04:55:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on canonical reconciliation for duplicate TrueConf incident coverage discovered during soft-launch corpus review batch 1."
+    }
+  ]
+}

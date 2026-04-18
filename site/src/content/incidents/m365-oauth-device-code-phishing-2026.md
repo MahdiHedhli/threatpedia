@@ -5,8 +5,8 @@ date: 2026-02-19
 attackType: phishing
 severity: high
 sector: Multi-Sector
-geography: US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, UAE
-threatActor: EvilTokens PhaaS (Storm-2372, APT29, UTA0304, UTA0307)
+geography: United States, Canada, Australia, New Zealand, Germany
+threatActor: EvilTokens-linked phishing infrastructure
 attributionConfidence: A4
 reviewStatus: under_review
 confidenceGrade: C
@@ -15,7 +15,6 @@ generatedDate: 2026-02-19
 cves: []
 relatedSlugs:
   - "frostarmada-soho-dns-hijacking-2026"
-  - "hims-hers-shinyhunters-breach-2026"
 tags:
   - "phishing"
   - "oauth"
@@ -30,119 +29,82 @@ tags:
 ---
 ## Executive Summary
 
-A sophisticated phishing campaign launched in mid-February 2026 has successfully compromised over 340 organizations worldwide by exploiting the Microsoft OAuth device code authentication flow. The threat actor group EvilTokens PhaaS (also tracked as Storm-2372, APT29, UTA0304, UTA0307) has developed and deployed an industrialized token theft-as-a-service platform that bypasses multi-factor authentication, captures valid OAuth access and refresh tokens, and maintains persistence even after victim password resets.
+A sophisticated phishing campaign launched in mid-February 2026 compromised more than 340 organizations by abusing Microsoft's OAuth device code authentication flow. Huntress and later Sekoia linked the infrastructure and phishing kit to the EvilTokens phishing-as-a-service (PhaaS) platform, which industrialized device-code phishing by combining Cloudflare Workers landing pages with Railway-hosted token-replay infrastructure.
 
-The attack chain is notably evasive: phishing emails direct victims to attacker-controlled infrastructure disguised as legitimate Microsoft 365, Adobe Acrobat, DocuSign, and SharePoint authentication pages. When victims complete MFA during the device code flow, they unknowingly grant the attacker valid OAuth tokens without triggering typical credential-based alerts. The campaign has targeted organizations across construction, non-profit, real estate, manufacturing, financial services, healthcare, legal, and government sectors in the US, Canada, Australia, New Zealand, Germany, France, India, Switzerland, and UAE.
+The attack chain is evasive because the victim ultimately authenticates on the legitimate Microsoft device login page, not on a fake password-collection form. The attacker generates a device code, lures the victim through a decoy page or email, and persuades the victim to complete the sign-in on `microsoft.com/devicelogin`. Once the victim finishes the flow, the attacker redeems the resulting access and refresh tokens from actor-controlled infrastructure. Huntress observed the strongest initial concentration of victim organizations in the United States, Canada, Australia, New Zealand, and Germany, with later reporting indicating broader global adoption of the kit.
 
-Attribution Confidence: Confirmed (validated by multiple security vendors including Palo Alto Networks Unit 42, Huntress, and Sekoia).
+This campaign should not be flattened into a single confirmed nation-state attribution. Device-code phishing has also been used by other Russia-aligned clusters such as Storm-2372, but the 2026 Railway-centered campaign reviewed here is best described as EvilTokens-linked phishing infrastructure with broad downstream abuse potential.
 
 ## Technical Analysis
 
-Attack Mechanism: OAuth Device Code Flow Abuse
+### Attack Mechanism: OAuth Device Code Flow Abuse
 
-The device code authentication flow is a legitimate OAuth 2.0 mechanism designed for devices with limited input capabilities (e.g., smart TVs, IoT devices). It normally operates as follows:
+The device code authentication flow is a legitimate OAuth 2.0 mechanism designed for devices with limited input capability. In the abuse pattern documented by Huntress and later Sekoia, the attacker first requests a legitimate device code from Microsoft, then delivers that code to the victim through a phishing lure. The victim is instructed to continue to the legitimate Microsoft device-login experience and enter the supplied code, after which the attacker redeems the resulting tokens from their own infrastructure.
 
-Device requests a device code from the authorization server
-User is prompted to visit a user code URL and authenticate on another device
-Upon successful user authentication, the device receives valid access and refresh tokens
+That distinction matters: public reporting on this campaign did not primarily describe a fake password page that steals the user's Microsoft password or MFA secret directly. Instead, the campaign abused a legitimate Microsoft authentication workflow and relied on social engineering to trick the victim into completing it on the attacker's behalf.
 
-EvilTokens exploits this flow by:
-
-Generating fraudulent device codes through attacker-controlled OAuth applications registered with Microsoft
-Embedding device codes in phishing emails disguised as security notifications or legitimate business communications
-Directing victims to fake login pages hosted on compromised infrastructure or legitimate platforms (Cloudflare Workers, Railway.com PaaS)
-Capturing MFA factors when victims enter their credentials and MFA codes on the attacker's replica pages
-Intercepting the OAuth flow to extract valid access and refresh tokens before victims reach the legitimate Microsoft login endpoint
-Maintaining persistence with refresh tokens that remain valid even after password resets
-
-Infrastructure & Evasion Tactics
+### Infrastructure & Evasion Tactics
 
 The EvilTokens platform leverages multiple evasion layers:
 
-Cloudflare Workers: Attacker-controlled functions redirect phishing traffic through legitimate Cloudflare domains, obfuscating the true origin
-Railway.com PaaS: Malicious applications hosted on Railway infrastructure (IP range 162.220.232.x–162.220.234.x) provide backend credential capture and token harvesting
-Security vendor cloaking: Phishing URLs wrapped in legitimate redirects from Cisco Umbrella, Trend Micro, and Mimecast security appliances to evade email gateway detection
-Template spoofing: Professional HTML/CSS replicas of Microsoft 365, Adobe Acrobat, DocuSign, and SharePoint interfaces with minimal visual differences from legitimate pages
+Cloudflare Workers: Decoy pages and redirect logic were commonly hosted on `workers.dev` infrastructure to blend into trusted web traffic
+Railway.com PaaS: Huntress observed a narrow block of Railway IPs functioning as the token replay engine once device code authentication succeeded
+Security vendor cloaking: Phishing URLs were sometimes wrapped in legitimate redirects from products such as Cisco Umbrella, Trend Micro, and Mimecast
+Template spoofing: The kit offered decoy pages impersonating Microsoft 365, Adobe Acrobat, DocuSign, SharePoint, and other business workflows before sending the victim to the legitimate Microsoft sign-in flow
 
-This multi-layer approach defeats many traditional security controls that rely on URL reputation, email header analysis, and sender verification.
+This multi-layer approach degrades many traditional email and URL-reputation controls because the victim eventually interacts with legitimate Microsoft infrastructure and the attacker only needs the resulting token set.
 
-Token Persistence & MFA Bypass
+### Token Persistence & MFA Bypass
 
 A critical vulnerability in this attack is the persistence of OAuth refresh tokens:
 
 Once an attacker captures a refresh token, they can obtain new access tokens without re-entering credentials
 Refresh tokens remain valid even after the victim changes their password
-MFA bypass occurs because the victim completes the MFA challenge on the attacker's page before the legitimate Microsoft authentication server processes the request
-Organizations without token-aware conditional access policies cannot detect or revoke tokens until the victim reports suspicious activity
+The attacker does not need to steal the user's password if the victim completes the device code flow for them
+Organizations without token-aware response controls may miss the compromise until suspicious mailbox or token activity is detected
 
 This creates a significant detection gap: organizations may only become aware of compromise weeks or months after the initial phishing attack.
 
 Attack Stages
 
-Stage 1
-Phishing Email Delivery
+### Stage 1: Phishing Email Delivery
 Attacker sends spearphishing emails with lures related to financial transactions, meeting invitations, logistics updates, payroll information, construction bids, or voicemail notifications. Email headers are spoofed to appear from trusted internal senders or partners.
 
-Stage 2
-Initial Redirect via Security Vendor
+### Stage 2: Initial Redirect via Security Vendor
 Phishing link directs through legitimate security vendor redirects (e.g., Cisco Umbrella safe browsing, Trend Micro URL reputation lookup) to create a chain of trust and evade email gateway reputation checks.
 
-Stage 3
-Landing on Attacker Replica Page
-Victim reaches a professional replica of Microsoft 365, Adobe, or DocuSign login page hosted on Cloudflare Workers or Railway.com. The page requests username, password, and MFA code.
+### Stage 3: Landing on Decoy Page
+Victim reaches a decoy page hosted through Cloudflare Workers or adjacent infrastructure. The page presents a lure theme and provides the attacker-generated verification code.
 
-Stage 4
-OAuth Device Code Interception
-Behind the scenes, attacker's backend initiates an OAuth device code flow with a pre-registered application. The attacker embeds the device code into the phishing page to intercept the MFA challenge response.
+### Stage 4: Legitimate Microsoft Device Login
+Victim is redirected to the legitimate Microsoft device login experience and enters the attacker-provided code, then completes normal authentication and MFA.
 
-Stage 5
-Token Harvesting
-After victim enters MFA code on attacker's page, the attacker exchanges the device code for valid Microsoft OAuth access and refresh tokens. These tokens provide full application access (Mail, Teams, SharePoint, OneDrive, etc.) without triggering traditional login alerts.
+### Stage 5: Token Harvesting
+After the victim completes the legitimate device-code flow, the attacker redeems the corresponding access and refresh tokens from Railway-hosted infrastructure. Those tokens can grant access to Exchange Online, SharePoint, OneDrive, Teams, and other cloud resources.
 
-Stage 6
-Post-Compromise Activity
+### Stage 6: Post-Compromise Activity
 Attacker uses stolen tokens to access email, exfiltrate data, establish persistence, deploy malware, or pivot to other cloud services. Refresh token validity ensures continued access even if victim password is reset.
 
-## MITRE ATT&CK Framework Mapping
+## MITRE ATT&CK Mapping
 
-Tactic
-Technique ID
-Technique Name
-Description
+T1566.002 — Phishing: Spearphishing Link
+Targeted emails and lure pages directed victims into the attacker-controlled device-code workflow.
 
-Initial Access
-T1566.002
-Phishing: Spearphishing Link
-Targeted emails with malicious links to fake authentication pages
+T1528 — Steal Application Access Token
+The core objective of the campaign was theft of Microsoft access and refresh tokens created by the device code flow.
 
-Credential Access
-T1187
-Forced Authentication
-Victim credentials and MFA codes captured on replica pages
-
-Credential Access
-T1528
-Steal Application Access Token
-OAuth refresh and access tokens harvested via device code flow
-
-Defense Evasion
-T1598
-Phishing for Information
-Email lures designed to trigger credential submission
-
-Lateral Movement
-T1550.001
-Use Alternate Authentication Material: Application Access Token
-Stolen OAuth tokens used to access cloud services without re-authentication
+T1550.001 — Use Alternate Authentication Material: Application Access Token
+Stolen OAuth tokens were then used to access Microsoft 365 services without re-entering credentials.
 
 ## Impact Assessment
 
 Scope of Compromise: 340+ organizations across multiple sectors and geographies. Confirmed victims in:
 
-United States (primary target)
-Canada, Australia, New Zealand
-Germany, France, Switzerland
-India, United Arab Emirates
+United States
+Canada
+Australia
+New Zealand
+Germany
 
 Sectoral Impact:
 
@@ -172,33 +134,30 @@ Persistence establishment for long-term espionage
 Supply chain attacks on downstream partners
 Regulatory and compliance violations (HIPAA, GLBA, GDPR)
 
-## Attack Timeline
+## Timeline
 
 Mid-February 2026
-EvilTokens PhaaS platform launched on NOIRLEGACY GROUP Telegram channel; attackers begin offering OAuth device code phishing as a service
+EvilTokens appears on Telegram channels advertising Microsoft-focused phishing-as-a-service capabilities
 
 February 18, 2026
-Palo Alto Networks Unit 42 first observes reconnaissance and early phishing activity targeting US organizations
+Unit 42 and other researchers later identify early activity tied to the same device-code phishing infrastructure
 
 February 19, 2026
 Huntress publishes initial detection of Railway.com-based token replay campaign; public awareness begins
 
-Late February 2026
-Campaign accelerates with increased spearphishing volume; multiple lure themes (financial, meeting, logistics, payroll) deployed
-
-March 2026
-Campaign reaches peak activity; over 340 organizations confirmed compromised; geographic expansion to EMEA and APAC regions
+March 2-19, 2026
+Huntress documents a wave of compromises affecting more than 340 organizations, with concentrated victimology in five countries and multiple lure themes
 
 March 25, 2026
-The Hacker News publishes comprehensive article detailing campaign scope and attribution to EvilTokens
+The Hacker News summarizes Huntress findings and notes later attribution of the infrastructure to EvilTokens
 
 March 30, 2026
-Sekoia publishes updated threat intelligence analysis with technical deep-dive into OAuth flow abuse and evasion tactics
+Sekoia publishes a deeper analysis of EvilTokens as a turnkey Microsoft device-code phishing kit
 
-April 2026 (Ongoing)
-Campaign continues with targeted spearphishing; new phishing templates and lures deployed to avoid email gateway updates
+April 6, 2026
+Microsoft publishes separate research on an AI-enabled device-code phishing campaign, reinforcing that the technique is now being reused by multiple actor sets and should not be attributed wholesale to a single cluster
 
-## Remediation & Detection
+## Remediation & Mitigation
 
 Immediate Actions
 
@@ -210,7 +169,7 @@ Search for authenticated sessions from Railway.com or Cloudflare Worker IP range
 
 Revoke Compromised Tokens:
 
-Force password reset for suspected victims (does not invalidate existing refresh tokens)
+Force password reset for suspected victims (password reset alone does not invalidate existing refresh tokens)
 Use Azure AD's "Sign out all sessions" capability to invalidate all active tokens
 Revoke OAuth app consent permissions in Microsoft 365 admin portal
 Monitor Azure AD for unauthorized consent grants to OAuth applications created by attackers
@@ -218,7 +177,7 @@ Monitor Azure AD for unauthorized consent grants to OAuth applications created b
 Contain Spread:
 
 Block IOC IP addresses at firewall and proxy level
-Block Railway.com and Cloudflare Worker domains suspected of hosting phishing pages in email gateway and web proxy
+Block or scrutinize Railway and `workers.dev` infrastructure associated with active phishing activity where operationally feasible
 Add known phishing email addresses to blocklist
 
 Detection & Monitoring
@@ -226,7 +185,7 @@ Detection & Monitoring
 Email Security:
 
 Configure advanced phishing detection rules for device code lures and "verify identity" language
-Block emails requesting users to "complete authentication" or "confirm credentials via device code"
+Train users that unsolicited requests to enter a code on `microsoft.com/devicelogin` can be malicious even if the page itself is legitimate
 Implement external email banners to warn of untrusted senders
 Monitor for emails forwarded through security vendor redirects (Cisco, Trend Micro, Mimecast) that terminate on attacker infrastructure
 
@@ -248,7 +207,7 @@ Alert on unusual PowerShell or Azure CLI authentication patterns from compromise
 
 Long-Term Hardening
 
-Device Code Flow Restrictions: Disable device code authentication for users unless explicitly required; consider allow-listing specific applications
+Device Code Flow Restrictions: Disable device code authentication where it is not operationally required; consider allow-listing specific applications
 Conditional Access Policies: Enforce MFA for all users, restrict authentication to managed devices, block legacy authentication protocols
 Token Management: Implement token lifetime policies; configure automatic refresh token rotation; monitor for unusual token refresh patterns
 User Training: Educate users on OAuth phishing tactics; emphasize that legitimate Microsoft never requests authentication via device codes in emails
@@ -257,66 +216,10 @@ Threat Intelligence Integration: Subscribe to threat feeds for IoCs; automate bl
 
 ## Sources & References
 
-The Hacker News: "Device Code Phishing Campaign Hits 340+ Microsoft 365 Organizations" — March 25, 2026
-https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html
-
-Huntress: "Railway PaaS M365 Token Replay Campaign" — February 19, 2026
-https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign
-
-Cloud Security Alliance: "OAuth Device Code Phishing Research" — March 25, 2026
-https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/
-
-Infosecurity Magazine: "OAuth Phishing Campaigns Surge in 2026" — March 2026
-https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/
-
-Palo Alto Networks Unit 42: Threat intelligence research on Storm-2372 and EvilTokens PhaaS platform
-
-Sekoia: Updated threat intelligence analysis with IOCs and YARA detection rules
-
-Microsoft Security: OAuth device code flow security guidance and token management best practices
-
-Key Takeaways
-
-340+ organizations compromised by OAuth device code phishing
-Attack bypasses MFA through token interception, not credential theft
-Refresh tokens persist after password reset
-Multi-layer evasion uses Cloudflare, Railway, and security vendor redirects
-Campaign active since mid-February 2026, ongoing through April
-Threat actor: EvilTokens PhaaS (Storm-2372, APT29 associates)
-Global impact: US, Canada, EMEA, APAC regions
-All sectors vulnerable: construction to government
-
-IOCs (Indicators of Compromise)
-
-Railway.com Infrastructure
-
-IP Address
-162.220.234.41
-
-IP Address
-162.220.234.66
-
-IP Address
-162.220.232.57
-
-IP Address
-162.220.232.99
-
-IP Address
-162.220.232.235
-
-Infrastructure Patterns
-
-Domain Pattern
-*.cloudflare.workers.dev (attacker-controlled)
-
-Domain Pattern
-*.railway.app (phishing page hosting)
-
-Redirect Pattern
-Security vendor domains redirecting to attacker infrastructure
-
-Threat Indicators
+- [Huntress: Threat Actors Abuse Railway.com PaaS as Microsoft 365 Token Attack Infrastructure](https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign) — Huntress, 2026-03-23 update
+- [The Hacker News: Device Code Phishing Hits 340+ Microsoft 365 Orgs Across Five Countries via OAuth Abuse](https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html) — The Hacker News, 2026-03-25
+- [Microsoft Security Blog: Storm-2372 Conducts Device Code Phishing Campaign](https://www.microsoft.com/en-us/security/blog/2025/02/13/storm-2372-conducts-device-code-phishing-campaign/) — Microsoft Threat Intelligence, 2025-02-13
+- [Microsoft Security Blog: Inside an AI-enabled Device Code Phishing Campaign](https://www.microsoft.com/en-us/security/blog/2026/04/06/ai-enabled-device-code-phishing-campaign-april-2026/) — Microsoft Defender Security Research, 2026-04-06
 
 Azure AD Activity
 Device code flow authentications from Railway.com IP ranges

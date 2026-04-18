@@ -64,7 +64,7 @@ County officials declare local state of emergency. National Guard troops arrive 
 Investigation & Recovery Operations
 Forensic investigation underway by FBI and BCA. Preliminary analysis indicates different threat actor than January attack. Recovery of critical systems prioritized. Estimated restoration timeline unknown pending investigation results.
 
-## Technical Details
+## Technical Analysis
 
 Attack Vector: Specific initial access vector not disclosed in public reporting as of April 9. Possible vectors based on common municipal ransomware targeting:
 
@@ -108,7 +108,7 @@ Recovery Resource Demand: Minnesota National Guard deployment indicates substant
 
 Financial Impact: Direct costs include incident response services, forensic investigation, system recovery/restoration, potential ransom payment (if decided), and remediation measures. Indirect costs include staff reallocation, public trust restoration, and potential regulatory fines if personal information is determined to have been compromised.
 
-## Attribution & Threat Actor Analysis
+## Historical Context
 
 Threat Actor Identity: Unknown. Preliminary investigation indicates the April 2026 attacker differs from the January 2026 threat actor responsible for the first Winona County attack. This determination is based on forensic indicators not yet disclosed in public reporting.
 
@@ -129,7 +129,7 @@ Intelligence sharing within ransomware affiliate networks highlights vulnerable 
 The county's known first incident makes it a target for opportunistic follow-up attacks
 Threat actors routinely target organizations that have recovered from previous attacks, assuming faster payment decisions
 
-## Mitigations & Recommendations
+## Remediation & Mitigation
 
 Immediate Actions:
 1. Preserve forensic evidence from all compromised systems (images, logs, memory dumps) for investigation and attribution.
@@ -159,7 +159,7 @@ Long-Term Resilience:
 4. Request federal cybersecurity support through CISA for vulnerability assessments and technical assistance.
 5. Consider cyber insurance policy review to ensure adequate coverage for recovery costs and business interruption.
 
-## Broader Context: Municipal Ransomware Targeting
+### Broader Context: Municipal Ransomware Targeting
 
 Winona County's experience reflects a broader trend of increasing ransomware targeting of municipal government organizations. 2025-2026 has seen significant public sector ransomware incidents including attacks on major cities, county governments, and state agencies. The targeting is driven by both financial motivation (high payment probability) and opportunistic attack surfacing of vulnerable systems.
 

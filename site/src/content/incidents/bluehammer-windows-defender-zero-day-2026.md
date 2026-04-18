@@ -6,8 +6,8 @@ attackType: "Zero-Day Exploitation"
 severity: critical
 sector: "Multi-Sector"
 geography: "Global"
-threatActor: "Chaotic Eclipse"
-attributionConfidence: A3
+threatActor: "Unknown"
+attributionConfidence: A4
 reviewStatus: "draft_ai"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
@@ -68,17 +68,9 @@ mitreMappings:
     techniqueName: "Exploitation for Privilege Escalation"
     tactic: "Privilege Escalation"
     notes: "BlueHammer exploits Windows Defender subsystems to escalate from standard user to SYSTEM without kernel exploits."
-  - techniqueId: "T1574.002"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
-    tactic: "Persistence"
-    notes: "Exploit chains Defender update workflow and file processing to execute code at SYSTEM level."
-  - techniqueId: "T1562.001"
-    techniqueName: "Impair Defenses: Disable or Modify Tools"
-    tactic: "Defense Evasion"
-    notes: "Once at SYSTEM, attackers can disable Windows Defender and other security tools."
 ---
 
-## Summary
+## Executive Summary
 
 BlueHammer is a critical zero-day vulnerability in Windows Defender that enables local privilege escalation from standard user to SYSTEM on all Windows 10 and Windows 11 systems, regardless of patch level. Discovered and publicly disclosed by the independent security researcher Chaotic Eclipse, the exploit chains multiple Defender subsystems to achieve complete system compromise in under 60 seconds without requiring kernel-level exploits or elevated privileges.
 
@@ -116,11 +108,11 @@ All Windows 10 and Windows 11 systems are affected regardless of version, build 
 
 Real-world attack scenarios include phishing campaigns that chain document execution with BlueHammer for immediate system compromise, compromised software installers that use BlueHammer for privilege escalation before installing backdoors, and ransomware operators using the exploit to dramatically reduce the barrier to enterprise deployment. Microsoft's signature-based mitigation released on 2026-04-07 detects common exploitation patterns, but the underlying vulnerability remains unpatched. Security researchers have demonstrated multiple variants that bypass current signatures.
 
-## Attribution
+## Historical Context
 
-The vulnerability was discovered and disclosed by Chaotic Eclipse (also known as Nightmare-Eclipse), an independent security researcher. The initial disclosure was a detailed technical blog post published on 2026-03-26, followed by a full working proof-of-concept released on GitHub on 2026-03-29. Microsoft acknowledged awareness on 2026-03-31 and requested CVE assignment, which remains pending.
+The public disclosure trail currently supports Chaotic Eclipse as the researcher who disclosed BlueHammer, not as the threat actor exploiting it. The initial disclosure was a technical blog post published on 2026-03-26, followed by a public proof-of-concept released on GitHub on 2026-03-29. Microsoft acknowledged awareness on 2026-03-31 and, as of the cited reporting window, a stable CVE record had not yet been surfaced in the article's source set.
 
-Attribution confidence for Chaotic Eclipse as the discoverer is high (A3) based on the public disclosure chain. Subsequent weaponization by ransomware operators and APT groups was detected by 2026-04-08, but specific threat actors leveraging the exploit in the wild have not been publicly identified.
+Attribution confidence for Chaotic Eclipse as the discoverer is high, but the threat-actor field remains unknown because public reporting has not identified a specific adversary cluster using the exploit in the wild.
 
 ## Timeline
 

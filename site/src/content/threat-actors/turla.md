@@ -49,7 +49,7 @@ mitreMappings:
     notes: "LightNeuron backdoors Microsoft Exchange servers for persistent email interception."
 attributionConfidence: A1
 attributionRationale: "Attributed to FSB Center 16 by a May 2023 joint advisory from CISA, FBI, NSA, and Five Eyes partners. The DOJ announced the disruption of the Snake malware network (Operation MEDUSA)."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

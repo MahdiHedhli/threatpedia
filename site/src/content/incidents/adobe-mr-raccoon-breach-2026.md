@@ -52,15 +52,15 @@ After successful bulk export of support tickets, the attacker leveraged the comp
 
 Data Exfiltration Method: Standard HTTPS connections to cloud storage; likely stored initially in temporary staging areas before bulk download and transfer to attacker-controlled infrastructure. No evidence of advanced evasion techniques reported.
 
-## MITRE ATT&CK Framework Mapping
+## MITRE ATT&CK Mapping
 
 T1566.001 — Phishing: Spearphishing Attachment
 
 Initial RAT deployment via malicious email attachment targeting BPO support employee. Subsequent spear-phishing attacks targeting BPO manager with credential harvesting intent.
 
-T1219 — Remote Access Tools
+T1204.002 — User Execution: Malicious File
 
-Remote Access Trojan deployed to BPO employee workstation, providing persistent interactive access and enabling reconnaissance and lateral movement activities.
+Initial malware execution relied on the targeted BPO employee opening a malicious attachment that deployed the remote access trojan.
 
 T1078 — Valid Accounts
 
@@ -88,7 +88,7 @@ Supply Chain Risk: Incident demonstrates vulnerability of third-party support pr
 
 Regulatory Exposure: GDPR, CCPA, and other privacy regulations may apply to exposed customer records. Adobe likely faces notification obligations and regulatory inquiry regardless of breach confirmation status.
 
-## Attack Timeline
+## Timeline
 
 Unknown (Weeks Prior)
 Initial Reconnaissance
@@ -122,7 +122,7 @@ April 7, 2026
 Status: Unconfirmed
 Adobe has not confirmed or denied the breach. vx-underground researchers assess breach as potentially legitimate but possibly limited to helpdesk environment.
 
-## Remediation & Lessons Learned
+## Remediation & Mitigation
 
 Principle of Least Privilege: Support agent accounts must be restricted to accessing only assigned tickets or team-level data. Bulk export functionality should require administrative approval, multi-factor authentication, and comprehensive audit logging. Access control review should be prioritized in all third-party support environments.
 

@@ -8,7 +8,7 @@ sector: Technology / DevOps
 geography: Global
 threatActor: TeamPCP (DeadCatx3 / PCPcat / ShellForce)
 attributionConfidence: A4
-reviewStatus: certified
+reviewStatus: under_review
 confidenceGrade: C
 generatedBy: dangermouse-bot
 generatedDate: 2026-02-28
@@ -83,7 +83,7 @@ March 30, 2026
 
 Ongoing Investigation: Security researchers from Microsoft, Arctic Wolf, Kaspersky, Unit 42, Snyk, ReversingLabs, and Wiz coordinate investigation efforts. The full scope of downstream impact continues to be assessed as the "largest multi-ecosystem supply chain attack of 2026." Hunt operations identify indicators of compromise across thousands of enterprise and open-source projects spanning GitHub Actions, Docker Hub, npm, OpenVSX, and PyPI ecosystems.
 
-## Attack Methodology
+## Technical Analysis
 
 The TeamPCP campaign employed a sophisticated, multi-stage attack methodology targeting the trust model of modern software development supply chains.
 
@@ -134,7 +134,7 @@ RSA-4096 wraps AES key with attacker's public key
 HMAC-SHA256 authentication tag included
 Exfiltration endpoint: plug-tab-protective-relay.trycloudflare.com
 
-## Affected Packages & Downstream Impact
+## Impact Assessment
 
 The supply chain compromise created a cascading impact across the open-source and enterprise ecosystem. The "blast radius" extends far beyond the directly compromised repositories:
 
@@ -269,7 +269,7 @@ Unexpected file I/O accessing ~/.ssh/, ~/.aws/credentials, ~/.kube/config
 Creation of tpcp.tar.gz archives in runner temporary directories
 Child processes spawned from GitHub Actions runners with unusual environment variable dumps
 
-## Detection & Remediation
+## Remediation & Mitigation
 
 Immediate Actions (Critical Priority)
 
@@ -308,7 +308,7 @@ Organizations should validate remediation efforts against the following checklis
 ☐ Container images built during attack window scanned for malicious payloads
 ☐ GitHub token scopes audited and reduced to minimum necessary permissions
 
-## References & Sources
+## Sources & References
 
 This incident assessment is compiled from research and disclosures from leading cybersecurity organizations:
 
@@ -348,7 +348,7 @@ github.com/aquasecurity | March 1, 2026
 Checkmarx Security Notice - GitHub Actions Compromise
 checkmarx.com | March 23, 2026
 
-## Related Incidents
+## Historical Context
 
 This campaign shares characteristics with other sophisticated supply chain attacks. Security teams should review these related incidents:
 

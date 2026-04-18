@@ -47,7 +47,7 @@ mitreMappings:
     notes: "DLL side-loading with signed legitimate binaries is a hallmark of APT41 operations."
 attributionConfidence: A1
 attributionRationale: "Attributed to Chinese MSS-affiliated actors by a September 2020 DOJ indictment of five Chinese nationals and two Malaysian nationals."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

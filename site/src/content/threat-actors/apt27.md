@@ -46,7 +46,7 @@ mitreMappings:
     notes: "Uses DLL side-loading with legitimate signed executables to load HyperBro and other backdoors."
 attributionConfidence: A3
 attributionRationale: "Attributed to China-nexus actors by multiple cybersecurity vendors including Secureworks, Trend Micro, and Mandiant, based on infrastructure, tooling, and targeting analysis. No government indictment to date."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

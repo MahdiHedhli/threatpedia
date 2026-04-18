@@ -8,7 +8,7 @@ sector: "Government Services"
 geography: "United States"
 threatActor: "Unknown"
 attributionConfidence: A4
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -82,7 +82,7 @@ mitreMappings:
     notes: "Systematic collection from file shares, databases, and local storage across Conduent environment."
 ---
 
-## Summary
+## Executive Summary
 
 Between October 2024 and January 2025, Conduent Business Solutions, a major business technology and outsourcing firm, suffered a massive data breach affecting over 25 million Americans. The breach involved the exfiltration of approximately 8 terabytes of sensitive data, representing one of the largest known data breaches in U.S. history. Conduent provides critical services including medical billing, toll transaction processing, and prepaid card administration for government programs, positioning it as a central hub for personal information across multiple government and healthcare systems.
 
@@ -128,7 +128,7 @@ This dataset enables multiple categories of fraud including financial fraud, med
 
 More than 35 class action lawsuits have been filed in New Jersey federal court against Conduent and associated parties. The Texas Attorney General investigation is active, with reports indicating 14.7 million victims in Texas alone.
 
-## Attribution
+## Historical Context
 
 The threat actor responsible for the Conduent breach has not been publicly identified. The attack characteristics (sophisticated reconnaissance, extended persistence, high-volume exfiltration capability, and targeting of critical infrastructure) suggest a capable, likely financially motivated group. No ransomware group has claimed responsibility.
 

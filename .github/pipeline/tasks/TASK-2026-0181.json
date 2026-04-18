@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0181",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T11:55:00Z",
+  "updated": "2026-04-18T11:55:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Yahoo 2013 and 2014 breach canonical split",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/yahoo-data-breaches-2013.md",
+    "issues": [
+      "multiple_incidents_in_one_article",
+      "mixed_attribution_scope",
+      "canonical_split_required"
+    ],
+    "notes": "Corpus review confirmed that `yahoo-data-breaches-2013.md` currently combines the unattributed 2013 Yahoo breach and the separately attributed 2014 FSB-directed breach into one plural incident page. The article was tightened for accuracy, but it should ultimately be split into separate canonical incident entries with distinct eventIds and a deliberate legacy-handling plan for the current umbrella slug."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0181"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T11:55:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on reprocess after corpus review found that the Yahoo page still served two separate historical breaches under one canonical incident article."
+    }
+  ]
+}

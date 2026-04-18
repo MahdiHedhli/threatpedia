@@ -44,7 +44,7 @@ mitreMappings:
     notes: "TrickBot and BazarLoader use process injection to evade detection."
 attributionConfidence: A1
 attributionRationale: "Multiple members indicted and sanctioned. The February 2022 Conti Leaks exposed internal communications confirming Russian-based operations. UK NCA and U.S. sanctions identified key members."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

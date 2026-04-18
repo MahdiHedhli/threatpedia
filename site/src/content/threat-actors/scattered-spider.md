@@ -44,7 +44,7 @@ mitreMappings:
     notes: "Social engineers IT help desks by impersonating employees to reset credentials."
 attributionConfidence: A1
 attributionRationale: "Multiple members arrested and charged by FBI in 2024, including a UK national extradited to the U.S. CISA advisory AA23-320A documented group TTPs."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

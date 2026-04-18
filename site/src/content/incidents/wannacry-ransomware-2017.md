@@ -8,7 +8,7 @@ sector: Healthcare
 geography: Global
 threatActor: Lazarus Group
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -78,7 +78,7 @@ mitreMappings:
     notes: Self-propagating worm component spread payloads to adjacent hosts
 ---
 
-## Summary
+## Executive Summary
 
 On 12 May 2017, the WannaCry ransomware worm began propagating across global networks, infecting an estimated 230,000 computers in over 150 countries within the first 24 hours. The malware exploited CVE-2017-0144 (EternalBlue), a vulnerability in the Microsoft Server Message Block version 1 (SMBv1) protocol, to achieve remote code execution on unpatched Windows systems. Once inside a network, WannaCry moved laterally without user interaction, encrypting files and displaying a ransom demand of $300-$600 in Bitcoin.
 
@@ -132,7 +132,7 @@ Renault-Nissan halted production at five manufacturing plants across Europe. Fed
 
 Despite infecting hundreds of thousands of systems, the WannaCry operators collected only approximately $140,000 in Bitcoin ransom payments — a fraction of the total damage caused. The low ransom yield was attributed to the kill switch activation, rapid public awareness, and law enforcement advisories against payment.
 
-## Attribution
+## Historical Context
 
 The United States, the United Kingdom, Australia, Canada, Japan, and New Zealand jointly attributed WannaCry to North Korea in December 2017. The UK NCSC assessed with high confidence that the Lazarus Group, operating under the Reconnaissance General Bureau of North Korea, was responsible for the attack.
 

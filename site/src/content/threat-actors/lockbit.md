@@ -43,7 +43,7 @@ mitreMappings:
     notes: "Affiliates commonly use compromised RDP credentials and VPN access for initial entry."
 attributionConfidence: A1
 attributionRationale: "Disrupted by Operation Cronos (February 2024). Lead developer Dmitry Khoroshev identified and indicted by DOJ in May 2024. FBI and NCA confirmed identities of operators."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

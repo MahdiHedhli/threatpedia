@@ -8,7 +8,7 @@ sector: "Government"
 geography: "European Union"
 threatActor: "TeamPCP"
 attributionConfidence: A3
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -80,7 +80,7 @@ mitreMappings:
     notes: "Data transferred to attacker-controlled infrastructure over web service channels."
 ---
 
-## Summary
+## Executive Summary
 
 On April 2, 2026, CERT-EU publicly disclosed that the European Commission's Europa web hosting platform on AWS had been breached through the Trivy supply chain compromise (CVE-2026-33634), making it the highest-profile governmental victim of the TeamPCP campaign. The attack gained initial access on March 19 and was detected on March 24, resulting in the exfiltration of 340 GB of data including approximately 52,000 email-related files affecting 71 clients: 42 internal European Commission departments plus 29 other EU entities.
 
@@ -130,7 +130,7 @@ The intelligence value of stolen inter-institutional communications is substanti
 
 ShinyHunters' publication on March 28 made the data irrecoverably public. The broader Trivy/TeamPCP campaign affected over 1,000 SaaS environments globally across technology, defense, financial services, and government sectors.
 
-## Attribution
+## Historical Context
 
 CERT-EU attributed the breach to TeamPCP via the Trivy CVE-2026-33634 supply chain compromise. ShinyHunters (affiliated with TeamPCP) published the stolen data on their dark web leak site. Attribution confidence is moderate (A3) based on CERT-EU official attribution, CVE correlation, and ShinyHunters' public claim.
 

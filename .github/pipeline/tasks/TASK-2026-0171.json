@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0171",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-18T04:56:00Z",
+  "updated": "2026-04-18T04:56:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "BlueHammer incident evidence and taxonomy rebuild",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/bluehammer-windows-defender-zero-day-2026.md",
+    "issues": [
+      "discoverer_threat_actor_conflation",
+      "primary_source_gap",
+      "mechanics_overclaim"
+    ],
+    "notes": "Reprocess the BlueHammer incident article from primary-source evidence and clearly separate the public discoverer/discloser from any actual threat actor attribution. Preserve the event if the incident is supportable, but reduce or retire unsupported exploit-chain, ATT&CK, and active-exploitation claims if they cannot be anchored to current primary or authoritative secondary reporting."
+  },
+  "output": {
+    "file_pattern": "site/src/content/incidents/bluehammer-windows-defender-zero-day-2026.md",
+    "branch": "pipeline/TASK-2026-0171"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T04:56:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on evidence rebuild for BlueHammer after corpus review found discoverer attribution conflation and source-quality overreach."
+    }
+  ]
+}

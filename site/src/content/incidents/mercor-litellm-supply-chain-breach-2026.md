@@ -1,11 +1,11 @@
 ---
 eventId: TP-2026-0052
-title: "Mercor AI Supply Chain Breach via LiteLLM Compromise | Threatpedia"
+title: "Mercor AI Supply Chain Breach via LiteLLM Compromise"
 date: 2026-04-08
-attackType: unknown
-severity: medium
-sector: Unknown
-geography: Unknown
+attackType: supply-chain
+severity: high
+sector: Technology / AI Services
+geography: Global
 threatActor: Unknown
 attributionConfidence: A4
 reviewStatus: under_review
@@ -13,8 +13,18 @@ confidenceGrade: C
 generatedBy: new-threat-intel
 generatedDate: 2026-04-08
 cves: []
-relatedSlugs: []
-tags: []
+relatedSlugs:
+  - "teampcp-supply-chain-attack"
+  - "cisco-trivy-supply-chain-breach-2026"
+  - "european-commission-trivy-breach-2026"
+tags:
+  - "supply-chain"
+  - "litellm"
+  - "mercor"
+  - "ai"
+  - "credential-theft"
+  - "extortion"
+  - "lapsus"
 ---
 ## Executive Summary
 
@@ -132,7 +142,7 @@ Estimated remediation costs: $100M+ for incident response, legal defense, and cu
 Long-term revenue loss as customers shift data annotation work to competing vendors
 Regulatory fines and compliance violations (GDPR, CCPA for data containing personal information)
 
-## Incident Timeline
+## Timeline
 
 March 27, 2026 - Unknown Time
 TeamPCP gains access to LiteLLM CI/CD pipeline (likely through compromised credentials or infrastructure vulnerability)
@@ -158,7 +168,7 @@ Mercor confirms breach to customers including Meta, Anthropic, OpenAI; Meta anno
 April 8, 2026
 Threatpedia publishes incident report (TP-2026-0037); ongoing law enforcement investigation and civil litigation
 
-## Threat Actor Profile
+## Historical Context
 
 TeamPCP — Supply Chain Specialists
 TeamPCP is a sophisticated threat actor group specializing in CI/CD pipeline compromise and software supply chain attacks. This incident represents a significant capability demonstration:
@@ -180,7 +190,7 @@ Operational Pattern: Rapid data analysis to identify highest-value information (
 Threat Actor Coordination Model
 This incident illustrates a concerning trend: specialized division of labor in cybercriminal ecosystems. TeamPCP focuses on supply chain compromise and initial access; Lapsus$ specializes in data exfiltration and extortion. This partnership model allows each group to focus on their operational strengths while maximizing financial returns through coordinated attacks.
 
-## Remediation & Defense Measures
+## Remediation & Mitigation
 
 Immediate Response (For Affected Organizations)
 

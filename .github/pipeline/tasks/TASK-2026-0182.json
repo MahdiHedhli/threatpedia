@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0182",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T14:46:05Z",
+  "updated": "2026-04-18T14:46:05Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "LockBit Black variant consolidation and legacy redirect cleanup",
+    "reprocess": true,
+    "target_file": "site/src/content/threat-actors/lockbit-black.md",
+    "issues": [
+      "duplicate_actor_variant",
+      "lockbit_3_variant_not_canonical_actor",
+      "legacy_slug_redirect_required"
+    ],
+    "notes": "Corpus review confirmed that `lockbit-black.md` was modeling LockBit 3.0 / LockBit Black as a separate threat actor when it is better treated as a ransomware variant within the canonical LockBit profile. The legacy slug now redirects to `/threat-actors/lockbit/`. Follow up by reviewing downstream references, search labels, and any future variant-specific content to ensure LockBit 3.0 remains represented as part of the canonical LockBit actor rather than as a duplicate actor page."
+  },
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/{slug}.md",
+    "branch": "pipeline/TASK-2026-0182"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T14:46:05Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on cleanup after consolidating LockBit Black into the canonical LockBit actor profile."
+    }
+  ]
+}

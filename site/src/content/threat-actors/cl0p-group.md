@@ -1,8 +1,6 @@
 ---
 name: "Cl0p"
 aliases:
-  - "TA505 (overlapping)"
-  - "FIN11 (overlapping)"
   - "CLOP"
   - "Cl0p Gang"
 affiliation: "Cybercriminal (Russian-speaking)"
@@ -42,7 +40,7 @@ mitreMappings:
     notes: "Mass data exfiltration from compromised file transfer platforms before disclosure."
 attributionConfidence: A2
 attributionRationale: "CISA and FBI attributed Cl0p as a Russian-speaking cybercriminal group. Ukrainian law enforcement arrested six suspected members in 2021, though the operation continued."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -115,7 +113,7 @@ The group operates a Tor-based data leak site and uses a tiered extortion model:
 
 CISA and FBI published joint advisories (AA23-158A) attributing the MOVEit exploitation to Cl0p. The U.S. State Department offered a $10 million reward for information leading to the identification of Cl0p members. In 2021, Ukrainian law enforcement arrested six individuals linked to the Cl0p operation, though the group continued operating, suggesting leadership remained at large.
 
-Cl0p has historical overlaps with the TA505/FIN11 threat clusters, sharing infrastructure, tooling, and operational patterns. The relationship suggests Cl0p is either a project of TA505 operators or draws from the same personnel pool.
+Cl0p has historical overlaps with the TA505/FIN11 threat clusters, sharing infrastructure, tooling, and operational patterns. Those overlaps are analytically important, but they do not justify treating TA505 or FIN11 as direct aliases of the Cl0p group.
 
 ## MITRE ATT&CK Profile
 

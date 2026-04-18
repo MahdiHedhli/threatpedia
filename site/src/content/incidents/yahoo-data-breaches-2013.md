@@ -1,14 +1,14 @@
 ---
 eventId: TP-2013-0002
-title: "Yahoo Data Breaches"
+title: "Yahoo 2013 and 2014 Data Breaches"
 date: 2013-08-01
 attackType: Data Breach
 severity: critical
 sector: Technology
 geography: United States
-threatActor: FSB-linked actors
-attributionConfidence: A1
-reviewStatus: "draft_ai"
+threatActor: "FSB-directed actors (2014 breach); unknown actor (2013 breach)"
+attributionConfidence: A3
+reviewStatus: "under_review"
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -66,11 +66,11 @@ mitreMappings:
     notes: Using forged cookies, the attackers accessed and searched the email content of targeted accounts belonging to Russian journalists, US government officials, and financial industry employees.
 ---
 
-## Summary
+## Executive Summary
 
 Between 2013 and 2016, Yahoo Inc. suffered two distinct but related data breaches that collectively affected all 3 billion Yahoo user accounts, making them the largest known data breaches in history. The first breach, occurring in late 2013, compromised all Yahoo accounts but was not disclosed until December 2016. The second breach, carried out in 2014, was attributed to state-sponsored actors and compromised approximately 500 million accounts.
 
-The 2014 breach was directed by two officers of the Russian Federal Security Service (FSB): Dmitry Dokuchaev, a deputy in the FSB's Center for Information Security (Center 18), and Igor Sushchin, also an FSB officer in the same unit. They recruited two criminal hackers, Alexsey Belan and Karim Baratov, to carry out the technical operations. The attackers obtained access to Yahoo's internal systems and exfiltrated the proprietary User Database (UDB) and Account Management Tool (AMT), enabling them to forge authentication cookies and access targeted email accounts.
+The 2014 breach was directed by two officers of the Russian Federal Security Service (FSB): Dmitry Dokuchaev, a deputy in the FSB's Center for Information Security (Center 18), and Igor Sushchin, also an FSB officer in the same unit. They recruited two criminal hackers, Alexsey Belan and Karim Baratov, to carry out the technical operations. The attackers obtained access to Yahoo's internal systems and exfiltrated the proprietary User Database (UDB) and Account Management Tool (AMT), enabling them to forge authentication cookies and access targeted email accounts. The larger 2013 breach, however, has never been publicly attributed to a named operator.
 
 The breaches had direct financial consequences for Yahoo. During the pending acquisition by Verizon Communications, Yahoo was forced to reduce the sale price by $350 million after disclosing the breaches. The SEC fined Yahoo's successor entity $35 million for failing to disclose the breaches in a timely manner.
 
@@ -116,7 +116,7 @@ Class-action litigation resulted in a $117.5 million settlement fund for affecte
 
 The intelligence impact was assessed as severe. The targeted email surveillance provided the FSB with access to the private communications of journalists, government officials, and business executives, with potential consequences for source protection, diplomatic negotiations, and competitive intelligence.
 
-## Attribution
+## Historical Context
 
 The U.S. Department of Justice indicted four individuals in March 2017 in connection with the 2014 Yahoo breach: FSB officers Dmitry Dokuchaev and Igor Sushchin, and criminal hackers Alexsey Belan and Karim Baratov. Baratov was arrested in Canada and extradited to the United States, where he pleaded guilty and was sentenced to five years in prison. Belan, a Latvian national on the FBI's Cyber Most Wanted list, remained at large in Russia. The two FSB officers were also not arrested.
 
@@ -124,7 +124,7 @@ The indictment detailed a direct relationship between Russian intelligence offic
 
 Attribution for the separate 2013 breach affecting 3 billion accounts was never publicly assigned.
 
-Attribution confidence for the 2014 breach is assessed as A1 (confirmed by government) based on the DOJ indictment naming specific FSB officers.
+Overall attribution confidence for this combined article is assessed as A3 because the 2014 breach was confirmed by U.S. government charges, while the larger 2013 breach remains unattributed.
 
 ## Timeline
 

@@ -55,7 +55,7 @@ mitreMappings:
     notes: "Harvests credentials via phishing and credential-stuffing to maintain persistent access."
 attributionConfidence: A1
 attributionRationale: "Attributed to GRU Unit 26165 by the U.S. Department of Justice (2018 indictment of 12 officers), corroborated by Five Eyes intelligence agencies and multiple private-sector firms."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -142,7 +142,7 @@ APT28 employs a broad range of techniques across the ATT&CK framework.
 
 **Execution and Persistence**: APT28 uses command and scripting interpreters (T1059), scheduled tasks (T1053), and registry run keys (T1547.001) for execution and persistence. On Linux systems, Drovorub uses kernel modules for rootkit-level persistence.
 
-**Defense Evasion**: The group employs indicator removal (T1070), timestomping, and process injection to evade host-based defenses. SUNBURST-style dormancy periods have been observed in some campaigns.
+**Defense Evasion**: The group employs indicator removal (T1070), timestomping, process injection, and delayed activation periods to evade host-based defenses.
 
 **Command and Control**: HTTP/S-based C2 (T1071.001) is the primary channel, with communications designed to mimic legitimate web traffic. The group also uses DNS tunneling (T1071.004) and encrypted channels through custom protocols.
 
