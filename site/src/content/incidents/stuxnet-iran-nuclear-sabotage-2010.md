@@ -6,9 +6,9 @@ attackType: Sabotage
 severity: critical
 sector: Energy & Utilities
 geography: Iran
-threatActor: Equation Group
+threatActor: Unknown (suspected U.S.-Israeli operation)
 attributionConfidence: A2
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -27,7 +27,7 @@ tags:
   - zero-day
   - worm
   - nation-state
-  - equation-group
+  - olympic-games
   - stuxnet
 sources:
   - url: https://www.cisa.gov/news-events/ics-alerts/ics-alert-10-238-01b
@@ -73,7 +73,7 @@ mitreMappings:
     notes: Stuxnet modified the frequency converter drives controlling IR-1 centrifuge rotor speeds at Natanz, alternating between speeds that caused mechanical stress and eventual physical destruction of the centrifuges.
 ---
 
-## Summary
+## Executive Summary
 
 Stuxnet was a purpose-built computer worm discovered in June 2010 that targeted Siemens Step 7 industrial control software used in programmable logic controllers (PLCs) managing centrifuge operations at Iran's Natanz uranium enrichment facility. The worm represented the first publicly documented case of a cyberweapon designed to cause physical destruction of industrial equipment.
 
@@ -123,7 +123,7 @@ Beyond the physical damage to centrifuges, Stuxnet's discovery had lasting effec
 
 The worm's uncontrolled propagation beyond the intended target — Stuxnet eventually infected an estimated 100,000 computers in over 100 countries — raised questions about the collateral effects of offensive cyber weapons and the risks of uncontrolled malware proliferation.
 
-## Attribution
+## Historical Context
 
 No government has officially claimed responsibility for Stuxnet. In June 2012, The New York Times reported that the worm was part of a joint U.S.-Israeli covert operation codenamed "Olympic Games," initiated under the George W. Bush administration and continued under the Obama administration. The reporting was based on interviews with current and former U.S., European, and Israeli officials.
 

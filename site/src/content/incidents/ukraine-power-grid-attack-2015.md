@@ -8,7 +8,7 @@ sector: Energy & Utilities
 geography: Ukraine
 threatActor: Sandworm
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -74,7 +74,7 @@ mitreMappings:
     notes: "Attackers remotely opened breakers in distribution substations, cutting power to approximately 230,000 customers."
 ---
 
-## Summary
+## Executive Summary
 
 On December 23, 2015, three Ukrainian regional electricity distribution companies — Prykarpattyaoblenergo, Chernivtsioblenergo, and Kyivoblenergo — experienced coordinated cyberattacks that disrupted electrical power distribution to approximately 230,000 customers for periods ranging from one to six hours. This event marked the first publicly confirmed case of a cyberattack causing a power outage, representing a watershed moment in the understanding of cyber threats to critical infrastructure.
 
@@ -128,7 +128,7 @@ While the power outage itself was relatively brief due to the manual restoration
 
 The attack demonstrated that cyber operations could achieve physical effects on critical infrastructure, validating theoretical scenarios that had been discussed in the cybersecurity community for years. It prompted reassessment of ICS/SCADA security across the global energy sector and led to increased investment in industrial control system security.
 
-## Attribution
+## Historical Context
 
 The attack has been attributed to the Russian government's Main Intelligence Directorate (GRU) Unit 74455, known in the cybersecurity community as Sandworm. Attribution is supported by multiple lines of evidence.
 

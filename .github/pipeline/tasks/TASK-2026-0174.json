@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0174",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-18T07:26:00Z",
+  "updated": "2026-04-18T07:26:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "Microsoft 365 device code phishing campaign reclassification and canonicalization",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/m365-oauth-device-code-phishing-2026.md",
+    "issues": [
+      "incident_campaign_taxonomy_drift",
+      "multi_victim_cluster_requires_campaign_handling",
+      "collection_reclassification"
+    ],
+    "notes": "The live `m365-oauth-device-code-phishing-2026.md` article describes a broad multi-victim cloud phishing campaign rather than a single canonical incident. Reprocess it into the appropriate collection with campaign semantics, preserve any victim-specific details for downstream incident handling, and retire or redirect the legacy incident slug according to site conventions."
+  },
+  "output": {
+    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "branch": "pipeline/TASK-2026-0174"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T07:26:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on reclassification after corpus review confirmed the Microsoft 365 device-code article is campaign-shaped coverage living in the incidents collection."
+    }
+  ]
+}
