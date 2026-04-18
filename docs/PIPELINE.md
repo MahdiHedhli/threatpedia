@@ -218,10 +218,14 @@ draft_ai | draft_human | under_review | certified | disputed | deprecated
 ```
 
 The authoritative source of this enum is
-[`site/src/content.config.ts`](../site/src/content.config.ts). The workflow
-and the runner each keep a local copy to avoid requiring Zod in the
-Actions environment; a future task-shape-formalization slice will
-consolidate.
+[`site/src/content.config.ts`](../site/src/content.config.ts). The shared
+JS-side mirror lives in
+[`scripts/pipeline-schema.mjs`](../scripts/pipeline-schema.mjs) and is
+consumed by both the runner (`import`) and the validator workflow (CLI
+shell-out via `--key reviewStatuses`). The validator workflow keeps a
+local fallback constant only as a safety net in case the shared module
+fails to load, with an Actions-level `::warning::` annotation when the
+fallback fires. There is no duplicated primary constant.
 
 ### Path A — `pipeline-validate.yml` (file-state rule)
 

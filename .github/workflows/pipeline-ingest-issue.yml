@@ -144,7 +144,13 @@ jobs:
               },
               history: [
                 {
+                  // Canonical creation entry carries BOTH `action: 'created'`
+                  // (consumed by the runner's "Created:" display lookup) AND
+                  // `{from: 'none', to: 'pending'}` (consumed by transition
+                  // rendering). See docs/PIPELINE.md "Task JSON — canonical
+                  // shape". TASK-2026-0066 / Slice 4b.
                   timestamp: now.toISOString(),
+                  action: 'created',
                   from: 'none',
                   to: 'pending',
                   agent: issue.user.login,
