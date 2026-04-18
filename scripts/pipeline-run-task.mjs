@@ -590,7 +590,7 @@ function validateOutput(task, explicitFile) {
       // Default rule (missing/legacy) is "draft_ai" exact-match.
       // Review/backfill tasks can set "*" or an array to preserve live states.
       // See matchesReviewStatus() helper near the top of this file.
-      const rsMatch = fm.match(/reviewStatus:\s*["']?([a-z_]+)/);
+      const rsMatch = fm.match(/^reviewStatus:\s*["']?([a-z_]+)/m);
       const actualReviewStatus = rsMatch ? rsMatch[1] : null;
       const rsRule = acceptance.review_status;
       const rsCheck = matchesReviewStatus(actualReviewStatus, rsRule);

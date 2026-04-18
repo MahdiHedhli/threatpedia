@@ -108,7 +108,7 @@ jobs:
               // This directly implements the Slice 3 direction: distinguish
               // draft-generation from corpus-correction at the validator
               // layer without requiring a task-id in the PR context.
-              const statusMatch = fm.match(/reviewStatus:\s*(\S+)/);
+              const statusMatch = fm.match(/^reviewStatus:\s*(\S+)/m);
               const reviewStatus = statusMatch ? statusMatch[1].replace(/^["']|["']$/g, '') : null;
               const isNewArticle = newFiles.has(file);
 
