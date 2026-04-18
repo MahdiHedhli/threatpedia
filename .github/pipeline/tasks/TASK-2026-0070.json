@@ -37,6 +37,8 @@
     {
       "timestamp": "2026-04-15T16:00:00Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Zero-day article \u2014 smoke test round 3"
     },

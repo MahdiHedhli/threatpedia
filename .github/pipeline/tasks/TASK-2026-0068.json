@@ -38,6 +38,8 @@
     {
       "timestamp": "2026-04-15T16:00:00Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Campaign article — smoke test round 3"
     },

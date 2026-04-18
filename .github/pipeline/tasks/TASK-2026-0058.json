@@ -43,6 +43,8 @@
     {
       "timestamp": "2026-04-15T14:00:00Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "dangermouse-bot",
       "notes": "Pipeline capability test \u2014 Penfold-Bot generation of incident article"
     },

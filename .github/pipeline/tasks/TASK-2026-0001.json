@@ -53,6 +53,7 @@
   "history": [
     {
       "timestamp": "2026-04-14T18:00:00Z",
+      "action": "created",
       "from": "none",
       "to": "pending",
       "agent": "MahdiHedhli",

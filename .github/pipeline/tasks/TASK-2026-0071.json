@@ -52,6 +52,8 @@
     {
       "timestamp": "2026-04-15T20:43:35.318Z",
       "action": "created",
+      "from": "none",
+      "to": "pending",
       "agent": "pipeline-discover",
       "note": "Auto-discovered from CISA KEV (score: 85)"
     },
