@@ -151,6 +151,13 @@ at the top of the step output (including the `_source` — `file` or
 single-knob edit in `config.yml` propagates to the dispatcher on the
 next run, no code change required.
 
+**Shared schema enum authority:** JavaScript-side schema enums (currently
+`SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
+single source of truth for the pipeline scripts. The runner imports it
+directly; the validator workflow loads it via a small shell-out step.
+The ultimate schema authority remains `site/src/content.config.ts` — the
+JS mirror must be updated in the same PR when the Zod schema changes.
+
 **Backpressure hysteresis:** the dispatcher pauses draft dispatch when
 the editorial queue hits `max_pending` and stays paused until the queue
 drains below `backpressure_resume`. State is tracked via a labeled
