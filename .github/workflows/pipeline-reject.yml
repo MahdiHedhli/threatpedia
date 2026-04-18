@@ -1,0 +1,135 @@
+name: "Pipeline: Reject Discovery Candidate"
+
+# Operator-invoked (workflow_dispatch) rejection of a discovery candidate.
+# Appends an entry to .github/pipeline/rejected-candidates.json via the
+# pipeline-reject.mjs helper and opens a PR against main.
+#
+# Never pushes directly to main. Re-eligibility = remove the entry via PR.
+#
+# See docs/PIPELINE.md — Rejection memory. TASK-2026-0067 / Slice 4c.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cve:
+        description: "CVE ID to reject (e.g. CVE-2026-34197)"
+        required: true
+        type: string
+      reason:
+        description: "Reason for rejection (shown in audit log)"
+        required: true
+        default: "operator veto"
+        type: string
+      topic:
+        description: "Optional topic string (for context in the audit log)"
+        required: false
+        type: string
+      pr:
+        description: "Optional PR number this rejection is tied to (e.g. closed accumulation PR)"
+        required: false
+        type: string
+
+jobs:
+  reject:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history is not needed; shallow is fine.
+          fetch-depth: 1
+
+      - name: Validate inputs
+        run: |
+          CVE="${{ github.event.inputs.cve }}"
+          if ! echo "$CVE" | grep -Eiq '^CVE-[0-9]{4}-[0-9]{4,}$'; then
+            echo "::error::Invalid CVE format: $CVE (expected CVE-YYYY-NNNN...)"
+            exit 1
+          fi
+          echo "CVE_UPPER=$(echo "$CVE" | tr '[:lower:]' '[:upper:]')" >> "$GITHUB_ENV"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create rejection branch
+        run: |
+          BRANCH="pipeline/reject-${CVE_UPPER}"
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          git checkout -b "$BRANCH"
+
+      - name: Append rejection entry
+        run: |
+          ARGS=(--cve "$CVE_UPPER" --reason "${{ github.event.inputs.reason }}")
+          if [ -n "${{ github.event.inputs.topic }}" ]; then
+            ARGS+=(--topic "${{ github.event.inputs.topic }}")
+          fi
+          if [ -n "${{ github.event.inputs.pr }}" ]; then
+            ARGS+=(--pr "${{ github.event.inputs.pr }}")
+          fi
+          node scripts/pipeline-reject.mjs "${ARGS[@]}"
+
+      - name: Commit and push
+        run: |
+          git add .github/pipeline/rejected-candidates.json
+          if git diff --cached --quiet; then
+            echo "::error::No changes produced by pipeline-reject.mjs (already rejected?)"
+            exit 1
+          fi
+          git commit -m "chore(pipeline): reject ${CVE_UPPER} — ${{ github.event.inputs.reason }}"
+          git push -u origin "$BRANCH"
+
+      - name: Open PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cve = process.env.CVE_UPPER;
+            const branch = process.env.BRANCH;
+            const reason = `${{ toJSON(github.event.inputs.reason) }}`;
+            const topic = `${{ toJSON(github.event.inputs.topic) }}`;
+            const pr = `${{ toJSON(github.event.inputs.pr) }}`;
+
+            const bodyLines = [
+              `**Reject discovery candidate:** \`${cve}\``,
+              '',
+              '| Field | Value |',
+              '|---|---|',
+              `| CVE | \`${cve}\` |`,
+              `| Reason | ${reason} |`,
+            ];
+            if (topic && topic !== 'null' && topic !== '""') {
+              bodyLines.push(`| Topic | ${topic} |`);
+            }
+            if (pr && pr !== 'null' && pr !== '""') {
+              bodyLines.push(`| Linked PR | ${pr} |`);
+            }
+            bodyLines.push(
+              `| Dispatched by | @${context.actor} |`,
+              '',
+              'After merge, `pipeline-discover.mjs` will skip this CVE in future runs.',
+              '',
+              'To re-surface: open a follow-up PR removing the entry from `.github/pipeline/rejected-candidates.json`.',
+              '',
+              'See `docs/PIPELINE.md` — Rejection memory.'
+            );
+
+            const { data: pullRequest } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `chore(pipeline): reject ${cve}`,
+              head: branch,
+              base: 'main',
+              body: bodyLines.join('\n'),
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pullRequest.number,
+              labels: ['pipeline/rejection'],
+            });
+
+            core.notice(`Opened PR #${pullRequest.number}: ${pullRequest.html_url}`);
