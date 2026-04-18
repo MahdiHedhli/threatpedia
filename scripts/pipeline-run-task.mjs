@@ -93,7 +93,7 @@ ${SOURCE_SCHEMA}
   campaign: {
     dir: 'campaigns',
     frontmatterSpec: `YAML frontmatter fields:
-  campaignId: string (optional) — format TP-CAMP-YYYY-NNNN
+  campaignId: string — format TP-CAMP-YYYY-NNNN
   title: string
   startDate: date — ISO 8601
   endDate: date (optional)
@@ -109,21 +109,20 @@ ${SOURCE_SCHEMA}
   generatedBy: string — your agent identity
   generatedDate: date — today's date
   cves: array of strings (optional)
-  relatedIncidents: array of strings (optional)
-  relatedSlugs: array of strings (optional)
+  relatedIncidents: array of strings (optional) — incident slugs; campaigns should reference confirmed constituent incidents where available
   tags: array of strings
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1`,
-    bodySpec: `Required H2 sections (minimum 5):
-  ## Summary — campaign overview, objectives, scope
-  ## Technical Analysis — tools, techniques, infrastructure
-  ## Attack Chain — multi-stage breakdown
-  ## Impact Assessment — affected organizations, sectors, quantified damage
-  ## Attribution — threat actor linkage and confidence
-  ## Timeline — key events chronologically
+    bodySpec: `Required H2 sections (minimum 6):
+  ## Executive Summary — campaign overview, objectives, scope, current status
+  ## Technical Analysis — tools, techniques, infrastructure, operator workflow
+  ## Attack Chain — multi-stage breakdown using ### Stage N: Title format
+  ## MITRE ATT&CK Mapping — campaign-level techniques grouped by tactic using ### headings
+  ## Timeline — key events chronologically using ### YYYY-MM-DD — Event format
+  ## Remediation & Mitigation — defensive guidance and hardening steps
   ## Sources & References — each source as a markdown hyperlink: [Publisher: Title](url). Must match frontmatter sources array.`,
-    requiredFields: ['title', 'startDate', 'attackType', 'severity', 'sector', 'geography', 'reviewStatus', 'generatedBy', 'generatedDate'],
+    requiredFields: ['campaignId', 'title', 'startDate', 'attackType', 'severity', 'sector', 'geography', 'reviewStatus', 'generatedBy', 'generatedDate'],
     idField: 'campaignId',
     idPattern: /^TP-CAMP-\d{4}-\d{4}$/,
   },
