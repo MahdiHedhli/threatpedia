@@ -23,9 +23,10 @@ scheduling:
 
 # ── Circuit Breaker ──────────────────────────────────────────────────────────
 circuit_breaker:
-  failure_threshold: 3       # Consecutive failures before tripping
-  cooldown_minutes: 60       # How long to wait before retrying after trip
-  alert_channel: "issues"    # Where to alert (GitHub Issues)
+  failure_threshold: 3           # Consecutive failures before tripping
+  failure_window_minutes: 120    # Look-back window: failures within this many minutes count toward the threshold
+  cooldown_minutes: 60           # How long to wait before retrying after trip
+  alert_channel: "issues"        # Where to alert (GitHub Issues)
 
 # ── Validation Gates ─────────────────────────────────────────────────────────
 validation:
