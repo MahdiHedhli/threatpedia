@@ -78,28 +78,23 @@ Stryker reports phased restoration of manufacturing, ordering, and distribution 
 
 ## Attack Chain
 
-Stage 1
-Privileged Access Compromise
+### Stage 1: Privileged Access Compromise
 
 An attacker obtains or abuses privileged access inside Stryker's Microsoft environment. The public record has not confirmed whether that access came from phishing, token theft, credential reuse, or another route.
 
-Stage 2
-Management Plane Access
+### Stage 2: Management Plane Access
 
 The actor reaches device-management controls capable of issuing wipe or reset commands at scale.
 
-Stage 3
-Destructive Device Actions
+### Stage 3: Destructive Device Actions
 
 High-impact wipe actions are issued across a large managed fleet. Because the platform treats these as legitimate administrative operations, the attack can move faster than traditional malware containment.
 
-Stage 4
-Distributed Execution
+### Stage 4: Distributed Execution
 
 Managed endpoints receive the commands through the standard MDM channel and execute device resets or data removal. Where personally owned devices are enrolled, personal data loss becomes a secondary impact.
 
-Stage 5
-Operational Impact
+### Stage 5: Operational Impact
 
 Inoperable endpoints disrupt ordering, manufacturing support, distribution, and internal communications. Recovery requires rebuilding trust in the management plane as much as it requires restoring endpoint functionality.
 

@@ -57,11 +57,11 @@ Incident response teams mobilized. Law enforcement, fire, and EMS agencies opera
 
 Systems Affected: Patriot Regional Emergency Communications Center telephone exchange and related business/administrative communications systems. 911 emergency dispatch systems operated on separate infrastructure and remained functional. This suggests intentional network segmentation protected critical 911 systems but non-emergency communications infrastructure lacked equivalent protection.
 
-Possible Attack Vector 1: CodeRED / Crisis24 Credential Leverage
+### Possible Attack Vector 1: CodeRED / Crisis24 Credential Leverage
 
 Attacker uses credentials obtained in November 2025 Crisis24 breach to access CodeRED platform or systems connected to it. CodeRED integration with Patriot Regional ECC provides network access pathway. Attacker pivots from CodeRED systems into emergency communications center infrastructure.
 
-Possible Attack Vector 2: Direct Intrusion / Ransomware
+### Possible Attack Vector 2: Direct Intrusion / Ransomware
 
 Attacker gains initial access to Patriot Regional ECC systems through unpatched vulnerabilities, exposed services, or compromised credentials. Malware deployed to disrupt or encrypt communications systems. Ransomware infection would render phone systems unavailable.
 

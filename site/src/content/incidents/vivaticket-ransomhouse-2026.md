@@ -232,25 +232,3 @@ https://skift.com/2026/03/26/ransomware-attack-hits-ticketing-system-used-by-maj
 
 BlackFog - State of Ransomware March 2026
 https://www.blackfog.com/the-state-of-ransomware-march-2026/
-
-Musée d'Orsay
-Notre-Dame de Paris
-Arc de Triomphe
-Eiffel Tower
-Vatican Museums
-~3,500 total venues
-
-Status Timeline
-
-March 2: Attack initiated
-March 3: Outages reported
-March 5: Public disclosure
-March 10: Claim posted
-March 15: ANSSI investigation
-March 26: Partial restoration
-
-Related Incidents
-
-Cegedim Santé Health Data Breach
-
-RansomHouse Campaign

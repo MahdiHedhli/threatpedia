@@ -37,13 +37,13 @@ This campaign should not be flattened into a single confirmed nation-state attri
 
 ## Technical Analysis
 
-Attack Mechanism: OAuth Device Code Flow Abuse
+### Attack Mechanism: OAuth Device Code Flow Abuse
 
 The device code authentication flow is a legitimate OAuth 2.0 mechanism designed for devices with limited input capability. In the abuse pattern documented by Huntress and later Sekoia, the attacker first requests a legitimate device code from Microsoft, then delivers that code to the victim through a phishing lure. The victim is instructed to continue to the legitimate Microsoft device-login experience and enter the supplied code, after which the attacker redeems the resulting tokens from their own infrastructure.
 
 That distinction matters: public reporting on this campaign did not primarily describe a fake password page that steals the user's Microsoft password or MFA secret directly. Instead, the campaign abused a legitimate Microsoft authentication workflow and relied on social engineering to trick the victim into completing it on the attacker's behalf.
 
-Infrastructure & Evasion Tactics
+### Infrastructure & Evasion Tactics
 
 The EvilTokens platform leverages multiple evasion layers:
 
@@ -54,7 +54,7 @@ Template spoofing: The kit offered decoy pages impersonating Microsoft 365, Adob
 
 This multi-layer approach degrades many traditional email and URL-reputation controls because the victim eventually interacts with legitimate Microsoft infrastructure and the attacker only needs the resulting token set.
 
-Token Persistence & MFA Bypass
+### Token Persistence & MFA Bypass
 
 A critical vulnerability in this attack is the persistence of OAuth refresh tokens:
 
@@ -67,28 +67,22 @@ This creates a significant detection gap: organizations may only become aware of
 
 Attack Stages
 
-Stage 1
-Phishing Email Delivery
+### Stage 1: Phishing Email Delivery
 Attacker sends spearphishing emails with lures related to financial transactions, meeting invitations, logistics updates, payroll information, construction bids, or voicemail notifications. Email headers are spoofed to appear from trusted internal senders or partners.
 
-Stage 2
-Initial Redirect via Security Vendor
+### Stage 2: Initial Redirect via Security Vendor
 Phishing link directs through legitimate security vendor redirects (e.g., Cisco Umbrella safe browsing, Trend Micro URL reputation lookup) to create a chain of trust and evade email gateway reputation checks.
 
-Stage 3
-Landing on Decoy Page
+### Stage 3: Landing on Decoy Page
 Victim reaches a decoy page hosted through Cloudflare Workers or adjacent infrastructure. The page presents a lure theme and provides the attacker-generated verification code.
 
-Stage 4
-Legitimate Microsoft Device Login
+### Stage 4: Legitimate Microsoft Device Login
 Victim is redirected to the legitimate Microsoft device login experience and enters the attacker-provided code, then completes normal authentication and MFA.
 
-Stage 5
-Token Harvesting
+### Stage 5: Token Harvesting
 After the victim completes the legitimate device-code flow, the attacker redeems the corresponding access and refresh tokens from Railway-hosted infrastructure. Those tokens can grant access to Exchange Online, SharePoint, OneDrive, Teams, and other cloud resources.
 
-Stage 6
-Post-Compromise Activity
+### Stage 6: Post-Compromise Activity
 Attacker uses stolen tokens to access email, exfiltrate data, establish persistence, deploy malware, or pivot to other cloud services. Refresh token validity ensures continued access even if victim password is reset.
 
 ## MITRE ATT&CK Mapping
