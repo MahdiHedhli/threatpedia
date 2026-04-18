@@ -1,14 +1,12 @@
 ---
 name: "Salt Typhoon"
 aliases:
-  - "GhostEmperor"
-  - "FamousSparrow"
   - "UNC2286"
-affiliation: "China (Ministry of State Security)"
+affiliation: "China (PRC state-sponsored)"
 motivation: "Espionage"
 status: active
 country: "China"
-firstSeen: "2020"
+firstSeen: "2022"
 lastSeen: "2025"
 targetSectors:
   - "Telecommunications"
@@ -19,8 +17,8 @@ targetGeographies:
   - "Global"
 tools:
   - "Demodex rootkit"
-  - "GhostEmperor tools"
   - "Custom backdoors"
+  - "Credential theft tooling"
 mitreMappings:
   - techniqueId: "T1190"
     techniqueName: "Exploit Public-Facing Application"
@@ -35,8 +33,8 @@ mitreMappings:
     tactic: "Defense Evasion"
     notes: "Deploys kernel-level rootkits for persistent concealed access to telecom infrastructure."
 attributionConfidence: A1
-attributionRationale: "Attributed to China by the U.S. government (FBI, CISA, NSA) in joint advisories. Senior U.S. officials publicly confirmed Chinese MSS attribution."
-reviewStatus: "draft_ai"
+attributionRationale: "Attributed to PRC state-sponsored actors by the U.S. government (FBI, CISA, NSA) in joint advisories and public statements. Public reporting has linked the activity to China, but the available cited sources in this profile do not independently establish GhostEmperor or FamousSparrow as canonical aliases."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -61,18 +59,18 @@ sources:
     publicationDate: "2024-11-13"
     accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.microsoft.com/en-us/security/blog/2024/11/22/midnight-blizzard-guidance-for-responders-on-nation-state-attacks/"
-    publisher: "Microsoft Security"
-    publisherType: vendor
-    reliability: R1
-    publicationDate: "2024-11-22"
+  - url: "https://therecord.media/norawy-intelligence-discloses-salt-typhoon-attacks"
+    publisher: "The Record"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-02-05"
     accessDate: "2026-04-16"
     archived: false
 ---
 
 ## Executive Summary
 
-Salt Typhoon is a Chinese state-sponsored threat actor attributed to the **Ministry of State Security (MSS)** that targets telecommunications infrastructure for espionage purposes. Active since at least 2020, the group gained public attention in late 2024 when U.S. officials disclosed that Salt Typhoon had compromised the networks of at least nine major U.S. telecommunications providers, including AT&T, Verizon, T-Mobile, and Lumen Technologies.
+Salt Typhoon is a PRC state-sponsored threat actor focused on telecommunications infrastructure and communications intelligence collection. Active since at least 2022, the group gained public attention in late 2024 when U.S. officials disclosed that Salt Typhoon had compromised the networks of at least nine major U.S. telecommunications providers, including AT&T, Verizon, T-Mobile, and Lumen Technologies.
 
 The group's intrusions into U.S. telecom infrastructure enabled access to call metadata, text messages, and audio intercepts of targeted individuals, including senior U.S. government officials and presidential campaign staff. Salt Typhoon also accessed lawful intercept (wiretapping) systems used by U.S. law enforcement, raising concerns about the compromise of sensitive surveillance operations. The incident has been described by U.S. officials as one of the most consequential espionage campaigns against the United States.
 
@@ -88,13 +86,13 @@ The group gained access to lawful intercept systems used by U.S. law enforcement
 
 ## Technical Capabilities
 
-Salt Typhoon demonstrates advanced capabilities in compromising telecommunications infrastructure. The group exploits vulnerabilities in network edge devices, routers, and telecom-specific systems. Kernel-level rootkits (Demodex) provide persistent concealed access that is resistant to standard detection methods.
+Salt Typhoon demonstrates advanced capabilities in compromising telecommunications infrastructure. The group exploits vulnerabilities in network edge devices, routers, and telecom-specific systems. Public reporting and incident writeups have associated the activity with kernel-level rootkit use such as Demodex, but the broader pattern is better supported by the group's access to telecom backbone systems, lawful-intercept environments, and subscriber-management infrastructure.
 
 The group's deep access to telecom infrastructure enables interception of communications traffic at scale, access to billing and subscriber data, and monitoring of lawful intercept systems. This level of access requires sophisticated understanding of telecom network architecture and protocols.
 
 ## Attribution
 
-The FBI and CISA issued a joint statement in November 2024 attributing the telecom intrusions to PRC-affiliated actors (Salt Typhoon). CISA published advisory AA24-347A providing technical guidance for telecom network hardening. Senior Biden administration officials publicly confirmed the MSS attribution. The campaign triggered bipartisan Congressional hearings and legislative proposals for mandatory telecom cybersecurity standards.
+The FBI and CISA issued a joint statement in November 2024 attributing the telecom intrusions to PRC-affiliated actors associated with Salt Typhoon. CISA published advisory AA24-347A providing technical guidance for telecom network hardening. Public reporting and allied threat assessments subsequently linked the activity to broader Chinese state-sponsored telecom espionage. The campaign triggered bipartisan Congressional hearings and legislative proposals for mandatory telecom cybersecurity standards.
 
 ## MITRE ATT&CK Profile
 

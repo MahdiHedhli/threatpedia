@@ -47,7 +47,7 @@ mitreMappings:
     notes: "Uses credential harvesting tools for lateral movement within targeted networks."
 attributionConfidence: A1
 attributionRationale: "Attributed to MSS Hainan State Security Department by a July 2021 joint advisory from CISA, NSA, FBI, and international partners (AA21-200A), and a 2021 DOJ indictment of four MSS officers."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:

@@ -6,7 +6,7 @@ aliases:
   - "DEV-0391"
   - "UNC3236"
   - "Insidious Taurus"
-affiliation: "China (PLA or MSS)"
+affiliation: "China (PRC state-sponsored)"
 motivation: "Espionage / Pre-positioning"
 status: active
 country: "China"
@@ -42,8 +42,8 @@ mitreMappings:
     tactic: "Persistence"
     notes: "Uses compromised valid credentials for persistent access, avoiding creation of new accounts."
 attributionConfidence: A1
-attributionRationale: "Attributed to PRC state-sponsored actors by joint CISA/NSA/FBI advisory (AA24-038A) and confirmed by Five Eyes intelligence agencies. CISA Director described as pre-positioning for potential disruption."
-reviewStatus: "draft_ai"
+attributionRationale: "Attributed to PRC state-sponsored actors by joint CISA/NSA/FBI advisory AA24-038A and supporting Five Eyes statements. Public sources consistently link the activity to the PRC, but the cited material does not require a public PLA-versus-MSS split in the profile metadata."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -81,7 +81,7 @@ sources:
 
 Volt Typhoon is a Chinese state-sponsored threat actor that has been pre-positioning within U.S. critical infrastructure networks since at least 2021. Attributed to PRC state-sponsored activity by CISA, NSA, FBI, and Five Eyes intelligence agencies, the group targets communications, energy, transportation, water and wastewater systems, and other critical infrastructure sectors, with a geographic focus on the U.S. mainland and Guam.
 
-Volt Typhoon is assessed to be pre-positioning for potential disruptive or destructive operations against U.S. critical infrastructure in the event of a geopolitical crisis (such as a conflict over Taiwan). The group's exclusive use of living-off-the-land (LOTL) techniques -- avoiding deployment of detectable malware in favor of native operating system tools -- makes detection challenging. CISA Director Jen Easterly described Volt Typhoon as a "defining threat of our generation."
+Volt Typhoon is assessed to be pre-positioning for potential disruptive or destructive operations against U.S. critical infrastructure in the event of a geopolitical crisis (such as a conflict over Taiwan). The group's heavy reliance on living-off-the-land (LOTL) techniques -- minimizing bespoke implants on victim Windows hosts in favor of native operating system tools and relay infrastructure -- makes detection challenging. CISA Director Jen Easterly described Volt Typhoon as a "defining threat of our generation."
 
 ## Notable Campaigns
 
@@ -95,7 +95,7 @@ In January 2024, the FBI announced the court-authorized disruption of a botnet (
 
 ## Technical Capabilities
 
-Volt Typhoon's defining characteristic is its exclusive use of living-off-the-land techniques. The group does not deploy custom malware; instead, it uses native Windows tools (cmd.exe, PowerShell, wmic, ntdsutil, netsh) for all post-compromise activities. This approach avoids triggering EDR and antivirus detections based on known malware signatures.
+Volt Typhoon's defining characteristic is its heavy use of living-off-the-land techniques. Rather than relying on large bespoke malware families on victim Windows systems, the group emphasizes native Windows tools (cmd.exe, PowerShell, wmic, ntdsutil, netsh), valid credentials, and compromised router infrastructure for post-compromise activity. This approach reduces obvious malware artifacts and complicates EDR-driven detection.
 
 The group routes all traffic through networks of compromised SOHO routers and VPN appliances, making C2 traffic indistinguishable from legitimate network activity. Valid credentials (obtained through credential dumping or exploitation) provide persistent access without the need for backdoors.
 

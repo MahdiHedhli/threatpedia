@@ -48,7 +48,7 @@ mitreMappings:
     notes: "APT1 used Mimikatz and custom tools to dump credentials for lateral movement."
 attributionConfidence: A1
 attributionRationale: "Attributed to PLA Unit 61398 by Mandiant's 2013 APT1 report, corroborated by a 2014 U.S. DOJ indictment of five PLA officers."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
