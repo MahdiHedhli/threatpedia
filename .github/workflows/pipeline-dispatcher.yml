@@ -27,27 +27,76 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Load pipeline config
+        id: config
+        run: |
+          set -euo pipefail
+          # Shell out to the authoritative reader. On parse failure it prints
+          # safe defaults + a WARN to stderr; the workflow continues with those
+          # so the dispatcher never fails-closed on config-parsing issues.
+          CONFIG_JSON=$(node scripts/pipeline-config.mjs)
+          # Escape newlines so the JSON survives as a step output
+          {
+            echo "json<<EOF"
+            echo "$CONFIG_JSON"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Check preconditions and dispatch tasks
         uses: actions/github-script@v7
+        env:
+          CONFIG_JSON: ${{ steps.config.outputs.json }}
         with:
           script: |
             const fs = require('fs');
             const path = require('path');
 
             const TASKS_DIR = '.github/pipeline/tasks';
-            const CONFIG_PATH = '.github/pipeline/config.yml';
 
             // ── Load pipeline config ─────────────────────────────────────
-            // Simple YAML parser for flat config (avoids dependency)
+            // Parsed by scripts/pipeline-config.mjs (authoritative reader);
+            // passed in via env var so this step doesn't re-parse YAML.
+            // Falls back to safe defaults if something is off.
+            const DEFAULTS = {
+              maxEditorial: 50,
+              backpressureResume: 40,
+              failureThreshold: 3,
+              staleLockMinutes: 30,
+              cooldownMinutes: 60,
+              failureWindowMinutes: 120,
+            };
+
             function loadConfig() {
-              const text = fs.readFileSync(CONFIG_PATH, 'utf8');
-              // Extract key values we need
-              const maxEditorial = 50;  // Hardcoded from config
-              const failureThreshold = 3;
-              const staleLockMinutes = 30;
-              return { maxEditorial, failureThreshold, staleLockMinutes };
+              try {
+                const raw = process.env.CONFIG_JSON || '';
+                if (!raw) return { ...DEFAULTS, _source: 'defaults', _reason: 'no-env' };
+                const cfg = JSON.parse(raw);
+                return {
+                  maxEditorial:         cfg?.queues?.editorial?.max_pending ?? DEFAULTS.maxEditorial,
+                  backpressureResume:   cfg?.queues?.editorial?.backpressure_resume ?? DEFAULTS.backpressureResume,
+                  failureThreshold:     cfg?.circuit_breaker?.failure_threshold ?? DEFAULTS.failureThreshold,
+                  staleLockMinutes:     cfg?.scheduling?.stale_lock_minutes ?? DEFAULTS.staleLockMinutes,
+                  cooldownMinutes:      cfg?.circuit_breaker?.cooldown_minutes ?? DEFAULTS.cooldownMinutes,
+                  failureWindowMinutes: cfg?.circuit_breaker?.failure_window_minutes ?? DEFAULTS.failureWindowMinutes,
+                  _source: cfg._source || 'file',
+                };
+              } catch (e) {
+                console.warn(`::warning::Pipeline config parse failed: ${e.message}. Using safe defaults.`);
+                return { ...DEFAULTS, _source: 'defaults', _reason: 'parse-error' };
+              }
             }
             const config = loadConfig();
+
+            // ── Log resolved config (every run self-documents active thresholds) ─
+            console.log('─── Dispatcher config (active thresholds) ───────────────');
+            console.log(`  source:               ${config._source}${config._reason ? ' (' + config._reason + ')' : ''}`);
+            console.log(`  maxEditorial:         ${config.maxEditorial}  (queues.editorial.max_pending)`);
+            console.log(`  backpressureResume:   ${config.backpressureResume}  (queues.editorial.backpressure_resume)`);
+            console.log(`  failureThreshold:     ${config.failureThreshold}  (circuit_breaker.failure_threshold)`);
+            console.log(`  failureWindowMinutes: ${config.failureWindowMinutes}  (circuit_breaker.failure_window_minutes)`);
+            console.log(`  cooldownMinutes:      ${config.cooldownMinutes}  (circuit_breaker.cooldown_minutes)`);
+            console.log(`  staleLockMinutes:     ${config.staleLockMinutes}  (scheduling.stale_lock_minutes)`);
+            console.log('──────────────────────────────────────────────────────────');
 
             // ── Load all tasks ───────────────────────────────────────────
             function loadTasks() {
@@ -72,7 +121,7 @@ jobs:
             if (recentFailed.length >= config.failureThreshold) {
               const allRecent = recentFailed.every(t => {
                 const ago = (Date.now() - new Date(t.updated).getTime()) / 60000;
-                return ago < 120; // Within last 2 hours
+                return ago < config.failureWindowMinutes;
               });
               if (allRecent) {
                 console.log('::warning::Circuit breaker tripped — 3+ consecutive recent failures. Halting dispatch.');
@@ -80,7 +129,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   title: `[PIPELINE ALERT] Circuit breaker tripped — ${config.failureThreshold} consecutive failures`,
-                  body: `The pipeline dispatcher detected ${config.failureThreshold} consecutive failures within the last 2 hours.\n\nFailed tasks:\n${recentFailed.map(t => `- \`${t.task_id}\`: ${t.error?.message || 'unknown error'}`).join('\n')}\n\nThe pipeline is paused until this issue is resolved. Close this issue to resume.`,
+                  body: `The pipeline dispatcher detected ${config.failureThreshold} consecutive failures within the last ${config.failureWindowMinutes} minutes.\n\nFailed tasks:\n${recentFailed.map(t => `- \`${t.task_id}\`: ${t.error?.message || 'unknown error'}`).join('\n')}\n\nThe pipeline is paused until this issue is resolved. Cooldown after resume: ${config.cooldownMinutes} minutes. Close this issue to resume.`,
                   labels: ['pipeline/alert', 'pipeline/circuit-breaker'],
                 });
                 return;
@@ -141,7 +190,11 @@ jobs:
             const requestedId = '${{ inputs.task_id }}';
             const tasksToRun = requestedId
               ? pendingTasks.filter(t => t.task_id === requestedId)
-              : pendingTasks.slice(0, 3); // Process up to 3 tasks per dispatch
+              // `tasks_per_run` is intentionally fixed (not config-backed) for
+              // this slice — deliberate operational ceiling. If dispatch volume
+              // pattern changes, move to config.yml as `dispatcher.tasks_per_run`
+              // in a follow-on slice.
+              : pendingTasks.slice(0, 3);
 
             if (tasksToRun.length === 0) {
               console.log('No pending tasks to dispatch.');
