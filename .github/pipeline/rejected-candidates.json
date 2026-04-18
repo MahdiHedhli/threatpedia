@@ -1,0 +1,6 @@
+{
+  "version": "1.0",
+  "description": "Discovery candidates operator-vetoed from becoming tasks. Append-only via scripts/pipeline-reject.mjs; remove entries via PR edit to restore eligibility. See docs/PIPELINE.md — Rejection memory.",
+  "lastUpdated": "2026-04-18T04:00:00Z",
+  "rejected": []
+}
