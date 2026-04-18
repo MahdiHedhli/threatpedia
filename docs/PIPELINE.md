@@ -137,7 +137,7 @@ for the pipeline.
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
-| Editorial queue backpressure | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 50 pending / resume at 40 | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
+| Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
 | Dependency blocking | `pipeline-dispatcher.yml` | Per-task `depends_on[]` | Task file |
@@ -147,8 +147,18 @@ for the pipeline.
 `.github/pipeline/config.yml` via the authoritative reader
 `scripts/pipeline-config.mjs`. Every dispatch run logs the resolved config
 at the top of the step output (including the `_source` — `file` or
-`defaults` with a reason). A single-knob edit in `config.yml` propagates
-to the dispatcher on the next run, no code change required.
+`defaults` with a reason, plus `_path` when sourced from a file). A
+single-knob edit in `config.yml` propagates to the dispatcher on the
+next run, no code change required.
+
+**Backpressure hysteresis:** the dispatcher pauses draft dispatch when
+the editorial queue hits `max_pending` and stays paused until the queue
+drains below `backpressure_resume`. State is tracked via a labeled
+GitHub Issue (`pipeline/backpressure`) — the same Issue-as-state pattern
+the circuit breaker uses — so there's no new persisted file or branch.
+Unlike the circuit breaker (which requires operator acknowledgement),
+backpressure auto-closes its Issue on the first cycle where the queue
+falls below the resume threshold.
 
 One operational value stays intentionally hardcoded: the per-run task
 dispatch ceiling (`pendingTasks.slice(0, 3)`) — deliberate cap, not a

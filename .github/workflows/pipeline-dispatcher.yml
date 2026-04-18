@@ -78,7 +78,12 @@ jobs:
                   staleLockMinutes:     cfg?.scheduling?.stale_lock_minutes ?? DEFAULTS.staleLockMinutes,
                   cooldownMinutes:      cfg?.circuit_breaker?.cooldown_minutes ?? DEFAULTS.cooldownMinutes,
                   failureWindowMinutes: cfg?.circuit_breaker?.failure_window_minutes ?? DEFAULTS.failureWindowMinutes,
+                  // Preserve reader diagnostics (source, reason, path) so the log line
+                  // below can surface any fallback state end-to-end — including the
+                  // reader-side fallbacks (file-not-found, read-error, parse-error).
                   _source: cfg._source || 'file',
+                  _reason: cfg._reason,
+                  _path:   cfg._path,
                 };
               } catch (e) {
                 console.warn(`::warning::Pipeline config parse failed: ${e.message}. Using safe defaults.`);
@@ -89,7 +94,7 @@ jobs:
 
             // ── Log resolved config (every run self-documents active thresholds) ─
             console.log('─── Dispatcher config (active thresholds) ───────────────');
-            console.log(`  source:               ${config._source}${config._reason ? ' (' + config._reason + ')' : ''}`);
+            console.log(`  source:               ${config._source}${config._reason ? ' (' + config._reason + ')' : ''}${config._path ? ' · ' + config._path : ''}`);
             console.log(`  maxEditorial:         ${config.maxEditorial}  (queues.editorial.max_pending)`);
             console.log(`  backpressureResume:   ${config.backpressureResume}  (queues.editorial.backpressure_resume)`);
             console.log(`  failureThreshold:     ${config.failureThreshold}  (circuit_breaker.failure_threshold)`);
@@ -136,17 +141,81 @@ jobs:
               }
             }
 
-            // ── Check editorial queue backpressure ────────────────────────
+            // ── Check editorial queue backpressure (hysteresis) ───────────
+            // State lives in a labeled GitHub Issue, reusing the same Issue-
+            // as-state pattern the circuit breaker uses for "paused" signals.
+            //
+            //   queue >= maxEditorial            → pause (create Issue if absent)
+            //   queue >= backpressureResume
+            //     AND Issue already open         → stay paused (hysteresis band)
+            //   queue <  backpressureResume
+            //     AND Issue already open         → auto-resume + close Issue
+            //   queue <  backpressureResume
+            //     AND no Issue                   → no-op, run dispatch
+            //
+            // Auto-close on drain (unlike circuit breaker, which requires
+            // operator acknowledgement) because backpressure is a soft
+            // throttle that self-heals as reviewers drain the queue.
+            const BP_LABEL = 'pipeline/backpressure';
+
             const pendingDrafts = allTasks.filter(t =>
               t.stage === 'draft' && t.status === 'complete' ||
               t.stage === 'validation' ||
               t.stage === 'review'
             ).length;
 
-            if (pendingDrafts >= config.maxEditorial) {
-              console.log(`Editorial queue at ${pendingDrafts}/${config.maxEditorial} — backpressure active, skipping new drafts.`);
+            async function findBackpressureIssue() {
+              const { data } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: BP_LABEL,
+                per_page: 5,
+              });
+              return data[0] || null;
+            }
+
+            const bpIssue = await findBackpressureIssue();
+            const queueInBand = pendingDrafts >= config.backpressureResume;
+            const queueAtCap = pendingDrafts >= config.maxEditorial;
+
+            if (queueAtCap && !bpIssue) {
+              // Hit the ceiling — open Issue, pause.
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `[PIPELINE BACKPRESSURE] Editorial queue at capacity (${pendingDrafts}/${config.maxEditorial})`,
+                body: `The editorial review queue is at or above capacity. Dispatch of new drafts is paused.\n\n**Active thresholds:**\n- Pause at: ${config.maxEditorial}\n- Resume at: ${config.backpressureResume}\n\nThe dispatcher will auto-resume and close this Issue on the first cycle where pending drafts drop below the resume threshold. No operator action required unless the queue stays stuck.`,
+                labels: [BP_LABEL, 'pipeline/alert'],
+              });
+              console.log(`Editorial queue at ${pendingDrafts}/${config.maxEditorial} — backpressure engaged, Issue opened.`);
               return;
             }
+
+            if (bpIssue && queueInBand) {
+              // In the hysteresis band — stay paused.
+              console.log(`Backpressure active (Issue #${bpIssue.number}): pendingDrafts=${pendingDrafts} still ≥ resume threshold ${config.backpressureResume}. Staying paused.`);
+              return;
+            }
+
+            if (bpIssue && !queueInBand) {
+              // Queue has drained — auto-resume.
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: bpIssue.number,
+                body: `Auto-resuming: pendingDrafts=${pendingDrafts} dropped below resume threshold ${config.backpressureResume}. Dispatch continuing.`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: bpIssue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              });
+              console.log(`Backpressure cleared (Issue #${bpIssue.number} closed): pendingDrafts=${pendingDrafts} < ${config.backpressureResume}. Resuming dispatch.`);
+            }
+            // Otherwise: no Issue, queue below cap — normal dispatch.
 
             // ── Release stale locks ──────────────────────────────────────
             const now = new Date();
