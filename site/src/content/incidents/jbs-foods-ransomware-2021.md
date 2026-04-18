@@ -8,7 +8,7 @@ sector: Food & Agriculture
 geography: Global
 threatActor: REvil
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -67,7 +67,7 @@ mitreMappings:
     notes: "The FBI assessed that the attackers gained access through compromised credentials."
 ---
 
-## Summary
+## Executive Summary
 
 On May 30, 2021, JBS S.A., the world's largest meat processing company, discovered that its IT systems in North America and Australia had been compromised by ransomware. The attack, attributed by the FBI to the REvil (also known as Sodinokibi) ransomware-as-a-service operation based in Russia, forced the temporary shutdown of meat processing plants across the United States, Canada, and Australia.
 
@@ -117,7 +117,7 @@ JBS reported paying an $11 million ransom in Bitcoin to the REvil operators. The
 
 The attack, coming weeks after the Colonial Pipeline incident, prompted the Biden administration to elevate ransomware to a national security priority. President Biden raised the issue of ransomware attacks originating from Russian territory during a summit with Russian President Vladimir Putin in June 2021.
 
-## Attribution
+## Historical Context
 
 The FBI attributed the JBS attack to the REvil (Sodinokibi) ransomware operation in a statement published on June 2, 2021. REvil was a Russian-speaking ransomware-as-a-service group that had been active since April 2019 and was responsible for numerous high-profile ransomware attacks.
 

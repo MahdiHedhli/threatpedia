@@ -1,14 +1,14 @@
 ---
-eventId: TP-2015-0002
+eventId: TP-2015-0001
 title: "Anthem Health Insurance Data Breach"
 date: 2015-01-29
 attackType: Data Breach
 severity: critical
 sector: Healthcare
 geography: United States
-threatActor: APT19
+threatActor: "Black Vine / China-linked espionage operators"
 attributionConfidence: A2
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: B
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -66,7 +66,7 @@ mitreMappings:
     notes: The attackers exfiltrated 78.8 million records through the same C2 channel used for command and control, compressing data before transfer.
 ---
 
-## Summary
+## Executive Summary
 
 On January 29, 2015, Anthem Inc. (formerly WellPoint Inc.), the second-largest health insurance company in the United States, discovered that attackers had gained unauthorized access to its IT systems and exfiltrated personal data belonging to approximately 78.8 million current and former members, employees, and their dependents. The breach was the largest healthcare data breach in U.S. history at the time.
 
@@ -110,7 +110,7 @@ Anthem agreed to a record $16 million settlement with the U.S. Department of Hea
 
 The total cost of the breach was estimated at over $260 million, including the regulatory settlements, legal fees, credit monitoring services, IT remediation, and business disruption. Anthem implemented a comprehensive cybersecurity improvement program, including the deployment of multi-factor authentication, enhanced network segmentation, and advanced threat detection capabilities.
 
-## Attribution
+## Historical Context
 
 In May 2019, the U.S. Department of Justice indicted Fujie Wang, a member of a hacking group operating in China, for his role in the Anthem breach and intrusions targeting three other U.S. companies. The indictment described Wang as a member of an "extremely sophisticated hacking group" that conducted campaigns against U.S. businesses in the technology, healthcare, and other sectors.
 

@@ -8,7 +8,7 @@ sector: Financial Services
 geography: United States
 threatActor: PLA 54th Research Institute
 attributionConfidence: A1
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: A
 generatedBy: dangermouse-bot
 generatedDate: 2026-04-16
@@ -76,7 +76,7 @@ mitreMappings:
     notes: Data exfiltrated in small increments over encrypted channels to avoid detection
 ---
 
-## Summary
+## Executive Summary
 
 Between May and July 2017, threat actors exploited CVE-2017-5638, a remote code execution vulnerability in the Apache Struts web framework, to breach Equifax, one of the three major U.S. consumer credit reporting agencies. The attackers gained access to an internet-facing consumer dispute portal running an unpatched version of Apache Struts and used that foothold to move laterally through Equifax's internal network over a period of 76 days.
 
@@ -126,7 +126,7 @@ Equifax CEO Richard Smith, CIO David Webb, and CSO Susan Mauldin resigned or ret
 
 The breach had lasting effects on consumer credit monitoring regulation and corporate cybersecurity accountability standards. Multiple states enacted data breach notification laws, and Equifax was required to provide free credit monitoring and identity theft protection to affected consumers.
 
-## Attribution
+## Historical Context
 
 In February 2020, the U.S. Department of Justice indicted four members of the Chinese People's Liberation Army's 54th Research Institute, part of the PLA's military intelligence apparatus. The four named defendants — Wu Zhiyong, Wang Qian, Xu Ke, and Liu Lei — were charged with computer fraud, economic espionage, and wire fraud.
 
