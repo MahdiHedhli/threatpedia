@@ -81,15 +81,23 @@ export const DEFAULTS = Object.freeze({
 // bare-string / single- or double-quoted string); comments; blank lines.
 // Does NOT handle: sequences / lists, anchors, multi-line strings, flow syntax.
 function parseScalar(raw) {
-  const s = raw.trim().replace(/\s+#.*$/, '').trim(); // strip inline comments
+  let s = raw.trim();
+  // Detect quotes BEFORE stripping comments — a hash inside a quoted string
+  // (e.g. alert_channel: "#security") must not be mistaken for a comment, and
+  // a trailing comment after a quoted value (e.g. `key: "value" # note`) must
+  // not confuse the end-of-string check.
+  const quote = (s[0] === '"' || s[0] === "'") ? s[0] : null;
+  if (quote) {
+    const endQuoteIndex = s.indexOf(quote, 1);
+    if (endQuoteIndex !== -1) return s.slice(1, endQuoteIndex);
+    // Unterminated quote — fall through to scalar parsing so we don't crash.
+  }
+
+  s = s.replace(/\s+#.*$/, '').trim(); // strip inline comments on unquoted values
   if (s === '') return null;
   if (s === 'true' || s === 'True' || s === 'TRUE') return true;
   if (s === 'false' || s === 'False' || s === 'FALSE') return false;
   if (s === 'null' || s === '~' || s === 'Null' || s === 'NULL') return null;
-  // Quoted string
-  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
-    return s.slice(1, -1);
-  }
   // Number
   if (/^-?\d+$/.test(s)) return parseInt(s, 10);
   if (/^-?\d*\.\d+$/.test(s)) return parseFloat(s);
@@ -119,7 +127,7 @@ export function parseYaml(text) {
       stack.pop();
     }
 
-    const kvMatch = content.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
+    const kvMatch = content.match(/^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$/);
     if (!kvMatch) continue; // ignore lines we don't understand (e.g. list items — not in our schema)
 
     const key = kvMatch[1];
@@ -187,7 +195,11 @@ export function loadPipelineConfig(path = DEFAULT_CONFIG_PATH) {
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────────
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Portable "ran directly" check: compare the resolved absolute path of this
+// module against argv[1]. Handles Windows path separators and relative
+// invocations correctly, unlike a raw string compare against `file://...`.
+// Guards against argv[1] being undefined (e.g. when imported via `node -e`).
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const args = process.argv.slice(2);
   let section = null;
   for (let i = 0; i < args.length; i++) {
