@@ -63,7 +63,7 @@ California Governor's Office of Emergency Services (CAL OES)
 Federal law enforcement (FBI, potentially CISA)
 Third-party cybersecurity firms engaged for forensic analysis
 
-## MITRE ATT&CK Framework
+## MITRE ATT&CK Mapping
 
 T1486 – Data Encrypted for Impact
 T1490 – Inhibit System Recovery
@@ -73,7 +73,7 @@ T1021 – Remote Services
 
 Techniques categorized under Impact, Defense Evasion, and Lateral Movement tactics. Specific techniques will be refined as forensic investigation progresses and threat actor toolkit is analyzed.
 
-## Incident Timeline
+## Timeline
 
 March 19 (Early AM)
 IT staff discover ransomware on city network during morning system checks
@@ -130,7 +130,7 @@ Infrastructure restoration and potential system rebuilds
 Potential ransom demands (status unknown as of April 6, 2026)
 Lost productivity from 250+ city staff for 1+ week
 
-## Remediation & Recovery
+## Remediation & Mitigation
 
 Immediate Response (In Progress)
 
@@ -177,51 +177,3 @@ GovTech Insider, March 25, 2026
 
 The Record — "California city reports ransomware attack as LA transit agency finds 'unauthorized activity'"
 Recorded Future News, March 26, 2026
-
-Quick Assessment
-
-Municipal governments operate with limited cybersecurity budgets and specialized IT staff. Foster City's attack demonstrates that cities of any size are attractive targets for ransomware operators seeking maximum disruption with minimal technical sophistication.
-Segregate emergency services on independent systems.
-
-Key Takeaways
-
-All municipal services offline for 1+ week
-City staff unable to communicate via phone/email
-State of emergency declared (rare for cyberattacks)
-Data exposure under investigation
-Unknown threat actor (attribution pending)
-
-Sector Vulnerability
-
-Limited Budgets: Municipal IT departments operate with minimal cybersecurity funding
-Legacy Systems: Aging infrastructure with inconsistent patch management
-Critical Services: Attacks directly impact resident services and government operations
-
-Threat Attribution
-
-Unknown — Under Investigation
-No public claim of responsibility. Investigation ongoing by local, state, and federal agencies.
-
-Incident Classification
-
-HIGH
-
-Complete municipal services disruption
-1+ week operational impact
-State of emergency declaration
-Potential resident data exposure
-
-Related Incidents
-
-Springfield Municipal Ransomware (2025)
-New Orleans Health System Attack (2026)
-Baltimore Municipal Ransomware (2025)
-
-Passaic County Ransomware Attack by Medusa Group
-
-Resources
-
-Ransomware (Glossary)
-Municipal Infrastructure
-State of Emergency Procedures
-Disaster Recovery Planning

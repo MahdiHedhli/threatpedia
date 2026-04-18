@@ -8,7 +8,7 @@ sector: "Legal Services"
 geography: "United States"
 threatActor: "Unknown"
 attributionConfidence: A4
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -77,7 +77,7 @@ mitreMappings:
     notes: "Cloud-based repository contents containing 116,666 individual records exfiltrated."
 ---
 
-## Summary
+## Executive Summary
 
 DocketWise, a cloud-based immigration case management platform used by thousands of U.S. immigration law firms, disclosed a data breach on April 3, 2026, affecting 116,666 individuals. Unauthorized actors used valid credentials to clone third-party partner repositories containing unstructured client data from law firm migration pipelines. The breach exposed sensitive immigration-related information including Social Security numbers, passport numbers, financial account details, medical information, and immigration case documentation.
 
@@ -119,7 +119,7 @@ Complete identity profiles (SSN combined with name, address, and financial infor
 
 The breach affects the immigration law sector's reputation for data security. Law firms face pressure to justify cloud service security posture to clients. Class action lawsuits are likely. State attorneys general investigations are probable. Affected individuals include visa applicants, green card applicants, asylum seekers, and employment authorization applicants.
 
-## Attribution
+## Historical Context
 
 The threat actor identity is unknown. Public reporting does not attribute the breach to any specific named group. The credential-based access suggests either a generic cybercriminal group, a financially motivated threat actor, or an insider threat.
 

@@ -6,7 +6,7 @@ attackType: ransomware
 severity: critical
 sector: Healthcare
 geography: United States (Mississippi)
-threatActor: Medusa (Storm-1175)
+threatActor: Medusa (claimed)
 attributionConfidence: A4
 reviewStatus: under_review
 confidenceGrade: C
@@ -31,9 +31,9 @@ tags:
 ---
 ## Executive Summary
 
-The University of Mississippi Medical Center (UMMC) suffered a critical ransomware attack on February 19, 2026, when Medusa ransomware encrypted its EPIC electronic medical record system and entire IT infrastructure. The attack forced UMMC to take 35 clinics offline and operate under complete manual procedures for 9 days (February 19 through March 2, 2026). Clinical staff reverted to paper charts, manual prescriptions, and analog communication systems. The emergency department remained open but operated with severely degraded capability and information access.
+The University of Mississippi Medical Center (UMMC) suffered a critical ransomware attack on February 19, 2026, that forced UMMC to take 35 clinics offline and operate under complete manual procedures for 9 days (February 19 through March 2, 2026). Clinical staff reverted to paper charts, manual prescriptions, and analog communication systems. The emergency department remained open but operated with severely degraded capability and information access.
 
-Threat actor Medusa (tracked as Storm-1175, Russia-linked) claims to have exfiltrated over 1 terabyte of data containing over 1 million files, including protected health information (PHI), employee and student personal information, and financial records. Medusa demanded an $800,000 ransom; UMMC allegedly offered $550,000 but negotiations failed and no payment was made. The attacker published the stolen data to the Medusa dark web leak site on March 12, 2026, exposing sensitive information to the public.
+Medusa later claimed responsibility on its leak site, alleging exfiltration of over 1 terabyte of data containing more than 1 million files, including protected health information (PHI), employee and student personal information, and financial records. Public reporting documented an $800,000 ransom demand and leak-site pressure, but UMMC did not publicly validate the exfiltration volume or the attacker's detailed claims.
 
 This incident represents one of the largest healthcare ransomware attacks in 2026 to date, demonstrating the catastrophic impact of ransomware on healthcare operations and the vulnerability of medical centers to extended service disruption. The 9-day recovery period is substantially longer than typical healthcare ransomware incidents and highlights the complexity of restoring encrypted healthcare systems and the difficulty in obtaining clean backups for recovery.
 
@@ -59,7 +59,7 @@ February 19: Ransomware detected; UMMC takes 35 clinics offline to prevent sprea
 February 20-March 1: 9-day manual operations period. Clinical staff operated under extreme information degradation: no access to recent lab results, imaging, medication histories, or patient records beyond immediate memory.
 March 2: Systems restoration completed. UMMC brings systems back online after forensic validation and malware removal.
 
-## Attack Chain & Timeline
+## Timeline
 
 Before February 19, 2026
 Initial Access — Timing Unknown
@@ -82,8 +82,8 @@ Manual Operations / Forensic Investigation
 Clinical staff operated under completely manual procedures. Nurses and doctors used paper-based patient records, manual calculation of medication dosing, and phone-based laboratory communication. Forensic investigation began to determine scope of breach and validate backup integrity.
 
 February 19 - March 2, 2026
-Ransom Negotiations
-UMMC engaged with Medusa threat actor regarding ransom demands. Initial demand: $800,000. UMMC counteroffered: $550,000. Negotiations continued but failed to reach agreement. No payment was made.
+Incident Response and Extortion Pressure
+UMMC managed restoration and incident response while threat actors applied external pressure through ransom demands and later leak-site claims. Public reporting did not establish that UMMC paid the ransom.
 
 March 2, 2026
 Systems Restoration Completed
@@ -110,15 +110,15 @@ The ability to encrypt both production and backup systems indicates: (1) Attacke
 Ransomware Ecosystem Analysis - Medusa / Storm-1175:
 Medusa (Storm-1175) is a Russia-linked threat actor that specializes in healthcare targeting. Microsoft tracks Storm-1175 as conducting ransomware operations with alleged connections to China-linked threat group activities. The ransomware-as-a-service operation demonstrates: (1) Professional-grade malware and exfiltration tools; (2) Sophisticated negotiation tactics; (3) Data monetization via dark web leak site; (4) Resilience and continued operations despite law enforcement pressure.
 
-## Threat Actor Attribution
+## Historical Context
 
-The UMMC ransomware attack was perpetrated by Medusa ransomware operator, tracked as Storm-1175 by Microsoft Threat Intelligence. Medusa is a Russia-linked ransomware-as-a-service variant that specializes in healthcare targeting and operates a dark web leak site for extortion purposes.
+Public reporting linked the UMMC incident to Medusa through the group's own leak-site claim and follow-on media reporting. UMMC itself did not publicly attribute the attack to Medusa in the same level of certainty, so the actor reference in this article is best treated as a claimed attribution rather than a fully confirmed government or victim-side determination.
 
-Storm-1175 has been linked to multiple healthcare ransomware incidents in 2025-2026. Microsoft threat intelligence reports indicate Storm-1175 connections to China-linked threat activities, suggesting possible state-sponsored or state-adjacent operations. The group demonstrates capability in large-scale data exfiltration (1TB+ datasets), backup system compromise, and negotiation tactics.
+Medusa has been linked in public reporting to multiple healthcare-targeting incidents in 2025-2026 and is known for leak-site extortion operations following ransomware deployment. For UMMC specifically, the leak-site posting and sample-file publication remain the strongest public indicator tying the event to Medusa.
 
 The UMMC attack is characteristic of Storm-1175 operations: targeting healthcare to maximize pressure for ransom payment (healthcare organizations prioritize operational restoration), exfiltrating sensitive PHI data for secondary blackmail, and publishing data to a dark web leak site when negotiations fail.
 
-## Mitigations & Recommendations
+## Remediation & Mitigation
 
 Immediate Actions — Healthcare Organizations:
 1. Conduct full forensic analysis of UMMC incident to understand attack vector, dwell time, and scope of lateral movement within UMMC infrastructure.
@@ -186,48 +186,3 @@ https://www.microsoft.com/security/
 8.
 US Department of Health and Human Services — HIPAA Breach Notification Rule
 https://www.hhs.gov/
-
-Key Takeaways
-
-Critical Severity: 9-day operational outage at major academic medical center
-System Encryption: EPIC EHR and all backup systems encrypted simultaneously
-Data Breach: 1TB+ data / 1M+ records exfiltrated and published
-Patient Impact: 35 clinics offline, complete reversion to manual operations
-Ransom: $800K demand, $550K counteroffer, negotiations failed
-Attribution: Medusa ransomware (Storm-1175, Russia-linked)
-Backup Failure: Backup systems also encrypted, enabling extended recovery
-
-Threat Actor Profile
-
-Name: Medusa
-Tracking ID: Storm-1175
-Origin: Russia-linked, possible China connection
-Motive: Financial extortion via ransomware and data theft
-Specialty: Healthcare targeting, large-scale data exfiltration
-Operations: RaaS (Ransomware-as-a-Service) with dark web leak site
-
-Affected Systems
-
-Primary: EPIC EHR system
-All connected clinic databases
-Backup infrastructure (also encrypted)
-Downstream:
-35 clinics across Mississippi
-Millions of patient records exposed
-
-Related Incidents
-ChipSoft Ransomware (April 2026) — Dutch Healthcare
-Cegedim Santé Healthcare Breach (2026)
-Conduent Data Breach (2026)
-CareCould Healthcare Breach (2026)
-FortiClient EMS CVE-2026-35616 Attack
-
-Compliance & Regulatory
-
-Regulation: HIPAA
-Breach Notification Rule
-60-day notification deadline
-500+ individual notification required
-Penalties:
-$100-$50K per violation
-Up to $1.5M per category/year

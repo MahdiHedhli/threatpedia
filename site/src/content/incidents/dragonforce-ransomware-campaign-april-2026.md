@@ -8,7 +8,7 @@ sector: "Multi-Sector"
 geography: "Global"
 threatActor: "DragonForce"
 attributionConfidence: A3
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-16
@@ -79,7 +79,7 @@ mitreMappings:
     notes: "Initial access via compromised credentials obtained through credential stuffing or dark web purchases."
 ---
 
-## Summary
+## Executive Summary
 
 Between April 2-7, 2026, the DragonForce ransomware-as-a-service (RaaS) platform claimed responsibility for a coordinated multi-sector campaign targeting 13 organizations spanning manufacturing, packaging, hospitality, utilities, and legal sectors. The campaign represents an escalation in both targeting breadth and claimed data exfiltration volume, with individual victims reportedly losing over 1 terabyte of sensitive business and personal information.
 
@@ -125,7 +125,7 @@ Manufacturing and logistics targets (AT Packaging, Congoleum) face downstream su
 
 If DragonForce or affiliates execute threatened data publication, anticipated escalations include continued targeting of critical sectors, secondary victimization through sale of data to other cybercriminal groups, and data-driven social engineering campaigns using stolen employee and customer information.
 
-## Attribution
+## Historical Context
 
 DragonForce publicly claimed responsibility for all 13 victims on its dark web leak portal. The group's claims have been corroborated by multiple independent threat intelligence sources including DeXpose, HendryAdrian, HookPhish, Ransomware.live, and Darktrace.
 
