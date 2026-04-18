@@ -37,6 +37,58 @@ const EDITORIAL_WORDS = [
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 
+// ── reviewStatus schema enum ───────────────────────────────────────────────
+// Authoritative source: site/src/content.config.ts. Kept as a local constant
+// here to avoid requiring Zod / content-collection imports in the Actions
+// environment. Task-shape-formalization slice will consolidate.
+const SCHEMA_REVIEW_STATUSES = [
+  'draft_ai',
+  'draft_human',
+  'under_review',
+  'certified',
+  'disputed',
+  'deprecated',
+];
+
+// ── Stage-aware reviewStatus rule matching ─────────────────────────────────
+// A task's acceptance.review_status is a declarative contract the validator
+// honors. Forms accepted:
+//
+//   - string (e.g. "draft_ai")  → exact match required
+//   - "*"                        → any schema-enum value
+//   - array (e.g. ["draft_ai","under_review"]) → any-of (must be a schema value)
+//   - missing / null             → default "draft_ai" (safe legacy fallback)
+//
+// See docs/PIPELINE.md "Validation rules" section.
+function matchesReviewStatus(actual, rule) {
+  if (rule === undefined || rule === null) rule = 'draft_ai';
+
+  if (rule === '*') {
+    return { pass: SCHEMA_REVIEW_STATUSES.includes(actual), rule };
+  }
+  if (Array.isArray(rule)) {
+    // Elements must themselves be schema-enum values or we'd allow garbage.
+    const valid = rule.filter(v => SCHEMA_REVIEW_STATUSES.includes(v));
+    return { pass: valid.includes(actual), rule };
+  }
+  if (typeof rule === 'string') {
+    return { pass: actual === rule, rule };
+  }
+  // Unknown rule shape — be strict and reject.
+  return { pass: false, rule };
+}
+
+function formatReviewStatusRule(rule) {
+  if (rule === undefined || rule === null) rule = 'draft_ai';
+  if (rule === '*') return `any schema-enum value (${SCHEMA_REVIEW_STATUSES.join(' | ')})`;
+  if (Array.isArray(rule)) {
+    const valid = rule.filter(v => SCHEMA_REVIEW_STATUSES.includes(v));
+    return valid.length === 0 ? 'NONE (invalid rule — no schema-enum values listed)' : `one of: ${valid.join(' | ')}`;
+  }
+  if (typeof rule === 'string') return `must be "${rule}"`;
+  return `unknown rule shape: ${JSON.stringify(rule)}`;
+}
+
 // ── Source object schema reference ──────────────────────────────────────────
 const SOURCE_SCHEMA = `  Each source object requires:
     url: string (valid URL)
@@ -62,7 +114,7 @@ const SCHEMAS = {
   geography: string — country or region
   threatActor: string (optional, default "Unknown")
   attributionConfidence: enum (optional, default A4) — A1 (confirmed by government) through A6 (unknown)
-  reviewStatus: must be "draft_ai"
+  reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   confidenceGrade: enum (optional, default C) — A through F
   generatedBy: string — your agent identity (e.g., "dangermouse-bot", "penfold-bot")
   generatedDate: date — today's date ISO 8601
@@ -104,7 +156,7 @@ ${SOURCE_SCHEMA}
   geography: string
   threatActor: string (optional, default "Unknown")
   attributionConfidence: enum (optional, default A4) — A1 through A6
-  reviewStatus: must be "draft_ai"
+  reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   confidenceGrade: enum (optional, default C) — A through F
   generatedBy: string — your agent identity
   generatedDate: date — today's date
@@ -149,7 +201,7 @@ ${SOURCE_SCHEMA}
       notes: string (optional)
   attributionConfidence: enum (optional) — A1 through A6
   attributionRationale: string (optional, max 500 chars)
-  reviewStatus: must be "draft_ai"
+  reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   generatedBy: string — your agent identity
   generatedDate: date — today's date
   tags: array of strings
@@ -184,7 +236,7 @@ ${SOURCE_SCHEMA}`,
   confirmedBy: string (optional) — e.g., CISA, Microsoft
   daysInTheWild: number or null (optional) — days between first exploitation and patch
   cisaKev: boolean (default false) — whether in CISA KEV catalog
-  reviewStatus: must be "draft_ai"
+  reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   generatedBy: string — your agent identity
   generatedDate: date — today's date
   relatedIncidents: array of strings (optional) — slugs of incident articles
@@ -213,10 +265,15 @@ ${SOURCE_SCHEMA}
 };
 
 // ── RULES (printed in brief, enforced in validate) ──────────────────────────
-const RULES = `
+// Rule #1 (reviewStatus) is stage-aware and rendered from the specific task's
+// acceptance.review_status. See matchesReviewStatus() / formatReviewStatusRule().
+function buildRules(task) {
+  const acceptance = getAcceptance(task);
+  const rsRule = acceptance.review_status;
+  return `
   CRITICAL RULES — the validator enforces ALL of these:
 
-  1. reviewStatus MUST be "draft_ai" (not certified, not under_review)
+  1. reviewStatus: ${formatReviewStatusRule(rsRule)}
   2. generatedBy MUST be your agent name (not "ai_ingestion" — use YOUR identity)
   3. sources MUST be structured objects in frontmatter (not just prose in body)
      — Minimum 3 source objects
@@ -234,6 +291,7 @@ const RULES = `
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
   9. The Astro build must pass: cd site && npm run build`;
+}
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
 function parseArgs() {
@@ -366,10 +424,10 @@ ${schema.bodySpec}
   min_sources:           ${acceptance.min_sources ?? 3} (structured objects in frontmatter, ≥1 government)
   min_h2_sections:       ${acceptance.min_h2_sections ?? 5}
   min_mitre_mappings:    ${acceptance.min_mitre_mappings ?? 1}
-  review_status:         draft_ai
+  review_status:         ${formatReviewStatusRule(acceptance.review_status)}
   edit_rule_030:         no editorial commentary words
   astro_build:           must pass
-${RULES}
+${buildRules(task)}
 
 ── OUTPUT ─────────────────────────────────────────────────────────────────────
 
@@ -528,9 +586,18 @@ function validateOutput(task, explicitFile) {
         }
       }
 
-      // ── 3. reviewStatus ───────────────────────────────────────────────────
-      if (!fm.match(/reviewStatus:\s*["']?draft_ai/)) {
-        issues.push('reviewStatus must be "draft_ai"');
+      // ── 3. reviewStatus (stage-aware, per task.acceptance.review_status) ──
+      // Default rule (missing/legacy) is "draft_ai" exact-match.
+      // Review/backfill tasks can set "*" or an array to preserve live states.
+      // See matchesReviewStatus() helper near the top of this file.
+      const rsMatch = fm.match(/reviewStatus:\s*["']?([a-z_]+)/);
+      const actualReviewStatus = rsMatch ? rsMatch[1] : null;
+      const rsRule = acceptance.review_status;
+      const rsCheck = matchesReviewStatus(actualReviewStatus, rsRule);
+      if (!rsCheck.pass) {
+        issues.push(
+          `reviewStatus ${formatReviewStatusRule(rsRule)}; got "${actualReviewStatus ?? '(not found)'}"`
+        );
       }
 
       // ── 4. ID format (if applicable) ──────────────────────────────────────
