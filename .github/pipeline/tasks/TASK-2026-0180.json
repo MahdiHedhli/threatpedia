@@ -1,0 +1,43 @@
+{
+  "task_id": "TASK-2026-0180",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-04-18T10:12:00Z",
+  "updated": "2026-04-18T10:12:00Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "input": {
+    "topic": "RansomHouse incident-to-actor promotion reference cleanup",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/ransomhouse-operations.md",
+    "issues": [
+      "wrong_collection",
+      "actor_profile_promotion",
+      "legacy_slug_redirect_required"
+    ],
+    "notes": "Corpus review confirmed that `ransomhouse-operations.md` was a threat-actor profile living in the incidents collection. The content was promoted into `threat-actors/ransomhouse.md` and the legacy incident slug now redirects there. Follow up by checking related-slug references, actor index behavior, and whether any stronger sourcing should replace the provisional actor-profile source set."
+  },
+  "output": {
+    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "branch": "pipeline/TASK-2026-0180"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-18T10:12:00Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Queued follow-on cleanup after promoting RansomHouse coverage from the incidents collection into a canonical actor profile."
+    }
+  ]
+}

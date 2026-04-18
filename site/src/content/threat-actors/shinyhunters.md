@@ -2,12 +2,13 @@
 name: "ShinyHunters"
 aliases:
   - "SH"
+  - "UNC5537"
 affiliation: "Cybercriminal"
 motivation: "Financial"
 status: active
 country: "France"
 firstSeen: "2020"
-lastSeen: "2025"
+lastSeen: "2026"
 targetSectors:
   - "Technology"
   - "E-Commerce"
@@ -37,7 +38,7 @@ mitreMappings:
     notes: "Uses stolen or leaked cloud credentials to access victim environments."
 attributionConfidence: A1
 attributionRationale: "French national Sebastien Raoult arrested in Morocco (2022), extradited to U.S., and sentenced to three years (2024). DOJ confirmed ShinyHunters membership."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -74,13 +75,17 @@ sources:
 
 ShinyHunters is a cybercriminal group that specializes in large-scale data breaches through exploitation of cloud infrastructure, code repositories, and web applications. Active since 2020, the group has been linked to breaches affecting hundreds of millions of records. ShinyHunters monetizes stolen data through sales on dark web marketplaces and extortion of victim organizations.
 
-French national Sebastien Raoult was arrested in Morocco in 2022 on a U.S. warrant, extradited to the United States, and sentenced to three years in prison in January 2024 for his role in ShinyHunters operations. The group has been linked to breaches at Tokopedia, Microsoft, AT&T (Snowflake), and Ticketmaster/Live Nation.
+French national Sebastien Raoult was arrested in Morocco in 2022 on a U.S. warrant, extradited to the United States, and sentenced to three years in prison in January 2024 for his role in ShinyHunters operations. The group has been linked to breaches at Tokopedia, Microsoft, AT&T (Snowflake), and Ticketmaster/Live Nation. By early 2026, ShinyHunters-branded infrastructure had re-emerged as a formal leak-site and extortion platform tied to downstream publication activity in the broader TeamPCP/Trivy victim cluster.
 
 ## Notable Campaigns
 
 ### 2024 -- Snowflake Customer Data Theft
 
 ShinyHunters was linked to the mass exploitation of Snowflake cloud data platform customers, stealing data from AT&T (110 million customer records), Ticketmaster/Live Nation (560 million records), Santander Bank, and other organizations. The attacks exploited stolen credentials and the absence of mandatory MFA on Snowflake accounts.
+
+### 2026 -- Leak-Site Extortion Resurgence
+
+ShinyHunters-branded infrastructure was used to publish and pressure victims in multiple 2026 extortion cases, including data exposed after the TeamPCP/Trivy supply-chain compromise. This marked a more explicit return to leak-site branding and victim shaming, even where the underlying intrusion set overlapped with other operators.
 
 ### 2020-2021 -- Database Theft Campaign
 
