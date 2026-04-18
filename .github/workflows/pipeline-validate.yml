@@ -29,11 +29,22 @@ jobs:
       - name: Identify changed articles
         id: changed
         run: |
-          FILES=$(git diff --name-only origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
-          echo "files<<EOF" >> $GITHUB_OUTPUT
-          echo "$FILES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          echo "count=$(echo "$FILES" | grep -c '.' || true)" >> $GITHUB_OUTPUT
+          # Emit two lists: all changed files, and which are NEW (not on origin/main).
+          # The stage-aware reviewStatus rule below uses the NEW set to enforce
+          # draft_ai strictly (draft-generation), while edited files may carry any
+          # schema-valid reviewStatus (review / backfill / reprocess work).
+          ALL=$(git diff --name-only origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
+          NEW=$(git diff --name-only --diff-filter=A origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
+
+          {
+            echo "files<<EOF"
+            echo "$ALL"
+            echo "EOF"
+            echo "new_files<<EOF"
+            echo "$NEW"
+            echo "EOF"
+            echo "count=$(echo "$ALL" | grep -c '.' || true)"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Validate frontmatter and structure
         id: validate
@@ -43,7 +54,19 @@ jobs:
           script: |
             const fs = require('fs');
             const files = `${{ steps.changed.outputs.files }}`.trim().split('\n').filter(Boolean);
+            const newFiles = new Set(
+              `${{ steps.changed.outputs.new_files }}`.trim().split('\n').filter(Boolean)
+            );
             const results = [];
+
+            // ── reviewStatus schema enum ───────────────────────────────
+            // Authoritative source: site/src/content.config.ts. Hardcoded
+            // here to avoid Zod imports in the Actions environment. A
+            // future task-shape-formalization slice will consolidate.
+            const SCHEMA_REVIEW_STATUSES = [
+              'draft_ai', 'draft_human', 'under_review',
+              'certified', 'disputed', 'deprecated',
+            ];
 
             for (const file of files) {
               if (!fs.existsSync(file)) continue;
@@ -69,15 +92,42 @@ jobs:
               else if (file.includes('/threat-actors/')) type = 'threat-actor';
               else if (file.includes('/zero-days/')) type = 'zero-day';
 
-              // ── Check reviewStatus ─────────────────────────────────────
+              // ── Stage-aware reviewStatus check ─────────────────────────
+              //
+              // Rule:
+              //   NEW article (added in this PR, not on origin/main)
+              //       → reviewStatus MUST be draft_ai
+              //         (draft-generation gate — new articles must begin
+              //         as AI drafts awaiting review)
+              //   EDITED article (existed on origin/main, modified here)
+              //       → reviewStatus MUST be any schema-enum value
+              //         (review / backfill / reprocess work is allowed to
+              //         preserve live review states — does not force
+              //         downgrade of already-valid articles)
+              //
+              // This directly implements the Slice 3 direction: distinguish
+              // draft-generation from corpus-correction at the validator
+              // layer without requiring a task-id in the PR context.
               const statusMatch = fm.match(/reviewStatus:\s*(\S+)/);
-              const reviewStatus = statusMatch ? statusMatch[1] : null;
-              checks.push({
-                name: 'reviewStatus is draft_ai',
-                pass: reviewStatus === 'draft_ai',
-                detail: reviewStatus || 'not found',
-              });
-              if (reviewStatus !== 'draft_ai') pass = false;
+              const reviewStatus = statusMatch ? statusMatch[1].replace(/^["']|["']$/g, '') : null;
+              const isNewArticle = newFiles.has(file);
+
+              if (isNewArticle) {
+                checks.push({
+                  name: 'reviewStatus (new article → draft_ai)',
+                  pass: reviewStatus === 'draft_ai',
+                  detail: `${reviewStatus || 'not found'} · new articles must start as draft_ai`,
+                });
+                if (reviewStatus !== 'draft_ai') pass = false;
+              } else {
+                const inEnum = SCHEMA_REVIEW_STATUSES.includes(reviewStatus);
+                checks.push({
+                  name: 'reviewStatus (edit → any schema value)',
+                  pass: inEnum,
+                  detail: `${reviewStatus || 'not found'} · must be one of ${SCHEMA_REVIEW_STATUSES.join(' | ')}`,
+                });
+                if (!inEnum) pass = false;
+              }
 
               // ── Check required fields per type ─────────────────────────
               const requiredFields = {
