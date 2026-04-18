@@ -6,7 +6,7 @@ aliases:
 affiliation: "Cybercriminal (Russian-speaking)"
 motivation: "Financial"
 status: active
-country: "Russia"
+country: "Unknown"
 firstSeen: "2016"
 lastSeen: "2025"
 targetSectors:
@@ -39,8 +39,8 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "Conducts high-volume phishing campaigns with malicious attachments."
 attributionConfidence: A3
-attributionRationale: "Tracked by Mandiant as a distinct cluster overlapping with TA505, based on shared tooling and infrastructure. Linked to Cl0p ransomware operations through operational overlap."
-reviewStatus: "draft_ai"
+attributionRationale: "Tracked by Mandiant as a distinct financially motivated cluster with meaningful operational overlap with TA505- and Cl0p-linked activity, but not as a fully interchangeable label with either one."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -64,18 +64,18 @@ sources:
     publicationDate: "2023-06-07"
     accessDate: "2026-04-16"
     archived: false
-  - url: "https://www.justice.gov/opa/pr/ukrainian-arrested-and-charged-ransomware-attack-kaseya"
-    publisher: "US Department of Justice"
-    publisherType: government
+  - url: "https://cloud.google.com/blog/topics/threat-intelligence/accellion-fta-exploited-for-data-theft-and-extortion/"
+    publisher: "Mandiant / Google Cloud"
+    publisherType: vendor
     reliability: R1
-    publicationDate: "2021-11-08"
-    accessDate: "2026-04-16"
+    publicationDate: "2021-03-03"
+    accessDate: "2026-04-18"
     archived: false
 ---
 
 ## Executive Summary
 
-FIN11 is a financially motivated threat actor tracked by Mandiant as a distinct cluster within the broader TA505/Cl0p ecosystem. Active since at least 2016, the group conducts high-volume phishing campaigns and exploitation of enterprise software for ransomware deployment and data theft. FIN11 is closely associated with Cl0p ransomware operations.
+FIN11 is a financially motivated threat actor tracked by Mandiant as a distinct cluster whose campaigns overlap with TA505- and Cl0p-linked activity. Active since at least 2016, the group conducts high-volume phishing campaigns and enterprise software exploitation that often precede ransomware deployment or large-scale data theft. The labels FIN11, TA505, and Cl0p should not be treated as perfect synonyms even when they intersect operationally.
 
 The group's campaigns have evolved from widespread phishing to targeted exploitation of enterprise file transfer appliances, including the Accellion FTA campaign that compromised over 100 organizations in 2020-2021. FIN11 represents the operational arm responsible for initial access and deployment in the Cl0p ransomware ecosystem.
 
@@ -91,13 +91,13 @@ FIN11 conducted massive phishing campaigns using malicious Excel attachments wit
 
 ## Technical Capabilities
 
-FIN11 maintains high-volume email distribution infrastructure capable of sending millions of phishing emails across campaigns. The group uses macro-laden Office documents, HTML smuggling, and more recently, exploitation of zero-day vulnerabilities in file transfer platforms.
+FIN11 maintains high-volume email distribution infrastructure capable of sending millions of phishing emails across campaigns. The group uses macro-laden Office documents, HTML smuggling, and more recently, exploitation of managed file transfer platforms such as Accellion FTA.
 
-Post-compromise tools include FlawedAmmyy RAT, SDBot, and Cobalt Strike. The group shares operational infrastructure with Cl0p ransomware operators and is assessed to represent the initial access component of the Cl0p operation.
+Post-compromise tools include FlawedAmmyy RAT, SDBot, and Cobalt Strike. The group shares operational infrastructure with Cl0p ransomware operators, but public reporting still treats FIN11 as a distinct intrusion cluster rather than a simple alias for all Cl0p activity.
 
 ## Attribution
 
-FIN11 is tracked by Mandiant as a distinct cluster based on unique operational patterns within the broader TA505 ecosystem. The overlap with Cl0p operations is supported by shared infrastructure, concurrent deployment timelines, and common tooling. Ukrainian law enforcement arrested Cl0p-linked individuals in 2021, though operations continued.
+FIN11 is tracked by Mandiant as a distinct cluster based on unique operational patterns within the broader TA505 ecosystem. The overlap with Cl0p operations is supported by shared infrastructure, overlapping extortion infrastructure, and common tooling, but even Mandiant's public reporting stops short of treating every Cl0p-branded intrusion as exclusively FIN11.
 
 ## MITRE ATT&CK Profile
 
@@ -111,4 +111,4 @@ FIN11 is tracked by Mandiant as a distinct cluster based on unique operational p
 
 - [Mandiant: FIN11 Email Campaigns](https://www.mandiant.com/resources/blog/fin11-email-campaigns-precursor-for-ransomware-data-theft) -- Mandiant, 2020-10-14
 - [CISA: Advisory AA23-158A - Cl0p/MOVEit](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a) -- CISA, 2023-06-07
-- [US DOJ: Ransomware Arrest](https://www.justice.gov/opa/pr/ukrainian-arrested-and-charged-ransomware-attack-kaseya) -- US Department of Justice, 2021-11-08
+- [Mandiant / Google Cloud: Threat Actors Exploit Accellion FTA for Data Theft and Extortion](https://cloud.google.com/blog/topics/threat-intelligence/accellion-fta-exploited-for-data-theft-and-extortion/) -- Mandiant, 2021-03-03

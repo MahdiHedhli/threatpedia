@@ -6,7 +6,7 @@ aliases:
 affiliation: "Cybercriminal"
 motivation: "Financial"
 status: active
-country: "France"
+country: "Unknown"
 firstSeen: "2020"
 lastSeen: "2026"
 targetSectors:
@@ -75,7 +75,7 @@ sources:
 
 ShinyHunters is a cybercriminal group that specializes in large-scale data breaches through exploitation of cloud infrastructure, code repositories, and web applications. Active since 2020, the group has been linked to breaches affecting hundreds of millions of records. ShinyHunters monetizes stolen data through sales on dark web marketplaces and extortion of victim organizations.
 
-French national Sebastien Raoult was arrested in Morocco in 2022 on a U.S. warrant, extradited to the United States, and sentenced to three years in prison in January 2024 for his role in ShinyHunters operations. The group has been linked to breaches at Tokopedia, Microsoft, AT&T (Snowflake), and Ticketmaster/Live Nation. By early 2026, ShinyHunters-branded infrastructure had re-emerged as a formal leak-site and extortion platform tied to downstream publication activity in the broader TeamPCP/Trivy victim cluster.
+French national Sebastien Raoult was arrested in Morocco in 2022 on a U.S. warrant, extradited to the United States, and sentenced to three years in prison in January 2024 for his role in ShinyHunters operations. The group has been linked to breaches at Tokopedia, Microsoft, AT&T (Snowflake), and Ticketmaster/Live Nation. By early 2026, ShinyHunters-branded infrastructure had re-emerged as a leak-site and extortion brand, including publication activity around some victims also affected in the broader TeamPCP/Trivy cluster.
 
 ## Notable Campaigns
 
@@ -85,7 +85,7 @@ ShinyHunters was linked to the mass exploitation of Snowflake cloud data platfor
 
 ### 2026 -- Leak-Site Extortion Resurgence
 
-ShinyHunters-branded infrastructure was used to publish and pressure victims in multiple 2026 extortion cases, including data exposed after the TeamPCP/Trivy supply-chain compromise. This marked a more explicit return to leak-site branding and victim shaming, even where the underlying intrusion set overlapped with other operators.
+ShinyHunters-branded infrastructure was used to publish and pressure victims in multiple 2026 extortion cases, including data exposed after the TeamPCP/Trivy supply-chain compromise. This marked a return to explicit leak-site branding and victim shaming, even where the exact relationship between the intrusion crew and the publication brand remained unsettled.
 
 ### 2020-2021 -- Database Theft Campaign
 

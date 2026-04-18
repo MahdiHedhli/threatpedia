@@ -40,7 +40,7 @@ mitreMappings:
     notes: "Deletes shadow copies and disables recovery options before encryption."
 attributionConfidence: A4
 attributionRationale: "Tracked by FBI and CISA as a ransomware-as-a-service operation. No individuals publicly identified or indicted."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -75,9 +75,9 @@ sources:
 
 ## Executive Summary
 
-Medusa is a ransomware-as-a-service (RaaS) operation active since June 2021. The group operates a double-extortion model, encrypting victim data and threatening to publish stolen information on their "Medusa Blog" leak site. By early 2025, Medusa had impacted over 300 organizations across critical infrastructure sectors including education, healthcare, and government.
+Medusa is a ransomware and extortion operation active since 2021 that has repeatedly targeted education, healthcare, government, and other critical sectors. The group runs a double-extortion model, encrypting victim environments while threatening to publish stolen information on its "Medusa Blog" leak site. Public reporting ties the name to a growing number of high-impact incidents, but the specific people or sub-groups operating under the Medusa label have not been publicly identified.
 
-In March 2025, CISA, FBI, and MS-ISAC published a joint advisory on Medusa ransomware, providing detailed indicators of compromise and recommended mitigations. The group has demonstrated a willingness to target educational institutions and healthcare providers.
+In March 2025, CISA, FBI, and MS-ISAC published a joint advisory on Medusa ransomware, providing detailed indicators of compromise and defensive guidance. The group has demonstrated a willingness to target educational institutions and healthcare providers and to use public leak-site pressure when negotiations fail. Medusa should not be casually flattened into other similarly named families such as MedusaLocker, which is tracked separately in many vendor taxonomies.
 
 ## Notable Campaigns
 

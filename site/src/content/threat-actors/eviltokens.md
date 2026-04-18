@@ -2,106 +2,115 @@
 name: "EvilTokens"
 aliases:
   - "Evil Tokens"
-affiliation: "Unknown"
-motivation: "Financial"
+affiliation: "Phishing-as-a-service (PhaaS)"
+motivation: "Credential Theft / Financial"
 status: active
 country: "Unknown"
-firstSeen: "2024"
-lastSeen: "2025"
+firstSeen: "2026"
+lastSeen: "2026"
 targetSectors:
-  - "Cryptocurrency"
-  - "Decentralized Finance"
-  - "Web3"
+  - "Financial Services"
+  - "Professional Services"
+  - "Government"
+  - "Healthcare"
+  - "Technology"
 targetGeographies:
   - "Global"
+  - "United States"
+  - "Canada"
+  - "Australia"
+  - "New Zealand"
+  - "Germany"
 tools:
-  - "Token approval exploits"
-  - "Phishing kits"
-  - "Wallet drainers"
+  - "Microsoft device code phishing kit"
+  - "Cloudflare Workers landing pages"
+  - "Railway-hosted token replay infrastructure"
+  - "Telegram operator panel"
 mitreMappings:
   - techniqueId: "T1566.002"
     techniqueName: "Phishing: Spearphishing Link"
     tactic: "Initial Access"
-    notes: "Uses phishing links to trick users into approving malicious token transactions."
-  - techniqueId: "T1657"
-    techniqueName: "Financial Theft"
-    tactic: "Impact"
-    notes: "Drains cryptocurrency wallets through authorized token approvals."
-  - techniqueId: "T1204.001"
-    techniqueName: "User Execution: Malicious Link"
-    tactic: "Execution"
-    notes: "Relies on user interaction with malicious dApp interfaces to execute wallet draining."
-attributionConfidence: A5
-attributionRationale: "Limited attribution data available. Activity tracked through blockchain analysis and phishing infrastructure monitoring by community researchers."
-reviewStatus: "draft_ai"
+    notes: "Delivers lure links that direct users into attacker-controlled Microsoft device code authentication flows."
+  - techniqueId: "T1528"
+    techniqueName: "Steal Application Access Token"
+    tactic: "Credential Access"
+    notes: "Captures Microsoft access and refresh tokens issued after victims complete the legitimate device login flow."
+  - techniqueId: "T1550.001"
+    techniqueName: "Use Alternate Authentication Material: Application Access Token"
+    tactic: "Defense Evasion"
+    notes: "Reuses stolen OAuth tokens to access Microsoft 365 resources without re-entering credentials."
+attributionConfidence: A4
+attributionRationale: "Huntress and Sekoia linked the 2026 Railway-centered Microsoft device-code phishing infrastructure to the EvilTokens kit. The kit is a real, documented operator service, but the individual operators and any national nexus remain unknown."
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
-  - "cryptocurrency"
-  - "wallet-drainer"
+  - "microsoft-365"
+  - "device-code"
+  - "oauth"
+  - "phaas"
   - "phishing"
-  - "defi"
-  - "web3"
+  - "token-theft"
 sources:
-  - url: "https://www.ic3.gov/Media/Y2024/PSA240306.pdf"
-    publisher: "FBI"
-    publisherType: government
+  - url: "https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign"
+    publisher: "Huntress"
+    publisherType: vendor
     reliability: R1
-    publicationDate: "2024-03-06"
-    accessDate: "2026-04-16"
+    publicationDate: "2026-03-23"
+    accessDate: "2026-04-18"
     archived: false
-  - url: "https://www.cisa.gov/news-events/alerts/2024/02/15/cryptocurrency-fraud-alert"
-    publisher: "CISA"
-    publisherType: government
-    reliability: R2
-    publicationDate: "2024-02-15"
-    accessDate: "2026-04-16"
+  - url: "https://blog.sekoia.io/new-widespread-eviltokens-kit-device-code-phishing-as-a-service-part-1/"
+    publisher: "Sekoia.io"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-03-30"
+    accessDate: "2026-04-18"
     archived: false
-  - url: "https://www.chainalysis.com/blog/2024-crypto-crime-report/"
-    publisher: "Chainalysis"
-    publisherType: research
-    reliability: R2
-    publicationDate: "2024-01-18"
-    accessDate: "2026-04-16"
+  - url: "https://www.microsoft.com/en-us/security/blog/2026/04/06/ai-enabled-device-code-phishing-campaign-april-2026/"
+    publisher: "Microsoft Defender Security Research"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-04-06"
+    accessDate: "2026-04-18"
     archived: false
 ---
 
 ## Executive Summary
 
-EvilTokens is a threat cluster associated with cryptocurrency wallet-draining operations targeting decentralized finance (DeFi) users and Web3 participants. The group operates through malicious decentralized application (dApp) interfaces and phishing campaigns that trick users into signing token approval transactions, granting attackers permission to transfer assets from victim wallets.
+EvilTokens is a phishing-as-a-service (PhaaS) kit focused on abusing Microsoft's OAuth device code flow to steal access and refresh tokens from Microsoft 365 users. Rather than stealing passwords directly, the platform lures victims into completing a legitimate Microsoft device-login challenge on the attacker's behalf, then redeems the resulting tokens from actor-controlled infrastructure.
 
-The threat cluster has been active since at least 2024 and operates across multiple blockchain networks including Ethereum, Binance Smart Chain, and Polygon. Attribution remains limited, with activity tracked primarily through blockchain forensics and phishing infrastructure analysis by community security researchers.
+Public reporting tied EvilTokens to a broad 2026 campaign that affected more than 340 organizations across the United States, Canada, Australia, New Zealand, and Germany. Huntress first documented the Railway-hosted token replay infrastructure, and Sekoia later analyzed EvilTokens as a turnkey kit sold in phishing-focused cybercrime communities. Microsoft subsequently described a broader rise in AI-enabled device code phishing, reinforcing that EvilTokens reflects a maturing criminal service model rather than a one-off intrusion set.
 
 ## Notable Campaigns
 
-### 2024-2025 -- Token Approval Phishing
+### 2026 -- Microsoft 365 Device Code Phishing Campaign
 
-EvilTokens operated phishing campaigns impersonating legitimate DeFi protocols, directing users to malicious interfaces that requested unlimited token approvals. Once approved, the attackers drained victim wallets of all approved tokens, often waiting hours or days before executing the drain to avoid immediate detection.
+EvilTokens-linked infrastructure was used in a device-code phishing wave that compromised more than 340 organizations. The kit combined lure pages hosted on Cloudflare Workers with Railway-hosted token replay infrastructure and business-themed phishing content to persuade victims to complete a legitimate Microsoft device code login.
 
-### 2024 -- Fake Airdrop Distribution
+### 2026 -- PhaaS Commercialization of Device-Code Abuse
 
-The group distributed phishing links through social media and messaging platforms advertising fake token airdrops. Victims who connected their wallets and approved the "claim" transaction unknowingly granted access to their entire token holdings.
+Sekoia documented EvilTokens as a subscription-style operator service with built-in account-takeover, email harvesting, and post-compromise automation features. The kit lowered the barrier to entry for device-code phishing and helped turn a once-specialized identity abuse pattern into a repeatable criminal workflow.
 
 ## Technical Capabilities
 
-EvilTokens operates sophisticated phishing infrastructure including cloned DeFi protocol interfaces hosted on lookalike domains. The malicious interfaces present seemingly legitimate transaction requests that, upon signing, grant the attacker's address unlimited approval to transfer the victim's tokens.
+EvilTokens operates layered phishing infrastructure rather than traditional credential-harvesting pages. Victims are first routed through a lure page or email theme, then redirected to the legitimate `microsoft.com/devicelogin` flow with an attacker-generated device code. Once the victim authenticates, the attacker redeems the corresponding Microsoft access and refresh tokens from actor-controlled infrastructure.
 
-The group uses blockchain-level obfuscation techniques including multi-hop transfers through mixing services, cross-chain bridges, and decentralized exchanges to launder stolen funds. Wallet drainer scripts are designed to enumerate all token balances and execute sequential transfers in a single transaction or rapid succession.
+Reporting on the kit highlights multiple evasion layers: Cloudflare Workers for landing and redirect logic, Railway-hosted token replay servers, and templated lures impersonating Microsoft 365, Adobe Acrobat, DocuSign, SharePoint, payroll, and invoice workflows. Sekoia also described advanced post-compromise features such as refresh-token weaponization, mailbox access, reconnaissance, and business-email-compromise-style automation.
 
 ## Attribution
 
-Attribution of EvilTokens activity is based on blockchain address clustering, phishing infrastructure analysis, and domain registration patterns. No government attribution has been issued. The threat cluster may represent multiple independent operators using shared toolkits and techniques common in the wallet-drainer ecosystem.
+The public record supports treating EvilTokens as a documented PhaaS kit rather than a named nation-state or nationally attributed threat actor. Huntress and Sekoia tied the same device-code phishing ecosystem to EvilTokens infrastructure and tooling, but the operators' identities and any national affiliation remain unknown. The strongest attribution claims today are about the service platform and its tradecraft, not a specific state sponsor.
 
 ## MITRE ATT&CK Profile
 
-**Initial Access**: Phishing links (T1566.002) distributed through social media, messaging platforms, and fake advertisements targeting cryptocurrency users.
+**Initial Access**: Spearphishing links (T1566.002) carrying business-themed lures direct victims into attacker-controlled device-code workflows.
 
-**Execution**: User interaction (T1204.001) with malicious dApp interfaces triggers token approval transactions.
+**Credential Access**: EvilTokens steals Microsoft application access and refresh tokens (T1528) after victims complete the legitimate device-code flow.
 
-**Impact**: Financial theft (T1657) through authorized token transfers from victim wallets.
+**Defense Evasion / Access Reuse**: Stolen OAuth tokens are reused as alternate authentication material (T1550.001) to access Microsoft 365 resources without re-entering credentials.
 
 ## Sources & References
 
-- [FBI: Cryptocurrency Fraud PSA](https://www.ic3.gov/Media/Y2024/PSA240306.pdf) -- FBI, 2024-03-06
-- [CISA: Cryptocurrency Fraud Alert](https://www.cisa.gov/news-events/alerts/2024/02/15/cryptocurrency-fraud-alert) -- CISA, 2024-02-15
-- [Chainalysis: 2024 Crypto Crime Report](https://www.chainalysis.com/blog/2024-crypto-crime-report/) -- Chainalysis, 2024-01-18
+- [Huntress: Threat Actors Abuse Railway.com PaaS as Microsoft 365 Token Attack Infrastructure](https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign) -- Huntress, 2026-03-23
+- [Sekoia.io: New Widespread EvilTokens Kit: Device Code Phishing as-a-Service - Part 1](https://blog.sekoia.io/new-widespread-eviltokens-kit-device-code-phishing-as-a-service-part-1/) -- Sekoia.io, 2026-03-30
+- [Microsoft Security Blog: Inside an AI-enabled Device Code Phishing Campaign](https://www.microsoft.com/en-us/security/blog/2026/04/06/ai-enabled-device-code-phishing-campaign-april-2026/) -- Microsoft Defender Security Research, 2026-04-06

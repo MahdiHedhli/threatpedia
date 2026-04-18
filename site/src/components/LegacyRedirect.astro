@@ -13,7 +13,7 @@ const canonical = new URL(destination, Astro.site ?? 'https://threatpedia.wiki')
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Campaign Redirect</title>
+    <title>Legacy Redirect</title>
     <meta http-equiv="refresh" content={`0;url=${destination}`} />
     <meta name="robots" content="noindex" />
     <link rel="canonical" href={canonical} />
@@ -24,7 +24,7 @@ const canonical = new URL(destination, Astro.site ?? 'https://threatpedia.wiki')
   <body>
     <main>
       <p>
-        This campaign has been consolidated into
+        This legacy entry has been consolidated into
         <a href={destination}>{label}</a>.
       </p>
     </main>

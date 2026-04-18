@@ -3,10 +3,7 @@ name: "Lazarus Group"
 aliases:
   - "HIDDEN COBRA"
   - "Zinc"
-  - "Diamond Sleet"
   - "Labyrinth Chollima"
-  - "APT-C-26"
-  - "Group 77"
 affiliation: "North Korea (Reconnaissance General Bureau)"
 motivation: "Financial / Espionage"
 status: active
@@ -52,7 +49,7 @@ mitreMappings:
     notes: "Deployed disk-wiping malware in attacks including the Sony Pictures breach."
 attributionConfidence: A1
 attributionRationale: "Attributed to North Korea's RGB by multiple U.S. government agencies (FBI, CISA, Treasury), a 2018 DOJ criminal complaint, and extensive private-sector research."
-reviewStatus: "draft_ai"
+reviewStatus: "under_review"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -95,9 +92,9 @@ sources:
 
 ## Executive Summary
 
-The Lazarus Group, also tracked as HIDDEN COBRA by the U.S. government, is a North Korean state-sponsored threat actor attributed to the **Reconnaissance General Bureau (RGB)**, Pyongyang's primary intelligence agency. Active since at least 2009, Lazarus conducts both espionage and financially motivated operations. The group is one of the most prolific state-sponsored cyber threat actors, responsible for some of the most consequential cyber operations of the past decade.
+The Lazarus Group, also tracked as HIDDEN COBRA by the U.S. government, is a North Korean state-sponsored threat actor attributed to the **Reconnaissance General Bureau (RGB)**, Pyongyang's primary intelligence agency. Active since at least 2009, Lazarus conducts both espionage and financially motivated operations. Public reporting treats Lazarus as an umbrella label that contains multiple sub-clusters, so operations such as APT38/Bluenoroff, AppleJeus, or Dream Job are often best understood as parts of the Lazarus ecosystem rather than as proof that every DPRK intrusion belongs to one monolithic unit.
 
-Lazarus is responsible for the 2014 Sony Pictures breach, the 2016 Bangladesh Bank heist ($81 million stolen), the 2017 WannaCry ransomware outbreak, and billions of dollars in cryptocurrency theft. The group's financial operations are assessed to generate revenue for the North Korean regime, including funding for its weapons programs. The U.S. Treasury sanctioned Lazarus Group in September 2019.
+Lazarus is responsible for the 2014 Sony Pictures breach, the 2017 WannaCry ransomware outbreak, and a long-running stream of cryptocurrency theft and sanctions-evasion operations. Major financial operations such as the Bangladesh Bank heist are often attributed to Lazarus-associated subgroups including APT38/Bluenoroff, which is why the broader Lazarus label is best used as an umbrella attribution rather than a substitute for all subgroup identities.
 
 ## Notable Campaigns
 
