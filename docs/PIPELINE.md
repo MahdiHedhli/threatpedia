@@ -133,6 +133,7 @@ for the pipeline.
 | Guardrail | Where it lives | Default | Source of truth |
 |---|---|---|---|
 | Corpus + task CVE dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks | Script |
+| Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | CVEs in rejected list skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
@@ -202,9 +203,85 @@ authoritative schema changes. There is no automated sync.
 | `scripts/pipeline-discover.mjs` | `acceptance_criteria` · `astro_build` |
 | `.github/workflows/pipeline-ingest-issue.yml` | `acceptance_criteria` · `astro_build` |
 | `.github/pipeline/tasks/*` (corpus, 112 files) | `acceptance_criteria` · `astro_build` |
+| `scripts/pipeline-reject.mjs` (via `pipeline-reject.yml`) | `.github/pipeline/rejected-candidates.json` entries — see Rejection memory |
 
 If a new writer lands that emits the legacy alias, readers will still
 work — but it should be updated to the canonical form in the same PR.
+
+---
+
+## Rejection memory
+
+Discovery re-surfaces the same CVE on every 6h cron run unless it shows up
+as "already known" in dedup. Before Slice 4c, dedup only knew about two
+sources: the live corpus and the open task set. Closing an accumulation PR
+without merging left no durable signal, so vetoed candidates came back.
+
+Slice 4c adds **rejection memory**: a repo-visible, PR-gated file that
+records operator-vetoed CVEs. Discovery reads it during dedup. Removing an
+entry (via PR edit) restores discovery eligibility.
+
+### Where it lives
+
+- **File:** [`.github/pipeline/rejected-candidates.json`](../.github/pipeline/rejected-candidates.json) on `main`
+- **Key:** CVE string, normalized to upper-case on both write and read
+- **Shape:**
+  ```json
+  {
+    "version": "1.0",
+    "description": "...",
+    "lastUpdated": "2026-04-18T04:00:00Z",
+    "rejected": [
+      {
+        "cve": "CVE-2026-34197",
+        "rejected_at": "2026-04-18T04:10:00Z",
+        "reason": "operator veto",
+        "topic": "Apache ActiveMQ ...",
+        "rejected_via_pr": 60
+      }
+    ]
+  }
+  ```
+
+### How rejection happens
+
+1. Operator runs the `Pipeline: Reject Discovery Candidate` workflow
+   (`workflow_dispatch`), providing `cve`, `reason`, and optionally
+   `topic` / `pr`.
+2. The workflow invokes [`scripts/pipeline-reject.mjs`](../scripts/pipeline-reject.mjs)
+   on a fresh branch `pipeline/reject-<CVE>`, which appends a rejection
+   entry and updates `lastUpdated`.
+3. The workflow opens a PR against `main` labeled `pipeline/rejection`.
+   **No direct push to `main`** — Kernel K reviews and merges.
+4. Next discovery run honors the new entry.
+
+### How discovery honors the file
+
+`pipeline-discover.mjs` builds a `Set<string>` of rejected CVEs at startup,
+in addition to the corpus + tasks dedup set. Any candidate whose CVE is in
+the set is skipped at the filter stage with a `::notice::` for audit
+visibility. The per-run summary prints the count of rejection skips
+separately from the corpus/task dupe count.
+
+**Compatibility-safe fallback:** if the file is missing or malformed,
+discovery logs a `::warning::` and proceeds with an empty rejection set.
+The file is never required to exist for discovery to run.
+
+### Re-eligibility
+
+**Manual only.** Operator opens a follow-up PR that removes the entry
+from `rejected[]`, KK reviews and merges, next discovery cron re-surfaces
+the candidate. There is no automatic timeout — operator veto is sticky
+until explicitly reversed. (Rationale: KEV re-issuance of a "rejected"
+CVE typically means the rejection was the wrong call; the operator
+should reconsider explicitly.)
+
+### Out of scope for this slice
+
+- Non-CVE rejection keys (topic_hash for non-KEV candidate sources) —
+  the schema is `version: "1.0"` to allow a future extension.
+- Validator-side enforcement — rejection is a discovery-time filter only.
+- Any automatic rejection paths — only the `workflow_dispatch` route.
 
 ---
 
