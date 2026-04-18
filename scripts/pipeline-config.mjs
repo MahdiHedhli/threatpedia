@@ -15,23 +15,19 @@
  *   import { loadPipelineConfig, DEFAULTS } from './pipeline-config.mjs';
  *   const cfg = loadPipelineConfig();
  *
- * Why an inline parser: js-yaml would be cleaner but would add a
- * dependency and a prerequisite install step to every workflow that
- * uses it. Our config is small, predictable, and under our control.
- * The inline parser handles the keys we need; if config grows to need
- * anchors, multi-line strings, or lists-of-maps, a future slice will
- * swap to js-yaml behind this same API.
- *
- * Parser supports:
- *   - Nested maps via indentation (2-space assumed)
- *   - Scalars: string (quoted or bare), integer, float, boolean
- *   - Comments (# … to end of line), blank lines
- *   - Does NOT support: sequences / lists, anchors, multi-line strings, flow syntax
+ * Parser: js-yaml (YAML 1.2, load-only). Earlier versions of this
+ * module shipped a hand-rolled parser to avoid the dependency; see git
+ * history (TASK-2026-0065 Slice 4a) for that path. Slice 4e (this file)
+ * replaced it with js-yaml after parity-checking the live config.yml
+ * output byte-for-byte against the inline parser. The public API
+ * (loadPipelineConfig, DEFAULTS, parseYaml wrapper), safe-default
+ * fallbacks, and CLI output shape are all preserved unchanged.
  */
 
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import yaml from 'js-yaml';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_CONFIG_PATH = resolve(__dirname, '..', '.github', 'pipeline', 'config.yml');
@@ -75,77 +71,19 @@ export const DEFAULTS = Object.freeze({
   },
 });
 
-// ── Minimal YAML parser (targeted for our config shape) ────────────────────
+// ── YAML parsing ───────────────────────────────────────────────────────────
 //
-// Handles: nested maps via 2-space indentation; scalars (int / float / bool /
-// bare-string / single- or double-quoted string); comments; blank lines.
-// Does NOT handle: sequences / lists, anchors, multi-line strings, flow syntax.
-function parseScalar(raw) {
-  let s = raw.trim();
-  // Detect quotes BEFORE stripping comments — a hash inside a quoted string
-  // (e.g. alert_channel: "#security") must not be mistaken for a comment, and
-  // a trailing comment after a quoted value (e.g. `key: "value" # note`) must
-  // not confuse the end-of-string check.
-  const quote = (s[0] === '"' || s[0] === "'") ? s[0] : null;
-  if (quote) {
-    const endQuoteIndex = s.indexOf(quote, 1);
-    if (endQuoteIndex !== -1) return s.slice(1, endQuoteIndex);
-    // Unterminated quote — fall through to scalar parsing so we don't crash.
-  }
-
-  s = s.replace(/\s+#.*$/, '').trim(); // strip inline comments on unquoted values
-  if (s === '') return null;
-  if (s === 'true' || s === 'True' || s === 'TRUE') return true;
-  if (s === 'false' || s === 'False' || s === 'FALSE') return false;
-  if (s === 'null' || s === '~' || s === 'Null' || s === 'NULL') return null;
-  // Number
-  if (/^-?\d+$/.test(s)) return parseInt(s, 10);
-  if (/^-?\d*\.\d+$/.test(s)) return parseFloat(s);
-  // Bare string
-  return s;
-}
-
-function parseIndent(line) {
-  const m = line.match(/^( *)/);
-  return m ? m[1].length : 0;
-}
-
+// js-yaml 4.x defaults to YAML 1.2 core schema via `load()` — handles nested
+// maps, quoted + bare scalars, ints, floats, bools, and all the flow / block
+// forms we don't currently use in config.yml but might in future. An empty
+// file parses as `undefined`; we normalize to `{}` so callers always see a
+// plain object on the happy path.
+//
+// `parseYaml` is retained as an exported thin wrapper for anyone who imports
+// it (no in-tree callers today; belt-and-braces for the previous public API).
 export function parseYaml(text) {
-  const out = {};
-  const stack = [{ indent: -1, node: out }];
-
-  const lines = text.split(/\r?\n/);
-  for (const rawLine of lines) {
-    // Strip full-line comments and blank lines
-    if (/^\s*#/.test(rawLine) || /^\s*$/.test(rawLine)) continue;
-
-    const indent = parseIndent(rawLine);
-    const content = rawLine.slice(indent);
-
-    // Pop stack until we're at a parent indent
-    while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
-      stack.pop();
-    }
-
-    const kvMatch = content.match(/^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$/);
-    if (!kvMatch) continue; // ignore lines we don't understand (e.g. list items — not in our schema)
-
-    const key = kvMatch[1];
-    const rawValue = kvMatch[2];
-
-    const parent = stack[stack.length - 1].node;
-
-    if (rawValue === '' || /^\s*#/.test(rawValue)) {
-      // Nested map — create and push
-      const child = {};
-      parent[key] = child;
-      stack.push({ indent, node: child });
-    } else {
-      parent[key] = parseScalar(rawValue);
-    }
-  }
-
-  return out;
+  const loaded = yaml.load(text);
+  return loaded == null ? {} : loaded;
 }
 
 // ── Deep merge (for safe-defaults fallback) ────────────────────────────────
@@ -185,8 +123,19 @@ export function loadPipelineConfig(path = DEFAULT_CONFIG_PATH) {
   try {
     parsed = parseYaml(text);
   } catch (e) {
+    // js-yaml throws YAMLException on malformed input. The message is more
+    // detailed than the inline parser's would have been (it names line / col).
     console.warn(`[pipeline-config] WARN: parse error: ${e.message}; using built-in defaults`);
     return { ...DEFAULTS, _source: 'defaults', _reason: 'parse-error' };
+  }
+  // Shape-error guard — defensive new branch post-js-yaml swap.
+  // The inline parser always returned a plain object. js-yaml can legally
+  // return scalars / arrays / null for root values like `"just a string"` or
+  // `- item`. None of those are valid for a config document; fall back to
+  // DEFAULTS rather than letting deepMerge hit a non-object.
+  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    console.warn(`[pipeline-config] WARN: config root is not a map (got ${Array.isArray(parsed) ? 'array' : typeof parsed}); using built-in defaults`);
+    return { ...DEFAULTS, _source: 'defaults', _reason: 'shape-error' };
   }
   const merged = deepMerge(DEFAULTS, parsed);
   merged._source = 'file';

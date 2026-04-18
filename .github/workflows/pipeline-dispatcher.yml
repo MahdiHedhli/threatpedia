@@ -26,6 +26,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
+          cache-dependency-path: scripts/package-lock.json
+
+      - name: Install scripts/ dependencies
+        # scripts/pipeline-config.mjs imports js-yaml (added in Slice 4e).
+        # On a fresh runner, scripts/node_modules does not exist, so the
+        # dispatcher would fail on the first `node scripts/...` invocation
+        # below. Install pinned lockfile versions before any script runs.
+        working-directory: scripts
+        run: npm ci --no-audit --no-fund
 
       - name: Load pipeline config
         id: config

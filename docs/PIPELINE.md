@@ -152,6 +152,16 @@ at the top of the step output (including the `_source` — `file` or
 single-knob edit in `config.yml` propagates to the dispatcher on the
 next run, no code change required.
 
+**Config parser:** `scripts/pipeline-config.mjs` parses `config.yml`
+via `js-yaml` (see `scripts/package.json`). Earlier versions shipped a
+hand-rolled parser; Slice 4e swapped it after verifying byte-identical
+output against the live config. Safe-default fallbacks remain in place
+for every failure mode: `file-not-found`, `read-error`, `parse-error`,
+and a new `shape-error` (triggered when the parsed root is not a map —
+e.g. a stray scalar or array at the top level). The dispatcher never
+fails-closed on a config issue; it falls back to `DEFAULTS` and logs
+the reason.
+
 **Shared schema enum authority:** JavaScript-side schema enums (currently
 `SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
 single source of truth for the pipeline scripts. The runner imports it
