@@ -3,7 +3,15 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 const campaigns = await getCollection('campaigns');
-campaigns.sort((a, b) => new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime());
+campaigns.sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+
+const formatDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-US', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).format(d);
 ---
 
 <Base title="Campaigns">
@@ -29,9 +37,9 @@ campaigns.sort((a, b) => new Date(b.data.startDate).getTime() - new Date(a.data.
       <tbody>
         {campaigns.map((campaign) => (
           <tr>
-            <td>{campaign.data.campaignId || '—'}</td>
+            <td>{campaign.data.campaignId}</td>
             <td><a href={`/campaigns/${campaign.id}/`}>{campaign.data.title}</a></td>
-            <td>{new Date(campaign.data.startDate).toLocaleDateString('en-US')}</td>
+            <td>{formatDate(campaign.data.startDate)}</td>
             <td><span class={`severity ${campaign.data.severity}`}>{campaign.data.severity}</span></td>
             <td>{campaign.data.attackType}</td>
             <td>{campaign.data.ongoing ? 'Ongoing' : 'Concluded'}</td>

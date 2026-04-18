@@ -1,0 +1,37 @@
+{
+  "task_id": "TASK-2026-0150",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "input": {
+    "topic": "SolarWinds campaign canonical reconciliation",
+    "reprocess": true,
+    "target_file": "site/src/content/campaigns/solarwinds-supply-chain-campaign.md",
+    "issues": [
+      "removed_duplicate_campaign_variant",
+      "canonical_campaign_reconciliation"
+    ],
+    "notes": "Deprecated duplicate source article removed: site/src/content/campaigns/apt29-solarwinds-supply-chain-campaign-2020.md. Future reprocessing must enrich only the canonical SolarWinds campaign file."
+  },
+  "output": {
+    "file_pattern": "site/src/content/campaigns/solarwinds-supply-chain-campaign.md",
+    "branch": "bot/reprocess-task-2026-0150"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-17T19:00:00Z",
+      "action": "created",
+      "agent": "kernel-k",
+      "note": "Campaign corpus review - removed duplicate SolarWinds campaign variant and queued canonical reprocessing."
+    }
+  ],
+  "updated": "2026-04-17T19:00:00Z"
+}
