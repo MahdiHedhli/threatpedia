@@ -58,10 +58,12 @@ selfTest();
 // against process.argv[1] being undefined when imported via `node -e`.
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const args = process.argv.slice(2);
-  let key = null;
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--key' && args[i + 1]) key = args[++i];
-  }
+  // Use lastIndexOf so `--key foo --key bar` takes the later value (standard
+  // CLI precedence) and avoids the ++i side-effect pattern in a manual loop.
+  const keyFlagIndex = args.lastIndexOf('--key');
+  const key = (keyFlagIndex > -1 && keyFlagIndex + 1 < args.length)
+    ? args[keyFlagIndex + 1]
+    : null;
   if (key) {
     if (!(key in SCHEMA)) {
       console.error(`Unknown key: ${key}`);
