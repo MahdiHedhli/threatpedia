@@ -121,14 +121,17 @@ jobs:
                 'EDITORIAL-WORKFLOW-SPEC.md §14A',
                 'INGESTION-SPEC.md §2',
               ],
-              acceptance: {
+              // Canonical write shape: `acceptance_criteria` (not `acceptance`)
+              // and `astro_build` (not `build_passes`) per TASK-2026-0066 /
+              // Slice 4b. Readers tolerate the legacy forms for back-compat.
+              acceptance_criteria: {
                 frontmatter_valid: true,
                 min_sources: 3,
                 min_h2_sections: 5,
                 min_mitre_mappings: 1,
                 review_status: 'draft_ai',
                 schema_validation: 'pass',
-                build_passes: true,
+                astro_build: true,
               },
               depends_on: [],
               preconditions: [
