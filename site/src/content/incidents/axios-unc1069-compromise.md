@@ -32,7 +32,7 @@ On March 31, 2026, threat actor UNC1069 successfully compromised the npm credent
 With a 3-hour exposure window before npm quarantine, the malicious packages reached systems across the global software supply chain. Axios receives over 100 million weekly downloads, making this one of the highest-impact supply chain compromises in 2026. Google's Threat Intelligence Group (GTIG) has formally attributed the attack to UNC1069, a North Korea-nexus financially motivated threat actor with a documented history of targeting cryptocurrency and software infrastructure.
 Organizations running compromised versions (axios@1.14.1 or axios@0.30.4) must immediately upgrade to safe versions and audit their systems for indicators of compromise, including outbound connections to the attacker's command and control infrastructure.
 
-## Attack Timeline
+## Timeline
 
 March 31, 2026~00:21 UTC
 
@@ -54,7 +54,7 @@ March 31, 2026~06:00 UTC
 Public disclosure and coordinated response
 npm publishes incident notice. Security vendors, cloud platforms, and development teams initiate detection and mitigation efforts.
 
-## Attack Methodology
+## Technical Analysis
 
 UNC1069 executed a credential compromise followed by manual package publication, avoiding automated CI/CD pipelines that might have triggered additional detection mechanisms.
 
@@ -98,7 +98,7 @@ Runtime Decryption: Payload decoded in memory, leaving minimal artifacts on disk
 Self-Cleanup: Script removes itself and temporary files after execution
 Environment Detection: Platform detection logic to select appropriate payload
 
-## Payload Architecture
+### Payload Architecture
 
 The attack implements a sophisticated 3-stage infection chain with platform-specific final payloads:
 
@@ -119,7 +119,7 @@ Windows: PowerShell-based malware with in-memory PE injection
 macOS: Compiled C++ Mach-O binary with persistence mechanisms
 Linux: Python backdoor implementing WAVESHAPER.V2 RAT
 
-## WAVESHAPER.V2 RAT Analysis
+### WAVESHAPER.V2 RAT Analysis
 
 The Linux payload represents an evolved version of WAVESHAPER, a RAT attributed to UNC1069 in previous operations. WAVESHAPER.V2 introduces enhanced reconnaissance capabilities while maintaining backward compatibility with UNC1069's existing command and control infrastructure.
 
@@ -177,7 +177,7 @@ Expanded Reconnaissance: Additional system profiling for targeting decisions
 Modular Architecture: Ability to load additional modules from C2
 Cross-Platform Consistency: Unified command interface across Windows, macOS, Linux
 
-## Affected Packages & Downstream Impact
+## Impact Assessment
 
 The blast radius of this supply chain attack extends across virtually all modern web applications and services.
 
@@ -272,7 +272,7 @@ plain-crypto-js@4.2.1 in package.json
 Suspicious Setup Script
 setup.js with postinstall hook in axios versions 1.14.1 and 0.30.4
 
-## Attribution
+## Historical Context
 
 Google Threat Intelligence Group (GTIG) has formally attributed this attack to UNC1069 with high confidence through multiple independent indicators:
 
@@ -302,7 +302,7 @@ Confidence Assessment
 Attribution Confidence: HIGH (>90%)
 Attribution is supported by direct technical connections (WAVESHAPER tooling, C2 infrastructure), behavioral patterns (VPN usage, timing), and corroborating intelligence from multiple security vendors independently reaching UNC1069 conclusions.
 
-## Detection & Remediation
+## Remediation & Mitigation
 
 Immediate Actions
 
@@ -347,7 +347,7 @@ Consider private npm registry mirrors with content verification
 Maintain software bill of materials (SBOM) for all deployments
 Implement network egress controls to prevent unauthorized C2 communications
 
-## References & Further Reading
+## Sources & References
 
 Google Cloud Blog: North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package
 Google Cloud Threat Intelligence, April 2, 2026
