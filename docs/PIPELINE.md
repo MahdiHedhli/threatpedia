@@ -6,6 +6,15 @@ bulk-support lanes are out of scope here (see ADR 0009).
 
 ---
 
+> **Visual overviews.** Four Mermaid diagrams live alongside this doc:
+>
+> - [`.github/pipeline/diagrams/architecture.md`](../.github/pipeline/diagrams/architecture.md) — system-level (two-repo split, content collections, schema authority)
+> - [`.github/pipeline/diagrams/pipeline-flow.md`](../.github/pipeline/diagrams/pipeline-flow.md) — task lifecycle end-to-end
+> - [`.github/pipeline/diagrams/discovery-rejection.md`](../.github/pipeline/diagrams/discovery-rejection.md) — discovery + rejection-memory lane
+> - [`.github/pipeline/diagrams/dispatcher-guardrails.md`](../.github/pipeline/diagrams/dispatcher-guardrails.md) — dispatcher state machine (config load + four gates)
+>
+> Themed to match the site (dark surface, IBM Plex Mono, amber accent). GitHub renders Mermaid inline.
+
 ## TL;DR
 
 ```
