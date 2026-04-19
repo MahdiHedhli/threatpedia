@@ -435,7 +435,7 @@ Related Incidents
 TeamPCP Supply Chain Attack Campaign
 CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis
 Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors
-FBI DCSNet Surveillance System Breach by Salt Typhoon
+FBI DCSNet Surveillance System Breach
 
 Related Reading
 
