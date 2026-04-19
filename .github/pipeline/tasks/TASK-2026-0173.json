@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0173",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T07:25:00Z",
-  "updated": "2026-04-18T07:25:00Z",
+  "updated": "2026-04-19T00:55:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on reclassification after corpus review confirmed FrostArmada is campaign-shaped coverage living in the incidents collection."
+    },
+    {
+      "timestamp": "2026-04-19T00:55:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "FrostArmada campaign reclassification completed via PR #70 (merge 2bf529d)."
     }
   ]
 }
