@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0182",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T14:46:05Z",
-  "updated": "2026-04-18T14:46:05Z",
+  "updated": "2026-04-19T11:00:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on cleanup after consolidating LockBit Black into the canonical LockBit actor profile."
+    },
+    {
+      "timestamp": "2026-04-19T11:00:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "downstream audit — canonical threat-actors/lockbit.md already carries \"LockBit 3.0 (LockBit Black)\" as an alias (line 27) and a dedicated evolution paragraph covering LockBit 2.0/3.0/Green (line 101); DragonForce body reference to LockBit 3.0 code is descriptive prose not a slug ref; redirect to /threat-actors/lockbit/ in place"
     }
   ]
 }

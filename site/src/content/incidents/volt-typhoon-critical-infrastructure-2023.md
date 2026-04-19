@@ -1,6 +1,7 @@
 ---
-campaignId: "TP-CAMP-2023-0001"
-title: "Volt Typhoon Critical Infrastructure Pre-positioning Campaign"
+eventId: "TP-2023-0001"
+articleType: "incident"
+title: "Volt Typhoon Critical Infrastructure Pre-positioning"
 startDate: 2021-06-01
 ongoing: true
 attackType: "Espionage / Pre-positioning"

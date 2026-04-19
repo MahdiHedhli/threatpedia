@@ -18,7 +18,7 @@ relatedSlugs:
   - "european-commission-trivy-breach-2026"
   - "trivy-cve-2026-33634"
   - "drift-protocol-dprk-exploit-2026"
-  - "fbi-dcsnet-salt-typhoon-2026"
+  - "fbi-dcsnet-surveillance-breach-2026"
 tags:
   - "npm"
   - "north-korea"
@@ -435,7 +435,7 @@ Related Incidents
 TeamPCP Supply Chain Attack Campaign
 CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis
 Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors
-FBI DCSNet Surveillance System Breach by Salt Typhoon
+FBI DCSNet Surveillance System Breach
 
 Related Reading
 

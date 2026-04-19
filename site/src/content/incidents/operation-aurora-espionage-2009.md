@@ -1,6 +1,7 @@
 ---
-campaignId: "TP-CAMP-2009-0001"
-title: "Operation Aurora Cyber Espionage Campaign"
+eventId: "TP-2009-0001"
+articleType: "incident"
+title: "Operation Aurora Cyber Espionage"
 startDate: 2009-06-01
 endDate: 2010-01-31
 ongoing: false

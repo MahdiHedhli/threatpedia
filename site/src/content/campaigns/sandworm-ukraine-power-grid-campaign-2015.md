@@ -17,6 +17,8 @@ generatedDate: 2026-04-17
 cves: []
 relatedIncidents:
   - "ukraine-power-grid-attack-2015"
+  - "ukraine-power-grid-industroyer-2016"
+  - "notpetya-wiper-attack-2017"
 tags:
   - "sandworm"
   - "ukraine"
