@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0170",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T04:55:00Z",
-  "updated": "2026-04-18T04:55:00Z",
+  "updated": "2026-04-19T00:55:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on canonical reconciliation for duplicate TrueConf incident coverage discovered during soft-launch corpus review batch 1."
+    },
+    {
+      "timestamp": "2026-04-19T00:55:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "TrueConf canonical reconciliation completed via PR #70 (merge 2bf529d)."
     }
   ]
 }
