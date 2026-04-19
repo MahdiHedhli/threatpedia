@@ -17,7 +17,6 @@ relatedSlugs: []
 tags:
   - "espionage"
   - "china"
-  - "salt-typhoon"
   - "surveillance"
   - "fisma"
   - "dcsnet"
