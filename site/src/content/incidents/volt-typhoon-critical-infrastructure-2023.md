@@ -1,9 +1,7 @@
 ---
 eventId: "TP-2023-0001"
-articleType: "incident"
 title: "Volt Typhoon Critical Infrastructure Pre-positioning"
-startDate: 2021-06-01
-ongoing: true
+date: 2021-06-01
 attackType: "Espionage / Pre-positioning"
 severity: critical
 sector: "Critical Infrastructure"
@@ -15,7 +13,7 @@ confidenceGrade: A
 generatedBy: "kernel-k"
 generatedDate: 2026-04-17
 cves: []
-relatedIncidents: []
+relatedSlugs: []
 tags:
   - "volt-typhoon"
   - "china"

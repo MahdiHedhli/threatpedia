@@ -1,10 +1,7 @@
 ---
 eventId: "TP-2009-0001"
-articleType: "incident"
 title: "Operation Aurora Cyber Espionage"
-startDate: 2009-06-01
-endDate: 2010-01-31
-ongoing: false
+date: 2009-06-01
 attackType: "Espionage"
 severity: critical
 sector: "Technology"
@@ -17,7 +14,7 @@ generatedBy: "kernel-k"
 generatedDate: 2026-04-17
 cves:
   - "CVE-2010-0249"
-relatedIncidents: []
+relatedSlugs: []
 tags:
   - "operation-aurora"
   - "china"

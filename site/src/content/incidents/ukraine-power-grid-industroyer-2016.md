@@ -1,14 +1,13 @@
 ---
 eventId: "TP-2016-0001"
-articleType: "incident"
 title: "Kyiv Power Grid Attack (Industroyer)"
-date_start: 2016-12-17
+date: 2016-12-17
 attackType: "Sabotage"
 severity: critical
 sector: "Energy & Utilities"
 geography: "Ukraine"
+threatActor: "Sandworm"
 attributionConfidence: A1
-attributionRationale: "U.S. DOJ indicted GRU Unit 74455 (Sandworm) for this and the 2015 power grid attacks."
 reviewStatus: "certified"
 confidenceGrade: A
 generatedBy: "dangermouse-bot"
@@ -48,9 +47,7 @@ mitreMappings:
   - techniqueId: "T0831"
     techniqueName: "Manipulation of Control"
     tactic: "Impact"
-    attackVersion: "v15.1"
-    confidence: "confirmed"
-    evidence: "Industroyer was designed to directly manipulate industrial control processes."
+    notes: "Industroyer was designed to directly manipulate industrial control processes."
 ---
 
 ## Executive Summary

@@ -18,6 +18,7 @@ cves: []
 relatedIncidents:
   - "solarwinds-orion-supply-chain-compromise-2020"
   - "fireeye-red-team-tools-breach-2020"
+  - "fireeye-red-team-tools-breach-2020"
 tags:
   - "solarwinds"
   - "supply-chain"
