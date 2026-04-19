@@ -1,168 +1,121 @@
-# Pipeline Flow Diagram
+# Pipeline Flow — Task Lifecycle End-to-End
 
-## Full Pipeline — End to End
+The path a single task takes from discovery (or manual submission) to
+merged article on `main`. Updated through Slice 4e.
+
+Companion diagrams:
+
+- [`architecture.md`](./architecture.md) — system-level overview
+- [`discovery-rejection.md`](./discovery-rejection.md) — discovery + rejection-memory lane
+- [`dispatcher-guardrails.md`](./dispatcher-guardrails.md) — operator-controls view
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{
+  'background':'#080b10',
+  'primaryColor':'#0d1117','primaryTextColor':'#cdd5e0','primaryBorderColor':'#1e2733',
+  'lineColor':'#e8a020','secondaryColor':'#0d1117','tertiaryColor':'#0d1117',
+  'fontFamily':'IBM Plex Mono, ui-monospace, monospace'
+}}}%%
 flowchart TB
-    subgraph INPUT["📥 Input Sources"]
-        MS["🙋 Manual Submission<br/><i>GitHub Issue Form</i>"]
-        AD["🔍 Auto Discovery<br/><i>CISA KEV scan, every 6h</i>"]
-    end
+  subgraph INPUT["input"]
+    direction LR
+    MS["manual submission<br/>(GitHub Issue form)"]
+    AD["auto discovery<br/>(CISA KEV, 6h cron)"]
+  end
 
-    subgraph INGEST["⚙️ Ingestion"]
-        II["Issue Ingestion Action<br/><i>Parses form → task JSON</i>"]
-        DI["Discovery Action<br/><i>Dedup → task JSON</i>"]
-    end
+  subgraph INGEST["ingest"]
+    direction LR
+    II["pipeline-ingest-issue.yml<br/>parse form → task JSON"]
+    DI["pipeline-discover.mjs<br/>score + dedup → task JSON"]
+  end
 
-    subgraph QUEUE["📋 Task Queue"]
-        TQ[".github/pipeline/tasks/*.json<br/><i>Pending tasks, prioritized P0→P3</i>"]
-    end
+  TASKS[("tasks/TASK-YYYY-NNNN.json<br/>canonical shape:<br/>acceptance_criteria<br/>astro_build<br/>history[action: created]")]
 
-    subgraph DISPATCH["🚦 Dispatcher"]
-        direction TB
-        CB{"Circuit<br/>breaker<br/>OK?"}
-        BP{"Queue<br/>< 50?"}
-        SL["Release stale<br/>locks > 30min"]
-        DEP{"Dependencies<br/>met?"}
-        ISS["Create GitHub Issue<br/><i>pipeline/ready label</i>"]
-    end
+  subgraph DISPATCH["dispatch (2h cron)"]
+    direction TB
+    CFG["load config.yml<br/>(pipeline-config.mjs · js-yaml)"]
+    CB{"circuit breaker<br/>open?"}
+    BP{"queue under<br/>max_pending?"}
+    SL["release locks<br/>> stale_lock_minutes"]
+    DEP{"depends_on<br/>satisfied?"}
+    ISS["open pipeline/ready Issue<br/>pick per P0..P3 priority"]
+  end
 
-    subgraph EXECUTE["🤖 Agent Execution"]
-        LOCK["Lock task<br/><code>--lock</code>"]
-        GEN["Generate article<br/><i>Any agent / any subscription</i>"]
-        VAL["Validate locally<br/><code>--validate</code>"]
-        PR["Open PR"]
-    end
+  subgraph AGENT["agent execution"]
+    direction TB
+    LOCK["pipeline-run-task.mjs --lock"]
+    GEN["generate article<br/>(agent-agnostic · own subscription)"]
+    VLOCAL["pipeline-run-task.mjs --validate<br/>(local gate)"]
+    PRO["open PR against main"]
+  end
 
-    subgraph VALIDATE["✅ Validation Gate"]
-        FM["Frontmatter check"]
-        FLD["Required fields"]
-        H2["H2 sections ≥ 5"]
-        SRC["Sources section"]
-        MIT["MITRE mappings ≥ 1"]
-        BLD["Astro build"]
-    end
+  subgraph GATE["validator (PR-level)"]
+    direction TB
+    VS["pipeline-validate.yml<br/>stage-aware reviewStatus"]
+    FM["frontmatter valid"]
+    H2["H2 sections ≥ min"]
+    SRC["sources ≥ min"]
+    MIT["MITRE mappings ≥ min"]
+    BLD["astro build passes"]
+  end
 
-    subgraph PUBLISH["🚀 Publish"]
-        MRG["Kernel K merges PR"]
-        DEP2["Deploy Action<br/><i>Astro build → GitHub Pages</i>"]
-        LIVE["📡 Live on threatpedia.wiki<br/><i>Status: draft_ai</i>"]
-    end
+  subgraph PUB["publish"]
+    direction TB
+    KKM["Kernel K review + merge"]
+    DEP2["Astro build<br/>GitHub Pages"]
+    LIVE["threatpedia.wiki"]
+  end
 
-    MS --> II --> TQ
-    AD --> DI --> TQ
+  MS --> II
+  AD --> DI
+  II --> TASKS
+  DI --> TASKS
+  TASKS --> CFG
+  CFG --> CB
+  CB -->|no| BP
+  CB -->|yes| HALT["halt · wait for<br/>circuit breaker Issue close"]
+  BP -->|yes| SL
+  BP -->|no| PAUSE["backpressure pause<br/>resume below backpressure_resume"]
+  SL --> DEP
+  DEP -->|yes| ISS
+  DEP -->|no| WAIT["wait for parent task"]
+  ISS --> LOCK
+  LOCK --> GEN --> VLOCAL --> PRO
+  PRO --> VS
+  VS --> FM --> H2 --> SRC --> MIT --> BLD
+  BLD -->|pass| KKM
+  BLD -->|fail| BACK["fix + push; re-run validator"]
+  BACK --> VS
+  KKM --> DEP2 --> LIVE
 
-    TQ --> CB
-    CB -->|"tripped"| ALERT["🚨 Alert Issue<br/><i>Pipeline halted</i>"]
-    CB -->|"OK"| BP
-    BP -->|"full"| PAUSE["⏸ Backpressure<br/><i>Skip new drafts</i>"]
-    BP -->|"OK"| SL --> DEP
-    DEP -->|"unmet"| BLOCK["🔒 Blocked<br/><i>Retry next run</i>"]
-    DEP -->|"met"| ISS
-
-    ISS --> LOCK --> GEN --> VAL
-    VAL -->|"fail"| FIX["Fix & re-validate"]
-    FIX --> VAL
-    VAL -->|"pass"| PR
-
-    PR --> FM & FLD & H2 & SRC & MIT & BLD
-    FM & FLD & H2 & SRC & MIT & BLD --> RESULT{"All pass?"}
-    RESULT -->|"yes"| MRG
-    RESULT -->|"no"| FIXPR["Fix issues on branch"]
-    FIXPR --> FM & FLD & H2 & SRC & MIT & BLD
-
-    MRG --> DEP2 --> LIVE
-
-    style INPUT fill:#1a1a2e,stroke:#e8a020,color:#fff
-    style QUEUE fill:#1a1a2e,stroke:#e8a020,color:#fff
-    style DISPATCH fill:#1a1a2e,stroke:#5a9fd4,color:#fff
-    style EXECUTE fill:#1a1a2e,stroke:#22c55e,color:#fff
-    style VALIDATE fill:#1a1a2e,stroke:#e8a020,color:#fff
-    style PUBLISH fill:#1a1a2e,stroke:#22c55e,color:#fff
-    style ALERT fill:#2a1010,stroke:#ff4444,color:#ff4444
-    style PAUSE fill:#2a2010,stroke:#ffa500,color:#ffa500
-    style BLOCK fill:#1a1a2e,stroke:#5a6a7e,color:#5a6a7e
-    style LIVE fill:#0a2010,stroke:#22c55e,color:#22c55e
+  classDef pause fill:#0d1117,stroke:#a06a10,color:#e8a020;
+  classDef halt fill:#0d1117,stroke:#ff4444,color:#ff4444;
+  classDef accent fill:#0d1117,stroke:#e8a020,color:#f0b030;
+  classDef data fill:#0d1117,stroke:#e8a020,color:#cdd5e0;
+  class HALT halt;
+  class PAUSE,WAIT,BACK pause;
+  class LIVE accent;
+  class TASKS data;
 ```
 
-## Task State Machine
+## Reading this diagram
 
-```mermaid
-stateDiagram-v2
-    [*] --> pending: Task created
-    pending --> locked: Agent locks task
-    pending --> blocked: Dependencies unmet
-    blocked --> pending: Dependencies met (next dispatcher run)
-    locked --> pending: Stale lock released (> 30 min)
-    locked --> complete: Article validated + PR opened
-    locked --> failed: Generation or validation error
-    failed --> pending: Retry (manual)
-    pending --> cancelled: Human cancels
-    complete --> [*]
-    cancelled --> [*]
-```
+- **Two intake lanes, one task shape.** Manual submissions and
+  auto-discovery converge on the same canonical JSON shape in
+  `.github/pipeline/tasks/`. Every writer has emitted canonical since
+  Slice 4b; every reader is tolerant of legacy.
 
-## Failsafe Mechanisms
+- **Dispatch is guardrail-first.** Before a task leaves the queue,
+  the dispatcher checks three gates in order: circuit breaker,
+  backpressure, stale-lock sweep. See
+  [`dispatcher-guardrails.md`](./dispatcher-guardrails.md) for the
+  state machine.
 
-```mermaid
-flowchart LR
-    subgraph SAFEGUARDS["Pipeline Safeguards"]
-        direction TB
-        CB["🔴 Circuit Breaker<br/><i>3 failures in 2h → halt</i>"]
-        BP["🟡 Backpressure<br/><i>Queue ≥ 50 → pause discovery</i>"]
-        SL["🔵 Stale Lock Recovery<br/><i>> 30 min → auto-release</i>"]
-        DG["🟢 Dependency Guards<br/><i>Unmet deps → blocked</i>"]
-        DD["🟢 Deduplication<br/><i>CVE already covered → skip</i>"]
-        VG["🟢 Validation Gates<br/><i>Schema + build on every PR</i>"]
-    end
+- **Agent execution is agent-agnostic.** Claude Code, Gemini, or a
+  human run `pipeline-run-task.mjs` under their own subscription. No
+  API key baked into the pipeline. Local `--validate` matches the PR-
+  level validator so agents fail fast before opening a PR.
 
-    CB -->|"trips"| HALT["Pipeline halts<br/>Alert Issue created"]
-    HALT -->|"Issue closed"| RESUME["Pipeline resumes"]
-    BP -->|"triggers"| SKIP["New tasks paused"]
-    SKIP -->|"queue < 40"| RESUME2["Discovery resumes"]
-
-    style SAFEGUARDS fill:#1a1a2e,stroke:#e8a020,color:#fff
-    style HALT fill:#2a1010,stroke:#ff4444,color:#ff4444
-    style RESUME fill:#0a2010,stroke:#22c55e,color:#22c55e
-    style RESUME2 fill:#0a2010,stroke:#22c55e,color:#22c55e
-```
-
-## Repository Boundaries
-
-```mermaid
-flowchart LR
-    subgraph PRIVATE["threatpedia-working (PRIVATE)"]
-        SPECS["📄 Specs"]
-        ADRS["📄 ADRs"]
-        NOTES["📝 Agent Notes"]
-        SUPER["👑 Supervisor"]
-    end
-
-    subgraph PUBLIC["threatpedia (PUBLIC)"]
-        subgraph PIPELINE["Pipeline Runtime"]
-            CONFIG["config.yml"]
-            TASKS["tasks/*.json"]
-            ACTIONS["workflows/*.yml"]
-            RUNNER["pipeline-run-task.mjs"]
-        end
-        subgraph CONTENT["Article Content"]
-            INC["incidents/"]
-            CAMP["campaigns/"]
-            TA["threat-actors/"]
-            ZD["zero-days/"]
-        end
-        subgraph DEPLOY["Deployment"]
-            BUILD["Astro Build"]
-            PAGES["GitHub Pages"]
-        end
-    end
-
-    SPECS -.->|"informs design"| PIPELINE
-    PIPELINE --> CONTENT --> BUILD --> PAGES
-
-    style PRIVATE fill:#1a1020,stroke:#5a6a7e,color:#fff
-    style PUBLIC fill:#1a1a2e,stroke:#e8a020,color:#fff
-    style PIPELINE fill:#0a1a2a,stroke:#5a9fd4,color:#fff
-    style CONTENT fill:#0a2010,stroke:#22c55e,color:#fff
-    style DEPLOY fill:#1a1a2e,stroke:#e8a020,color:#fff
-```
+- **Merge is the trust anchor.** Branch protection on `main` means
+  nothing lands without Kernel K's review — including the pipeline's
+  own output. The validator is advisory; the human merge is the gate.
