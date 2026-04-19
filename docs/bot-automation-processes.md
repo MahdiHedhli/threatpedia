@@ -296,7 +296,7 @@ subprocess.run(["git", "push", "origin", source_branch], check=True)
 
 # Step 5: Reply to the actionable comments and resolve them
 for comment in gemini_comments:
-    review_comment = repo.get_pull(target_pr_number).get_review_comment(comment["id"])
+    review_comment = pr.get_review_comment(comment["id"])
     review_comment.reply("Fixed in follow-up commit on this PR branch.")
     # Resolve the review thread via GraphQL / gh if available
 
