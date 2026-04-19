@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0176",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T09:25:00Z",
-  "updated": "2026-04-18T09:25:00Z",
+  "updated": "2026-04-19T11:00:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on cleanup after corpus review collapsed duplicate Heartbleed zero-day coverage into a single canonical article with a legacy redirect."
+    },
+    {
+      "timestamp": "2026-04-19T11:00:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "downstream audit — zero in-scope refs to legacy heartbleed-openssl-tls-cve-2014-0160 slug remain; redirect in place; single-canonical-per-CVE validator enforcement deliberately not added in this slice (wider scope; leave as candidate for a later validator pass)"
     }
   ]
 }

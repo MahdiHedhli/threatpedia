@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0175",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T07:27:00Z",
-  "updated": "2026-04-18T07:27:00Z",
+  "updated": "2026-04-19T11:00:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on canonicalization after corpus review removed confirmed Salt Typhoon attribution from the FBI DCSNet article but the legacy slug still encodes that claim."
+    },
+    {
+      "timestamp": "2026-04-19T11:00:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "slug renamed fbi-dcsnet-salt-typhoon-2026 → fbi-dcsnet-surveillance-breach-2026; legacy redirect added; relatedSlugs in drift-protocol-dprk-exploit-2026 + axios-unc1069-compromise updated; build passes at 127 pages"
     }
   ]
 }

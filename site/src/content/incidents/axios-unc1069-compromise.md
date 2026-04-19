@@ -18,7 +18,7 @@ relatedSlugs:
   - "european-commission-trivy-breach-2026"
   - "trivy-cve-2026-33634"
   - "drift-protocol-dprk-exploit-2026"
-  - "fbi-dcsnet-salt-typhoon-2026"
+  - "fbi-dcsnet-surveillance-breach-2026"
 tags:
   - "npm"
   - "north-korea"

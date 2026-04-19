@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0180",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T10:12:00Z",
-  "updated": "2026-04-18T10:12:00Z",
+  "updated": "2026-04-19T11:00:00Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
@@ -38,6 +38,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on cleanup after promoting RansomHouse coverage from the incidents collection into a canonical actor profile."
+    },
+    {
+      "timestamp": "2026-04-19T11:00:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "downstream audit — zero in-scope refs to legacy ransomhouse-operations incident slug remain; redirect to /threat-actors/ransomhouse/ in place; tag + malware-extension mentions of \"ransomhouse\" in vivaticket-ransomhouse-2026 are legitimate metadata (not slug refs); provisional source set on the canonical actor profile left as-is, stronger sourcing is a content-quality question for a separate slice"
     }
   ]
 }
