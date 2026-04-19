@@ -3,9 +3,9 @@
   "stage": "review",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-17T20:30:00Z",
-  "updated": "2026-04-17T20:30:00Z",
+  "updated": "2026-04-18T12:00:00Z",
   "locked_by": null,
   "locked_at": null,
   "source": "backfill",
@@ -58,6 +58,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Soft-launch corpus review queue — threat actor batch 4 of 4"
+    },
+    {
+      "timestamp": "2026-04-18T12:00:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "threat actor batch 4/4 (hybrid and criminal) — completed via PR #68 (merge a08f3b1)"
     }
   ]
 }
