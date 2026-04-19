@@ -1,15 +1,13 @@
 ---
 eventId: "TP-2020-0002"
-articleType: "incident"
 title: "FireEye Red Team Tools Breach"
-date_start: 2020-11-01
-date_disclosed: 2020-12-08
+date: 2020-12-08
 attackType: "Espionage"
 severity: critical
 sector: "Technology"
 geography: "Global"
+threatActor: "APT29"
 attributionConfidence: A1
-attributionRationale: "Linked unequivocally to the broader SVR/APT29 SolarWinds campaign by government attribution."
 reviewStatus: "certified"
 confidenceGrade: A
 generatedBy: "dangermouse-bot"
@@ -22,6 +20,7 @@ tags:
   - "apt29"
   - "fireeye"
   - "svr"
+  - "red-team"
 sources:
   - url: "https://www.mandiant.com/resources/blog/fireeye-cyber-attack"
     publisher: "Mandiant"
@@ -48,14 +47,12 @@ mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
     tactic: "Initial Access"
-    attackVersion: "v15.1"
-    confidence: "confirmed"
-    evidence: "APT29 accessed FireEye through the trojanized SolarWinds Orion build."
+    notes: "APT29 accessed FireEye through the trojanized SolarWinds Orion build."
 ---
 
 ## Executive Summary
 
-On December 8, 2020, FireEye (now Mandiant) publicly disclosed that it had been breached by a highly sophisticated state-sponsored adversary. The attackers explicitly targeted and successfully exfiltrated the company's proprietary Red Team assessment tools. This breach served as the precipitating discovery event for the massive SolarWinds supply chain compromise. The actors gained initial access through the trojanized SolarWinds Orion software (SUNBURST), making FireEye one of the most critical victims in the broader SVR espionge campaign.
+On December 8, 2020, FireEye (now Mandiant) publicly disclosed that it had been breached by a highly sophisticated state-sponsored adversary. The attackers explicitly targeted and successfully exfiltrated the company's proprietary Red Team assessment tools. This breach served as the precipitating discovery event for the massive SolarWinds supply chain compromise. The actors gained initial access through the trojanized SolarWinds Orion software (SUNBURST), making FireEye one of the most critical victims in the broader SVR espionage campaign.
 
 ## Technical Analysis
 

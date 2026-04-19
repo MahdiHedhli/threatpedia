@@ -38,7 +38,7 @@ The architecture prioritizes data consistency, security, and uniform operational
 - **Severity Levels**: Critical, High, Medium, Low
 - **Response Time**: Typically posts comments within 1-3 minutes of PR creation
 - **Comment Format**: Includes file path, line number, violation description, and suggested fix
-- **Integration**: Tasks check for Gemini comments post-merge and apply fixes in follow-up PRs
+- **Integration**: PRs are not merge-ready until Gemini comments have been reviewed, actionable findings fixed, replies posted, and actionable threads resolved. Post-merge follow-up is only for late-arriving comments that appear after the merge gate was already cleared.
 
 ## Security Requirements
 
@@ -65,7 +65,9 @@ Security is non-negotiable in all automation processes. The following rules prot
 ### PR Review and Merging
 - **All PRs must pass Gemini Code Assist review** before owner account merges
 - **Critical and high-priority findings** must be fixed before merge
-- **Medium and low findings** should be fixed but can be deferred to next run if blocking
+- **Medium and low findings** should also be reviewed before merge; if one is deferred, the deferment must be explicit and owned by the merger
+- **Reply to actionable Gemini comments** with the fix or disposition before resolving the thread
+- **Resolve actionable Gemini threads** before merge so review state matches the code state
 - **Never merge PRs** with dangling security issues (exposed tokens, hardcoded credentials)
 
 ## Standard PR Workflow
@@ -134,13 +136,14 @@ c. Capture PR number from API response
 d. Log PR URL: https://github.com/MahdiHedhli/threatpedia/pull/{number}
 ```
 
-### 6. Gemini Review Post-Check (see dedicated section below)
+### 6. Gemini Review Gate (see dedicated section below)
 ```
-a. Wait 2 minutes after PR creation/merge
-b. Query GitHub API for Gemini comments on the merged commit
-c. If comments found: apply fixes in follow-up PR (see Gemini resolution template)
-d. Continue checking at 5 min total, then 10 min total
-e. After 10 minutes with no new comments: task complete
+a. Wait 2 minutes after PR creation
+b. Query GitHub API for Gemini comments on the PR branch
+c. If comments found: apply fixes on the same branch or a direct follow-up branch, push, reply, and resolve actionable threads
+d. Re-check at 5 min total, then 10 min total
+e. Merge only after actionable Gemini comments are addressed and threads are resolved
+f. If comments arrive only after merge, handle them in a follow-up PR and document the exception
 ```
 
 ### 7. Finalization (Always)
@@ -214,33 +217,22 @@ else:
     print("No critical/high issues found. Proceeding with main task.")
 ```
 
-### Post-PR Check (AFTER Creating and Merging a PR)
+### Post-PR Check (AFTER Creating A PR, BEFORE MERGE)
 
-After merging a PR, check for Gemini comments and resolve them in follow-up PRs:
+Before merging a PR, check for Gemini comments and resolve them before the branch lands on `main`:
 
 ```python
 import time
 
-# After PR is merged to main
-print(f"PR #{pr_number} merged. Checking for Gemini Code Assist comments...")
+# After PR is opened and ready for review
+print(f"PR #{pr_number} open. Checking for Gemini Code Assist comments before merge...")
 
 # Timeline: check at 2 min, 5 min total, 10 min total
 for wait_cycle, total_wait in [(120, 120), (180, 300), (300, 600)]:
     print(f"Waiting {wait_cycle} seconds (total: {total_wait}s)...")
     time.sleep(wait_cycle)
     
-    # Query for Gemini comments on merged commit
-    commits = repo.get_commits(sha="main")
-    latest_commit = commits[0]
-    
-    # Look for associated PR and its comments
-    prs_for_commit = repo.get_pulls(state="all")
-    target_pr = None
-    for pr in prs_for_commit:
-        if pr.merge_commit_sha == latest_commit.sha:
-            target_pr = pr
-            break
-    
+    target_pr = repo.get_pull(pr_number)
     if target_pr:
         gemini_comments = []
         for comment in target_pr.get_comments():
@@ -254,19 +246,19 @@ for wait_cycle, total_wait in [(120, 120), (180, 300), (300, 600)]:
         
         if gemini_comments:
             print(f"Found {len(gemini_comments)} Gemini comments at {total_wait}s")
-            # Apply fixes (see Fix Procedure below)
+            # Apply fixes, reply to comments, and resolve actionable threads (see Fix Procedure below)
             break
         else:
             print(f"No Gemini comments yet at {total_wait}s")
     
     if total_wait >= 600:  # 10 minutes
-        print("No Gemini comments after 10 minutes. Task complete.")
+        print("No Gemini comments after 10 minutes. PR is clear to merge.")
         break
 ```
 
 ### Gemini Comment Resolution Procedure
 
-When Gemini comments are found, clone the PR branch, apply fixes, and push a new PR:
+When Gemini comments are found, update the PR branch, then reply to and resolve the actionable comments before merge:
 
 ```python
 # Step 1: Get PR branch name
@@ -302,26 +294,23 @@ subprocess.run([
 
 subprocess.run(["git", "push", "origin", source_branch], check=True)
 
-# Step 5: Create new PR (or update existing)
-new_pr = repo.create_pull(
-    title=f"[GEMINI FIX] {pr.title}",
-    body=f"Resolves Gemini Code Assist findings:\n" + 
-         "\n".join([f"- {c['severity']}: {c['file']}:{c['line']}" for c in gemini_comments]),
-    head=source_branch,
-    base="main"
-)
+# Step 5: Reply to the actionable comments and resolve them
+for comment in gemini_comments:
+    review_comment = pr.get_review_comment(comment["id"])
+    review_comment.reply("Fixed in follow-up commit on this PR branch.")
+    # Resolve the review thread via GraphQL / gh if available
 
-# Step 6: Approve and merge (using owner token)
+# Step 6: Approve and merge (using owner token) only after actionable threads are resolved
 with open(os.path.expanduser("~/Documents/Coding/Threatpedia/.env.owner")) as f:
     owner_token = f.read().strip()
 
 owner_g = Github(auth=Auth.Token(owner_token))
 owner_repo = owner_g.get_repo("MahdiHedhli/threatpedia")
-owner_pr = owner_repo.get_pull(new_pr.number)
+owner_pr = owner_repo.get_pull(target_pr_number)
 owner_pr.create_review(event="APPROVE")
 owner_pr.merge()
 
-print(f"Gemini fixes merged in PR #{new_pr.number}")
+print(f"Gemini findings resolved and PR #{target_pr_number} merged")
 ```
 
 ### Common Gemini Findings to Watch For
@@ -400,11 +389,12 @@ Every new scheduled task should follow this structure in its prompt or runbook:
 
 ### Post-PR: Gemini Review Check
 1. Wait 2 minutes
-2. Query GitHub API for Gemini comments on merged commit
-3. If found: apply fixes using Comment Resolution Procedure, push new PR
-4. Wait 3 more minutes (5 min total), check again — fix if needed
-5. Wait 5 more minutes (10 min total), final check — fix if needed
-6. If no new comments after 10 min: task complete
+2. Query GitHub API for Gemini comments on the open PR
+3. If found: apply fixes using Comment Resolution Procedure on the PR branch
+4. Reply to actionable comments and resolve actionable threads
+5. Wait 3 more minutes (5 min total), check again — fix if needed
+6. Wait 5 more minutes (10 min total), final check — fix if needed
+7. Merge only after the actionable review state is clean
 
 ### Finalization
 1. Release lock: activeLocks[{task-name}].locked = false
