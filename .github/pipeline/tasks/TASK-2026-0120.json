@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0120",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Palo Alto PAN-OS GlobalProtect Command Injection (CVE-2024-3400)",
     "reprocess": true,
@@ -31,7 +31,25 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-20T15:48:25.961Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-20T11:50:00Z",
+      "action": "completed",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Reprocess: added 5 sources to frontmatter per current sourceSchema (R1 research + R1 government + R1 vendor). Body H2 vocabulary already canonical (8 sections). Build passes. Review status left at \"certified\" per current stage-aware validator policy; pre-existing certified status preserved (PAN-OS CVE-2024-3400 is a well-documented, primary-source-rich zero-day)."
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-20T11:50:00Z"
 }
