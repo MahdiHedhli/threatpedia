@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0099",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations",
     "reprocess": true,
@@ -32,7 +32,17 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-20T15:51:42.708Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
-  ]
+  ],
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-20T15:51:42.707Z",
+  "updated": "2026-04-20T15:51:42.708Z"
 }

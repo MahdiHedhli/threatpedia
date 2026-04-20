@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0152",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "MCP ecosystem coordinated vulnerability disclosure",
     "reprocess": true,
@@ -33,7 +33,16 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Campaign corpus review - removed MCP campaign article and queued reprocessing under a non-campaign taxonomy."
+    },
+    {
+      "timestamp": "2026-04-20T15:51:43.109Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ],
-  "updated": "2026-04-17T19:00:00Z"
+  "updated": "2026-04-20T15:51:43.109Z",
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-20T15:51:43.106Z"
 }
