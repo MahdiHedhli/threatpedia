@@ -5342,16 +5342,6 @@
     "a": "LOL"
   },
   {
-    "t": "llm security",
-    "d": "The practice of identifying and mitigating security risks specific to Large Language Model applications, including prompt injection, training data poisoning,...",
-    "r": [
-      "appsec-devsecops",
-      "threat-intel",
-      "pentest-red"
-    ],
-    "s": "llm-security"
-  },
-  {
     "t": "log aggregation",
     "d": "The process of collecting log data from multiple sources into a centralized system for analysis, correlation, and retention.",
     "r": [
