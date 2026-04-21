@@ -169,7 +169,7 @@ jobs:
             const BP_LABEL = 'pipeline/backpressure';
 
             const pendingDrafts = allTasks.filter(t =>
-              t.stage === 'draft' && t.status === 'complete' ||
+              t.status === 'pr_open' ||
               t.stage === 'validation' ||
               t.stage === 'review'
             ).length;
@@ -324,7 +324,7 @@ jobs:
                 '4. Write the article using your AI agent or manually (follow the brief)',
                 `5. Validate:         \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate\``,
                 '6. Commit, push, and open PR targeting `main`',
-                `7. Mark complete:    \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --complete\``,
+                `7. Record PR state:  \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr --pr <number>\``,
                 '',
                 '### Task Details',
                 '',
