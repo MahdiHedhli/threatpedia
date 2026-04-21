@@ -6,15 +6,15 @@ attackType: supply-chain
 severity: high
 sector: Technology / AI Services
 geography: Global
-threatActor: Unknown
+threatActor: TeamPCP
 attributionConfidence: A4
-reviewStatus: under_review
+reviewStatus: draft_ai
 confidenceGrade: C
-generatedBy: new-threat-intel
-generatedDate: 2026-04-08
+generatedBy: dangermouse-bot
+generatedDate: 2026-04-21
 cves: []
 relatedSlugs:
-  - "teampcp-supply-chain-attack"
+  - "teampcp-supply-chain-campaign-2026"
   - "cisco-trivy-supply-chain-breach-2026"
   - "european-commission-trivy-breach-2026"
 tags:
@@ -24,285 +24,200 @@ tags:
   - "ai"
   - "credential-theft"
   - "extortion"
+  - "teampcp"
   - "lapsus"
+mitreMappings:
+  - techniqueId: "T1195.001"
+    techniqueName: "Supply Chain Compromise: Compromise Software Dependencies and Development Tools"
+    tactic: "Initial Access"
+    notes: "Malicious code injected into LiteLLM CI/CD pipeline produced trojanized PyPI releases 1.82.7 and 1.82.8 during a ~40 minute exposure window."
+  - techniqueId: "T1199"
+    techniqueName: "Trusted Relationship"
+    tactic: "Initial Access"
+    notes: "Exploited widespread trust in LiteLLM as a privileged dependency across AI/ML applications; downstream pipelines pulled the compromised version automatically."
+  - techniqueId: "T1552.001"
+    techniqueName: "Unsecured Credentials: Credentials In Files"
+    tactic: "Credential Access"
+    notes: "Runtime harvesting of API keys, auth tokens, and secrets from environment variables and config files on installations of the trojanized package."
+  - techniqueId: "T1567"
+    techniqueName: "Exfiltration Over Web Service"
+    tactic: "Exfiltration"
+    notes: "Harvested credentials and downstream ~4 TB of Mercor data exfiltrated via attacker-controlled web infrastructure."
+  - techniqueId: "T1657"
+    techniqueName: "Financial Theft"
+    tactic: "Impact"
+    notes: "Lapsus$ conducted a public extortion campaign against Mercor referencing exfiltrated Slack, source code, and contractor interaction material."
+sources:
+  - url: "https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/"
+    publisher: "TechCrunch"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-03-31"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://fortune.com/2026/04/02/mercor-ai-startup-security-incident-10-billion/"
+    publisher: "Fortune"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-02"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://www.theregister.com/2026/04/02/mercor_supply_chain_attack/"
+    publisher: "The Register"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-02"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://cybernews.com/security/mercor-data-breach-litelllm-supply-chain-attack/"
+    publisher: "Cybernews"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-02"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://www.bankinfosecurity.com/mercor-breach-linked-to-litellm-supply-chain-attack-a-31340"
+    publisher: "BankInfoSecurity"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-01"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://thenextweb.com/news/meta-mercor-breach-ai-training-secrets-risk"
+    publisher: "The Next Web"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-03"
+    accessDate: "2026-04-21"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/alerts"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-03-25"
+    accessDate: "2026-04-21"
+    archived: false
 ---
-## Executive Summary
+## Summary
 
-On March 27, 2026, the threat actor group TeamPCP compromised the CI/CD pipeline of LiteLLM, an open-source Python library with 97 million monthly downloads used in approximately 36% of cloud environments globally. For approximately 40 minutes, malicious versions of LiteLLM (1.82.7 and 1.82.8) were published to the PyPI package repository, designed to harvest API credentials and authentication tokens from downstream applications.
-Among thousands of affected organizations, Mercor — a $10 billion AI startup providing data annotation and quality assurance services for leading AI companies — was compromised. On April 2, 2026, the extortion group Lapsus$ claimed responsibility for exfiltrating 4 terabytes of sensitive data from Mercor, including internal Slack communications, development tickets, proprietary source code, database records, and video recordings of AI system interactions with contractors.
-The breach exposed Mercor's relationships with major tech companies including Anthropic, OpenAI, and Meta. Meta subsequently paused AI data work with Mercor following the exposure of training methodologies and proprietary techniques. A class action lawsuit was filed on April 1, 2026, potentially affecting 40,000+ individuals. TeamPCP has publicly stated its intention to partner with ransomware and extortion groups, signaling a concerning shift in supply chain threat tactics.
+On March 27, 2026, the TeamPCP threat actor cluster compromised the CI/CD pipeline of **LiteLLM**, an open-source Python library (97 million monthly downloads, present in approximately 36% of cloud AI environments) used as a unified interface across multiple LLM providers. For roughly 40 minutes, trojanized LiteLLM releases `1.82.7` and `1.82.8` were published to PyPI, harvesting API credentials and authentication tokens from every installation that occurred during the exposure window.
+
+Mercor — a USD 10 billion AI startup providing data-annotation and QA services to leading AI companies — was among the organisations compromised via the LiteLLM path. On April 2, 2026, the extortion group **Lapsus$** claimed responsibility for exfiltrating approximately 4 TB of sensitive Mercor data, including Slack communications, internal tickets, proprietary source code, database records, and video recordings of AI-system interactions with contractors.
+
+The breach exposed Mercor's working relationships with Anthropic, OpenAI, and Meta. Meta subsequently paused AI-data work with Mercor following the disclosure, and a class-action lawsuit was filed on April 1, 2026, potentially affecting more than 40,000 individuals. This incident is tracked as the Mercor-specific victim pane of the broader [TeamPCP Multi-Ecosystem Supply Chain Campaign](/campaigns/teampcp-supply-chain-campaign-2026/).
 
 ## Technical Analysis
 
-LiteLLM is a widely-adopted open-source Python library that provides a unified interface for integrating multiple large language models (LLMs) across cloud platforms. The library abstracts API compatibility differences between OpenAI, Anthropic, Cohere, Azure OpenAI, and other LLM providers, making it essential infrastructure for AI applications at scale.
+LiteLLM provides a unified API across OpenAI, Anthropic, Cohere, Azure OpenAI, and other LLM vendors and is widely treated as privileged infrastructure by AI applications. TeamPCP gained unauthorised access to the LiteLLM project's CI/CD pipeline — the same technique pattern the actor used against Aqua's Trivy action and Checkmarx's KICS — and used that access to publish two trojanized releases with credential-harvesting payloads.
 
-Compromise Vector
-TeamPCP gained unauthorized access to the LiteLLM project's CI/CD (Continuous Integration/Continuous Deployment) pipeline, likely through compromised credentials or a vulnerability in the build infrastructure. The attackers were able to:
+The malicious package enumerated runner and host environment for API keys, tokens, and secrets; read common credential-bearing config files; and exfiltrated findings to attacker infrastructure. Credential harvesting triggered during package installation and initialisation, before any downstream application-layer security tooling could react. Credentials obtained from Mercor installations were the leverage used to pivot into Mercor's broader environment, from which Lapsus$ extracted the 4 TB dataset referenced in the public extortion campaign.
 
-Inject malicious code into the build pipeline
-Generate and publish unsigned or insufficiently verified Python packages to PyPI
-Bypass automated security scanning and code review processes
-Maintain access for approximately 40 minutes before detection
-
-Malicious Payload
-
-LiteLLM versions 1.82.7 and 1.82.8 contained credential-harvesting functionality that:
-- Enumerated environment variables for API keys and tokens
-- Harvested authentication credentials from config files
-- Exfiltrated credentials to attacker-controlled servers
-- Maintained persistent backdoor capability via callback hooks
-- Obfuscated malicious code within legitimate library functions
-
-The malicious payload was designed to operate silently without triggering alerts in typical application monitoring systems. Credential harvesting occurred during package installation and initialization, before security scanning tools could detect the exfiltration.
-
-Scale of Exposure
-
-Metric
-Impact
-
-Monthly LiteLLM Downloads
-97 million
-
-Cloud Environment Usage
-~36% globally
-
-Malicious Package Window
-~40 minutes (March 27, 2026)
-
-Estimated Direct Downloads
-2-3 million during window
-
-Organizations Potentially Affected
-Thousands
+Scale of exposure: ~97M LiteLLM monthly downloads overall; ~36% cloud-environment presence; the ~40 minute malicious window produced an estimated 2–3 million direct installations of the compromised versions. Mercor is the most prominent named victim to date; many others are affected but undisclosed.
 
 ## Attack Chain
 
-Stage 1: Initial Access
-CI/CD Pipeline Compromise
-TeamPCP obtained credentials or exploited a vulnerability to gain access to LiteLLM's build infrastructure. Attack vectors likely included: compromised developer credentials, GitHub Actions token theft, or unpatched CI/CD vulnerabilities.
+### Stage 1: CI/CD access to LiteLLM
 
-Stage 2: Code Injection
-Malicious Payload Insertion
-Attackers injected credential-harvesting code into the LiteLLM codebase, specifically within initialization functions and dependency loading mechanisms to ensure execution during package setup and runtime.
+TeamPCP obtains credentials or exploits a vulnerability in LiteLLM's build infrastructure. Likely paths (per public reporting): compromised maintainer credentials or GitHub Actions token theft consistent with the wider TeamPCP campaign.
 
-Stage 3: Distribution
-PyPI Package Publication
-Malicious versions 1.82.7 and 1.82.8 were published to PyPI, the official Python package repository. Automatic dependency resolution systems worldwide began downloading and installing the compromised packages.
+### Stage 2: Malicious payload insertion
 
-Stage 4: Credential Harvesting
-Exfiltration via Compromised Instances
-Upon installation, the malicious packages enumerated environment variables, configuration files, and secrets management systems for API keys, tokens, and authentication credentials. Data was exfiltrated to attacker infrastructure.
+Credential-harvesting code is injected into LiteLLM initialisation and dependency-loading paths to ensure execution during install and runtime.
 
-Stage 5: Lateral Movement (Mercor-Specific)
-Compromised Credentials Used for Access
-Harvested LiteLLM API credentials and internal tokens from Mercor's systems were used to authenticate to internal services, databases, and cloud resources. Attackers moved laterally throughout the Mercor infrastructure.
+### Stage 3: PyPI publication
 
-Stage 6: Data Exfiltration
-4TB of Sensitive Data Stolen
-Lapsus$ (coordinating with or purchasing data from TeamPCP) exfiltrated 4 terabytes of data including Slack communications, internal tickets, source code repositories, database exports, and video recordings of AI system interactions.
+Trojanized versions `1.82.7` and `1.82.8` are published to PyPI. Automatic dependency resolvers worldwide begin pulling them.
 
-Stage 7: Extortion
-Ransom Demand and Threat Publication
-Lapsus$ published proof of data theft and demanded ransom. Threatened to release data to competitors and regulatory authorities. Exposed Mercor's relationships with Anthropic, OpenAI, and Meta, triggering business consequences.
+### Stage 4: Credential harvesting at scale
 
-## MITRE ATT&CK Mapping
+On installation the payload enumerates environment variables, config files, and local secrets stores; harvested material is exfiltrated to attacker-controlled infrastructure.
 
-The incident demonstrates sophisticated supply chain attack and data exfiltration techniques, with emphasis on trusted relationships and valid account compromise:
+### Stage 5: Lateral movement into Mercor
 
-Tactics & Techniques
+Credentials harvested from Mercor's LiteLLM instances are used to authenticate to internal services, databases, and cloud resources, enabling broader access inside Mercor.
 
-T1195.001 — Supply Chain Compromise: Compromise Software Dependencies — Malicious code injection into open-source library CI/CD pipeline
-T1199 — Trusted Relationship — Exploitation of trust in LiteLLM as widely-used open-source dependency
-T1078 — Valid Accounts — Harvesting and use of legitimate API credentials and authentication tokens
-T1530 — Data from Cloud Storage — Exfiltration of databases and cloud-stored configuration files
-T1567 — Exfiltration Over Web Service — Data transmission to attacker infrastructure and extortion platform
-T1657 — Financial Theft — Extortion and ransom demand campaign by Lapsus$
+### Stage 6: 4 TB data exfiltration
+
+Slack history, internal tickets, source-code repositories, database exports, and AI-interaction video recordings are exfiltrated from Mercor infrastructure.
+
+### Stage 7: Public extortion by Lapsus$
+
+Lapsus$ publishes proof-of-theft samples on April 1, 2026, and issues a ransom demand. The group explicitly references Mercor's relationships with Anthropic, OpenAI, and Meta to maximise pressure.
 
 ## Impact Assessment
 
-Direct Impact on Mercor
+**Mercor-direct.** USD 10 billion valuation materially at risk through customer-confidence impact. Meta paused AI-data work pending resolution. 4 TB exfiltrated, including Slack communications, internal architecture, source code, and contractor-interaction recordings. Class-action lawsuit filed on April 1, 2026, with plaintiff class potentially exceeding 40,000 individuals. Significant ongoing incident-response, forensic, legal-defence, and notification costs.
 
-Valuation Impact: $10 billion startup valuation at immediate risk due to breach disclosure and customer confidence erosion
-Customer Loss: Meta paused AI data work with Mercor following exposure of proprietary training methodologies
-Data Exposure: 4TB of sensitive data including Slack communications, internal architecture, source code, and contractor interaction videos
-Legal Liability: Class action lawsuit filed April 1, 2026, potentially affecting 40,000+ individuals
-Operational Disruption: Incident response costs, forensics, notification, and remediation efforts
+**Ecosystem.** Thousands of organisations are exposed via the LiteLLM dependency path; ~2–3 million direct installations during the exposure window. The compromise is corroborating evidence for the broader argument that privileged AI/ML infrastructure libraries deserve CI/CD hardening equivalent to security tooling.
 
-Ecosystem Impact
+**AI-sector specific.** Mercor's customers (Anthropic, OpenAI, Meta) face indirect reputational exposure through association with a compromised contractor. The exfiltrated data plausibly includes proprietary prompts, training methodologies, and contractor-interaction material with long-tail analytical value beyond immediate extortion leverage.
 
-Supply Chain Vulnerability: Thousands of organizations were compromised through LiteLLM dependency. Estimated 2-3 million installations during the ~40 minute window.
-Open Source Trust Crisis: Demonstrates vulnerability of widely-used open-source libraries to CI/CD compromise, undermining trust in OSS security
-Cloud Infrastructure Risk: Credentials harvested from compromised systems could enable subsequent attacks on cloud environments using those credentials
-AI Industry Exposure: LiteLLM's role as critical infrastructure for LLM deployments means this attack affected core AI development pipelines across the industry
+**Regulatory and legal.** GDPR / CCPA exposure where the exfiltrated material contains personal information of contractors or end-users. Ongoing investigation activity by federal authorities; Lapsus$ attribution brings the incident within existing DOJ / FBI Lapsus$ case activity.
 
-Financial & Reputational Harm
+## Attribution
 
-Mercor's major customers (Anthropic, OpenAI, Meta) facing reputational risk from association with compromised contractor
-Estimated remediation costs: $100M+ for incident response, legal defense, and customer notification
-Long-term revenue loss as customers shift data annotation work to competing vendors
-Regulatory fines and compliance violations (GDPR, CCPA for data containing personal information)
+**Confidence: A4.** Initial-access attribution to the TeamPCP cluster is supported by multi-vendor reporting (Microsoft, Akamai, Wiz, others) tracking the broader campaign of which the LiteLLM compromise is one vector. The Mercor-specific extortion is publicly claimed by Lapsus$, which has a well-documented prior history of aggressive data-theft-plus-publication operations. The exact division of labour between TeamPCP (initial access / pipeline compromise) and Lapsus$ (downstream victim monetisation) is consistent with specialised-partnership patterns seen elsewhere in 2025–2026 extortion activity but is not independently confirmed by government source here.
+
+No U.S. or EU government advisory has, at time of writing, named either actor in connection with the Mercor-specific incident.
 
 ## Timeline
 
-March 27, 2026 - Unknown Time
-TeamPCP gains access to LiteLLM CI/CD pipeline (likely through compromised credentials or infrastructure vulnerability)
+### 2026-03-27 — LiteLLM CI/CD compromise
 
-March 27, 2026 - ~14:00 UTC (estimated)
-Malicious LiteLLM versions 1.82.7 and 1.82.8 published to PyPI; automatic downloads begin worldwide
+TeamPCP gains access to the LiteLLM build pipeline (exact vector not public).
 
-March 27, 2026 - ~14:40 UTC (estimated)
-LiteLLM maintainers detect suspicious package versions and publish security alert; PyPI removes malicious versions
+### 2026-03-27 ~14:00 UTC — Trojanized packages published
 
-March 28-31, 2026
-Compromised organizations discover malicious packages in logs; incident response and forensics begin; LiteLLM CI/CD pipeline hardening occurs
+LiteLLM `1.82.7` and `1.82.8` go live on PyPI; automated downloads begin worldwide.
 
-March 31, 2026 - Evening
-Mercor discovers breach through forensic investigation; credentials harvested from their LiteLLM instances traced to unauthorized access
+### 2026-03-27 ~14:40 UTC — Maintainer detection
 
-April 1, 2026
-Lapsus$ publicly claims responsibility for Mercor breach; publishes proof-of-concept data samples; ransom demand issued; class action lawsuit filed by affected individuals
+LiteLLM maintainers identify the rogue releases and issue a security notice; PyPI removes the compromised versions. Exposure window closes at approximately 40 minutes.
 
-April 2, 2026
-Mercor confirms breach to customers including Meta, Anthropic, OpenAI; Meta announces pause in AI data work with Mercor
+### 2026-03-28 – 2026-03-31 — Downstream discovery
 
-April 8, 2026
-Threatpedia publishes incident report (TP-2026-0037); ongoing law enforcement investigation and civil litigation
+Affected organisations begin identifying the malicious versions in installation logs; incident-response and forensic work begins. LiteLLM project hardens its CI/CD posture.
 
-## Historical Context
+### 2026-03-31 — Mercor internal detection
 
-TeamPCP — Supply Chain Specialists
-TeamPCP is a sophisticated threat actor group specializing in CI/CD pipeline compromise and software supply chain attacks. This incident represents a significant capability demonstration:
+Mercor traces unauthorised access back to credentials harvested from its LiteLLM installations during the exposure window.
 
-Specialization: CI/CD infrastructure compromise, open-source library manipulation, credential harvesting
-Sophistication Level: Advanced — demonstrated understanding of Python packaging, PyPI mechanisms, automated build systems, and secure credential storage bypass
-Infrastructure: Command-and-control infrastructure for credential exfiltration; likely coordination with extortion groups for monetization
-Intent Shift: TeamPCP has publicly stated intention to partner with ransomware and extortion groups, suggesting evolution from pure supply chain theft to ransomware-as-a-service coordination
-Motivation: Financial — likely receives percentage of ransom/extortion payments from downstream threat actors like Lapsus$
+### 2026-04-01 — Lapsus$ claim + lawsuit
 
-Lapsus$ — Data Extortion Group
-Lapsus$ is a well-known extortion group known for aggressive data theft and publication tactics. In this incident, they acquired Mercor data either through direct compromise or from TeamPCP through partnership/purchase:
+Lapsus$ publicly claims the Mercor breach, publishes proof-of-theft samples, and issues a ransom demand. Class-action lawsuit filed the same day.
 
-Methodology: Data exfiltration followed by public proof-of-concept publication and ransom demands
-Tactics: Leverage relationship exposure (Anthropic, OpenAI, Meta) to amplify pressure on victim organization
-Success Rate: Known for high ransom payment rates through aggressive publication of sensitive data samples
-Operational Pattern: Rapid data analysis to identify highest-value information (customer lists, source code, proprietary methodologies) for maximum negotiation leverage
+### 2026-04-02 — Mercor customer notifications
 
-Threat Actor Coordination Model
-This incident illustrates a concerning trend: specialized division of labor in cybercriminal ecosystems. TeamPCP focuses on supply chain compromise and initial access; Lapsus$ specializes in data exfiltration and extortion. This partnership model allows each group to focus on their operational strengths while maximizing financial returns through coordinated attacks.
+Mercor confirms the breach to customers including Meta, Anthropic, and OpenAI. Meta announces a pause in AI-data work with Mercor.
+
+### 2026-04-08 — Incident reporting stabilises
+
+Wider sector reporting converges on the TeamPCP ↔ LiteLLM ↔ Mercor attribution chain; Threatpedia's initial incident record (now reprocessed in this pass) was drafted on this date.
 
 ## Remediation & Mitigation
 
-Immediate Response (For Affected Organizations)
+**For organisations that installed LiteLLM during the exposure window.**
 
-Identify Exposure: Check package installation logs for LiteLLM versions 1.82.7 or 1.82.8 (PyPI timestamps ~March 27, 14:00-14:40 UTC)
-Credential Rotation: Immediately rotate all API keys, authentication tokens, and credentials that may have been exposed to compromised systems
-Access Review: Audit access logs for suspicious activity during and after the ~40 minute malicious package window and in subsequent days
-Package Remediation: Uninstall LiteLLM 1.82.7/1.82.8; update to patched version 1.82.9+ from verified PyPI source
-Dependency Scanning: Scan codebase and dependency trees for other potentially compromised packages
+- Identify exposure via package-install logs for LiteLLM `1.82.7` or `1.82.8` between approximately `2026-03-27 14:00–14:40 UTC`.
+- Rotate every API key, auth token, and credential that was reachable from the affected Python process or its environment; revoke rather than simply rotate wherever feasible.
+- Pin LiteLLM to a known-safe release (≤ `1.82.6` or ≥ `1.82.9`) and audit dependency manifests for transitive pulls.
+- Review access logs for anomalous activity during and after the exposure window for the specific credentials involved.
 
-Supply Chain Security Hardening
+**Supply-chain hardening (general).**
 
-Dependency Pinning: Use exact version pinning in dependency specifications to avoid automatic minor/patch version updates that could pull malicious packages
-Package Verification: Implement cryptographic signature verification for all package downloads; verify source and maintainer identity
-Build Isolation: Run dependency installation in isolated, sandboxed environments with network restrictions
-SCA Tools: Deploy software composition analysis (SCA) tools with behavioral detection capabilities to identify credential-harvesting or exfiltration code
-Vendor Security Assessment: Require open-source projects to implement CI/CD security best practices: 2FA, IP whitelisting, code review enforcement, signed commits
+- Exact version pinning and immutable-commit-SHA pinning for CI/CD actions (lessons carry across the TeamPCP campaign's several vectors).
+- Package-signature verification and software bill-of-materials (SBOM) review as part of dependency intake.
+- Isolated / sandboxed dependency installation with egress restrictions; egress telemetry on Python processes fetching dependencies.
+- SCA tools with behavioural detection, not just signature matching, to catch credential-harvesting code in otherwise-known-good libraries.
 
-Detection & Monitoring
-
-Monitor for outbound connections from Python/LiteLLM processes to unknown or unexpected IP addresses
-Alert on environment variable enumeration or file system scanning by application processes
-Log and monitor credential access patterns; detect anomalous credential usage (geographic inconsistency, unusual service access)
-Implement network segmentation to limit lateral movement if credentials are compromised
-Deploy endpoint detection and response (EDR) tools with behavioral analysis to identify credential harvesting
-
-Long-Term Supply Chain Resilience
-
-Open Source CI/CD Standards: Advocate for and implement SLSA Framework (Supply Chain Levels for Software Artifacts) to harden build pipelines
-Attestation & Provenance: Use cryptographic attestation to verify package origin, build environment integrity, and maintainer identity
-PyPI Security Enhancements: Require mandatory 2FA, implement package signature verification at repository level, and automated malware scanning
-Vendor Relationship Management: Monitor security posture of critical open-source projects; establish SLAs requiring rapid security response
-Secrets Management: Use environment-based secrets injection rather than credentials in config files or code; implement vault-based access controls
+**For privileged AI/ML infrastructure owners.** Treat widely-used LLM-integration libraries as privileged dependencies deserving the same CI/CD hygiene and publishing controls as security tooling — the assumption of benign-ness is exactly the trust gradient TeamPCP exploited here.
 
 ## Sources & References
 
-TechCrunch — Mercor says it was hit by cyberattack tied to compromise of open-source LiteLLM project
-https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/
-
-Fortune — $10 billion Mercor AI startup hit by major data breach
-https://fortune.com/2026/04/02/mercor-ai-startup-security-incident-10-billion/
-
-The Register — LiteLLM supply chain attack hits Mercor and thousands of others
-https://www.theregister.com/2026/04/02/mercor_supply_chain_attack/
-
-Cybernews — Mercor data breach: 4TB of data stolen in LiteLLM supply chain attack
-https://cybernews.com/security/mercor-data-breach-litelllm-supply-chain-attack/
-
-Bank Info Security — Mercor Breach Linked to LiteLLM Supply Chain Attack
-https://www.bankinfosecurity.com/mercor-breach-linked-to-litellm-supply-chain-attack-a-31340
-
-The Next Web — Meta pauses Mercor AI work after breach exposes training secrets
-https://thenextweb.com/news/meta-mercor-breach-ai-training-secrets-risk
-
-Key Takeaways
-
-Supply chain attack via LiteLLM CI/CD compromise exposed 4TB of sensitive data from $10B AI startup Mercor. TeamPCP demonstrated advanced supply chain capability; Lapsus$ executed extortion campaign. This incident signals dangerous trend of specialized threat actor partnerships targeting open-source infrastructure.
-Critical Actions:
-
-Check logs for LiteLLM 1.82.7/1.82.8
-Rotate all exposed credentials immediately
-Update to patched LiteLLM 1.82.9+
-Implement SCA tools with behavioral detection
-Audit access logs for unauthorized activity
-
-Related Incidents
-
-TeamPCP Supply Chain Attack
-Broader context on TeamPCP's CI/CD compromise tactics and partnerships with extortion groups.
-Axios UNC1069 Compromise
-Another high-profile supply chain attack demonstrating vulnerability of trusted platforms.
-European Commission Trivy Breach
-Open-source supply chain vulnerability affecting government and enterprise infrastructure.
-
-Affected Customers
-
-Known Customers of Mercor:
-
-Anthropic
-OpenAI
-Meta
-
-Thousands of organizations using LiteLLM also compromised during ~40 minute malicious package window.
-
-Data Exfiltrated
-
-4 TB Total
-
-Slack communications
-Internal development tickets
-Proprietary source code
-Database records
-AI system interaction videos
-Customer data & training methodologies
-
-Severity & Metrics
-
-CRITICAL
-Severity
-
-$10B
-Mercor Valuation at Risk
-
-~2-3M
-Compromised Installs (LiteLLM)
-
-4 TB
-Data Exfiltrated
-
-40 Minutes
-Malicious Package Window
-
-40K+
-Class Action Plaintiffs
-
-// Hamburger menu functionality
+- [TechCrunch: Mercor says it was hit by cyberattack tied to compromise of open-source LiteLLM project](https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/) — TechCrunch, 2026-03-31
+- [Fortune: USD 10 billion Mercor AI startup hit by major data breach](https://fortune.com/2026/04/02/mercor-ai-startup-security-incident-10-billion/) — Fortune, 2026-04-02
+- [The Register: LiteLLM supply-chain attack hits Mercor and thousands of others](https://www.theregister.com/2026/04/02/mercor_supply_chain_attack/) — The Register, 2026-04-02
+- [Cybernews: Mercor data breach — 4 TB of data stolen in LiteLLM supply-chain attack](https://cybernews.com/security/mercor-data-breach-litelllm-supply-chain-attack/) — Cybernews, 2026-04-02
+- [BankInfoSecurity: Mercor Breach Linked to LiteLLM Supply-Chain Attack](https://www.bankinfosecurity.com/mercor-breach-linked-to-litellm-supply-chain-attack-a-31340) — BankInfoSecurity, 2026-04-01
+- [The Next Web: Meta pauses Mercor AI work after breach exposes training secrets](https://thenextweb.com/news/meta-mercor-breach-ai-training-secrets-risk) — The Next Web, 2026-04-03
+- [CISA: Supply-Chain Compromise Alerts — TeamPCP / Trivy / LiteLLM campaign coverage (corroborating government reference, not Mercor-specific primary)](https://www.cisa.gov/news-events/alerts) — CISA, 2026-03-25
