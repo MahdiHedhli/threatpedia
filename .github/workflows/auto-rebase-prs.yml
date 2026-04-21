@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.DMBOT_PAT }}
@@ -47,6 +47,26 @@ jobs:
           echo "$prs" | while read -r pr_number branch; do
             echo ""
             echo "=== PR #${pr_number} (${branch}) ==="
+
+            # Skip PRs that are not currently healthy. Rebase churn on failing
+            # branches only retriggers validation noise without moving them
+            # toward merge readiness.
+            pr_status=$(gh pr view "${pr_number}" --json statusCheckRollup)
+            failing_or_pending_checks=$(echo "$pr_status" | jq '
+              [
+                .statusCheckRollup[]?
+                | select(
+                    (has("status") and .status != "COMPLETED")
+                    or (has("conclusion") and ((.conclusion // "PENDING") != "SUCCESS"))
+                    or (has("state") and .state != "SUCCESS")
+                  )
+              ] | length
+            ')
+
+            if [ "${failing_or_pending_checks}" -gt 0 ]; then
+              echo "  ⏭️ Skipping auto-rebase because the PR has failing or pending checks."
+              continue
+            fi
 
             # Fetch the PR branch
             git fetch origin "${branch}" 2>/dev/null
