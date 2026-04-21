@@ -36,7 +36,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           # Full history is not needed; shallow is fine.
           fetch-depth: 1
@@ -64,7 +64,7 @@ jobs:
           echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
 
       - name: Handle stale remote branch (durable retry path)
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Mirrors the discovery workflow's stale-branch handling in
@@ -148,7 +148,7 @@ jobs:
           git push -u origin "$BRANCH"
 
       - name: Open PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const cve = process.env.CVE_UPPER;
