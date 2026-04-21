@@ -52,7 +52,9 @@ manual operator use; do not wire into the scheduled flow.
 | `scripts/pipeline-discover.mjs` | Node script — single source of truth for feed fetch, scoring, dedup, task emission | Invoked by the workflow above |
 | `.github/pipeline/tasks/TASK-*.json` | Pipeline task files — discovered and dispatched individually | Created by discovery, read/written by dispatcher |
 | `.github/workflows/pipeline-dispatcher.yml` | GitHub Actions cron workflow — dispatches tasks to agents | Every 2 hours + manual dispatch |
+| `.github/workflows/pipeline-post-merge-audit.yml` | GitHub Actions push workflow — re-validates changed merged content on `main` and opens/updates an audit issue on failure | Push to `main` + manual dispatch |
 | `scripts/pipeline-run-task.mjs` | Node script — agent-agnostic task runner and validator | Invoked by the dispatcher, executed under the agent's subscription |
+| `scripts/validate-content-corpus.mjs` | Shared content validator for PR gating and post-merge audits | Invoked by workflows, reads newline-delimited changed-file lists |
 
 `.github/pipeline/config.yml` holds queue limits, circuit-breaker thresholds,
 validation gates, and discovery feed config. It is the single tunable knob
@@ -191,9 +193,18 @@ the reason.
 **Shared schema enum authority:** JavaScript-side schema enums (currently
 `SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
 single source of truth for the pipeline scripts. The runner imports it
-directly; the validator workflow loads it via a small shell-out step.
-The ultimate schema authority remains `site/src/content.config.ts` — the
-JS mirror must be updated in the same PR when the Zod schema changes.
+directly; the shared content validator (`scripts/validate-content-corpus.mjs`)
+also imports it and now backs both the PR validator workflow and the
+post-merge `main` audit. The ultimate schema authority remains
+`site/src/content.config.ts` — the JS mirror must be updated in the same
+PR when the Zod schema changes.
+
+**Post-merge integrity backstop:** merged content changes on `main` are
+re-audited via `.github/workflows/pipeline-post-merge-audit.yml`. The
+workflow reuses the same shared validator as the PR gate, runs a site
+build, and opens or updates a standing Issue (`pipeline/audit-failure`)
+instead of attempting auto-repair. When a later run returns green, the
+workflow closes that Issue automatically.
 
 **Backpressure hysteresis:** the dispatcher pauses draft dispatch when
 the editorial queue hits `max_pending` and stays paused until the queue
