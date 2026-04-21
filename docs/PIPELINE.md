@@ -117,6 +117,16 @@ for the pipeline.
      marks `status: locked` with `locked_by` set and `locked_at`
      timestamped (so the stale-lock sweep will recover it if the agent
      dies mid-task).
+   - Dispatcher bookkeeping is published on the long-lived
+     `pipeline/dispatcher` branch, not pushed directly to `main`.
+     The workflow opens or updates a PR labeled `pipeline/dispatcher`
+     carrying task-state-only changes (dispatch notes, stale-lock
+     releases, dependency blocking). Merge the PR to persist dispatcher
+     state; close it to discard the bookkeeping batch and let the next
+     run reset `pipeline/dispatcher` back to `origin/main`.
+   - If a task already has an open `pipeline/ready` Issue, the dispatcher
+     does **not** open a duplicate Issue on the next tick. It records the
+     existing Issue number in task history once and moves on.
 
 7. **Agent execution** (under the agent's own subscription)
    - Agent reads the task brief, drafts the article into
@@ -146,6 +156,7 @@ for the pipeline.
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
