@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -32,429 +34,79 @@ jobs:
       - name: Identify changed articles
         id: changed
         run: |
-          # Emit two lists: all changed files, and which are NEW (not on origin/main).
-          # The stage-aware reviewStatus rule below uses the NEW set to enforce
-          # draft_ai strictly (draft-generation), while edited files may carry any
-          # schema-valid reviewStatus (review / backfill / reprocess work).
-          ALL=$(git diff --name-only origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
+          set -euo pipefail
+
+          ALL=$(git diff --name-only --diff-filter=d origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
           NEW=$(git diff --name-only --diff-filter=A origin/main...HEAD -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -20)
+
+          printf '%s\n' "$ALL" > "$RUNNER_TEMP/pipeline_changed_files.txt"
+          printf '%s\n' "$NEW" > "$RUNNER_TEMP/pipeline_new_files.txt"
 
           {
             echo "files<<EOF"
             echo "$ALL"
             echo "EOF"
-            echo "new_files<<EOF"
-            echo "$NEW"
-            echo "EOF"
             echo "count=$(echo "$ALL" | grep -c '.' || true)"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Load pipeline schema
-        id: schema
-        if: steps.changed.outputs.count != '0'
-        run: |
-          set -euo pipefail
-          # Shell out to the shared schema module. On failure, emit an
-          # empty value — the github-script step falls back to a safe
-          # local default and logs a ::warning:: so the fallback is visible.
-          SCHEMA_JSON="$(node scripts/pipeline-schema.mjs 2>/dev/null || echo '')"
-          {
-            echo "json<<EOF"
-            echo "$SCHEMA_JSON"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Validate frontmatter and structure
+      - name: Run shared content validator
         id: validate
+        if: steps.changed.outputs.count != '0'
+        continue-on-error: true
+        run: |
+          node scripts/validate-content-corpus.mjs \
+            --files-file "$RUNNER_TEMP/pipeline_changed_files.txt" \
+            --new-files-file "$RUNNER_TEMP/pipeline_new_files.txt" \
+            --json-out "$RUNNER_TEMP/pipeline_validation.json"
+
+      - name: Build check
+        id: build
+        if: steps.changed.outputs.count != '0'
+        continue-on-error: true
+        run: |
+          cd site && npm run build
+
+      - name: Publish validation report
         if: steps.changed.outputs.count != '0'
         uses: actions/github-script@v7
         env:
-          PIPELINE_SCHEMA_JSON: ${{ steps.schema.outputs.json }}
+          PIPELINE_VALIDATION_JSON: ${{ runner.temp }}/pipeline_validation.json
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
         with:
           script: |
             const fs = require('fs');
-            const path = require('path');
-            const yaml = require(path.resolve('scripts/node_modules/js-yaml'));
-            const files = `${{ steps.changed.outputs.files }}`.trim().split('\n').filter(Boolean);
-            const newFiles = new Set(
-              `${{ steps.changed.outputs.new_files }}`.trim().split('\n').filter(Boolean)
-            );
-            const results = [];
-            const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+—\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
-            const FALLBACK_SCHEMA = {
-              reviewStatuses: [
-                'draft_ai', 'draft_human', 'under_review',
-                'certified', 'disputed', 'deprecated',
-              ],
-              mitreTactics: [
-                'Reconnaissance', 'Resource Development', 'Initial Access', 'Execution',
-                'Persistence', 'Privilege Escalation', 'Defense Evasion', 'Credential Access',
-                'Discovery', 'Lateral Movement', 'Collection', 'Command and Control',
-                'Exfiltration', 'Impact', 'Impair Process Control',
-              ],
-              generatedByValues: [
-                'ai_ingestion',
-                'dangermouse-bot',
-                'incident-crosslink-gapfill',
-                'kernel-k',
-                'new-threat-intel',
-                'new-threat-intel-automation',
-                'penfold-bot',
-                'zero-day-tracker',
-              ],
-              requiredH2ByType: {
-                incident: [
-                  'Summary',
-                  'Technical Analysis',
-                  'Attack Chain',
-                  'Impact Assessment',
-                  'Attribution',
-                  'Timeline',
-                  'Remediation & Mitigation',
-                  'Sources & References',
-                ],
-                campaign: [
-                  'Executive Summary',
-                  'Technical Analysis',
-                  'Attack Chain',
-                  'MITRE ATT&CK Mapping',
-                  'Timeline',
-                  'Remediation & Mitigation',
-                  'Sources & References',
-                ],
-                'threat-actor': [
-                  'Executive Summary',
-                  'Notable Campaigns',
-                  'Technical Capabilities',
-                  'Attribution',
-                  'MITRE ATT&CK Profile',
-                  'Sources & References',
-                ],
-                'zero-day': [
-                  'Severity Assessment',
-                  'Summary',
-                  'Exploit Chain',
-                  'Detection Guidance',
-                  'Indicators of Compromise',
-                  'Disclosure Timeline',
-                  'Sources & References',
-                ],
-              },
-              canonicalPublisherAliases: {
-                'msrc': 'Microsoft Security Response Center',
-                'microsoft msrc': 'Microsoft Security Response Center',
-                'nvd': 'National Vulnerability Database',
-                'nist nvd': 'National Vulnerability Database',
-                'national vulnerability database': 'National Vulnerability Database',
-                'sec': 'U.S. Securities and Exchange Commission',
-                'securities and exchange commission': 'U.S. Securities and Exchange Commission',
-                'u.s. securities and exchange commission': 'U.S. Securities and Exchange Commission',
-                'uk national cyber security centre': 'UK NCSC',
-                'uk ncsc': 'UK NCSC',
-                'us department of justice': 'U.S. Department of Justice',
-                'u.s. department of justice': 'U.S. Department of Justice',
-              },
-            };
+            const reportPath = process.env.PIPELINE_VALIDATION_JSON;
+            const buildOutcome = process.env.BUILD_OUTCOME || 'skipped';
+            let payload;
 
-            let SCHEMA;
-            try {
-              const raw = process.env.PIPELINE_SCHEMA_JSON || '';
-              const parsed = raw ? JSON.parse(raw) : null;
-              if (parsed && Array.isArray(parsed.reviewStatuses) && parsed.reviewStatuses.length > 0) {
-                SCHEMA = parsed;
-              } else {
-                throw new Error(`unexpected shape: ${raw || '(empty)'}`);
-              }
-            } catch (e) {
-              console.warn(`::warning::Could not load schema data from scripts/pipeline-schema.mjs (${e.message}); falling back to hardcoded default.`);
-              SCHEMA = FALLBACK_SCHEMA;
-            }
-
-            function normalizePublisherAlias(value) {
-              if (typeof value !== 'string') return value;
-              const trimmed = value.trim();
-              return SCHEMA.canonicalPublisherAliases[trimmed.toLowerCase()] || trimmed;
-            }
-
-            function parseFrontmatter(content) {
-              const match = content.match(/^---\n([\s\S]*?)\n---\n?/);
-              if (!match) return { error: 'No YAML frontmatter found', data: null, body: content };
-              try {
-                return {
-                  error: null,
-                  data: yaml.load(match[1]) || {},
-                  body: content.slice(match[0].length),
-                };
-              } catch (error) {
-                return { error: `YAML parse error: ${error.message}`, data: null, body: content.slice(match[0].length) };
-              }
-            }
-
-            function getBodyH2Headings(body) {
-              return [...body.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
-            }
-
-            function getSourcesSection(body) {
-              const headingMatch = body.match(/^## Sources & References\s*$/m);
-              if (!headingMatch) return null;
-              const start = body.indexOf(headingMatch[0]);
-              const afterHeading = body.slice(start + headingMatch[0].length);
-              const nextH2 = afterHeading.search(/^## /m);
-              return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
-            }
-
-            function parseBodySourceEntries(sourcesBody) {
-              const lines = sourcesBody
-                .split('\n')
-                .map(line => line.trim())
-                .filter(line => line.startsWith('- '));
-              const valid = [];
-              const invalid = [];
-              for (const line of lines) {
-                const match = line.match(SOURCE_BODY_LINE_RE);
-                if (!match) {
-                  invalid.push(line);
-                  continue;
-                }
-                const [, linkPublisher, linkTitle, url, trailingPublisher, publicationDate] = match;
-                valid.push({
-                  raw: line,
-                  linkPublisher: linkPublisher.trim(),
-                  linkTitle: linkTitle.trim(),
-                  url: url.trim(),
-                  trailingPublisher: trailingPublisher.trim(),
-                  publicationDate,
-                });
-              }
-              return { lines, valid, invalid };
-            }
-
-            for (const file of files) {
-              if (!fs.existsSync(file)) continue;
-              const content = fs.readFileSync(file, 'utf8');
-              const checks = [];
-              let pass = true;
-
-              const parsed = parseFrontmatter(content);
-              if (parsed.error) {
-                checks.push({ name: 'Frontmatter exists', pass: false, detail: parsed.error });
-                results.push({ file, checks, pass: false });
-                continue;
-              }
-              checks.push({ name: 'Frontmatter exists', pass: true });
-
-              const fm = parsed.data;
-              const body = parsed.body;
-
-              let type = 'unknown';
-              if (file.includes('/incidents/')) type = 'incident';
-              else if (file.includes('/campaigns/')) type = 'campaign';
-              else if (file.includes('/threat-actors/')) type = 'threat-actor';
-              else if (file.includes('/zero-days/')) type = 'zero-day';
-
-              const reviewStatus = typeof fm.reviewStatus === 'string' ? fm.reviewStatus : null;
-              const isNewArticle = newFiles.has(file);
-
-              if (isNewArticle) {
-                checks.push({
-                  name: 'reviewStatus (new article → draft_ai)',
-                  pass: reviewStatus === 'draft_ai',
-                  detail: `${reviewStatus || 'not found'} · new articles must start as draft_ai`,
-                });
-                if (reviewStatus !== 'draft_ai') pass = false;
-              } else {
-                const inEnum = SCHEMA.reviewStatuses.includes(reviewStatus);
-                checks.push({
-                  name: 'reviewStatus (edit → any schema value)',
-                  pass: inEnum,
-                  detail: `${reviewStatus || 'not found'} · must be one of ${SCHEMA.reviewStatuses.join(' | ')}`,
-                });
-                if (!inEnum) pass = false;
-              }
-
-              const requiredFields = {
-                'incident': ['eventId', 'title', 'date', 'attackType', 'severity', 'sector', 'geography'],
-                'campaign': ['title', 'startDate', 'attackType', 'severity', 'sector', 'geography'],
-                'threat-actor': ['name', 'affiliation', 'motivation', 'status'],
-                'zero-day': ['title', 'cve', 'type', 'platform', 'severity', 'status'],
-              };
-
-              const fields = requiredFields[type] || [];
-              for (const field of fields) {
-                const has = fm[field] !== undefined && fm[field] !== null && fm[field] !== '';
-                checks.push({ name: `Field: ${field}`, pass: has });
-                if (!has) pass = false;
-              }
-
-              const generatedBy = typeof fm.generatedBy === 'string' ? fm.generatedBy.trim() : '';
-              checks.push({
-                name: 'generatedBy canonical value',
-                pass: SCHEMA.generatedByValues.includes(generatedBy),
-                detail: generatedBy || 'not found',
-              });
-              if (!SCHEMA.generatedByValues.includes(generatedBy)) pass = false;
-
-              const requiredH2 = SCHEMA.requiredH2ByType[type] || [];
-              const actualH2 = getBodyH2Headings(body);
-              const missingH2 = requiredH2.filter(heading => !actualH2.includes(heading));
-              const unexpectedH2 = actualH2.filter(heading => !requiredH2.includes(heading));
-              const duplicateH2 = actualH2.filter((heading, index) => actualH2.indexOf(heading) !== index);
-              const h2Pass = missingH2.length === 0 && unexpectedH2.length === 0 && duplicateH2.length === 0;
-              checks.push({
-                name: 'Canonical H2 headings',
-                pass: h2Pass,
-                detail: h2Pass
-                  ? `${actualH2.length} canonical headings present`
-                  : [
-                      missingH2.length ? `missing: ${missingH2.join(', ')}` : null,
-                      unexpectedH2.length ? `unexpected: ${unexpectedH2.join(', ')}` : null,
-                      duplicateH2.length ? `duplicate: ${[...new Set(duplicateH2)].join(', ')}` : null,
-                    ].filter(Boolean).join(' · '),
-              });
-              if (!h2Pass) pass = false;
-
-              const lines = content.split('\n');
-              let blankLineIssues = 0;
-              for (let i = 1; i < lines.length - 1; i++) {
-                if (/^#{1,3}\s/.test(lines[i])) {
-                  if (lines[i-1].trim() !== '' && !lines[i-1].startsWith('---')) blankLineIssues++;
-                  if (i + 1 < lines.length && lines[i+1].trim() === '' && i + 2 < lines.length) continue;
-                }
-              }
-              checks.push({
-                name: 'EDIT-RULE-030: blank lines around headings',
-                pass: blankLineIssues === 0,
-                detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
-              });
-              if (blankLineIssues > 0) pass = false;
-
-              const mitreMappings = Array.isArray(fm.mitreMappings) ? fm.mitreMappings : [];
-              checks.push({
-                name: 'MITRE mappings >= 1',
-                pass: mitreMappings.length >= 1,
-                detail: `Found ${mitreMappings.length} in frontmatter`,
-              });
-              if (mitreMappings.length < 1) pass = false;
-
-              const invalidTactics = mitreMappings
-                .map(mapping => typeof mapping?.tactic === 'string' ? mapping.tactic.trim() : null)
-                .filter(Boolean)
-                .filter(tactic => !SCHEMA.mitreTactics.includes(tactic));
-              checks.push({
-                name: 'MITRE tactic vocabulary',
-                pass: invalidTactics.length === 0,
-                detail: invalidTactics.length === 0 ? 'Canonical ATT&CK tactic casing' : invalidTactics.join(', '),
-              });
-              if (invalidTactics.length > 0) pass = false;
-
-              const sources = Array.isArray(fm.sources) ? fm.sources : [];
-              const publisherAliasViolations = [];
-              for (const source of sources) {
-                if (!source?.publisher) continue;
-                const canonical = normalizePublisherAlias(source.publisher);
-                if (canonical !== String(source.publisher).trim()) {
-                  publisherAliasViolations.push(`${source.publisher} -> ${canonical}`);
-                }
-              }
-              checks.push({
-                name: 'Canonical publisher names',
-                pass: publisherAliasViolations.length === 0,
-                detail: publisherAliasViolations.length === 0 ? 'Canonical' : publisherAliasViolations.join(' | '),
-              });
-              if (publisherAliasViolations.length > 0) pass = false;
-
-              const sourcesSection = getSourcesSection(body);
-              if (!sourcesSection) {
-                checks.push({
-                  name: 'Sources & References section',
-                  pass: false,
-                  detail: 'Missing exact "Sources & References" H2 heading',
-                });
-                pass = false;
-              } else {
-                const parsedBodySources = parseBodySourceEntries(sourcesSection);
-                checks.push({
-                  name: 'Sources body line format',
-                  pass: parsedBodySources.invalid.length === 0 && parsedBodySources.lines.length > 0,
-                  detail: parsedBodySources.invalid.length === 0
-                    ? `${parsedBodySources.valid.length} formatted source line(s)`
-                    : parsedBodySources.invalid.slice(0, 2).join(' | '),
-                });
-                if (parsedBodySources.invalid.length > 0 || parsedBodySources.lines.length === 0) pass = false;
-
-                const frontmatterUrls = new Set(sources.map(source => source?.url).filter(Boolean));
-                const bodyUrls = new Set(parsedBodySources.valid.map(source => source.url));
-                const missingBodyUrls = [...frontmatterUrls].filter(url => !bodyUrls.has(url));
-                const orphanBodyUrls = [...bodyUrls].filter(url => !frontmatterUrls.has(url));
-                checks.push({
-                  name: 'Frontmatter/body source URL parity',
-                  pass: missingBodyUrls.length === 0 && orphanBodyUrls.length === 0,
-                  detail: [
-                    missingBodyUrls.length ? `missing in body: ${missingBodyUrls.join(', ')}` : null,
-                    orphanBodyUrls.length ? `missing in frontmatter: ${orphanBodyUrls.join(', ')}` : null,
-                  ].filter(Boolean).join(' · ') || `${frontmatterUrls.size}:${bodyUrls.size} matched`,
-                });
-                if (missingBodyUrls.length > 0 || orphanBodyUrls.length > 0) pass = false;
-
-                const sourceMetadataMismatches = [];
-                for (const bodySource of parsedBodySources.valid) {
-                  const frontmatterSource = sources.find(source => source?.url === bodySource.url);
-                  if (!frontmatterSource) continue;
-                  const canonicalPublisher = normalizePublisherAlias(frontmatterSource.publisher || '');
-                  if (bodySource.linkPublisher !== canonicalPublisher) {
-                    sourceMetadataMismatches.push(`${bodySource.url} link publisher ${bodySource.linkPublisher} != ${canonicalPublisher}`);
-                  }
-                  if (bodySource.trailingPublisher !== canonicalPublisher) {
-                    sourceMetadataMismatches.push(`${bodySource.url} publisher ${bodySource.trailingPublisher} != ${canonicalPublisher}`);
-                  }
-                  if (bodySource.publicationDate !== frontmatterSource.publicationDate) {
-                    sourceMetadataMismatches.push(`${bodySource.url} date ${bodySource.publicationDate} != ${frontmatterSource.publicationDate}`);
-                  }
-                }
-                checks.push({
-                  name: 'Source metadata matches frontmatter',
-                  pass: sourceMetadataMismatches.length === 0,
-                  detail: sourceMetadataMismatches.length === 0 ? 'Publisher/date parity confirmed' : sourceMetadataMismatches.slice(0, 3).join(' | '),
-                });
-                if (sourceMetadataMismatches.length > 0) pass = false;
-              }
-
-              results.push({ file, type, checks, pass });
-            }
-
-            // ── Build PR comment ─────────────────────────────────────────
-            let comment = '## Pipeline Validation Report\n\n';
-            let allPass = true;
-
-            for (const r of results) {
-              const icon = r.pass ? ':white_check_mark:' : ':x:';
-              comment += `### ${icon} \`${r.file}\` (${r.type || 'unknown'})\n\n`;
-              comment += '| Check | Result | Detail |\n|---|---|---|\n';
-              for (const c of r.checks) {
-                const ci = c.pass ? ':heavy_check_mark:' : ':x:';
-                comment += `| ${c.name} | ${ci} | ${c.detail || '-'} |\n`;
-              }
-              comment += '\n';
-              if (!r.pass) allPass = false;
-            }
-
-            if (results.length === 0) {
-              comment += '_No article files detected in this PR._\n';
+            if (fs.existsSync(reportPath)) {
+              payload = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
             } else {
-              comment += allPass
-                ? '\n**All validation checks passed.** :rocket:\n'
-                : '\n**Some checks failed.** Please fix the issues above before merge.\n';
+              payload = {
+                allPass: false,
+                results: [],
+                markdown: '## Pipeline Validation Report\n\n:x: Shared validator did not produce a report. Check workflow logs.\n',
+              };
             }
 
-            // Post or update comment
+            const buildPassed = buildOutcome === 'success';
+            const body = [
+              payload.markdown.trim(),
+              '## Build Check',
+              '',
+              buildPassed ? '**Build passed.** :rocket:' : '**Build failed.** Check workflow logs before merge.',
+              '',
+            ].join('\n');
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            const botComment = comments.find(c =>
-              c.user.type === 'Bot' && c.body.includes('Pipeline Validation Report')
+
+            const botComment = comments.find((comment) =>
+              comment.user.type === 'Bot' && comment.body.includes('Pipeline Validation Report')
             );
 
             if (botComment) {
@@ -462,27 +114,27 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: botComment.id,
-                body: comment,
+                body,
               });
             } else {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: comment,
+                body,
               });
             }
 
-            // ── Add/remove label ─────────────────────────────────────────
-            if (allPass) {
+            const overallPass = payload.allPass && buildPassed;
+
+            if (overallPass) {
               await github.rest.issues.addLabels({
-                owner: context.repo.owner, repo: context.repo.repo,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: context.issue.number,
                 labels: ['pipeline/validated'],
               });
-            }
-
-            if (!allPass) {
+            } else {
               try {
                 await github.rest.issues.removeLabel({
                   owner: context.repo.owner,
@@ -490,12 +142,8 @@ jobs:
                   issue_number: context.issue.number,
                   name: 'pipeline/validated',
                 });
-              } catch (e) {
-                if (e.status !== 404) throw e;
+              } catch (error) {
+                if (error.status !== 404) throw error;
               }
-              core.setFailed('Article validation failed');
+              core.setFailed(buildPassed ? 'Article validation failed' : 'Article validation or build failed');
             }
-
-      - name: Build check
-        run: |
-          cd site && npm run build
