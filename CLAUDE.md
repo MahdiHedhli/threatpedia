@@ -1,151 +1,157 @@
 # Threatpedia — Public Repository Context
 
-**For:** Any AI agent operating in this repository (Claude, Gemini, future agents)
+**For:** Any AI agent operating in this repository (Claude, Gemini, future
+agents)
 
-**Read:** When you cd into this repo as part of a session.
+**Read:** When you `cd` into this repo as part of a session.
 
-**Note:** This file is named `CLAUDE.md` by convention (Claude Code auto-loads it), but its content is generic and applies to any agent. Gemini agents should also read this file when working in this repo.
+**Note:** This file is named `CLAUDE.md` by convention (Claude Code auto-loads
+it), but its content is generic and applies to any agent. Gemini agents should
+also read this file when working in this repo.
+
+**Parity rule:** This file should stay in parity with the sibling `GEMINI.md`
+and the relevant root-level `../AGENTS.md` guidance for shared security,
+workflow, repo-boundary, and merge-discipline rules. Only agent-specific
+startup wording and strictly repo-local guidance should differ. If one of these
+files changes, review the others in the same change.
 
 ---
 
 ## What this repository is
 
-This is the public Threatpedia repository: a Wikipedia-style cybersecurity threat encyclopedia at https://threatpedia.wiki, hosted from this repo via GitHub Pages.
+This is the public Threatpedia production repository for
+https://threatpedia.wiki.
 
-It contains:
+The current repo shape is:
 
-- **`docs/`** — the data standards, schema, contributor docs. Most importantly: `docs/DATA-STANDARDS-v1.0.md`, the locked v1.0 schema that governs every article.
-- **`incidents/`** — incident articles (specific bounded events: a breach, a ransomware attack, a disclosed exploit campaign)
-- **`campaigns/`** — campaign articles (ongoing patterns: an APT group's multi-year activity, a malware family's evolution)
-- **`entities/`** — entity profiles (threat actors, malware families, zero-days as standalone reference)
-- **`assets/`** — shared CSS, JavaScript, fonts, images
-- **`public/`** — static site source files (the HTML/JS that builds threatpedia.wiki)
-- **`scripts/`** — build, validation, and utility scripts
-- **`*.json`** (root) — manifests indexing the corpus contents
+- **`site/`** — the Astro site
+  - `site/src/content/` — Markdown/MDX content collections:
+    `incidents`, `campaigns`, `threat-actors`, `zero-days`
+  - `site/src/content.config.ts` — authoritative content schema and enums
+- **`scripts/`** — pipeline utilities, validators, task helpers
+- **`.github/workflows/`** — deploy, discovery, dispatcher, validation, and
+  post-merge audit workflows
+- **`.github/pipeline/`** — pipeline config, task JSON files, and queue state
+- **`docs/`** — standards and process documentation, including
+  `docs/DATA-STANDARDS-v1.0.md`
 
-It does NOT contain:
-
-- Agent logs, decision records, drafts in progress, internal coordination state — those are in the **private** repo `MahdiHedhli/threatpedia-working`. If you're trying to find ADR 0005 or the working directory protocol, you're in the wrong repo.
-- Credentials, env files, secrets — these never live in any repo. They live in `THREATPEDIA-ROOT/` outside both repo trees.
+It does **not** contain private coordination state, agent logs, or secrets.
+Those belong in `../threatpedia-working/` or at the root workspace level.
 
 ---
 
 ## Critical context
 
-### The schema is locked at v1.0
+### The schema authority is split human + machine
 
-`docs/DATA-STANDARDS-v1.0.md` is the operating schema. It is **locked**. Do not propose modifications without first writing an ADR in the private repo (`threatpedia-working/working/decisions/`) and getting Kernel K's ratification.
+`docs/DATA-STANDARDS-v1.0.md` is the human-facing editorial standard.
+`site/src/content.config.ts` is the machine-enforced schema used by Astro and
+pipeline tooling.
 
-The schema defines:
+If work changes the content contract, keep those authorities aligned and do not
+silently invent new fields or enum values.
 
-- 11 canonical H2 sections that every article uses
-- 7-field article frontmatter
-- Three article types (incident, campaign, entity_profile) as separate Astro content collections
-- 26 data quality rules (RULE-001 through RULE-026)
-- The Admiralty A1-A6 attribution scale and rationale requirements
-- The MITRE ATT&CK technique mapping format
-- The source schema (publisher type, archival, citation format)
+### The site is Astro-based now
 
-If you're working on anything in `incidents/`, `campaigns/`, or `entities/`, you reference the schema constantly. Do not invent fields. Do not skip required fields. Validate against the schema before claiming work is done.
+Do not assume Jekyll, root-level static HTML articles, or “just serve the repo”
+preview behavior. Articles are built from `site/` into `site/dist`.
 
-### The freeze is active
+### The pipeline is live
 
-As of 2026-04-09, a freeze is in effect on the public corpus. This means:
+This repo is no longer in a purely frozen reset state. Current public workflow
+includes:
 
-- **No new articles** are being added via automation. All 14 previously-running Cowork tasks have been stopped per ADR 0005 (Pipeline Reset and Spec-First Approach).
-- **No content modifications** to existing articles without explicit Kernel K approval.
-- **No schema modifications** (the schema was locked at v1.0 immediately before the freeze).
-- **Site infrastructure changes** are allowed if they don't touch the corpus.
+- discovery
+- dispatcher
+- PR validation
+- post-merge audit
+- Astro deploy
 
-The freeze lifts when:
+Always check live workflow and PR state before claiming something is blocked,
+frozen, or complete.
 
-1. The seven operational specs (in `threatpedia-working/working/specs/`) are written and ratified
-2. The data pipeline is rebuilt against the ratified specs
-3. The new pipeline produces a small validated launch corpus
-4. Kernel K decides to launch
+### Merge discipline is strict
 
-Estimated 5-10 weeks. Until then, the public repo is mostly read-only for agents.
-
-### Do not "fix" the existing corpus
-
-The 24 incidents currently in the manifest, the 78 threat actors, the 1006 glossary terms, and the 6 working scrapers are PoC output. They were produced by the autonomous pipeline before v1.0 existed and they have known quality issues. Per ADR 0005, this content is **not being preserved** — it's being walked away from. The launch corpus will be fresh content produced by the rebuilt pipeline.
-
-If you find a quality issue in a current corpus article and your instinct is to fix it, **don't.** The article will be rebuilt or discarded entirely. Spending time on legacy content is wasted effort.
-
-The exception: 36 normalized articles that DM hand-normalized to v1.0 during the overnight sweep (2026-04-09 → 2026-04-10). These live in the private repo at `threatpedia-working/working/editorial-pass/pending/`. They are **test cases for the new pipeline**, not launch material. Don't migrate them to the public repo.
+`main` is protected. Public work lands by PR only. Before merge, actionable
+`gemini-code-assist[bot]` threads must be fixed, replied to, and resolved.
 
 ---
 
 ## Working in this repo
 
-### Reading is fine
+### Normal write scope
 
-Any agent can read any file in this repo at any time. Use it as reference material:
+Scoped PRs are expected for:
 
-- Look up the schema when drafting specs
-- Look up existing article structure when reviewing draft articles
-- Look up the build commands when setting up a runtime
-- Look up the manifest format when planning the new MANIFEST-SPEC.md
+- site infrastructure fixes
+- pipeline and validator improvements
+- approved content task execution
+- schema-aligned docs updates
 
-### Writing is mostly forbidden
+Do not mix unrelated task work into the same branch or PR.
 
-Per the freeze, agents should not commit to this repo without explicit Kernel K approval for the specific commit. Permitted exceptions:
+### Content-task workflow
 
-- **Schema work** — only if you're implementing a ratified ADR that modifies the schema, only on a feature branch, only via PR for Kernel K to merge
-- **Site infrastructure** — fixing build scripts, updating CI, fixing typos in docs/ — only via PR
-- **Migration of approved articles** — when (eventually) `threatpedia-working/working/editorial-pass/approved/` has content ready to ship, the migration PR happens here. Only Kernel K performs this migration; agents prepare the PR but don't merge.
+For pipeline task work, prefer the scripted path:
 
-### Branch protection
+```bash
+cd scripts && npm ci --no-audit --no-fund
+node scripts/pipeline-run-task.mjs --task TASK-2026-XXXX --lock
+node scripts/pipeline-run-task.mjs --task TASK-2026-XXXX --validate
+node scripts/pipeline-run-task.mjs --task TASK-2026-XXXX --open-pr
+```
 
-`main` is protected. All commits must come via PR with Kernel K's review. Bot accounts can push feature branches but cannot merge to main. This is the correct configuration; do not try to work around it.
+`--open-pr` is the finish path. Do not stop at “branch ready.”
 
 ### Build and validation
 
-To verify the site builds (when working on infrastructure):
+Use the real current commands:
 
 ```bash
-npm install        # one-time setup
-npm run validate   # schema validation across the corpus
-npm run build      # build the static site
+cd site && npm ci
+cd site && npm run build
+cd site && npm run preview
+cd scripts && npm ci --no-audit --no-fund
+node scripts/pipeline-schema.mjs
 ```
 
-If you make any change that touches the corpus or the schema, run `npm run validate` and fix any failures before committing. If validation fails on existing content (not your change), file a conflict — don't try to fix it as part of your commit.
+PR validation and post-merge audit reuse the shared validator. Prefer those
+paths over one-off local checks.
 
 ---
 
 ## What to do if you find something wrong
 
-### Schema violation in an existing article
+### Schema or content-shape drift
 
-File a conflict in `threatpedia-working/working/supervisor/conflicts.md` with severity `info` (not `blocker` — these articles are being abandoned anyway). Don't fix it.
+Treat it as a real integrity issue. Fix it in the scoped PR if it is part of
+your change, or surface it clearly if it is unrelated legacy drift.
 
-### Schema violation in a draft article (in private repo)
+### Broken build / broken CI / broken workflow
 
-That's editorial pass work. File or update the relevant task in `threatpedia-working/working/inbox/penfold/`. Penfold handles editorial pass per TASK-2026-0010.
-
-### Broken build / broken CI
-
-This is legitimate infrastructure work. Investigate, fix on a feature branch, open a PR, ping Kernel K for review.
+This is legitimate infrastructure work. Investigate on a feature branch, patch
+the existing workflow or validator path, and open a PR.
 
 ### Credential or secret in this repo
 
-This is a security incident. See `THREATPEDIA-ROOT/SECURITY-PRACTICES.md` § Incident Response. Stop everything, notify Kernel K.
+Treat it as a security incident. Use
+`THREATPEDIA-ROOT/SECURITY-PRACTICES.md`, stop work, and notify Kernel K.
 
-### Suspicious commit, unauthorized push, or anything that looks like compromise
+### Suspicious commit, unauthorized push, or compromise signal
 
-Same as above. Security incident, immediate escalation.
+Treat it as a security incident and escalate immediately.
 
 ---
 
 ## Cross-references
 
-- **Operating manual** (how to be an agent): `THREATPEDIA-ROOT/AGENT-OPERATING-MANUAL.md`
+- **Operating manual**: `THREATPEDIA-ROOT/AGENT-OPERATING-MANUAL.md`
 - **Security practices**: `THREATPEDIA-ROOT/SECURITY-PRACTICES.md`
-- **Private repo / working directory**: `threatpedia-working/working/`
-- **Schema**: `docs/DATA-STANDARDS-v1.0.md` (in this repo)
-- **Pipeline reset decision**: `threatpedia-working/working/decisions/0005-pipeline-reset-and-spec-first.md`
-- **Spec index**: `threatpedia-working/working/specs/README.md`
+- **Private repo / working directory**: `../threatpedia-working/working/`
+- **Schema**: `docs/DATA-STANDARDS-v1.0.md`
+- **Machine schema**: `site/src/content.config.ts`
+- **Pipeline guide**: `docs/PIPELINE.md`
 
 ---
 
-*Public repo context · v1.0 · Maintained by DangerMouse-Bot*
+*Public repo context · Maintained for parity with sibling agent docs*
