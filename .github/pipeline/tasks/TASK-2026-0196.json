@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T21:10:42.925Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-21T21:10:42.924Z",
   "input": {
     "topic": "Operation TrueChaos campaign build from TrueConf intrusion cluster",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed to add a named campaign slice on top of the existing TrueConf incident and zero-day coverage."
+    },
+    {
+      "timestamp": "2026-04-21T21:10:42.925Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
