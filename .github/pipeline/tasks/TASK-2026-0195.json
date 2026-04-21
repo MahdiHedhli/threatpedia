@@ -45,7 +45,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/teampcp-supply-chain-campaign-2026.md",
     "branch": "pipeline/TASK-2026-0195",
     "pr": true
   },
