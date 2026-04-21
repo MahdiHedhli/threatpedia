@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0194",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T18:58:17Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Storm-2372 threat actor profile build from device-code phishing reporting",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2025/02/13/storm-2372-conducts-device-code-phishing-campaign/",
+      "https://www.aha.org/system/files/media/file/2025/02/h-isac-tlp-white-threat-bulletin-storm-2372-conducts-device-code-phishing-campaign--2-14-2025.pdf",
+      "https://www.dc3.mil/Portals/100/Documents/DC3/Missions/DCISE/DCISE%20Cyber%20Threat%20Roundup/2025/february/20250218%20Cyber%20Threat%20Roundup.pdf"
+    ],
+    "candidate_data": {
+      "actor_name": "Storm-2372",
+      "aliases": [],
+      "origin": "Russia-aligned",
+      "affiliation": "Suspected nation-state",
+      "motivation": "Espionage",
+      "active_since": "2024",
+      "status": "active"
+    },
+    "notes": "Create a canonical Storm-2372 profile grounded in Microsoft's device-code phishing reporting and conservative secondary corroboration. Preserve Microsoft's 'Storm' naming semantics: this is an emerging activity cluster label, not a final real-world organization name. Keep attribution at the confidence supported by the reporting and link the profile back to the existing Microsoft 365 device-code phishing campaign coverage."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/storm-2372.md",
+    "branch": "pipeline/TASK-2026-0194",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed for a strongly sourced emerging actor profile tied to the device-code phishing campaign lane."
+    }
+  ]
+}
