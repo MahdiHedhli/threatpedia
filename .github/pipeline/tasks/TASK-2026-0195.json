@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:20:33.118Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -45,7 +45,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/teampcp-supply-chain-campaign-2026.md",
     "branch": "pipeline/TASK-2026-0195",
     "pr": true
   },
@@ -57,6 +57,23 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed to deepen the campaign lane with a multi-victim supply-chain cluster already represented in the corpus."
+    },
+    {
+      "timestamp": "2026-04-21T19:16:18.733Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:20:33.118Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #182"
     }
-  ]
+  ],
+  "pr_number": 182,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/182"
 }
