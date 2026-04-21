@@ -37,8 +37,15 @@ sources:
     publicationDate: "2017-10-03"
     accessDate: "2026-04-19"
     archived: false
+  - url: https://www.cnbc.com/2017/10/03/yahoo-every-single-account-3-billion-people-affected-in-2013-attack.html
+    publisher: CNBC
+    publisherType: media
+    reliability: R2
+    publicationDate: "2017-10-03"
+    accessDate: "2026-04-19"
+    archived: false
   - url: https://www.sec.gov/news/press-release/2018-71
-    publisher: Securities and Exchange Commission (SEC)
+    publisher: U.S. Securities and Exchange Commission
     publisherType: government
     reliability: R1
     publicationDate: "2018-04-24"
@@ -50,7 +57,7 @@ mitreMappings:
     tactic: "Initial Access"
 ---
 
-## Executive Summary
+## Summary
 
 In August 2013, an unknown actor breached Yahoo's internal network and exfiltrated user data for all 3 billion accounts on the platform, making it one of the largest data breaches in history. The breach went undiscovered for over three years and was first disclosed publicly in December 2016 before being revised in 2017 to reflect the full 3 billion-account scope.
 
@@ -76,7 +83,7 @@ The attackers extracted the core user database containing account metadata for 3
 
 The 2013 breach was massive in volume, affecting 3 billion accounts. The breach exposed personal identifiers, password hashes, and security questions for nearly every Yahoo user at the time. It also forced broad password resets and heightened scrutiny of Yahoo's account-security practices.
 
-## Historical Context
+## Attribution
 
 Attribution for the 2013 breach was never publicly assigned, even after Yahoo revised the incident to its full 3 billion-account scope. The event remains an important historical marker because it demonstrated how long a major account-compromise can go undetected when database access is not aggressively monitored.
 
@@ -101,6 +108,6 @@ Following the disclosure, Yahoo forced password resets and invalidated unencrypt
 ## Sources & References
 
 - [Yahoo: Important Security Information for Yahoo Users](https://blog.yahoo.net/post/154309897759/important-security-information-for-yahoo-users) — Yahoo, 2016-12-14
-- [Yahoo/Reuters: Yahoo Says 3 Billion Accounts Were Affected by 2013 Breach](https://www.yahoo.com/news/yahoo-says-3-billion-accounts-205639389.html) — Reuters, 2017-10-03
+- [Reuters: Yahoo Says 3 Billion Accounts Were Affected by 2013 Breach](https://www.yahoo.com/news/yahoo-says-3-billion-accounts-205639389.html) — Reuters, 2017-10-03
 - [CNBC: Yahoo Every Single Account Affected in 2013 Attack](https://www.cnbc.com/2017/10/03/yahoo-every-single-account-3-billion-people-affected-in-2013-attack.html) — CNBC, 2017-10-03
-- [Securities and Exchange Commission: Altaba, Charged With Failing to Disclose Massive Cybersecurity Breach](https://www.sec.gov/news/press-release/2018-71) — SEC, 2018-04-24
+- [U.S. Securities and Exchange Commission: Altaba, Charged With Failing to Disclose Massive Cybersecurity Breach](https://www.sec.gov/news/press-release/2018-71) — U.S. Securities and Exchange Commission, 2018-04-24
