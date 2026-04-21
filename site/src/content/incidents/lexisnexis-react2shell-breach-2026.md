@@ -31,7 +31,7 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "React2Shell vulnerability exploited in the unpatched React frontend application to obtain RCE on the web server."
   - techniqueId: "T1552.005"
-    techniqueName: "Unsecured Credentials: Cloud Instance Metadata API / Secrets Manager"
+    techniqueName: "Unsecured Credentials: Cloud Instance Metadata API"
     tactic: "Credential Access"
     notes: "53 plaintext AWS Secrets Manager secrets extracted following RCE, providing IAM credentials and database connection strings."
   - techniqueId: "T1078.004"
@@ -99,7 +99,7 @@ On or around February 24, 2026, threat actor FulcrumSec exploited a React2Shell 
 
 The attacker exfiltrated approximately 2.04 GB of structured data including 536 Redshift database tables, over 430 VPC database tables, 53 plaintext AWS Secrets Manager secrets, approximately 3.9 million database records, 21,042 customer accounts, and 5,582 attorney survey respondents with IP addresses. FulcrumSec also claimed access to around 400,000 cloud user profiles containing real names, emails, phone numbers, and job functions — including 118 users with .gov email addresses belonging to U.S. government employees, federal judges, Department of Justice attorneys, and SEC staff.
 
-LexisNexis stated that the compromised data primarily consisted of legacy, deprecated information from before 2020, and that no sensitive PII such as Social Security numbers, driver's license numbers, financial data, active passwords, or customer search queries were included. The exposure of government user profiles, AWS infrastructure secrets, and the complete VPC infrastructure map nonetheless presents material follow-on risk to affected organisations and government agencies.
+LexisNexis stated that the compromised data primarily consisted of legacy, deprecated information from before 2020, and that no sensitive PII such as Social Security numbers, driver's license numbers, financial data, active passwords, or customer search queries were included. The exposure of government user profiles, AWS infrastructure secrets, and the complete VPC infrastructure map nonetheless presents material follow-on risk to affected organizations and government agencies.
 
 ## Technical Analysis
 
@@ -149,7 +149,7 @@ FulcrumSec publicly claims access to approximately 400,000 cloud user profiles, 
 
 **Confidence: A4 (uncategorized).** FulcrumSec has publicly claimed the breach and published proof-of-access material consistent with the exfiltrated dataset descriptions reported by The Register, SC Media, and follow-on media. LexisNexis has confirmed the breach but has not publicly attributed it to a named actor. No U.S. government advisory has, at time of writing, named FulcrumSec in connection with this incident.
 
-Public reporting characterises FulcrumSec as a data-theft cluster specialising in cloud-infrastructure compromise and web-application exploitation, with a pattern of publishing claims and partial proof-of-access against named targets. That characterisation derives from FulcrumSec's own public posture and the vendor reporting cited; it is not independently confirmed by a government source.
+Public reporting characterizes FulcrumSec as a data-theft cluster specializing in cloud-infrastructure compromise and web-application exploitation, with a pattern of publishing claims and partial proof-of-access against named targets. That characterization derives from FulcrumSec's own public posture and the vendor reporting cited; it is not independently confirmed by a government source.
 
 ## Timeline
 
@@ -179,13 +179,13 @@ FulcrumSec publishes claims of access to 400,000 cloud user profiles including 1
 
 ### 2026-03 — Containment confirmed
 
-LexisNexis states the React2Shell vulnerability has been patched and AWS infrastructure access has been secured, characterising compromised data as legacy / deprecated pre-2020 information.
+LexisNexis states the React2Shell vulnerability has been patched and AWS infrastructure access has been secured, characterizing compromised data as legacy / deprecated pre-2020 information.
 
 ## Remediation & Mitigation
 
 **Immediate actions (per LexisNexis and public reporting).** React2Shell patched in frontend applications. All compromised AWS credentials and secrets rotated. Temporary restrictions applied to cloud data access. Full AWS configuration audit and forensic investigation initiated.
 
-**Hardening guidance for similarly-exposed organisations.**
+**Hardening guidance for similarly-exposed organizations.**
 
 - Patch discipline for public-facing web frameworks: React2Shell had patches available; lagging rollout was the decisive failure.
 - WAF signatures against the React2Shell exploitation pattern; runtime protections on the frontend process.
