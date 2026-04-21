@@ -7,10 +7,10 @@
   "description": "Terms found in incident reports but potentially missing from the glossary. Queued for weekly glossary-term-updater.",
   "candidates": [
     {
-      "term": "LOLbin",
+      "term": "lolbin",
       "acronym": "Living Off the Land Binary",
       "proposedDefinition": "A legitimate binary, script, or library already present in a target environment that an attacker abuses to execute payloads, evade defenses, escalate privileges, move laterally, or maintain persistence.",
-      "submittedDefinition": "A legitimate tool or file on the targets operating system that gets abused by an attacker to deploy malware, escalate their privileges or retain their access.",
+      "submittedDefinition": "A legitimate tool or file on the target's operating system that gets abused by an attacker to deploy malware, escalate their privileges, or retain their access.",
       "status": "queued",
       "queuedAt": "2026-04-20T00:00:00Z",
       "reviewNotes": "Potential overlap with existing glossary terms 'living off the land' and 'LOLBAS'; editorial review should determine whether LOLbin becomes alias-only, merged, or standalone.",
