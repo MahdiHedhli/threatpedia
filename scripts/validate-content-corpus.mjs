@@ -103,15 +103,20 @@ function parseFrontmatter(content) {
 }
 
 function getBodyH2Headings(body) {
-  return [...body.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
+  const codeBlockRegex = /```[\s\S]*?```/g;
+  const bodyWithoutCodeBlocks = body.replace(codeBlockRegex, '');
+  return [...bodyWithoutCodeBlocks.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
 }
 
 function getSourcesSection(body) {
-  const headingMatch = body.match(/^## Sources & References\s*$/m);
+  const codeBlockRegex = /```[\s\S]*?```/g;
+  const bodyWithoutCodeBlocks = body.replace(codeBlockRegex, (match) => ' '.repeat(match.length));
+  const headingMatch = bodyWithoutCodeBlocks.match(/^## Sources & References\s*$/m);
   if (!headingMatch) return null;
-  const start = body.indexOf(headingMatch[0]);
+  const start = headingMatch.index;
   const afterHeading = body.slice(start + headingMatch[0].length);
-  const nextH2 = afterHeading.search(/^## /m);
+  const afterHeadingNoCode = bodyWithoutCodeBlocks.slice(start + headingMatch[0].length);
+  const nextH2 = afterHeadingNoCode.search(/^## /m);
   return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
 }
 
@@ -247,7 +252,10 @@ function validateFile(file, newFiles) {
 
   const lines = content.split('\n');
   let blankLineIssues = 0;
+  let inCodeBlock = false;
   for (let i = 1; i < lines.length; i += 1) {
+    if (lines[i].startsWith('```')) inCodeBlock = !inCodeBlock;
+    if (inCodeBlock) continue;
     if (lines[i].match(/^#{2,3} /) && lines[i - 1].trim() !== '' && !lines[i - 1].startsWith('---')) {
       blankLineIssues += 1;
     }
@@ -313,19 +321,25 @@ function validateFile(file, newFiles) {
     });
     if (parsedBodySources.invalid.length > 0 || parsedBodySources.lines.length === 0) pass = false;
 
-    const frontmatterUrls = new Set(sources.map((source) => source?.url).filter(Boolean));
-    const bodyUrls = new Set(parsedBodySources.valid.map((source) => source.url));
-    const missingBodyUrls = [...frontmatterUrls].filter((url) => !bodyUrls.has(url));
-    const orphanBodyUrls = [...bodyUrls].filter((url) => !frontmatterUrls.has(url));
+    const frontmatterUrls = sources.map((source) => source?.url).filter(Boolean);
+    const bodyUrls = parsedBodySources.valid.map((source) => source.url);
+    const frontmatterUrlSet = new Set(frontmatterUrls);
+    const bodyUrlSet = new Set(bodyUrls);
+
+    const missingBodyUrls = [...frontmatterUrlSet].filter((url) => !bodyUrlSet.has(url));
+    const orphanBodyUrls = [...bodyUrlSet].filter((url) => !frontmatterUrlSet.has(url));
+    const hasDuplicates = frontmatterUrls.length !== frontmatterUrlSet.size || bodyUrls.length !== bodyUrlSet.size;
+
     checks.push({
       name: 'Frontmatter/body source URL parity',
-      pass: missingBodyUrls.length === 0 && orphanBodyUrls.length === 0,
+      pass: missingBodyUrls.length === 0 && orphanBodyUrls.length === 0 && !hasDuplicates,
       detail: [
         missingBodyUrls.length ? `missing in body: ${missingBodyUrls.join(', ')}` : null,
         orphanBodyUrls.length ? `missing in frontmatter: ${orphanBodyUrls.join(', ')}` : null,
-      ].filter(Boolean).join(' · ') || `${frontmatterUrls.size}:${bodyUrls.size} matched`,
+        hasDuplicates ? 'duplicate URLs detected' : null,
+      ].filter(Boolean).join(' · ') || `${frontmatterUrls.length}:${bodyUrls.length} matched`,
     });
-    if (missingBodyUrls.length > 0 || orphanBodyUrls.length > 0) pass = false;
+    if (missingBodyUrls.length > 0 || orphanBodyUrls.length > 0 || hasDuplicates) pass = false;
 
     const sourceMetadataMismatches = [];
     for (const bodySource of parsedBodySources.valid) {
