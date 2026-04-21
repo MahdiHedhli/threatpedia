@@ -122,8 +122,8 @@ for the pipeline.
    - Agent reads the task brief, drafts the article into
      `site/src/content/<type>/<slug>.md` on the `pipeline/TASK-XXXX`
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
-     iterates until validation passes, opens a real PR, then runs
-     `--open-pr --pr <number>`.
+     iterates until validation passes, then runs `--open-pr` to create
+     (or reuse) the PR and record `status: pr_open` in one step.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
@@ -456,7 +456,13 @@ node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --lock
 node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --validate
 ```
 
-**Record an open PR**:
+**Open or record a PR in one step**:
+
+```
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr
+```
+
+**Record an already-open PR by number**:
 
 ```
 node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr --pr 123

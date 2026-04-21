@@ -13,15 +13,17 @@
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001           # Show task brief
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --lock    # Lock task for execution
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --validate # Validate output
- *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --open-pr --pr 123 # Record validated PR
+ *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --open-pr # Create/reuse PR, record pr_open, and push bookkeeping commit
+ *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --open-pr --pr 123 # Record an already-open PR
  *   node scripts/pipeline-run-task.mjs --list                          # List pending tasks
  *   node scripts/pipeline-run-task.mjs --list --all                    # List all tasks
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
-import { resolve, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdtempSync, rmSync } from 'fs';
+import { resolve, dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
+import { tmpdir } from 'os';
 import yaml from 'js-yaml';
 
 // Shared schema enums (single source of truth — see scripts/pipeline-schema.mjs).
@@ -430,8 +432,9 @@ function loadPullRequest(prNumber) {
   }
 
   try {
-    const raw = execSync(
-      `gh pr view ${prNumber} --json number,state,isDraft,headRefName,baseRefName,url`,
+    const raw = execFileSync(
+      'gh',
+      ['pr', 'view', String(prNumber), '--json', 'number,state,isDraft,headRefName,baseRefName,url'],
       { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
     );
     return JSON.parse(raw);
@@ -439,6 +442,241 @@ function loadPullRequest(prNumber) {
     const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
     console.error(`  ERROR: Could not verify PR #${prNumber} via gh: ${stderr}`);
     console.error('  Open the PR first and ensure GitHub auth is available before recording PR state.');
+    process.exit(1);
+  }
+}
+
+function getCurrentBranchName() {
+  try {
+    return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8', cwd: ROOT }).trim();
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not determine the current git branch: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureTaskBranchCheckedOut(task) {
+  const currentBranch = getCurrentBranchName();
+  if (currentBranch !== task.output.branch) {
+    console.error(`  ERROR: Current branch is ${currentBranch}, expected ${task.output.branch}`);
+    console.error('  Switch to the task branch before running --open-pr.');
+    process.exit(1);
+  }
+}
+
+function normalizeStatusPath(pathValue) {
+  return pathValue.includes(' -> ') ? pathValue.split(' -> ').pop().trim() : pathValue.trim();
+}
+
+function ensureNoUnexpectedTrackedWorktreeDrift(filePath) {
+  const allowedDirtyPaths = new Set([relative(ROOT, filePath)]);
+
+  try {
+    const status = execSync('git status --porcelain --untracked-files=no', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+
+    const unexpected = status
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .filter(line => {
+        const pathValue = normalizeStatusPath(line.slice(3));
+        return !allowedDirtyPaths.has(pathValue);
+      });
+
+    if (unexpected.length > 0) {
+      console.error('  ERROR: Refusing to open or record a PR with unrelated tracked local changes still pending.');
+      console.error(`  Allowed dirty path during --open-pr: ${[...allowedDirtyPaths].join(', ')}`);
+      unexpected.slice(0, 5).forEach(line => console.error(`    ${line}`));
+      if (unexpected.length > 5) {
+        console.error(`    ...and ${unexpected.length - 5} more`);
+      }
+      console.error('  Commit or stash the unrelated tracked changes first so the PR reflects a stable snapshot.');
+      process.exit(1);
+    }
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not inspect git status: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureBranchPushed(task) {
+  let upstream;
+  try {
+    upstream = execSync('git rev-parse --abbrev-ref --symbolic-full-name @{upstream}', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Task branch ${task.output.branch} is not tracking a pushed remote branch yet: ${stderr}`);
+    console.error(`  Push it first with: git push -u origin ${task.output.branch}`);
+    process.exit(1);
+  }
+
+  const expectedUpstream = `origin/${task.output.branch}`;
+  if (upstream !== expectedUpstream) {
+    console.error(`  ERROR: Task branch upstream is ${upstream}, expected ${expectedUpstream}`);
+    console.error(`  Push it first with: git push -u origin ${task.output.branch}`);
+    process.exit(1);
+  }
+
+  try {
+    const [aheadRaw, behindRaw] = execSync('git rev-list --left-right --count HEAD...@{upstream}', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim().split(/\s+/);
+    const ahead = Number(aheadRaw || 0);
+    const behind = Number(behindRaw || 0);
+
+    if (ahead !== 0 || behind !== 0) {
+      console.error(`  ERROR: Branch ${task.output.branch} is not in sync with ${expectedUpstream} (ahead ${ahead}, behind ${behind}).`);
+      console.error('  Push and/or rebase first so the PR is created from the exact validated commit.');
+      process.exit(1);
+    }
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not verify upstream sync for ${task.output.branch}: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureArticleTracked(articleFile) {
+  const relativeFile = relative(ROOT, articleFile);
+  try {
+    execFileSync('git', ['ls-files', '--error-unmatch', relativeFile], {
+      cwd: ROOT,
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
+  } catch {
+    console.error(`  ERROR: Article file ${relativeFile} is not tracked by git yet.`);
+    console.error('  Add, commit, and push the article before opening or recording the PR.');
+    process.exit(1);
+  }
+}
+
+function findExistingOpenPullRequest(task) {
+  try {
+    const raw = execFileSync(
+      'gh',
+      ['pr', 'list', '--head', task.output.branch, '--base', 'main', '--state', 'open', '--json', 'number,state,isDraft,headRefName,baseRefName,url'],
+      { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    const pulls = JSON.parse(raw);
+
+    if (pulls.length > 1) {
+      console.error(`  ERROR: Found ${pulls.length} open PRs for branch ${task.output.branch}.`);
+      console.error('  Resolve the duplicate PR state manually before running --open-pr again.');
+      process.exit(1);
+    }
+
+    return pulls[0] || null;
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not inspect open PRs for ${task.output.branch}: ${stderr}`);
+    console.error('  Ensure GitHub auth is available before opening or recording PR state.');
+    process.exit(1);
+  }
+}
+
+function buildPullRequestTitle(task) {
+  const topic = String(task.input?.topic || task.task_id).replace(/\s+/g, ' ').trim();
+  const prefix = `feat(pipeline): ${task.task_id} — `;
+  const maxTopicLength = 118 - prefix.length;
+  const trimmedTopic = topic.length > maxTopicLength
+    ? `${topic.slice(0, Math.max(maxTopicLength - 3, 0)).trim()}...`
+    : topic;
+  return `${prefix}${trimmedTopic}`;
+}
+
+function buildPullRequestBody(task, articleFile) {
+  const acceptance = getAcceptance(task);
+  const relativeFile = relative(ROOT, articleFile);
+  const topic = String(task.input?.topic || task.task_id).trim();
+
+  return [
+    '## Pipeline Task',
+    '',
+    `- Task: \`${task.task_id}\``,
+    `- Type: \`${task.type}\``,
+    `- Topic: ${topic}`,
+    `- Output file: \`${relativeFile}\``,
+    '',
+    '## Validation',
+    '',
+    `- Local validator: \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate\``,
+    `- Minimum sources: \`${acceptance.min_sources ?? 3}\``,
+    `- Minimum H2 sections: \`${acceptance.min_h2_sections ?? 5}\``,
+    `- Minimum MITRE mappings: \`${acceptance.min_mitre_mappings ?? 1}\``,
+    '',
+    'Opened via the one-step pipeline wrapper so PR creation and task-state recording stay in sync.',
+    '',
+  ].join('\n');
+}
+
+function createPullRequest(task, articleFile) {
+  const tempDir = mkdtempSync(join(tmpdir(), 'threatpedia-pr-'));
+  const bodyFile = join(tempDir, 'body.md');
+  writeFileSync(bodyFile, buildPullRequestBody(task, articleFile));
+
+  try {
+    execFileSync(
+      'gh',
+      ['pr', 'create', '--base', 'main', '--head', task.output.branch, '--title', buildPullRequestTitle(task), '--body-file', bodyFile],
+      { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not create a PR for ${task.output.branch}: ${stderr}`);
+    console.error('  If the PR already exists, rerun --open-pr --pr <number> or fix GitHub auth and try again.');
+    process.exit(1);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+
+  const created = findExistingOpenPullRequest(task);
+  if (!created) {
+    console.error(`  ERROR: gh reported success but no open PR was found for ${task.output.branch}.`);
+    process.exit(1);
+  }
+  return created;
+}
+
+function assertPullRequestMatchesTask(task, pr) {
+  if (pr.state !== 'OPEN') {
+    console.error(`  ERROR: PR #${pr.number} is not open (state: ${pr.state})`);
+    process.exit(1);
+  }
+  if (pr.baseRefName !== 'main') {
+    console.error(`  ERROR: PR #${pr.number} targets ${pr.baseRefName}, expected main`);
+    process.exit(1);
+  }
+  if (pr.headRefName !== task.output.branch) {
+    console.error(`  ERROR: PR #${pr.number} head branch is ${pr.headRefName}, expected ${task.output.branch}`);
+    process.exit(1);
+  }
+}
+
+function commitAndPushTaskState(task, filePath, prNumber) {
+  const relativeTaskPath = relative(ROOT, filePath);
+  try {
+    execFileSync('git', ['add', relativeTaskPath], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync('git', ['commit', '-m', `chore(pipeline): record ${task.task_id} PR #${prNumber}`], {
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    execFileSync('git', ['push'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: PR #${prNumber} exists, but the task-state bookkeeping commit could not be pushed: ${stderr}`);
+    console.error(`  Recover by committing ${relativeTaskPath} and pushing ${task.output.branch}.`);
     process.exit(1);
   }
 }
@@ -551,8 +789,8 @@ ${buildRules(task)}
   4. Validate:         node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate
   5. Fix any issues and re-validate until ALL CHECKS PASSED
   6. Commit & push:    git add . && git commit && git push -u origin ${task.output.branch}
-  7. Open PR:          gh pr create --base main
-  8. Record PR state:  node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr --pr <number>
+  7. Open + record PR: node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr
+     → Creates (or reuses) the PR, records status: pr_open, commits the task JSON, and pushes the bookkeeping update
 
 ══════════════════════════════════════════════════════════════════════════════`);
 }
@@ -871,8 +1109,7 @@ function validateOutput(task, explicitFile) {
     console.log('  ✓ ALL CHECKS PASSED');
     console.log(`\n  Next: git add . && git commit -m "feat: ${task.task_id} — ${task.input.topic.substring(0, 50)}"`);
     console.log(`        git push -u origin ${task.output.branch}`);
-    console.log(`        gh pr create --base main`);
-    console.log(`        node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr --pr <number>`);
+    console.log(`        node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr`);
   } else {
     console.log(`  ✗ ${issues.length} ISSUE(S):`);
     issues.forEach(i => console.log(`    - ${i}`));
@@ -882,13 +1119,24 @@ function validateOutput(task, explicitFile) {
   return issues.length === 0;
 }
 
-// ── Record an open PR for a validated task ──────────────────────────────────
+// ── Open or record a PR for a validated task ────────────────────────────────
 function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComplete) {
   if (usedDeprecatedComplete) {
-    console.log('  NOTE: --complete is deprecated. Use --open-pr --pr <number> going forward.\n');
+    console.log('  NOTE: --complete is deprecated. Use --open-pr going forward.\n');
   }
   if (task.status !== 'locked') {
     console.error(`  Task ${task.task_id} must be locked before recording an open PR (current status: ${task.status})`);
+    process.exit(1);
+  }
+
+  ensureTaskBranchCheckedOut(task);
+  ensureNoUnexpectedTrackedWorktreeDrift(filePath);
+
+  const schema = SCHEMAS[task.type];
+  const articleFile = findArticle(task, schema, explicitFile);
+  if (!articleFile) {
+    console.error(`  No article found in site/src/content/${schema.dir}/`);
+    console.error(`  Write the article first, then run --open-pr`);
     process.exit(1);
   }
 
@@ -898,19 +1146,22 @@ function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComple
     process.exit(1);
   }
 
-  const pr = loadPullRequest(prNumber);
-  if (pr.state !== 'OPEN') {
-    console.error(`  ERROR: PR #${pr.number} is not open (state: ${pr.state})`);
-    process.exit(1);
+  ensureArticleTracked(articleFile);
+  ensureBranchPushed(task);
+
+  let pr = null;
+  if (prNumber) {
+    pr = loadPullRequest(prNumber);
+  } else {
+    pr = findExistingOpenPullRequest(task);
+    if (!pr) {
+      pr = createPullRequest(task, articleFile);
+      console.log(`  Created PR #${pr.number}: ${pr.url}`);
+    } else {
+      console.log(`  Reusing existing PR #${pr.number}: ${pr.url}`);
+    }
   }
-  if (pr.baseRefName !== 'main') {
-    console.error(`  ERROR: PR #${pr.number} targets ${pr.baseRefName}, expected main`);
-    process.exit(1);
-  }
-  if (pr.headRefName !== task.output.branch) {
-    console.error(`  ERROR: PR #${pr.number} head branch is ${pr.headRefName}, expected ${task.output.branch}`);
-    process.exit(1);
-  }
+  assertPullRequestMatchesTask(task, pr);
 
   let agent = 'unknown';
   try { agent = execSync('git config user.name', { encoding: 'utf8' }).trim(); } catch {}
@@ -931,7 +1182,9 @@ function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComple
   });
 
   saveTask(task, filePath);
+  commitAndPushTaskState(task, filePath, pr.number);
   console.log(`  ✓ ${task.task_id} recorded against PR #${pr.number}`);
+  console.log(`  Bookkeeping commit pushed to ${task.output.branch}.`);
   console.log('  Final completion is now driven by the PR merge event, not by local CLI state.');
 }
 
@@ -943,7 +1196,7 @@ console.log(`\n  Threatpedia Pipeline Task Runner v2\n`);
 if (args.action === 'list') {
   listTasks(args.all);
 } else if (!args.taskId) {
-  console.error('  Usage: node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN [--lock|--validate|--open-pr --pr 123]');
+  console.error('  Usage: node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN [--lock|--validate|--open-pr [--pr 123]]');
   console.error('         node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN --validate --file path/to/article.md');
   console.error('         node scripts/pipeline-run-task.mjs --list [--all]');
   process.exit(1);
