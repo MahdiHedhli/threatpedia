@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T19:13:19.628Z",
+  "updated": "2026-04-21T19:16:04.384Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-21T19:13:19.626Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Mr. Raccoon persona profile and UNC6783 linkage assessment",
     "sources": [
@@ -67,6 +67,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:16:04.384Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #181"
     }
-  ]
+  ],
+  "pr_number": 181,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/181"
 }
