@@ -26,6 +26,35 @@ const attributionConfidence = z.enum(['A1', 'A2', 'A3', 'A4', 'A5', 'A6']);
 
 const sourceReliability = z.enum(['R1', 'R2', 'R3', 'R4']);
 
+const generatedBy = z.enum([
+  'ai_ingestion',
+  'dangermouse-bot',
+  'incident-crosslink-gapfill',
+  'kernel-k',
+  'new-threat-intel',
+  'new-threat-intel-automation',
+  'penfold-bot',
+  'zero-day-tracker',
+]);
+
+const mitreTactic = z.enum([
+  'Reconnaissance',
+  'Resource Development',
+  'Initial Access',
+  'Execution',
+  'Persistence',
+  'Privilege Escalation',
+  'Defense Evasion',
+  'Credential Access',
+  'Discovery',
+  'Lateral Movement',
+  'Collection',
+  'Command and Control',
+  'Exfiltration',
+  'Impact',
+  'Impair Process Control',
+]);
+
 /** Source citation schema per SOURCE-SPEC v1.0 */
 const sourceSchema = z.object({
   url: z.string().url(),
@@ -42,7 +71,7 @@ const sourceSchema = z.object({
 const mitreMapping = z.object({
   techniqueId: z.string(),
   techniqueName: z.string(),
-  tactic: z.string().optional(),
+  tactic: mitreTactic.optional(),
   notes: z.string().optional(),
 });
 
@@ -71,7 +100,7 @@ const incidents = defineCollection({
     // Quality
     reviewStatus: reviewStatus,
     confidenceGrade: confidenceGrade.default('C'),
-    generatedBy: z.string(),
+    generatedBy: generatedBy,
     generatedDate: z.coerce.date(),
 
     // References
@@ -114,7 +143,7 @@ const campaigns = defineCollection({
     // Quality
     reviewStatus: reviewStatus,
     confidenceGrade: confidenceGrade.default('C'),
-    generatedBy: z.string(),
+    generatedBy: generatedBy,
     generatedDate: z.coerce.date(),
 
     // References
@@ -189,7 +218,7 @@ const threatActors = defineCollection({
     attributionConfidence: attributionConfidence.optional(),
     attributionRationale: z.string().max(500).optional(),
     reviewStatus: reviewStatus.default('draft_ai'),
-    generatedBy: z.string().default('dangermouse-bot'),
+    generatedBy: generatedBy.default('dangermouse-bot'),
     generatedDate: z.coerce.date().default(new Date()),
 
     tags: z.array(z.string()).default([]),
@@ -223,7 +252,7 @@ const zeroDays = defineCollection({
 
     // Quality
     reviewStatus: reviewStatus.default('draft_ai'),
-    generatedBy: z.string().default('dangermouse-bot'),
+    generatedBy: generatedBy.default('dangermouse-bot'),
     generatedDate: z.coerce.date().default(new Date()),
 
     // Relations
