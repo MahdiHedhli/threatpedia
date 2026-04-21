@@ -8,7 +8,8 @@
  *
  * Current lanes:
  *   - zero-day discovery: CISA KEV + NVD CVSS enrichment
- *   - incident discovery: CISA alerts/advisories RSS + Microsoft Security Blog RSS
+ *   - incident discovery: CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
+ *   - threat-actor promotion: recent incident corpus -> threat-actor tasks
  *
  * Usage:
  *   node scripts/pipeline-discover.mjs
@@ -21,6 +22,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { resolve, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
+import yaml from 'js-yaml';
 import { loadPipelineConfig } from './pipeline-config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -87,8 +89,8 @@ function parseArgs() {
     if (args[i] === '--mode' && args[i + 1]) parsed.mode = args[++i];
   }
 
-  if (!['all', 'zero-day', 'incident'].includes(parsed.mode)) {
-    throw new Error(`Unsupported --mode ${parsed.mode}. Expected all, zero-day, or incident.`);
+  if (!['all', 'zero-day', 'incident', 'threat-actor'].includes(parsed.mode)) {
+    throw new Error(`Unsupported --mode ${parsed.mode}. Expected all, zero-day, incident, or threat-actor.`);
   }
   if (!Number.isFinite(parsed.days) || parsed.days < 1) {
     throw new Error(`Invalid --days value ${parsed.days}. Expected integer >= 1.`);
@@ -189,6 +191,12 @@ function parseTimestamp(value) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
+function buildLookbackCutoff(days) {
+  const value = Number(days);
+  if (!Number.isFinite(value) || value < 1) return null;
+  return new Date(Date.now() - value * 24 * 60 * 60 * 1000);
+}
+
 function isoDateOnly(value) {
   const parsed = parseTimestamp(value);
   if (!parsed) return null;
@@ -197,6 +205,52 @@ function isoDateOnly(value) {
 
 function clampScore(value) {
   return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function parseFrontmatter(content) {
+  const text = String(content || '');
+  if (!text.startsWith('---\n')) return null;
+  const end = text.indexOf('\n---\n', 4);
+  if (end === -1) return null;
+  const frontmatter = text.slice(4, end);
+  const parsed = yaml.load(frontmatter);
+  return parsed && typeof parsed === 'object' ? parsed : null;
+}
+
+function isPromotableActorName(name) {
+  const value = String(name || '').trim();
+  if (!value) return false;
+  if (/^(unknown|none|n\/a)$/i.test(value)) return false;
+  if (/\b(unknown|suspected|vendor error|unattributed|n\/a)\b/i.test(value)) return false;
+  if (/\bunattributed\b/i.test(value)) return false;
+  if (/\bnexus\b/i.test(value)) return false;
+  if (/\bmultiple actors\b/i.test(value)) return false;
+  return true;
+}
+
+function explodeActorIdentities(name) {
+  const withoutParens = String(name || '')
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/[–—]/g, '-')
+    .trim();
+  const parts = withoutParens
+    .split(/\/|;|,|\band\b/gi)
+    .map(part => part.trim())
+    .filter(Boolean)
+    .filter(isPromotableActorName);
+  return [...new Set(parts)];
+}
+
+function selectPromotableActorIdentity(name, knownActors) {
+  const aliases = explodeActorIdentities(name);
+  if (aliases.length === 0) return null;
+  if (aliases.some(alias => knownActors.has(normalizeTitleKey(alias)))) return null;
+
+  const preferred = aliases.find(alias => !/^(APT\d+|UNC\d+|FIN\d+|TA\d+|UAC-\d+)/i.test(alias)) || aliases[0];
+  return {
+    canonicalName: preferred,
+    aliases: aliases.filter(alias => alias !== preferred),
+  };
 }
 
 function buildCorpusIndexes() {
@@ -296,6 +350,10 @@ function buildIncidentCandidateKey(sourceKey, url) {
   return `incident:${sourceKey}:${normalizeUrl(url)}`;
 }
 
+function buildThreatActorCandidateKey(actorName) {
+  return `threat-actor:${slugify(actorName, 80)}`;
+}
+
 function buildRejectionIndexes() {
   const indexes = {
     cves: new Set(),
@@ -341,6 +399,75 @@ function getNextTaskId() {
 
   const next = existing.length > 0 ? existing[0] + 1 : 71;
   return `TASK-2026-${String(next).padStart(4, '0')}`;
+}
+
+function buildThreatActorIdentityIndex() {
+  const keys = new Set();
+
+  const actorDir = resolve(CONTENT_DIR, 'threat-actors');
+  if (existsSync(actorDir)) {
+    for (const file of readdirSync(actorDir).filter(name => name.endsWith('.md'))) {
+      const stem = file.replace(/\.md$/, '');
+      keys.add(normalizeTitleKey(stem.replace(/-/g, ' ')));
+
+      const content = readFileSync(resolve(actorDir, file), 'utf8');
+      const frontmatter = parseFrontmatter(content);
+      if (!frontmatter) continue;
+      if (frontmatter.name) keys.add(normalizeTitleKey(frontmatter.name));
+      for (const alias of ensureArray(frontmatter.aliases)) {
+        keys.add(normalizeTitleKey(alias));
+      }
+    }
+  }
+
+  if (existsSync(TASKS_DIR)) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+      const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
+      if (task.type !== 'threat-actor') continue;
+      const actorName = task.input?.candidate_data?.actor_name;
+      if (actorName) keys.add(normalizeTitleKey(actorName));
+      for (const alias of ensureArray(task.input?.candidate_data?.aliases)) {
+        keys.add(normalizeTitleKey(alias));
+      }
+      const outputStem = extractStemFromPath(task.output?.file_pattern);
+      if (outputStem) keys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
+    }
+  }
+
+  keys.delete('');
+  return keys;
+}
+
+function collectIncidentAttributionSources(lookbackDays) {
+  const incidentDir = resolve(CONTENT_DIR, 'incidents');
+  const records = [];
+  const cutoff = buildLookbackCutoff(lookbackDays);
+  if (!existsSync(incidentDir)) return records;
+
+  for (const file of readdirSync(incidentDir).filter(name => name.endsWith('.md'))) {
+    const fullPath = resolve(incidentDir, file);
+    const content = readFileSync(fullPath, 'utf8');
+    const frontmatter = parseFrontmatter(content);
+    if (!frontmatter) continue;
+
+    const incidentDate = parseTimestamp(frontmatter.date);
+    if (!incidentDate) continue;
+    if (cutoff && incidentDate < cutoff) continue;
+
+    records.push({
+      slug: file.replace(/\.md$/, ''),
+      title: String(frontmatter.title || file.replace(/\.md$/, '')),
+      date: incidentDate.toISOString(),
+      threatActor: String(frontmatter.threatActor || '').trim(),
+      sources: ensureArray(frontmatter.sources),
+      attackType: String(frontmatter.attackType || '').trim(),
+      geography: String(frontmatter.geography || '').trim(),
+      sector: String(frontmatter.sector || '').trim(),
+      tags: ensureArray(frontmatter.tags),
+    });
+  }
+
+  return records;
 }
 
 async function fetchJSON(url, timeout = 30000) {
@@ -730,6 +857,190 @@ function buildIncidentTask(candidate, taskId) {
   };
 }
 
+function scoreThreatActorPromotion(candidate) {
+  let score = 55;
+  if (candidate.incidentCount >= 2) score += 12;
+  if (candidate.uniqueSourceCount >= 5) score += 10;
+  if (candidate.hasGovernmentSource) score += 8;
+  if (candidate.latestDate) {
+    const latest = parseTimestamp(candidate.latestDate);
+    if (latest) {
+      const ageDays = (Date.now() - latest.getTime()) / (1000 * 60 * 60 * 24);
+      if (ageDays <= 365) score += 10;
+      else if (ageDays <= 730) score += 5;
+    }
+  }
+  if (candidate.attackTypes.size >= 2) score += 5;
+  candidate.score = clampScore(score);
+  return candidate;
+}
+
+function buildThreatActorTask(candidate, taskId) {
+  const actorSlug = slugify(candidate.actorName, 80);
+  const nowIso = new Date().toISOString();
+  const notes = [
+    `Promoted from ${candidate.incidentCount} recent incident article${candidate.incidentCount === 1 ? '' : 's'} in the live corpus.`,
+    `Supporting incidents: ${candidate.relatedIncidents.map(item => item.slug).join(', ')}.`,
+    candidate.attackTypes.size > 0 ? `Observed attack types: ${[...candidate.attackTypes].join(', ')}.` : null,
+    candidate.geographies.size > 0 ? `Observed geographies: ${[...candidate.geographies].join(', ')}.` : null,
+    'Keep the profile tightly evidence-bound to the supporting incidents; do not inflate maturity, attribution confidence, or campaign breadth beyond what those incidents support.',
+    `Promotion score: ${candidate.score}/100.`,
+  ].filter(Boolean).join(' ');
+
+  return {
+    task_id: taskId,
+    stage: 'draft',
+    type: 'threat-actor',
+    priority: candidate.score >= 80 ? 'P1' : 'P2',
+    status: 'pending',
+    created: nowIso,
+    updated: nowIso,
+    source: 'promotion',
+    submitted_by: 'pipeline-discovery',
+    locked_by: null,
+    locked_at: null,
+    input: {
+      topic: `${candidate.actorName} threat actor profile build from incident corpus`,
+      sources: candidate.sources.slice(0, 6).map(source => source.url),
+      candidate_data: {
+        actor_name: candidate.actorName,
+        aliases: candidate.aliases,
+        origin: 'Unknown',
+        affiliation: 'Unknown',
+        motivation: 'Unknown',
+        active_since: candidate.firstSeenYear,
+        promotion_key: candidate.candidateKey,
+        supporting_incidents: candidate.relatedIncidents.map(item => item.slug),
+      },
+      notes,
+    },
+    specs: [
+      'DATA-STANDARDS-v1.0.md',
+      'EDITORIAL-WORKFLOW-SPEC.md §14A',
+      'site/src/content.config.ts',
+    ],
+    acceptance_criteria: {
+      frontmatter_valid: true,
+      min_sources: 3,
+      min_h2_sections: 6,
+      min_mitre_mappings: 3,
+      review_status: 'draft_ai',
+      schema_validation: 'pass',
+      astro_build: true,
+    },
+    depends_on: [],
+    preconditions: ['editorial queue depth < 50'],
+    output: {
+      file_pattern: `site/src/content/threat-actors/${actorSlug}.md`,
+      branch: `pipeline/${taskId}`,
+      pr: true,
+    },
+    discovery: {
+      feed: 'promotion:incidents',
+      score: candidate.score,
+      auto_certify: false,
+      discovered_at: nowIso,
+    },
+    history: [
+      {
+        timestamp: nowIso,
+        action: 'created',
+        from: 'none',
+        to: 'pending',
+        agent: 'pipeline-discovery',
+        note: `Auto-promoted threat actor candidate from incident corpus (${candidate.relatedIncidents.length} supporting incident${candidate.relatedIncidents.length === 1 ? '' : 's'})`,
+      },
+    ],
+  };
+}
+
+async function buildThreatActorPromotionCandidates(config, opts, indexes, rejectedCandidateKeys) {
+  const headroom = computeHeadroom(config, indexes, 'threat-actor', opts.limit);
+  if (headroom <= 0) {
+    console.log('  [2/6] Threat-actor headroom exhausted — skipping actor promotion\n');
+    return [];
+  }
+
+  console.log(`  [2/6] Scanning last ${opts.days} day(s) of incident corpus for promotable threat-actor candidates...`);
+  const knownActors = buildThreatActorIdentityIndex();
+  const incidents = collectIncidentAttributionSources(opts.days);
+  const aggregates = new Map();
+
+  for (const incident of incidents) {
+    if (!isPromotableActorName(incident.threatActor)) continue;
+    const identity = selectPromotableActorIdentity(incident.threatActor, knownActors);
+    if (!identity) continue;
+    const actorKey = normalizeTitleKey(identity.canonicalName);
+    const candidateKey = buildThreatActorCandidateKey(identity.canonicalName);
+    if (rejectedCandidateKeys.has(candidateKey)) continue;
+
+    let aggregate = aggregates.get(actorKey);
+    if (!aggregate) {
+      aggregate = {
+        type: 'threat-actor',
+        actorName: identity.canonicalName,
+        aliases: identity.aliases,
+        candidateKey,
+        relatedIncidents: [],
+        attackTypes: new Set(),
+        geographies: new Set(),
+        sectors: new Set(),
+        sourceMap: new Map(),
+        sources: [],
+        uniqueSourceCount: 0,
+        hasGovernmentSource: false,
+        firstSeenYear: null,
+        latestDate: null,
+        incidentCount: 0,
+        score: 0,
+      };
+      aggregates.set(actorKey, aggregate);
+    } else {
+      for (const alias of identity.aliases) {
+        if (!aggregate.aliases.includes(alias)) aggregate.aliases.push(alias);
+      }
+    }
+
+    aggregate.relatedIncidents.push({ slug: incident.slug, title: incident.title });
+    aggregate.incidentCount += 1;
+    if (incident.attackType) aggregate.attackTypes.add(incident.attackType);
+    if (incident.geography) aggregate.geographies.add(incident.geography);
+    if (incident.sector) aggregate.sectors.add(incident.sector);
+
+    const incidentDate = parseTimestamp(incident.date);
+    if (incidentDate) {
+      const year = String(incidentDate.getUTCFullYear());
+      if (!aggregate.firstSeenYear || year < aggregate.firstSeenYear) aggregate.firstSeenYear = year;
+      if (!aggregate.latestDate || incidentDate.toISOString() > aggregate.latestDate) aggregate.latestDate = incidentDate.toISOString();
+    }
+
+    for (const source of incident.sources) {
+      if (!source?.url) continue;
+      const normalizedUrl = normalizeUrl(source.url);
+      if (!aggregate.sourceMap.has(normalizedUrl)) {
+        aggregate.sourceMap.set(normalizedUrl, source);
+      }
+      if (source.publisherType === 'government') aggregate.hasGovernmentSource = true;
+    }
+  }
+
+  const candidates = [...aggregates.values()]
+    .map(candidate => {
+      candidate.sources = [...candidate.sourceMap.values()];
+      candidate.uniqueSourceCount = candidate.sources.length;
+      return scoreThreatActorPromotion(candidate);
+    })
+    .filter(candidate => candidate.uniqueSourceCount >= 3)
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return String(right.latestDate || '').localeCompare(String(left.latestDate || ''));
+    })
+    .slice(0, headroom);
+
+  console.log(`         ${candidates.length} promotable threat-actor candidate${candidates.length === 1 ? '' : 's'}\n`);
+  return candidates;
+}
+
 async function fetchRssItems(sourceKey, sourceConfig) {
   const xml = await fetchText(sourceConfig.url);
   const parsed = RSS_PARSER.parse(xml);
@@ -958,11 +1269,15 @@ function renderCandidateTable(candidates) {
     const type = candidate.type.padEnd(11);
     const ref = candidate.type === 'zero-day'
       ? String(candidate.kev.cveID).padEnd(24)
-      : `${candidate.sourceKey}:${candidate.publishedDate}`.slice(0, 24).padEnd(24);
+      : candidate.type === 'incident'
+        ? `${candidate.sourceKey}:${candidate.publishedDate}`.slice(0, 24).padEnd(24)
+        : `${candidate.firstSeenYear || 'unknown'}:${candidate.relatedIncidents.length} incidents`.slice(0, 24).padEnd(24);
     const auto = candidate.autoCertify ? '  ✓ ' : '    ';
     const topic = candidate.type === 'zero-day'
       ? `${candidate.kev.vendorProject} ${candidate.kev.product} ${candidate.kev.cveID}`
-      : candidate.title;
+      : candidate.type === 'incident'
+        ? candidate.title
+        : `${candidate.actorName} threat actor promotion`;
     console.log(`  ${String(candidate.score).padEnd(6)} ${type} ${ref} ${auto} ${topic}`);
   }
 
@@ -1012,6 +1327,11 @@ async function main() {
     discovered.push(...incidents);
   }
 
+  if (opts.mode === 'all' || opts.mode === 'threat-actor') {
+    const actors = await buildThreatActorPromotionCandidates(config, opts, knownIndexes, rejectionIndexes.candidateKeys);
+    discovered.push(...actors);
+  }
+
   if (discovered.length === 0) {
     console.log('  No new candidates found. Nothing to do.\n');
     return;
@@ -1022,8 +1342,16 @@ async function main() {
     .sort((left, right) => {
       if (right.score !== left.score) return right.score - left.score;
       if (left.type !== right.type) return left.type.localeCompare(right.type);
-      const leftDate = left.type === 'incident' ? left.publishedAt : left.kev.dateAdded;
-      const rightDate = right.type === 'incident' ? right.publishedAt : right.kev.dateAdded;
+      const leftDate = left.type === 'zero-day'
+        ? left.kev.dateAdded
+        : left.type === 'incident'
+          ? left.publishedAt
+          : left.latestDate;
+      const rightDate = right.type === 'zero-day'
+        ? right.kev.dateAdded
+        : right.type === 'incident'
+          ? right.publishedAt
+          : right.latestDate;
       return String(rightDate).localeCompare(String(leftDate));
     })
     .slice(0, Math.min(opts.limit, maxGlobalHeadroom));
@@ -1041,7 +1369,9 @@ async function main() {
     const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
     const task = candidate.type === 'zero-day'
       ? buildZeroDayTask(candidate, taskId, generateExploitId(candidate.kev.cveID, existingExploitIds))
-      : buildIncidentTask(candidate, taskId);
+      : candidate.type === 'incident'
+        ? buildIncidentTask(candidate, taskId)
+        : buildThreatActorTask(candidate, taskId);
 
     if (candidate.type === 'zero-day') {
       existingExploitIds.push(task.input.candidate_data.exploitId);
