@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:43:18.141Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -58,6 +58,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed for the BPO / helpdesk intrusion cluster now tracked as UNC6783."
+    },
+    {
+      "timestamp": "2026-04-21T19:43:18.141Z",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #187"
     }
-  ]
+  ],
+  "_file": "TASK-2026-0193.json"
 }
