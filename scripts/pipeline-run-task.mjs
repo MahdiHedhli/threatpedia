@@ -50,7 +50,7 @@ const EDITORIAL_WORDS = [
   'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
-const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+—\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
+const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -411,12 +411,13 @@ function parseBodySourceEntries(sourcesBody) {
       continue;
     }
 
-    const [, linkPublisher, linkTitle, url, trailingPublisher, publicationDate] = match;
+    const [, linkPublisher, linkTitle, url, separator, trailingPublisher, publicationDate] = match;
     valid.push({
       raw: line,
       linkPublisher: linkPublisher.trim(),
       linkTitle: linkTitle.trim(),
       url: url.trim(),
+      separator,
       trailingPublisher: trailingPublisher.trim(),
       publicationDate,
     });
@@ -444,6 +445,14 @@ function loadPullRequest(prNumber) {
     console.error('  Open the PR first and ensure GitHub auth is available before recording PR state.');
     process.exit(1);
   }
+}
+
+function normalizeSourceDateValue(value) {
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0];
+  }
+
+  return typeof value === 'string' ? value.trim() : String(value || '');
 }
 
 function getCurrentBranchName() {
@@ -1038,14 +1047,18 @@ function validateOutput(task, explicitFile) {
         if (!frontmatterSource) continue;
 
         const canonicalFrontmatterPublisher = normalizePublisherAlias(frontmatterSource.publisher || '');
+        const canonicalFrontmatterDate = normalizeSourceDateValue(frontmatterSource.publicationDate);
         if (bodySource.linkPublisher !== canonicalFrontmatterPublisher) {
           issues.push(`Source ${bodySource.url} link publisher "${bodySource.linkPublisher}" must match canonical frontmatter publisher "${canonicalFrontmatterPublisher}"`);
+        }
+        if (bodySource.separator !== '—') {
+          issues.push(`Source ${bodySource.url} must use an em dash (—) between the link and trailing publisher`);
         }
         if (bodySource.trailingPublisher !== canonicalFrontmatterPublisher) {
           issues.push(`Source ${bodySource.url} trailing publisher "${bodySource.trailingPublisher}" must match canonical frontmatter publisher "${canonicalFrontmatterPublisher}"`);
         }
-        if (bodySource.publicationDate !== frontmatterSource.publicationDate) {
-          issues.push(`Source ${bodySource.url} publication date "${bodySource.publicationDate}" must match frontmatter publicationDate "${frontmatterSource.publicationDate}"`);
+        if (bodySource.publicationDate !== canonicalFrontmatterDate) {
+          issues.push(`Source ${bodySource.url} publication date "${bodySource.publicationDate}" must match frontmatter publicationDate "${canonicalFrontmatterDate}"`);
         }
       }
     }
