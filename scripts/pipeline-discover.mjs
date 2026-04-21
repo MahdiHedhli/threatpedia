@@ -10,6 +10,7 @@
  *   - zero-day discovery: CISA KEV + NVD CVSS enrichment
  *   - incident discovery: CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
  *   - threat-actor promotion: recent incident corpus -> threat-actor tasks
+ *   - campaign promotion: recent incident corpus -> conservative campaign tasks
  *
  * Usage:
  *   node scripts/pipeline-discover.mjs
@@ -77,6 +78,15 @@ const INCIDENT_NEGATIVE_PATTERNS = [
 
 const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
+const CAMPAIGN_THEME_LABELS = {
+  'supply chain': 'Supply Chain',
+  ransomware: 'Ransomware',
+  wiper: 'Wiper',
+  'data breach': 'Data Breach',
+  phishing: 'Phishing',
+  espionage: 'Espionage',
+  extortion: 'Extortion',
+};
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -89,8 +99,8 @@ function parseArgs() {
     if (args[i] === '--mode' && args[i + 1]) parsed.mode = args[++i];
   }
 
-  if (!['all', 'zero-day', 'incident', 'threat-actor'].includes(parsed.mode)) {
-    throw new Error(`Unsupported --mode ${parsed.mode}. Expected all, zero-day, incident, or threat-actor.`);
+  if (!['all', 'zero-day', 'incident', 'threat-actor', 'campaign'].includes(parsed.mode)) {
+    throw new Error(`Unsupported --mode ${parsed.mode}. Expected all, zero-day, incident, threat-actor, or campaign.`);
   }
   if (!Number.isFinite(parsed.days) || parsed.days < 1) {
     throw new Error(`Invalid --days value ${parsed.days}. Expected integer >= 1.`);
@@ -468,6 +478,149 @@ function collectIncidentAttributionSources(lookbackDays) {
   }
 
   return records;
+}
+
+function buildCampaignIdentityIndex() {
+  const names = new Set();
+  const relatedIncidents = new Set();
+  const topicStrings = [];
+
+  const campaignDir = resolve(CONTENT_DIR, 'campaigns');
+  if (existsSync(campaignDir)) {
+    for (const file of readdirSync(campaignDir).filter(name => name.endsWith('.md'))) {
+      const stem = file.replace(/\.md$/, '');
+      names.add(normalizeTitleKey(stem.replace(/-/g, ' ')));
+
+      const content = readFileSync(resolve(campaignDir, file), 'utf8');
+      const frontmatter = parseFrontmatter(content);
+      if (!frontmatter) continue;
+
+      for (const value of [frontmatter.name, frontmatter.title, ...ensureArray(frontmatter.aliases)]) {
+        const key = normalizeTitleKey(value);
+        if (key) names.add(key);
+      }
+      for (const incidentSlug of ensureArray(frontmatter.relatedIncidents)) {
+        const normalized = slugify(incidentSlug, 120);
+        if (normalized) relatedIncidents.add(normalized);
+      }
+    }
+  }
+
+  if (existsSync(TASKS_DIR)) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+      const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
+      if (task.type !== 'campaign') continue;
+
+      for (const value of [
+        task.input?.topic,
+        task.input?.candidate_data?.campaign_name,
+        task.output?.file_pattern ? extractStemFromPath(task.output.file_pattern)?.replace(/-/g, ' ') : '',
+      ]) {
+        const key = normalizeTitleKey(value);
+        if (key) {
+          names.add(key);
+          topicStrings.push(key);
+        }
+      }
+
+      const relatedIncident = task.input?.candidate_data?.related_incident;
+      if (relatedIncident) relatedIncidents.add(slugify(relatedIncident, 120));
+
+      const targetStem = extractStemFromPath(task.input?.target_file);
+      if (targetStem) relatedIncidents.add(slugify(targetStem, 120));
+    }
+  }
+
+  names.delete('');
+  return { names, relatedIncidents, topicStrings };
+}
+
+function findCampaignTheme(incident) {
+  const candidates = [
+    normalizeTitleKey(incident.attackType),
+    ...ensureArray(incident.tags).map(tag => normalizeTitleKey(tag)),
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    for (const [themeKey, label] of Object.entries(CAMPAIGN_THEME_LABELS)) {
+      if (candidate === themeKey || candidate.includes(themeKey)) {
+        return { key: themeKey, label };
+      }
+    }
+  }
+
+  return null;
+}
+
+function titleCaseWords(value) {
+  return String(value || '')
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map(part => part[0].toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
+function extractExplicitCampaignIdentity(incident) {
+  const title = String(incident.title || '').trim();
+  const operationMatch = title.match(/\b(Operation [A-Z][A-Za-z0-9-]+)\b/);
+  if (operationMatch) {
+    return { campaignName: operationMatch[1], explicitNamedOperation: true };
+  }
+
+  const operationTag = ensureArray(incident.tags).find(tag => /^operation-[a-z0-9-]+$/i.test(tag));
+  if (operationTag) {
+    const words = operationTag.replace(/^operation-/i, '').split('-').map(titleCaseWords).join(' ');
+    return { campaignName: `Operation ${words}`, explicitNamedOperation: true };
+  }
+
+  if (/\bcampaign\b/i.test(title)) {
+    return {
+      campaignName: title.replace(/\s+\([^)]*\)\s*$/g, '').trim(),
+      explicitNamedOperation: false,
+    };
+  }
+
+  return null;
+}
+
+function buildCampaignCandidateKey(campaignName) {
+  return `campaign:${slugify(campaignName, 100)}`;
+}
+
+function scoreCampaignPromotion(candidate) {
+  let score = candidate.promotionKind === 'explicit' ? 68 : 60;
+  if (candidate.incidentCount >= 3) score += 12;
+  else if (candidate.incidentCount >= 2) score += 6;
+  if (candidate.uniqueSourceCount >= 5) score += 10;
+  if (candidate.hasGovernmentSource) score += 8;
+  if (candidate.explicitNamedOperation) score += 8;
+  if (candidate.latestDate) {
+    const latest = parseTimestamp(candidate.latestDate);
+    if (latest) {
+      const ageDays = (Date.now() - latest.getTime()) / (1000 * 60 * 60 * 24);
+      if (ageDays <= 365) score += 8;
+    }
+  }
+  candidate.score = clampScore(score);
+  return candidate;
+}
+
+function isKnownCampaignMatch(candidate, knownCampaigns) {
+  const nameKey = normalizeTitleKey(candidate.campaignName);
+  if (nameKey && knownCampaigns.names.has(nameKey)) return true;
+  if (candidate.relatedIncidents.some(item => knownCampaigns.relatedIncidents.has(slugify(item.slug, 120)))) return true;
+
+  const actorKey = normalizeTitleKey(candidate.actorName);
+  const themeKey = normalizeTitleKey(candidate.themeLabel);
+  if (actorKey && themeKey) {
+    return knownCampaigns.topicStrings.some(topic =>
+      topic.includes(actorKey) &&
+      topic.includes(themeKey) &&
+      topic.includes('campaign')
+    );
+  }
+
+  return false;
 }
 
 async function fetchJSON(url, timeout = 30000) {
@@ -1041,6 +1194,202 @@ async function buildThreatActorPromotionCandidates(config, opts, indexes, reject
   return candidates;
 }
 
+function buildCampaignTask(candidate, taskId) {
+  const campaignSlug = slugify(candidate.campaignName, 90);
+  const nowIso = new Date().toISOString();
+  const notes = [
+    candidate.promotionKind === 'explicit'
+      ? `Promoted from a campaign-shaped incident record: ${candidate.relatedIncidents.map(item => item.slug).join(', ')}.`
+      : `Promoted from ${candidate.incidentCount} recent incidents sharing the same actor/theme cluster.`,
+    candidate.actorName ? `Primary actor signal: ${candidate.actorName}.` : null,
+    candidate.themeLabel ? `Theme: ${candidate.themeLabel}.` : null,
+    candidate.relatedIncidents.length > 0 ? `Supporting incidents: ${candidate.relatedIncidents.map(item => item.slug).join(', ')}.` : null,
+    'Keep the campaign article evidence-bound to the supporting incidents. Do not merge actor identity, victim detail, or attribution confidence beyond what the cited reporting supports.',
+    `Promotion score: ${candidate.score}/100.`,
+  ].filter(Boolean).join(' ');
+
+  return {
+    task_id: taskId,
+    stage: 'draft',
+    type: 'campaign',
+    priority: candidate.score >= 85 ? 'P1' : 'P2',
+    status: 'pending',
+    created: nowIso,
+    updated: nowIso,
+    source: 'promotion',
+    submitted_by: 'pipeline-discovery',
+    locked_by: null,
+    locked_at: null,
+    input: {
+      topic: `${candidate.campaignName} campaign build from recent incident cluster`,
+      sources: candidate.sources.slice(0, 6).map(source => source.url),
+      candidate_data: {
+        campaign_name: candidate.campaignName,
+        related_incident: candidate.relatedIncidents[0]?.slug || null,
+        related_incidents: candidate.relatedIncidents.map(item => item.slug),
+        related_actor: candidate.actorName || null,
+        promotion_key: candidate.candidateKey,
+        promotion_kind: candidate.promotionKind,
+        explicit_named_operation: !!candidate.explicitNamedOperation,
+      },
+      notes,
+    },
+    specs: [
+      'DATA-STANDARDS-v1.0.md',
+      'EDITORIAL-WORKFLOW-SPEC.md §14A',
+      'site/src/content.config.ts',
+    ],
+    acceptance_criteria: {
+      frontmatter_valid: true,
+      min_sources: 3,
+      min_h2_sections: 7,
+      min_mitre_mappings: 1,
+      review_status: 'draft_ai',
+      schema_validation: 'pass',
+      astro_build: true,
+    },
+    depends_on: [],
+    preconditions: ['editorial queue depth < 50'],
+    output: {
+      file_pattern: `site/src/content/campaigns/${campaignSlug}.md`,
+      branch: `pipeline/${taskId}`,
+      pr: true,
+    },
+    discovery: {
+      feed: 'promotion:incidents',
+      score: candidate.score,
+      auto_certify: false,
+      discovered_at: nowIso,
+    },
+    history: [
+      {
+        timestamp: nowIso,
+        action: 'created',
+        from: 'none',
+        to: 'pending',
+        agent: 'pipeline-discovery',
+        note: `Auto-promoted campaign candidate from recent incident clustering (${candidate.relatedIncidents.length} supporting incident${candidate.relatedIncidents.length === 1 ? '' : 's'})`,
+      },
+    ],
+  };
+}
+
+async function buildCampaignPromotionCandidates(config, opts, indexes, rejectedCandidateKeys) {
+  const headroom = computeHeadroom(config, indexes, 'campaign', opts.limit);
+  if (headroom <= 0) {
+    console.log('  [2/6] Campaign headroom exhausted — skipping campaign promotion\n');
+    return [];
+  }
+
+  console.log(`  [2/6] Scanning last ${opts.days} day(s) of incident corpus for promotable campaign candidates...`);
+  const incidents = collectIncidentAttributionSources(opts.days);
+  const knownCampaigns = buildCampaignIdentityIndex();
+
+  const explicitCandidates = new Map();
+  const clusteredCandidates = new Map();
+
+  for (const incident of incidents) {
+    const explicit = extractExplicitCampaignIdentity(incident);
+    if (explicit) {
+      const candidateKey = buildCampaignCandidateKey(explicit.campaignName);
+      if (!rejectedCandidateKeys.has(candidateKey)) {
+        let aggregate = explicitCandidates.get(candidateKey);
+        if (!aggregate) {
+          aggregate = {
+            type: 'campaign',
+            promotionKind: 'explicit',
+            campaignName: explicit.campaignName,
+            candidateKey,
+            actorName: isPromotableActorName(incident.threatActor) ? explodeActorIdentities(incident.threatActor)[0] || null : null,
+            themeLabel: findCampaignTheme(incident)?.label || null,
+            relatedIncidents: [],
+            sourceMap: new Map(),
+            sources: [],
+            uniqueSourceCount: 0,
+            hasGovernmentSource: false,
+            incidentCount: 0,
+            latestDate: null,
+            explicitNamedOperation: explicit.explicitNamedOperation,
+            score: 0,
+          };
+          explicitCandidates.set(candidateKey, aggregate);
+        }
+
+        aggregate.relatedIncidents.push({ slug: incident.slug, title: incident.title });
+        aggregate.incidentCount += 1;
+        if (!aggregate.latestDate || incident.date > aggregate.latestDate) aggregate.latestDate = incident.date;
+        for (const source of incident.sources) {
+          if (!source?.url) continue;
+          const normalizedUrl = normalizeUrl(source.url);
+          if (!aggregate.sourceMap.has(normalizedUrl)) aggregate.sourceMap.set(normalizedUrl, source);
+          if (source.publisherType === 'government') aggregate.hasGovernmentSource = true;
+        }
+      }
+    }
+
+    if (!isPromotableActorName(incident.threatActor)) continue;
+    const identities = explodeActorIdentities(incident.threatActor);
+    if (identities.length !== 1) continue;
+
+    const theme = findCampaignTheme(incident);
+    if (!theme) continue;
+
+    const actorName = identities[0];
+    const clusterKey = `campaign-cluster:${slugify(actorName, 60)}:${slugify(theme.key, 40)}`;
+    if (rejectedCandidateKeys.has(clusterKey)) continue;
+
+    let aggregate = clusteredCandidates.get(clusterKey);
+    if (!aggregate) {
+      aggregate = {
+        type: 'campaign',
+        promotionKind: 'cluster',
+        campaignName: `${actorName} ${theme.label} Campaign`,
+        candidateKey: clusterKey,
+        actorName,
+        themeLabel: theme.label,
+        relatedIncidents: [],
+        sourceMap: new Map(),
+        sources: [],
+        uniqueSourceCount: 0,
+        hasGovernmentSource: false,
+        incidentCount: 0,
+        latestDate: null,
+        explicitNamedOperation: false,
+        score: 0,
+      };
+      clusteredCandidates.set(clusterKey, aggregate);
+    }
+
+    aggregate.relatedIncidents.push({ slug: incident.slug, title: incident.title });
+    aggregate.incidentCount += 1;
+    if (!aggregate.latestDate || incident.date > aggregate.latestDate) aggregate.latestDate = incident.date;
+    for (const source of incident.sources) {
+      if (!source?.url) continue;
+      const normalizedUrl = normalizeUrl(source.url);
+      if (!aggregate.sourceMap.has(normalizedUrl)) aggregate.sourceMap.set(normalizedUrl, source);
+      if (source.publisherType === 'government') aggregate.hasGovernmentSource = true;
+    }
+  }
+
+  const candidates = [...explicitCandidates.values(), ...clusteredCandidates.values()]
+    .map(candidate => {
+      candidate.sources = [...candidate.sourceMap.values()];
+      candidate.uniqueSourceCount = candidate.sources.length;
+      return scoreCampaignPromotion(candidate);
+    })
+    .filter(candidate => candidate.uniqueSourceCount >= 3)
+    .filter(candidate => candidate.promotionKind === 'explicit' || candidate.incidentCount >= 3)
+    .filter(candidate => !isKnownCampaignMatch(candidate, knownCampaigns))
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return String(right.latestDate || '').localeCompare(String(left.latestDate || ''));
+    })
+    .slice(0, headroom);
+
+  console.log(`         ${candidates.length} promotable campaign candidate${candidates.length === 1 ? '' : 's'}\n`);
+  return candidates;
+}
+
 async function fetchRssItems(sourceKey, sourceConfig) {
   const xml = await fetchText(sourceConfig.url);
   const parsed = RSS_PARSER.parse(xml);
@@ -1271,13 +1620,17 @@ function renderCandidateTable(candidates) {
       ? String(candidate.kev.cveID).padEnd(24)
       : candidate.type === 'incident'
         ? `${candidate.sourceKey}:${candidate.publishedDate}`.slice(0, 24).padEnd(24)
-        : `${candidate.firstSeenYear || 'unknown'}:${candidate.relatedIncidents.length} incidents`.slice(0, 24).padEnd(24);
+        : candidate.type === 'threat-actor'
+          ? `${candidate.firstSeenYear || 'unknown'}:${candidate.relatedIncidents.length} incidents`.slice(0, 24).padEnd(24)
+          : `${candidate.promotionKind}:${candidate.relatedIncidents.length} incidents`.slice(0, 24).padEnd(24);
     const auto = candidate.autoCertify ? '  ✓ ' : '    ';
     const topic = candidate.type === 'zero-day'
       ? `${candidate.kev.vendorProject} ${candidate.kev.product} ${candidate.kev.cveID}`
       : candidate.type === 'incident'
         ? candidate.title
-        : `${candidate.actorName} threat actor promotion`;
+        : candidate.type === 'threat-actor'
+          ? `${candidate.actorName} threat actor promotion`
+          : `${candidate.campaignName} campaign promotion`;
     console.log(`  ${String(candidate.score).padEnd(6)} ${type} ${ref} ${auto} ${topic}`);
   }
 
@@ -1332,6 +1685,11 @@ async function main() {
     discovered.push(...actors);
   }
 
+  if (opts.mode === 'all' || opts.mode === 'campaign') {
+    const campaigns = await buildCampaignPromotionCandidates(config, opts, knownIndexes, rejectionIndexes.candidateKeys);
+    discovered.push(...campaigns);
+  }
+
   if (discovered.length === 0) {
     console.log('  No new candidates found. Nothing to do.\n');
     return;
@@ -1371,7 +1729,9 @@ async function main() {
       ? buildZeroDayTask(candidate, taskId, generateExploitId(candidate.kev.cveID, existingExploitIds))
       : candidate.type === 'incident'
         ? buildIncidentTask(candidate, taskId)
-        : buildThreatActorTask(candidate, taskId);
+        : candidate.type === 'threat-actor'
+          ? buildThreatActorTask(candidate, taskId)
+          : buildCampaignTask(candidate, taskId);
 
     if (candidate.type === 'zero-day') {
       existingExploitIds.push(task.input.candidate_data.exploitId);

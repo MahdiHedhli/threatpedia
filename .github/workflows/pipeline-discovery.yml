@@ -1,7 +1,7 @@
 name: "Pipeline: Automated Discovery"
 
 # Scans external sources for new CVEs/incidents and promotes recent
-# incident-linked threat actors into pipeline tasks.
+# incident-linked threat actors and campaign clusters into pipeline tasks.
 #
 # This workflow is a thin wrapper around scripts/pipeline-discover.mjs —
 # the single source of truth for discovery logic (feed fetch, scoring,
@@ -34,7 +34,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "Discovery lane (all, zero-day, incident, threat-actor)"
+        description: "Discovery lane (all, zero-day, incident, threat-actor, campaign)"
         required: false
         default: "all"
         type: choice
@@ -43,6 +43,7 @@ on:
           - "zero-day"
           - "incident"
           - "threat-actor"
+          - "campaign"
       days:
         description: "Lookback window in days (default: 14)"
         required: false

@@ -80,6 +80,7 @@ for the pipeline.
      - **zero-day:** CISA KEV + NVD CVSS enrichment
      - **incident:** CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
      - **threat-actor promotion:** scans the recent incident corpus within the requested lookback window, skips actors already present in the corpus or pending threat-actor tasks (including known aliases), and promotes only evidence-backed names into new threat-actor tasks
+     - **campaign promotion:** scans the recent incident corpus for named campaign-shaped incidents and strong same-actor clusters, then promotes only conservative, non-duplicate campaign candidates into new campaign tasks
    - Discovery builds dedup indexes against the live corpus and existing tasks
      using CVEs, source URLs, normalized titles, output slugs, and rejected
      candidate keys; allocates a
