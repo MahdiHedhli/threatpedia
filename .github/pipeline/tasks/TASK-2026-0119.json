@@ -41,15 +41,15 @@
       "note": "Locked for execution"
     },
     {
-      "timestamp": "2026-04-20T11:50:00Z",
+      "timestamp": "2026-04-21T12:00:00Z",
       "action": "completed",
       "from": "locked",
       "to": "complete",
       "agent": "dangermouse-bot",
-      "note": "Reprocess: added 7 sources to frontmatter per current sourceSchema (R1 government + R1/R2 research/vendor). Body H2 vocabulary already canonical (8 sections, exceeds min 5). MITRE mappings already canonical (2 entries). Build passes. Review status left at \"under_review\" per current stage-aware validator policy (edited articles retain schema-valid status); task acceptance_criteria.review_status = \"draft_ai\" is pre-stage-aware policy and no longer enforced for edited articles."
+      "note": "Reprocess: added 8 sources to frontmatter per current sourceSchema (R1 government + R1/R2 research/vendor). Body H2 vocabulary already canonical (8 sections, exceeds min 5). MITRE mappings already canonical (2 entries). Build passes. Review status left at \"under_review\" per current stage-aware validator policy (edited articles retain schema-valid status); task acceptance_criteria.review_status = \"draft_ai\" is pre-stage-aware policy and no longer enforced for edited articles."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-20T11:50:00Z"
+  "updated": "2026-04-21T12:00:00Z"
 }
