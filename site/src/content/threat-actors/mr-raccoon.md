@@ -30,8 +30,8 @@ mitreMappings:
     techniqueName: "Gather Victim Identity Information"
     tactic: "Reconnaissance"
     notes: "Messaging tied to the persona demonstrates pre-collected victim-organisation context (named employees, department structure) used to substantiate extortion claims publicly."
-attributionConfidence: A5
-attributionRationale: "Public extortion persona tied to the Adobe BPO breach disclosures and adjacent 2026 victim claims. Ankura CTIX corroborates the posture; GTIG's UNC6783 reporting notes a possible but unproven overlap. Held as a persona, not merged into UNC6783, pending stronger primary evidence."
+attributionConfidence: A4
+attributionRationale: "Public extortion persona tied to the Adobe BPO breach disclosures and adjacent 2026 victim claims. Ankura CTIX corroborates the posture; GTIG's UNC6783 reporting notes a possible but unproven overlap. Held as a persona, not merged into UNC6783, pending stronger primary evidence. A4 matches confidence in associated Adobe incident page."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-21
@@ -109,7 +109,7 @@ Attribution confidence is **A5 (speculative)**. The persona is real in the sense
 - Whether the persona is operated by the same people responsible for the underlying intrusion(s).
 - Whether Mr. Raccoon is identical with, a front for, a cooperating handle of, or independent from [UNC6783](/threat-actors/unc6783/).
 
-Per the TASK-2026-0192 brief and Threatpedia's attribution hygiene, the two profiles are preserved as distinct until primary evidence justifies a merge. If future disclosure establishes identity between the persona and UNC6783 (or a different underlying cluster), the correct action is a canonicalisation PR that consolidates the two — not a silent edit to either profile.
+Per Threatpedia's attribution hygiene, the two profiles are preserved as distinct until primary evidence justifies a merge. If future disclosure establishes identity between the persona and UNC6783 (or a different underlying cluster), the correct action is a canonicalisation PR that consolidates the two — not a silent edit to either profile.
 
 The Mr. Raccoon persona sits alongside a broader class of extortion-first handles that have surfaced around high-profile corporate data-breach disclosures since 2023. The operational pattern — pre-collected victim context, public extortion messaging, selective document release — is consistent with the extortion economy around BPO-mediated and helpdesk-mediated intrusions tracked by multiple vendors. Whether Mr. Raccoon is a durable identity or an ephemeral handle that will be superseded by the next extortion campaign's branding is itself an open question; that uncertainty is the reason this profile is held at persona level rather than named-actor level.
 
