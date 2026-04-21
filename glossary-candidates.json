@@ -1,5 +1,24 @@
 {
-  "lastUpdated": "2026-04-20T09:00:00Z",
+  "_deprecated": true,
+  "_deprecatedAt": "2026-04-17",
+  "_deprecationNote": "This legacy root index is NO LONGER AUTHORITATIVE and is not deployed to threatpedia.wiki. The live threat-actor registry is built from site/src/content/threat-actors/ (Astro content collection). This file is kept as a historical artifact. Do not write to it; do not read it as truth.",
+  "_authoritativeSource": "site/src/data/glossary-index.json",
+  "lastUpdated": "2026-04-20T00:00:00Z",
   "description": "Terms found in incident reports but potentially missing from the glossary. Queued for weekly glossary-term-updater.",
-  "candidates": []
+  "candidates": [
+    {
+      "term": "lolbin",
+      "acronym": "Living Off the Land Binary",
+      "proposedDefinition": "A legitimate binary, script, or library already present in a target environment that an attacker abuses to execute payloads, evade defenses, escalate privileges, move laterally, or maintain persistence.",
+      "submittedDefinition": "A legitimate tool or file on the target's operating system that gets abused by an attacker to deploy malware, escalate their privileges, or retain their access.",
+      "status": "queued",
+      "queuedAt": "2026-04-20T00:00:00Z",
+      "reviewNotes": "Potential overlap with existing glossary terms 'living off the land' and 'LOLBAS'; editorial review should determine whether LOLbin becomes alias-only, merged, or standalone.",
+      "sources": [
+        "https://lolbas-project.github.io/",
+        "https://www.cisa.gov/resources-tools/resources/identifying-and-mitigating-living-land-techniques",
+        "https://www.microsoft.com/en-us/security/blog/2019/09/26/bring-your-own-lolbin-multi-stage-fileless-nodersok-campaign-delivers-rare-node-js-based-malware/"
+      ]
+    }
+  ]
 }
