@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0195",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T18:58:17Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "TeamPCP / LiteLLM supply-chain campaign canonicalization",
+    "reprocess": true,
+    "target_file": "site/src/content/incidents/teampcp-supply-chain-attack.md",
+    "sources": [
+      "https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/",
+      "https://www.theregister.com/2026/04/02/mercor_supply_chain_attack/",
+      "https://www.bankinfosecurity.com/mercor-breach-linked-to-litellm-supply-chain-attack-a-31340"
+    ],
+    "issues": [
+      "incident_campaign_taxonomy_drift",
+      "multi_victim_cluster_requires_campaign_handling",
+      "actor_campaign_boundary_cleanup"
+    ],
+    "notes": "The live `teampcp-supply-chain-attack.md` article is campaign-shaped coverage living in the incidents collection and overlaps with the canonical `threat-actors/teampcp.md` actor profile plus downstream Mercor, Cisco, and European Commission victim articles. Reprocess it into the campaign collection with campaign semantics, preserve victim-specific detail for incident pages, and keep actor-vs-campaign boundaries explicit so the TeamPCP actor profile remains canonical for the group itself."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "branch": "pipeline/TASK-2026-0195",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed to deepen the campaign lane with a multi-victim supply-chain cluster already represented in the corpus."
+    }
+  ]
+}
