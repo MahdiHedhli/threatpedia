@@ -48,7 +48,7 @@ mitreMappings:
 attributionConfidence: A2
 attributionRationale: "French national Sebastien Raoult was arrested in Morocco in 2022, extradited to the United States, and sentenced to three years in prison in January 2024. Later ShinyHunters-branded leak-site activity has been tied to the European Commission Trivy breach and Hims & Hers reporting."
 reviewStatus: "draft_ai"
-generatedBy: "penfold-bot"
+generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-20
 tags:
   - "cybercriminal"
@@ -121,8 +121,8 @@ T1657 - Financial Theft: Complete monetization strategy revolves around extortio
 
 ## Sources & References
 
-- [US Department of Justice: ShinyHunters Member Sentenced](https://www.justice.gov/usao-wdwa/pr/french-national-sentenced-three-years-prison-computer-hacking-conspiracy)
-- [FBI: Data Breach Alert](https://www.ic3.gov/Media/Y2023/PSA230921.pdf)
-- [Recorded Future: ShinyHunters Profile](https://www.recordedfuture.com/threat-intelligence-101/threat-actors/shinyhunters)
-- [CERT-EU: European Commission Cloud Breach](https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain)
-- [BleepingComputer: Hims & Hers Warns of Data Breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/)
+- [US Department of Justice: ShinyHunters Member Sentenced](https://www.justice.gov/usao-wdwa/pr/french-national-sentenced-three-years-prison-computer-hacking-conspiracy) — US Department of Justice, 2024-01-10
+- [FBI: Data Breach Alert](https://www.ic3.gov/Media/Y2023/PSA230921.pdf) — FBI, 2023-09-21
+- [Recorded Future: ShinyHunters Profile](https://www.recordedfuture.com/threat-intelligence-101/threat-actors/shinyhunters) — Recorded Future, 2023-05-15
+- [CERT-EU: European Commission Cloud Breach](https://cert.europa.eu/blog/european-commission-cloud-breach-trivy-supply-chain) — CERT-EU, 2026-04-02
+- [BleepingComputer: Hims & Hers Warns of Data Breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/) — BleepingComputer, 2026-04-03
