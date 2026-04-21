@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:13:19.628Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-21T19:13:19.626Z",
   "input": {
     "topic": "Mr. Raccoon persona profile and UNC6783 linkage assessment",
     "sources": [
@@ -60,6 +60,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed for persona-vs-actor attribution testing around the Adobe / UNC6783 reporting cluster."
+    },
+    {
+      "timestamp": "2026-04-21T19:13:19.627Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
