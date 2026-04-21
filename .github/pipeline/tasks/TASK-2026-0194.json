@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:40:42.243Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-21T19:40:42.242Z",
   "input": {
     "topic": "Storm-2372 threat actor profile build from device-code phishing reporting",
     "sources": [
@@ -59,6 +59,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed for a strongly sourced emerging actor profile tied to the device-code phishing campaign lane."
+    },
+    {
+      "timestamp": "2026-04-21T19:40:42.243Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
