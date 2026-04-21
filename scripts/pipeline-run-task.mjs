@@ -13,20 +13,29 @@
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001           # Show task brief
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --lock    # Lock task for execution
  *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --validate # Validate output
- *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --complete # Mark complete
+ *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --open-pr # Create/reuse PR, record pr_open, and push bookkeeping commit
+ *   node scripts/pipeline-run-task.mjs --task TASK-2026-0001 --open-pr --pr 123 # Record an already-open PR
  *   node scripts/pipeline-run-task.mjs --list                          # List pending tasks
  *   node scripts/pipeline-run-task.mjs --list --all                    # List all tasks
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
-import { resolve, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdtempSync, rmSync } from 'fs';
+import { resolve, dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
+import { tmpdir } from 'os';
+import yaml from 'js-yaml';
 
 // Shared schema enums (single source of truth — see scripts/pipeline-schema.mjs).
 // The validator workflow loads the same enum via its CLI. Both track the
 // authoritative definitions in site/src/content.config.ts manually.
-import { SCHEMA_REVIEW_STATUSES } from './pipeline-schema.mjs';
+import {
+  SCHEMA_CANONICAL_PUBLISHER_ALIASES,
+  SCHEMA_GENERATED_BY_VALUES,
+  SCHEMA_MITRE_TACTICS,
+  SCHEMA_REQUIRED_H2_BY_TYPE,
+  SCHEMA_REVIEW_STATUSES,
+} from './pipeline-schema.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -41,6 +50,7 @@ const EDITORIAL_WORDS = [
   'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
+const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -265,7 +275,7 @@ function buildRules(task) {
   CRITICAL RULES — the validator enforces ALL of these:
 
   1. reviewStatus: ${formatReviewStatusRule(rsRule)}
-  2. generatedBy MUST be your agent name (not "ai_ingestion" — use YOUR identity)
+  2. generatedBy MUST be one of the canonical agent identities (${SCHEMA_GENERATED_BY_VALUES.join(', ')})
   3. sources MUST be structured objects in frontmatter (not just prose in body)
      — Minimum 3 source objects
      — At least 1 must have publisherType: "government"
@@ -276,27 +286,35 @@ function buildRules(task) {
      ${EDITORIAL_WORDS.join(', ')}
   6. Every H2 heading must have a blank line before it
   7. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
-  8. Sources & References body section must use markdown hyperlinks: [Title](url)
-     — Every frontmatter source URL must appear as a clickable link in the body
+  8. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
+  9. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
      — Format: - [Publisher: Title](https://...) — Publisher, YYYY-MM-DD
+     — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  9. The Astro build must pass: cd site && npm run build`;
+  10. MITRE tactic casing must use the canonical ATT&CK vocabulary
+  11. Canonical publisher aliases must be normalized in frontmatter and body
+  12. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
 function parseArgs() {
   const args = process.argv.slice(2);
-  const parsed = { taskId: null, action: 'brief', all: false, file: null };
+  const parsed = { taskId: null, action: 'brief', all: false, file: null, prNumber: null, usedDeprecatedComplete: false };
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--task' && args[i + 1]) parsed.taskId = args[++i];
     if (args[i] === '--lock') parsed.action = 'lock';
     if (args[i] === '--validate') parsed.action = 'validate';
-    if (args[i] === '--complete') parsed.action = 'complete';
+    if (args[i] === '--open-pr') parsed.action = 'open-pr';
+    if (args[i] === '--complete') {
+      parsed.action = 'open-pr';
+      parsed.usedDeprecatedComplete = true;
+    }
     if (args[i] === '--list') parsed.action = 'list';
     if (args[i] === '--all') parsed.all = true;
     if (args[i] === '--file' && args[i + 1]) parsed.file = args[++i];
+    if (args[i] === '--pr' && args[i + 1]) parsed.prNumber = Number(args[++i]);
   }
 
   return parsed;
@@ -327,6 +345,349 @@ function getAcceptance(task) {
     frontmatter_valid: true,
     astro_build: true,
   };
+}
+
+function parseFrontmatter(content) {
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (!fmMatch) {
+    return { data: null, raw: null, body: content, error: 'Missing frontmatter (must start with ---)' };
+  }
+
+  try {
+    return {
+      data: yaml.load(fmMatch[1]) || {},
+      raw: fmMatch[1],
+      body: content.slice(fmMatch[0].length),
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      raw: fmMatch[1],
+      body: content.slice(fmMatch[0].length),
+      error: `Frontmatter YAML invalid: ${error.message}`,
+    };
+  }
+}
+
+function normalizePublisherAlias(value) {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  return SCHEMA_CANONICAL_PUBLISHER_ALIASES[trimmed.toLowerCase()] || trimmed;
+}
+
+function findCanonicalCaseMatch(value, allowedValues) {
+  if (typeof value !== 'string') return null;
+  const lower = value.trim().toLowerCase();
+  return allowedValues.find(entry => entry.toLowerCase() === lower) || null;
+}
+
+function getBodyH2Headings(body) {
+  return [...body.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
+}
+
+function getSourcesSection(body) {
+  const headingMatch = body.match(/^## Sources & References\s*$/m);
+  if (!headingMatch) return null;
+  const start = body.indexOf(headingMatch[0]);
+  const afterHeading = body.slice(start + headingMatch[0].length);
+  const nextH2 = afterHeading.search(/^## /m);
+  return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
+}
+
+function parseBodySourceEntries(sourcesBody) {
+  const lines = sourcesBody
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.startsWith('- '));
+
+  const valid = [];
+  const invalid = [];
+
+  for (const line of lines) {
+    const match = line.match(SOURCE_BODY_LINE_RE);
+    if (!match) {
+      invalid.push(line);
+      continue;
+    }
+
+    const [, linkPublisher, linkTitle, url, separator, trailingPublisher, publicationDate] = match;
+    valid.push({
+      raw: line,
+      linkPublisher: linkPublisher.trim(),
+      linkTitle: linkTitle.trim(),
+      url: url.trim(),
+      separator,
+      trailingPublisher: trailingPublisher.trim(),
+      publicationDate,
+    });
+  }
+
+  return { lines, valid, invalid };
+}
+
+function loadPullRequest(prNumber) {
+  if (!Number.isInteger(prNumber) || prNumber <= 0) {
+    console.error('  ERROR: --pr must be a positive integer PR number');
+    process.exit(1);
+  }
+
+  try {
+    const raw = execFileSync(
+      'gh',
+      ['pr', 'view', String(prNumber), '--json', 'number,state,isDraft,headRefName,baseRefName,url'],
+      { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    return JSON.parse(raw);
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not verify PR #${prNumber} via gh: ${stderr}`);
+    console.error('  Open the PR first and ensure GitHub auth is available before recording PR state.');
+    process.exit(1);
+  }
+}
+
+function normalizeSourceDateValue(value) {
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0];
+  }
+
+  return typeof value === 'string' ? value.trim() : String(value || '');
+}
+
+function getCurrentBranchName() {
+  try {
+    return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8', cwd: ROOT }).trim();
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not determine the current git branch: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureTaskBranchCheckedOut(task) {
+  const currentBranch = getCurrentBranchName();
+  if (currentBranch !== task.output.branch) {
+    console.error(`  ERROR: Current branch is ${currentBranch}, expected ${task.output.branch}`);
+    console.error('  Switch to the task branch before running --open-pr.');
+    process.exit(1);
+  }
+}
+
+function normalizeStatusPath(pathValue) {
+  return pathValue.includes(' -> ') ? pathValue.split(' -> ').pop().trim() : pathValue.trim();
+}
+
+function ensureNoUnexpectedTrackedWorktreeDrift(filePath) {
+  const allowedDirtyPaths = new Set([relative(ROOT, filePath)]);
+
+  try {
+    const status = execSync('git status --porcelain --untracked-files=no', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+
+    const unexpected = status
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .filter(line => {
+        const pathValue = normalizeStatusPath(line.slice(3));
+        return !allowedDirtyPaths.has(pathValue);
+      });
+
+    if (unexpected.length > 0) {
+      console.error('  ERROR: Refusing to open or record a PR with unrelated tracked local changes still pending.');
+      console.error(`  Allowed dirty path during --open-pr: ${[...allowedDirtyPaths].join(', ')}`);
+      unexpected.slice(0, 5).forEach(line => console.error(`    ${line}`));
+      if (unexpected.length > 5) {
+        console.error(`    ...and ${unexpected.length - 5} more`);
+      }
+      console.error('  Commit or stash the unrelated tracked changes first so the PR reflects a stable snapshot.');
+      process.exit(1);
+    }
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not inspect git status: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureBranchPushed(task) {
+  let upstream;
+  try {
+    upstream = execSync('git rev-parse --abbrev-ref --symbolic-full-name @{upstream}', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Task branch ${task.output.branch} is not tracking a pushed remote branch yet: ${stderr}`);
+    console.error(`  Push it first with: git push -u origin ${task.output.branch}`);
+    process.exit(1);
+  }
+
+  const expectedUpstream = `origin/${task.output.branch}`;
+  if (upstream !== expectedUpstream) {
+    console.error(`  ERROR: Task branch upstream is ${upstream}, expected ${expectedUpstream}`);
+    console.error(`  Push it first with: git push -u origin ${task.output.branch}`);
+    process.exit(1);
+  }
+
+  try {
+    const [aheadRaw, behindRaw] = execSync('git rev-list --left-right --count HEAD...@{upstream}', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim().split(/\s+/);
+    const ahead = Number(aheadRaw || 0);
+    const behind = Number(behindRaw || 0);
+
+    if (ahead !== 0 || behind !== 0) {
+      console.error(`  ERROR: Branch ${task.output.branch} is not in sync with ${expectedUpstream} (ahead ${ahead}, behind ${behind}).`);
+      console.error('  Push and/or rebase first so the PR is created from the exact validated commit.');
+      process.exit(1);
+    }
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not verify upstream sync for ${task.output.branch}: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureArticleTracked(articleFile) {
+  const relativeFile = relative(ROOT, articleFile);
+  try {
+    execFileSync('git', ['ls-files', '--error-unmatch', relativeFile], {
+      cwd: ROOT,
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
+  } catch {
+    console.error(`  ERROR: Article file ${relativeFile} is not tracked by git yet.`);
+    console.error('  Add, commit, and push the article before opening or recording the PR.');
+    process.exit(1);
+  }
+}
+
+function findExistingOpenPullRequest(task) {
+  try {
+    const raw = execFileSync(
+      'gh',
+      ['pr', 'list', '--head', task.output.branch, '--base', 'main', '--state', 'open', '--json', 'number,state,isDraft,headRefName,baseRefName,url'],
+      { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    const pulls = JSON.parse(raw);
+
+    if (pulls.length > 1) {
+      console.error(`  ERROR: Found ${pulls.length} open PRs for branch ${task.output.branch}.`);
+      console.error('  Resolve the duplicate PR state manually before running --open-pr again.');
+      process.exit(1);
+    }
+
+    return pulls[0] || null;
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not inspect open PRs for ${task.output.branch}: ${stderr}`);
+    console.error('  Ensure GitHub auth is available before opening or recording PR state.');
+    process.exit(1);
+  }
+}
+
+function buildPullRequestTitle(task) {
+  const topic = String(task.input?.topic || task.task_id).replace(/\s+/g, ' ').trim();
+  const prefix = `feat(pipeline): ${task.task_id} — `;
+  const maxTopicLength = 118 - prefix.length;
+  const trimmedTopic = topic.length > maxTopicLength
+    ? `${topic.slice(0, Math.max(maxTopicLength - 3, 0)).trim()}...`
+    : topic;
+  return `${prefix}${trimmedTopic}`;
+}
+
+function buildPullRequestBody(task, articleFile) {
+  const acceptance = getAcceptance(task);
+  const relativeFile = relative(ROOT, articleFile);
+  const topic = String(task.input?.topic || task.task_id).trim();
+
+  return [
+    '## Pipeline Task',
+    '',
+    `- Task: \`${task.task_id}\``,
+    `- Type: \`${task.type}\``,
+    `- Topic: ${topic}`,
+    `- Output file: \`${relativeFile}\``,
+    '',
+    '## Validation',
+    '',
+    `- Local validator: \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate\``,
+    `- Minimum sources: \`${acceptance.min_sources ?? 3}\``,
+    `- Minimum H2 sections: \`${acceptance.min_h2_sections ?? 5}\``,
+    `- Minimum MITRE mappings: \`${acceptance.min_mitre_mappings ?? 1}\``,
+    '',
+    'Opened via the one-step pipeline wrapper so PR creation and task-state recording stay in sync.',
+    '',
+  ].join('\n');
+}
+
+function createPullRequest(task, articleFile) {
+  const tempDir = mkdtempSync(join(tmpdir(), 'threatpedia-pr-'));
+  const bodyFile = join(tempDir, 'body.md');
+  writeFileSync(bodyFile, buildPullRequestBody(task, articleFile));
+
+  try {
+    execFileSync(
+      'gh',
+      ['pr', 'create', '--base', 'main', '--head', task.output.branch, '--title', buildPullRequestTitle(task), '--body-file', bodyFile],
+      { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Could not create a PR for ${task.output.branch}: ${stderr}`);
+    console.error('  If the PR already exists, rerun --open-pr --pr <number> or fix GitHub auth and try again.');
+    process.exit(1);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+
+  const created = findExistingOpenPullRequest(task);
+  if (!created) {
+    console.error(`  ERROR: gh reported success but no open PR was found for ${task.output.branch}.`);
+    process.exit(1);
+  }
+  return created;
+}
+
+function assertPullRequestMatchesTask(task, pr) {
+  if (pr.state !== 'OPEN') {
+    console.error(`  ERROR: PR #${pr.number} is not open (state: ${pr.state})`);
+    process.exit(1);
+  }
+  if (pr.baseRefName !== 'main') {
+    console.error(`  ERROR: PR #${pr.number} targets ${pr.baseRefName}, expected main`);
+    process.exit(1);
+  }
+  if (pr.headRefName !== task.output.branch) {
+    console.error(`  ERROR: PR #${pr.number} head branch is ${pr.headRefName}, expected ${task.output.branch}`);
+    process.exit(1);
+  }
+}
+
+function commitAndPushTaskState(task, filePath, prNumber) {
+  const relativeTaskPath = relative(ROOT, filePath);
+  try {
+    execFileSync('git', ['add', relativeTaskPath], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync('git', ['commit', '-m', `chore(pipeline): record ${task.task_id} PR #${prNumber}`], {
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    execFileSync('git', ['push'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: PR #${prNumber} exists, but the task-state bookkeeping commit could not be pushed: ${stderr}`);
+    console.error(`  Recover by committing ${relativeTaskPath} and pushing ${task.output.branch}.`);
+    process.exit(1);
+  }
 }
 
 // ── List tasks ──────────────────────────────────────────────────────────────
@@ -437,8 +798,8 @@ ${buildRules(task)}
   4. Validate:         node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate
   5. Fix any issues and re-validate until ALL CHECKS PASSED
   6. Commit & push:    git add . && git commit && git push -u origin ${task.output.branch}
-  7. Open PR:          gh pr create --base main
-  8. Mark complete:    node scripts/pipeline-run-task.mjs --task ${task.task_id} --complete
+  7. Open + record PR: node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr
+     → Creates (or reuses) the PR, records status: pr_open, commits the task JSON, and pushes the bookkeeping update
 
 ══════════════════════════════════════════════════════════════════════════════`);
 }
@@ -509,36 +870,6 @@ function findArticle(task, schema, explicitFile) {
   return null;
 }
 
-// ── Parse YAML frontmatter (lightweight, no deps) ───────────────────────────
-function parseFrontmatterSources(fm) {
-  const sources = [];
-  const sourceBlocks = fm.split(/^  - url:/m);
-
-  for (let i = 1; i < sourceBlocks.length; i++) {
-    const block = '  - url:' + sourceBlocks[i];
-    const source = {};
-
-    const urlMatch = block.match(/url:\s*["']?([^\s"'\n]+)/);
-    if (urlMatch) source.url = urlMatch[1];
-
-    const publisherMatch = block.match(/publisher:\s*["']?([^\n"']+)/);
-    if (publisherMatch) source.publisher = publisherMatch[1].trim().replace(/["']$/, '');
-
-    const typeMatch = block.match(/publisherType:\s*["']?(\w+)/);
-    if (typeMatch) source.publisherType = typeMatch[1];
-
-    const reliabilityMatch = block.match(/reliability:\s*["']?(R[1-4])/);
-    if (reliabilityMatch) source.reliability = reliabilityMatch[1];
-
-    const pubDateMatch = block.match(/publicationDate:\s*["']?(\d{4}-\d{2}-\d{2})/);
-    if (pubDateMatch) source.publicationDate = pubDateMatch[1];
-
-    sources.push(source);
-  }
-
-  return sources;
-}
-
 // ── Validate output ─────────────────────────────────────────────────────────
 function validateOutput(task, explicitFile) {
   const schema = SCHEMAS[task.type];
@@ -558,166 +889,208 @@ function validateOutput(task, explicitFile) {
 
   console.log(`  Validating: ${newFile}\n`);
   const content = readFileSync(newFile, 'utf8');
+  const parsed = parseFrontmatter(content);
 
   // ── 1. Frontmatter structure ──────────────────────────────────────────────
-  if (!content.startsWith('---')) {
-    issues.push('Missing frontmatter (must start with ---)');
+  if (parsed.error) {
+    issues.push(parsed.error);
   } else {
-    const fmEnd = content.indexOf('---', 3);
-    if (fmEnd === -1) {
-      issues.push('Frontmatter not closed (missing closing ---)');
+    const frontmatter = parsed.data;
+    const body = parsed.body;
+
+    // ── 2. Required fields ────────────────────────────────────────────────
+    for (const field of (schema.requiredFields || [])) {
+      if (frontmatter[field] === undefined || frontmatter[field] === null || frontmatter[field] === '') {
+        issues.push(`Missing required field: ${field}`);
+      }
+    }
+
+    // ── 3. reviewStatus (stage-aware, per task.acceptance.review_status) ──
+    const actualReviewStatus = typeof frontmatter.reviewStatus === 'string' ? frontmatter.reviewStatus : null;
+    const rsRule = acceptance.review_status;
+    const rsCheck = matchesReviewStatus(actualReviewStatus, rsRule);
+    if (!rsCheck.pass) {
+      issues.push(
+        `reviewStatus ${formatReviewStatusRule(rsRule)}; got "${actualReviewStatus ?? '(not found)'}"`
+      );
+    }
+
+    // ── 4. generatedBy vocabulary ─────────────────────────────────────────
+    const generatedBy = typeof frontmatter.generatedBy === 'string' ? frontmatter.generatedBy.trim() : null;
+    if (!generatedBy) {
+      issues.push('Missing required field: generatedBy');
+    } else if (!SCHEMA_GENERATED_BY_VALUES.includes(generatedBy)) {
+      const canonical = findCanonicalCaseMatch(generatedBy, SCHEMA_GENERATED_BY_VALUES);
+      issues.push(
+        canonical
+          ? `generatedBy "${generatedBy}" should use canonical value "${canonical}"`
+          : `generatedBy "${generatedBy}" is not in the allowed set (${SCHEMA_GENERATED_BY_VALUES.join(', ')})`
+      );
+    }
+
+    // ── 5. ID format (if applicable) ──────────────────────────────────────
+    if (schema.idField && schema.idPattern && frontmatter[schema.idField]) {
+      const identifier = String(frontmatter[schema.idField]).trim();
+      if (!schema.idPattern.test(identifier)) {
+        issues.push(`${schema.idField} format invalid: "${identifier}" — expected pattern: ${schema.idPattern}`);
+      }
+    }
+
+    // ── 6. Structured sources in frontmatter ──────────────────────────────
+    const minSources = acceptance.min_sources ?? 3;
+    const sources = Array.isArray(frontmatter.sources) ? frontmatter.sources : [];
+    const sourceCount = sources.length;
+
+    if (sourceCount < minSources) {
+      issues.push(`Only ${sourceCount} structured source(s) in frontmatter (need ${minSources}+). Sources must be YAML objects with url, publisher, publisherType, reliability — not just prose in the body.`);
+    }
+
+    if (sourceCount > 0 && !sources.some(source => source?.publisherType === 'government')) {
+      issues.push('No government source found. At least 1 source must have publisherType: "government" (CISA, FBI, DOJ, etc.)');
+    }
+
+    for (let i = 0; i < sources.length; i++) {
+      const source = sources[i] || {};
+      const canonicalPublisher = normalizePublisherAlias(source.publisher || '');
+      if (!source.url) issues.push(`Source ${i + 1}: missing url`);
+      if (!source.publisher) issues.push(`Source ${i + 1}: missing publisher`);
+      if (source.publisher && canonicalPublisher !== String(source.publisher).trim()) {
+        issues.push(`Source ${i + 1} publisher "${source.publisher}" should use canonical "${canonicalPublisher}"`);
+      }
+      if (!source.publisherType) issues.push(`Source ${i + 1}: missing publisherType`);
+      if (!source.reliability) issues.push(`Source ${i + 1}: missing reliability`);
+      if (!source.publicationDate) issues.push(`Source ${i + 1} (${source.publisher || 'unknown'}): missing publicationDate`);
+    }
+
+    // ── 7. MITRE mappings in frontmatter ──────────────────────────────────
+    const minMitre = acceptance.min_mitre_mappings ?? 1;
+    const mitreMappings = Array.isArray(frontmatter.mitreMappings) ? frontmatter.mitreMappings : [];
+    if (mitreMappings.length < minMitre) {
+      issues.push(`Only ${mitreMappings.length} MITRE mapping(s) in frontmatter (need ${minMitre}+). Add mitreMappings array with techniqueId, techniqueName fields.`);
+    }
+
+    for (let i = 0; i < mitreMappings.length; i++) {
+      const mapping = mitreMappings[i] || {};
+      const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
+      if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
+        issues.push(`MITRE mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
+      }
+
+      if (mapping.tactic) {
+        const tactic = String(mapping.tactic).trim();
+        const canonicalTactic = findCanonicalCaseMatch(tactic, SCHEMA_MITRE_TACTICS);
+        if (!canonicalTactic) {
+          issues.push(`MITRE mapping ${i + 1}: tactic "${tactic}" is not in the canonical ATT&CK tactic list`);
+        } else if (canonicalTactic !== tactic) {
+          issues.push(`MITRE mapping ${i + 1}: tactic "${tactic}" should use canonical casing "${canonicalTactic}"`);
+        }
+      }
+    }
+
+    // ── 8. Exact H2 section headings ───────────────────────────────────────
+    const requiredH2 = SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || [];
+    const actualH2 = getBodyH2Headings(body);
+    const minH2 = acceptance.min_h2_sections ?? requiredH2.length;
+
+    if (actualH2.length < minH2) {
+      issues.push(`Only ${actualH2.length} H2 section(s) (need ${minH2}+)`);
+    }
+
+    const missingH2 = requiredH2.filter(heading => !actualH2.includes(heading));
+    const unexpectedH2 = actualH2.filter(heading => !requiredH2.includes(heading));
+    const duplicateH2 = actualH2.filter((heading, index) => actualH2.indexOf(heading) !== index);
+
+    for (const heading of missingH2) {
+      issues.push(`Missing required H2 section: "${heading}"`);
+    }
+    if (unexpectedH2.length > 0) {
+      issues.push(`Unexpected H2 section(s) for ${task.type}: ${unexpectedH2.join(', ')}`);
+    }
+    if (duplicateH2.length > 0) {
+      issues.push(`Duplicate H2 section(s): ${[...new Set(duplicateH2)].join(', ')}`);
+    }
+
+    // ── 9. Sources section in body (exact format + URL parity) ────────────
+    const sourcesBody = getSourcesSection(body);
+    if (!sourcesBody) {
+      issues.push('Missing required H2 section: "Sources & References"');
     } else {
-      const fm = content.slice(3, fmEnd);
-      const body = content.slice(fmEnd + 3);
-
-      // ── 2. Required fields ────────────────────────────────────────────────
-      for (const field of (schema.requiredFields || [])) {
-        if (!fm.match(new RegExp(`^${field}:`, 'm'))) {
-          issues.push(`Missing required field: ${field}`);
+      const parsedBodySources = parseBodySourceEntries(sourcesBody);
+      if (parsedBodySources.lines.length === 0) {
+        issues.push('Sources & References section has no bullet entries');
+      }
+      if (parsedBodySources.invalid.length > 0) {
+        issues.push(`Sources & References contains ${parsedBodySources.invalid.length} line(s) that do not match the required format "[Publisher: Title](url) — Publisher, YYYY-MM-DD"`);
+        for (const line of parsedBodySources.invalid.slice(0, 3)) {
+          issues.push(`  → "${line.substring(0, 120)}"`);
         }
       }
 
-      // ── 3. reviewStatus (stage-aware, per task.acceptance.review_status) ──
-      // Default rule (missing/legacy) is "draft_ai" exact-match.
-      // Review/backfill tasks can set "*" or an array to preserve live states.
-      // See matchesReviewStatus() helper near the top of this file.
-      const rsMatch = fm.match(/^reviewStatus:\s*["']?([a-z_]+)/m);
-      const actualReviewStatus = rsMatch ? rsMatch[1] : null;
-      const rsRule = acceptance.review_status;
-      const rsCheck = matchesReviewStatus(actualReviewStatus, rsRule);
-      if (!rsCheck.pass) {
-        issues.push(
-          `reviewStatus ${formatReviewStatusRule(rsRule)}; got "${actualReviewStatus ?? '(not found)'}"`
-        );
+      const bodyUrls = new Set(parsedBodySources.valid.map(source => source.url));
+      const frontmatterUrls = new Set(sources.map(source => source.url).filter(Boolean));
+      const missingBodyUrls = sources
+        .filter(source => source?.url && !bodyUrls.has(source.url))
+        .map(source => source.url);
+      const orphanBodyUrls = parsedBodySources.valid
+        .filter(source => !frontmatterUrls.has(source.url))
+        .map(source => source.url);
+
+      for (const url of missingBodyUrls) {
+        issues.push(`Frontmatter source URL missing from Sources & References body section: ${url}`);
+      }
+      for (const url of orphanBodyUrls) {
+        issues.push(`Body source URL missing from frontmatter sources array: ${url}`);
       }
 
-      // ── 4. ID format (if applicable) ──────────────────────────────────────
-      if (schema.idField && schema.idPattern) {
-        const idMatch = fm.match(new RegExp(`^${schema.idField}:\\s*["']?([^\\s"'\\n]+)`, 'm'));
-        if (idMatch && !schema.idPattern.test(idMatch[1])) {
-          issues.push(`${schema.idField} format invalid: "${idMatch[1]}" — expected pattern: ${schema.idPattern}`);
+      for (const bodySource of parsedBodySources.valid) {
+        const frontmatterSource = sources.find(source => source?.url === bodySource.url);
+        if (!frontmatterSource) continue;
+
+        const canonicalFrontmatterPublisher = normalizePublisherAlias(frontmatterSource.publisher || '');
+        const canonicalFrontmatterDate = normalizeSourceDateValue(frontmatterSource.publicationDate);
+        if (bodySource.linkPublisher !== canonicalFrontmatterPublisher) {
+          issues.push(`Source ${bodySource.url} link publisher "${bodySource.linkPublisher}" must match canonical frontmatter publisher "${canonicalFrontmatterPublisher}"`);
+        }
+        if (bodySource.separator !== '—') {
+          issues.push(`Source ${bodySource.url} must use an em dash (—) between the link and trailing publisher`);
+        }
+        if (bodySource.trailingPublisher !== canonicalFrontmatterPublisher) {
+          issues.push(`Source ${bodySource.url} trailing publisher "${bodySource.trailingPublisher}" must match canonical frontmatter publisher "${canonicalFrontmatterPublisher}"`);
+        }
+        if (bodySource.publicationDate !== canonicalFrontmatterDate) {
+          issues.push(`Source ${bodySource.url} publication date "${bodySource.publicationDate}" must match frontmatter publicationDate "${canonicalFrontmatterDate}"`);
         }
       }
+    }
 
-      // ── 5. Structured sources in frontmatter ──────────────────────────────
-      const minSources = acceptance.min_sources ?? 3;
-      const sources = parseFrontmatterSources(fm);
-      const sourceCount = sources.length;
-
-      if (sourceCount < minSources) {
-        issues.push(`Only ${sourceCount} structured source(s) in frontmatter (need ${minSources}+). Sources must be YAML objects with url, publisher, publisherType, reliability — not just prose in the body.`);
+    // ── 10. EDIT-RULE-030: editorial commentary words ─────────────────────
+    const bodyLines = body.split('\n');
+    const editorialHits = [];
+    for (let i = 0; i < bodyLines.length; i++) {
+      const line = bodyLines[i];
+      if (line.startsWith('#') || line.startsWith('```') || line.startsWith('  - url:')) continue;
+      if (/^\s*-\s*\[.*\]\(https?:\/\//.test(line)) continue;
+      const match = line.match(EDITORIAL_RE);
+      if (match) {
+        editorialHits.push({ line: i + 1, word: match[0], context: line.trim().substring(0, 80) });
       }
-
-      // Check for government source
-      if (sourceCount > 0) {
-        const hasGovSource = sources.some(s => s.publisherType === 'government');
-        if (!hasGovSource) {
-          issues.push('No government source found. At least 1 source must have publisherType: "government" (CISA, NCSC, FBI, NSA, etc.)');
-        }
+    }
+    if (editorialHits.length > 0) {
+      issues.push(`EDIT-RULE-030: ${editorialHits.length} editorial commentary word(s) found:`);
+      for (const hit of editorialHits.slice(0, 5)) {
+        issues.push(`  → line ${hit.line}: "${hit.word}" in "${hit.context}..."`);
       }
-
-      // Check source completeness
-      for (let i = 0; i < sources.length; i++) {
-        const s = sources[i];
-        if (!s.url) issues.push(`Source ${i + 1}: missing url`);
-        if (!s.publisher) warnings.push(`Source ${i + 1}: missing publisher`);
-        if (!s.publisherType) issues.push(`Source ${i + 1}: missing publisherType`);
-        if (!s.reliability) warnings.push(`Source ${i + 1}: missing reliability`);
-        if (!s.publicationDate) issues.push(`Source ${i + 1} (${s.publisher || 'unknown'}): missing publicationDate — required for all sources (for living resources like MITRE ATT&CK or NVD, use last-modified or access date)`);
+      if (editorialHits.length > 5) {
+        issues.push(`  → ...and ${editorialHits.length - 5} more`);
       }
+    }
 
-      // ── 6. MITRE mappings in frontmatter ──────────────────────────────────
-      const minMitre = acceptance.min_mitre_mappings ?? 1;
-      const mitreCount = (fm.match(/techniqueId:/g) || []).length;
-      if (mitreCount < minMitre) {
-        issues.push(`Only ${mitreCount} MITRE mapping(s) in frontmatter (need ${minMitre}+). Add mitreMappings array with techniqueId, techniqueName fields.`);
-      }
-
-      // Validate MITRE technique ID format
-      const techniqueIds = [...fm.matchAll(/techniqueId:\s*["']?(T\d{4}(?:\.\d{3})?)/g)];
-      for (const [, tid] of techniqueIds) {
-        if (!/^T\d{4}(\.\d{3})?$/.test(tid)) {
-          issues.push(`Invalid MITRE technique ID: "${tid}" — expected format: T####[.###]`);
-        }
-      }
-
-      // ── 7. H2 section count ───────────────────────────────────────────────
-      const minH2 = acceptance.min_h2_sections ?? 5;
-      const h2s = body.match(/^## .+$/gm) || [];
-      if (h2s.length < minH2) {
-        issues.push(`Only ${h2s.length} H2 section(s) (need ${minH2}+)`);
-      }
-
-      // ── 8. Sources section in body ────────────────────────────────────────
-      const sourcesHeadingMatch = body.match(/^## (?:Sources|References|Sources & References|Sources and References)/mi);
-      if (!sourcesHeadingMatch) {
-        issues.push('Missing Sources/References section in body');
-      } else {
-        // Extract the Sources section text (from heading to next H2 or end)
-        const sourcesStart = body.indexOf(sourcesHeadingMatch[0]);
-        const afterSources = body.slice(sourcesStart + sourcesHeadingMatch[0].length);
-        const nextH2 = afterSources.search(/^## /m);
-        const sourcesBody = nextH2 === -1 ? afterSources : afterSources.slice(0, nextH2);
-
-        // Check for markdown links [text](url)
-        const markdownLinks = sourcesBody.match(/\[([^\]]+)\]\(https?:\/\/[^\)]+\)/g) || [];
-        if (markdownLinks.length === 0) {
-          issues.push(`Sources section has no hyperlinks. Each source must be a markdown link: [Title](url). The URLs from your frontmatter sources: array must appear as clickable links in the body.`);
-        } else if (sourceCount > 0 && markdownLinks.length < sourceCount) {
-          warnings.push(`Sources section has ${markdownLinks.length} link(s) but frontmatter has ${sourceCount} source(s). Each frontmatter source should have a corresponding markdown link in the body.`);
-        }
-
-        // Check for orphan sources (body entries not in frontmatter)
-        const bodySourceLines = sourcesBody.split('\n').filter(l => l.match(/^-\s/));
-        if (bodySourceLines.length > sourceCount) {
-          const orphanCount = bodySourceLines.length - sourceCount;
-          issues.push(`Sources section has ${bodySourceLines.length} entries but frontmatter has only ${sourceCount} source(s). ${orphanCount} orphan source(s) in body without frontmatter entry. Every body source must have a corresponding structured source object in frontmatter.`);
-        }
-
-        // Check for plain-text source entries (no hyperlink)
-        const plainTextSources = bodySourceLines.filter(l => !l.match(/\[.*\]\(https?:\/\//));
-        if (plainTextSources.length > 0) {
-          issues.push(`${plainTextSources.length} source(s) in body are plain text without hyperlinks:`);
-          for (const line of plainTextSources.slice(0, 3)) {
-            issues.push(`  → "${line.trim().substring(0, 80)}"`);
-          }
-          if (plainTextSources.length > 3) {
-            issues.push(`  → ...and ${plainTextSources.length - 3} more`);
-          }
-        }
-      }
-
-      // ── 9. EDIT-RULE-030: editorial commentary words ──────────────────────
-      const bodyLines = body.split('\n');
-      const editorialHits = [];
-      for (let i = 0; i < bodyLines.length; i++) {
-        const line = bodyLines[i];
-        // Skip headings, code blocks, source URLs, and markdown hyperlinks in Sources section
-        // (official source titles like FBI press releases may contain banned words)
-        if (line.startsWith('#') || line.startsWith('```') || line.startsWith('  - url:')) continue;
-        if (/^\s*-\s*\[.*\]\(https?:\/\//.test(line)) continue;
-        const match = line.match(EDITORIAL_RE);
-        if (match) {
-          editorialHits.push({ line: i + 1, word: match[0], context: line.trim().substring(0, 80) });
-        }
-      }
-      if (editorialHits.length > 0) {
-        issues.push(`EDIT-RULE-030: ${editorialHits.length} editorial commentary word(s) found:`);
-        for (const hit of editorialHits.slice(0, 5)) {
-          issues.push(`  → line ${hit.line}: "${hit.word}" in "${hit.context}..."`);
-        }
-        if (editorialHits.length > 5) {
-          issues.push(`  → ...and ${editorialHits.length - 5} more`);
-        }
-      }
-
-      // ── 10. EDIT-RULE-030: blank lines before headings ────────────────────
-      const allLines = content.split('\n');
-      for (let i = 1; i < allLines.length; i++) {
-        if (allLines[i].match(/^#{2,3} /) && allLines[i - 1].trim() !== '' && !allLines[i - 1].startsWith('---')) {
-          issues.push(`EDIT-RULE-030: Missing blank line before heading at line ${i + 1}: "${allLines[i].substring(0, 60)}"`);
-          break; // Report first occurrence only
-        }
+    // ── 11. EDIT-RULE-030: blank lines before headings ────────────────────
+    const allLines = content.split('\n');
+    for (let i = 1; i < allLines.length; i++) {
+      if (allLines[i].match(/^#{2,3} /) && allLines[i - 1].trim() !== '' && !allLines[i - 1].startsWith('---')) {
+        issues.push(`EDIT-RULE-030: Missing blank line before heading at line ${i + 1}: "${allLines[i].substring(0, 60)}"`);
+        break;
       }
     }
   }
@@ -749,8 +1122,7 @@ function validateOutput(task, explicitFile) {
     console.log('  ✓ ALL CHECKS PASSED');
     console.log(`\n  Next: git add . && git commit -m "feat: ${task.task_id} — ${task.input.topic.substring(0, 50)}"`);
     console.log(`        git push -u origin ${task.output.branch}`);
-    console.log(`        gh pr create --base main`);
-    console.log(`        node scripts/pipeline-run-task.mjs --task ${task.task_id} --complete`);
+    console.log(`        node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr`);
   } else {
     console.log(`  ✗ ${issues.length} ISSUE(S):`);
     issues.forEach(i => console.log(`    - ${i}`));
@@ -760,25 +1132,73 @@ function validateOutput(task, explicitFile) {
   return issues.length === 0;
 }
 
-// ── Complete task ───────────────────────────────────────────────────────────
-function completeTask(task, filePath) {
+// ── Open or record a PR for a validated task ────────────────────────────────
+function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComplete) {
+  if (usedDeprecatedComplete) {
+    console.log('  NOTE: --complete is deprecated. Use --open-pr going forward.\n');
+  }
+  if (task.status !== 'locked') {
+    console.error(`  Task ${task.task_id} must be locked before recording an open PR (current status: ${task.status})`);
+    process.exit(1);
+  }
+
+  ensureTaskBranchCheckedOut(task);
+  ensureNoUnexpectedTrackedWorktreeDrift(filePath);
+
+  const schema = SCHEMAS[task.type];
+  const articleFile = findArticle(task, schema, explicitFile);
+  if (!articleFile) {
+    console.error(`  No article found in site/src/content/${schema.dir}/`);
+    console.error(`  Write the article first, then run --open-pr`);
+    process.exit(1);
+  }
+
+  const validationPassed = validateOutput(task, explicitFile);
+  if (!validationPassed) {
+    console.error('\n  Refusing to record PR state because validation is still failing.');
+    process.exit(1);
+  }
+
+  ensureArticleTracked(articleFile);
+  ensureBranchPushed(task);
+
+  let pr = null;
+  if (prNumber) {
+    pr = loadPullRequest(prNumber);
+  } else {
+    pr = findExistingOpenPullRequest(task);
+    if (!pr) {
+      pr = createPullRequest(task, articleFile);
+      console.log(`  Created PR #${pr.number}: ${pr.url}`);
+    } else {
+      console.log(`  Reusing existing PR #${pr.number}: ${pr.url}`);
+    }
+  }
+  assertPullRequestMatchesTask(task, pr);
+
   let agent = 'unknown';
   try { agent = execSync('git config user.name', { encoding: 'utf8' }).trim(); } catch {}
 
-  task.status = 'complete';
+  task.status = 'pr_open';
+  task.pr_number = pr.number;
+  task.pr_url = pr.url;
   task.locked_by = null;
   task.locked_at = null;
   task.history = task.history || [];
   task.history.push({
     timestamp: new Date().toISOString(),
     from: 'locked',
-    to: 'complete',
+    to: 'pr_open',
     agent,
-    note: 'Article generated, validated, and PR opened',
+    action: 'pr_opened',
+    note: `Article generated, validated, and recorded against PR #${pr.number}`,
   });
 
   saveTask(task, filePath);
-  console.log(`  ✓ ${task.task_id} marked complete`);
+  commitAndPushTaskState(task, filePath, pr.number);
+  console.log(`  ✓ ${task.task_id} recorded against PR #${pr.number}`);
+  console.log(`  Bookkeeping commit pushed to ${task.output.branch}.`);
+  console.log('  Final completion is now driven by the PR merge event, not by local CLI state.');
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
@@ -789,7 +1209,7 @@ console.log(`\n  Threatpedia Pipeline Task Runner v2\n`);
 if (args.action === 'list') {
   listTasks(args.all);
 } else if (!args.taskId) {
-  console.error('  Usage: node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN [--lock|--validate|--complete]');
+  console.error('  Usage: node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN [--lock|--validate|--open-pr [--pr 123]]');
   console.error('         node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN --validate --file path/to/article.md');
   console.error('         node scripts/pipeline-run-task.mjs --list [--all]');
   process.exit(1);
@@ -806,8 +1226,8 @@ if (args.action === 'list') {
     case 'validate':
       validateOutput(task, args.file);
       break;
-    case 'complete':
-      completeTask(task, filePath);
+    case 'open-pr':
+      openPrTask(task, filePath, args.prNumber, args.file, args.usedDeprecatedComplete);
       break;
   }
 }

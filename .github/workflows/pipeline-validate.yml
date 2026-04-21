@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: cd site && npm ci
 
+      - name: Install scripts dependencies
+        run: cd scripts && npm ci --no-audit --no-fund
+
       - name: Identify changed articles
         id: changed
         run: |
@@ -46,7 +49,7 @@ jobs:
             echo "count=$(echo "$ALL" | grep -c '.' || true)"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Load pipeline schema (review-status enum)
+      - name: Load pipeline schema
         id: schema
         if: steps.changed.outputs.count != '0'
         run: |
@@ -54,45 +57,177 @@ jobs:
           # Shell out to the shared schema module. On failure, emit an
           # empty value — the github-script step falls back to a safe
           # local default and logs a ::warning:: so the fallback is visible.
-          REVIEW_STATUSES_JSON="$(node scripts/pipeline-schema.mjs --key reviewStatuses 2>/dev/null || echo '')"
-          echo "review_statuses=${REVIEW_STATUSES_JSON}" >> "$GITHUB_OUTPUT"
+          SCHEMA_JSON="$(node scripts/pipeline-schema.mjs 2>/dev/null || echo '')"
+          {
+            echo "json<<EOF"
+            echo "$SCHEMA_JSON"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Validate frontmatter and structure
         id: validate
         if: steps.changed.outputs.count != '0'
         uses: actions/github-script@v7
         env:
-          REVIEW_STATUSES_JSON: ${{ steps.schema.outputs.review_statuses }}
+          PIPELINE_SCHEMA_JSON: ${{ steps.schema.outputs.json }}
         with:
           script: |
             const fs = require('fs');
+            const path = require('path');
+            const yaml = require(path.resolve('scripts/node_modules/js-yaml'));
             const files = `${{ steps.changed.outputs.files }}`.trim().split('\n').filter(Boolean);
             const newFiles = new Set(
               `${{ steps.changed.outputs.new_files }}`.trim().split('\n').filter(Boolean)
             );
             const results = [];
+            const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+—\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
-            // ── reviewStatus schema enum (from scripts/pipeline-schema.mjs) ──
-            // Loaded via the previous step's shell-out, same pattern as
-            // the dispatcher's config load. Falls back to a local default
-            // if the shared-module load failed, with an Actions-level warning
-            // so the degradation is visible.
-            const FALLBACK_REVIEW_STATUSES = [
-              'draft_ai', 'draft_human', 'under_review',
-              'certified', 'disputed', 'deprecated',
-            ];
-            let SCHEMA_REVIEW_STATUSES;
+            const FALLBACK_SCHEMA = {
+              reviewStatuses: [
+                'draft_ai', 'draft_human', 'under_review',
+                'certified', 'disputed', 'deprecated',
+              ],
+              mitreTactics: [
+                'Reconnaissance', 'Resource Development', 'Initial Access', 'Execution',
+                'Persistence', 'Privilege Escalation', 'Defense Evasion', 'Credential Access',
+                'Discovery', 'Lateral Movement', 'Collection', 'Command and Control',
+                'Exfiltration', 'Impact', 'Impair Process Control',
+              ],
+              generatedByValues: [
+                'ai_ingestion',
+                'dangermouse-bot',
+                'incident-crosslink-gapfill',
+                'kernel-k',
+                'new-threat-intel',
+                'new-threat-intel-automation',
+                'penfold-bot',
+                'zero-day-tracker',
+              ],
+              requiredH2ByType: {
+                incident: [
+                  'Summary',
+                  'Technical Analysis',
+                  'Attack Chain',
+                  'Impact Assessment',
+                  'Attribution',
+                  'Timeline',
+                  'Remediation & Mitigation',
+                  'Sources & References',
+                ],
+                campaign: [
+                  'Executive Summary',
+                  'Technical Analysis',
+                  'Attack Chain',
+                  'MITRE ATT&CK Mapping',
+                  'Timeline',
+                  'Remediation & Mitigation',
+                  'Sources & References',
+                ],
+                'threat-actor': [
+                  'Executive Summary',
+                  'Notable Campaigns',
+                  'Technical Capabilities',
+                  'Attribution',
+                  'MITRE ATT&CK Profile',
+                  'Sources & References',
+                ],
+                'zero-day': [
+                  'Severity Assessment',
+                  'Summary',
+                  'Exploit Chain',
+                  'Detection Guidance',
+                  'Indicators of Compromise',
+                  'Disclosure Timeline',
+                  'Sources & References',
+                ],
+              },
+              canonicalPublisherAliases: {
+                'msrc': 'Microsoft Security Response Center',
+                'microsoft msrc': 'Microsoft Security Response Center',
+                'nvd': 'National Vulnerability Database',
+                'nist nvd': 'National Vulnerability Database',
+                'national vulnerability database': 'National Vulnerability Database',
+                'sec': 'U.S. Securities and Exchange Commission',
+                'securities and exchange commission': 'U.S. Securities and Exchange Commission',
+                'u.s. securities and exchange commission': 'U.S. Securities and Exchange Commission',
+                'uk national cyber security centre': 'UK NCSC',
+                'uk ncsc': 'UK NCSC',
+                'us department of justice': 'U.S. Department of Justice',
+                'u.s. department of justice': 'U.S. Department of Justice',
+              },
+            };
+
+            let SCHEMA;
             try {
-              const raw = process.env.REVIEW_STATUSES_JSON || '';
+              const raw = process.env.PIPELINE_SCHEMA_JSON || '';
               const parsed = raw ? JSON.parse(raw) : null;
-              if (Array.isArray(parsed) && parsed.length > 0 && parsed.every(v => typeof v === 'string')) {
-                SCHEMA_REVIEW_STATUSES = parsed;
+              if (parsed && Array.isArray(parsed.reviewStatuses) && parsed.reviewStatuses.length > 0) {
+                SCHEMA = parsed;
               } else {
                 throw new Error(`unexpected shape: ${raw || '(empty)'}`);
               }
             } catch (e) {
-              console.warn(`::warning::Could not load review-status enum from scripts/pipeline-schema.mjs (${e.message}); falling back to hardcoded default.`);
-              SCHEMA_REVIEW_STATUSES = FALLBACK_REVIEW_STATUSES;
+              console.warn(`::warning::Could not load schema data from scripts/pipeline-schema.mjs (${e.message}); falling back to hardcoded default.`);
+              SCHEMA = FALLBACK_SCHEMA;
+            }
+
+            function normalizePublisherAlias(value) {
+              if (typeof value !== 'string') return value;
+              const trimmed = value.trim();
+              return SCHEMA.canonicalPublisherAliases[trimmed.toLowerCase()] || trimmed;
+            }
+
+            function parseFrontmatter(content) {
+              const match = content.match(/^---\n([\s\S]*?)\n---\n?/);
+              if (!match) return { error: 'No YAML frontmatter found', data: null, body: content };
+              try {
+                return {
+                  error: null,
+                  data: yaml.load(match[1]) || {},
+                  body: content.slice(match[0].length),
+                };
+              } catch (error) {
+                return { error: `YAML parse error: ${error.message}`, data: null, body: content.slice(match[0].length) };
+              }
+            }
+
+            function getBodyH2Headings(body) {
+              return [...body.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
+            }
+
+            function getSourcesSection(body) {
+              const headingMatch = body.match(/^## Sources & References\s*$/m);
+              if (!headingMatch) return null;
+              const start = body.indexOf(headingMatch[0]);
+              const afterHeading = body.slice(start + headingMatch[0].length);
+              const nextH2 = afterHeading.search(/^## /m);
+              return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
+            }
+
+            function parseBodySourceEntries(sourcesBody) {
+              const lines = sourcesBody
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.startsWith('- '));
+              const valid = [];
+              const invalid = [];
+              for (const line of lines) {
+                const match = line.match(SOURCE_BODY_LINE_RE);
+                if (!match) {
+                  invalid.push(line);
+                  continue;
+                }
+                const [, linkPublisher, linkTitle, url, trailingPublisher, publicationDate] = match;
+                valid.push({
+                  raw: line,
+                  linkPublisher: linkPublisher.trim(),
+                  linkTitle: linkTitle.trim(),
+                  url: url.trim(),
+                  trailingPublisher: trailingPublisher.trim(),
+                  publicationDate,
+                });
+              }
+              return { lines, valid, invalid };
             }
 
             for (const file of files) {
@@ -101,42 +236,24 @@ jobs:
               const checks = [];
               let pass = true;
 
-              // ── Parse frontmatter ──────────────────────────────────────
-              const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-              if (!fmMatch) {
-                checks.push({ name: 'Frontmatter exists', pass: false, detail: 'No YAML frontmatter found' });
+              const parsed = parseFrontmatter(content);
+              if (parsed.error) {
+                checks.push({ name: 'Frontmatter exists', pass: false, detail: parsed.error });
                 results.push({ file, checks, pass: false });
                 continue;
               }
               checks.push({ name: 'Frontmatter exists', pass: true });
 
-              const fm = fmMatch[1];
+              const fm = parsed.data;
+              const body = parsed.body;
 
-              // ── Detect article type from path ──────────────────────────
               let type = 'unknown';
               if (file.includes('/incidents/')) type = 'incident';
               else if (file.includes('/campaigns/')) type = 'campaign';
               else if (file.includes('/threat-actors/')) type = 'threat-actor';
               else if (file.includes('/zero-days/')) type = 'zero-day';
 
-              // ── Stage-aware reviewStatus check ─────────────────────────
-              //
-              // Rule:
-              //   NEW article (added in this PR, not on origin/main)
-              //       → reviewStatus MUST be draft_ai
-              //         (draft-generation gate — new articles must begin
-              //         as AI drafts awaiting review)
-              //   EDITED article (existed on origin/main, modified here)
-              //       → reviewStatus MUST be any schema-enum value
-              //         (review / backfill / reprocess work is allowed to
-              //         preserve live review states — does not force
-              //         downgrade of already-valid articles)
-              //
-              // This directly implements the Slice 3 direction: distinguish
-              // draft-generation from corpus-correction at the validator
-              // layer without requiring a task-id in the PR context.
-              const statusMatch = fm.match(/^reviewStatus:\s*(\S+)/m);
-              const reviewStatus = statusMatch ? statusMatch[1].replace(/^["']|["']$/g, '') : null;
+              const reviewStatus = typeof fm.reviewStatus === 'string' ? fm.reviewStatus : null;
               const isNewArticle = newFiles.has(file);
 
               if (isNewArticle) {
@@ -147,16 +264,15 @@ jobs:
                 });
                 if (reviewStatus !== 'draft_ai') pass = false;
               } else {
-                const inEnum = SCHEMA_REVIEW_STATUSES.includes(reviewStatus);
+                const inEnum = SCHEMA.reviewStatuses.includes(reviewStatus);
                 checks.push({
                   name: 'reviewStatus (edit → any schema value)',
                   pass: inEnum,
-                  detail: `${reviewStatus || 'not found'} · must be one of ${SCHEMA_REVIEW_STATUSES.join(' | ')}`,
+                  detail: `${reviewStatus || 'not found'} · must be one of ${SCHEMA.reviewStatuses.join(' | ')}`,
                 });
                 if (!inEnum) pass = false;
               }
 
-              // ── Check required fields per type ─────────────────────────
               const requiredFields = {
                 'incident': ['eventId', 'title', 'date', 'attackType', 'severity', 'sector', 'geography'],
                 'campaign': ['title', 'startDate', 'attackType', 'severity', 'sector', 'geography'],
@@ -166,27 +282,38 @@ jobs:
 
               const fields = requiredFields[type] || [];
               for (const field of fields) {
-                const has = new RegExp(`^${field}:`, 'm').test(fm);
+                const has = fm[field] !== undefined && fm[field] !== null && fm[field] !== '';
                 checks.push({ name: `Field: ${field}`, pass: has });
                 if (!has) pass = false;
               }
 
-              // ── Check H2 section count ─────────────────────────────────
-              const body = content.split('---').slice(2).join('---');
-              const h2Count = (body.match(/^## /gm) || []).length;
+              const generatedBy = typeof fm.generatedBy === 'string' ? fm.generatedBy.trim() : '';
               checks.push({
-                name: 'H2 sections >= 5',
-                pass: h2Count >= 5,
-                detail: `Found ${h2Count}`,
+                name: 'generatedBy canonical value',
+                pass: SCHEMA.generatedByValues.includes(generatedBy),
+                detail: generatedBy || 'not found',
               });
-              if (h2Count < 5) pass = false;
+              if (!SCHEMA.generatedByValues.includes(generatedBy)) pass = false;
 
-              // ── Check sources section exists ───────────────────────────
-              const hasSources = /^## (?:Sources|References|Sources & References|Sources and References)/mi.test(body);
-              checks.push({ name: 'Sources section exists', pass: hasSources });
-              if (!hasSources) pass = false;
+              const requiredH2 = SCHEMA.requiredH2ByType[type] || [];
+              const actualH2 = getBodyH2Headings(body);
+              const missingH2 = requiredH2.filter(heading => !actualH2.includes(heading));
+              const unexpectedH2 = actualH2.filter(heading => !requiredH2.includes(heading));
+              const duplicateH2 = actualH2.filter((heading, index) => actualH2.indexOf(heading) !== index);
+              const h2Pass = missingH2.length === 0 && unexpectedH2.length === 0 && duplicateH2.length === 0;
+              checks.push({
+                name: 'Canonical H2 headings',
+                pass: h2Pass,
+                detail: h2Pass
+                  ? `${actualH2.length} canonical headings present`
+                  : [
+                      missingH2.length ? `missing: ${missingH2.join(', ')}` : null,
+                      unexpectedH2.length ? `unexpected: ${unexpectedH2.join(', ')}` : null,
+                      duplicateH2.length ? `duplicate: ${[...new Set(duplicateH2)].join(', ')}` : null,
+                    ].filter(Boolean).join(' · '),
+              });
+              if (!h2Pass) pass = false;
 
-              // ── EDIT-RULE-030: blank lines around headings ─────────────
               const lines = content.split('\n');
               let blankLineIssues = 0;
               for (let i = 1; i < lines.length - 1; i++) {
@@ -200,16 +327,98 @@ jobs:
                 pass: blankLineIssues === 0,
                 detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
               });
+              if (blankLineIssues > 0) pass = false;
 
-              // ── MITRE mappings in frontmatter ──────────────────────────
-              const hasMitre = /mitreMappings:/m.test(fm);
-              const mitreCount = (fm.match(/techniqueId:/g) || []).length;
+              const mitreMappings = Array.isArray(fm.mitreMappings) ? fm.mitreMappings : [];
               checks.push({
                 name: 'MITRE mappings >= 1',
-                pass: mitreCount >= 1,
-                detail: `Found ${mitreCount} in frontmatter`,
+                pass: mitreMappings.length >= 1,
+                detail: `Found ${mitreMappings.length} in frontmatter`,
               });
-              if (mitreCount < 1) pass = false;
+              if (mitreMappings.length < 1) pass = false;
+
+              const invalidTactics = mitreMappings
+                .map(mapping => typeof mapping?.tactic === 'string' ? mapping.tactic.trim() : null)
+                .filter(Boolean)
+                .filter(tactic => !SCHEMA.mitreTactics.includes(tactic));
+              checks.push({
+                name: 'MITRE tactic vocabulary',
+                pass: invalidTactics.length === 0,
+                detail: invalidTactics.length === 0 ? 'Canonical ATT&CK tactic casing' : invalidTactics.join(', '),
+              });
+              if (invalidTactics.length > 0) pass = false;
+
+              const sources = Array.isArray(fm.sources) ? fm.sources : [];
+              const publisherAliasViolations = [];
+              for (const source of sources) {
+                if (!source?.publisher) continue;
+                const canonical = normalizePublisherAlias(source.publisher);
+                if (canonical !== String(source.publisher).trim()) {
+                  publisherAliasViolations.push(`${source.publisher} -> ${canonical}`);
+                }
+              }
+              checks.push({
+                name: 'Canonical publisher names',
+                pass: publisherAliasViolations.length === 0,
+                detail: publisherAliasViolations.length === 0 ? 'Canonical' : publisherAliasViolations.join(' | '),
+              });
+              if (publisherAliasViolations.length > 0) pass = false;
+
+              const sourcesSection = getSourcesSection(body);
+              if (!sourcesSection) {
+                checks.push({
+                  name: 'Sources & References section',
+                  pass: false,
+                  detail: 'Missing exact "Sources & References" H2 heading',
+                });
+                pass = false;
+              } else {
+                const parsedBodySources = parseBodySourceEntries(sourcesSection);
+                checks.push({
+                  name: 'Sources body line format',
+                  pass: parsedBodySources.invalid.length === 0 && parsedBodySources.lines.length > 0,
+                  detail: parsedBodySources.invalid.length === 0
+                    ? `${parsedBodySources.valid.length} formatted source line(s)`
+                    : parsedBodySources.invalid.slice(0, 2).join(' | '),
+                });
+                if (parsedBodySources.invalid.length > 0 || parsedBodySources.lines.length === 0) pass = false;
+
+                const frontmatterUrls = new Set(sources.map(source => source?.url).filter(Boolean));
+                const bodyUrls = new Set(parsedBodySources.valid.map(source => source.url));
+                const missingBodyUrls = [...frontmatterUrls].filter(url => !bodyUrls.has(url));
+                const orphanBodyUrls = [...bodyUrls].filter(url => !frontmatterUrls.has(url));
+                checks.push({
+                  name: 'Frontmatter/body source URL parity',
+                  pass: missingBodyUrls.length === 0 && orphanBodyUrls.length === 0,
+                  detail: [
+                    missingBodyUrls.length ? `missing in body: ${missingBodyUrls.join(', ')}` : null,
+                    orphanBodyUrls.length ? `missing in frontmatter: ${orphanBodyUrls.join(', ')}` : null,
+                  ].filter(Boolean).join(' · ') || `${frontmatterUrls.size}:${bodyUrls.size} matched`,
+                });
+                if (missingBodyUrls.length > 0 || orphanBodyUrls.length > 0) pass = false;
+
+                const sourceMetadataMismatches = [];
+                for (const bodySource of parsedBodySources.valid) {
+                  const frontmatterSource = sources.find(source => source?.url === bodySource.url);
+                  if (!frontmatterSource) continue;
+                  const canonicalPublisher = normalizePublisherAlias(frontmatterSource.publisher || '');
+                  if (bodySource.linkPublisher !== canonicalPublisher) {
+                    sourceMetadataMismatches.push(`${bodySource.url} link publisher ${bodySource.linkPublisher} != ${canonicalPublisher}`);
+                  }
+                  if (bodySource.trailingPublisher !== canonicalPublisher) {
+                    sourceMetadataMismatches.push(`${bodySource.url} publisher ${bodySource.trailingPublisher} != ${canonicalPublisher}`);
+                  }
+                  if (bodySource.publicationDate !== frontmatterSource.publicationDate) {
+                    sourceMetadataMismatches.push(`${bodySource.url} date ${bodySource.publicationDate} != ${frontmatterSource.publicationDate}`);
+                  }
+                }
+                checks.push({
+                  name: 'Source metadata matches frontmatter',
+                  pass: sourceMetadataMismatches.length === 0,
+                  detail: sourceMetadataMismatches.length === 0 ? 'Publisher/date parity confirmed' : sourceMetadataMismatches.slice(0, 3).join(' | '),
+                });
+                if (sourceMetadataMismatches.length > 0) pass = false;
+              }
 
               results.push({ file, type, checks, pass });
             }
@@ -274,6 +483,16 @@ jobs:
             }
 
             if (!allPass) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: 'pipeline/validated',
+                });
+              } catch (e) {
+                if (e.status !== 404) throw e;
+              }
               core.setFailed('Article validation failed');
             }
 
