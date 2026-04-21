@@ -89,8 +89,8 @@ for the pipeline.
    - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
-   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks at
-     `stage: draft` with `status: complete | validation | review` is
+   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks with
+     `status: pr_open` (plus any legacy `validation | review` stage items) is
      ≥ `queues.editorial.max_pending` (default 50), the dispatcher backs
      off without dispatching more. When the queue drains below
      `backpressure_resume` (default 40), dispatch resumes.
@@ -132,18 +132,24 @@ for the pipeline.
    - Agent reads the task brief, drafts the article into
      `site/src/content/<type>/<slug>.md` on the `pipeline/TASK-XXXX`
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
-     iterates until validation passes, then runs `--complete`.
+     iterates until validation passes, then runs `--open-pr` to create
+     (or reuse) the PR and record `status: pr_open` in one step.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
-     rules: min sources, min H2 sections, min MITRE mappings,
-     `review_status: draft_ai`, build must pass, schema must pass.
-   - Failure leaves the task locked for agent iteration; success flips
-     `status` to `complete` and opens a PR.
+     rules plus exact section/schema normalization: canonical H2 headings,
+     exact source-line format, frontmatter/body source URL parity, canonical
+     MITRE tactic casing, canonical publisher aliases, and canonical
+     `generatedBy` values.
+   - Failure leaves the task locked for agent iteration; success allows the
+     agent to record a real open PR number, which moves the task to
+     `status: pr_open`.
 
 9. **Human review + merge**
    - `auto_merge.enabled: false` today — every PR goes to Kernel K for
-     review. Once merged, the task's history records the final transition.
+     review. Merge state is no longer trusted from the local CLI. A GitHub PR
+     event records the final task transition after the PR is merged (or reverts
+     the task to `pending` if the PR is closed without merge).
 
 ---
 
@@ -461,10 +467,16 @@ node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --lock
 node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --validate
 ```
 
-**Mark complete**:
+**Open or record a PR in one step**:
 
 ```
-node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --complete
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr
+```
+
+**Record an already-open PR by number**:
+
+```
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr --pr 123
 ```
 
 ---
