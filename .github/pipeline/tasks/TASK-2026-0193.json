@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:07:12.886Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-21T19:07:12.886Z",
   "input": {
     "topic": "UNC6783 threat actor profile build from BPO and helpdesk intrusion reporting",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed for the BPO / helpdesk intrusion cluster now tracked as UNC6783."
+    },
+    {
+      "timestamp": "2026-04-21T19:07:12.886Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
