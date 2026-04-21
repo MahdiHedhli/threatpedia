@@ -10,6 +10,10 @@ sector: "Government"
 geography: "Southeast Asia"
 threatActor: "Chinese-nexus (unattributed)"
 attributionConfidence: A4
+cves:
+  - "CVE-2026-3502"
+relatedIncidents:
+  - "operation-truechaos-trueconf-zero-day-2026"
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-04-21
@@ -45,22 +49,26 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Adversaries abused the trusted TrueConf on-premises update relationship to distribute a trojanized client package."
   - techniqueId: "T1574.002"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
+    techniqueName: "DLL Side-Loading"
     tactic: "Defense Evasion"
     notes: "Malicious updates dropped files used for DLL sideloading through legitimate-looking software paths."
   - techniqueId: "T1021.001"
-    techniqueName: "Remote Services: Remote Desktop Protocol"
+    techniqueName: "Remote Desktop Protocol"
     tactic: "Lateral Movement"
     notes: "Attackers utilized RDP for lateral movement across compromised government networks."
+  - techniqueId: "T1071.001"
+    techniqueName: "Web Protocols"
+    tactic: "Command and Control"
+    notes: "The campaign utilized HTTP/S for command-and-control communications, including interactions with Havoc infrastructure."
 ---
 
 ## Executive Summary
 
-Operation TrueChaos is a targeted cyber-espionage campaign that emerged in early 2026, characterized by its abuse of the TrueConf video conferencing platform's update mechanism. The campaign primarily targeted government entities in Southeast Asia, leveraging a critical zero-day vulnerability (CVE-2026-3502) to execute a localized supply chain pivot.
+Operation TrueChaos is a targeted cyber-espionage campaign that emerged in early 2026, characterized by its abuse of the TrueConf video conferencing platform's update mechanism. The campaign primarily targeted government entities in Southeast Asia, leveraging a high-severity zero-day vulnerability (CVE-2026-3502) to execute a localized supply chain pivot.
 
 The operation is defined by the strategic compromise of customer-operated, on-premises TrueConf servers. By gaining control of these central update sources, the adversary was able to distribute weaponized installer packages to dozens of downstream government agencies. Check Point Research, which discovered the activity, assesses with moderate confidence that the campaign is the work of a Chinese-nexus threat actor focused on regional intelligence collection.
 
