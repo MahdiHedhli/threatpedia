@@ -10,7 +10,7 @@ threatActor: Unknown
 attributionConfidence: A4
 reviewStatus: "draft_ai"
 confidenceGrade: A
-generatedBy: penfold-bot
+generatedBy: dangermouse-bot
 generatedDate: 2026-04-19
 cves: []
 relatedSlugs:
@@ -38,7 +38,7 @@ sources:
     accessDate: "2026-04-19"
     archived: false
   - url: https://www.sec.gov/news/press-release/2018-71
-    publisher: SEC
+    publisher: Securities and Exchange Commission (SEC)
     publisherType: government
     reliability: R1
     publicationDate: "2018-04-24"
@@ -47,7 +47,7 @@ sources:
 mitreMappings:
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
-    tactic: initial-access
+    tactic: "Initial Access"
 ---
 
 ## Executive Summary
@@ -103,4 +103,4 @@ Following the disclosure, Yahoo forced password resets and invalidated unencrypt
 - [Yahoo: Important Security Information for Yahoo Users](https://blog.yahoo.net/post/154309897759/important-security-information-for-yahoo-users) — Yahoo, 2016-12-14
 - [Yahoo/Reuters: Yahoo Says 3 Billion Accounts Were Affected by 2013 Breach](https://www.yahoo.com/news/yahoo-says-3-billion-accounts-205639389.html) — Reuters, 2017-10-03
 - [CNBC: Yahoo Every Single Account Affected in 2013 Attack](https://www.cnbc.com/2017/10/03/yahoo-every-single-account-3-billion-people-affected-in-2013-attack.html) — CNBC, 2017-10-03
-- [SEC: Altaba, Formerly Known as Yahoo!, Charged With Failing to Disclose Massive Cybersecurity Breach](https://www.sec.gov/news/press-release/2018-71) — SEC, 2018-04-24
+- [Securities and Exchange Commission: Altaba, Charged With Failing to Disclose Massive Cybersecurity Breach](https://www.sec.gov/news/press-release/2018-71) — SEC, 2018-04-24
