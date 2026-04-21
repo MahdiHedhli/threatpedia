@@ -119,10 +119,11 @@ for the pipeline.
      dies mid-task).
    - Dispatcher bookkeeping is published on the long-lived
      `pipeline/dispatcher` branch, not pushed directly to `main`.
-     The workflow opens or updates a labeled PR carrying task-state-only
-     changes (dispatch notes, stale-lock releases, dependency blocking).
-     Merge the PR to persist dispatcher state; close it to discard the
-     bookkeeping batch and let the next run reset the branch to `main`.
+     The workflow opens or updates a PR labeled `pipeline/dispatcher`
+     carrying task-state-only changes (dispatch notes, stale-lock
+     releases, dependency blocking). Merge the PR to persist dispatcher
+     state; close it to discard the bookkeeping batch and let the next
+     run reset `pipeline/dispatcher` back to `origin/main`.
    - If a task already has an open `pipeline/ready` Issue, the dispatcher
      does **not** open a duplicate Issue on the next tick. It records the
      existing Issue number in task history once and moves on.
