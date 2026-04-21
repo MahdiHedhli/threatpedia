@@ -108,7 +108,7 @@ The TeamPCP supply chain campaign was a coordinated multi-ecosystem intrusion op
 
 The campaign is distinctive in three respects. First, it targeted **security tools themselves** rather than general-purpose libraries, abusing the privileged CI/CD position those tools occupy. Second, it used **force-pushed version tags** against trusted repositories, so downstream consumers pinning to what they believed were immutable semantic versions silently began executing attacker-controlled code. Third, it cascaded into **multiple independent victim incidents** — Mercor, Cisco, European Commission, and others — that Threatpedia maintains as separate incident pages.
 
-This article is the canonical **campaign-level** record of the TeamPCP operation. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). The constituent victim events are tracked as individual incident articles linked under Timeline and the related-incident list in frontmatter. The earlier `incidents/teampcp-supply-chain-attack.md` article was campaign-shaped content living in the incidents collection; it has been superseded by this page and replaced with a legacy redirect.
+This article is the canonical **campaign-level** record of the TeamPCP operation. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). The constituent victim events are tracked as individual incident articles linked under Timeline and the related-incident list in frontmatter.
 
 ## Technical Analysis
 
@@ -128,11 +128,11 @@ The cascading effect: credentials harvested in one victim's CI/CD environment fr
 
 TeamPCP gains access to the `aqua-bot` service account through exposed environment variables in workflow logs combined with weak PAT rotation. Initial entry point is the `trivy-action` repository. Aqua detects anomalous activity on Feb 28; token rotation is initiated but is not comprehensive.
 
-### Stage 2: Tag-hijack weaponisation
+### Stage 2: Tag-hijack weaponization
 
 With residual PAT access surviving Aqua's initial rotation, TeamPCP force-pushes over trusted version tags in `trivy-action` (76/77 tags) and `setup-trivy` (7/7 tags) on March 19, redirecting any downstream workflow that re-resolves a tag reference. The Checkmarx `kics-github-action` is compromised by the same pattern on March 23.
 
-### Stage 3: LiteLLM PyPI trojanisation
+### Stage 3: LiteLLM PyPI trojanization
 
 Between late March and early April, attacker-controlled releases of the LiteLLM PyPI package are published. Installations during the exposure window deploy the TeamPCP Cloud Stealer payload on target runners. Telnyx is among the public victims affected by the LiteLLM compromise path.
 
@@ -189,7 +189,7 @@ Microsoft Security publishes the first major cross-vendor analysis of the Trivy 
 
 Data exfiltrated via the Trivy path is published on the ShinyHunters leak site, including ~340 GB attributed to the European Commission.
 
-### 2026-03-30 — LiteLLM trojanisation
+### 2026-03-30 — LiteLLM trojanization
 
 Attacker-controlled LiteLLM PyPI releases are published, triggering runner compromises at Telnyx and Mercor among others.
 
@@ -212,7 +212,7 @@ The public exposure window for the campaign's last active vectors closes; remedi
 - **Audit GitHub logs** during the February 27 – April 3 window for suspicious force-push, branch deletion, tag mutation, and token-creation events.
 - **Pin LiteLLM** to a safe version (≤ `1.82.6` or ≥ `1.82.9`) and audit runner logs for installation events in the exposure window.
 - **Enable GPG signature enforcement** on protected branches and restrict service-account force-push capabilities.
-- **Scan CI/CD egress logs** for outbound connections to `45.148.10.212` and to `*.trycloudflare.com` hosts associated with TeamPCP C2.
+- **Scan CI/CD egress logs** for outbound connections to `45.148.10.212`, to the typosquatted `scan.aquasecurtiy.org` domain used as a TeamPCP C2 / staging host (note the intentional misspelling of "aquasecurity"), and to `*.trycloudflare.com` hosts associated with TeamPCP C2.
 - **Treat security tools as privileged dependencies.** The campaign's novelty is exploiting the trust gradient between application code and security/CI tooling; threat models that assume security tools are inherently trustworthy are the gap the campaign exploited.
 
 ## Sources & References
