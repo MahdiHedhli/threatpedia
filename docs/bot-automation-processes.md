@@ -70,6 +70,25 @@ Security is non-negotiable in all automation processes. The following rules prot
 - **Resolve actionable Gemini threads** before merge so review state matches the code state
 - **Never merge PRs** with dangling security issues (exposed tokens, hardcoded credentials)
 
+## Model Selection Guidance
+
+Threatpedia should spend model credits in proportion to task ambiguity, not by habit. The default rule is:
+
+- use the cheapest model that can reliably produce mergeable output
+- escalate only when ambiguity or review churn makes the cheaper run false economy
+
+### Suggested routing
+
+| Task type | Preferred model tier |
+|---|---|
+| Simple formatting fixes, heading normalization, source-body alignment, low-risk reprocess | Fast / low-cost |
+| Deterministic schema cleanup, validator fixes, isolated PR review fixes, bounded article reprocess | Mid-tier |
+| New zero-day drafts, attribution-heavy actor work, canonical split/merge decisions, pipeline architecture | Frontier / high-reasoning |
+
+### Operational rule
+
+If a cheaper model repeatedly creates the same Gemini findings or misses the same schema rules, stop routing that task class to it until the validator or prompt contract is improved.
+
 ## Standard PR Workflow
 
 Every scheduled task that writes to the repository must follow this workflow precisely:
