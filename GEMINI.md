@@ -1,12 +1,13 @@
 # Threatpedia — Public Repository Context
 
-This file provides guidance to Claude Code when working in this repository.
+This file provides guidance to Gemini CLI and future Gemini-based agents when
+working in this repository.
 
 ## Parity rule
 
-This file should stay in parity with the sibling `AGENTS.md` and `GEMINI.md`
+This file should stay in parity with the sibling `AGENTS.md` and `CLAUDE.md`
 for shared security, workflow, repository-boundary, and review-discipline
-guidance. Only agent-specific auto-load notes and explicitly repo-local
+guidance. Only Gemini-specific startup notes and explicitly repo-local
 exceptions should differ. If one of these files changes, review the others in
 the same change.
 
@@ -93,7 +94,7 @@ when working on corpus or pipeline integrity.
 - do not call a PR merge-ready based only on local state; live GitHub PR state
   is the source of truth
 
-## Task isolation discipline
+## Gemini execution discipline
 
 For pipeline tasks and task-scoped content work:
 
@@ -101,9 +102,9 @@ For pipeline tasks and task-scoped content work:
 - run `node scripts/pipeline-run-task.mjs --task ... --lock` only from that
   clean task-scoped checkout
 - if you hit a branch mismatch, unrelated dirty paths, or unexpected spillover,
-  stop and rebuild from clean state rather than renaming branches mid-flight or
-  carrying cleanup commits
-- do not broaden the PR beyond the task scope just to recover local state
+  stop immediately and rebuild from clean state
+- do not rename branches mid-flight to fit the task
+- do not use local task-runner success as a proxy for live PR readiness
 
 Before reporting a task PR as ready, verify all of the following:
 
@@ -112,6 +113,9 @@ Before reporting a task PR as ready, verify all of the following:
 - local validation passes for every modified article or task file in the branch
 - `gh pr checks` is green
 - unresolved Gemini review threads are actually zero on the live PR
+
+If any of those checks fail, report the blocker rather than a clean completion
+state.
 
 ## Security expectations
 
