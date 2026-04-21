@@ -2,32 +2,26 @@
 /**
  * pipeline-discover.mjs — Automated Discovery Pipeline
  *
- * Fetches high-trust threat intelligence feeds, scores discovered events,
- * deduplicates against the existing corpus, and creates pipeline tasks.
+ * Fetches high-trust discovery feeds, scores discovered events,
+ * deduplicates against the existing corpus/task queue, and creates
+ * pipeline tasks.
  *
- * Feed priority (by trust):
- *   1. CISA KEV Catalog  — R1 government, pre-vetted, structured
- *   2. NVD/CVE Feed      — R1 government, CVSS enrichment
- *   (future: CISA Alerts, NCSC UK, vendor advisories, research firms)
- *
- * Scoring model:
- *   R1 source count (40%) + CISA KEV (20%) + CVSS ≥7.0 (15%)
- *   + cross-source corroboration (15%) + active exploitation (10%)
- *
- * Auto-publish threshold: score ≥ 80 AND 2+ R1 sources AND (KEV OR CVSS ≥ 7.0)
+ * Current lanes:
+ *   - zero-day discovery: CISA KEV + NVD CVSS enrichment
+ *   - incident discovery: CISA alerts/advisories RSS + Microsoft Security Blog RSS
  *
  * Usage:
- *   node scripts/pipeline-discover.mjs                    # Discover + create tasks (dry run)
- *   node scripts/pipeline-discover.mjs --execute          # Discover + create tasks (write files)
- *   node scripts/pipeline-discover.mjs --days 7           # Look back N days (default: 7)
- *   node scripts/pipeline-discover.mjs --limit 10         # Max tasks to create (default: 10)
- *   node scripts/pipeline-discover.mjs --execute --days 3 --limit 5
+ *   node scripts/pipeline-discover.mjs
+ *   node scripts/pipeline-discover.mjs --execute
+ *   node scripts/pipeline-discover.mjs --mode incident --days 7 --limit 3
+ *   node scripts/pipeline-discover.mjs --mode zero-day --execute --days 3 --limit 5
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { resolve, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { XMLParser } from 'fast-xml-parser';
+import { loadPipelineConfig } from './pipeline-config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -35,14 +29,17 @@ const TASKS_DIR = resolve(ROOT, '.github/pipeline/tasks');
 const CONTENT_DIR = resolve(ROOT, 'site/src/content');
 const REJECTION_FILE = resolve(ROOT, '.github/pipeline/rejected-candidates.json');
 
-// ── Feed URLs ──────────────────────────────────────────────────────────────
-const FEEDS = {
-  CISA_KEV: 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json',
-  NVD_CVE: 'https://services.nvd.nist.gov/rest/json/cves/2.0',
-};
+const RSS_PARSER = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+  textNodeName: '#text',
+  parseTagValue: true,
+  trimValues: true,
+  processEntities: false,
+  htmlEntities: false,
+});
 
-// ── Scoring weights ────────────────────────────────────────────────────────
-const WEIGHTS = {
+const ZERO_DAY_WEIGHTS = {
   R1_SOURCE_COUNT: 0.40,
   CISA_KEV: 0.20,
   CVSS_HIGH: 0.15,
@@ -50,142 +47,347 @@ const WEIGHTS = {
   ACTIVE_EXPLOITATION: 0.10,
 };
 
-// Auto-publish threshold
+const INCIDENT_STRONG_PATTERNS = [
+  { label: 'breach', regex: /\bbreach\b/i, points: 18 },
+  { label: 'compromise', regex: /\bcompromis(?:e|ed|es|ing)\b/i, points: 16 },
+  { label: 'intrusion', regex: /\bintrusion\b/i, points: 16 },
+  { label: 'phishing', regex: /\bphishing\b/i, points: 14 },
+  { label: 'ransomware', regex: /\bransomware\b/i, points: 16 },
+  { label: 'malware', regex: /\bmalware\b/i, points: 12 },
+  { label: 'supply chain', regex: /\bsupply[- ]chain\b/i, points: 18 },
+  { label: 'exfiltration', regex: /\bexfiltrat(?:e|ion|ed)\b/i, points: 16 },
+  { label: 'active exploitation', regex: /\b(active exploitation|exploited in the wild)\b/i, points: 14 },
+];
+
+const INCIDENT_BOUNDARY_PATTERNS = [
+  { label: 'affects/impacts', regex: /\b(affect(?:s|ed|ing)?|impact(?:s|ed|ing)?)\b/i, points: 10 },
+  { label: 'targets/against', regex: /\b(target(?:s|ed|ing)?|against)\b/i, points: 10 },
+  { label: 'victim language', regex: /\b(victim|victims|victimised|victimized)\b/i, points: 10 },
+  { label: 'org/service boundary', regex: /\b(compromise of|breach of|attack on)\b/i, points: 12 },
+];
+
+const INCIDENT_NEGATIVE_PATTERNS = [
+  { label: 'kev catalog churn', regex: /\b(cisa adds?.*known exploited vulnerabilities|known exploited vulnerabilities(?: to)? catalog)\b/i, points: 50, hardReject: true },
+  { label: 'generic strategy/guidance', regex: /\b(detection strategies|harder by design|best practices|guidance|defending against|security update)\b/i, points: 30, hardReject: true },
+  { label: 'analysis-style writeup', regex: /\b(dissecting|investigating|playbook|lessons learned|containing a)\b/i, points: 30, hardReject: true },
+  { label: 'vulnerability advisory only', regex: /\b(out-of-bounds|use-after-free|heap overflow|cvss|vulnerability)\b/i, points: 16 },
+];
+
+const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
 
-// ── CLI ────────────────────────────────────────────────────────────────────
 function parseArgs() {
   const args = process.argv.slice(2);
-  const parsed = { execute: false, days: 7, limit: 10 };
+  const parsed = { execute: false, days: 7, limit: 10, mode: 'all' };
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--execute') parsed.execute = true;
     if (args[i] === '--days' && args[i + 1]) parsed.days = parseInt(args[++i], 10);
     if (args[i] === '--limit' && args[i + 1]) parsed.limit = parseInt(args[++i], 10);
+    if (args[i] === '--mode' && args[i + 1]) parsed.mode = args[++i];
+  }
+
+  if (!['all', 'zero-day', 'incident'].includes(parsed.mode)) {
+    throw new Error(`Unsupported --mode ${parsed.mode}. Expected all, zero-day, or incident.`);
+  }
+  if (!Number.isFinite(parsed.days) || parsed.days < 1) {
+    throw new Error(`Invalid --days value ${parsed.days}. Expected integer >= 1.`);
+  }
+  if (!Number.isFinite(parsed.limit) || parsed.limit < 1) {
+    throw new Error(`Invalid --limit value ${parsed.limit}. Expected integer >= 1.`);
   }
 
   return parsed;
 }
 
-// ── Corpus CVE index ───────────────────────────────────────────────────────
-function buildCorpusCveIndex() {
-  const cves = new Set();
-  const dirs = ['incidents', 'campaigns', 'zero-days', 'threat-actors'];
+function ensureArray(value) {
+  if (value == null) return [];
+  return Array.isArray(value) ? value : [value];
+}
 
+function textValue(value) {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+  if (!value || typeof value !== 'object') return '';
+  if (typeof value['#text'] === 'string') return value['#text'];
+  return '';
+}
+
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&#8211;|&#x2013;/gi, '-')
+    .replace(/&#8212;|&#x2014;/gi, '-')
+    .replace(/&#8217;|&#x2019;/gi, "'")
+    .replace(/&#8220;|&#8221;|&#x201c;|&#x201d;/gi, '"')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeUrl(rawUrl) {
+  const value = String(rawUrl || '').trim();
+  if (!value) return '';
+
+  try {
+    const url = new URL(value);
+    url.hash = '';
+    if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
+      url.pathname = url.pathname.slice(0, -1);
+    }
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
+function normalizeTitleKey(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function slugify(text, maxLength = 90) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, maxLength)
+    .replace(/-+$/g, '');
+}
+
+function extractMarkdownUrls(content) {
+  return [...String(content || '').matchAll(/https?:\/\/[^\s)<>"']+/g)].map(match => normalizeUrl(match[0]));
+}
+
+function extractFrontmatterTitle(content) {
+  const text = String(content || '');
+  if (!text.startsWith('---\n')) return null;
+  const end = text.indexOf('\n---\n', 4);
+  if (end === -1) return null;
+  const frontmatter = text.slice(4, end);
+  const match = frontmatter.match(/^title:\s*(.+)$/m);
+  if (!match) return null;
+  return match[1].trim().replace(/^['"]|['"]$/g, '');
+}
+
+function extractStemFromPath(pathValue) {
+  const fileName = basename(String(pathValue || '').trim());
+  return fileName.endsWith('.md') ? fileName.slice(0, -3) : '';
+}
+
+function parseTimestamp(value) {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function isoDateOnly(value) {
+  const parsed = parseTimestamp(value);
+  if (!parsed) return null;
+  return parsed.toISOString().split('T')[0];
+}
+
+function clampScore(value) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function buildCorpusIndexes() {
+  const indexes = {
+    cves: new Set(),
+    urls: new Set(),
+    titleKeys: new Set(),
+    slugs: new Set(),
+  };
+
+  const dirs = ['incidents', 'campaigns', 'zero-days', 'threat-actors'];
   for (const dir of dirs) {
     const dirPath = resolve(CONTENT_DIR, dir);
     if (!existsSync(dirPath)) continue;
 
-    for (const file of readdirSync(dirPath).filter(f => f.endsWith('.md'))) {
-      const content = readFileSync(resolve(dirPath, file), 'utf8');
+    for (const file of readdirSync(dirPath).filter(name => name.endsWith('.md'))) {
+      const fullPath = resolve(dirPath, file);
+      const content = readFileSync(fullPath, 'utf8');
+      const stem = file.replace(/\.md$/, '');
+      indexes.slugs.add(stem);
+
+      const stemKey = normalizeTitleKey(stem.replace(/-/g, ' '));
+      if (stemKey) indexes.titleKeys.add(stemKey);
+
+      const title = extractFrontmatterTitle(content);
+      if (title) indexes.titleKeys.add(normalizeTitleKey(title));
+
+      for (const url of extractMarkdownUrls(content)) {
+        if (url) indexes.urls.add(url);
+      }
+
       const matches = content.matchAll(/CVE-\d{4}-\d+/g);
-      for (const m of matches) cves.add(m[0]);
+      for (const match of matches) indexes.cves.add(match[0].toUpperCase());
     }
   }
 
-  return cves;
+  return indexes;
 }
 
-// ── Existing task CVE index ────────────────────────────────────────────────
-function buildTaskCveIndex() {
-  const cves = new Set();
-  if (!existsSync(TASKS_DIR)) return cves;
+function buildTaskIndexes() {
+  const indexes = {
+    cves: new Set(),
+    urls: new Set(),
+    titleKeys: new Set(),
+    slugs: new Set(),
+    activeCount: 0,
+    byType: {},
+  };
 
-  for (const file of readdirSync(TASKS_DIR).filter(f => f.endsWith('.json'))) {
+  if (!existsSync(TASKS_DIR)) return indexes;
+
+  for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
     const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
-    // Check candidate_data.cves and candidate_data.cve
-    const cd = task.input?.candidate_data || {};
-    if (cd.cve) cves.add(cd.cve);
-    if (cd.cves) cd.cves.forEach(c => cves.add(c));
-    // Check topic for CVE mentions
-    const topicCves = (task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
-    for (const m of topicCves) cves.add(m[0]);
+    const type = String(task.type || 'unknown');
+    const status = String(task.status || 'pending');
+
+    if (ACTIVE_TASK_STATUSES.has(status)) {
+      indexes.activeCount += 1;
+      indexes.byType[type] = (indexes.byType[type] || 0) + 1;
+    }
+
+    const topic = task.input?.topic;
+    if (topic) indexes.titleKeys.add(normalizeTitleKey(topic));
+
+    const outputStem = extractStemFromPath(task.output?.file_pattern);
+    if (outputStem) {
+      indexes.slugs.add(outputStem);
+      indexes.titleKeys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
+    }
+
+    const targetStem = extractStemFromPath(task.input?.target_file);
+    if (targetStem) {
+      indexes.slugs.add(targetStem);
+      indexes.titleKeys.add(normalizeTitleKey(targetStem.replace(/-/g, ' ')));
+    }
+
+    for (const source of ensureArray(task.input?.sources)) {
+      const normalized = normalizeUrl(source);
+      if (normalized) indexes.urls.add(normalized);
+    }
+
+    const candidateData = task.input?.candidate_data || {};
+    const cve = candidateData.cve;
+    if (cve) indexes.cves.add(String(cve).toUpperCase());
+    for (const cveValue of ensureArray(candidateData.cves)) {
+      indexes.cves.add(String(cveValue).toUpperCase());
+    }
+
+    const topicCves = String(task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
+    for (const match of topicCves) indexes.cves.add(match[0].toUpperCase());
   }
 
-  return cves;
+  return indexes;
 }
 
-// ── Rejection memory (operator-vetoed CVEs) ────────────────────────────────
-// Compatibility-safe: missing or malformed file → warning + empty set.
-// Never hard-fails discovery. Operator workflow manages the file via
-// .github/workflows/pipeline-reject.yml. Re-eligibility = remove entry via PR.
-// See docs/PIPELINE.md — Rejection memory. TASK-2026-0067 / Slice 4c.
-function buildRejectionCveIndex() {
-  const cves = new Set();
+function buildIncidentCandidateKey(sourceKey, url) {
+  return `incident:${sourceKey}:${normalizeUrl(url)}`;
+}
+
+function buildRejectionIndexes() {
+  const indexes = {
+    cves: new Set(),
+    candidateKeys: new Set(),
+  };
   if (!existsSync(REJECTION_FILE)) {
     console.log('::warning::rejected-candidates.json not found; proceeding with empty rejection set');
-    return cves;
+    return indexes;
   }
+
   let data;
   try {
     data = JSON.parse(readFileSync(REJECTION_FILE, 'utf8'));
-  } catch (err) {
-    console.log(`::warning::rejected-candidates.json parse error (${err.message}); proceeding with empty rejection set`);
-    return cves;
+  } catch (error) {
+    console.log(`::warning::rejected-candidates.json parse error (${error.message}); proceeding with empty rejection set`);
+    return indexes;
   }
+
   if (!data || !Array.isArray(data.rejected)) {
     console.log('::warning::rejected-candidates.json malformed (missing rejected[] array); proceeding with empty rejection set');
-    return cves;
+    return indexes;
   }
+
   for (const entry of data.rejected) {
     if (entry && typeof entry.cve === 'string') {
-      cves.add(entry.cve.toUpperCase());
+      indexes.cves.add(entry.cve.toUpperCase());
+    }
+    if (entry && typeof entry.candidate_key === 'string' && entry.candidate_key.trim()) {
+      indexes.candidateKeys.add(entry.candidate_key.trim());
     }
   }
-  return cves;
+
+  return indexes;
 }
 
-// ── Next available task ID ─────────────────────────────────────────────────
 function getNextTaskId() {
   if (!existsSync(TASKS_DIR)) return 'TASK-2026-0071';
 
   const existing = readdirSync(TASKS_DIR)
-    .filter(f => f.match(/^TASK-\d{4}-\d{4}\.json$/))
-    .map(f => parseInt(f.match(/TASK-\d{4}-(\d{4})/)[1], 10))
+    .filter(file => file.match(/^TASK-\d{4}-\d{4}\.json$/))
+    .map(file => parseInt(file.match(/TASK-\d{4}-(\d{4})/)[1], 10))
     .sort((a, b) => b - a);
 
   const next = existing.length > 0 ? existing[0] + 1 : 71;
   return `TASK-2026-${String(next).padStart(4, '0')}`;
 }
 
-// ── Fetch with timeout ─────────────────────────────────────────────────────
 async function fetchJSON(url, timeout = 30000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
 
   try {
-    const res = await fetch(url, { signal: controller.signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    return await res.json();
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    return await response.json();
   } finally {
     clearTimeout(timer);
   }
 }
 
-// ── NVD CVSS enrichment ───────────────────────────────────────────────────
-async function fetchCvssScore(cveId) {
+async function fetchText(url, timeout = 30000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+
   try {
-    const res = await fetch(`${FEEDS.NVD_CVE}?cveId=${cveId}`, {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    return await response.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchCvssScore(cveId, baseUrl) {
+  try {
+    const response = await fetch(`${baseUrl}?cveId=${cveId}`, {
       signal: AbortSignal.timeout(15000),
     });
 
-    // Detect rate limiting and signal to caller
-    if (res.status === 403 || res.status === 429) {
+    if (response.status === 403 || response.status === 429) {
       return { rateLimited: true };
     }
+    if (!response.ok) return null;
 
-    if (!res.ok) return null;
-
-    const data = await res.json();
+    const data = await response.json();
     const vuln = data?.vulnerabilities?.[0]?.cve;
     if (!vuln) return null;
 
-    // Try CVSS 3.1 first, then 3.0, then 2.0
     const metrics = vuln.metrics || {};
     const v31 = metrics.cvssMetricV31?.[0]?.cvssData;
     const v30 = metrics.cvssMetricV30?.[0]?.cvssData;
     const v2 = metrics.cvssMetricV2?.[0]?.cvssData;
-
     const cvss = v31 || v30 || v2;
     if (!cvss) return null;
 
@@ -196,98 +398,171 @@ async function fetchCvssScore(cveId) {
       version: v31 ? '3.1' : v30 ? '3.0' : '2.0',
     };
   } catch {
-    return null; // NVD unavailable — not fatal
+    return null;
   }
 }
 
-// ── Score a candidate ──────────────────────────────────────────────────────
-function scoreCandidate(candidate) {
+function scoreZeroDayCandidate(candidate) {
   let score = 0;
 
-  // R1 source count (40%): KEV = 1 R1, NVD = 1 R1 → max 2 from our current feeds
   const r1Count = candidate.r1Sources || 0;
-  const r1Score = Math.min(r1Count / 2, 1) * 100; // 2+ R1 sources = full marks
-  score += r1Score * WEIGHTS.R1_SOURCE_COUNT;
+  const r1Score = Math.min(r1Count / 2, 1) * 100;
+  score += r1Score * ZERO_DAY_WEIGHTS.R1_SOURCE_COUNT;
+  score += (candidate.inKev ? 100 : 0) * ZERO_DAY_WEIGHTS.CISA_KEV;
 
-  // CISA KEV (20%): binary — is it in KEV?
-  score += (candidate.inKev ? 100 : 0) * WEIGHTS.CISA_KEV;
-
-  // CVSS ≥ 7.0 (15%): scaled 0-100 based on CVSS score
   if (candidate.cvss) {
     const cvssScore = Math.min(candidate.cvss.score / 10, 1) * 100;
-    score += cvssScore * WEIGHTS.CVSS_HIGH;
+    score += cvssScore * ZERO_DAY_WEIGHTS.CVSS_HIGH;
   }
 
-  // Cross-source corroboration (15%): CWE data, notes with multiple URLs
-  const noteUrls = (candidate.kev.notes || '').split(';').filter(s => s.trim().startsWith('http')).length;
+  const noteUrls = (candidate.kev.notes || '')
+    .split(';')
+    .filter(segment => segment.trim().startsWith('http'))
+    .length;
   const crossScore = Math.min((noteUrls + (candidate.kev.cwes?.length || 0)) / 3, 1) * 100;
-  score += crossScore * WEIGHTS.CROSS_SOURCE;
+  score += crossScore * ZERO_DAY_WEIGHTS.CROSS_SOURCE;
+  score += (candidate.inKev ? 100 : 0) * ZERO_DAY_WEIGHTS.ACTIVE_EXPLOITATION;
 
-  // Active exploitation (10%): KEV implies active exploitation
-  score += (candidate.inKev ? 100 : 0) * WEIGHTS.ACTIVE_EXPLOITATION;
-
-  candidate.score = Math.round(score);
-
-  // Auto-certify check
+  candidate.score = clampScore(score);
   candidate.autoCertify = (
     candidate.score >= AUTO_CERTIFY_THRESHOLD &&
     (candidate.r1Sources || 0) >= 2 &&
     (candidate.inKev || (candidate.cvss && candidate.cvss.score >= 7.0))
   );
-
   return candidate;
 }
 
-// ── Determine article type ─────────────────────────────────────────────────
-function determineArticleType(kevEntry) {
-  // KEV entries are vulnerabilities → zero-day articles
-  // If knownRansomwareCampaignUse === "Known", also consider incident
-  if (kevEntry.knownRansomwareCampaignUse === 'Known') {
-    return 'zero-day'; // Still zero-day, but notes should mention ransomware use
+function evaluateIncidentItem(sourceKey, item) {
+  const combined = `${item.title} ${item.summary}`.trim();
+  const positiveHits = INCIDENT_STRONG_PATTERNS.filter(entry => entry.regex.test(combined));
+  const boundaryHits = INCIDENT_BOUNDARY_PATTERNS.filter(entry => entry.regex.test(combined));
+  const negativeHits = INCIDENT_NEGATIVE_PATTERNS.filter(entry => entry.regex.test(combined));
+
+  if (sourceKey === 'cisa_alerts') {
+    if (item.link.includes('/ics-advisories/')) {
+      return { accepted: false, score: 0, reason: 'ICS advisory excluded', positiveHits: [], boundaryHits: [], negativeHits: [] };
+    }
+    if (!item.link.includes('/alerts/') && !item.link.includes('/cybersecurity-advisories/')) {
+      return { accepted: false, score: 0, reason: 'Non-alert CISA entry excluded', positiveHits: [], boundaryHits: [], negativeHits: [] };
+    }
   }
+  if (sourceKey === 'ncsc_news' && !item.link.includes('/news/')) {
+    return { accepted: false, score: 0, reason: 'Non-news NCSC entry excluded', positiveHits: [], boundaryHits: [], negativeHits: [] };
+  }
+
+  const hardReject = negativeHits.find(entry => entry.hardReject);
+  if (hardReject) {
+    return {
+      accepted: false,
+      score: 0,
+      reason: `Hard reject: ${hardReject.label}`,
+      positiveHits: positiveHits.map(entry => entry.label),
+      boundaryHits: boundaryHits.map(entry => entry.label),
+      negativeHits: negativeHits.map(entry => entry.label),
+    };
+  }
+
+  let score = sourceKey === 'cisa_alerts' ? 48 : sourceKey === 'ncsc_news' ? 46 : 34;
+  for (const hit of positiveHits) score += hit.points;
+  for (const hit of boundaryHits) score += hit.points;
+  for (const hit of negativeHits) score -= hit.points;
+
+  if (sourceKey === 'cisa_alerts' && item.link.includes('/alerts/')) score += 10;
+  if (sourceKey === 'ncsc_news' && /\b(alert:|warns?|advises?)\b/i.test(item.title)) score += 6;
+
+  const clamped = clampScore(score);
+  return {
+    accepted: positiveHits.length > 0 && boundaryHits.length > 0 && clamped >= 60,
+    score: clamped,
+    reason: positiveHits.length > 0 && boundaryHits.length > 0 ? 'signal-threshold-met' : 'insufficient-incident-boundary',
+    positiveHits: positiveHits.map(entry => entry.label),
+    boundaryHits: boundaryHits.map(entry => entry.label),
+    negativeHits: negativeHits.map(entry => entry.label),
+  };
+}
+
+function determineArticleType(kevEntry) {
+  if (kevEntry.knownRansomwareCampaignUse === 'Known') return 'zero-day';
   return 'zero-day';
 }
 
-// ── Generate slug ──────────────────────────────────────────────────────────
-function generateSlug(kevEntry) {
-  const vendor = kevEntry.vendorProject.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const product = kevEntry.product.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const cve = kevEntry.cveID.toLowerCase();
-  // Truncate to reasonable length
-  const base = `${vendor}-${product}-${cve}`.substring(0, 80);
-  return base.replace(/-+$/, '');
+function generateZeroDaySlug(kevEntry) {
+  const vendor = slugify(kevEntry.vendorProject, 35);
+  const product = slugify(kevEntry.product, 35);
+  const cve = String(kevEntry.cveID || '').toLowerCase();
+  const base = `${vendor}-${product}-${cve}`;
+  return base.slice(0, 80).replace(/-+$/g, '');
 }
 
-// ── Generate exploitId ─────────────────────────────────────────────────────
+function generateIncidentSlug(candidate) {
+  const base = slugify(candidate.title, 72);
+  const year = candidate.publishedAt ? String(new Date(candidate.publishedAt).getUTCFullYear()) : String(new Date().getUTCFullYear());
+  const withYear = base.includes(year) ? base : `${base}-${year}`;
+  return withYear.slice(0, 90).replace(/-+$/g, '');
+}
+
 function generateExploitId(cveId, existingIds) {
   const cveYear = cveId.match(/CVE-(\d{4})/)?.[1] || new Date().getFullYear().toString();
-
-  // Find next available sequence for this year
   const yearIds = existingIds
     .filter(id => id.includes(`TP-EXP-${cveYear}-`))
     .map(id => parseInt(id.match(/TP-EXP-\d{4}-(\d{4})/)?.[1] || '0', 10));
-
   const next = yearIds.length > 0 ? Math.max(...yearIds) + 1 : 1;
   return `TP-EXP-${cveYear}-${String(next).padStart(4, '0')}`;
 }
 
-// ── Build task JSON ────────────────────────────────────────────────────────
-function buildTask(candidate, taskId, exploitId) {
-  const slug = generateSlug(candidate.kev);
-  const cveYear = candidate.kev.cveID.match(/CVE-(\d{4})/)?.[1] || '????';
+function guessVulnType(kev) {
+  const name = `${kev.vulnerabilityName} ${kev.shortDescription}`.toLowerCase();
+  if (name.includes('remote code execution') || name.includes('rce')) return 'Remote Code Execution';
+  if (name.includes('privilege escalation')) return 'Privilege Escalation';
+  if (name.includes('authentication bypass') || name.includes('auth bypass')) return 'Authentication Bypass';
+  if (name.includes('sql injection')) return 'SQL Injection';
+  if (name.includes('cross-site scripting') || name.includes('xss')) return 'Cross-Site Scripting';
+  if (name.includes('deserialization')) return 'Deserialization';
+  if (name.includes('path traversal') || name.includes('directory traversal')) return 'Path Traversal';
+  if (name.includes('buffer overflow') || name.includes('heap overflow') || name.includes('stack overflow')) return 'Buffer Overflow';
+  if (name.includes('information disclosure') || name.includes('information leak')) return 'Information Disclosure';
+  if (name.includes('denial of service') || name.includes('dos')) return 'Denial of Service';
+  if (name.includes('command injection') || name.includes('os command')) return 'Command Injection';
+  if (name.includes('use-after-free') || name.includes('memory corruption')) return 'Memory Corruption';
+  if (name.includes('code execution')) return 'Remote Code Execution';
+  if (name.includes('arbitrary file')) return 'Arbitrary File Access';
+  return 'Unclassified';
+}
 
+function collectExploitIds() {
+  const ids = [];
+  const zeroDayDir = resolve(CONTENT_DIR, 'zero-days');
+  if (existsSync(zeroDayDir)) {
+    for (const file of readdirSync(zeroDayDir).filter(name => name.endsWith('.md'))) {
+      const content = readFileSync(resolve(zeroDayDir, file), 'utf8');
+      const match = content.match(/exploitId:\s*["']?(TP-EXP-\d{4}-\d{4})/);
+      if (match) ids.push(match[1]);
+    }
+  }
+
+  if (existsSync(TASKS_DIR)) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+      const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
+      const exploitId = task.input?.candidate_data?.exploitId;
+      if (exploitId) ids.push(exploitId);
+    }
+  }
+
+  return ids;
+}
+
+function buildZeroDayTask(candidate, taskId, exploitId) {
+  const slug = generateZeroDaySlug(candidate.kev);
   const sourcesSet = new Set([
-    `https://www.cisa.gov/known-exploited-vulnerabilities-catalog`,
+    'https://www.cisa.gov/known-exploited-vulnerabilities-catalog',
     `https://nvd.nist.gov/vuln/detail/${candidate.kev.cveID}`,
   ]);
 
-  // Add any URLs from KEV notes (deduped)
-  const noteUrls = (candidate.kev.notes || '').split(';')
-    .map(s => s.trim())
-    .filter(s => s.startsWith('http'));
-  noteUrls.forEach(u => sourcesSet.add(u));
-
-  const sources = [...sourcesSet];
+  const noteUrls = (candidate.kev.notes || '')
+    .split(';')
+    .map(segment => segment.trim())
+    .filter(segment => segment.startsWith('http'));
+  noteUrls.forEach(url => sourcesSet.add(url));
 
   const notes = [
     `CISA KEV entry added ${candidate.kev.dateAdded}.`,
@@ -296,22 +571,17 @@ function buildTask(candidate, taskId, exploitId) {
       ? 'Known ransomware campaign use — mention in article body.'
       : null,
     candidate.cvss
-      ? `CVSS ${candidate.cvss.version}: ${candidate.cvss.score} (${candidate.cvss.severity})`
+      ? `CVSS ${candidate.cvss.version}: ${candidate.cvss.score} (${candidate.cvss.severity}).`
       : null,
-    `Discovery score: ${candidate.score}/100${candidate.autoCertify ? ' (auto-certify eligible)' : ''}.`,
+    `Discovery score: ${candidate.score}/100${candidate.autoCertify ? ' (auto-certify eligible).' : '.'}`,
   ].filter(Boolean).join(' ');
 
-  // Task shape aligned with dispatcher expectations (stage-based filtering,
-  // stale-lock fields, history transitions). Matches the structure the
-  // pre-convergence inline workflow in .github/workflows/pipeline-discovery.yml
-  // produced, so tasks emitted by this script are pickable by the dispatcher
-  // without any dispatcher-side changes.
   const nowIso = new Date().toISOString();
 
   return {
     task_id: taskId,
     stage: 'draft',
-    type: 'zero-day',
+    type: determineArticleType(candidate.kev),
     priority: candidate.score >= 80 ? 'P0' : candidate.score >= 60 ? 'P1' : 'P2',
     status: 'pending',
     created: nowIso,
@@ -322,16 +592,16 @@ function buildTask(candidate, taskId, exploitId) {
     locked_at: null,
     input: {
       topic: `${candidate.kev.vulnerabilityName} (${candidate.kev.cveID})`,
-      sources,
+      sources: [...sourcesSet],
       candidate_data: {
         cve: candidate.kev.cveID,
         cves: [candidate.kev.cveID],
-        exploitId: exploitId,
+        exploitId,
         type: guessVulnType(candidate.kev),
         platform: `${candidate.kev.vendorProject} ${candidate.kev.product}`,
         severity: candidate.cvss
           ? (candidate.cvss.score >= 9 ? 'critical' : candidate.cvss.score >= 7 ? 'high' : candidate.cvss.score >= 4 ? 'medium' : 'low')
-          : 'high', // Default high since it's in KEV
+          : 'high',
         cisaKev: true,
         disclosedDate: candidate.kev.dateAdded,
         cwes: candidate.kev.cwes || [],
@@ -343,8 +613,6 @@ function buildTask(candidate, taskId, exploitId) {
       'DATA-STANDARDS-v1.0.md',
       'EDITORIAL-WORKFLOW-SPEC.md §14A',
     ],
-    // Canonical write shape: `acceptance_criteria` (not `acceptance`) per
-    // TASK-2026-0066 / Slice 4b. Readers tolerate both via getAcceptance().
     acceptance_criteria: {
       frontmatter_valid: true,
       min_sources: 3,
@@ -381,213 +649,415 @@ function buildTask(candidate, taskId, exploitId) {
   };
 }
 
-// ── Guess vulnerability type from KEV data ─────────────────────────────────
-function guessVulnType(kev) {
-  const name = (kev.vulnerabilityName + ' ' + kev.shortDescription).toLowerCase();
-  if (name.includes('remote code execution') || name.includes('rce')) return 'Remote Code Execution';
-  if (name.includes('privilege escalation')) return 'Privilege Escalation';
-  if (name.includes('authentication bypass') || name.includes('auth bypass')) return 'Authentication Bypass';
-  if (name.includes('sql injection')) return 'SQL Injection';
-  if (name.includes('cross-site scripting') || name.includes('xss')) return 'Cross-Site Scripting';
-  if (name.includes('deserialization')) return 'Deserialization';
-  if (name.includes('path traversal') || name.includes('directory traversal')) return 'Path Traversal';
-  if (name.includes('buffer overflow') || name.includes('heap overflow') || name.includes('stack overflow')) return 'Buffer Overflow';
-  if (name.includes('information disclosure') || name.includes('information leak')) return 'Information Disclosure';
-  if (name.includes('denial of service') || name.includes('dos')) return 'Denial of Service';
-  if (name.includes('command injection') || name.includes('os command')) return 'Command Injection';
-  if (name.includes('use-after-free') || name.includes('memory corruption')) return 'Memory Corruption';
-  if (name.includes('code execution')) return 'Remote Code Execution';
-  if (name.includes('arbitrary file')) return 'Arbitrary File Access';
-  return 'Unclassified';
+function buildIncidentTask(candidate, taskId) {
+  const slug = generateIncidentSlug(candidate);
+  const nowIso = new Date().toISOString();
+  const notes = [
+    `Auto-discovered from ${candidate.sourceLabel} on ${candidate.publishedDate}.`,
+    candidate.summary ? `Source summary: ${candidate.summary.slice(0, 320)}${candidate.summary.length > 320 ? '…' : ''}` : null,
+    candidate.positiveHits.length > 0 ? `Incident signals: ${candidate.positiveHits.join(', ')}.` : null,
+    candidate.boundaryHits.length > 0 ? `Boundary signals: ${candidate.boundaryHits.join(', ')}.` : null,
+    candidate.negativeHits.length > 0 ? `Watch-outs: ${candidate.negativeHits.join(', ')}.` : null,
+    'Treat this as incident intake first: keep the article grounded in the concrete event described by the sources, and only elevate to a campaign or actor follow-on if the evidence supports it.',
+    `Discovery score: ${candidate.score}/100.`,
+  ].filter(Boolean).join(' ');
+
+  return {
+    task_id: taskId,
+    stage: 'draft',
+    type: 'incident',
+    priority: candidate.score >= 85 ? 'P0' : candidate.score >= 65 ? 'P1' : 'P2',
+    status: 'pending',
+    created: nowIso,
+    updated: nowIso,
+    source: 'auto_discovery',
+    submitted_by: 'pipeline-discovery',
+    locked_by: null,
+    locked_at: null,
+    input: {
+      topic: candidate.title,
+      sources: [candidate.url],
+      candidate_data: {
+        discovery_type: 'incident',
+        candidate_key: candidate.candidateKey,
+        source_url: candidate.url,
+        source_feed: candidate.sourceKey,
+        source_label: candidate.sourceLabel,
+        published_at: candidate.publishedAt,
+        discovered_signals: candidate.positiveHits,
+        boundary_signals: candidate.boundaryHits,
+        feed_categories: candidate.categories,
+      },
+      notes,
+    },
+    specs: [
+      'DATA-STANDARDS-v1.0.md',
+      'EDITORIAL-WORKFLOW-SPEC.md §14A',
+    ],
+    acceptance_criteria: {
+      frontmatter_valid: true,
+      min_sources: 3,
+      min_h2_sections: 5,
+      min_mitre_mappings: 1,
+      review_status: 'draft_ai',
+      schema_validation: 'pass',
+      astro_build: true,
+    },
+    depends_on: [],
+    preconditions: ['editorial queue depth < 50'],
+    output: {
+      file_pattern: `site/src/content/incidents/${slug}.md`,
+      branch: `pipeline/${taskId}`,
+      pr: true,
+    },
+    discovery: {
+      feed: candidate.sourceKey,
+      score: candidate.score,
+      auto_certify: false,
+      discovered_at: nowIso,
+      published_at: candidate.publishedAt,
+    },
+    history: [
+      {
+        timestamp: nowIso,
+        action: 'created',
+        from: 'none',
+        to: 'pending',
+        agent: 'pipeline-discovery',
+        note: `Auto-discovered incident candidate from ${candidate.sourceLabel} (score: ${candidate.score})`,
+      },
+    ],
+  };
 }
 
-// ── Collect existing exploitIds ────────────────────────────────────────────
-function collectExploitIds() {
-  const ids = [];
-  const zdDir = resolve(CONTENT_DIR, 'zero-days');
-  if (!existsSync(zdDir)) return ids;
+async function fetchRssItems(sourceKey, sourceConfig) {
+  const xml = await fetchText(sourceConfig.url);
+  const parsed = RSS_PARSER.parse(xml);
+  const items = ensureArray(parsed?.rss?.channel?.item);
 
-  for (const file of readdirSync(zdDir).filter(f => f.endsWith('.md'))) {
-    const content = readFileSync(resolve(zdDir, file), 'utf8');
-    const match = content.match(/exploitId:\s*["']?(TP-EXP-\d{4}-\d{4})/);
-    if (match) ids.push(match[1]);
-  }
-
-  // Also check pending tasks
-  if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(f => f.endsWith('.json'))) {
-      const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
-      const eid = task.input?.candidate_data?.exploitId;
-      if (eid) ids.push(eid);
-    }
-  }
-
-  return ids;
+  return items.map(item => ({
+    sourceKey,
+    title: stripHtml(textValue(item.title)),
+    link: normalizeUrl(textValue(item.link)),
+    published: textValue(item.pubDate),
+    summary: stripHtml(textValue(item.description) || textValue(item.summary) || textValue(item['content:encoded'])),
+    categories: ensureArray(item.category).map(textValue).map(stripHtml).filter(Boolean),
+  })).filter(item => item.title && item.link);
 }
 
-// ── Main ───────────────────────────────────────────────────────────────────
-async function main() {
-  const opts = parseArgs();
+function computeHeadroom(config, taskIndexes, type, requestedLimit) {
+  const editorialMax = config.queues?.editorial?.max_pending ?? requestedLimit;
+  const globalHeadroom = Math.max(0, editorialMax - taskIndexes.activeCount);
+  const typedMax = config.queues?.by_type?.[type]?.max_pending;
+  const typedHeadroom = typeof typedMax === 'number'
+    ? Math.max(0, typedMax - (taskIndexes.byType[type] || 0))
+    : requestedLimit;
+  return Math.min(requestedLimit, globalHeadroom, typedHeadroom);
+}
 
-  console.log(`\n  Threatpedia Discovery Pipeline\n`);
-  console.log(`  Mode:      ${opts.execute ? 'EXECUTE (will write files)' : 'DRY RUN (preview only)'}`);
-  console.log(`  Lookback:  ${opts.days} days`);
-  console.log(`  Limit:     ${opts.limit} tasks max\n`);
+async function buildZeroDayCandidates(config, opts, indexes, rejectedCves) {
+  const feedConfig = config.discovery_sources?.cisa_kev;
+  const nvdConfig = config.discovery_sources?.nvd;
+  if (!feedConfig?.enabled) return [];
 
-  // ── Step 1: Build dedup indexes ──────────────────────────────────────────
-  console.log('  [1/5] Building corpus CVE index...');
-  const corpusCves = buildCorpusCveIndex();
-  const taskCves = buildTaskCveIndex();
-  const rejectedCves = buildRejectionCveIndex();
-  const allKnownCves = new Set([...corpusCves, ...taskCves]);
-  console.log(`         ${corpusCves.size} CVEs in corpus, ${taskCves.size} in pending tasks`);
-  console.log(`         ${rejectedCves.size} operator-rejected CVEs (rejection memory)`);
-  console.log(`         ${allKnownCves.size} unique CVEs in corpus+tasks (existing dedup set)\n`);
+  const headroom = computeHeadroom(config, indexes, 'zero-day', opts.limit);
+  if (headroom <= 0) {
+    console.log('         zero-day headroom exhausted — skipping zero-day discovery');
+    return [];
+  }
 
-  // ── Step 2: Fetch CISA KEV ───────────────────────────────────────────────
-  console.log('  [2/5] Fetching CISA KEV catalog...');
+  console.log('  [2/6] Fetching CISA KEV catalog...');
   let kevData;
   try {
-    kevData = await fetchJSON(FEEDS.CISA_KEV);
-  } catch (err) {
-    console.error(`  ERROR: Failed to fetch KEV: ${err.message}`);
-    process.exit(1);
+    kevData = await fetchJSON(feedConfig.url);
+  } catch (error) {
+    console.error(`  ERROR: Failed to fetch KEV: ${error.message}`);
+    throw error;
   }
   console.log(`         ${kevData.count} total vulnerabilities in catalog`);
   console.log(`         Catalog version: ${kevData.catalogVersion}\n`);
 
-  // ── Step 3: Filter by date + dedup ───────────────────────────────────────
-  console.log('  [3/5] Filtering and deduplicating...');
+  console.log('  [3/6] Filtering and deduplicating zero-day candidates...');
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - opts.days);
   const cutoffStr = cutoffDate.toISOString().split('T')[0];
 
-  // Tally and log rejection skips separately for auditability.
   let rejectedSkipped = 0;
   const candidates = kevData.vulnerabilities
-    .filter(v => v.dateAdded >= cutoffStr)
-    .filter(v => !allKnownCves.has(v.cveID))
-    .filter(v => {
-      if (rejectedCves.has(String(v.cveID || '').toUpperCase())) {
-        console.log(`::notice::Skipped ${v.cveID} (in rejection memory)`);
-        rejectedSkipped++;
+    .filter(entry => entry.dateAdded >= cutoffStr)
+    .filter(entry => !indexes.cves.has(String(entry.cveID || '').toUpperCase()))
+    .filter(entry => {
+      if (rejectedCves.has(String(entry.cveID || '').toUpperCase())) {
+        console.log(`::notice::Skipped ${entry.cveID} (in rejection memory)`);
+        rejectedSkipped += 1;
         return false;
       }
       return true;
     })
-    .map(v => ({
-      kev: v,
+    .map(entry => ({
+      type: 'zero-day',
+      kev: entry,
       inKev: true,
-      r1Sources: 1, // KEV itself is 1 R1 source
+      r1Sources: 1,
       cvss: null,
       score: 0,
       autoCertify: false,
     }));
 
-  const recentTotal = kevData.vulnerabilities.filter(v => v.dateAdded >= cutoffStr).length;
-  const dupes = recentTotal - candidates.length - rejectedSkipped;
+  const recentTotal = kevData.vulnerabilities.filter(entry => entry.dateAdded >= cutoffStr).length;
+  const duplicateCount = recentTotal - candidates.length - rejectedSkipped;
   console.log(`         ${recentTotal} entries in last ${opts.days} days`);
-  console.log(`         ${dupes} already in corpus/tasks (deduped)`);
+  console.log(`         ${duplicateCount} already in corpus/tasks (deduped)`);
   console.log(`         ${rejectedSkipped} skipped via rejection memory`);
-  console.log(`         ${candidates.length} new candidates\n`);
+  console.log(`         ${candidates.length} new zero-day candidates\n`);
 
-  if (candidates.length === 0) {
-    console.log('  No new candidates found. Nothing to do.\n');
-    return;
+  if (candidates.length === 0) return [];
+  if (!nvdConfig?.enabled || !nvdConfig?.base_url) {
+    console.log('  [4/6] NVD enrichment disabled in config — scoring KEV candidates without CVSS enrichment\n');
+    return candidates
+      .map(scoreZeroDayCandidate)
+      .sort((left, right) => right.score - left.score)
+      .slice(0, headroom);
   }
 
-  // ── Step 4: Enrich with NVD CVSS ─────────────────────────────────────────
-  console.log(`  [4/5] Enriching ${Math.min(candidates.length, opts.limit)} candidates with NVD CVSS data...`);
-
-  // Only enrich up to limit (NVD has rate limits)
-  const toEnrich = candidates.slice(0, opts.limit * 2); // Fetch extra in case some fail
+  console.log(`  [4/6] Enriching ${Math.min(candidates.length, headroom * 2)} zero-day candidates with NVD CVSS data...`);
+  const toEnrich = candidates.slice(0, headroom * 2);
   let enriched = 0;
   let rateLimited = false;
 
   for (const candidate of toEnrich) {
     if (rateLimited) break;
-
-    const cvss = await fetchCvssScore(candidate.kev.cveID);
+    const cvss = await fetchCvssScore(candidate.kev.cveID, nvdConfig.base_url);
     if (cvss?.rateLimited) {
       rateLimited = true;
-      console.log(`         ⚠ NVD rate limited — stopping enrichment early`);
+      console.log('         ⚠ NVD rate limited — stopping enrichment early');
       break;
     }
     if (cvss) {
       candidate.cvss = cvss;
-      candidate.r1Sources = 2; // KEV + NVD = 2 R1 sources
-      enriched++;
+      candidate.r1Sources = 2;
+      enriched += 1;
     }
-
-    // NVD rate limit: 5 req / 30 sec without API key
-    await new Promise(r => setTimeout(r, 6500));
+    await new Promise(resolveDelay => setTimeout(resolveDelay, 6500));
   }
 
   console.log(`         Enriched ${enriched}/${toEnrich.length} with CVSS data${rateLimited ? ' (rate limited)' : ''}\n`);
 
-  // ── Step 5: Score and rank ───────────────────────────────────────────────
-  console.log('  [5/5] Scoring candidates...\n');
+  return candidates
+    .map(scoreZeroDayCandidate)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, headroom);
+}
 
-  const scored = candidates
-    .map(c => scoreCandidate(c))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, opts.limit);
+async function buildIncidentCandidates(config, opts, indexes, rejectedCandidateKeys) {
+  const incidentSources = Object.entries(config.discovery_sources || {})
+    .filter(([, sourceConfig]) => sourceConfig?.enabled && sourceConfig?.kind === 'incident');
 
-  // ── Output ───────────────────────────────────────────────────────────────
-  console.log(`  ${'Score'.padEnd(6)} ${'CVE'.padEnd(18)} ${'CVSS'.padEnd(6)} ${'Type'.padEnd(25)} ${'Auto'.padEnd(5)} Vendor / Product`);
-  console.log(`  ${'─'.repeat(6)} ${'─'.repeat(18)} ${'─'.repeat(6)} ${'─'.repeat(25)} ${'─'.repeat(5)} ${'─'.repeat(40)}`);
+  if (incidentSources.length === 0) return [];
 
-  for (const c of scored) {
-    const cvssStr = c.cvss ? c.cvss.score.toFixed(1) : '  — ';
-    const vulnType = guessVulnType(c.kev).substring(0, 24);
-    const autoCert = c.autoCertify ? '  ✓ ' : '    ';
-    console.log(`  ${String(c.score).padEnd(6)} ${c.kev.cveID.padEnd(18)} ${cvssStr.padEnd(6)} ${vulnType.padEnd(25)} ${autoCert} ${c.kev.vendorProject} ${c.kev.product}`);
+  const headroom = computeHeadroom(config, indexes, 'incident', opts.limit);
+  if (headroom <= 0) {
+    console.log('  [2/6] Incident headroom exhausted — skipping incident discovery\n');
+    return [];
+  }
+
+  console.log(`  [2/6] Fetching incident feeds (${incidentSources.length} configured)...`);
+
+  const candidates = [];
+  const seenUrls = new Set(indexes.urls);
+  const seenTitleKeys = new Set(indexes.titleKeys);
+  const seenSlugs = new Set(indexes.slugs);
+  const seenCandidateKeys = new Set(rejectedCandidateKeys);
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - opts.days);
+
+  for (const [sourceKey, sourceConfig] of incidentSources) {
+    if (sourceConfig.format !== 'rss') {
+      console.log(`         Skipping ${sourceKey} — unsupported format ${sourceConfig.format}`);
+      continue;
+    }
+
+    let items;
+    try {
+      items = await fetchRssItems(sourceKey, sourceConfig);
+    } catch (error) {
+      console.log(`         WARN ${sourceKey}: ${error.message}`);
+      continue;
+    }
+
+    const sourceCandidates = [];
+    const sourceLocalKeys = new Set();
+    for (const item of items) {
+      const publishedAt = parseTimestamp(item.published);
+      if (!publishedAt || publishedAt < cutoffDate) continue;
+
+      const evaluation = evaluateIncidentItem(sourceKey, item);
+      if (!evaluation.accepted) continue;
+
+      const titleKey = normalizeTitleKey(item.title);
+      const slug = generateIncidentSlug({ title: item.title, publishedAt: publishedAt.toISOString() });
+      const candidateKey = buildIncidentCandidateKey(sourceKey, item.link);
+      if (seenCandidateKeys.has(candidateKey)) continue;
+      if (sourceLocalKeys.has(candidateKey)) continue;
+      if (seenUrls.has(item.link)) continue;
+      if (seenTitleKeys.has(titleKey)) continue;
+      if (seenSlugs.has(slug)) continue;
+      sourceLocalKeys.add(candidateKey);
+
+      sourceCandidates.push({
+        type: 'incident',
+        sourceKey,
+        sourceLabel: sourceConfig.label || sourceKey,
+        candidateKey,
+        title: item.title,
+        url: item.link,
+        publishedAt: publishedAt.toISOString(),
+        publishedDate: publishedAt.toISOString().split('T')[0],
+        summary: item.summary,
+        categories: item.categories,
+        score: evaluation.score,
+        autoCertify: false,
+        positiveHits: evaluation.positiveHits,
+        boundaryHits: evaluation.boundaryHits,
+        negativeHits: evaluation.negativeHits,
+      });
+    }
+
+    sourceCandidates
+      .sort((left, right) => {
+        if (right.score !== left.score) return right.score - left.score;
+        return String(right.publishedAt).localeCompare(String(left.publishedAt));
+      })
+      .slice(0, sourceConfig.limit_per_run || headroom)
+      .forEach(candidate => {
+        seenCandidateKeys.add(candidate.candidateKey);
+        seenUrls.add(candidate.url);
+        seenTitleKeys.add(normalizeTitleKey(candidate.title));
+        seenSlugs.add(generateIncidentSlug(candidate));
+        candidates.push(candidate);
+      });
+
+    console.log(`         ${sourceConfig.label || sourceKey}: ${sourceCandidates.length} scored candidates`);
   }
 
   console.log();
 
-  // ── Create tasks ─────────────────────────────────────────────────────────
-  if (opts.execute) {
-    console.log('  Creating pipeline tasks...\n');
-    const existingExploitIds = collectExploitIds();
-    let nextIdNum = parseInt(getNextTaskId().match(/(\d{4})$/)[1], 10);
+  return candidates
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return String(right.publishedAt).localeCompare(String(left.publishedAt));
+    })
+    .slice(0, headroom);
+}
 
-    for (const candidate of scored) {
-      const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
-      const exploitId = generateExploitId(candidate.kev.cveID, existingExploitIds);
-      existingExploitIds.push(exploitId); // Track to avoid collisions within this run
-      const task = buildTask(candidate, taskId, exploitId);
+function renderCandidateTable(candidates) {
+  console.log(`  ${'Score'.padEnd(6)} ${'Type'.padEnd(11)} ${'Ref'.padEnd(24)} ${'Auto'.padEnd(5)} Topic`);
+  console.log(`  ${'─'.repeat(6)} ${'─'.repeat(11)} ${'─'.repeat(24)} ${'─'.repeat(5)} ${'─'.repeat(64)}`);
 
-      const filePath = resolve(TASKS_DIR, `${taskId}.json`);
-      writeFileSync(filePath, JSON.stringify(task, null, 2) + '\n');
-      console.log(`  ✓ ${taskId} — ${candidate.kev.cveID} → ${exploitId} (score: ${candidate.score}${candidate.autoCertify ? ', auto-certify' : ''})`);
-
-      nextIdNum++;
-    }
-
-    console.log(`\n  Created ${scored.length} task(s) in ${TASKS_DIR}`);
-    console.log(`  Next: node scripts/pipeline-run-task.mjs --list\n`);
-  } else {
-    console.log(`  DRY RUN — ${scored.length} task(s) would be created.`);
-    console.log(`  Run with --execute to write task files.\n`);
+  for (const candidate of candidates) {
+    const type = candidate.type.padEnd(11);
+    const ref = candidate.type === 'zero-day'
+      ? String(candidate.kev.cveID).padEnd(24)
+      : `${candidate.sourceKey}:${candidate.publishedDate}`.slice(0, 24).padEnd(24);
+    const auto = candidate.autoCertify ? '  ✓ ' : '    ';
+    const topic = candidate.type === 'zero-day'
+      ? `${candidate.kev.vendorProject} ${candidate.kev.product} ${candidate.kev.cveID}`
+      : candidate.title;
+    console.log(`  ${String(candidate.score).padEnd(6)} ${type} ${ref} ${auto} ${topic}`);
   }
 
-  // ── Summary ──────────────────────────────────────────────────────────────
-  const autoCount = scored.filter(c => c.autoCertify).length;
-  const reviewCount = scored.length - autoCount;
-
-  console.log('  ─── Summary ───────────────────────────────────────────');
-  console.log(`  Candidates found:    ${candidates.length}`);
-  console.log(`  Tasks to create:     ${scored.length}`);
-  console.log(`  Auto-certify (≥80):  ${autoCount}`);
-  console.log(`  Needs review (<80):  ${reviewCount}`);
-  if (scored.length > 0) {
-    console.log(`  Score range:         ${scored[scored.length - 1].score}–${scored[0].score}`);
-  }
   console.log();
 }
 
-main().catch(err => {
-  console.error(`\n  FATAL: ${err.message}\n`);
+async function main() {
+  const opts = parseArgs();
+  const config = loadPipelineConfig();
+  const corpusIndexes = buildCorpusIndexes();
+  const taskIndexes = buildTaskIndexes();
+  const rejectionIndexes = buildRejectionIndexes();
+
+  const knownIndexes = {
+    cves: new Set([...corpusIndexes.cves, ...taskIndexes.cves]),
+    urls: new Set([...corpusIndexes.urls, ...taskIndexes.urls]),
+    titleKeys: new Set([...corpusIndexes.titleKeys, ...taskIndexes.titleKeys]),
+    slugs: new Set([...corpusIndexes.slugs, ...taskIndexes.slugs]),
+    activeCount: taskIndexes.activeCount,
+    byType: taskIndexes.byType,
+  };
+
+  console.log('\n  Threatpedia Discovery Pipeline\n');
+  console.log(`  Mode:      ${opts.execute ? 'EXECUTE (will write files)' : 'DRY RUN (preview only)'}`);
+  console.log(`  Lane:      ${opts.mode}`);
+  console.log(`  Lookback:  ${opts.days} days`);
+  console.log(`  Limit:     ${opts.limit} tasks max`);
+  console.log(`  Config:    ${config._source}${config._path ? ` (${config._path})` : ''}\n`);
+
+  console.log('  [1/6] Building corpus/task indexes...');
+  console.log(`         ${corpusIndexes.cves.size} CVEs in corpus, ${taskIndexes.cves.size} in pending tasks`);
+  console.log(`         ${knownIndexes.urls.size} known source URLs across corpus/tasks`);
+  console.log(`         ${knownIndexes.titleKeys.size} known title keys across corpus/tasks`);
+  console.log(`         ${knownIndexes.activeCount} active tasks in queue`);
+  console.log(`         ${rejectionIndexes.cves.size} operator-rejected CVEs (rejection memory)`);
+  console.log(`         ${rejectionIndexes.candidateKeys.size} operator-rejected candidate keys\n`);
+
+  const discovered = [];
+
+  if (opts.mode === 'all' || opts.mode === 'zero-day') {
+    const zeroDays = await buildZeroDayCandidates(config, opts, knownIndexes, rejectionIndexes.cves);
+    discovered.push(...zeroDays);
+  }
+
+  if (opts.mode === 'all' || opts.mode === 'incident') {
+    const incidents = await buildIncidentCandidates(config, opts, knownIndexes, rejectionIndexes.candidateKeys);
+    discovered.push(...incidents);
+  }
+
+  if (discovered.length === 0) {
+    console.log('  No new candidates found. Nothing to do.\n');
+    return;
+  }
+
+  const maxGlobalHeadroom = Math.max(0, (config.queues?.editorial?.max_pending ?? opts.limit) - knownIndexes.activeCount);
+  const selected = discovered
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      if (left.type !== right.type) return left.type.localeCompare(right.type);
+      const leftDate = left.type === 'incident' ? left.publishedAt : left.kev.dateAdded;
+      const rightDate = right.type === 'incident' ? right.publishedAt : right.kev.dateAdded;
+      return String(rightDate).localeCompare(String(leftDate));
+    })
+    .slice(0, Math.min(opts.limit, maxGlobalHeadroom));
+
+  console.log('  [5/6] Ranked candidates...\n');
+  renderCandidateTable(selected);
+
+  if (!opts.execute) return;
+
+  console.log('  [6/6] Creating pipeline tasks...\n');
+  const existingExploitIds = collectExploitIds();
+  let nextIdNum = parseInt(getNextTaskId().match(/(\d{4})$/)[1], 10);
+
+  for (const candidate of selected) {
+    const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
+    const task = candidate.type === 'zero-day'
+      ? buildZeroDayTask(candidate, taskId, generateExploitId(candidate.kev.cveID, existingExploitIds))
+      : buildIncidentTask(candidate, taskId);
+
+    if (candidate.type === 'zero-day') {
+      existingExploitIds.push(task.input.candidate_data.exploitId);
+    }
+
+    const filePath = resolve(TASKS_DIR, `${taskId}.json`);
+    writeFileSync(filePath, `${JSON.stringify(task, null, 2)}\n`, 'utf8');
+    console.log(`  ✓ Created ${taskId} → ${candidate.type} → ${task.input.topic}`);
+
+    nextIdNum += 1;
+  }
+
+  console.log('\n  Done.\n');
+}
+
+main().catch(error => {
+  console.error(`\n  ERROR: ${error.message}`);
   process.exit(1);
 });

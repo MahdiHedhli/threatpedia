@@ -10,6 +10,15 @@ queues:
   editorial:
     max_pending: 50          # Maximum drafts awaiting review
     backpressure_resume: 40  # Resume discovery when queue drops below this
+  by_type:
+    zero-day:
+      max_pending: 20
+    incident:
+      max_pending: 25
+    threat-actor:
+      max_pending: 8
+    campaign:
+      max_pending: 8
   discovery:
     max_candidates: 200      # Maximum unprocessed discovery candidates
   draft_ready:
@@ -67,7 +76,24 @@ discovery_sources:
     base_url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
     lookback_days: 7
     min_cvss: 7.0            # Only high/critical CVEs
-  # Future sources:
-  # mitre_attack:
-  #   enabled: false
-  #   url: "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
+  cisa_alerts:
+    enabled: true
+    kind: "incident"
+    format: "rss"
+    label: "CISA Alerts & Advisories"
+    url: "https://www.cisa.gov/cybersecurity-advisories/all.xml"
+    limit_per_run: 3
+  ncsc_news:
+    enabled: true
+    kind: "incident"
+    format: "rss"
+    label: "NCSC News"
+    url: "https://www.ncsc.gov.uk/api/1/services/v1/news-rss-feed.xml"
+    limit_per_run: 2
+  microsoft_security_blog:
+    enabled: true
+    kind: "incident"
+    format: "rss"
+    label: "Microsoft Security Blog"
+    url: "https://www.microsoft.com/en-us/security/blog/feed/"
+    limit_per_run: 2

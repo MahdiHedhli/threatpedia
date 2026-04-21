@@ -22,7 +22,8 @@ name: "Pipeline: Automated Discovery"
 #     new PR is only opened when no open one exists (first run, or
 #     after the previous one was merged/closed).
 #   - Merge PR to accept the whole batch; close PR (without merging)
-#     to reject all staged tasks. Nothing auto-merges.
+#     to discard the staged batch. Durable vetoes belong in
+#     pipeline-reject.yml / rejected-candidates.json. Nothing auto-merges.
 #
 # See docs/PIPELINE.md for the end-to-end flow.
 
@@ -31,6 +32,15 @@ on:
     - cron: "0 */6 * * *"   # Every 6 hours
   workflow_dispatch:
     inputs:
+      mode:
+        description: "Discovery lane (all, zero-day, incident)"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - "all"
+          - "zero-day"
+          - "incident"
       days:
         description: "Lookback window in days (default: 14)"
         required: false
@@ -70,6 +80,12 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Install script dependencies
+        run: |
+          set -euo pipefail
+          cd scripts
+          npm ci --no-audit --no-fund
+
       - name: Configure git
         if: ${{ inputs.execute != 'false' }}
         run: |
@@ -91,8 +107,8 @@ jobs:
             # An open PR from this branch means the previous batch is still pending
             # human review — accumulate onto it. No open PR means the previous batch
             # was either merged (tasks now on main) or closed-without-merging
-            # (rejection). Both cases collapse to "reset to main" so rejected tasks
-            # do not silently resurface on the next run.
+            # (discarded batch). Both cases collapse to "reset to main" so stale
+            # branch-only tasks do not silently linger on the next run.
             OPEN_PRS=$(curl -sSf \
               -H "Authorization: token ${GH_TOKEN}" \
               -H "Accept: application/vnd.github+json" \
@@ -124,14 +140,15 @@ jobs:
       - name: Run discovery
         id: discover
         env:
+          MODE: ${{ inputs.mode || 'all' }}
           DAYS: ${{ inputs.days || '14' }}
           LIMIT: ${{ inputs.limit || '5' }}
           EXECUTE: ${{ inputs.execute || 'true' }}
         run: |
           set -euo pipefail
-          echo "Running pipeline-discover.mjs (days=${DAYS}, limit=${LIMIT}, execute=${EXECUTE})"
+          echo "Running pipeline-discover.mjs (mode=${MODE}, days=${DAYS}, limit=${LIMIT}, execute=${EXECUTE})"
 
-          ARGS="--days ${DAYS} --limit ${LIMIT}"
+          ARGS="--mode ${MODE} --days ${DAYS} --limit ${LIMIT}"
           if [ "${EXECUTE}" = "true" ]; then
             ARGS="${ARGS} --execute"
           fi
@@ -199,6 +216,7 @@ jobs:
                   score: (t.discovery && t.discovery.score) ?? null,
                   auto_certify: !!(t.discovery && t.discovery.auto_certify),
                   cve,
+                  source: (Array.isArray(t.input?.sources) && t.input.sources[0]) || '—',
                   topic,
                 });
               } catch (e) {
@@ -240,17 +258,21 @@ jobs:
             body += `This PR accumulates task candidates produced by the scheduled discovery workflow `;
             body += `(\`.github/workflows/pipeline-discovery.yml\`). Tasks here are staged for your review `;
             body += `on the \`${BRANCH}\` branch before landing on \`main\`.\n\n`;
-            body += `**Merge** to accept the whole batch. **Close** (without merging) to reject all staged tasks.\n`;
+            body += `**Merge** to accept the whole batch. **Close** (without merging) to discard this staged batch.\n`;
+            body += `For a durable veto across future discovery runs, use the rejection-memory workflow and merge its PR.\n`;
             body += `Nothing auto-merges from this PR.\n\n`;
             body += `---\n\n`;
             body += `**${tasks.length} task${tasks.length === 1 ? '' : 's'}** currently pending review.\n\n`;
-            body += `| Task | Type | Pri | Score | Auto-cert | CVE | Topic |\n`;
+            body += `| Task | Type | Pri | Score | Auto-cert | Reference | Topic |\n`;
             body += `|---|---|---|---:|:-:|---|---|\n`;
             for (const t of tasks) {
               const scoreCell = t.score == null ? '—' : String(t.score);
               const certCell = t.auto_certify ? '✓' : '—';
               const topicCell = t.topic.length > 80 ? t.topic.slice(0, 77) + '…' : t.topic;
-              body += `| \`${t.task_id}\` | ${t.type} | ${t.priority} | ${scoreCell} | ${certCell} | \`${t.cve}\` | ${topicCell.replace(/\|/g, '\\|')} |\n`;
+              const refCell = t.cve !== '—'
+                ? `\`${t.cve}\``
+                : (t.source !== '—' ? `[source](${t.source})` : '—');
+              body += `| \`${t.task_id}\` | ${t.type} | ${t.priority} | ${scoreCell} | ${certCell} | ${refCell} | ${topicCell.replace(/\|/g, '\\|')} |\n`;
             }
             body += `\n---\n\n`;
             body += `_Last updated: ${nowIso} · Run [${context.runId}](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}) · See [docs/PIPELINE.md](${context.serverUrl}/${owner}/${repo}/blob/main/docs/PIPELINE.md) for the end-to-end flow._\n`;

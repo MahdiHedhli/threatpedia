@@ -70,24 +70,29 @@ for the pipeline.
      - **Branch exists + open PR from it** → accumulate onto the existing branch
        (merge latest `main` in so task files stay compatible with the live schema)
      - **Branch exists + NO open PR** → the previous batch was either **merged**
-       (tasks now on `main`) or **closed-without-merging** (rejection). Both
-       cases collapse to: **reset the branch to `origin/main`** so rejected
-       tasks do not silently resurface on the next run, and merged tasks aren't
-       counted as new. Force-push the reset.
-   - Calls `node scripts/pipeline-discover.mjs --days 14 --limit 5 --execute`
-   - Script fetches CISA KEV (+ NVD CVSS enrichment), builds dedup indexes
-     against the live corpus and existing tasks, scores candidates per
-     ROAD-011, allocates a year-namespaced exploitId per ADR 0007, and
-     writes one `TASK-2026-NNNN.json` per surviving candidate to
+       (tasks now on `main`) or **closed-without-merging** (discarded batch). Both
+       cases collapse to: **reset the branch to `origin/main`** so discarded
+       branch-only tasks do not linger on the long-lived discovery branch, and
+       merged tasks aren't counted as new. Force-push the reset.
+   - Calls `node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute`
+   - Script loads `.github/pipeline/config.yml`, installs lane-specific
+     headroom limits, then runs the currently supported discovery lanes:
+     - **zero-day:** CISA KEV + NVD CVSS enrichment
+     - **incident:** CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
+   - Discovery builds dedup indexes against the live corpus and existing tasks
+     using CVEs, source URLs, normalized titles, output slugs, and rejected
+     candidate keys; allocates a
+     year-namespaced exploitId per ADR 0007 for zero-day candidates; and writes
+     one `TASK-2026-NNNN.json` per surviving candidate to
      `.github/pipeline/tasks/` **on the branch** (not `main`).
    - Commits and pushes the branch. **Branch protection on `main` is
      respected** — nothing pushes directly to `main`.
    - Opens or updates a PR from `pipeline/discovery` to `main` with the
      `pipeline/discovery` label. The PR body enumerates every task on the
      branch with task ID, type, priority, score, auto-cert eligibility,
-     CVE, and topic. **Merge** to accept the whole batch; **close without
-     merging** to reject all staged tasks — the branch-reset logic above
-     ensures rejection is durable.
+     reference, and topic. **Merge** to accept the whole batch; **close without
+     merging** to discard the staged batch. To make a rejection durable across
+     future discovery runs, use the rejection-memory workflow and merge its PR.
    - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
@@ -159,10 +164,11 @@ for the pipeline.
 
 | Guardrail | Where it lives | Default | Source of truth |
 |---|---|---|---|
-| Corpus + task CVE dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks | Script |
-| Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | CVEs in rejected list skipped at discovery time | File on `main`; see Rejection memory section |
+| Corpus + task dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks using CVEs, URLs, normalized titles, and output slugs | Script |
+| Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | Rejected CVEs and non-CVE candidate keys skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
+| Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
@@ -276,13 +282,15 @@ sources: the live corpus and the open task set. Closing an accumulation PR
 without merging left no durable signal, so vetoed candidates came back.
 
 Slice 4c adds **rejection memory**: a repo-visible, PR-gated file that
-records operator-vetoed CVEs. Discovery reads it during dedup. Removing an
-entry (via PR edit) restores discovery eligibility.
+records operator-vetoed discovery candidates. Discovery reads it during
+dedup. Removing an entry (via PR edit) restores discovery eligibility.
 
 ### Where it lives
 
 - **File:** [`.github/pipeline/rejected-candidates.json`](../.github/pipeline/rejected-candidates.json) on `main`
-- **Key:** CVE string, normalized to upper-case on both write and read
+- **Key:** one of:
+  - `cve` — CVE string, normalized to upper-case on both write and read
+  - `candidate_key` — stable non-CVE key (for example incident feed + URL)
 - **Shape:**
   ```json
   {
@@ -296,6 +304,14 @@ entry (via PR edit) restores discovery eligibility.
         "reason": "operator veto",
         "topic": "Apache ActiveMQ ...",
         "rejected_via_pr": 60
+      },
+      {
+        "candidate_key": "incident:ncsc_news:https://www.ncsc.gov.uk/news/example",
+        "candidate_type": "incident",
+        "source_feed": "ncsc_news",
+        "rejected_at": "2026-04-21T19:10:00Z",
+        "reason": "not a bounded incident",
+        "topic": "Example incident candidate"
       }
     ]
   }
@@ -304,19 +320,19 @@ entry (via PR edit) restores discovery eligibility.
 ### How rejection happens
 
 1. Operator runs the `Pipeline: Reject Discovery Candidate` workflow
-   (`workflow_dispatch`), providing `cve`, `reason`, and optionally
-   `topic` / `pr`.
+   (`workflow_dispatch`), providing either `cve` or `candidate_key`, plus
+   `reason`, and optionally `candidate_type`, `source_feed`, `topic`, and `pr`.
 2. The workflow invokes [`scripts/pipeline-reject.mjs`](../scripts/pipeline-reject.mjs)
-   on a fresh branch `pipeline/reject-<CVE>`, which appends a rejection
-   entry and updates `lastUpdated`.
+   on a fresh branch `pipeline/reject-*`, which appends a rejection entry and
+   updates `lastUpdated`.
 3. The workflow opens a PR against `main` labeled `pipeline/rejection`.
    **No direct push to `main`** — Kernel K reviews and merges.
 4. Next discovery run honors the new entry.
 
 **Durable retry path.** The workflow handles pre-existing remote branches
-for the same CVE without operator cleanup:
+for the same rejection target without operator cleanup:
 
-- If no branch `pipeline/reject-<CVE>` exists on the remote → clean start.
+- If no matching `pipeline/reject-*` branch exists on the remote → clean start.
 - If the branch exists and has an **open** rejection PR → the workflow
   errors out with a clear message; the operator resolves that PR (merge
   or close) and re-dispatches.
@@ -331,8 +347,9 @@ push.
 
 ### How discovery honors the file
 
-`pipeline-discover.mjs` builds a `Set<string>` of rejected CVEs at startup,
-in addition to the corpus + tasks dedup set. Any candidate whose CVE is in
+`pipeline-discover.mjs` builds `Set<string>` indexes of rejected CVEs and
+rejected non-CVE candidate keys at startup, in addition to the corpus +
+tasks dedup set. Any candidate whose CVE or candidate key is in
 the set is skipped at the filter stage with a `::notice::` for audit
 visibility. The per-run summary prints the count of rejection skips
 separately from the corpus/task dupe count.
@@ -352,8 +369,6 @@ should reconsider explicitly.)
 
 ### Out of scope for this slice
 
-- Non-CVE rejection keys (topic_hash for non-KEV candidate sources) —
-  the schema is `version: "1.0"` to allow a future extension.
 - Validator-side enforcement — rejection is a discovery-time filter only.
 - Any automatic rejection paths — only the `workflow_dispatch` route.
 
@@ -438,21 +453,23 @@ task's rule is honest about whether the output is new or edited.
 
 **Dry-run discovery** (does not write tasks or commit):
 
-```
+```bash
 # From repo root
-node scripts/pipeline-discover.mjs --days 14 --limit 5
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5
+node scripts/pipeline-discover.mjs --mode incident --days 7 --limit 3
 ```
 
 **Run discovery for real** (writes tasks; commit yourself):
 
-```
-node scripts/pipeline-discover.mjs --days 14 --limit 5 --execute
+```bash
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute
 git add .github/pipeline/tasks/
 git commit -m "chore(pipeline): manual discovery run"
 ```
 
 **From GitHub Actions** — use the `Pipeline: Automated Discovery` workflow's
-**Run workflow** button; choose dry-run by setting `execute: false`.
+**Run workflow** button; choose the lane with `mode` and choose dry-run by
+setting `execute: false`.
 
 **List pending tasks**:
 
