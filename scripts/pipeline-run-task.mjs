@@ -658,6 +658,50 @@ function createPullRequest(task, articleFile) {
   return created;
 }
 
+function findOpenPipelineIssues(taskId) {
+  try {
+    const raw = execFileSync(
+      'gh',
+      ['issue', 'list', '--state', 'open', '--label', 'pipeline/ready', '--limit', '200', '--json', 'number,title,body,url'],
+      { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    const issues = JSON.parse(raw);
+    return issues.filter(issue =>
+      String(issue.title || '').includes(`[PIPELINE] ${taskId}:`) ||
+      String(issue.body || '').includes(`## Pipeline Task: \`${taskId}\``)
+    );
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.warn(`  WARNING: Could not inspect open pipeline issues for ${taskId}: ${stderr}`);
+    return [];
+  }
+}
+
+function closeOpenPipelineIssues(task, prNumber) {
+  const issues = findOpenPipelineIssues(task.task_id);
+  if (issues.length === 0) return;
+
+  for (const issue of issues) {
+    try {
+      execFileSync(
+        'gh',
+        [
+          'issue',
+          'close',
+          String(issue.number),
+          '--reason', 'completed',
+          '--comment', `Closing automatically because ${task.task_id} moved to PR #${prNumber}.`,
+        ],
+        { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+      );
+      console.log(`  Closed pipeline issue #${issue.number}: ${issue.url}`);
+    } catch (error) {
+      const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+      console.warn(`  WARNING: Could not close pipeline issue #${issue.number} for ${task.task_id}: ${stderr}`);
+    }
+  }
+}
+
 function assertPullRequestMatchesTask(task, pr) {
   if (pr.state !== 'OPEN') {
     console.error(`  ERROR: PR #${pr.number} is not open (state: ${pr.state})`);
@@ -1196,6 +1240,7 @@ function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComple
 
   saveTask(task, filePath);
   commitAndPushTaskState(task, filePath, pr.number);
+  closeOpenPipelineIssues(task, pr.number);
   console.log(`  ✓ ${task.task_id} recorded against PR #${pr.number}`);
   console.log(`  Bookkeeping commit pushed to ${task.output.branch}.`);
   console.log('  Final completion is now driven by the PR merge event, not by local CLI state.');
