@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T01:59:07.360Z",
-  "updated": "2026-04-22T03:45:35.241Z",
+  "updated": "2026-04-22T15:27:18.380Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-22T15:27:18.380Z",
   "input": {
     "topic": "Quest KACE Systems Management Appliance (SMA) Improper Authentication Vulnerability (CVE-2025-32975)",
     "sources": [
@@ -84,6 +84,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #197"
+    },
+    {
+      "timestamp": "2026-04-22T15:27:18.380Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
