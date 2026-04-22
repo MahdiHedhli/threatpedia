@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T19:41:18.803Z",
+  "updated": "2026-04-22T00:14:41.895Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -74,8 +74,17 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #185"
+    },
+    {
+      "timestamp": "2026-04-22T00:14:41.895Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #185 merged (a5b2d02)."
     }
   ],
   "pr_number": 185,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/185"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/185",
+  "merged_at": "2026-04-22T00:14:41.895Z"
 }
