@@ -10,6 +10,10 @@ on:
         description: "Run a specific task (leave blank to process queue)"
         required: false
 
+concurrency:
+  group: pipeline-dispatcher
+  cancel-in-progress: false
+
 env:
   DISPATCHER_BRANCH: pipeline/dispatcher
   DISPATCHER_LABEL: pipeline/dispatcher
@@ -67,9 +71,10 @@ jobs:
             if [ "$OPEN_PRS" = "0" ]; then
               echo "No open PR on $BRANCH — previous dispatcher state was merged or closed."
               echo "Resetting branch to origin/main."
-              git fetch origin main
+              git fetch origin main "$BRANCH"
+              REMOTE_BRANCH_SHA="$(git rev-parse --verify "refs/remotes/origin/$BRANCH")"
               git checkout -B "$BRANCH" origin/main
-              git push --force-with-lease origin "$BRANCH"
+              git push --force-with-lease="$BRANCH:$REMOTE_BRANCH_SHA" origin "$BRANCH"
             else
               echo "Open PR exists on $BRANCH — accumulating onto existing branch"
               git fetch origin "$BRANCH"
@@ -151,6 +156,8 @@ jobs:
               }
             }
             const config = loadConfig();
+            const now = new Date();
+            const nowIso = now.toISOString();
 
             // ── Log resolved config (every run self-documents active thresholds) ─
             console.log('─── Dispatcher config (active thresholds) ───────────────');
@@ -175,6 +182,28 @@ jobs:
                 });
             }
 
+            function saveTask(task) {
+              const taskFile = task._file;
+              const persisted = { ...task };
+              delete persisted._file;
+              fs.writeFileSync(
+                path.join(TASKS_DIR, taskFile),
+                JSON.stringify(persisted, null, 2) + '\n'
+              );
+            }
+
+            function appendHistory(task, entry) {
+              task.history = task.history || [];
+              task.history.push(entry);
+            }
+
+            function parseTaskIdFromIssue(issue) {
+              const titleMatch = String(issue.title || '').match(/\[PIPELINE\]\s+(TASK-\d{4}-\d{4}):/);
+              if (titleMatch) return titleMatch[1];
+              const bodyMatch = String(issue.body || '').match(/## Pipeline Task: `([^`]+)`/);
+              return bodyMatch ? bodyMatch[1] : null;
+            }
+
             const allTasks = loadTasks();
 
             async function loadOpenPipelineIssues() {
@@ -192,6 +221,14 @@ jobs:
             }
 
             const openPipelineIssues = await loadOpenPipelineIssues();
+            const taskIndex = new Map(allTasks.map(task => [task.task_id, task]));
+
+            function removeOpenIssue(issueNumber) {
+              const index = openPipelineIssues.findIndex(issue => issue.number === issueNumber);
+              if (index >= 0) {
+                openPipelineIssues.splice(index, 1);
+              }
+            }
 
             function findOpenPipelineIssue(taskId) {
               return openPipelineIssues.find(issue =>
@@ -199,6 +236,159 @@ jobs:
                 (issue.body || '').includes(`## Pipeline Task: \`${taskId}\``)
               ) || null;
             }
+
+            async function closePipelineIssue(issue, reason) {
+              console.log(`Closing Issue #${issue.number}: ${reason}`);
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              });
+              removeOpenIssue(issue.number);
+            }
+
+            async function loadPrForTask(task) {
+              if (task.pr_number) {
+                try {
+                  const { data } = await github.rest.pulls.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: task.pr_number,
+                  });
+                  return data;
+                } catch (error) {
+                  if (error.status !== 404) throw error;
+                }
+              }
+
+              const headRef = task.output?.branch;
+              if (!headRef) return null;
+
+              const { data } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                head: `${context.repo.owner}:${headRef}`,
+                sort: 'updated',
+                direction: 'desc',
+                per_page: 5,
+              });
+              return data[0] || null;
+            }
+
+            async function reconcilePrBackedTasks() {
+              const prBackedTasks = allTasks.filter(task => task.status === 'pr_open');
+
+              for (const task of prBackedTasks) {
+                const pr = await loadPrForTask(task);
+                if (!pr) continue;
+
+                if (pr.state === 'open') {
+                  let changed = false;
+                  if (task.pr_number !== pr.number) {
+                    task.pr_number = pr.number;
+                    changed = true;
+                  }
+                  if (task.pr_url !== pr.html_url) {
+                    task.pr_url = pr.html_url;
+                    changed = true;
+                  }
+                  if (changed) {
+                    task.updated = nowIso;
+                    appendHistory(task, {
+                      timestamp: nowIso,
+                      action: 'pr_reconciled',
+                      from: 'pr_open',
+                      to: 'pr_open',
+                      agent: 'dispatcher',
+                      note: `Synchronized live PR metadata from PR #${pr.number}.`,
+                    });
+                    saveTask(task);
+                  }
+                  continue;
+                }
+
+                const previousStatus = task.status || 'pending';
+                task.locked_by = null;
+                task.locked_at = null;
+                task.updated = nowIso;
+
+                if (pr.merged_at) {
+                  task.status = 'complete';
+                  task.pr_number = pr.number;
+                  task.pr_url = pr.html_url;
+                  task.merged_at = pr.merged_at;
+                  appendHistory(task, {
+                    timestamp: nowIso,
+                    action: 'merged',
+                    from: previousStatus,
+                    to: 'complete',
+                    agent: 'dispatcher',
+                    note: `Reconciled merged PR #${pr.number}.`,
+                  });
+                } else {
+                  task.status = 'pending';
+                  task.pr_number = null;
+                  delete task.pr_url;
+                  delete task.merged_at;
+                  appendHistory(task, {
+                    timestamp: nowIso,
+                    action: 'pr_closed',
+                    from: previousStatus,
+                    to: 'pending',
+                    agent: 'dispatcher',
+                    note: `Reconciled closed PR #${pr.number} without merge.`,
+                  });
+                }
+
+                saveTask(task);
+              }
+            }
+
+            async function reconcileOpenPipelineIssues() {
+              const issuesByTask = new Map();
+
+              for (const issue of [...openPipelineIssues]) {
+                const taskId = parseTaskIdFromIssue(issue);
+                if (!taskId) continue;
+                const bucket = issuesByTask.get(taskId) || [];
+                bucket.push(issue);
+                issuesByTask.set(taskId, bucket);
+              }
+
+              for (const [taskId, issues] of issuesByTask.entries()) {
+                issues.sort((a, b) => a.number - b.number);
+                const task = taskIndex.get(taskId);
+
+                if (!task) {
+                  for (const issue of issues) {
+                    await closePipelineIssue(issue, `orphaned pipeline issue for missing task ${taskId}`);
+                  }
+                  continue;
+                }
+
+                const readyForPickup = task.status === 'pending' && task.stage === 'draft';
+                if (!readyForPickup) {
+                  for (const issue of issues) {
+                    await closePipelineIssue(
+                      issue,
+                      `${taskId} is no longer ready for pickup (status=${task.status}, stage=${task.stage})`
+                    );
+                  }
+                  continue;
+                }
+
+                const [, ...duplicates] = issues;
+                for (const issue of duplicates) {
+                  await closePipelineIssue(issue, `duplicate pipeline issue for ${taskId}`);
+                }
+              }
+            }
+
+            await reconcilePrBackedTasks();
+            await reconcileOpenPipelineIssues();
 
             // ── Check circuit breaker ────────────────────────────────────
             const recentFailed = allTasks
@@ -301,7 +491,6 @@ jobs:
             // Otherwise: no Issue, queue below cap — normal dispatch.
 
             // ── Release stale locks ──────────────────────────────────────
-            const now = new Date();
             for (const task of allTasks) {
               if (task.status === 'locked' && task.locked_at) {
                 const lockAge = (now - new Date(task.locked_at)) / 60000;
@@ -310,19 +499,16 @@ jobs:
                   task.status = 'pending';
                   task.locked_by = null;
                   task.locked_at = null;
-                  task.updated = now.toISOString();
-                  task.history = task.history || [];
-                  task.history.push({
-                    timestamp: now.toISOString(),
+                  task.updated = nowIso;
+                  appendHistory(task, {
+                    timestamp: nowIso,
+                    action: 'lock_released',
                     from: 'locked',
                     to: 'pending',
                     agent: 'dispatcher',
                     note: `Stale lock released after ${Math.round(lockAge)} minutes`,
                   });
-                  fs.writeFileSync(
-                    path.join(TASKS_DIR, task._file),
-                    JSON.stringify(task, null, 2) + '\n'
-                  );
+                  saveTask(task);
                 }
               }
             }
@@ -364,19 +550,16 @@ jobs:
               if (unmet.length > 0) {
                 console.log(`Task ${task.task_id} blocked by unmet dependencies: ${unmet.join(', ')}`);
                 task.status = 'blocked';
-                task.updated = now.toISOString();
-                task.history = task.history || [];
-                task.history.push({
-                  timestamp: now.toISOString(),
+                task.updated = nowIso;
+                appendHistory(task, {
+                  timestamp: nowIso,
+                  action: 'blocked',
                   from: 'pending',
                   to: 'blocked',
                   agent: 'dispatcher',
                   note: `Blocked by: ${unmet.join(', ')}`,
                 });
-                fs.writeFileSync(
-                  path.join(TASKS_DIR, task._file),
-                  JSON.stringify(task, null, 2) + '\n'
-                );
+                saveTask(task);
                 continue;
               }
 
@@ -392,18 +575,16 @@ jobs:
                   String(entry.note || '').includes(`Issue #${existingIssue.number}`)
                 );
                 if (!alreadyRecorded) {
-                  task.updated = now.toISOString();
-                  task.history.push({
-                    timestamp: now.toISOString(),
+                  task.updated = nowIso;
+                  appendHistory(task, {
+                    timestamp: nowIso,
+                    action: 'dispatch_skipped',
                     from: 'pending',
                     to: 'pending',
                     agent: 'dispatcher',
                     note: `Dispatch already open as Issue #${existingIssue.number}`,
                   });
-                  fs.writeFileSync(
-                    path.join(TASKS_DIR, task._file),
-                    JSON.stringify(task, null, 2) + '\n'
-                  );
+                  saveTask(task);
                 }
                 continue;
               }
@@ -460,19 +641,16 @@ jobs:
 
               // Update task status
               task.status = 'pending'; // Stays pending until agent locks it
-              task.updated = now.toISOString();
-              task.history = task.history || [];
-              task.history.push({
-                timestamp: now.toISOString(),
+              task.updated = nowIso;
+              appendHistory(task, {
+                timestamp: nowIso,
+                action: 'dispatched',
                 from: 'pending',
                 to: 'pending',
                 agent: 'dispatcher',
                 note: `Dispatched as Issue #${createdIssue.number}`,
               });
-              fs.writeFileSync(
-                path.join(TASKS_DIR, task._file),
-                  JSON.stringify(task, null, 2) + '\n'
-                );
+              saveTask(task);
 
               openPipelineIssues.push(createdIssue);
             }
