@@ -102,7 +102,7 @@ sources:
 
 On March 27, 2026, the TeamPCP threat actor cluster compromised the CI/CD pipeline of **LiteLLM**, an open-source Python library (97 million monthly downloads, present in approximately 36% of cloud AI environments) used as a unified interface across multiple LLM providers. For roughly 40 minutes, trojanized LiteLLM releases `1.82.7` and `1.82.8` were published to PyPI, harvesting API credentials and authentication tokens from every installation that occurred during the exposure window.
 
-Mercor — a USD 10 billion AI startup providing data-annotation and QA services to leading AI companies — was among the organisations compromised via the LiteLLM path. On April 2, 2026, the extortion group **Lapsus$** claimed responsibility for exfiltrating approximately 4 TB of sensitive Mercor data, including Slack communications, internal tickets, proprietary source code, database records, and video recordings of AI-system interactions with contractors.
+Mercor — a USD 10 billion AI startup providing data-annotation and QA services to leading AI companies — was among the organizations compromised via the LiteLLM path. On April 2, 2026, the extortion group **Lapsus$** claimed responsibility for exfiltrating approximately 4 TB of sensitive Mercor data, including Slack communications, internal tickets, proprietary source code, database records, and video recordings of AI-system interactions with contractors.
 
 The breach exposed Mercor's working relationships with Anthropic, OpenAI, and Meta. Meta subsequently paused AI-data work with Mercor following the disclosure, and a class-action lawsuit was filed on April 1, 2026, potentially affecting more than 40,000 individuals. This incident is tracked as the Mercor-specific victim pane of the broader [TeamPCP Multi-Ecosystem Supply Chain Campaign](/campaigns/teampcp-supply-chain-campaign-2026/).
 
@@ -142,13 +142,13 @@ Slack history, internal tickets, source-code repositories, database exports, and
 
 ### Stage 7: Public extortion by Lapsus$
 
-Lapsus$ publishes proof-of-theft samples on April 1, 2026, and issues a ransom demand. The group explicitly references Mercor's relationships with Anthropic, OpenAI, and Meta to maximise pressure.
+Lapsus$ publishes proof-of-theft samples on April 1, 2026, and issues a ransom demand. The group explicitly references Mercor's relationships with Anthropic, OpenAI, and Meta to maximize pressure.
 
 ## Impact Assessment
 
-**Mercor-direct.** USD 10 billion valuation materially at risk through customer-confidence impact. Meta paused AI-data work pending resolution. 4 TB exfiltrated, including Slack communications, internal architecture, source code, and contractor-interaction recordings. Class-action lawsuit filed on April 1, 2026, with plaintiff class potentially exceeding 40,000 individuals. Significant ongoing incident-response, forensic, legal-defence, and notification costs.
+**Mercor-direct.** USD 10 billion valuation materially at risk through customer-confidence impact. Meta paused AI-data work pending resolution. 4 TB exfiltrated, including Slack communications, internal architecture, source code, and contractor-interaction recordings. Class-action lawsuit filed on April 1, 2026, with plaintiff class potentially exceeding 40,000 individuals. Significant ongoing incident-response, forensic, legal-defense, and notification costs.
 
-**Ecosystem.** Thousands of organisations are exposed via the LiteLLM dependency path; ~2–3 million direct installations during the exposure window. The compromise is corroborating evidence for the broader argument that privileged AI/ML infrastructure libraries deserve CI/CD hardening equivalent to security tooling.
+**Ecosystem.** Thousands of organizations are exposed via the LiteLLM dependency path; ~2–3 million direct installations during the exposure window. The compromise is corroborating evidence for the broader argument that privileged AI/ML infrastructure libraries deserve CI/CD hardening equivalent to security tooling.
 
 **AI-sector specific.** Mercor's customers (Anthropic, OpenAI, Meta) face indirect reputational exposure through association with a compromised contractor. The exfiltrated data plausibly includes proprietary prompts, training methodologies, and contractor-interaction material with long-tail analytical value beyond immediate extortion leverage.
 
@@ -156,7 +156,7 @@ Lapsus$ publishes proof-of-theft samples on April 1, 2026, and issues a ransom d
 
 ## Attribution
 
-**Confidence: A4.** Initial-access attribution to the TeamPCP cluster is supported by multi-vendor reporting (Microsoft, Akamai, Wiz, others) tracking the broader campaign of which the LiteLLM compromise is one vector. The Mercor-specific extortion is publicly claimed by Lapsus$, which has a well-documented prior history of aggressive data-theft-plus-publication operations. The exact division of labour between TeamPCP (initial access / pipeline compromise) and Lapsus$ (downstream victim monetisation) is consistent with specialised-partnership patterns seen elsewhere in 2025–2026 extortion activity but is not independently confirmed by government source here.
+**Confidence: A4.** Initial-access attribution to the TeamPCP cluster is supported by multi-vendor reporting (Microsoft, Akamai, Wiz, others) tracking the broader campaign of which the LiteLLM compromise is one vector. The Mercor-specific extortion is publicly claimed by Lapsus$, which has a well-documented prior history of aggressive data-theft-plus-publication operations. The exact division of labor between TeamPCP (initial access / pipeline compromise) and Lapsus$ (downstream victim monetization) is consistent with specialized-partnership patterns seen elsewhere in 2025–2026 extortion activity but is not independently confirmed by government source here.
 
 No U.S. or EU government advisory has, at time of writing, named either actor in connection with the Mercor-specific incident.
 
@@ -176,7 +176,7 @@ LiteLLM maintainers identify the rogue releases and issue a security notice; PyP
 
 ### 2026-03-28 – 2026-03-31 — Downstream discovery
 
-Affected organisations begin identifying the malicious versions in installation logs; incident-response and forensic work begins. LiteLLM project hardens its CI/CD posture.
+Affected organizations begin identifying the malicious versions in installation logs; incident-response and forensic work begins. LiteLLM project hardens its CI/CD posture.
 
 ### 2026-03-31 — Mercor internal detection
 
@@ -192,11 +192,11 @@ Mercor confirms the breach to customers including Meta, Anthropic, and OpenAI. M
 
 ### 2026-04-08 — Incident reporting stabilises
 
-Wider sector reporting converges on the TeamPCP ↔ LiteLLM ↔ Mercor attribution chain; Threatpedia's initial incident record (now reprocessed in this pass) was drafted on this date.
+Wider sector reporting converges on the TeamPCP ↔ LiteLLM ↔ Mercor attribution chain.
 
 ## Remediation & Mitigation
 
-**For organisations that installed LiteLLM during the exposure window.**
+**For organizations that installed LiteLLM during the exposure window.**
 
 - Identify exposure via package-install logs for LiteLLM `1.82.7` or `1.82.8` between approximately `2026-03-27 14:00–14:40 UTC`.
 - Rotate every API key, auth token, and credential that was reachable from the affected Python process or its environment; revoke rather than simply rotate wherever feasible.
@@ -208,7 +208,7 @@ Wider sector reporting converges on the TeamPCP ↔ LiteLLM ↔ Mercor attributi
 - Exact version pinning and immutable-commit-SHA pinning for CI/CD actions (lessons carry across the TeamPCP campaign's several vectors).
 - Package-signature verification and software bill-of-materials (SBOM) review as part of dependency intake.
 - Isolated / sandboxed dependency installation with egress restrictions; egress telemetry on Python processes fetching dependencies.
-- SCA tools with behavioural detection, not just signature matching, to catch credential-harvesting code in otherwise-known-good libraries.
+- SCA tools with behavioral detection, not just signature matching, to catch credential-harvesting code in otherwise-known-good libraries.
 
 **For privileged AI/ML infrastructure owners.** Treat widely-used LLM-integration libraries as privileged dependencies deserving the same CI/CD hygiene and publishing controls as security tooling — the assumption of benign-ness is exactly the trust gradient TeamPCP exploited here.
 
