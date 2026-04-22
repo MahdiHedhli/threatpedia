@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T19:41:18.803Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -59,6 +59,23 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual pipeline seed for a strongly sourced emerging actor profile tied to the device-code phishing campaign lane."
+    },
+    {
+      "timestamp": "2026-04-21T19:40:42.243Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:41:18.802Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #185"
     }
-  ]
+  ],
+  "pr_number": 185,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/185"
 }
