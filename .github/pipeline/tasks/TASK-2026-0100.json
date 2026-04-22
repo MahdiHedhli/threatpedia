@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0100",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "input": {
     "topic": "Mercor AI Supply Chain Breach via LiteLLM Compromise | Threatpedia",
     "reprocess": true,
@@ -15,7 +15,7 @@
   },
   "output": {
     "file_pattern": "site/src/content/incidents/mercor-litellm-supply-chain-breach-2026.md",
-    "branch": "bot/reprocess-task-2026-0100"
+    "branch": "pipeline/TASK-2026-0100"
   },
   "acceptance_criteria": {
     "min_sources": 3,
@@ -32,7 +32,27 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-21T19:24:43.461Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:27:47.127Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #184"
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-21T19:27:47.127Z",
+  "pr_number": 184,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/184"
 }
