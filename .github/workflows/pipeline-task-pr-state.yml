@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [closed]
 
+concurrency:
+  group: pipeline-task-pr-state
+  cancel-in-progress: false
+
 env:
   TASK_STATE_BRANCH: pipeline/task-state
   TASK_STATE_LABEL: pipeline/task-state
@@ -45,9 +49,10 @@ jobs:
 
             if [ "$OPEN_PRS" = "0" ]; then
               echo "No open PR on $BRANCH — resetting to origin/main"
-              git fetch origin main
+              git fetch origin main "$BRANCH"
+              REMOTE_BRANCH_SHA="$(git rev-parse --verify "refs/remotes/origin/$BRANCH")"
               git checkout -B "$BRANCH" origin/main
-              git push --force-with-lease origin "$BRANCH"
+              git push --force-with-lease="$BRANCH:$REMOTE_BRANCH_SHA" origin "$BRANCH"
             else
               echo "Open PR exists on $BRANCH — accumulating onto existing branch"
               git fetch origin "$BRANCH"
