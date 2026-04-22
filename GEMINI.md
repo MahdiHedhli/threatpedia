@@ -74,12 +74,12 @@ Current `reviewStatus` enum values are:
 Useful local commands:
 
 ```bash
-cd scripts && npm ci --no-audit --no-fund
+npm --prefix scripts ci --no-audit --no-fund
 node scripts/pipeline-schema.mjs
 node scripts/pipeline-run-task.mjs --task TASK-2026-0000 --validate
-cd site && npm ci
-cd site && npm run build
-cd site && npm run dev
+npm --prefix site ci
+npm --prefix site run build
+npm --prefix site run dev
 ```
 
 Use the shared validator and task runner paths rather than ad hoc file checks
@@ -94,7 +94,7 @@ when working on corpus or pipeline integrity.
 - do not call a PR merge-ready based only on local state; live GitHub PR state
   is the source of truth
 
-## Gemini execution discipline
+## Task isolation discipline
 
 For pipeline tasks and task-scoped content work:
 
@@ -102,9 +102,9 @@ For pipeline tasks and task-scoped content work:
 - run `node scripts/pipeline-run-task.mjs --task ... --lock` only from that
   clean task-scoped checkout
 - if you hit a branch mismatch, unrelated dirty paths, or unexpected spillover,
-  stop immediately and rebuild from clean state
-- do not rename branches mid-flight to fit the task
-- do not use local task-runner success as a proxy for live PR readiness
+  stop and rebuild from clean state rather than renaming branches mid-flight or
+  carrying cleanup commits
+- do not broaden the PR beyond the task scope just to recover local state
 
 Before reporting a task PR as ready, verify all of the following:
 
@@ -113,9 +113,6 @@ Before reporting a task PR as ready, verify all of the following:
 - local validation passes for every modified article or task file in the branch
 - `gh pr checks` is green
 - unresolved Gemini review threads are actually zero on the live PR
-
-If any of those checks fail, report the blocker rather than a clean completion
-state.
 
 ## Security expectations
 

@@ -73,12 +73,12 @@ Current `reviewStatus` enum values are:
 Useful local commands:
 
 ```bash
-cd scripts && npm ci --no-audit --no-fund
+npm --prefix scripts ci --no-audit --no-fund
 node scripts/pipeline-schema.mjs
 node scripts/pipeline-run-task.mjs --task TASK-2026-0000 --validate
-cd site && npm ci
-cd site && npm run build
-cd site && npm run dev
+npm --prefix site ci
+npm --prefix site run build
+npm --prefix site run dev
 ```
 
 Use the shared validator and task runner paths rather than ad hoc file checks
