@@ -1,0 +1,80 @@
+{
+  "task_id": "TASK-2026-0191",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pr_open",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-21T21:06:45.204Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "FulcrumSec threat actor profile build from LexisNexis React2Shell intrusion",
+    "sources": [
+      "https://www.scworld.com/brief/lexisnexis-legal-professional-confirms-data-breach-after-react2shell-exploit",
+      "https://www.theregister.com/2026/03/04/lexisnexis_legal_professional_confirms_data/",
+      "https://www.lawnext.com/2026/03/lexisnexis-confirms-data-breach-reports-say-hackers-claim-access-to-government-and-law-firm-user-data.html"
+    ],
+    "candidate_data": {
+      "actor_name": "FulcrumSec",
+      "aliases": [],
+      "origin": "Unknown",
+      "affiliation": "Criminal",
+      "motivation": "Data Theft / Extortion",
+      "active_since": "2026"
+    },
+    "notes": "Create a canonical actor profile for FulcrumSec based on the LexisNexis React2Shell intrusion and any defensible adjacent reporting. Keep the profile tightly evidence-bound: the corpus currently supports one named intrusion cluster and public breach claims, not a broad campaign history. If the evidence does not support a durable standalone actor profile, create the most conservative profile possible and avoid inflating maturity, victim count, or attribution confidence."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/fulcrumsec.md",
+    "branch": "pipeline/TASK-2026-0191",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed for actor-lane testing from the LexisNexis / React2Shell cluster."
+    },
+    {
+      "timestamp": "2026-04-21T19:41:51.994Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T21:06:45.203Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #191"
+    }
+  ],
+  "pr_number": 191,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/191"
+}

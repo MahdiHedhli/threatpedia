@@ -1,0 +1,232 @@
+name: "Pipeline: Sync Task PR State"
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  TASK_STATE_BRANCH: pipeline/task-state
+  TASK_STATE_LABEL: pipeline/task-state
+
+jobs:
+  sync:
+    if: github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout task-state branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          BRANCH="${TASK_STATE_BRANCH}"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+
+            if [ "$OPEN_PRS" = "0" ]; then
+              echo "No open PR on $BRANCH — resetting to origin/main"
+              git fetch origin main
+              git checkout -B "$BRANCH" origin/main
+              git push --force-with-lease origin "$BRANCH"
+            else
+              echo "Open PR exists on $BRANCH — accumulating onto existing branch"
+              git fetch origin "$BRANCH"
+              git checkout -B "$BRANCH" "origin/$BRANCH"
+              if ! git merge --no-edit origin/main; then
+                echo "::error::Merge conflict between $BRANCH and main. Human resolution required."
+                git merge --abort || true
+                exit 1
+              fi
+            fi
+          else
+            echo "Branch $BRANCH does not exist — creating from main"
+            git checkout -b "$BRANCH"
+          fi
+
+      - name: Apply task PR state transition
+        id: mutate
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
+          PR_MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const core = require('@actions/core');
+
+            const TASKS_DIR = '.github/pipeline/tasks';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const prHeadRef = process.env.PR_HEAD_REF;
+            const prMerged = process.env.PR_MERGED === 'true';
+            const mergeSha = process.env.PR_MERGE_SHA || '';
+            const now = new Date().toISOString();
+
+            if (!fs.existsSync(TASKS_DIR)) {
+              core.setOutput('has_changes', 'false');
+              return;
+            }
+
+            const files = fs.readdirSync(TASKS_DIR).filter(file => file.endsWith('.json'));
+            const changedTasks = [];
+
+            for (const file of files) {
+              const filePath = path.join(TASKS_DIR, file);
+              const task = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+              const matchesPrNumber = task.pr_number === prNumber;
+              const matchesBranch = task.output?.branch === prHeadRef;
+              if (!matchesPrNumber && !matchesBranch) continue;
+
+              const previousStatus = task.status || 'pending';
+              task.history = task.history || [];
+              task.locked_by = null;
+              task.locked_at = null;
+              task.updated = now;
+              task.pr_number = prNumber;
+
+              if (prMerged) {
+                if (previousStatus === 'complete') continue;
+                task.status = 'complete';
+                task.merged_at = now;
+                task.history.push({
+                  timestamp: now,
+                  action: 'merged',
+                  from: previousStatus,
+                  to: 'complete',
+                  agent: 'pipeline-task-state',
+                  note: `PR #${prNumber} merged${mergeSha ? ` (${mergeSha.slice(0, 7)})` : ''}.`,
+                });
+              } else {
+                if (previousStatus !== 'pr_open') continue;
+                task.status = 'pending';
+                task.pr_number = null;
+                delete task.pr_url;
+                delete task.merged_at;
+                task.history.push({
+                  timestamp: now,
+                  action: 'pr_closed',
+                  from: previousStatus,
+                  to: 'pending',
+                  agent: 'pipeline-task-state',
+                  note: `PR #${prNumber} closed without merge.`,
+                });
+              }
+
+              fs.writeFileSync(filePath, JSON.stringify(task, null, 2) + '\n');
+              changedTasks.push({
+                task_id: task.task_id,
+                from: previousStatus,
+                to: task.status,
+              });
+            }
+
+            core.setOutput('has_changes', changedTasks.length > 0 ? 'true' : 'false');
+            core.setOutput('changed_tasks', JSON.stringify(changedTasks));
+            core.setOutput('disposition', prMerged ? 'merged' : 'closed');
+
+      - name: Commit task-state updates
+        id: commit
+        if: steps.mutate.outputs.has_changes == 'true'
+        run: |
+          set -euo pipefail
+          git add .github/pipeline/tasks/
+          git diff --cached --quiet && echo "has_changes=false" >> "$GITHUB_OUTPUT" && exit 0
+          git commit -m "chore(pipeline): sync task PR state for #${{ github.event.pull_request.number }}"
+          git push --force-with-lease origin "${TASK_STATE_BRANCH}"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update task-state PR
+        if: steps.commit.outputs.has_changes == 'true'
+        uses: actions/github-script@v8
+        env:
+          CHANGED_TASKS_JSON: ${{ steps.mutate.outputs.changed_tasks }}
+          DISPOSITION: ${{ steps.mutate.outputs.disposition }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const BRANCH = process.env.TASK_STATE_BRANCH;
+            const LABEL = process.env.TASK_STATE_LABEL;
+            const changedTasks = JSON.parse(process.env.CHANGED_TASKS_JSON || '[]');
+            const disposition = process.env.DISPOSITION || 'updated';
+            const prNumber = context.payload.pull_request.number;
+            const headRef = context.payload.pull_request.head.ref;
+            const title = `Pipeline task-state sync — PR #${prNumber} ${disposition}`;
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: LABEL });
+            } catch (e) {
+              if (e.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: LABEL,
+                  color: '1d76db',
+                  description: 'Automated task-state bookkeeping updates from pipeline PR events',
+                });
+              }
+            }
+
+            let body = `## Pipeline task-state sync\n\n`;
+            body += `This PR records task-state transitions triggered by GitHub PR event **#${prNumber}** (\`${headRef}\`).\n\n`;
+            body += `| Task | From | To |\n|---|---|---|\n`;
+            for (const task of changedTasks) {
+              body += `| \`${task.task_id}\` | \`${task.from}\` | \`${task.to}\` |\n`;
+            }
+            body += `\n_Disposition: ${disposition} · Source PR: #${prNumber}_\n`;
+
+            const { data: existing } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${BRANCH}`,
+              per_page: 5,
+            });
+
+            if (existing.length > 0) {
+              const pr = existing[0];
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                title,
+                body,
+              });
+            } else {
+              const { data: pr } = await github.rest.pulls.create({
+                owner,
+                repo,
+                head: BRANCH,
+                base: 'main',
+                title,
+                body,
+              });
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr.number,
+                labels: [LABEL],
+              });
+            }

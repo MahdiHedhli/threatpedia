@@ -10,6 +10,10 @@ on:
         description: "Run a specific task (leave blank to process queue)"
         required: false
 
+env:
+  DISPATCHER_BRANCH: pipeline/dispatcher
+  DISPATCHER_LABEL: pipeline/dispatcher
+
 jobs:
   dispatch:
     runs-on: ubuntu-latest
@@ -19,15 +23,21 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: main
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: "npm"
           cache-dependency-path: scripts/package-lock.json
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Install scripts/ dependencies
         # scripts/pipeline-config.mjs imports js-yaml (added in Slice 4e).
@@ -36,6 +46,45 @@ jobs:
         # below. Install pinned lockfile versions before any script runs.
         working-directory: scripts
         run: npm ci --no-audit --no-fund
+
+      - name: Checkout dispatcher branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          BRANCH="${DISPATCHER_BRANCH}"
+
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Branch $BRANCH exists on remote — checking open PR state"
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+
+            if [ "$OPEN_PRS" = "0" ]; then
+              echo "No open PR on $BRANCH — previous dispatcher state was merged or closed."
+              echo "Resetting branch to origin/main."
+              git fetch origin main
+              git checkout -B "$BRANCH" origin/main
+              git push --force-with-lease origin "$BRANCH"
+            else
+              echo "Open PR exists on $BRANCH — accumulating onto existing branch"
+              git fetch origin "$BRANCH"
+              git checkout -B "$BRANCH" "origin/$BRANCH"
+              echo "Merging latest main into $BRANCH"
+              if ! git merge --no-edit origin/main; then
+                echo "::error::Merge conflict between $BRANCH and main. Human resolution required."
+                git merge --abort || true
+                exit 1
+              fi
+            fi
+          else
+            echo "Branch $BRANCH does not exist — creating from main"
+            git checkout -b "$BRANCH"
+          fi
 
       - name: Load pipeline config
         id: config
@@ -53,7 +102,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Check preconditions and dispatch tasks
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           CONFIG_JSON: ${{ steps.config.outputs.json }}
         with:
@@ -62,6 +111,7 @@ jobs:
             const path = require('path');
 
             const TASKS_DIR = '.github/pipeline/tasks';
+            const DISPATCH_LABEL = 'pipeline/ready';
 
             // ── Load pipeline config ─────────────────────────────────────
             // Parsed by scripts/pipeline-config.mjs (authoritative reader);
@@ -127,6 +177,29 @@ jobs:
 
             const allTasks = loadTasks();
 
+            async function loadOpenPipelineIssues() {
+              const issues = await github.paginate(
+                github.rest.issues.listForRepo,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: DISPATCH_LABEL,
+                  per_page: 100,
+                }
+              );
+              return issues.filter(issue => !issue.pull_request);
+            }
+
+            const openPipelineIssues = await loadOpenPipelineIssues();
+
+            function findOpenPipelineIssue(taskId) {
+              return openPipelineIssues.find(issue =>
+                issue.title.includes(`[PIPELINE] ${taskId}:`) ||
+                (issue.body || '').includes(`## Pipeline Task: \`${taskId}\``)
+              ) || null;
+            }
+
             // ── Check circuit breaker ────────────────────────────────────
             const recentFailed = allTasks
               .filter(t => t.status === 'failed')
@@ -169,7 +242,7 @@ jobs:
             const BP_LABEL = 'pipeline/backpressure';
 
             const pendingDrafts = allTasks.filter(t =>
-              t.stage === 'draft' && t.status === 'complete' ||
+              t.status === 'pr_open' ||
               t.stage === 'validation' ||
               t.stage === 'review'
             ).length;
@@ -310,6 +383,31 @@ jobs:
               // ── Dispatch: create Issue for agent pickup ────────────────
               console.log(`Dispatching ${task.task_id} (${task.type}, ${task.priority})`);
 
+              const existingIssue = findOpenPipelineIssue(task.task_id);
+              if (existingIssue) {
+                console.log(`Task ${task.task_id} already has open Issue #${existingIssue.number} — skipping duplicate dispatch`);
+                task.history = task.history || [];
+                const alreadyRecorded = task.history.some(entry =>
+                  entry.agent === 'dispatcher' &&
+                  String(entry.note || '').includes(`Issue #${existingIssue.number}`)
+                );
+                if (!alreadyRecorded) {
+                  task.updated = now.toISOString();
+                  task.history.push({
+                    timestamp: now.toISOString(),
+                    from: 'pending',
+                    to: 'pending',
+                    agent: 'dispatcher',
+                    note: `Dispatch already open as Issue #${existingIssue.number}`,
+                  });
+                  fs.writeFileSync(
+                    path.join(TASKS_DIR, task._file),
+                    JSON.stringify(task, null, 2) + '\n'
+                  );
+                }
+                continue;
+              }
+
               // Create GitHub Issue for agent execution
               const issueBody = [
                 `## Pipeline Task: \`${task.task_id}\``,
@@ -323,8 +421,8 @@ jobs:
                 `3. Create branch:    \`git checkout -b ${task.output.branch}\``,
                 '4. Write the article using your AI agent or manually (follow the brief)',
                 `5. Validate:         \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate\``,
-                '6. Commit, push, and open PR targeting `main`',
-                `7. Mark complete:    \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --complete\``,
+                '6. Commit and push your task branch',
+                `7. Open + record PR state:  \`node scripts/pipeline-run-task.mjs --task ${task.task_id} --open-pr\``,
                 '',
                 '### Task Details',
                 '',
@@ -373,15 +471,149 @@ jobs:
               });
               fs.writeFileSync(
                 path.join(TASKS_DIR, task._file),
-                JSON.stringify(task, null, 2) + '\n'
-              );
+                  JSON.stringify(task, null, 2) + '\n'
+                );
+
+              openPipelineIssues.push(createdIssue);
             }
 
       - name: Commit any task updates
+        id: commit
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/pipeline/tasks/
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git commit -m "chore(pipeline): dispatcher run — $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push
+          git push --force-with-lease origin "${DISPATCHER_BRANCH}"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update dispatcher PR
+        if: ${{ steps.commit.outputs.has_changes == 'true' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+
+            const BRANCH = process.env.DISPATCHER_BRANCH;
+            const LABEL = process.env.DISPATCHER_LABEL;
+            const { owner, repo } = context.repo;
+
+            let taskPaths = [];
+            try {
+              const diffOut = execSync(
+                `git diff --name-only origin/main...HEAD -- '.github/pipeline/tasks/*.json'`,
+                { encoding: 'utf8' },
+              );
+              taskPaths = diffOut.split('\n').map(s => s.trim()).filter(Boolean);
+            } catch (e) {
+              console.log(`Failed to enumerate branch-only task files: ${e.message}`);
+              return;
+            }
+
+            if (taskPaths.length === 0) {
+              console.log('No branch-only task files detected. Skipping PR update.');
+              return;
+            }
+
+            const tasks = [];
+            for (const p of taskPaths) {
+              try {
+                const t = JSON.parse(fs.readFileSync(p, 'utf8'));
+                const history = Array.isArray(t.history) ? t.history : [];
+                const lastEntry = history[history.length - 1] || {};
+                tasks.push({
+                  task_id: t.task_id,
+                  stage: t.stage || '—',
+                  status: t.status || '—',
+                  updated: t.updated || '—',
+                  note: lastEntry.note || '—',
+                });
+              } catch (e) {
+                console.log(`Failed to parse ${p}: ${e.message}`);
+              }
+            }
+
+            if (tasks.length === 0) {
+              console.log('No parseable tasks found on branch. Skipping PR update.');
+              return;
+            }
+
+            tasks.sort((a, b) => a.task_id.localeCompare(b.task_id));
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: LABEL });
+            } catch (e) {
+              if (e.status === 404) {
+                try {
+                  await github.rest.issues.createLabel({
+                    owner, repo,
+                    name: LABEL,
+                    color: '1d76db',
+                    description: 'Automated dispatcher bookkeeping PRs for pipeline task state updates',
+                  });
+                  console.log(`Created label ${LABEL}`);
+                } catch (e2) {
+                  console.log(`Could not create label ${LABEL}: ${e2.message} — continuing without label`);
+                }
+              }
+            }
+
+            const title = `Pipeline dispatcher — ${tasks.length} task update${tasks.length === 1 ? '' : 's'} pending`;
+            const nowIso = new Date().toISOString();
+
+            let body = `## Automated Dispatcher state updates\n\n`;
+            body += `This PR persists task-state changes produced by `;
+            body += `\`.github/workflows/pipeline-dispatcher.yml\` on the \`${BRANCH}\` branch.\n\n`;
+            body += `These updates are bookkeeping only: dispatch notes, stale-lock releases, and dependency blocking.\n`;
+            body += `No content is generated on this path.\n\n`;
+            body += `Merge this PR to persist dispatcher state. Close it to discard these task-state updates and reset the branch on the next run.\n\n`;
+            body += `---\n\n`;
+            body += `| Task | Stage | Status | Last update | Latest note |\n`;
+            body += `|---|---|---|---|---|\n`;
+            for (const t of tasks) {
+              const noteCell = String(t.note).replace(/\|/g, '\\|');
+              body += `| \`${t.task_id}\` | ${t.stage} | ${t.status} | ${t.updated} | ${noteCell} |\n`;
+            }
+            body += `\n---\n\n`;
+            body += `_Last updated: ${nowIso} · Run [${context.runId}](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}) · See [docs/PIPELINE.md](${context.serverUrl}/${owner}/${repo}/blob/main/docs/PIPELINE.md) for the end-to-end flow._\n`;
+
+            const { data: existing } = await github.rest.pulls.list({
+              owner, repo,
+              state: 'open',
+              head: `${owner}:${BRANCH}`,
+              per_page: 5,
+            });
+
+            if (existing.length > 0) {
+              const pr = existing[0];
+              console.log(`Updating existing PR #${pr.number}`);
+              await github.rest.pulls.update({
+                owner, repo,
+                pull_number: pr.number,
+                title,
+                body,
+              });
+            } else {
+              console.log('Creating new dispatcher PR');
+              const { data: pr } = await github.rest.pulls.create({
+                owner, repo,
+                head: BRANCH,
+                base: 'main',
+                title,
+                body,
+              });
+              try {
+                await github.rest.issues.addLabels({
+                  owner, repo,
+                  issue_number: pr.number,
+                  labels: [LABEL],
+                });
+              } catch (e) {
+                console.log(`Could not add label ${LABEL} to PR #${pr.number}: ${e.message}`);
+              }
+              console.log(`Opened PR #${pr.number}: ${pr.html_url}`);
+            }

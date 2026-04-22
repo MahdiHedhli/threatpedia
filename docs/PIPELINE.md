@@ -52,7 +52,9 @@ manual operator use; do not wire into the scheduled flow.
 | `scripts/pipeline-discover.mjs` | Node script — single source of truth for feed fetch, scoring, dedup, task emission | Invoked by the workflow above |
 | `.github/pipeline/tasks/TASK-*.json` | Pipeline task files — discovered and dispatched individually | Created by discovery, read/written by dispatcher |
 | `.github/workflows/pipeline-dispatcher.yml` | GitHub Actions cron workflow — dispatches tasks to agents | Every 2 hours + manual dispatch |
+| `.github/workflows/pipeline-post-merge-audit.yml` | GitHub Actions push workflow — re-validates changed merged content on `main` and opens/updates an audit issue on failure | Push to `main` + manual dispatch |
 | `scripts/pipeline-run-task.mjs` | Node script — agent-agnostic task runner and validator | Invoked by the dispatcher, executed under the agent's subscription |
+| `scripts/validate-content-corpus.mjs` | Shared content validator for PR gating and post-merge audits | Invoked by workflows, reads newline-delimited changed-file lists |
 
 `.github/pipeline/config.yml` holds queue limits, circuit-breaker thresholds,
 validation gates, and discovery feed config. It is the single tunable knob
@@ -89,8 +91,8 @@ for the pipeline.
    - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
-   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks at
-     `stage: draft` with `status: complete | validation | review` is
+   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks with
+     `status: pr_open` (plus any legacy `validation | review` stage items) is
      ≥ `queues.editorial.max_pending` (default 50), the dispatcher backs
      off without dispatching more. When the queue drains below
      `backpressure_resume` (default 40), dispatch resumes.
@@ -117,23 +119,39 @@ for the pipeline.
      marks `status: locked` with `locked_by` set and `locked_at`
      timestamped (so the stale-lock sweep will recover it if the agent
      dies mid-task).
+   - Dispatcher bookkeeping is published on the long-lived
+     `pipeline/dispatcher` branch, not pushed directly to `main`.
+     The workflow opens or updates a PR labeled `pipeline/dispatcher`
+     carrying task-state-only changes (dispatch notes, stale-lock
+     releases, dependency blocking). Merge the PR to persist dispatcher
+     state; close it to discard the bookkeeping batch and let the next
+     run reset `pipeline/dispatcher` back to `origin/main`.
+   - If a task already has an open `pipeline/ready` Issue, the dispatcher
+     does **not** open a duplicate Issue on the next tick. It records the
+     existing Issue number in task history once and moves on.
 
 7. **Agent execution** (under the agent's own subscription)
    - Agent reads the task brief, drafts the article into
      `site/src/content/<type>/<slug>.md` on the `pipeline/TASK-XXXX`
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
-     iterates until validation passes, then runs `--complete`.
+     iterates until validation passes, then runs `--open-pr` to create
+     (or reuse) the PR and record `status: pr_open` in one step.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
-     rules: min sources, min H2 sections, min MITRE mappings,
-     `review_status: draft_ai`, build must pass, schema must pass.
-   - Failure leaves the task locked for agent iteration; success flips
-     `status` to `complete` and opens a PR.
+     rules plus exact section/schema normalization: canonical H2 headings,
+     exact source-line format, frontmatter/body source URL parity, canonical
+     MITRE tactic casing, canonical publisher aliases, and canonical
+     `generatedBy` values.
+   - Failure leaves the task locked for agent iteration; success allows the
+     agent to record a real open PR number, which moves the task to
+     `status: pr_open`.
 
 9. **Human review + merge**
    - `auto_merge.enabled: false` today — every PR goes to Kernel K for
-     review. Once merged, the task's history records the final transition.
+     review. Merge state is no longer trusted from the local CLI. A GitHub PR
+     event records the final task transition after the PR is merged (or reverts
+     the task to `pending` if the PR is closed without merge).
 
 ---
 
@@ -146,6 +164,7 @@ for the pipeline.
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
@@ -174,9 +193,18 @@ the reason.
 **Shared schema enum authority:** JavaScript-side schema enums (currently
 `SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
 single source of truth for the pipeline scripts. The runner imports it
-directly; the validator workflow loads it via a small shell-out step.
-The ultimate schema authority remains `site/src/content.config.ts` — the
-JS mirror must be updated in the same PR when the Zod schema changes.
+directly; the shared content validator (`scripts/validate-content-corpus.mjs`)
+also imports it and now backs both the PR validator workflow and the
+post-merge `main` audit. The ultimate schema authority remains
+`site/src/content.config.ts` — the JS mirror must be updated in the same
+PR when the Zod schema changes.
+
+**Post-merge integrity backstop:** merged content changes on `main` are
+re-audited via `.github/workflows/pipeline-post-merge-audit.yml`. The
+workflow reuses the same shared validator as the PR gate, runs a site
+build, and opens or updates a standing Issue (`pipeline/audit-failure`)
+instead of attempting auto-repair. When a later run returns green, the
+workflow closes that Issue automatically.
 
 **Backpressure hysteresis:** the dispatcher pauses draft dispatch when
 the editorial queue hits `max_pending` and stays paused until the queue
@@ -450,10 +478,16 @@ node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --lock
 node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --validate
 ```
 
-**Mark complete**:
+**Open or record a PR in one step**:
 
 ```
-node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --complete
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr
+```
+
+**Record an already-open PR by number**:
+
+```
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr --pr 123
 ```
 
 ---
