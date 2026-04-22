@@ -75,7 +75,6 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const core = require('@actions/core');
 
             const TASKS_DIR = '.github/pipeline/tasks';
             const prNumber = Number(process.env.PR_NUMBER);
