@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0100",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Mercor AI Supply Chain Breach via LiteLLM Compromise | Threatpedia",
     "reprocess": true,
@@ -48,11 +48,20 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #184"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #184."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-21T19:27:47.127Z",
+  "updated": "2026-04-22T14:46:12.135Z",
   "pr_number": 184,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/184"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/184",
+  "merged_at": "2026-04-21T21:10:04Z"
 }

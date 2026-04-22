@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-04-18T00:01:26.100Z",
-  "updated": "2026-04-21T15:32:28.181Z",
+  "updated": "2026-04-22T14:46:12.135Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -92,6 +92,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch already open as Issue #167"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch already open as Issue #73"
     }
   ]
 }
