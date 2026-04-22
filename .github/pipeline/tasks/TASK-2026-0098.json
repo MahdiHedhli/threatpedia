@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0098",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "LexisNexis AWS Cloud Breach via React2Shell Exploit",
     "reprocess": true,
@@ -48,11 +48,20 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #183"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #183."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-21T19:24:28.429Z",
+  "updated": "2026-04-22T14:46:12.135Z",
   "pr_number": 183,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/183"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/183",
+  "merged_at": "2026-04-21T21:09:53Z"
 }
