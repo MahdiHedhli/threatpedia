@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0077",
   "type": "incident",
   "priority": "P0",
-  "status": "complete",
+  "status": "pr_open",
   "input": {
     "topic": "Adobe BPO Supply Chain Breach by Mr. Raccoon",
     "reprocess": true,
@@ -36,12 +36,15 @@
     {
       "timestamp": "2026-04-20T17:58:03.929Z",
       "from": "locked",
-      "to": "complete",
+      "to": "pr_open",
       "agent": "dangermouse-bot",
-      "note": "Article generated, validated, and PR opened"
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #192"
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-20T17:58:03.930Z"
+  "updated": "2026-04-20T17:58:03.930Z",
+  "pr_number": 192,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/192"
 }

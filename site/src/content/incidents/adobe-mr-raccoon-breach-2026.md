@@ -15,6 +15,7 @@ generatedDate: 2026-04-21
 cves:
   - "CVE-2026-34621"
 relatedSlugs:
+  - "adobe-acrobat-and-reader-cve-2026-34621"
   - "shiny-hunters-leak-site"
   - "lexisnexis-react2shell-breach-2026"
   - "conduent-data-breach-2026"
