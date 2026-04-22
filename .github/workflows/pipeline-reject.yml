@@ -4,16 +4,34 @@ name: "Pipeline: Reject Discovery Candidate"
 # Appends an entry to .github/pipeline/rejected-candidates.json via the
 # pipeline-reject.mjs helper and opens a PR against main.
 #
-# Never pushes directly to main. Re-eligibility = remove the entry via PR.
+# Supports:
+#   - CVE-backed discovery candidates
+#   - Non-CVE discovery candidates via stable candidate_key strings
 #
-# See docs/PIPELINE.md — Rejection memory. TASK-2026-0067 / Slice 4c.
+# Never pushes directly to main. Re-eligibility = remove the entry via PR.
 
 on:
   workflow_dispatch:
     inputs:
       cve:
-        description: "CVE ID to reject (e.g. CVE-2026-34197)"
-        required: true
+        description: "Optional CVE ID to reject (e.g. CVE-2026-34197)"
+        required: false
+        type: string
+      candidate_key:
+        description: "Optional non-CVE candidate key (e.g. incident:ncsc_news:https://...)"
+        required: false
+        type: string
+      candidate_type:
+        description: "Optional candidate type for non-CVE rejections"
+        required: false
+        type: choice
+        options:
+          - incident
+          - campaign
+          - threat-actor
+      source_feed:
+        description: "Optional source feed for non-CVE rejections"
+        required: false
         type: string
       reason:
         description: "Reason for rejection (shown in audit log)"
@@ -35,54 +53,63 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+
     steps:
       - uses: actions/checkout@v6
         with:
-          # Full history is not needed; shallow is fine.
           fetch-depth: 1
 
-      - name: Validate inputs
+      - name: Validate inputs and derive branch identity
         run: |
-          CVE="${{ github.event.inputs.cve }}"
-          if ! echo "$CVE" | grep -Eiq '^CVE-[0-9]{4}-[0-9]{4,}$'; then
-            echo "::error::Invalid CVE format: $CVE (expected CVE-YYYY-NNNN...)"
+          set -euo pipefail
+
+          CVE_RAW="${{ github.event.inputs.cve }}"
+          KEY_RAW="${{ github.event.inputs.candidate_key }}"
+
+          if [ -n "$CVE_RAW" ] && [ -n "$KEY_RAW" ]; then
+            echo "::error::Provide either cve or candidate_key, not both"
             exit 1
           fi
-          echo "CVE_UPPER=$(echo "$CVE" | tr '[:lower:]' '[:upper:]')" >> "$GITHUB_ENV"
+          if [ -z "$CVE_RAW" ] && [ -z "$KEY_RAW" ]; then
+            echo "::error::One of cve or candidate_key is required"
+            exit 1
+          fi
+
+          if [ -n "$CVE_RAW" ]; then
+            if ! echo "$CVE_RAW" | grep -Eiq '^CVE-[0-9]{4}-[0-9]{4,}$'; then
+              echo "::error::Invalid CVE format: $CVE_RAW (expected CVE-YYYY-NNNN...)"
+              exit 1
+            fi
+            CVE_UPPER=$(echo "$CVE_RAW" | tr '[:lower:]' '[:upper:]')
+            echo "REJECTION_KIND=cve" >> "$GITHUB_ENV"
+            echo "REJECTION_TARGET=$CVE_UPPER" >> "$GITHUB_ENV"
+            echo "BRANCH=pipeline/reject-$CVE_UPPER" >> "$GITHUB_ENV"
+          else
+            KEY_TRIMMED=$(printf '%s' "$KEY_RAW" | sed 's/^ *//;s/ *$//')
+            if [ -z "$KEY_TRIMMED" ]; then
+              echo "::error::candidate_key cannot be blank"
+              exit 1
+            fi
+            KEY_HASH=$(printf '%s' "$KEY_TRIMMED" | shasum -a 256 | cut -c1-12)
+            TYPE_SAFE=$(printf '%s' "${{ github.event.inputs.candidate_type || 'candidate' }}" | tr '[:upper:] ' '[:lower:]-' | tr -cd 'a-z0-9-')
+            if [ -z "$TYPE_SAFE" ]; then TYPE_SAFE="candidate"; fi
+            echo "REJECTION_KIND=key" >> "$GITHUB_ENV"
+            echo "REJECTION_TARGET=$KEY_TRIMMED" >> "$GITHUB_ENV"
+            echo "BRANCH=pipeline/reject-$TYPE_SAFE-$KEY_HASH" >> "$GITHUB_ENV"
+          fi
 
       - name: Configure git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Resolve branch name
-        run: |
-          # Stable, predictable branch name per CVE. Stale-branch handling in
-          # the next step keeps this durable across retry / reissue without
-          # manual remote cleanup.
-          BRANCH="pipeline/reject-${CVE_UPPER}"
-          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
-
       - name: Handle stale remote branch (durable retry path)
         uses: actions/github-script@v8
         with:
           script: |
-            // Mirrors the discovery workflow's stale-branch handling in
-            // spirit: detect prior state, collapse it to a clean starting
-            // point, never require the operator to clean up remotes.
-            //
-            // Cases this covers:
-            //   (a) Branch does not exist → nothing to do.
-            //   (b) Branch exists, open PR from it → error out cleanly.
-            //       A single open rejection PR per CVE is the invariant;
-            //       the operator should merge or close that PR first.
-            //   (c) Branch exists, no open PR (closed-without-merge, or
-            //       merged PR with branch-not-deleted) → delete the remote
-            //       branch so the next step creates a fresh one from main.
             const branch = process.env.BRANCH;
             const { owner, repo } = context.repo;
 
-            // (a) does the branch exist at all?
             let branchExists = false;
             try {
               await github.rest.repos.getBranch({ owner, repo, branch });
@@ -95,7 +122,6 @@ jobs:
               return;
             }
 
-            // (b) is there an open PR from that branch?
             const { data: openPRs } = await github.rest.pulls.list({
               owner, repo,
               state: 'open',
@@ -104,30 +130,32 @@ jobs:
             if (openPRs.length > 0) {
               const pr = openPRs[0];
               core.setFailed(
-                `Refusing to proceed: open rejection PR #${pr.number} (${pr.html_url}) ` +
-                `already exists on branch ${branch}. Merge or close that PR first, ` +
-                `then re-dispatch this workflow.`
+                `Refusing to proceed: open rejection PR #${pr.number} (${pr.html_url}) already exists on ${branch}.`
               );
               return;
             }
 
-            // (c) stale branch — delete it so the next step starts fresh.
             core.info(`Deleting stale remote branch ${branch} (no open PR).`);
-            await github.rest.git.deleteRef({
-              owner, repo,
-              ref: `heads/${branch}`,
-            });
+            await github.rest.git.deleteRef({ owner, repo, ref: `heads/${branch}` });
 
       - name: Create rejection branch from main
-        run: |
-          # Fresh branch from the just-checked-out main commit. No force-push
-          # semantics needed because the stale-cleanup step ensures the
-          # remote ref does not exist at this point.
-          git checkout -b "$BRANCH"
+        run: git checkout -b "$BRANCH"
 
       - name: Append rejection entry
         run: |
-          ARGS=(--cve "$CVE_UPPER" --reason "${{ github.event.inputs.reason }}")
+          set -euo pipefail
+          ARGS=(--reason "${{ github.event.inputs.reason }}")
+          if [ "$REJECTION_KIND" = "cve" ]; then
+            ARGS+=(--cve "$REJECTION_TARGET")
+          else
+            ARGS+=(--key "$REJECTION_TARGET")
+            if [ -n "${{ github.event.inputs.candidate_type }}" ]; then
+              ARGS+=(--type "${{ github.event.inputs.candidate_type }}")
+            fi
+            if [ -n "${{ github.event.inputs.source_feed }}" ]; then
+              ARGS+=(--source-feed "${{ github.event.inputs.source_feed }}")
+            fi
+          fi
           if [ -n "${{ github.event.inputs.topic }}" ]; then
             ARGS+=(--topic "${{ github.event.inputs.topic }}")
           fi
@@ -143,38 +171,43 @@ jobs:
             echo "::error::No changes produced by pipeline-reject.mjs (already rejected?)"
             exit 1
           fi
-          git commit -m "chore(pipeline): reject ${CVE_UPPER} — ${{ github.event.inputs.reason }}"
-          # Plain push — stale-cleanup step guarantees the ref does not exist.
+          git commit -m "chore(pipeline): reject ${REJECTION_KIND} ${BRANCH##pipeline/reject-}"
           git push -u origin "$BRANCH"
 
       - name: Open PR
         uses: actions/github-script@v8
+        env:
+          INPUT_CVE: ${{ github.event.inputs.cve }}
+          INPUT_KEY: ${{ github.event.inputs.candidate_key }}
+          INPUT_TYPE: ${{ github.event.inputs.candidate_type }}
+          INPUT_FEED: ${{ github.event.inputs.source_feed }}
+          INPUT_REASON: ${{ github.event.inputs.reason }}
+          INPUT_TOPIC: ${{ github.event.inputs.topic }}
+          INPUT_PR: ${{ github.event.inputs.pr }}
         with:
           script: |
-            const cve = process.env.CVE_UPPER;
             const branch = process.env.BRANCH;
-            const reason = `${{ toJSON(github.event.inputs.reason) }}`;
-            const topic = `${{ toJSON(github.event.inputs.topic) }}`;
-            const pr = `${{ toJSON(github.event.inputs.pr) }}`;
+            const kind = process.env.REJECTION_KIND;
+            const target = process.env.REJECTION_TARGET;
 
             const bodyLines = [
-              `**Reject discovery candidate:** \`${cve}\``,
+              `**Reject discovery candidate:** \`${target}\``,
               '',
               '| Field | Value |',
               '|---|---|',
-              `| CVE | \`${cve}\` |`,
-              `| Reason | ${reason} |`,
+              `| Kind | ${kind} |`,
             ];
-            if (topic && topic !== 'null' && topic !== '""') {
-              bodyLines.push(`| Topic | ${topic} |`);
-            }
-            if (pr && pr !== 'null' && pr !== '""') {
-              bodyLines.push(`| Linked PR | ${pr} |`);
-            }
+            if (process.env.INPUT_CVE) bodyLines.push(`| CVE | \`${process.env.INPUT_CVE.toUpperCase()}\` |`);
+            if (process.env.INPUT_KEY) bodyLines.push(`| Candidate key | \`${process.env.INPUT_KEY}\` |`);
+            if (process.env.INPUT_TYPE) bodyLines.push(`| Candidate type | ${process.env.INPUT_TYPE} |`);
+            if (process.env.INPUT_FEED) bodyLines.push(`| Source feed | ${process.env.INPUT_FEED} |`);
+            bodyLines.push(`| Reason | ${process.env.INPUT_REASON} |`);
+            if (process.env.INPUT_TOPIC) bodyLines.push(`| Topic | ${process.env.INPUT_TOPIC} |`);
+            if (process.env.INPUT_PR) bodyLines.push(`| Linked PR | ${process.env.INPUT_PR} |`);
             bodyLines.push(
               `| Dispatched by | @${context.actor} |`,
               '',
-              'After merge, `pipeline-discover.mjs` will skip this CVE in future runs.',
+              'After merge, `pipeline-discover.mjs` will skip this candidate in future runs.',
               '',
               'To re-surface: open a follow-up PR removing the entry from `.github/pipeline/rejected-candidates.json`.',
               '',
@@ -184,7 +217,7 @@ jobs:
             const { data: pullRequest } = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `chore(pipeline): reject ${cve}`,
+              title: `chore(pipeline): reject ${kind} candidate`,
               head: branch,
               base: 'main',
               body: bodyLines.join('\n'),
