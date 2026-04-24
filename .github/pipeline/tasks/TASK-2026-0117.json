@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0117",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "in_progress",
   "input": {
     "topic": "FortiClient EMS API Authentication Bypass \u2014 Pre-Auth RCE",
     "reprocess": true,
@@ -32,6 +32,13 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Corpus reprocessing \u2014 source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-24T22:28:13.000Z",
+      "action": "locked",
+      "agent": "dangermouse-bot"
     }
-  ]
+  ],
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T22:28:13.000Z"
 }
