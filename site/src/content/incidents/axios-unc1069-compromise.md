@@ -1,446 +1,184 @@
 ---
-eventId: TP-2026-0015
-title: Axios npm Package Compromise by UNC1069
+eventId: "TP-2026-0015"
+title: "Axios npm Package Compromise by UNC1069"
 date: 2026-03-31
-attackType: supply-chain
+attackType: "Supply Chain"
 severity: critical
-sector: Technology / Open Source
-geography: Global
-threatActor: UNC1069
+sector: "Technology"
+geography: "Global"
+threatActor: "UNC1069 / Sapphire Sleet"
 attributionConfidence: A4
-reviewStatus: certified
-confidenceGrade: C
-generatedBy: dangermouse-bot
-generatedDate: 2026-03-31
+reviewStatus: draft_ai
+confidenceGrade: B
+generatedBy: kernel-k
+generatedDate: 2026-04-24
 cves: []
-relatedSlugs:
-  - "teampcp-supply-chain-attack"
-  - "european-commission-trivy-breach-2026"
-  - "trivy-cve-2026-33634"
-  - "drift-protocol-dprk-exploit-2026"
-  - "fbi-dcsnet-surveillance-breach-2026"
+relatedSlugs: []
 tags:
+  - "axios"
   - "npm"
-  - "north-korea"
-  - "open-source"
-  - "rat"
   - "supply-chain"
+  - "open-source"
+  - "developer-tools"
+  - "north-korea"
+  - "rat"
+sources:
+  - url: "https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/"
+    publisher: "Microsoft Security Blog"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-04-01"
+    accessDate: "2026-04-24"
+    archived: false
+  - url: "https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/"
+    publisher: "Snyk"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-04-01"
+    accessDate: "2026-04-24"
+    archived: false
+  - url: "https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack"
+    publisher: "Wiz"
+    publisherType: vendor
+    reliability: R2
+    publicationDate: "2026-03-31"
+    accessDate: "2026-04-24"
+    archived: false
+  - url: "https://securitylabs.datadoghq.com/articles/axios-npm-supply-chain-compromise/"
+    publisher: "Datadog Security Labs"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-04-01"
+    accessDate: "2026-04-24"
+    archived: false
+  - url: "https://github.com/axios/axios/issues/10636"
+    publisher: "Axios"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2026-03-31"
+    accessDate: "2026-04-24"
+    archived: false
+  - url: "https://www.cisa.gov/resources-tools/resources/defending-against-software-supply-chain-attacks"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-04-26"
+    accessDate: "2026-04-24"
+    archived: false
+mitreMappings:
+  - techniqueId: "T1195.002"
+    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    tactic: "Initial Access"
+    notes: "The malicious axios releases added a trojanized npm dependency that executed during installation."
+  - techniqueId: "T1059.007"
+    techniqueName: "Command and Scripting Interpreter: JavaScript"
+    tactic: "Execution"
+    notes: "plain-crypto-js executed a Node.js postinstall script named setup.js."
+  - techniqueId: "T1105"
+    techniqueName: "Ingress Tool Transfer"
+    tactic: "Command and Control"
+    notes: "The install-time loader fetched a platform-specific second-stage payload from actor infrastructure."
+  - techniqueId: "T1071.001"
+    techniqueName: "Application Layer Protocol: Web Protocols"
+    tactic: "Command and Control"
+    notes: "The second-stage flow used HTTP traffic to sfrclak.com on port 8000."
 ---
-## Executive Summary
 
-On March 31, 2026, threat actor UNC1069 successfully compromised the npm credentials of axios lead maintainer Jason Saayman, enabling the publication of two backdoored versions of the axios HTTP client library. The attack deployed a sophisticated multi-stage payload architecture including the WAVESHAPER.V2 remote access trojan (RAT) targeting Windows, macOS, and Linux platforms.
-With a 3-hour exposure window before npm quarantine, the malicious packages reached systems across the global software supply chain. Axios receives over 100 million weekly downloads, making this one of the highest-impact supply chain compromises in 2026. Google's Threat Intelligence Group (GTIG) has formally attributed the attack to UNC1069, a North Korea-nexus financially motivated threat actor with a documented history of targeting cryptocurrency and software infrastructure.
-Organizations running compromised versions (axios@1.14.1 or axios@0.30.4) must immediately upgrade to safe versions and audit their systems for indicators of compromise, including outbound connections to the attacker's command and control infrastructure.
+## Summary
 
-## Timeline
+On March 31, 2026, two malicious axios npm releases, `1.14.1` and `0.30.4`, were published through a compromised maintainer account. The releases added `plain-crypto-js@4.2.1`, a malicious dependency that ran during package installation and retrieved a second-stage remote access trojan for macOS, Windows, or Linux systems.
 
-March 31, 2026~00:21 UTC
+The exposure window was short, about three hours, but axios is widely used across application and CI/CD dependency trees. Any fresh install, update, or transitive dependency resolution that selected the affected versions during the window could have executed the postinstall script before application code ever loaded axios.
 
-Malicious axios@1.14.1 published
-Attacker publishes backdoored version tagged as "latest" release. Package immediately begins propagating to systems with automated dependency resolution.
-
-March 31, 2026~00:21 UTC
-
-Malicious axios@0.30.4 published
-Legacy version also backdoored and published with same payload architecture. Targets installations pinned to older axios versions.
-
-March 31, 2026~03:30 UTC
-
-npm Security Team quarantines packages
-npm Trust & Safety team identifies malicious activity, removes packages from registry, and begins remediation. Exposure window: approximately 3 hours.
-
-March 31, 2026~06:00 UTC
-
-Public disclosure and coordinated response
-npm publishes incident notice. Security vendors, cloud platforms, and development teams initiate detection and mitigation efforts.
+Microsoft attributed the infrastructure and compromise to Sapphire Sleet, a North Korea-nexus actor name. Public reporting also mapped the activity to UNC1069; this article keeps both names visible because the local task topic uses UNC1069 while the strongest direct source in this reconstruction uses Microsoft's Sapphire Sleet label.
 
 ## Technical Analysis
 
-UNC1069 executed a credential compromise followed by manual package publication, avoiding automated CI/CD pipelines that might have triggered additional detection mechanisms.
+The attacker did not need to alter normal axios runtime logic. The malicious releases changed the npm package manifest so that installing axios pulled `plain-crypto-js@4.2.1`. That dependency contained a `postinstall` hook that launched `node setup.js`, giving the attacker code execution on developer workstations, build systems, and CI jobs that installed the package.
 
-Credential Compromise
-The attacker obtained npm credentials belonging to Jason Saayman, the primary maintainer of axios. The specific compromise vector remains under investigation, with hypothesized attack paths including:
+Several reports describe `plain-crypto-js` as pre-staged before the axios releases. A clean-looking `4.2.0` version appeared first, followed by the malicious `4.2.1` release. The axios releases then referenced the malicious dependency, which reduced the visible change inside axios itself to a manifest-level addition.
 
-Phishing or credential harvesting targeting Saayman's development environment
-Exploitation of authentication bypass vulnerabilities in npm infrastructure
-Compromise of credential storage systems on Saayman's workstation
-Social engineering to obtain 2FA bypass codes
+Microsoft and Snyk both describe the loader as obfuscated and self-removing. After execution, the package attempted to remove the postinstall artifacts and leave behind cleaner package metadata, making later inspection of `node_modules/plain-crypto-js` less useful than install-time telemetry, lockfile evidence, and network records.
 
-Package Modification & Publication
-Once credentials were obtained, the attacker manually published two backdoored versions through legitimate npm accounts. The attack avoided automated detection by:
+The observed command-and-control endpoint was `sfrclak[.]com` on port `8000`, resolving to `142.11.206[.]73`. Microsoft described a single HTTP endpoint that served platform-specific responses, while Datadog and Snyk documented host artifacts and hunting logic for macOS, Windows, and Linux payload paths.
 
-No repo commits: Packages were published directly to npm registry without corresponding GitHub commits
-Minimal diff: Malicious changes were confined to package.json and a new setup.js file
-Authentic metadata: Publish records appeared legitimate, matching historical publication patterns
-Rapid spread: Leveraged axios's enormous ecosystem reach (100M+ weekly downloads)
+## Attack Chain
 
-Phantom Dependency Mechanism
-The attack employed a sophisticated obfuscation technique using a phantom dependency:
+### Stage 1: Maintainer Account Compromise
 
-dependencies: {
-"plain-crypto-js": "4.2.1"
-}
-This package plain-crypto-js@4.2.1 never existed on npm prior to this attack and was never actually imported by axios. The phantom dependency served as a secondary infection vector, ensuring that installations using npm's dependency resolution would fetch additional malicious code from attacker-controlled npm registries or mirrors.
+The Axios postmortem states that malicious versions were published through a compromised maintainer account. The maintainer also reported follow-up actions including device resets, credential resets, session revocation, and publishing-flow changes.
 
-Postinstall Script Execution
-The malicious setup.js file was configured as a postinstall script, executing automatically upon package installation:
-"scripts": {
-"postinstall": "node setup.js"
-}
-This design pattern ensures payload execution before any user code verification or dependency analysis occurs, maximizing success rates even on systems with basic npm security configurations.
+### Stage 2: Dependency Staging
 
-Obfuscation & Anti-Analysis
-The malicious setup.js employed multiple obfuscation techniques:
+The attacker staged `plain-crypto-js` before the axios releases. The malicious `4.2.1` package included a postinstall path that was not part of legitimate axios application behavior.
 
-XOR Encryption: Payload instructions encrypted with custom XOR cipher using static keys
-Base64 Encoding: Multi-layer encoding to prevent string pattern matching
-Runtime Decryption: Payload decoded in memory, leaving minimal artifacts on disk
-Self-Cleanup: Script removes itself and temporary files after execution
-Environment Detection: Platform detection logic to select appropriate payload
+### Stage 3: Malicious Axios Releases
 
-### Payload Architecture
+`axios@1.14.1` was published at 00:21 UTC and `axios@0.30.4` around 01:00 UTC on March 31, 2026. Both releases referenced the malicious dependency and were later removed from npm.
 
-The attack implements a sophisticated 3-stage infection chain with platform-specific final payloads:
+### Stage 4: Install-Time Execution
 
-Stage 1
-Phantom Dependency Injection
+When a developer endpoint or CI runner installed an affected axios version, npm resolved `plain-crypto-js@4.2.1` and ran the dependency's lifecycle script. The script contacted the actor endpoint and selected a second-stage path based on host operating system.
 
-Package.json declares non-existent plain-crypto-js@4.2.1 as dependency. npm's resolution mechanism attempts to fetch from registry, introducing second-stage dropper.
+### Stage 5: Payload Retrieval and Follow-On Risk
 
-Stage 2
-SILKBELL Dropper
-
-setup.js executes on postinstall. Decrypts and unpacks platform detection logic. Identifies host OS (Windows, macOS, Linux) and selects appropriate Stage 3 payload. Self-destructs after execution to minimize forensic evidence.
-
-Stage 3
-Platform-Specific RAT Payloads
-
-Windows: PowerShell-based malware with in-memory PE injection
-macOS: Compiled C++ Mach-O binary with persistence mechanisms
-Linux: Python backdoor implementing WAVESHAPER.V2 RAT
-
-### WAVESHAPER.V2 RAT Analysis
-
-The Linux payload represents an evolved version of WAVESHAPER, a RAT attributed to UNC1069 in previous operations. WAVESHAPER.V2 introduces enhanced reconnaissance capabilities while maintaining backward compatibility with UNC1069's existing command and control infrastructure.
-
-Reconnaissance Capabilities
-Upon initial execution, WAVESHAPER.V2 performs comprehensive system enumeration:
-
-System Information: Hostname, OS version, kernel details
-User Context: Current username, UID, group memberships
-Network Configuration: MAC addresses, IP configuration, routing tables
-Process Enumeration: Running processes, child process trees, command lines
-Boot Time: System uptime and installation timestamp
-Software Inventory: Installed packages and versions (package manager enumeration)
-Privilege Level Detection: Verification of sudo privileges and potential privilege escalation paths
-
-Command & Control Beaconing
-C2 Domain: sfrclak[.]com
-IP Address: 142.11.206.73
-Port: 8000 (HTTP)
-Beacon Interval: 60 seconds
-Protocol: HTTP with Base64-encoded JSON payloads
-WAVESHAPER.V2 establishes outbound HTTP connections to attacker-controlled C2 servers every 60 seconds, transmitting gathered system metadata in Base64-encoded JSON format. The User-Agent string mimics Internet Explorer 11 to blend with legitimate enterprise traffic patterns:
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-
-Remote Code Execution
-WAVESHAPER.V2 receives and executes arbitrary shell commands from C2:
-
-Commands decoded from Base64-encoded C2 instructions
-Execution context: inherited user privileges
-Output captured and transmitted back to C2 server
-Support for long-running processes and background execution
-Session management with unique beacon IDs
-
-Windows Compatibility Features
-The Windows variant (PowerShell dropper) implements:
-
-In-Memory PE Injection: Injects .NET assemblies directly into running processes
-UAC Bypass: Attempts privilege escalation through UAC token duplication
-Persistence: Registry Run keys, scheduled tasks, Windows Management Instrumentation (WMI) event subscriptions
-Living-Off-The-Land: Abuse of native Windows utilities (wmiexec, psexec emulation)
-
-macOS Capabilities
-The macOS Mach-O binary variant includes:
-
-Persistence through launch agents in ~/Library/LaunchAgents/
-Kernel-level privilege escalation attempts
-Codesign bypass for native code execution
-Credential theft from macOS Keychain
-
-Evolution from Original WAVESHAPER
-WAVESHAPER.V2 represents significant improvements over the original variant:
-
-Enhanced Stealth: Reduced logging, improved anti-detection mechanisms
-Better C2 Resilience: DNS-over-HTTPS support, proxy awareness
-Expanded Reconnaissance: Additional system profiling for targeting decisions
-Modular Architecture: Ability to load additional modules from C2
-Cross-Platform Consistency: Unified command interface across Windows, macOS, Linux
+The retrieved payload gave the actor a foothold on machines or build runners that executed the install. Because CI runners and developer systems can hold registry tokens, cloud credentials, deployment secrets, and source access, responders were advised to treat exposed systems as potentially compromised and rotate secrets.
 
 ## Impact Assessment
 
-The blast radius of this supply chain attack extends across virtually all modern web applications and services.
+The direct affected packages were `axios@1.14.1`, `axios@0.30.4`, and `plain-crypto-js@4.2.1`. Snyk reported that the malicious axios versions were removed by 03:29 UTC on March 31, while Datadog's timeline places npm cleanup and token revocation in the same early-morning UTC response window.
 
-Directly Compromised Packages
+The main risk was not only direct application use of axios. Dependency ranges such as caret constraints, third-party libraries, and GitHub Actions could resolve axios transitively during a fresh install. Datadog highlighted this CI/CD exposure pattern and provided examples for reviewing dependency paths and workflow runs during the compromise window.
 
-Malicious Versions
+Potential impact included remote access on developer endpoints or CI systems, exposure of environment variables and build secrets, and follow-on access to source code or deployment infrastructure. The incident therefore required both package cleanup and credential response, not only upgrading away from the affected versions.
 
-Package
-axios@1.14.1
+## Attribution
 
-Weekly Downloads (typical)
-100+ million
+Microsoft Threat Intelligence attributed the infrastructure and axios compromise to Sapphire Sleet. Public reports citing Google Threat Intelligence Group associated the same incident with UNC1069, a North Korea-nexus activity cluster. The Axios project postmortem confirms maintainer-account compromise and package impact but does not independently attribute the actor.
 
-Exposure Window
-~3 hours (00:21 - 03:30 UTC March 31)
+Attribution confidence is set to A4 because the actor name relies on vendor intelligence rather than a public government attribution in the sources used here. The incident mechanics, affected versions, malicious dependency, and response timeline are higher-confidence because they are corroborated by the Axios postmortem and multiple security vendors.
 
-Package
-axios@0.30.4
+## Timeline
 
-Weekly Downloads (typical)
-83+ million
+### 2026-03-30 — Malicious Dependency Preparation
 
-Package
-plain-crypto-js@4.2.1
+Datadog reports that the C2 domain was registered on March 30 and that `plain-crypto-js@4.2.0` appeared before the malicious release. The later `4.2.1` package contained the malicious postinstall behavior.
 
-Status
-Phantom dependency (never legitimately published)
+### 2026-03-31 00:21 UTC — axios 1.14.1 Published
 
-Downstream Impact - Affected Frameworks & Tools
-Axios is a critical dependency for countless projects. Estimated affected categories include:
+The malicious `axios@1.14.1` package was published from the compromised maintainer account and referenced `plain-crypto-js@^4.2.1`.
 
-Web Frameworks: Next.js, Nuxt.js, React applications, Vue.js projects
-Server-Side: Node.js APIs, Express middleware, Fastify applications
-Development Tools: Webpack plugins, Vite plugins, Gulp/Grunt tasks
-Cloud Platforms: AWS Lambda functions, Azure Functions, Google Cloud Functions
-Desktop Applications: Electron applications
-CI/CD Pipelines: GitHub Actions, GitLab CI, Jenkins automation
-Container Orchestration: Docker images with Node.js base layers
-Microservices: Service-to-service communication libraries
+### 2026-03-31 01:00 UTC — axios 0.30.4 Published
 
-Installation Vector Analysis
-Because axios typically installs with npm install --save and npm install without version pinning (caret/tilde ranges), many organizations would have automatically pulled the malicious versions unless using strict version locking:
-"axios": "^1.14.0"  → pulls 1.14.1 (MALICIOUS)
-"axios": "~1.14.0"  → pulls 1.14.1 (MALICIOUS)
-"axios": "*"        → pulls latest (1.14.1 MALICIOUS)
-Only strict pinning prevented automatic compromise:
-"axios": "1.14.0"  → safe (no auto-update)
+The malicious `axios@0.30.4` package was published from the same account, expanding exposure to the older axios release line.
 
-## Indicators of Compromise
+### 2026-03-31 02:19-03:00 UTC — Community Reports Escalate
 
-Command & Control Infrastructure
+Datadog's timeline records multiple GitHub issues from StepSecurity reporting the compromise. Some early reports were deleted, while a later issue remained available to the community.
 
-C2 Domain
-sfrclak[.]com
+### 2026-03-31 03:15-03:40 UTC — Packages Removed
 
-C2 IP Address
-142.11.206.73
+The Axios postmortem states that the malicious axios versions were removed around 03:15 UTC and that `plain-crypto-js` was removed at 03:29 UTC. Datadog reports npm replacement and cleanup actions in the same window.
 
-C2 Port
-8000 (HTTP)
+### 2026-04-01 — Vendor Advisories Published
 
-Protocol
-HTTP with Base64-encoded JSON
-
-Network Indicators
-
-VPN Infrastructure
-AstrillVPN exit nodes (linked to UNC1069 previous operations)
-
-Beacon Interval
-60-second check-in to C2
-
-User-Agent String
-Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko
-
-Filesystem Indicators
-
-macOS Temp Directory
-/Library/Caches/com.apple.act.mond/
-
-Linux Temp Paths
-/tmp/.npm_*, /var/tmp/.npm_*
-
-Windows Persistence
-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
-
-Package Indicators
-
-Phantom Dependency
-plain-crypto-js@4.2.1 in package.json
-
-Suspicious Setup Script
-setup.js with postinstall hook in axios versions 1.14.1 and 0.30.4
-
-## Historical Context
-
-Google Threat Intelligence Group (GTIG) has formally attributed this attack to UNC1069 with high confidence through multiple independent indicators:
-
-Formal Attribution & Attack Details
-On April 2, 2026, Google Cloud and GTIG formally attributed the axios npm supply chain attack to UNC1069, a North Korea-nexus threat actor with financial motivations active since 2018. The attack was executed via highly-targeted social engineering, with the attacker posing as the founder of a well-known company to compromise the axios maintainer's credentials. The malware deployed was identified as WAVESHAPER.V2, an evolved variant of the WAVESHAPER remote access trojan.
-
-Technical Attribution Vectors
-
-WAVESHAPER.V2 Malware: The deployed payload is WAVESHAPER.V2, a sophisticated RAT exclusively attributed to UNC1069 representing a clear evolution of WAVESHAPER variants documented in previous operations dating to 2023.
-C2 Infrastructure Links: Domain sfrclak[.]com and IP 142.11.206.73 directly correlate with known UNC1069 infrastructure based on WHOIS data, SSL certificate chains, and passive DNS records.
-VPN Node Reuse: Attacker egress through AstrillVPN nodes previously identified in UNC1069 campaigns (Lazarus Group VPN provider of choice for DPRK threat actors).
-Payload Architecture: Three-stage infection chain, platform-specific payloads, and obfuscation techniques match UNC1069's established patterns.
-Operational Security: Time zone indicators (UTC timing, 00:21 initial publication) align with known UNC1069 operational windows.
-Social Engineering Methodology: Sophisticated credential compromise via targeted social engineering posing as corporate founder aligns with UNC1069's advanced operational tactics.
-
-Threat Actor Profile: UNC1069
-
-Nexus: North Korea-aligned, suspected Lazarus Group affiliate or subordinate element
-Active Since: 2018, with campaigns documented across multiple industry verticals
-Motivation: Financial cybercrime, cryptocurrency theft, intellectual property acquisition
-Specialization: Supply chain attacks, software infrastructure targeting, cryptocurrency exchange operations
-Notable Operations: Previous npm package compromises, PyPI attacks, enterprise software supply chain infiltration
-Infrastructure Preference: Premium VPN services, bulletproof hosters, decentralized C2 patterns
-Operational Sophistication: High (custom tools, evasion techniques, rapid iteration, targeted social engineering)
-
-Confidence Assessment
-Attribution Confidence: HIGH (>90%)
-Attribution is supported by direct technical connections (WAVESHAPER tooling, C2 infrastructure), behavioral patterns (VPN usage, timing), and corroborating intelligence from multiple security vendors independently reaching UNC1069 conclusions.
+Microsoft, Snyk, Datadog, and other vendors published analysis and detection guidance covering affected versions, network indicators, platform artifacts, and remediation steps.
 
 ## Remediation & Mitigation
 
-Immediate Actions
+Organizations should audit lockfiles, package-manager logs, CI job logs, and software composition inventories for `axios@1.14.1`, `axios@0.30.4`, or `plain-crypto-js@4.2.1`. If any affected install ran, responders should treat the host or runner as potentially compromised, remove the malicious dependency, restore axios to a clean version, and rotate secrets exposed to that environment.
 
-Identify Compromised Installations: Search package.json, package-lock.json, and yarn.lock for axios@1.14.1 or axios@0.30.4
-Upgrade to Safe Versions: Upgrade to axios ≤1.14.0 or ≥1.14.2
-Remove Phantom Dependency: Search all package.json files for "plain-crypto-js" and remove any references
-Rebuild Deployments: Rebuild and redeploy all affected applications from clean source
-Container Registry Cleanup: Delete container images built during exposure window; rebuild from safe base layers
+Network and endpoint hunts should cover connections to `sfrclak[.]com`, traffic to `142.11.206[.]73:8000`, and platform-specific payload paths described by Microsoft and Datadog. CI/CD review should include both first-party projects and third-party actions or tools that may install axios transitively.
 
-Network Detection
+Longer-term controls should reduce dependence on newly published packages during build time. Practical measures include lockfile enforcement, dependency cooldown or minimum-age policies, package provenance review, secret minimization in CI, short-lived credentials, immutable runners, and package install policies that account for lifecycle scripts.
 
-Monitor for outbound connections to sfrclak[.]com or 142.11.206.73:8000
-Detect HTTP requests with User-Agent "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
-Alert on regular 60-second beacon patterns to external IPs on port 8000
-Monitor AstrillVPN exit node connections from internal systems
-
-Host-Based Detection
-
-Search for setup.js or .npm_* files in /tmp, /var/tmp, ~/.npm directories
-Check for suspicious postinstall scripts in installed packages
-Monitor for new process spawn from npm postinstall hooks
-macOS: Audit ~/Library/LaunchAgents/ for suspicious launch agents
-Windows: Inspect HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run for new entries created during exposure window
-Review security logs for UAC bypass attempts and privilege escalation indicators
-
-Incident Response
-
-Assume Compromise: Any system running axios@1.14.1 or @0.30.4 during exposure window should be considered compromised
-Isolate Affected Systems: Disconnect from network pending forensic investigation
-Credential Rotation: Rotate all credentials, SSH keys, API tokens on affected systems
-Forensic Capture: Preserve memory dumps, process snapshots for threat hunting and attribution
-Supply Chain Assessment: Audit dependencies for additional compromised packages
-Notification: Notify customers, partners, regulators per incident response procedures
-
-Long-Term Hardening
-
-Implement strict package version pinning in package-lock.json
-Disable postinstall scripts unless absolutely necessary: npm install --ignore-scripts
-Use npm audit and supply chain security scanning (Snyk, Black Duck, etc.)
-Implement code signing verification for npm packages
-Consider private npm registry mirrors with content verification
-Maintain software bill of materials (SBOM) for all deployments
-Implement network egress controls to prevent unauthorized C2 communications
+CISA and NIST software supply chain guidance supports this response model: identify and manage critical components, monitor for unauthorized changes, protect release integrity, and integrate software supply chain risk into normal security operations rather than treating dependency updates as routine trusted events.
 
 ## Sources & References
 
-Google Cloud Blog: North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package
-Google Cloud Threat Intelligence, April 2, 2026
-
-Microsoft Security Blog: Mitigating the Axios npm supply chain compromise
-Microsoft Security Response Center, April 1, 2026
-
-Elastic Security Labs: Inside the Axios supply chain compromise
-Elastic Security Research, April 3, 2026
-
-Snyk Blog: Axios npm Package Compromised
-Snyk Security Research, April 2, 2026
-
-Huntress: Supply Chain Compromise of axios npm Package
-Huntress Labs, April 1, 2026
-
-Tenable FAQ: Axios npm Supply Chain Attack FAQ
-Tenable Security Research, April 4, 2026
-
-Google Cloud Blog: UNC1069 npm Supply Chain Attack (Original)
-Google Threat Intelligence Group, March 31, 2026
-
-npm Security Advisory: axios Compromise
-npm Trust & Safety Team, March 31, 2026
-
-Huntress: Technical Analysis of Axios Compromise
-Huntress Labs, April 1, 2026
-
-Snyk: Supply Chain Risk Assessment
-Snyk Security Research, April 1, 2026
-
-SecurityWeek: Axios Attack - Supply Chain Lessons
-SecurityWeek, April 2, 2026
-
-Elastic Security Labs: WAVESHAPER.V2 Technical Deep Dive
-Elastic Security Research, April 2, 2026
-
-Mandiant: UNC1069 Infrastructure and Attribution
-Mandiant Threat Intelligence, April 3, 2026
-
-Axios GitHub Security Advisory
-Axios Project Maintainers, March 31, 2026
-
-CISA Alert: UNC1069 npm Package Supply Chain Attack
-U.S. Cybersecurity & Infrastructure Security Agency, April 1, 2026
-
-Related Incident: TeamPCP Cryptocurrency Theft Campaign
-Threatpedia Incident Database
-
-Quick Assessment
-
-If your organization uses Node.js, React, Next.js, Vue.js, Angular, or any tool with axios as a dependency, review immediately for exposure.
-This attack affected virtually all modern JavaScript applications.
-
-Key Takeaways
-
-3-hour exposure window to 100M+ weekly downloads
-Multi-platform WAVESHAPER.V2 RAT payload
-Phantom dependency technique for obfuscation
-North Korea-nexus UNC1069 attribution
-Immediate upgrade to safe versions required
-
-Critical IOCs
-
-Domain: sfrclak[.]com
-IP: 142.11.206.73
-Port: 8000
-
-Threat Actor
-
-UNC1069 Profile
-North Korea-nexus, financially motivated. Active since 2018.
-
-Severity Indicators
-
-CRITICAL
-
-Mass exploitation potential
-Active RAT deployment
-Cryptocurrency targeting
-Persistent C2 control
-
-Related Incidents
-
-TeamPCP Supply Chain Attack Campaign
-CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis
-Drift Protocol $285M DeFi Exploit by DPRK-Linked Actors
-FBI DCSNet Surveillance System Breach
-
-Related Reading
-
-TeamPCP Campaign
-European Commission Trivy Breach
-Supply Chain Attack (Glossary)
-RAT - Remote Access Trojan
-C2 Infrastructure
+- [Microsoft Security Blog: Mitigating the Axios npm supply chain compromise](https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/) — Microsoft Security Blog, 2026-04-01
+- [Snyk: Axios npm Package Compromised: Supply Chain Attack Delivers Cross-Platform RAT](https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/) — Snyk, 2026-04-01
+- [Wiz: Axios NPM Distribution Compromised in Supply Chain Attack](https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack) — Wiz, 2026-03-31
+- [Datadog Security Labs: Compromised axios npm package delivers cross-platform RAT](https://securitylabs.datadoghq.com/articles/axios-npm-supply-chain-compromise/) — Datadog Security Labs, 2026-04-01
+- [Axios: Post Mortem: axios npm supply chain compromise](https://github.com/axios/axios/issues/10636) — Axios, 2026-03-31
+- [CISA: Defending Against Software Supply Chain Attacks](https://www.cisa.gov/resources-tools/resources/defending-against-software-supply-chain-attacks) — CISA, 2021-04-26
