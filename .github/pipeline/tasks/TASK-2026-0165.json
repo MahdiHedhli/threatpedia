@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-18T00:01:26.100Z",
-  "updated": "2026-04-24T17:15:55.000Z",
+  "updated": "2026-04-22T16:15:24Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-22T16:15:24Z",
   "input": {
     "topic": "Apache ActiveMQ Improper Input Validation Vulnerability (CVE-2026-34197)",
     "sources": [
@@ -115,32 +115,6 @@
       "to": "complete",
       "agent": "dangermouse-bot",
       "note": "Article drafted using CISA KEV, NVD, Apache advisory, and Horizon3.ai research. PR to be opened."
-    },
-    {
-      "timestamp": "2026-04-23T21:41:16Z",
-      "action": "state_corrected",
-      "from": "complete",
-      "to": "locked",
-      "agent": "codex",
-      "note": "Local branch validated cleanly; task returned to locked so --open-pr can record PR state when GitHub access is available."
-    },
-    {
-      "timestamp": "2026-04-24T17:04:06.421Z",
-      "from": "locked",
-      "to": "pr_open",
-      "agent": "dangermouse-bot",
-      "action": "pr_opened",
-      "note": "Article generated, validated, and recorded against PR #216"
-    },
-    {
-      "timestamp": "2026-04-24T17:15:55.000Z",
-      "action": "pr_opened",
-      "from": "locked",
-      "to": "pr_open",
-      "agent": "dangermouse-bot",
-      "note": "PR #216 already open (opened in previous session). Task JSON updated to pr_open state."
     }
-  ],
-  "pr_number": 216,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/216"
+  ]
 }

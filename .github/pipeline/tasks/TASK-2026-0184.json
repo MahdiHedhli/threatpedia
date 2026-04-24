@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-21T01:59:07.361Z",
-  "updated": "2026-04-21T01:59:07.361Z",
+  "updated": "2026-04-24T14:36:37.123Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T14:34:11.370Z",
   "input": {
     "topic": "Kentico Xperience Path Traversal Vulnerability (CVE-2025-2749)",
     "sources": [
@@ -38,7 +38,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -78,6 +78,23 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 96)"
+    },
+    {
+      "timestamp": "2026-04-24T14:34:11.370Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T14:36:37.123Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #214 opened via GitHub API fallback (gh not available)"
     }
-  ]
+  ],
+  "pr_number": 214,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/214"
 }
