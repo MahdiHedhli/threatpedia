@@ -514,14 +514,41 @@ jobs:
             }
 
             // ── Find dispatchable tasks ──────────────────────────────────
+            // Compatibility note: older freeze-era backlog tasks can still be
+            // `pending` without an explicit `stage`. Treat those as implicit
+            // `draft` so the dispatcher can surface them instead of starving
+            // the backlog behind newer schema-complete tasks.
+            function effectiveStage(task) {
+              return task.stage || 'draft';
+            }
+
+            function effectiveCreatedAt(task) {
+              return (
+                task.created ||
+                task.updated ||
+                task.history?.[0]?.timestamp ||
+                null
+              );
+            }
+
             // Priority order: P0 > P1 > P2 > P3, then oldest first
             const priorityOrder = { P0: 0, P1: 1, P2: 2, P3: 3 };
             const pendingTasks = allTasks
-              .filter(t => t.status === 'pending' && t.stage === 'draft')
+              .filter(t => t.status === 'pending' && effectiveStage(t) === 'draft')
               .sort((a, b) => {
                 const pDiff = (priorityOrder[a.priority] || 9) - (priorityOrder[b.priority] || 9);
                 if (pDiff !== 0) return pDiff;
-                return new Date(a.created) - new Date(b.created);
+
+                const aCreated = effectiveCreatedAt(a);
+                const bCreated = effectiveCreatedAt(b);
+
+                if (aCreated && bCreated) {
+                  return new Date(aCreated) - new Date(bCreated);
+                }
+                if (aCreated && !bCreated) return -1;
+                if (!aCreated && bCreated) return 1;
+
+                return String(a.task_id || a._file).localeCompare(String(b.task_id || b._file));
               });
 
             // If specific task requested via manual trigger
