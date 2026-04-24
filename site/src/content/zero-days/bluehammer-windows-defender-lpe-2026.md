@@ -113,10 +113,10 @@ Third-party reporting described the public exploit as a TOCTOU and path-confusio
 1. Hunt for suspicious local privilege-escalation activity tied to Microsoft Defender immediately before SYSTEM-level process creation.
 2. Investigate systems that showed hands-on-keyboard activity or VPN-derived compromise in the April 2026 window, especially where Huntress-style tradecraft was observed.
 3. Confirm that Microsoft Defender platform updates, not only signature updates, are current across the fleet.
-4. Install Microsoft Defender Antimalware Platform version 4.18.26030.3011 or later.
-5. Verify update health on endpoints rather than assuming Defender auto-updated successfully.
-6. Treat systems exposed before the April 14 patch as higher risk if an attacker had any local foothold.
-7. Pair patching with retrospective investigation for privilege-escalation activity from April 3 onward.
+4. Identify systems running Microsoft Defender Antimalware Platform versions prior to 4.18.26030.3011.
+5. Audit update health on endpoints to determine whether the platform update was successfully applied.
+6. Flag systems exposed before the April 14 patch as high-risk candidates for retrospective investigation.
+7. Conduct retrospective hunts for privilege-escalation activity on systems where the platform update arrived after April 3.
 
 ## Indicators of Compromise
 
