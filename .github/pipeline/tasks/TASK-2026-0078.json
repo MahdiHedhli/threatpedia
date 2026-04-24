@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0078",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Axios npm Package Compromise by UNC1069",
     "reprocess": true,
@@ -47,11 +47,20 @@
       "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #222"
+    },
+    {
+      "timestamp": "2026-04-24T20:53:22.194Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #222 merged (e478219)."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-24T17:57:31.387Z",
+  "updated": "2026-04-24T20:53:22.194Z",
   "pr_number": 222,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/222"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/222",
+  "merged_at": "2026-04-24T20:53:22.194Z"
 }
