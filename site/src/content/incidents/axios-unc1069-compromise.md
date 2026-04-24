@@ -90,7 +90,7 @@ On March 31, 2026, two malicious axios npm releases, `1.14.1` and `0.30.4`, were
 
 The exposure window was short, about three hours, but axios is widely used across application and CI/CD dependency trees. Any fresh install, update, or transitive dependency resolution that selected the affected versions during the window could have executed the postinstall script before application code ever loaded axios.
 
-Microsoft attributed the infrastructure and compromise to Sapphire Sleet, a North Korea-nexus actor name. Public reporting also mapped the activity to UNC1069; this article keeps both names visible because the local task topic uses UNC1069 while the strongest direct source in this reconstruction uses Microsoft's Sapphire Sleet label.
+Microsoft attributed the infrastructure and compromise to Sapphire Sleet, a North Korea-nexus actor name. Public reporting also mapped the activity to UNC1069; this article includes both names to align with vendor reporting and community tracking.
 
 ## Technical Analysis
 
@@ -136,7 +136,7 @@ Potential impact included remote access on developer endpoints or CI systems, ex
 
 Microsoft Threat Intelligence attributed the infrastructure and axios compromise to Sapphire Sleet. Public reports citing Google Threat Intelligence Group associated the same incident with UNC1069, a North Korea-nexus activity cluster. The Axios project postmortem confirms maintainer-account compromise and package impact but does not independently attribute the actor.
 
-Attribution confidence is set to A4 because the actor name relies on vendor intelligence rather than a public government attribution in the sources used here. The incident mechanics, affected versions, malicious dependency, and response timeline are higher-confidence because they are corroborated by the Axios postmortem and multiple security vendors.
+Attribution is based on vendor intelligence from Microsoft and public reporting that cites Google Threat Intelligence Group. No official government attribution was identified in the sources used here. The incident mechanics, affected versions, malicious dependency, and response timeline are corroborated by the Axios postmortem and multiple security vendors.
 
 ## Timeline
 
