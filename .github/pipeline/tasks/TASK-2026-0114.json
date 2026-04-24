@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0114",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "input": {
-    "topic": "BlueHammer \u2014 Windows Defender LPE via VSS Race Condition",
+    "topic": "BlueHammer — Windows Defender LPE via VSS Race Condition",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
     "issues": [
@@ -32,7 +32,17 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-24T20:15:21.760Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
-  ]
+  ],
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-24T20:15:21.760Z",
+  "updated": "2026-04-24T20:15:21.760Z"
 }
