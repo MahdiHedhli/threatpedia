@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T07:26:03.005Z",
-  "updated": "2026-04-21T07:26:03.005Z",
+  "updated": "2026-04-24T21:16:17.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T21:15:15.063Z",
   "input": {
     "topic": "Cisco Catalyst SD-WAN Manager Incorrect Use of Privileged APIs Vulnerability (CVE-2026-20122)",
     "sources": [
@@ -39,7 +39,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -79,6 +79,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 93)"
+    },
+    {
+      "timestamp": "2026-04-24T21:15:15.063Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
