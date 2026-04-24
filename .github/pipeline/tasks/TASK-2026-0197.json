@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-23T18:59:57.303Z",
-  "updated": "2026-04-24T18:14:21.000Z",
+  "updated": "2026-04-24T21:26:26.593Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "DangerMouse Bot",
-  "locked_at": "2026-04-24T18:10:25.705Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Marimo Remote Code Execution Vulnerability (CVE-2026-39987)",
     "sources": [
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -89,6 +89,16 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #225 opened via GitHub API (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-24T21:26:26.593Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #225 merged (ec8d354)."
     }
-  ]
+  ],
+  "pr_number": 225,
+  "merged_at": "2026-04-24T21:26:26.593Z"
 }
