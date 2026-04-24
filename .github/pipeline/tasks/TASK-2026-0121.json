@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0121",
   "type": "zero-day",
   "priority": "P1",
-  "status": "in_progress",
+  "status": "pr_open",
   "input": {
     "topic": "TrueConf Update Integrity Bypass \u2014 Supply Chain Code Execution",
     "reprocess": true,
@@ -37,8 +37,21 @@
       "timestamp": "2026-04-24T22:35:25.000Z",
       "action": "locked",
       "agent": "dangermouse-bot"
+    },
+    {
+      "timestamp": "2026-04-24T22:36:00.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "pr_number": 250,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/250",
+      "commit": "8746237b58f41eb2489c4eb1a54225c7002048eb"
     }
   ],
   "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T22:35:25.000Z"
+  "locked_at": "2026-04-24T22:35:25.000Z",
+  "pr_number": 250,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/250",
+  "updated": "2026-04-24T22:36:00.000Z"
 }
