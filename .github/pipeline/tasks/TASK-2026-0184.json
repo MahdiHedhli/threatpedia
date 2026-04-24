@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-21T01:59:07.361Z",
-  "updated": "2026-04-22T16:42:40.647Z",
+  "updated": "2026-04-24T14:34:11.370Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T14:34:11.370Z",
   "input": {
     "topic": "Kentico Xperience Path Traversal Vulnerability (CVE-2025-2749)",
     "sources": [
@@ -80,12 +80,11 @@
       "note": "Auto-discovered from CISA KEV (score: 96)"
     },
     {
-      "timestamp": "2026-04-22T16:42:40.647Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-24T14:34:11.370Z",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #206"
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
