@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-21T07:26:03.005Z",
-  "updated": "2026-04-24T21:16:17.000Z",
+  "updated": "2026-04-24T21:25:29.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": "dangermouse-bot",
@@ -57,7 +57,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manger-cve-2026-20122.md",
     "branch": "pipeline/TASK-2026-0190",
-    "pr": true
+    "pr": true,
+    "pr_number": 234,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/234"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -86,6 +88,14 @@
       "to": "locked",
       "agent": "DangerMouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T21:25:29.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #234 opened via GitHub API (gh not available)"
     }
   ]
 }
