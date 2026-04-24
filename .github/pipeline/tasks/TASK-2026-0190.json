@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-21T07:26:03.005Z",
-  "updated": "2026-04-24T21:25:29.000Z",
+  "updated": "2026-04-24T21:38:33.983Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T21:15:15.063Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Cisco Catalyst SD-WAN Manager Incorrect Use of Privileged APIs Vulnerability (CVE-2026-20122)",
     "sources": [
@@ -39,7 +39,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -96,6 +96,16 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #234 opened via GitHub API (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-24T21:38:33.983Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #234 merged (eacc524)."
     }
-  ]
+  ],
+  "pr_number": 234,
+  "merged_at": "2026-04-24T21:38:33.983Z"
 }
