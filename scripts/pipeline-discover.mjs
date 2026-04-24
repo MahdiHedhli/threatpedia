@@ -78,6 +78,12 @@ const INCIDENT_NEGATIVE_PATTERNS = [
 
 const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
+const INCIDENT_TASK_SUMMARY_MAX_LENGTH = 320;
+const THREAT_ACTOR_PROMOTION_MIN_SOURCES = 3;
+const THREAT_ACTOR_PROMOTION_MIN_INCIDENTS = 2;
+const CAMPAIGN_PROMOTION_MIN_SOURCES = 3;
+const CAMPAIGN_PROMOTION_MIN_INCIDENTS = 3;
+const NVD_API_DELAY_MS = 6500; // Respect the unauthenticated NVD rate limit window.
 const CAMPAIGN_THEME_LABELS = {
   'supply chain': 'Supply Chain',
   ransomware: 'Ransomware',
@@ -232,7 +238,6 @@ function isPromotableActorName(name) {
   if (!value) return false;
   if (/^(unknown|none|n\/a)$/i.test(value)) return false;
   if (/\b(unknown|suspected|vendor error|unattributed|n\/a)\b/i.test(value)) return false;
-  if (/\bunattributed\b/i.test(value)) return false;
   if (/\bnexus\b/i.test(value)) return false;
   if (/\bmultiple actors\b/i.test(value)) return false;
   return true;
@@ -934,7 +939,9 @@ function buildIncidentTask(candidate, taskId) {
   const nowIso = new Date().toISOString();
   const notes = [
     `Auto-discovered from ${candidate.sourceLabel} on ${candidate.publishedDate}.`,
-    candidate.summary ? `Source summary: ${candidate.summary.slice(0, 320)}${candidate.summary.length > 320 ? '…' : ''}` : null,
+    candidate.summary
+      ? `Source summary: ${candidate.summary.slice(0, INCIDENT_TASK_SUMMARY_MAX_LENGTH)}${candidate.summary.length > INCIDENT_TASK_SUMMARY_MAX_LENGTH ? '…' : ''}`
+      : null,
     candidate.positiveHits.length > 0 ? `Incident signals: ${candidate.positiveHits.join(', ')}.` : null,
     candidate.boundaryHits.length > 0 ? `Boundary signals: ${candidate.boundaryHits.join(', ')}.` : null,
     candidate.negativeHits.length > 0 ? `Watch-outs: ${candidate.negativeHits.join(', ')}.` : null,
@@ -1183,7 +1190,10 @@ async function buildThreatActorPromotionCandidates(config, opts, indexes, reject
       candidate.uniqueSourceCount = candidate.sources.length;
       return scoreThreatActorPromotion(candidate);
     })
-    .filter(candidate => candidate.uniqueSourceCount >= 3)
+    .filter(candidate => (
+      candidate.uniqueSourceCount >= THREAT_ACTOR_PROMOTION_MIN_SOURCES &&
+      candidate.incidentCount >= THREAT_ACTOR_PROMOTION_MIN_INCIDENTS
+    ))
     .sort((left, right) => {
       if (right.score !== left.score) return right.score - left.score;
       return String(right.latestDate || '').localeCompare(String(left.latestDate || ''));
@@ -1377,8 +1387,8 @@ async function buildCampaignPromotionCandidates(config, opts, indexes, rejectedC
       candidate.uniqueSourceCount = candidate.sources.length;
       return scoreCampaignPromotion(candidate);
     })
-    .filter(candidate => candidate.uniqueSourceCount >= 3)
-    .filter(candidate => candidate.promotionKind === 'explicit' || candidate.incidentCount >= 3)
+    .filter(candidate => candidate.uniqueSourceCount >= CAMPAIGN_PROMOTION_MIN_SOURCES)
+    .filter(candidate => candidate.promotionKind === 'explicit' || candidate.incidentCount >= CAMPAIGN_PROMOTION_MIN_INCIDENTS)
     .filter(candidate => !isKnownCampaignMatch(candidate, knownCampaigns))
     .sort((left, right) => {
       if (right.score !== left.score) return right.score - left.score;
@@ -1498,7 +1508,7 @@ async function buildZeroDayCandidates(config, opts, indexes, rejectedCves) {
       candidate.r1Sources = 2;
       enriched += 1;
     }
-    await new Promise(resolveDelay => setTimeout(resolveDelay, 6500));
+    await new Promise(resolveDelay => setTimeout(resolveDelay, NVD_API_DELAY_MS));
   }
 
   console.log(`         Enriched ${enriched}/${toEnrich.length} with CVSS data${rateLimited ? ' (rate limited)' : ''}\n`);

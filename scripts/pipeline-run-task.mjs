@@ -426,10 +426,128 @@ function parseBodySourceEntries(sourcesBody) {
   return { lines, valid, invalid };
 }
 
+let ghAvailabilityCache = null;
+let gitHubRepoCache = null;
+let gitHubTokenCache = undefined;
+
+function isGhCliAvailable() {
+  if (ghAvailabilityCache !== null) return ghAvailabilityCache;
+
+  try {
+    execFileSync('gh', ['--version'], {
+      cwd: ROOT,
+      stdio: ['ignore', 'ignore', 'ignore'],
+    });
+    ghAvailabilityCache = true;
+  } catch {
+    ghAvailabilityCache = false;
+  }
+
+  return ghAvailabilityCache;
+}
+
+function getGitHubToken() {
+  if (gitHubTokenCache !== undefined) return gitHubTokenCache;
+
+  gitHubTokenCache =
+    process.env.GH_TOKEN ||
+    process.env.GITHUB_TOKEN ||
+    process.env.GITHUB_PAT ||
+    process.env.DMBOT_PAT ||
+    null;
+
+  return gitHubTokenCache;
+}
+
+function detectGitHubRepo() {
+  if (gitHubRepoCache) return gitHubRepoCache;
+
+  const fromEnv = String(process.env.GITHUB_REPOSITORY || '').trim();
+  if (/^[^/\s]+\/[^/\s]+$/.test(fromEnv)) {
+    gitHubRepoCache = fromEnv;
+    return gitHubRepoCache;
+  }
+
+  try {
+    const remote = execSync('git remote get-url origin', {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+    const match = remote.match(/github\.com[:/]([^/]+\/[^/.]+?)(?:\.git)?$/);
+    if (match) {
+      gitHubRepoCache = match[1];
+      return gitHubRepoCache;
+    }
+  } catch {
+    // Fall through to the explicit error below.
+  }
+
+  console.error('  ERROR: Could not determine the GitHub repository for API fallback.');
+  console.error('  Set GITHUB_REPOSITORY or ensure origin points at GitHub before running --open-pr without gh.');
+  process.exit(1);
+}
+
+function githubApiRequest(method, endpoint, body = null) {
+  const repo = detectGitHubRepo();
+  const token = getGitHubToken();
+  if (!token) {
+    throw new Error('gh is not available and no GitHub token env var was found. Set GH_TOKEN, GITHUB_TOKEN, GITHUB_PAT, or DMBOT_PAT before using --open-pr without gh.');
+  }
+
+  const url = `https://api.github.com/repos/${repo}${endpoint}`;
+  const args = [
+    '-sSfL',
+    '-X', method,
+    '-H', 'Accept: application/vnd.github+json',
+    '-H', `Authorization: token ${token}`,
+    '-H', 'User-Agent: threatpedia-pipeline-runner',
+  ];
+
+  if (body !== null) {
+    args.push('-H', 'Content-Type: application/json', '--data-binary', JSON.stringify(body));
+  }
+
+  args.push(url);
+
+  try {
+    const raw = execFileSync('curl', args, {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    return raw ? JSON.parse(raw) : {};
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    throw new Error(`GitHub API ${method} ${endpoint} failed: ${stderr}`);
+  }
+}
+
+function mapPullRequestRecord(pr) {
+  return {
+    number: pr.number,
+    state: String(pr.state || '').toUpperCase(),
+    isDraft: Boolean(pr.draft),
+    headRefName: pr.head?.ref || '',
+    baseRefName: pr.base?.ref || '',
+    url: pr.html_url || pr.url || '',
+  };
+}
+
 function loadPullRequest(prNumber) {
   if (!Number.isInteger(prNumber) || prNumber <= 0) {
     console.error('  ERROR: --pr must be a positive integer PR number');
     process.exit(1);
+  }
+
+  if (!isGhCliAvailable()) {
+    try {
+      return mapPullRequestRecord(githubApiRequest('GET', `/pulls/${prNumber}`));
+    } catch (error) {
+      console.error(`  ERROR: Could not verify PR #${prNumber} via GitHub API fallback: ${error.message}`);
+      console.error('  Open the PR first and ensure GitHub auth is available before recording PR state.');
+      process.exit(1);
+    }
   }
 
   try {
@@ -572,6 +690,28 @@ function ensureArticleTracked(articleFile) {
 }
 
 function findExistingOpenPullRequest(task) {
+  if (!isGhCliAvailable()) {
+    try {
+      const [owner] = detectGitHubRepo().split('/');
+      const pulls = githubApiRequest(
+        'GET',
+        `/pulls?state=open&head=${encodeURIComponent(`${owner}:${task.output.branch}`)}&base=main&per_page=10`
+      );
+
+      if (pulls.length > 1) {
+        console.error(`  ERROR: Found ${pulls.length} open PRs for branch ${task.output.branch}.`);
+        console.error('  Resolve the duplicate PR state manually before running --open-pr again.');
+        process.exit(1);
+      }
+
+      return pulls[0] ? mapPullRequestRecord(pulls[0]) : null;
+    } catch (error) {
+      console.error(`  ERROR: Could not inspect open PRs for ${task.output.branch} via GitHub API fallback: ${error.message}`);
+      console.error('  Ensure GitHub auth is available before opening or recording PR state.');
+      process.exit(1);
+    }
+  }
+
   try {
     const raw = execFileSync(
       'gh',
@@ -631,6 +771,21 @@ function buildPullRequestBody(task, articleFile) {
 }
 
 function createPullRequest(task, articleFile) {
+  if (!isGhCliAvailable()) {
+    try {
+      return mapPullRequestRecord(githubApiRequest('POST', '/pulls', {
+        title: buildPullRequestTitle(task),
+        head: task.output.branch,
+        base: 'main',
+        body: buildPullRequestBody(task, articleFile),
+      }));
+    } catch (error) {
+      console.error(`  ERROR: Could not create a PR for ${task.output.branch} via GitHub API fallback: ${error.message}`);
+      console.error('  If the PR already exists, rerun --open-pr --pr <number> or fix GitHub auth and try again.');
+      process.exit(1);
+    }
+  }
+
   const tempDir = mkdtempSync(join(tmpdir(), 'threatpedia-pr-'));
   const bodyFile = join(tempDir, 'body.md');
   writeFileSync(bodyFile, buildPullRequestBody(task, articleFile));
@@ -656,6 +811,83 @@ function createPullRequest(task, articleFile) {
     process.exit(1);
   }
   return created;
+}
+
+function findOpenPipelineIssues(taskId) {
+  if (!isGhCliAvailable()) {
+    try {
+      const issues = githubApiRequest('GET', '/issues?state=open&labels=pipeline%2Fready&per_page=100');
+      return issues.filter(issue =>
+        !issue.pull_request &&
+        (
+          String(issue.title || '').includes(`[PIPELINE] ${taskId}:`) ||
+          String(issue.body || '').includes(`## Pipeline Task: \`${taskId}\``)
+        )
+      );
+    } catch (error) {
+      console.warn(`  WARNING: Could not inspect open pipeline issues for ${taskId} via GitHub API fallback: ${error.message}`);
+      return [];
+    }
+  }
+
+  try {
+    const raw = execFileSync(
+      'gh',
+      ['issue', 'list', '--state', 'open', '--label', 'pipeline/ready', '--limit', '200', '--json', 'number,title,body,url'],
+      { encoding: 'utf8', cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    const issues = JSON.parse(raw);
+    return issues.filter(issue =>
+      String(issue.title || '').includes(`[PIPELINE] ${taskId}:`) ||
+      String(issue.body || '').includes(`## Pipeline Task: \`${taskId}\``)
+    );
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.warn(`  WARNING: Could not inspect open pipeline issues for ${taskId}: ${stderr}`);
+    return [];
+  }
+}
+
+function closeOpenPipelineIssues(task, prNumber) {
+  const issues = findOpenPipelineIssues(task.task_id);
+  if (issues.length === 0) return;
+
+  for (const issue of issues) {
+    if (!isGhCliAvailable()) {
+      try {
+        githubApiRequest('POST', `/issues/${issue.number}/comments`, {
+          body: `Closing automatically because ${task.task_id} moved to PR #${prNumber}.`,
+        });
+        githubApiRequest('PATCH', `/issues/${issue.number}`, {
+          state: 'closed',
+          state_reason: 'completed',
+        });
+        console.log(`  Closed pipeline issue #${issue.number}: ${issue.html_url || issue.url}`);
+      } catch (error) {
+        const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+        console.warn(`  WARNING: Could not close pipeline issue #${issue.number} for ${task.task_id}: ${stderr}`);
+      }
+      continue;
+    }
+
+    try {
+      execFileSync(
+        'gh',
+        [
+          'issue',
+          'close',
+          String(issue.number),
+          '--reason', 'completed',
+          '--comment', `Closing automatically because ${task.task_id} moved to PR #${prNumber}.`,
+        ],
+        { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }
+      );
+      console.log(`  Closed pipeline issue #${issue.number}: ${issue.url}`);
+    } catch (error) {
+      const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+      console.warn(`  WARNING: Could not close pipeline issue #${issue.number} for ${task.task_id}: ${stderr}`);
+    }
+  }
 }
 
 function assertPullRequestMatchesTask(task, pr) {
@@ -1169,7 +1401,7 @@ function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComple
     pr = findExistingOpenPullRequest(task);
     if (!pr) {
       pr = createPullRequest(task, articleFile);
-      console.log(`  Created PR #${pr.number}: ${pr.url}`);
+      console.log(`  Created PR #${pr.number}: ${pr.url}${isGhCliAvailable() ? '' : ' (GitHub API fallback)'}`);
     } else {
       console.log(`  Reusing existing PR #${pr.number}: ${pr.url}`);
     }
@@ -1196,6 +1428,7 @@ function openPrTask(task, filePath, prNumber, explicitFile, usedDeprecatedComple
 
   saveTask(task, filePath);
   commitAndPushTaskState(task, filePath, pr.number);
+  closeOpenPipelineIssues(task, pr.number);
   console.log(`  ✓ ${task.task_id} recorded against PR #${pr.number}`);
   console.log(`  Bookkeeping commit pushed to ${task.output.branch}.`);
   console.log('  Final completion is now driven by the PR merge event, not by local CLI state.');

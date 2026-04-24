@@ -28,6 +28,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DMBOT_PAT }}
           MAIN_SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
         run: |
           echo "Main advanced to ${MAIN_SHA:0:7}. Checking open PRs..."
 
@@ -89,10 +90,14 @@ jobs:
               git push origin HEAD:"${branch}" 2>/dev/null
               if [ $? -eq 0 ]; then
                 echo "  ✅ Merged main and pushed."
-                gh pr comment "${pr_number}" --body "✅ Auto-rebased against main (${MAIN_SHA:0:7}). No conflicts."
+                if ! gh pr comment "${pr_number}" --body "✅ Auto-rebased against main (${MAIN_SHA:0:7}). No conflicts."; then
+                  echo "  ⚠️ Could not post auto-rebase success comment."
+                fi
               else
                 echo "  ⚠️ Merge succeeded but push failed."
-                gh pr comment "${pr_number}" --body "⚠️ Auto-rebase merged cleanly but push failed. Manual push needed."
+                if ! gh pr comment "${pr_number}" --body "⚠️ Auto-rebase merged cleanly but push failed. Manual push needed."; then
+                  echo "  ⚠️ Could not post push-failure comment."
+                fi
               fi
             else
               # Merge failed — extract conflicted files
@@ -101,13 +106,23 @@ jobs:
 
               echo "  ❌ Conflicts detected."
 
-              # Add needs-rebase label (create if it doesn't exist)
-              gh label create "needs-rebase" --description "PR has merge conflicts with main" --color "D93F0B" 2>/dev/null || true
-              gh pr edit "${pr_number}" --add-label "needs-rebase"
+              # Add needs-rebase label via REST so repo-scoped tokens work.
+              if ! gh api -X POST "repos/${REPO}/labels" \
+                -f name='needs-rebase' \
+                -f description='PR has merge conflicts with main' \
+                -f color='D93F0B' >/dev/null 2>&1; then
+                true
+              fi
+
+              if ! gh api -X POST "repos/${REPO}/issues/${pr_number}/labels" \
+                -f labels[]='needs-rebase' >/dev/null; then
+                echo "  ⚠️ Could not apply needs-rebase label."
+              fi
 
               # Comment with conflict details
               conflict_list=$(echo "$conflicts" | sed 's/^/- `/' | sed 's/$/`/')
-              gh pr comment "${pr_number}" --body "$(cat <<EOF
+              if ! gh api -X POST "repos/${REPO}/issues/${pr_number}/comments" \
+                -f body="$(cat <<EOF
           ⚠️ Merge conflicts detected after main advanced to ${MAIN_SHA:0:7}.
 
           **Conflicted files:**
@@ -115,7 +130,9 @@ jobs:
 
           DangerMouse-Bot will resolve on next session, or resolve manually and remove the \`needs-rebase\` label.
           EOF
-              )"
+              )" >/dev/null; then
+                echo "  ⚠️ Could not post conflict comment."
+              fi
             fi
 
             # Reset for next PR

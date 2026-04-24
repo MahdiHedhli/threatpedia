@@ -1,10 +1,11 @@
 # Threatpedia — Public Repository Context
 
-This file provides guidance to Claude Code when working in this repository.
+This file provides guidance to Codex and other OpenAI coding agents when
+working in this repository.
 
 ## Parity rule
 
-This file should stay in parity with the sibling `AGENTS.md` and `GEMINI.md`
+This file should stay in parity with the sibling `CLAUDE.md` and `GEMINI.md`
 for shared security, workflow, repository-boundary, and review-discipline
 guidance. Only agent-specific auto-load notes and explicitly repo-local
 exceptions should differ. If one of these files changes, review the others in

@@ -109,6 +109,9 @@ function selfTest() {
   if (cveEntry.cve !== 'CVE-2026-00001') throw new Error('selfTest: append cve');
   const keyEntry = appendRejection(data, { key: 'incident:demo:https://example.com', type: 'incident', reason: 'test', now: fakeNow });
   if (keyEntry.candidate_key !== 'incident:demo:https://example.com') throw new Error('selfTest: append key');
+  let threwCve = false;
+  try { appendRejection(data, { cve: 'cve-2026-00001', reason: 'dup', now: fakeNow }); } catch { threwCve = true; }
+  if (!threwCve) throw new Error('selfTest: duplicate CVE must throw');
   let threw = false;
   try { appendRejection(data, { key: 'incident:demo:https://example.com', reason: 'dup', now: fakeNow }); } catch { threw = true; }
   if (!threw) throw new Error('selfTest: duplicate key must throw');

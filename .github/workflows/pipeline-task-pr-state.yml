@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [closed]
 
+concurrency:
+  group: pipeline-task-pr-state
+  cancel-in-progress: false
+
 env:
   TASK_STATE_BRANCH: pipeline/task-state
   TASK_STATE_LABEL: pipeline/task-state
@@ -14,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
       pull-requests: write
 
     steps:
@@ -45,9 +50,10 @@ jobs:
 
             if [ "$OPEN_PRS" = "0" ]; then
               echo "No open PR on $BRANCH — resetting to origin/main"
-              git fetch origin main
+              git fetch origin main "$BRANCH"
+              REMOTE_BRANCH_SHA="$(git rev-parse --verify "refs/remotes/origin/$BRANCH")"
               git checkout -B "$BRANCH" origin/main
-              git push --force-with-lease origin "$BRANCH"
+              git push --force-with-lease="$BRANCH:$REMOTE_BRANCH_SHA" origin "$BRANCH"
             else
               echo "Open PR exists on $BRANCH — accumulating onto existing branch"
               git fetch origin "$BRANCH"
@@ -75,7 +81,6 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const core = require('@actions/core');
 
             const TASKS_DIR = '.github/pipeline/tasks';
             const prNumber = Number(process.env.PR_NUMBER);
@@ -157,6 +162,53 @@ jobs:
           git commit -m "chore(pipeline): sync task PR state for #${{ github.event.pull_request.number }}"
           git push --force-with-lease origin "${TASK_STATE_BRANCH}"
           echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Close matching pipeline issues for completed tasks
+        if: steps.commit.outputs.has_changes == 'true'
+        uses: actions/github-script@v8
+        env:
+          CHANGED_TASKS_JSON: ${{ steps.mutate.outputs.changed_tasks }}
+        with:
+          script: |
+            const changedTasks = JSON.parse(process.env.CHANGED_TASKS_JSON || '[]');
+            const completedTaskIds = changedTasks
+              .filter(task => task.to === 'complete')
+              .map(task => task.task_id);
+
+            if (completedTaskIds.length === 0) {
+              console.log('No completed tasks in this sync event.');
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const openIssues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner,
+                repo,
+                state: 'open',
+                labels: 'pipeline/ready',
+                per_page: 100,
+              }
+            );
+
+            const matchesTask = (issue, taskId) =>
+              String(issue.title || '').includes(`[PIPELINE] ${taskId}:`) ||
+              String(issue.body || '').includes(`## Pipeline Task: \`${taskId}\``);
+
+            for (const taskId of completedTaskIds) {
+              const matches = openIssues.filter(issue => !issue.pull_request && matchesTask(issue, taskId));
+              for (const issue of matches) {
+                console.log(`Closing pipeline issue #${issue.number} for ${taskId}`);
+                await github.rest.issues.update({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  state_reason: 'completed',
+                });
+              }
+            }
 
       - name: Create or update task-state PR
         if: steps.commit.outputs.has_changes == 'true'
