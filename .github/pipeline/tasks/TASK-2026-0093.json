@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0093",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "FortiClient EMS Zero-Day Exploitation (CVE-2026-35616)",
     "reprocess": true,
@@ -47,11 +47,20 @@
       "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #223"
+    },
+    {
+      "timestamp": "2026-04-24T20:54:57.231Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #223 merged (1662f0a)."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-24T18:02:38.711Z",
+  "updated": "2026-04-24T20:54:57.231Z",
   "pr_number": 223,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/223"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/223",
+  "merged_at": "2026-04-24T20:54:57.231Z"
 }
