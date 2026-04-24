@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-24T18:41:00.530Z",
   "updated": "2026-04-24T21:38:33.000Z",
   "source": "auto_discovery",
@@ -56,7 +56,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/samsung-magicinfo-9-server-cve-2024-7399.md",
     "branch": "pipeline/TASK-2026-0199",
-    "pr": true
+    "pr": true,
+    "pr_number": 240,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/240"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -85,6 +87,14 @@
       "to": "locked",
       "agent": "DangerMouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T21:38:33.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #240 opened via GitHub API (gh not available)"
     }
   ]
 }
