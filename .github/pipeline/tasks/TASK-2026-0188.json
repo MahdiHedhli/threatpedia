@@ -1,83 +1,101 @@
 {
-  "task_id": "TASK-2026-0188",
-  "stage": "draft",
-  "type": "zero-day",
-  "priority": "P0",
-  "status": "pending",
-  "created": "2026-04-21T07:26:03.005Z",
-  "updated": "2026-04-21T07:26:03.005Z",
-  "source": "auto_discovery",
-  "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
-  "input": {
-    "topic": "Cisco Catalyst SD-WAN Manager Exposure of Sensitive Information to an Unauthorized Actor Vulnerability (CVE-2026-20133)",
-    "sources": [
-      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
-      "https://nvd.nist.gov/vuln/detail/CVE-2026-20133",
-      "https://www.cisa.gov/news-events/directives/supplemental-direction-ed-26-03-hunt-and-hardening-guidance-cisco-sd-wan-systems",
-      "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-authbp-qwCX8D4v"
+    "task_id": "TASK-2026-0188",
+    "stage": "draft",
+    "type": "zero-day",
+    "priority": "P0",
+    "status": "pr_open",
+    "created": "2026-04-21T07:26:03.005Z",
+    "updated": "2026-04-24T20:31:09.000Z",
+    "source": "auto_discovery",
+    "submitted_by": "pipeline-discovery",
+    "locked_by": "dangermouse-bot",
+    "locked_at": "2026-04-24T20:29:44.889Z",
+    "input": {
+        "topic": "Cisco Catalyst SD-WAN Manager Exposure of Sensitive Information to an Unauthorized Actor Vulnerability (CVE-2026-20133)",
+        "sources": [
+            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-20133",
+            "https://www.cisa.gov/news-events/directives/supplemental-direction-ed-26-03-hunt-and-hardening-guidance-cisco-sd-wan-systems",
+            "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-authbp-qwCX8D4v"
+        ],
+        "candidate_data": {
+            "cve": "CVE-2026-20133",
+            "cves": [
+                "CVE-2026-20133"
+            ],
+            "exploitId": "TP-EXP-2026-0012",
+            "type": "Unclassified",
+            "platform": "Cisco Catalyst SD-WAN Manager",
+            "severity": "medium",
+            "cisaKev": true,
+            "disclosedDate": "2026-04-20",
+            "cwes": [
+                "CWE-200"
+            ],
+            "knownRansomwareUse": false
+        },
+        "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-04-23. CVSS 3.1: 6.5 (MEDIUM) Discovery score: 95/100 (auto-certify eligible)."
+    },
+    "specs": [
+        "DATA-STANDARDS-v1.0.md",
+        "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
     ],
-    "candidate_data": {
-      "cve": "CVE-2026-20133",
-      "cves": [
-        "CVE-2026-20133"
-      ],
-      "exploitId": "TP-EXP-2026-0012",
-      "type": "Unclassified",
-      "platform": "Cisco Catalyst SD-WAN Manager",
-      "severity": "medium",
-      "cisaKev": true,
-      "disclosedDate": "2026-04-20",
-      "cwes": [
-        "CWE-200"
-      ],
-      "knownRansomwareUse": false
+    "acceptance_criteria": {
+        "frontmatter_valid": true,
+        "min_sources": 3,
+        "min_h2_sections": 5,
+        "min_mitre_mappings": 1,
+        "review_status": "draft_ai",
+        "schema_validation": "pass",
+        "astro_build": true
     },
-    "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-04-23. CVSS 3.1: 6.5 (MEDIUM) Discovery score: 95/100 (auto-certify eligible)."
-  },
-  "specs": [
-    "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
-  ],
-  "acceptance_criteria": {
-    "frontmatter_valid": true,
-    "min_sources": 3,
-    "min_h2_sections": 5,
-    "min_mitre_mappings": 1,
-    "review_status": "draft_ai",
-    "schema_validation": "pass",
-    "astro_build": true
-  },
-  "depends_on": [],
-  "preconditions": [
-    "editorial queue depth < 50"
-  ],
-  "output": {
-    "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manager-cve-2026-20133.md",
-    "branch": "pipeline/TASK-2026-0188",
-    "pr": true
-  },
-  "discovery": {
-    "feed": "CISA_KEV",
-    "score": 95,
-    "auto_certify": true,
-    "cvss": {
-      "score": 6.5,
-      "severity": "MEDIUM",
-      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
-      "version": "3.1"
+    "depends_on": [],
+    "preconditions": [
+        "editorial queue depth < 50"
+    ],
+    "output": {
+        "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manager-cve-2026-20133.md",
+        "branch": "pipeline/TASK-2026-0188",
+        "pr": true
     },
-    "discovered_at": "2026-04-21T07:26:03.005Z"
-  },
-  "history": [
-    {
-      "timestamp": "2026-04-21T07:26:03.005Z",
-      "action": "created",
-      "from": "none",
-      "to": "pending",
-      "agent": "pipeline-discovery",
-      "note": "Auto-discovered from CISA KEV (score: 95)"
-    }
-  ]
+    "discovery": {
+        "feed": "CISA_KEV",
+        "score": 95,
+        "auto_certify": true,
+        "cvss": {
+            "score": 6.5,
+            "severity": "MEDIUM",
+            "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+            "version": "3.1"
+        },
+        "discovered_at": "2026-04-21T07:26:03.005Z"
+    },
+    "history": [
+        {
+            "timestamp": "2026-04-21T07:26:03.005Z",
+            "action": "created",
+            "from": "none",
+            "to": "pending",
+            "agent": "pipeline-discovery",
+            "note": "Auto-discovered from CISA KEV (score: 95)"
+        },
+        {
+            "timestamp": "2026-04-24T20:29:44.889Z",
+            "from": "pending",
+            "to": "locked",
+            "agent": "dangermouse-bot",
+            "note": "Locked for execution"
+        },
+        {
+            "timestamp": "2026-04-24T20:31:09.000Z",
+            "from": "locked",
+            "to": "pr_open",
+            "agent": "dangermouse-bot",
+            "note": "PR opened via GitHub API",
+            "pr_number": 231,
+            "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/231"
+        }
+    ],
+    "pr_number": 231,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/231"
 }
