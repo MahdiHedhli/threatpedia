@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0117",
   "type": "zero-day",
   "priority": "P1",
-  "status": "in_progress",
+  "status": "pr_open",
   "input": {
     "topic": "FortiClient EMS API Authentication Bypass \u2014 Pre-Auth RCE",
     "reprocess": true,
@@ -37,8 +37,22 @@
       "timestamp": "2026-04-24T22:28:13.000Z",
       "action": "locked",
       "agent": "dangermouse-bot"
+    },
+    {
+      "timestamp": "2026-04-24T22:30:03.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #248 opened via GitHub API",
+      "pr_number": 248,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/248",
+      "commit": "f568b5537a5efadb606c3e62b9718c2ba4475eb2"
     }
   ],
   "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T22:28:13.000Z"
+  "locked_at": "2026-04-24T22:28:13.000Z",
+  "pr_number": 248,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/248",
+  "updated": "2026-04-24T22:30:03.000Z"
 }
