@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-24T18:41:00.531Z",
-  "updated": "2026-04-24T23:17:24.086Z",
+  "updated": "2026-04-24T23:23:43.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T23:17:24.086Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "SimpleHelp Path Traversal Vulnerability (CVE-2024-57728)",
     "sources": [
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -79,6 +79,17 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T23:23:43.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #251 opened: https://github.com/MahdiHedhli/threatpedia/pull/251 | commit 7f926ce56b33e75757cc7994d4fd2fe77396b1b9"
     }
-  ]
+  ],
+  "pr_number": 251,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/251",
+  "locked": false
 }
