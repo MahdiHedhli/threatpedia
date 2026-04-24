@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-24T18:41:00.530Z",
-  "updated": "2026-04-24T18:41:00.530Z",
+  "updated": "2026-04-24T21:53:16.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T21:53:16.000Z",
   "input": {
     "topic": "D-Link DIR-823X Command Injection Vulnerability (CVE-2025-29635)",
     "sources": [
@@ -27,7 +27,7 @@
       "platform": "D-Link DIR-823X",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-04-24",
+      "disclosedDate": "2025-03-25",
       "cwes": [
         "CWE-77"
       ],
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -77,6 +77,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 96)"
+    },
+    {
+      "timestamp": "2026-04-24T21:53:16.000Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
