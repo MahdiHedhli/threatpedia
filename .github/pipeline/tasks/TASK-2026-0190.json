@@ -55,7 +55,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manger-cve-2026-20122.md",
+    "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manager-cve-2026-20122.md",
     "branch": "pipeline/TASK-2026-0190",
     "pr": true,
     "pr_number": 234,
