@@ -1,0 +1,83 @@
+{
+  "task_id": "TASK-2026-0199",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-24T18:41:00.530Z",
+  "updated": "2026-04-24T18:41:00.530Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Samsung MagicINFO 9 Server Path Traversal Vulnerability (CVE-2024-7399)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-7399",
+      "https://security.samsungtv.com/securityUpdates"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2024-7399",
+      "cves": [
+        "CVE-2024-7399"
+      ],
+      "exploitId": "TP-EXP-2024-0004",
+      "type": "Path Traversal",
+      "platform": "Samsung MagicINFO 9 Server",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-24",
+      "cwes": [
+        "CWE-22",
+        "CWE-434"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-24. Required action by 2026-05-08. CVSS 3.1: 8.8 (HIGH). Discovery score: 98/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/samsung-magicinfo-9-server-cve-2024-7399.md",
+    "branch": "pipeline/TASK-2026-0199",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 98,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-24T18:41:00.530Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-24T18:41:00.530Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 98)"
+    }
+  ]
+}
