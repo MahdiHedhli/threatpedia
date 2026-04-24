@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0118",
   "type": "zero-day",
   "priority": "P1",
-  "status": "in_progress",
+  "status": "pr_open",
   "input": {
     "topic": "Ivanti EPMM Code Injection \u2014 Bash Arithmetic Expansion RCE",
     "reprocess": true,
@@ -37,8 +37,21 @@
       "timestamp": "2026-04-24T22:32:36.000Z",
       "action": "locked",
       "agent": "dangermouse-bot"
+    },
+    {
+      "timestamp": "2026-04-24T22:33:11.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "pr_number": 249,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
+      "commit": "e469ec9e4287850d646768340c61532f5015679a"
     }
   ],
   "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T22:32:36.000Z"
+  "locked_at": "2026-04-24T22:32:36.000Z",
+  "pr_number": 249,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
+  "updated": "2026-04-24T22:33:11.000Z"
 }
