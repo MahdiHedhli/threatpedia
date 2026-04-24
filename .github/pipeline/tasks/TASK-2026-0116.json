@@ -2,9 +2,9 @@
   "task_id": "TASK-2026-0116",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
-    "topic": "Cisco FMC Insecure Deserialization \u2014 Interlock Ransomware Zero-Day",
+    "topic": "Cisco FMC Insecure Deserialization — Interlock Ransomware Zero-Day",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/cisco-fmc-cve-2026-20131.md",
     "issues": [
@@ -31,7 +31,17 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-24T22:14:56.942Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
-  ]
+  ],
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T22:14:56.942Z",
+  "updated": "2026-04-24T22:14:56.942Z"
 }
