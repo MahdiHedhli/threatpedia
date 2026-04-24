@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-18T00:01:26.100Z",
-  "updated": "2026-04-24T14:31:37.515Z",
+  "updated": "2026-04-24T17:25:36.300Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T14:24:51.262Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Microsoft Windows Link Following Vulnerability (CVE-2025-60710)",
     "sources": [
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance": {
     "frontmatter_valid": true,
@@ -99,8 +99,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #213 opened via GitHub API fallback (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-24T17:25:36.300Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #213 merged (027353b)."
     }
   ],
   "pr_number": 213,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/213"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/213",
+  "merged_at": "2026-04-24T17:25:36.300Z"
 }
