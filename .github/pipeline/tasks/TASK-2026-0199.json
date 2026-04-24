@@ -27,7 +27,7 @@
       "platform": "Samsung MagicINFO 9 Server",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-04-24",
+      "disclosedDate": "2024-08-01",
       "cwes": [
         "CWE-22",
         "CWE-434"
