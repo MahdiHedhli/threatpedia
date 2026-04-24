@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-24T18:41:00.530Z",
-  "updated": "2026-04-24T21:21:00.000Z",
+  "updated": "2026-04-24T21:32:19.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T21:21:00.000Z",
+  "locked_at": "2026-04-24T21:29:32.000Z",
   "input": {
     "topic": "SimpleHelp Missing Authorization Vulnerability (CVE-2024-57726)",
     "sources": [
@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/simplehelp-simplehelp-cve-2024-57726.md",
     "branch": "pipeline/TASK-2026-0198",
-    "pr": true
+    "pr": true,
+    "pr_number": 238,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/238"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -79,11 +81,19 @@
       "note": "Auto-discovered from CISA KEV (score: 100)"
     },
     {
-      "timestamp": "2026-04-24T21:21:00.000Z",
+      "timestamp": "2026-04-24T21:29:32.000Z",
       "from": "pending",
       "to": "locked",
       "agent": "DangerMouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T21:32:19.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #238 opened via GitHub API (gh not available)"
     }
   ]
 }
