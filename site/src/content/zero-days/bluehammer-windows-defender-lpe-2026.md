@@ -73,36 +73,40 @@ mitreMappings:
 ---
 
 ## Severity Assessment
-- **Exploitability**: 7.0/10
-- **Impact**: 8.0/10
-- **Weaponization Risk**: 7.5/10
-- **Patch Urgency**: 8.5/10
-- **Detection Coverage**: 5.5/10
 
+Exploitability: 7/10
+
+Impact: 8/10
+
+Weaponization Risk: 7.5/10
+
+Patch Urgency: 8.5/10
+
+Detection Coverage: 5.5/10
 
 ## Summary
 
-BlueHammer is the public name attached to a Microsoft Defender local privilege-escalation vulnerability that Microsoft tracks as CVE-2026-33825. The flaw was publicly exposed before Microsoft shipped a fix, making it a true zero-day during the first half of April 2026. Microsoft addressed it in the April 14, 2026 Patch Tuesday release.
+BlueHammer is the public name attached to a Microsoft Defender local privilege-escalation vulnerability that Microsoft now tracks as CVE-2026-33825. The flaw was publicly exposed before Microsoft shipped a fix, making it a true zero-day during the first half of April 2026. Microsoft later addressed it in the April 14, 2026 Patch Tuesday release.
 
 The strongest supportable facts are that a public exploit existed, the underlying issue was a Microsoft Defender elevation-of-privilege flaw, and exploitation in the wild was later reported. Earlier drafts in this corpus treated BlueHammer as permanently unassigned and unpatched; that is no longer accurate.
 
-BlueHammer should be treated as a real operational risk. The existence of a public exploit before patching, followed by later reporting of in-the-wild use, means defenders should assume rapid adversary adoption once local access is obtained. The public record supports active use of BlueHammer-style exploitation but does not yet support naming a specific actor cluster or claiming a universal, vendor-confirmed exploit chain beyond local privilege escalation in Microsoft Defender.
+BlueHammer should be treated as a real operational risk, not just a proof-of-concept curiosity. The existence of a public exploit before patching, followed by later reporting of in-the-wild use, means defenders should assume rapid adversary adoption once local access is obtained. The public record supports active use of BlueHammer-style exploitation, but does not yet support naming a specific actor cluster or claiming a universal, vendor-confirmed exploit chain beyond local privilege escalation in Microsoft Defender.
 
 ## Exploit Chain
 
 Vendor-confirmed detail on the exploit chain remains limited. Microsoft's public advisory and the NVD record only describe the flaw as insufficient granularity of access control in Microsoft Defender leading to local privilege escalation.
 
-Third-party reporting described the public exploit as a TOCTOU and path-confusion chain that could lead to SYSTEM-level compromise after local execution. That detail is relevant context, but it should be treated as public exploit analysis rather than fully vendor-confirmed root cause language. The MITRE ATT&CK technique T1068 (Exploitation for Privilege Escalation) covers this attack vector.
+Third-party reporting described the public exploit as a TOCTOU and path-confusion chain that could lead to SYSTEM-level compromise after local execution. That detail is relevant context, but it should be treated as public exploit analysis rather than fully vendor-confirmed root cause language.
 
 ## Detection Guidance
 
 1. Hunt for suspicious local privilege-escalation activity tied to Microsoft Defender immediately before SYSTEM-level process creation.
 2. Investigate systems that showed hands-on-keyboard activity or VPN-derived compromise in the April 2026 window, especially where Huntress-style tradecraft was observed.
 3. Confirm that Microsoft Defender platform updates, not only signature updates, are current across the fleet.
-4. Identify systems running Microsoft Defender Antimalware Platform versions prior to 4.18.26030.3011.
-5. Audit update health on endpoints to determine whether the platform update was successfully applied.
-6. Flag systems exposed before the April 14 patch as high-risk candidates for retrospective investigation.
-7. Conduct retrospective hunts for privilege-escalation activity on systems where the platform update arrived after April 3.
+4. Install Microsoft Defender Antimalware Platform version 4.18.26030.3011 or later.
+5. Verify update health on endpoints rather than assuming Defender auto-updated successfully.
+6. Treat systems exposed before the April 14 patch as higher risk if an attacker had any local foothold.
+7. Pair patching with retrospective investigation for privilege-escalation activity from April 3 onward.
 
 ## Indicators of Compromise
 
@@ -116,26 +120,26 @@ Because the exploit was public and iterated by the community, defenders should a
 
 ## Disclosure Timeline
 
-2026-04-03
+### 2026-04-03 — Public exploit release
 
 BlueHammer proof-of-concept code was publicly released under the Nightmare-Eclipse handle after public complaints about Microsoft's disclosure handling.
 
-2026-04-06
+### 2026-04-06 — Media coverage and independent validation
 
 BleepingComputer reported the disclosure and independent validation context, including Will Dormann's description of the exploit as a local privilege-escalation issue.
 
-2026-04-14
+### 2026-04-14 — Vendor patch
 
 Microsoft addressed the flaw as CVE-2026-33825 in the April 2026 security updates.
 
-2026-04-17
+### 2026-04-17 — Active exploitation confirmed
 
-Public reporting said Huntress had observed BlueHammer exploitation in attacks dating back to April 10.
+Public reporting indicated Huntress had observed BlueHammer exploitation in attacks dating back to April 10.
 
 ## Sources & References
 
-- [Microsoft Security Response Center: CVE-2026-33825 — Microsoft Defender Elevation of Privilege Vulnerability](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33825) — Microsoft Security Response Center, 2026-04-14
+- [Microsoft Security Response Center: CVE-2026-33825](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33825) — Microsoft Security Response Center, 2026-04-14
 - [National Vulnerability Database: CVE-2026-33825](https://nvd.nist.gov/vuln/detail/CVE-2026-33825) — National Vulnerability Database, 2026-04-14
-- [BleepingComputer: Disgruntled researcher leaks BlueHammer Windows zero-day exploit](https://www.bleepingcomputer.com/news/security/disgruntled-researcher-leaks-bluehammer-windows-zero-day-exploit/) — BleepingComputer, 2026-04-06
+- [BleepingComputer: Disgruntled researcher leaks "BlueHammer" Windows zero-day exploit](https://www.bleepingcomputer.com/news/security/disgruntled-researcher-leaks-bluehammer-windows-zero-day-exploit/) — BleepingComputer, 2026-04-06
 - [BleepingComputer: Microsoft April 2026 Patch Tuesday fixes 167 flaws, 2 zero-days](https://www.bleepingcomputer.com/news/microsoft/microsoft-april-2026-patch-tuesday-fixes-167-flaws-2-zero-days/) — BleepingComputer, 2026-04-14
 - [BleepingComputer: Recently leaked Windows zero-days now exploited in attacks](https://www.bleepingcomputer.com/news/security/recently-leaked-windows-zero-days-now-exploited-in-attacks/) — BleepingComputer, 2026-04-17
