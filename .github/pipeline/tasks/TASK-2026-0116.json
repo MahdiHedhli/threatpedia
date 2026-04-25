@@ -4,7 +4,7 @@
   "priority": "P1",
   "status": "pr_open",
   "input": {
-    "topic": "Cisco FMC Insecure Deserialization \u2014 Interlock Ransomware Zero-Day",
+    "topic": "Cisco FMC Insecure Deserialization — Interlock Ransomware Zero-Day",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/cisco-fmc-cve-2026-20131.md",
     "issues": [
@@ -31,7 +31,7 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
     },
     {
       "timestamp": "2026-04-24T22:14:56.942Z",
@@ -50,11 +50,19 @@
       "pr_number": 247,
       "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247",
       "commit": "fbbd1be9586d8c35523aad4b2f3e4c0e9da7567c"
+    },
+    {
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #247 opened; validate:success; all Gemini threads resolved"
     }
   ],
   "locked_by": "dangermouse-bot",
   "locked_at": "2026-04-24T22:14:56.942Z",
-  "updated": "2026-04-24T22:24:28.000Z",
+  "updated": "2026-04-25T14:18:09.587Z",
   "pr_number": 247,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247"
 }
