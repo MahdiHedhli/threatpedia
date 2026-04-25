@@ -4,7 +4,7 @@
   "priority": "P1",
   "status": "pr_open",
   "input": {
-    "topic": "FortiClient EMS API Authentication Bypass \u2014 Pre-Auth RCE",
+    "topic": "FortiClient EMS API Authentication Bypass — Pre-Auth RCE",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/forticlient-ems-cve-2026-35616.md",
     "issues": [
@@ -31,7 +31,7 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
     },
     {
       "timestamp": "2026-04-24T22:28:13.000Z",
@@ -48,11 +48,19 @@
       "pr_number": 248,
       "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/248",
       "commit": "f568b5537a5efadb606c3e62b9718c2ba4475eb2"
+    },
+    {
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #248 opened; validate:success; all Gemini threads resolved"
     }
   ],
   "locked_by": "dangermouse-bot",
   "locked_at": "2026-04-24T22:28:13.000Z",
   "pr_number": 248,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/248",
-  "updated": "2026-04-24T22:30:03.000Z"
+  "updated": "2026-04-25T14:18:09.587Z"
 }
