@@ -5,11 +5,11 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-04-24T18:41:00.530Z",
-  "updated": "2026-04-24T21:38:33.000Z",
+  "updated": "2026-04-25T13:54:32.725Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T21:36:11.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Samsung MagicINFO 9 Server Path Traversal Vulnerability (CVE-2024-7399)",
     "sources": [
@@ -38,7 +38,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -95,6 +95,16 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #240 opened via GitHub API (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-25T13:54:32.725Z",
+      "action": "worker_reviewed",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #240 validated (validate:success, 0 unresolved Gemini threads). PR number recorded."
     }
-  ]
+  ],
+  "pr_number": 240,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/240"
 }
