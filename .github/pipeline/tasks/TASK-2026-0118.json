@@ -4,7 +4,7 @@
   "priority": "P1",
   "status": "pr_open",
   "input": {
-    "topic": "Ivanti EPMM Code Injection \u2014 Bash Arithmetic Expansion RCE",
+    "topic": "Ivanti EPMM Code Injection — Bash Arithmetic Expansion RCE",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/ivanti-epmm-cve-2026-1340.md",
     "issues": [
@@ -31,7 +31,7 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
     },
     {
       "timestamp": "2026-04-24T22:32:36.000Z",
@@ -47,11 +47,19 @@
       "pr_number": 249,
       "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
       "commit": "e469ec9e4287850d646768340c61532f5015679a"
+    },
+    {
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #249 opened; validate:success; all Gemini threads resolved"
     }
   ],
   "locked_by": "dangermouse-bot",
   "locked_at": "2026-04-24T22:32:36.000Z",
   "pr_number": 249,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
-  "updated": "2026-04-24T22:33:11.000Z"
+  "updated": "2026-04-25T14:18:09.587Z"
 }
