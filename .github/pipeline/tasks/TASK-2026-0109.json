@@ -4,7 +4,7 @@
   "priority": "P1",
   "status": "pending",
   "input": {
-    "topic": "CVE-2026-33634 \u2014 Trivy GitHub Actions Vulnerability Analysis",
+    "topic": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
     "reprocess": true,
     "target_file": "site/src/content/incidents/trivy-cve-2026-33634.md",
     "issues": [
@@ -31,7 +31,16 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-25T15:05:14.357Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #261"
     }
-  ]
+  ],
+  "updated": "2026-04-25T15:05:14.357Z"
 }
