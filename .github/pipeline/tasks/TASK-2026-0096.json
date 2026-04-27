@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0096",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Hims & Hers Health Zendesk Breach by ShinyHunters",
     "reprocess": true,
@@ -79,11 +79,20 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #308"
+    },
+    {
+      "timestamp": "2026-04-27T15:28:49.094Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #308 merged (97a3429)."
     }
   ],
-  "updated": "2026-04-27T15:26:39.046Z",
+  "updated": "2026-04-27T15:28:49.094Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 308,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/308"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/308",
+  "merged_at": "2026-04-27T15:28:49.094Z"
 }
