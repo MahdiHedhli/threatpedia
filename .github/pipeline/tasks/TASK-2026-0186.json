@@ -1,0 +1,101 @@
+{
+    "task_id": "TASK-2026-0186",
+    "stage": "draft",
+    "type": "zero-day",
+    "priority": "P0",
+    "status": "pr_open",
+    "created": "2026-04-21T01:59:07.361Z",
+    "updated": "2026-04-24T20:22:47.000Z",
+    "source": "auto_discovery",
+    "submitted_by": "pipeline-discovery",
+    "locked_by": "dangermouse-bot",
+    "locked_at": "2026-04-24T20:21:14.617Z",
+    "input": {
+        "topic": "Cisco Catalyst SD-WAN Manager Storing Passwords in a Recoverable Format Vulnerability (CVE-2026-20128)",
+        "sources": [
+            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-20128",
+            "https://www.cisa.gov/news-events/directives/supplemental-direction-ed-26-03-hunt-and-hardening-guidance-cisco-sd-wan-systems",
+            "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-sdwan-authbp-qwCX8D4v"
+        ],
+        "candidate_data": {
+            "cve": "CVE-2026-20128",
+            "cves": [
+                "CVE-2026-20128"
+            ],
+            "exploitId": "TP-EXP-2026-0011",
+            "type": "Unclassified",
+            "platform": "Cisco Catalyst SD-WAN Manager",
+            "severity": "high",
+            "cisaKev": true,
+            "disclosedDate": "2026-04-20",
+            "cwes": [
+                "CWE-257"
+            ],
+            "knownRansomwareUse": false
+        },
+        "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-04-23. CVSS 3.1: 7.5 (HIGH) Discovery score: 96/100 (auto-certify eligible)."
+    },
+    "specs": [
+        "DATA-STANDARDS-v1.0.md",
+        "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    ],
+    "acceptance_criteria": {
+        "frontmatter_valid": true,
+        "min_sources": 3,
+        "min_h2_sections": 5,
+        "min_mitre_mappings": 1,
+        "review_status": "draft_ai",
+        "schema_validation": "pass",
+        "astro_build": true
+    },
+    "depends_on": [],
+    "preconditions": [
+        "editorial queue depth < 50"
+    ],
+    "output": {
+        "file_pattern": "site/src/content/zero-days/cisco-catalyst-sd-wan-manager-cve-2026-20128.md",
+        "branch": "pipeline/TASK-2026-0186",
+        "pr": true
+    },
+    "discovery": {
+        "feed": "CISA_KEV",
+        "score": 96,
+        "auto_certify": true,
+        "cvss": {
+            "score": 7.5,
+            "severity": "HIGH",
+            "vector": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:C/C:H/I:H/A:H",
+            "version": "3.1"
+        },
+        "discovered_at": "2026-04-21T01:59:07.361Z"
+    },
+    "history": [
+        {
+            "timestamp": "2026-04-21T01:59:07.361Z",
+            "action": "created",
+            "from": "none",
+            "to": "pending",
+            "agent": "pipeline-discovery",
+            "note": "Auto-discovered from CISA KEV (score: 96)"
+        },
+        {
+            "timestamp": "2026-04-24T20:21:14.617Z",
+            "from": "pending",
+            "to": "locked",
+            "agent": "dangermouse-bot",
+            "note": "Locked for execution"
+        },
+        {
+            "timestamp": "2026-04-24T20:22:47.000Z",
+            "from": "locked",
+            "to": "pr_open",
+            "agent": "dangermouse-bot",
+            "note": "PR opened via GitHub API (gh not available)",
+            "pr_number": 229,
+            "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/229"
+        }
+    ],
+    "pr_number": 229,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/229"
+}

@@ -1,0 +1,91 @@
+{
+  "task_id": "TASK-2026-0192",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "complete",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-22T14:46:12.135Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Mr. Raccoon persona profile and UNC6783 linkage assessment",
+    "sources": [
+      "https://ankura.com/insights/ankura-ctix-flash-update-april-10-2026/",
+      "https://www.securityweek.com/google-warns-of-new-campaign-targeting-bpos-to-steal-corporate-data/",
+      "https://www.bleepingcomputer.com/news/security/google-new-unc6783-hackers-steal-corporate-zendesk-support-tickets/"
+    ],
+    "candidate_data": {
+      "actor_name": "Mr. Raccoon",
+      "aliases": [
+        "Raccoon"
+      ],
+      "origin": "Unknown",
+      "affiliation": "Criminal Persona",
+      "motivation": "Data Theft / Extortion",
+      "active_since": "2026"
+    },
+    "notes": "Build a conservative actor-persona profile for Mr. Raccoon rooted in the Adobe BPO breach claims and later reporting that suggests a possible UNC6783 link. Treat this as a provenance and attribution hygiene task as much as a profile build: if the evidence only supports a criminal handle or persona-level alias, say so clearly. Do not overstate that Mr. Raccoon is a fully distinct threat actor if the stronger defensible reading is 'persona possibly linked to UNC6783'."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/mr-raccoon.md",
+    "branch": "pipeline/TASK-2026-0192",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed for persona-vs-actor attribution testing around the Adobe / UNC6783 reporting cluster."
+    },
+    {
+      "timestamp": "2026-04-21T19:13:19.627Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:16:04.384Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #181"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #181."
+    }
+  ],
+  "pr_number": 181,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/181",
+  "merged_at": "2026-04-21T21:09:31Z"
+}

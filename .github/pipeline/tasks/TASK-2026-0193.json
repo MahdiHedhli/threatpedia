@@ -1,0 +1,89 @@
+{
+  "task_id": "TASK-2026-0193",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-22T14:46:12.135Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "UNC6783 threat actor profile build from BPO and helpdesk intrusion reporting",
+    "sources": [
+      "https://www.securityweek.com/google-warns-of-new-campaign-targeting-bpos-to-steal-corporate-data/",
+      "https://www.bleepingcomputer.com/news/security/google-new-unc6783-hackers-steal-corporate-zendesk-support-tickets/",
+      "https://www.infosecurity-magazine.com/news/google-warns-group-targeting-bpos/"
+    ],
+    "candidate_data": {
+      "actor_name": "UNC6783",
+      "aliases": [],
+      "origin": "Unknown",
+      "affiliation": "Criminal",
+      "motivation": "Data Theft / Extortion",
+      "active_since": "2026"
+    },
+    "notes": "Create a canonical UNC6783 actor profile focused on BPO compromise, helpdesk-targeting tradecraft, credential theft, device enrollment abuse, and extortion operations. Public reporting currently supports a financially motivated cluster with possible ties to the Raccoon persona; preserve that distinction carefully and do not collapse persona and actor identity without evidence."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/unc6783.md",
+    "branch": "pipeline/TASK-2026-0193",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed for the BPO / helpdesk intrusion cluster now tracked as UNC6783."
+    },
+    {
+      "timestamp": "2026-04-21T19:07:12.886Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T19:13:08.517Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #180"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #180."
+    }
+  ],
+  "pr_number": 180,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/180",
+  "merged_at": "2026-04-21T21:09:19Z"
+}

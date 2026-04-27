@@ -1,0 +1,89 @@
+{
+  "task_id": "TASK-2026-0196",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-04-21T18:58:17Z",
+  "updated": "2026-04-22T14:46:12.135Z",
+  "source": "backfill",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Operation TrueChaos campaign build from TrueConf intrusion cluster",
+    "sources": [
+      "https://research.checkpoint.com/2026/operation-truechaos-0-day-exploitation-against-southeast-asian-government-targets/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-3502",
+      "https://www.bleepingcomputer.com/news/security/hackers-exploit-trueconf-zero-day-to-push-malicious-software-updates/"
+    ],
+    "candidate_data": {
+      "campaign_name": "Operation TrueChaos",
+      "related_incident": "operation-truechaos-trueconf-zero-day-2026",
+      "related_zero_day": "trueconf-cve-2026-3502",
+      "suspected_affiliation": "Chinese-nexus (unattributed)"
+    },
+    "notes": "Create a campaign article for Operation TrueChaos as a named multi-victim intrusion cluster while keeping the canonical TrueConf incident article focused on the concrete compromise event and CVE chain. Preserve the current conservative attribution posture: reporting supports a Chinese-nexus assessment with moderate confidence, not a hard public APT attribution."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [
+    "TASK-2026-0170"
+  ],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/operation-truechaos.md",
+    "branch": "pipeline/TASK-2026-0196",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T18:58:17Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual pipeline seed to add a named campaign slice on top of the existing TrueConf incident and zero-day coverage."
+    },
+    {
+      "timestamp": "2026-04-21T21:10:42.925Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-21T21:12:44.325Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #193"
+    },
+    {
+      "timestamp": "2026-04-22T14:46:12.135Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #193."
+    }
+  ],
+  "pr_number": 193,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/193",
+  "merged_at": "2026-04-21T21:52:48Z"
+}

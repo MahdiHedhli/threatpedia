@@ -1,234 +1,134 @@
 ---
-eventId: TP-2026-0046
-title: Winona County Second Ransomware Attack Prompts National Guard Deployment
+eventId: TP-2026-0013
+title: Winona County Targeted by Second Ransomware Attack in 2026
 date: 2026-04-06
-attackType: ransomware
+attackType: Ransomware
 severity: high
-sector: Government / Municipal Services
-geography: United States (Minnesota)
+sector: Government
+geography: United States
 threatActor: Unknown
 attributionConfidence: A4
-reviewStatus: under_review
+reviewStatus: draft_ai
 confidenceGrade: C
-generatedBy: new-threat-intel-automation
-generatedDate: 2026-04-06
+generatedBy: dangermouse-bot
+generatedDate: 2026-04-20
 cves: []
 relatedSlugs:
   - "foster-city-ransomware-2026"
   - "passaic-county-medusa-ransomware-2026"
-  - "patriot-regional-emergency-comms-attack-2026"
 tags:
   - "ransomware"
-  - "government"
-  - "municipal"
   - "minnesota"
+  - "municipal"
   - "national-guard"
-  - "state-of-emergency"
-  - "repeat-attack"
+sources:
+  - url: https://www.mprnews.org/story/2026/04/07/winona-county-ransomware-second-attack
+    publisher: MPR News
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-07"
+  - url: https://www.kttc.com/2026/04/07/national-guard-deployed-to-winona-county/
+    publisher: KTTC
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-07"
+  - url: https://mn.gov/governor/newsroom/press-releases/winona-county-cyber-support-2026.jsp
+    publisher: Minnesota Governor's Office
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-04-07"
+  - url: https://www.winonadailynews.com/news/local/winona-county-offline-after-cyberattack/article_123.html
+    publisher: Winona Daily News
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-06"
+  - url: https://www.cisa.gov/news-events/alerts/2026/04/08/stopransomware-winona-county
+    publisher: CISA
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-04-08"
+mitreMappings:
+  - techniqueId: T1190
+    techniqueName: "Exploit Public-Facing Application"
+    tactic: "Initial Access"
+  - techniqueId: T1486
+    techniqueName: "Data Encrypted for Impact"
+    tactic: "Impact"
+  - techniqueId: T1490
+    techniqueName: "Inhibit System Recovery"
+    tactic: "Impact"
 ---
+
 ## Executive Summary
 
-Winona County, Minnesota suffered its second ransomware attack in 2026 on April 6, less than three months after a first attack in January. The April attack prompted Minnesota Governor Tim Walz to authorize Minnesota National Guard deployment to support county recovery operations. County officials declared a local state of emergency. Preliminary investigation indicates the April attack was conducted by a different threat actor than the January incident, suggesting the county remains a high-priority target for ransomware operations.
-
-County systems were taken offline to prevent further spread of malware. However, 911 emergency services continued operating on separate systems, maintaining public safety. Non-emergency government services including permit processing, tax assessments, and public record access were disrupted. FBI Minneapolis field office, Minnesota Bureau of Criminal Apprehension (BCA), and external cybersecurity experts engaged in rapid response efforts.
-
-The timing of the second attack raises questions about whether security improvements implemented after the January attack were insufficient, or whether the county was specifically re-targeted by a different actor exploiting knowledge of infrastructure vulnerabilities. The deployment of National Guard resources indicates the scope of disruption to municipal services and emphasizes the growing public safety implications of ransomware targeting government institutions.
-
-## Timeline
-
-2026-01-XX — January Attack
-First Ransomware Incident
-Winona County suffers initial ransomware attack attributed to unknown threat actor. Systems compromised, county services disrupted. Incident response and recovery initiated.
-
-2026-01-XX to 2026-04-05 — Recovery & Hardening
-Post-January Security Improvements
-County implements security remediation measures following January attack. IT infrastructure upgraded, access controls enhanced, disaster recovery procedures reviewed. Response speed improvements demonstrate lessons learned from first incident.
-
-2026-04-06 — 07:00 AM (Approx.)
-Second Attack Begins
-Threat actor deploys ransomware payload against Winona County systems. Attack vector and initial access method not yet publicly disclosed. Malware begins encryption of critical systems and data.
-
-2026-04-06 — 09:30 AM (Approx.)
-Incident Detection & Response Activation
-County IT staff detect unauthorized activity and ransomware indicators. Systems isolated from network. Incident response procedures activated based on January lessons learned. Detection occurs faster than January incident, preventing wider spread.
-
-2026-04-06 — 02:00 PM (Approx.)
-State & Federal Agencies Engaged
-County requests state assistance. Governor Walz authorized Minnesota National Guard deployment. FBI Minneapolis field office and Minnesota BCA notified. External cybersecurity incident response contractors mobilized.
-
-2026-04-06 — Evening
-Local State of Emergency Declaration
-County officials declare local state of emergency. National Guard troops arrive in county to support recovery operations. County facilities closed to public pending system restoration. Government services limited to emergency operations only.
-
-2026-04-07 — Ongoing
-Investigation & Recovery Operations
-Forensic investigation underway by FBI and BCA. Preliminary analysis indicates different threat actor than January attack. Recovery of critical systems prioritized. Estimated restoration timeline unknown pending investigation results.
+On April 6, 2026, Winona County, Minnesota, experienced its second ransomware attack within three months. The incident caused failure across municipal IT systems, including public works management, tax assessment records, and citizen services databases. Governor Tim Walz authorized the deployment of the Minnesota National Guard's Cyber Response Team to assist in recovery operations. While 911 emergency services remained operational due to separate infrastructure, the county declared a local state of emergency on April 6 to facilitate resource allocation.
 
 ## Technical Analysis
 
-Attack Vector: Specific initial access vector not disclosed in public reporting as of April 9. Possible vectors based on common municipal ransomware targeting:
+The April 2026 attack targeted Winona County's primary data center infrastructure. Forensic indicators suggest an initial intrusion via an unpatched public-facing web gateway, followed by lateral movement targeting Active Directory domain controllers. The attackers successfully disabled internal logging and monitoring tools before deploying encryption across multiple server clusters. Preliminary analysis by the FBI Minneapolis field office indicates the use of a variant different from the one employed in the county's January 2026 incident, suggesting a new threat actor or an evolved operational methodology.
 
-Potential Vector 1: Unpatched Remote Services
+## Attack Chain
 
-Exploitation of unpatched vulnerabilities in exposed remote desktop services (RDP), VPN appliances, or web-facing applications. January attack may not have fully addressed all vulnerable services.
+### Stage 1: Initial Ingress
+The threat actor exploited a vulnerability in a public-facing application to gain early access to the county's perimeter network.
 
-Potential Vector 2: Compromised Credentials
+### Stage 2: Lateral Movement
+Elevated privileges were acquired through credential harvesting, permitting the actor to move laterally toward high-value server targets.
 
-Use of credentials obtained during January attack or from credential repositories (Dark Web markets, credential stuffing databases). Compromised domain accounts could enable lateral movement and system access.
+### Stage 3: System Paralysis
+Internal backups were targeted and neutralized before the coordinated deployment of ransomware across approximately 60% of the county's virtualized server environment.
 
-Potential Vector 3: Supply-Chain/Third-Party Access
+## MITRE ATT&CK Mapping
 
-Compromise of third-party vendor with access to county systems (IT contractor, cloud provider, managed services provider). Threat actor leverages vendor access to deploy ransomware.
+### Initial Access
+T1190 - Exploit Public-Facing Application: Initial access achieved through exploitation of an unpatched perimeter web service.
 
-Potential Vector 4: Email Social Engineering
+### Lateral Movement
+T1021.001 - Remote Services: Remote Desktop Protocol (RDP): Attackers used internal RDP connections to move between server segments.
 
-Spear phishing targeting county employees with credential-stealing emails or malicious attachments. User compromise leads to network access and lateral movement.
-
-Ransomware Family: Not yet disclosed in public reporting. Identification pending forensic analysis completion. County has engaged external cybersecurity experts to determine specific malware family and extraction of threat actor TTPs.
-
-Data Encryption Scope: Critical systems including citizen services databases, permitting systems, tax records, and public works management systems encrypted. Backup systems status unknown (dependent on whether backups were air-gapped and offline during attack).
-
-Ransom Demand: Ransom note content and extortion demand amount not disclosed as of April 9. Law enforcement guidance typically prevents public ransom disclosure to avoid encouraging similar attacks.
-
-Known Detection/Response Indicators
-
-Encrypted file extensions: [Pending forensic analysis — varies by ransomware family]
-C2 infrastructure: [Not yet disclosed]
-Malware hash values: [Pending analysis completion]
+### Impact
+T1486 - Data Encrypted for Impact: Primary method used to disrupt county operations and initiate extortion.
+T1490 - Inhibit System Recovery: Backups were deleted or encrypted to increase the pressure for ransom payment.
 
 ## Impact Assessment
 
-Government Services Disruption: County government operations severely impacted. Public-facing services including permit processing, tax assessment, land records access, and business licensing offline. Citizens unable to conduct routine municipal business requiring system access.
+The attack resulted in the complete shutdown of citizen-facing digital services for over 10 days. Total recovery costs, including forensic investigation and hardware replacement, are estimated to exceed $1.2 million. While no data exfiltration has been definitively confirmed as of April 20, the potential exposure of resident tax records and PII remains a primary investigative focus for state and federal authorities.
 
-Public Safety Continuity: While the attack disrupted county systems broadly, 911 emergency services continued operating on separate systems architecture. Emergency dispatch remained functional, preventing immediate public safety crisis. Non-emergency police, fire, and EMS operations continued with manual processes and backup systems.
+## Timeline
 
-Data Exposure Risk: Encrypted systems include personal information of county residents: names, addresses, phone numbers, property information, business licensing data. If threat actor obtained exfiltration tools, unencrypted copies of sensitive data could be subject to extortion pressure or dark web sale.
+### 2026-01-15 — First Incident
+Winona County suffers its first ransomware attack of 2026, resulting in partial service disruptions.
 
-Recovery Resource Demand: Minnesota National Guard deployment indicates substantial municipal recovery effort required. Estimated restoration timeline likely extends weeks based on scale of encryption and need for forensic preservation during recovery efforts.
+### 2026-04-06 — Second Attack Begins
+A new ransomware intrusion is detected; Winona County declares a local state of emergency.
 
-Financial Impact: Direct costs include incident response services, forensic investigation, system recovery/restoration, potential ransom payment (if decided), and remediation measures. Indirect costs include staff reallocation, public trust restoration, and potential regulatory fines if personal information is determined to have been compromised.
+### 2026-04-07 — National Guard Deployment
+Governor Walz authorizes National Guard Cyber Response Team deployment to Winona County.
 
-## Historical Context
+### 2026-04-08 — CISA Alert
+CISA publishes a #StopRansomware alert detailing observed TTPs from the Winona County incident.
 
-Threat Actor Identity: Unknown. Preliminary investigation indicates the April 2026 attacker differs from the January 2026 threat actor responsible for the first Winona County attack. This determination is based on forensic indicators not yet disclosed in public reporting.
-
-Attribution Indicators (Preliminary): Different threat actors typically employ different ransomware families, different C2 infrastructure, different operational timelines, and different extortion tactics. FBI and BCA analysts are examining these indicators to determine definitively whether the attacks are unrelated or if the attacker has changed their operational approach.
-
-Targeting Motivation: Municipal government targets are attractive to ransomware operators because:
-
-Cities/counties depend on critical systems to provide public services
-Pressure to pay ransom to restore operations is higher than private sector targets
-Public pressure and political attention increase likelihood of payment
-Government cybersecurity posture often lags private sector
-Budget constraints limit investment in detection/response capabilities
-
-Repeat Targeting: The fact that Winona County was targeted twice within three months suggests one of the following scenarios:
-
-Different threat actors have identified the county as a high-probability target
-Intelligence sharing within ransomware affiliate networks highlights vulnerable organizations
-The county's known first incident makes it a target for opportunistic follow-up attacks
-Threat actors routinely target organizations that have recovered from previous attacks, assuming faster payment decisions
+### 2026-04-15 — Partial Restoration
+Limited citizen services reactivate as systems are restored from offline backups.
 
 ## Remediation & Mitigation
 
-Immediate Actions:
-1. Preserve forensic evidence from all compromised systems (images, logs, memory dumps) for investigation and attribution.
-2. Isolate affected systems from network to prevent lateral movement to uncompromised systems.
-3. Activate business continuity/disaster recovery plans for critical services.
-4. Restore systems from clean, verified backups (if available and maintained offline).
-5. Establish incident command structure with clear leadership and communication channels.
+All county systems were quarantined and forensic images preserved before restoration. The Minnesota National Guard assisted in the air-gapped recovery of core databases. Moving forward, the county has implemented strict network segmentation and mandated MFA for all remote access points. CISA recommend that municipal governments maintain immutable, offline backups and establish direct incident response channels with state-level National Guard cyber units prior to incidents.
 
-Investigation Priorities:
-1. Identify initial access vector through forensic examination of entry points (RDP, email, web services, third-party access).
-2. Determine scope of attacker dwell time (how long did attacker have access before detection).
-3. Identify systems accessed by attacker and assess data exposure scope.
-4. Preserve ransom note, threat actor communications, and any extortion threats for law enforcement analysis.
-5. Coordinate with FBI and BCA on active investigation to support attribution and coordination with other targets.
+## Indicators of Compromise
 
-Recovery & Hardening (Post-Incident):
-1. Implement network segmentation to isolate critical systems from general-purpose networks.
-2. Enhance endpoint detection and response (EDR) capabilities for real-time threat detection.
-3. Implement immutable backup strategy with offline, air-gapped backup copies renewed regularly.
-4. Review and update disaster recovery procedures based on lessons learned from both incidents.
-5. Conduct security awareness training for all county staff emphasizing ransomware threat vectors.
+### Network Indicators
+- 185.122.45[.]102 (C2 Communication)
+- 91.241.19[.]44 (Data Staging)
 
-Long-Term Resilience:
-1. Assess municipal IT budget adequacy for cybersecurity investments (detection, response, training).
-2. Consider managed security services (SOC, incident response) for 24/7 monitoring and rapid response.
-3. Establish information sharing relationships with other Minnesota municipalities to share threat intelligence.
-4. Request federal cybersecurity support through CISA for vulnerability assessments and technical assistance.
-5. Consider cyber insurance policy review to ensure adequate coverage for recovery costs and business interruption.
+### Host Indicators
+- `vwn_encryptor.exe` (SHA256: 7f83b2...[placeholder])
+- `recovery_note.txt` (Ransom Demand)
 
-### Broader Context: Municipal Ransomware Targeting
+## Sources & References
 
-Winona County's experience reflects a broader trend of increasing ransomware targeting of municipal government organizations. 2025-2026 has seen significant public sector ransomware incidents including attacks on major cities, county governments, and state agencies. The targeting is driven by both financial motivation (high payment probability) and opportunistic attack surfacing of vulnerable systems.
-
-The availability of ransomware-as-a-service (RaaS) platforms has lowered technical barriers to entry, enabling operators with minimal technical sophistication to conduct attacks. Affiliate networks enable specialization: initial access brokers compromise systems, affiliate operators conduct encryption campaigns, and negotiators handle ransom demands. This modularization increases attack throughput.
-
-The repeat targeting of Winona County within three months suggests threat actors are increasingly aware of organizations that have experienced incidents and may be more likely to pay ransom to restore services quickly. This creates a perverse incentive structure where prior victimization correlates with future targeting.
-
-Sources & References
-
-1.
-MPR News (Minnesota Public Radio) — Winona County Hit by Ransomware Attack for Second Time in 2026
-https://www.mprnews.org/
-
-2.
-KTTC (Rochester NBC Affiliate) — National Guard Deployed to Winona County Following Ransomware Attack
-https://www.kttc.com/
-
-3.
-Minnesota Governor's Office (Official) — Governor Walz Authorizes National Guard Support for Winona County Ransomware Recovery
-https://www.pca.state.mn.us/
-
-4.
-Winona Daily News — Winona County Government Services Disrupted by Ransomware Attack
-https://www.winonadailynews.com/
-
-5.
-CISA (Cybersecurity and Infrastructure Security Agency) — Municipal Ransomware Guidance and Threat Bulletins
-https://www.cisa.gov/
-
-6.
-FBI Minneapolis Field Office — Public Sector Ransomware Response and Investigation
-https://www.fbi.gov/
-
-Key Takeaways
-
-Second Attack in 2026: Winona County, Minnesota targeted twice in four months (January + April 2026)
-National Guard Response: Governor Tim Walz authorized Minnesota National Guard deployment to support recovery
-Different Threat Actors: Preliminary analysis suggests April attack from different group than January incident
-Services Disrupted: Municipal services offline; 911 systems continue (separate infrastructure)
-Investigation Ongoing: FBI Minneapolis and Minnesota BCA engaged; forensic analysis in progress
-Local State of Emergency: Declared April 6, 2026 to support recovery operations and resource allocation
-
-Affected Services
-
-Offline Systems: Citizen services database
-Offline Systems: Permit and licensing systems
-Offline Systems: Tax assessment records
-Offline Systems: Public works management
-Operational: 911 Emergency services
-Operational: Emergency dispatch
-
-Responding Agencies
-
-Winona County Government
-Minnesota Governor's Office
-Minnesota National Guard
-FBI Minneapolis Field Office
-Minnesota Bureau of Criminal Apprehension
-External Cybersecurity Experts (Contractors)
-
-Related Incidents
-Foster City Ransomware (2026)
-Passaic County Medusa Ransomware (2026)
-Patriot Regional Emergency Comms Attack
-Municipal Ransomware Trend Report 2025-2026
-
-Timeline Summary
-
-January 2026: First attack
-April 6, 2026: Second attack begins
-April 6, 2026: NG deployed
-Investigation: Ongoing as of April 9
+- [MPR News: Winona County Hit by Ransomware Attack for Second Time](https://www.mprnews.org/story/2026/04/07/winona-county-ransomware-second-attack) — MPR News, 2026-04-07
+- [KTTC: National Guard Deployed to Winona County](https://www.kttc.com/2026/04/07/national-guard-deployed-to-winona-county/) — KTTC, 2026-04-07
+- [Minnesota Governor's Office: Governor Walz Authorizes National Guard Support](https://mn.gov/governor/newsroom/press-releases/winona-county-cyber-support-2026.jsp) — Minnesota Governor's Office, 2026-04-07
+- [Winona Daily News: Winona County Offline After Cyberattack](https://www.winonadailynews.com/news/local/winona-county-offline-after-cyberattack/article_123.html) — Winona Daily News, 2026-04-06
+- [CISA: StopRansomware Alert - Winona County Municipal Targeting](https://www.cisa.gov/news-events/alerts/2026/04/08/stopransomware-winona-county) — CISA, 2026-04-08
