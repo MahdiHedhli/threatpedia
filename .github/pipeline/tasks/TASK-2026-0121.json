@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0121",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "TrueConf Update Integrity Bypass — Supply Chain Code Execution",
     "reprocess": true,
@@ -55,11 +55,20 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #250 opened; validate:success; all Gemini threads resolved"
+    },
+    {
+      "timestamp": "2026-04-27T15:34:42.129Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #250 merged (fdd67e2)."
     }
   ],
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T22:35:25.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "pr_number": 250,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/250",
-  "updated": "2026-04-25T14:18:09.587Z"
+  "updated": "2026-04-27T15:34:42.129Z",
+  "merged_at": "2026-04-27T15:34:42.129Z"
 }

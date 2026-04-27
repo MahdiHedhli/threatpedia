@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0116",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Cisco FMC Insecure Deserialization — Interlock Ransomware Zero-Day",
     "reprocess": true,
@@ -58,11 +58,20 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #247 opened; validate:success; all Gemini threads resolved"
+    },
+    {
+      "timestamp": "2026-04-27T15:34:26.588Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #247 merged (056eadb)."
     }
   ],
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-24T22:14:56.942Z",
-  "updated": "2026-04-25T14:18:09.587Z",
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-27T15:34:26.588Z",
   "pr_number": 247,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247",
+  "merged_at": "2026-04-27T15:34:26.588Z"
 }
