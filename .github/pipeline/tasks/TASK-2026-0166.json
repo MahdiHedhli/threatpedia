@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/microsoft-windows-cve-2025-60710.md",
     "branch": "pipeline/TASK-2026-0166",
-    "pr": true
+    "pr": true,
+    "pr_number": 330,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/330"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -118,14 +120,14 @@
     },
     {
       "timestamp": "2026-04-27T20:22:54Z",
-      "action": "article_generated",
+      "action": "pr_opened",
       "from": "locked",
       "to": "pr_open",
       "agent": "dangermouse-bot",
-      "note": "Article drafted \u2014 MSRC, NVD, CISA KEV, Wh04m1001 PoC. Validator PASS 18/18."
+      "note": "PR #330 opened via GitHub API (gh not available)"
     }
   ],
-  "pr_number": 213,
+  "pr_number": 330,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/213",
   "merged_at": "2026-04-24T17:25:36.300Z"
 }
