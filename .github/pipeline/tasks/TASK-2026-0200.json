@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-24T18:41:00.530Z",
-  "updated": "2026-04-24T18:41:00.530Z",
+  "updated": "2026-04-25T13:55:35.553Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -27,7 +27,7 @@
       "platform": "D-Link DIR-823X",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-04-24",
+      "disclosedDate": "2025-03-25",
       "cwes": [
         "CWE-77"
       ],
@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/d-link-dir-823x-cve-2025-29635.md",
     "branch": "pipeline/TASK-2026-0200",
-    "pr": true
+    "pr": true,
+    "pr_number": 246,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/246"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -77,6 +79,31 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 96)"
+    },
+    {
+      "timestamp": "2026-04-24T21:53:16.000Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T21:55:07.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #246 opened via GitHub API (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-25T13:55:35.553Z",
+      "action": "worker_reviewed",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #246 validated (validate:success, 0 unresolved Gemini threads). PR number recorded."
     }
-  ]
+  ],
+  "pr_number": 246,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/246"
 }
