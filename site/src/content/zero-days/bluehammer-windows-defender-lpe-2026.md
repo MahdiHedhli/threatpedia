@@ -74,15 +74,11 @@ mitreMappings:
 
 ## Severity Assessment
 
-Exploitability: 7/10
-
-Impact: 8/10
-
-Weaponization Risk: 7.5/10
-
-Patch Urgency: 8.5/10
-
-Detection Coverage: 5.5/10
+- Exploitability: 7/10
+- Impact: 8/10
+- Weaponization Risk: 7.5/10
+- Patch Urgency: 8.5/10
+- Detection Coverage: 5.5/10
 
 ## Summary
 
