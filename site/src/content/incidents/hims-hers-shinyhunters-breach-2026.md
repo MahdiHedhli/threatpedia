@@ -31,17 +31,17 @@ sources:
     publisher: Bleeping Computer
     publisherType: media
     reliability: R2
-    publicationDate: "2026-03-05"
-  - url: https://techcrunch.com/2026/03/05/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/
+    publicationDate: "2026-04-03"
+  - url: https://techcrunch.com/2026/04/02/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/
     publisher: TechCrunch
     publisherType: media
     reliability: R2
-    publicationDate: "2026-03-05"
-  - url: https://www.hhs.gov/hipaa/for-professionals/breach-notification/breach-portal/index.html
-    publisher: HHS
+    publicationDate: "2026-04-02"
+  - url: https://oag.ca.gov/ecrime/databreach/reports/sb24-621205
+    publisher: California Attorney General
     publisherType: government
     reliability: R1
-    publicationDate: "2026-03-06"
+    publicationDate: "2026-04-02"
 mitreMappings:
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
@@ -107,7 +107,11 @@ Access Terminated. Hims & Hers security team revokes the compromised Okta creden
 
 ### 2026-03-03 — Event
 
-Breach Publicly Confirmed. Hims & Hers publicly acknowledges the data breach and issues notifications to affected individuals and regulators.
+Internal Review Complete. Hims & Hers determines that some affected support tickets contained personal information.
+
+### 2026-04-02 — Event
+
+Public Notice Filed. Hims & Hers submits its California breach notice and begins customer notification.
 
 ## Remediation & Mitigation
 
@@ -115,6 +119,6 @@ Hims & Hers revoked compromised Okta credentials, reset SSO trust relationships,
 
 ## Sources & References
 
-- [Bleeping Computer: Hims & Hers warns of data breach after Zendesk support ticket breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/) — Bleeping Computer, 2026-03-05
-- [TechCrunch: Telehealth giant Hims & Hers says its customer support system was hacked](https://techcrunch.com/2026/03/05/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/) — TechCrunch, 2026-03-05
-- [HHS: OCR Breach Portal](https://www.hhs.gov/hipaa/for-professionals/breach-notification/breach-portal/index.html) — HHS, 2026-03-06
+- [Bleeping Computer: Hims & Hers warns of data breach after Zendesk support ticket breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/) — Bleeping Computer, 2026-04-03
+- [TechCrunch: Telehealth giant Hims & Hers says its customer support system was hacked](https://techcrunch.com/2026/04/02/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/) — TechCrunch, 2026-04-02
+- [California Attorney General: Hims & Hers Notice of Data Event](https://oag.ca.gov/ecrime/databreach/reports/sb24-621205) — California Attorney General, 2026-04-02
