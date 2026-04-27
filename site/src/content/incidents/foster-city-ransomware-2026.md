@@ -60,7 +60,7 @@ On March 20, the city said it had taken most computer systems offline while it w
 
 The city's public statements confirm a ransomware-related cybersecurity breach affecting municipal systems, but they do not identify the ransomware variant, intrusion vector, or the internal sequence of compromise. Foster City said it initiated incident-response procedures after identifying suspicious activity and took most systems offline as a containment measure.
 
-Because the public record remains limited, this incident should be described as a city-disclosed ransomware event with major service disruption rather than a fully mapped attack chain. Claims about initial access, encryption scope, or specific attacker tooling are not supported by the cited public sources.
+The public record remains limited. Claims about initial access, encryption scope, or specific attacker tooling are not supported by the cited public sources.
 
 ## Attack Chain
 
@@ -82,7 +82,7 @@ The city said services were gradually reactivated over the following weeks, culm
 
 ## Impact Assessment
 
-The confirmed impact was significant disruption to municipal operations. Foster City said non-emergency public services were temporarily paused, and NBC Bay Area reported that staff could not make or receive calls or respond to emails after the city took its network offline.
+The confirmed impact was disruption to municipal operations. Foster City said non-emergency public services were temporarily paused, and NBC Bay Area reported that staff could not make or receive calls or respond to emails after the city took its network offline.
 
 The city also said it was uncertain whether public information had been accessed and advised people who had done business with the city to change personal passwords as a precaution. The public record does not confirm the volume or type of any affected records.
 
@@ -90,23 +90,23 @@ The city also said it was uncertain whether public information had been accessed
 
 No threat actor had been publicly identified in the cited sources. Foster City's statements focused on response and restoration, and NBC Bay Area reported that the city was not disclosing what had been accessed or what a potential ransom demand involved.
 
-The incident should therefore remain unattributed unless future public reporting provides confirmed actor identification.
+The incident remains unattributed unless future public reporting provides confirmed actor identification.
 
 ## Timeline
 
-### 2026-03-19 - Event
+### 2026-03-19 — Ransomware Identified
 
 Foster City announced that ransomware had been identified on city networks and that non-emergency public services were being paused.
 
-### 2026-03-20 - Event
+### 2026-03-20 — Systems Taken Offline
 
 The city said it had taken most computer systems offline, initiated incident-response procedures, and engaged independent cybersecurity specialists.
 
-### 2026-03-24 - Event
+### 2026-03-24 — State of Emergency Declared
 
 NBC Bay Area reported that Foster City declared a state of emergency as the investigation and service disruption continued.
 
-### 2026-04-16 - Event
+### 2026-04-16 — Full Public-Service Functionality Restored
 
 Foster City announced that full functionality of public services, including key online portals, had been restored.
 
