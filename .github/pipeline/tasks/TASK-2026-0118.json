@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0118",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "input": {
     "topic": "Ivanti EPMM Code Injection — Bash Arithmetic Expansion RCE",
     "reprocess": true,
@@ -34,37 +34,32 @@
       "note": "Corpus reprocessing — source quality enforcement"
     },
     {
-      "timestamp": "2026-04-25T17:06:11.705Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #264"
+      "timestamp": "2026-04-24T22:32:36.000Z",
+      "action": "locked",
+      "agent": "dangermouse-bot"
     },
     {
-      "timestamp": "2026-04-26T06:22:55.278Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #277"
+      "timestamp": "2026-04-24T22:33:11.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "pr_number": 249,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
+      "commit": "e469ec9e4287850d646768340c61532f5015679a"
     },
     {
-      "timestamp": "2026-04-26T17:07:14.749Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #289"
-    },
-    {
-      "timestamp": "2026-04-27T10:29:26.917Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #301"
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #249 opened; validate:success; all Gemini threads resolved"
     }
   ],
-  "updated": "2026-04-27T10:29:26.917Z"
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-24T22:32:36.000Z",
+  "pr_number": 249,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/249",
+  "updated": "2026-04-25T14:18:09.587Z"
 }
