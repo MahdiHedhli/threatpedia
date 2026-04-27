@@ -73,15 +73,19 @@ The incident involved ransomware deployed on the city network. IT staff discover
 ## Attack Chain
 
 ### Stage 1: Initial Compromise
+
 Threat actor gains initial access to the municipal network, likely through remote services or compromised accounts.
 
 ### Stage 2: Lateral Movement
+
 Attacker moves laterally through the domain, executing scripts to target file shares and backup systems.
 
 ### Stage 3: Encryption
+
 Ransomware payload is delivered and executed, encrypting data across multiple municipal departments.
 
 ### Stage 4: Extortion
+
 A ransom demand is generated, and municipal services are locked out until mitigation begins.
 
 ## Impact Assessment
@@ -95,12 +99,15 @@ No threat actor has publicly claimed responsibility for the attack as of early A
 ## Timeline
 
 ### 2026-03-19 — Event
+
 IT staff discover ransomware on the city network. All non-emergency city services are suspended, and isolation procedures are initiated.
 
 ### 2026-03-24 — Event
+
 City council holds a special in-person meeting and officially declares a state of emergency to expedite recovery resources.
 
 ### 2026-03-26 — Event
+
 National cybersecurity tracking platforms and regional news agencies officially report the scope of the incident.
 
 ## Remediation & Mitigation
