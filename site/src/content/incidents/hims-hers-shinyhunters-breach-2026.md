@@ -45,16 +45,16 @@ sources:
 mitreMappings:
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
-    tactic: initial-access
+    tactic: Initial Access
   - techniqueId: T1550.001
     techniqueName: "Use Alternate Authentication Material: Application Access Token"
-    tactic: lateral-movement
+    tactic: Lateral Movement
   - techniqueId: T1530
     techniqueName: "Data from Cloud Storage"
-    tactic: collection
+    tactic: Collection
   - techniqueId: T1567
     techniqueName: "Exfiltration Over Web Service"
-    tactic: exfiltration
+    tactic: Exfiltration
 ---
 
 ## Summary
@@ -107,6 +107,6 @@ Hims & Hers revoked compromised Okta credentials, reset SSO trust relationships,
 
 ## Sources & References
 
-- [Bleeping Computer: Hims & Hers Zendesk Support Breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/)
-- [TechCrunch: Telehealth Giant Hims & Hers Support System Hacked](https://techcrunch.com/2026/03/05/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/)
-- [HHS: OCR Breach Portal](https://www.hhs.gov/hipaa/for-professionals/breach-notification/breach-portal/index.html)
+- [Bleeping Computer: Hims & Hers warns of data breach after Zendesk support ticket breach](https://www.bleepingcomputer.com/news/security/hims-and-hers-warns-of-data-breach-after-zendesk-support-ticket-breach/) — Bleeping Computer, 2026-03-05
+- [TechCrunch: Telehealth giant Hims & Hers says its customer support system was hacked](https://techcrunch.com/2026/03/05/telehealth-giant-hims-hers-says-its-customer-support-system-was-hacked/) — TechCrunch, 2026-03-05
+- [HHS: OCR Breach Portal](https://www.hhs.gov/hipaa/for-professionals/breach-notification/breach-portal/index.html) — HHS, 2026-03-06
