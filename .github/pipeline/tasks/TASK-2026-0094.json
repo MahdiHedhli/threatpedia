@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0094",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Foster City Ransomware Attack Forces State of Emergency",
     "reprocess": true,
@@ -64,7 +64,35 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #292"
+    },
+    {
+      "timestamp": "2026-04-27T14:04:31.136Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T14:06:45.021Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #304"
+    },
+    {
+      "timestamp": "2026-04-27T15:30:03.553Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #304 merged (c80d7f8)."
     }
   ],
-  "updated": "2026-04-26T21:02:00.835Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-27T15:30:03.553Z",
+  "pr_number": 304,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/304",
+  "merged_at": "2026-04-27T15:30:03.553Z"
 }
