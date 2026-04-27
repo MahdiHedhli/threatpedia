@@ -39,11 +39,6 @@ sources:
     publisherType: media
     reliability: R2
     publicationDate: "2026-03-20"
-  - url: https://www.cisa.gov/news-events/alerts/2026/03/30/oauth-device-code-phishing
-    publisher: CISA
-    publisherType: government
-    reliability: R1
-    publicationDate: "2026-03-30"
 mitreMappings:
   - techniqueId: T1566.002
     techniqueName: "Phishing: Spearphishing Link"
@@ -130,10 +125,6 @@ Huntress publishes initial detection of Railway.com-based token replay campaign;
 
 The Hacker News publishes comprehensive article detailing campaign scope and attribution to EvilTokens.
 
-### 2026-03-30 — Event
-
-CISA issues advisory regarding OAuth device code phishing.
-
 ## Remediation & Mitigation
 
 Identify Compromised Accounts: Check email logs for abnormal access patterns, unusual geographic locations, or off-hours activity. Review Azure AD sign-in logs for device code authentication flows from unusual IP addresses (especially 162.220.232.x and 162.220.234.x ranges). Search for authenticated sessions from Railway.com or Cloudflare Worker IP ranges.
@@ -148,4 +139,3 @@ Contain Spread: Block IOC IP addresses at firewall and proxy level; block Railwa
 - [Huntress: Railway PaaS M365 Token Replay Campaign](https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign) — Huntress, 2026-02-19
 - [Cloud Security Alliance: OAuth Device Code Phishing Research](https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/) — Cloud Security Alliance, 2026-03-25
 - [Infosecurity Magazine: OAuth Phishing Campaigns Surge in 2026](https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/) — Infosecurity Magazine, 2026-03-20
-- [CISA: OAuth Device Code Phishing](https://www.cisa.gov/news-events/alerts/2026/03/30/oauth-device-code-phishing) — CISA, 2026-03-30
