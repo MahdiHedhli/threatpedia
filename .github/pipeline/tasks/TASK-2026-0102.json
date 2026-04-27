@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0102",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "input": {
     "topic": "Passaic County Ransomware Attack by Medusa Group",
     "reprocess": true,
@@ -20,7 +20,7 @@
     "min_sources": 3,
     "min_h2_sections": 5,
     "min_mitre_mappings": 1,
-    "review_status": "draft_ai",
+    "review_status": "under_review",
     "frontmatter_valid": true,
     "astro_build": true
   },
@@ -64,7 +64,34 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #295"
+    },
+    {
+      "timestamp": "2026-04-27T15:38:19.376Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T15:39:22.871Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #315"
+    },
+    {
+      "timestamp": "2026-04-27T16:39:10Z",
+      "action": "criteria_updated",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "note": "Aligned task review_status acceptance criteria to live under_review article state for remediation pass"
     }
   ],
-  "updated": "2026-04-26T23:03:49.699Z"
+  "updated": "2026-04-27T16:39:10Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 315,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/315"
 }
