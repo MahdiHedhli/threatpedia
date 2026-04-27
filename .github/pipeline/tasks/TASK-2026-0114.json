@@ -1,59 +1,68 @@
 {
-    "task_id": "TASK-2026-0114",
-    "type": "zero-day",
-    "priority": "P0",
-    "status": "pr_open",
-    "input": {
-        "topic": "BlueHammer \u2014 Windows Defender LPE via VSS Race Condition",
-        "reprocess": true,
-        "target_file": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
-        "issues": [
-            "missing_sources",
-            "plain_text_sources"
-        ],
-        "notes": "No sources in frontmatter; 13 bare URL(s) in body sources need markdown hyperlinks"
-    },
-    "output": {
-        "file_pattern": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
-        "branch": "bot/reprocess-task-2026-0114"
-    },
-    "acceptance_criteria": {
-        "min_sources": 3,
-        "min_h2_sections": 5,
-        "min_mitre_mappings": 1,
-        "review_status": "draft_ai",
-        "frontmatter_valid": true,
-        "astro_build": true
-    },
-    "history": [
-        {
-            "timestamp": "2026-04-16T04:00:00.000Z",
-            "action": "created",
-            "from": "none",
-            "to": "pending",
-            "agent": "dangermouse-bot",
-            "note": "Corpus reprocessing \u2014 source quality enforcement"
-        },
-        {
-            "timestamp": "2026-04-24T20:15:21.760Z",
-            "from": "pending",
-            "to": "locked",
-            "agent": "Mahdi Hedhli",
-            "note": "Locked for execution"
-        },
-        {
-            "timestamp": "2026-04-24T20:19:30.000Z",
-            "from": "locked",
-            "to": "pr_open",
-            "agent": "dangermouse-bot",
-            "note": "PR opened via GitHub API (gh not available)",
-            "pr_number": 228,
-            "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/228"
-        }
+  "task_id": "TASK-2026-0114",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "input": {
+    "topic": "BlueHammer — Windows Defender LPE via VSS Race Condition",
+    "reprocess": true,
+    "target_file": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
+    "issues": [
+      "missing_sources",
+      "plain_text_sources"
     ],
-    "locked_by": "Mahdi Hedhli",
-    "locked_at": "2026-04-24T20:15:21.760Z",
-    "updated": "2026-04-24T20:19:30.000Z",
-    "pr_number": 228,
-    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/228"
+    "notes": "No sources in frontmatter; 13 bare URL(s) in body sources need markdown hyperlinks"
+  },
+  "output": {
+    "file_pattern": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
+    "branch": "bot/reprocess-task-2026-0114"
+  },
+  "acceptance_criteria": {
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "frontmatter_valid": true,
+    "astro_build": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-16T04:00:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-24T20:15:21.760Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T20:19:30.000Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR opened via GitHub API (gh not available)",
+      "pr_number": 228,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/228"
+    },
+    {
+      "timestamp": "2026-04-25T13:03:00.343Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #228."
+    }
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-25T13:03:00.343Z",
+  "pr_number": 228,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/228",
+  "merged_at": "2026-04-24T21:26:19Z"
 }
