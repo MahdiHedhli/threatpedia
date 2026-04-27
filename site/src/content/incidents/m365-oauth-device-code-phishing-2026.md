@@ -1,6 +1,6 @@
 ---
 eventId: TP-2026-0031
-title: Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations
+title: Railway-Hosted Microsoft 365 Device Code Phishing Activity Hits 340+ Organizations
 date: 2026-02-19
 attackType: Phishing
 severity: high
@@ -53,9 +53,9 @@ mitreMappings:
 
 ## Summary
 
-A large device code phishing campaign targeting Microsoft 365 users compromised more than 340 organizations by abusing Microsoft's legitimate OAuth device code authentication flow. Huntress said the campaign used Railway-hosted infrastructure for token replay and observed a broad victim set across multiple sectors and countries.
+A Railway-hosted device code phishing operation targeting Microsoft 365 users compromised more than 340 organizations by abusing Microsoft's legitimate OAuth device code authentication flow. Huntress said the activity used Railway-hosted infrastructure for token replay and observed a broad victim set across multiple sectors and countries.
 
-Public reporting links parts of the campaign to the EvilTokens phishing-as-a-service ecosystem, and Microsoft later described an April 2026 campaign aligned with EvilTokens tradecraft. The current public source set does not establish a single confirmed actor identity for every intrusion in this cluster even where tooling overlap is strong.
+Public reporting links the Railway-hosted activity to the EvilTokens phishing-as-a-service ecosystem, and Microsoft later described an April 2026 campaign aligned with similar device-code-phishing tradecraft. The current public source set does not establish a single confirmed actor identity for every intrusion in the Railway-hosted cluster even where tooling overlap is strong.
 
 ## Technical Analysis
 
@@ -89,9 +89,9 @@ The operational impact comes from token-backed access to Microsoft 365 resources
 
 ## Attribution
 
-Huntress updated its investigation on March 23, 2026 to say the Railway-based campaign had been attributed to the EvilTokens phishing-as-a-service platform, which it said first advertised publicly on February 16, 2026. Microsoft later described an April campaign aligned with EvilTokens tradecraft and infrastructure patterns.
+Huntress updated its investigation on March 23, 2026 to say the Railway-based activity had been attributed to the EvilTokens phishing-as-a-service platform, which it said first advertised publicly on February 16, 2026. Microsoft later described an April campaign aligned with EvilTokens tradecraft and infrastructure patterns.
 
-That evidence supports associating the observed activity with the EvilTokens ecosystem, but the current source set does not prove that every related intrusion was conducted by one confirmed named actor or intrusion set.
+That evidence supports associating the observed Railway-hosted activity with the EvilTokens ecosystem, but the current source set does not prove that every related intrusion was conducted by one confirmed named actor or intrusion set.
 
 ## Timeline
 
