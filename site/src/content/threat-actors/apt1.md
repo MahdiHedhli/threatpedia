@@ -12,7 +12,7 @@ motivation: "Espionage"
 status: inactive
 country: "China"
 firstSeen: "2006"
-lastSeen: "2016"
+lastSeen: "2014"
 targetSectors:
   - "Technology"
   - "Aerospace & Defense"
@@ -48,7 +48,7 @@ mitreMappings:
     notes: "APT1 used Mimikatz and custom tools to dump credentials for lateral movement."
 attributionConfidence: A1
 attributionRationale: "Attributed to PLA Unit 61398 by Mandiant's 2013 APT1 report, corroborated by a 2014 U.S. DOJ indictment of five PLA officers."
-reviewStatus: "under_review"
+reviewStatus: "certified"
 generatedBy: "penfold-bot"
 generatedDate: 2026-04-16
 tags:
@@ -61,39 +61,32 @@ tags:
 sources:
   - url: "https://attack.mitre.org/groups/G0006/"
     publisher: "MITRE ATT&CK"
-    publicationDate: "2025-10-17"
+    publicationDate: "2025-04-25"
     publisherType: research
     reliability: R1
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-27"
     archived: false
   - url: "https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor"
-    publisher: "US Department of Justice"
+    publisher: "U.S. Department of Justice"
     publisherType: government
     reliability: R1
     publicationDate: "2014-05-19"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-27"
     archived: false
   - url: "https://www.mandiant.com/resources/apt1-exposing-one-of-chinas-cyber-espionage-units"
     publisher: "Mandiant"
     publisherType: vendor
     reliability: R1
     publicationDate: "2013-02-18"
-    accessDate: "2026-04-16"
-    archived: false
-  - url: "https://www.cisa.gov/news-events/alerts/2014/05/19/chinese-hackers-indicted"
-    publisher: "CISA"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2014-05-19"
-    accessDate: "2026-04-16"
+    accessDate: "2026-04-27"
     archived: false
 ---
 
 ## Executive Summary
 
-APT1, also known as Comment Crew, is a Chinese state-sponsored cyber-espionage group attributed to **People's Liberation Army (PLA) Unit 61398**, based in the Pudong district of Shanghai. Active from at least 2006 until approximately 2016, the group conducted sustained espionage campaigns targeting over 140 organizations across 20 industries, with a primary focus on English-speaking countries.
+APT1, also known as Comment Crew, is a Chinese state-sponsored cyber-espionage group attributed to **People's Liberation Army (PLA) Unit 61398**, based in the Pudong district of Shanghai. The cited public record documents activity from at least 2006 through the 2014 U.S. indictment period, including sustained espionage campaigns targeting more than 140 organizations across 20 industries, with a primary focus on English-speaking countries.
 
-APT1 was the subject of Mandiant's landmark 2013 report, which provided the first detailed public attribution of a nation-state cyber-espionage operation to a specific military unit. The report, combined with a 2014 U.S. federal indictment of five PLA officers, marked a turning point in the public discourse around state-sponsored cyber operations. APT1's activity decreased after the September 2015 U.S.-China cyber agreement.
+APT1 was the subject of Mandiant's landmark 2013 report, which provided one of the first detailed public attributions of a nation-state cyber-espionage operation to a specific military unit. The report, combined with a 2014 U.S. federal indictment of five PLA officers, marked a turning point in public attribution of state-sponsored cyber operations.
 
 ## Notable Campaigns
 
@@ -137,7 +130,6 @@ In May 2014, the U.S. Department of Justice indicted five named PLA officers of 
 
 ## Sources & References
 
-- [MITRE ATT&CK: APT1](https://attack.mitre.org/groups/G0006/) -- MITRE ATT&CK
-- [US DOJ: Charges Against Five Chinese Military Hackers](https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor) -- US Department of Justice, 2014-05-19
-- [Mandiant: APT1 - Exposing One of China's Cyber Espionage Units](https://www.mandiant.com/resources/apt1-exposing-one-of-chinas-cyber-espionage-units) -- Mandiant, 2013-02-18
-- [CISA: Chinese Hackers Indicted](https://www.cisa.gov/news-events/alerts/2014/05/19/chinese-hackers-indicted) -- CISA, 2014-05-19
+- [MITRE ATT&CK: APT1](https://attack.mitre.org/groups/G0006/) — MITRE ATT&CK, 2025-04-25
+- [U.S. Department of Justice: Charges Against Five Chinese Military Hackers](https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor) — U.S. Department of Justice, 2014-05-19
+- [Mandiant: APT1 - Exposing One of China's Cyber Espionage Units](https://www.mandiant.com/resources/apt1-exposing-one-of-chinas-cyber-espionage-units) — Mandiant, 2013-02-18
