@@ -8,7 +8,7 @@ sector: Government
 geography: United States
 threatActor: Medusa
 attributionConfidence: A4
-reviewStatus: draft_ai
+reviewStatus: under_review
 confidenceGrade: C
 generatedBy: penfold-bot
 generatedDate: 2026-04-20
