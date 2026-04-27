@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-24T18:41:00.530Z",
-  "updated": "2026-04-25T13:55:35.553Z",
+  "updated": "2026-04-27T16:17:01Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -102,6 +102,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #246 validated (validate:success, 0 unresolved Gemini threads). PR number recorded."
+    },
+    {
+      "timestamp": "2026-04-27T16:17:01Z",
+      "action": "completed",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "PR #246 merged by Kernel K at 2026-04-27T15:27:16Z (merge SHA 973b375f). Task state sync by DM queue worker run #39."
     }
   ],
   "pr_number": 246,
