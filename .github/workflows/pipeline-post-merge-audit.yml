@@ -1,0 +1,219 @@
+name: "Pipeline: Post-Merge Content Audit"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/src/content/**/*.md"
+      - "site/src/content/**/*.mdx"
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: "Optional base commit SHA for manual audit"
+        required: false
+        type: string
+      head_sha:
+        description: "Optional head commit SHA for manual audit"
+        required: false
+        type: string
+
+concurrency:
+  group: pipeline-post-merge-audit-main
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: cd site && npm ci
+
+      - name: Install scripts dependencies
+        run: cd scripts && npm ci --no-audit --no-fund
+
+      - name: Identify changed articles
+        id: changed
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BASE="${{ inputs.base_sha }}"
+            HEAD="${{ inputs.head_sha }}"
+            if [ -z "$HEAD" ]; then
+              HEAD="${GITHUB_SHA}"
+            fi
+            if [ -z "$BASE" ]; then
+              BASE="$(git rev-parse "${HEAD}^" 2>/dev/null || echo "$HEAD")"
+            fi
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+            if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+              BASE="$(git rev-parse "${HEAD}^" 2>/dev/null || echo "$HEAD")"
+            fi
+          fi
+
+          ALL=$(git diff --name-only --diff-filter=d "$BASE" "$HEAD" -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -50)
+          NEW=$(git diff --name-only --diff-filter=A "$BASE" "$HEAD" -- 'site/src/content/**/*.md' 'site/src/content/**/*.mdx' | head -50)
+
+          printf '%s\n' "$ALL" > "$RUNNER_TEMP/pipeline_changed_files.txt"
+          printf '%s\n' "$NEW" > "$RUNNER_TEMP/pipeline_new_files.txt"
+
+          {
+            echo "base=$BASE"
+            echo "head=$HEAD"
+            echo "files<<EOF"
+            echo "$ALL"
+            echo "EOF"
+            echo "count=$(echo "$ALL" | grep -c '.' || true)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Run shared content validator
+        id: validate
+        if: steps.changed.outputs.count != '0'
+        continue-on-error: true
+        run: |
+          node scripts/validate-content-corpus.mjs \
+            --files-file "$RUNNER_TEMP/pipeline_changed_files.txt" \
+            --new-files-file "$RUNNER_TEMP/pipeline_new_files.txt" \
+            --json-out "$RUNNER_TEMP/pipeline_validation.json"
+
+      - name: Build check
+        id: build
+        if: steps.changed.outputs.count != '0'
+        continue-on-error: true
+        run: |
+          cd site && npm run build
+
+      - name: Publish audit result
+        if: steps.changed.outputs.count != '0'
+        uses: actions/github-script@v8
+        env:
+          PIPELINE_VALIDATION_JSON: ${{ runner.temp }}/pipeline_validation.json
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          RANGE_BASE: ${{ steps.changed.outputs.base }}
+          RANGE_HEAD: ${{ steps.changed.outputs.head }}
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+        with:
+          script: |
+            const fs = require('fs');
+
+            const LABEL = 'pipeline/audit-failure';
+            const TITLE = 'Post-merge content audit failure on main';
+            const reportPath = process.env.PIPELINE_VALIDATION_JSON;
+            const buildOutcome = process.env.BUILD_OUTCOME || 'skipped';
+            const base = process.env.RANGE_BASE;
+            const head = process.env.RANGE_HEAD;
+            const changedFiles = (process.env.CHANGED_FILES || '').trim().split('\n').filter(Boolean);
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            let payload;
+            if (fs.existsSync(reportPath)) {
+              payload = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            } else {
+              payload = {
+                allPass: false,
+                results: [],
+                markdown: '## Pipeline Validation Report\n\n:x: Shared validator did not produce a report. Check workflow logs.\n',
+              };
+            }
+
+            const buildPassed = buildOutcome === 'success';
+            const overallPass = payload.allPass && buildPassed;
+
+            async function ensureLabel() {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: LABEL,
+                  color: 'B60205',
+                  description: 'Post-merge content audit found invalid content or build drift on main',
+                });
+              } catch (error) {
+                if (error.status !== 422) {
+                  console.log(`Could not create label ${LABEL}: ${error.message}`);
+                }
+              }
+            }
+
+            async function findOpenAuditIssue() {
+              const issues = await github.paginate(github.rest.issues.listForRepo, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: LABEL,
+                per_page: 100,
+              });
+              return issues.find((issue) => !issue.pull_request && issue.title === TITLE);
+            }
+
+            await ensureLabel();
+            const openIssue = await findOpenAuditIssue();
+
+            if (overallPass) {
+              if (openIssue) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: openIssue.number,
+                  body: `Audit returned to green on \`${head.slice(0, 7)}\`.\n\n- Run: ${runUrl}\n- Range: \`${base}..${head}\``,
+                });
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: openIssue.number,
+                  state: 'closed',
+                });
+              }
+              return;
+            }
+
+            const body = [
+              '## Post-merge content audit failure',
+              '',
+              `- Run: ${runUrl}`,
+              `- Range: \`${base}..${head}\``,
+              `- Validation: ${payload.allPass ? 'passed' : 'failed'}`,
+              `- Build: ${buildPassed ? 'passed' : 'failed'}`,
+              '',
+              '### Changed files',
+              '',
+              ...changedFiles.map((file) => `- \`${file}\``),
+              '',
+              payload.markdown.trim(),
+              '',
+            ].join('\n');
+
+            if (openIssue) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: openIssue.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: TITLE,
+                body,
+                labels: [LABEL],
+              });
+            }
+
+            core.setFailed(buildPassed ? 'Post-merge content audit failed' : 'Post-merge content audit or build failed');

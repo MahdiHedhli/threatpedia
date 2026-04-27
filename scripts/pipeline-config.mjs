@@ -40,6 +40,12 @@ const DEFAULT_CONFIG_PATH = resolve(__dirname, '..', '.github', 'pipeline', 'con
 export const DEFAULTS = Object.freeze({
   queues: {
     editorial: { max_pending: 50, backpressure_resume: 40 },
+    by_type: {
+      'zero-day': { max_pending: 20 },
+      incident: { max_pending: 25 },
+      'threat-actor': { max_pending: 8 },
+      campaign: { max_pending: 8 },
+    },
     discovery: { max_candidates: 200 },
     draft_ready: { max_pending: 25 },
   },
@@ -68,6 +74,27 @@ export const DEFAULTS = Object.freeze({
   discovery_sources: {
     cisa_kev: { enabled: true },
     nvd: { enabled: true, lookback_days: 7, min_cvss: 7.0 },
+    cisa_alerts: {
+      enabled: true,
+      kind: 'incident',
+      format: 'rss',
+      label: 'CISA Alerts & Advisories',
+      limit_per_run: 3,
+    },
+    ncsc_news: {
+      enabled: true,
+      kind: 'incident',
+      format: 'rss',
+      label: 'NCSC News',
+      limit_per_run: 2,
+    },
+    microsoft_security_blog: {
+      enabled: true,
+      kind: 'incident',
+      format: 'rss',
+      label: 'Microsoft Security Blog',
+      limit_per_run: 2,
+    },
   },
 });
 
