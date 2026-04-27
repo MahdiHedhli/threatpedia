@@ -2,7 +2,7 @@
 eventId: TP-2026-0029
 title: "Hims & Hers Health Zendesk Breach by ShinyHunters"
 date: 2026-02-05
-attackType: "Data Breach"
+attackType: data-breach
 severity: high
 sector: Healthcare
 geography: United States
@@ -68,15 +68,19 @@ The initial compromise vector involved a compromised Okta SSO (Single Sign-On) a
 ## Attack Chain
 
 ### Stage 1: Okta SSO Compromise
+
 Initial compromise of an Okta SSO account likely via credential stuffing or phishing.
 
 ### Stage 2: Pivot to Zendesk
+
 Leveraging the compromised Okta credentials to access the Zendesk customer support platform.
 
 ### Stage 3: Data Harvesting
+
 Browsing and searching the Zendesk instance for sensitive support tickets containing PII.
 
 ### Stage 4: Exfiltration
+
 Systematically exfiltrating support tickets to attacker-controlled infrastructure over standard web connections.
 
 ## Impact Assessment
@@ -85,25 +89,29 @@ Customer names, contact information, references to medical conditions, and histo
 
 ## Attribution
 
-The attack is attributed to ShinyHunters (UNC5537) with an A4 confidence ranking. The threat group is known to actively target identity and access management systems as a high-value entry point into enterprise networks, later publishing samples of the stolen data on their dark web leak site for extortion demands.
+The attack is attributed to ShinyHunters (UNC5537). The threat group is known to actively target identity and access management systems as a high-value entry point into enterprise networks, later publishing samples of the stolen data on their dark web leak site for extortion demands.
 
 ## Timeline
 
 ### 2026-02-04 — Event
+
 Unauthorized access begins. Attackers use compromised Okta SSO credentials to access the Zendesk environment.
 
 ### 2026-02-05 — Event
+
 Suspicious Activity Detected. Abnormal logins and data access patterns trigger investigations.
 
 ### 2026-02-07 — Event
+
 Access Terminated. Hims & Hers security team revokes the compromised Okta credentials.
 
 ### 2026-03-03 — Event
+
 Breach Publicly Confirmed. Hims & Hers publicly acknowledges the data breach and issues notifications to affected individuals and regulators.
 
 ## Remediation & Mitigation
 
-Hims & Hers revoked compromised Okta credentials, reset SSO trust relationships, audited access logs, and notified regulatory authorities while offering 12-month credit monitoring. Long-term mitigation includes enforcing mandatory Phish-Resistant MFA on all Okta SSO accounts, implementing anomalous anomaly behavior detection, deploying Data Loss Prevention (DLP) to restrict exfiltration of PII, and establishing explicit Zero Trust architecture authorization checks in federated identity systems.
+Hims & Hers revoked compromised Okta credentials, reset SSO trust relationships, audited access logs, and notified regulatory authorities while offering 12-month credit monitoring. Long-term mitigation includes enforcing mandatory Phish-Resistant MFA on all Okta SSO accounts, implementing anomalous behavior detection, deploying Data Loss Prevention (DLP) to restrict exfiltration of PII, and establishing explicit Zero Trust architecture authorization checks in federated identity systems.
 
 ## Sources & References
 
