@@ -1,6 +1,6 @@
 ---
 eventId: TP-2026-0029
-title: "Hims & Hers Health Zendesk Breach by ShinyHunters"
+title: "Hims & Hers Health Zendesk Breach Linked to ShinyHunters"
 date: 2026-02-05
 attackType: data-breach
 severity: high
@@ -46,76 +46,73 @@ mitreMappings:
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
     tactic: Initial Access
-  - techniqueId: T1550.001
-    techniqueName: "Use Alternate Authentication Material: Application Access Token"
-    tactic: Lateral Movement
-  - techniqueId: T1530
-    techniqueName: "Data from Cloud Storage"
-    tactic: Collection
-  - techniqueId: T1567
-    techniqueName: "Exfiltration Over Web Service"
-    tactic: Exfiltration
 ---
 
 ## Summary
 
-Hims & Hers Health, a major U.S. telehealth company, suffered a significant data breach in early February 2026 when the threat group ShinyHunters gained unauthorized access to the company's Zendesk support platform using a compromised Okta SSO account. The breach exposed support tickets containing personally identifiable information (PII) of affected individuals, including names, email addresses, phone numbers, and medical information related to customer support interactions. The unauthorized access occurred between February 4-7, 2026. The company confirmed the breach on March 3, 2026, notifying affected individuals and regulatory authorities.
+Hims & Hers disclosed that an unauthorized party accessed certain customer-support tickets in its third-party customer service platform between February 4 and February 7, 2026. The company said the exposed information included customer names, contact details, and other data contained in support interactions, while medical records and communications with healthcare providers were not affected.
+
+TechCrunch reported that Hims & Hers described the incident as a social engineering attack. BleepingComputer later linked the breach to ShinyHunters reporting and said it was told a compromised Okta single sign-on account was used to reach the company's Zendesk environment, but Hims & Hers did not publicly name the actor in its own notice.
 
 ## Technical Analysis
 
-The initial compromise vector involved a compromised Okta SSO (Single Sign-On) account. Typical attack vectors against SSO infrastructure include credential stuffing, phishing campaigns, or exploitation of unpatched Okta instances. Once the attackers obtained valid Okta credentials, they leveraged SSO trust relationships to gain access to Hims & Hers' Zendesk instance. With access to the Zendesk instance, the attackers were able to browse, search, and exfiltrate support ticket contents in multiple bulk data harvesting operations during a four-day access window without triggering immediate security alerts.
+The company's public notice and TechCrunch's reporting establish that the incident affected a third-party support platform and involved unauthorized access to customer-support tickets during a four-day window in early February. The public record does not establish the full intrusion path beyond that access.
+
+BleepingComputer reported that the attackers used a compromised Okta SSO account to access the Hims & Hers Zendesk instance as part of a broader support-platform intrusion cluster associated with ShinyHunters. Because that attribution detail comes from external reporting rather than from Hims & Hers directly, the technical description for this incident should remain limited to reported account compromise, access to support tickets, and theft of ticket data.
 
 ## Attack Chain
 
-### Stage 1: Okta SSO Compromise
+### Stage 1: Unauthorized Access to Support Platform
 
-Initial compromise of an Okta SSO account likely via credential stuffing or phishing.
+An unauthorized actor gained access to the third-party customer service environment used by Hims & Hers between February 4 and February 7, 2026.
 
-### Stage 2: Pivot to Zendesk
+### Stage 2: Access to Customer-Support Tickets
 
-Leveraging the compromised Okta credentials to access the Zendesk customer support platform.
+The attacker accessed support tickets submitted to the company's customer service team, exposing information contained in those records.
 
-### Stage 3: Data Harvesting
+### Stage 3: Company Response and Notification
 
-Browsing and searching the Zendesk instance for sensitive support tickets containing PII.
-
-### Stage 4: Exfiltration
-
-Systematically exfiltrating support tickets to attacker-controlled infrastructure over standard web connections.
+Hims & Hers said it identified suspicious activity on February 5, secured the affected environment, investigated the scope of access, and later filed a public breach notice and customer notifications.
 
 ## Impact Assessment
 
-Customer names, contact information, references to medical conditions, and historical customer service interactions were compromised. While full medical records and payment information were unaffected, the exposed data poses a severe identity theft and medical privacy risk. This breach impacted tens of thousands of customer records and required public disclosure to state and federal regulators.
+According to the California breach notice and TechCrunch's reporting, the exposed information included customer names and contact information along with other data contained in support tickets. Hims & Hers said customer medical records and communications with healthcare providers on the platform were not impacted.
+
+The public source set does not confirm the total number of affected people or the full range of ticket contents, so the impact should be described as exposure of customer-support data rather than a quantified medical-record breach.
 
 ## Attribution
 
-The attack is attributed to ShinyHunters (UNC5537) based on the group's dark web leak site claims. The threat group is known to actively target identity and access management systems as a high-value entry point into enterprise networks, later publishing samples of the stolen data on their dark web leak site for extortion demands.
+BleepingComputer linked the incident to ShinyHunters and reported that the attackers used a compromised Okta SSO account to access Zendesk. That reporting places the incident within the same broader support-platform intrusion activity that has been associated with ShinyHunters.
+
+Hims & Hers itself publicly described the breach as a social engineering attack and did not publicly confirm a named threat actor. The attribution in this article should therefore remain framed as reported linkage rather than company-confirmed responsibility.
 
 ## Timeline
 
-### 2026-02-04 — Event
+### 2026-02-04 - Event
 
-Unauthorized access begins. Attackers use compromised Okta SSO credentials to access the Zendesk environment.
+The unauthorized access window to the third-party support platform began.
 
-### 2026-02-05 — Event
+### 2026-02-05 - Event
 
-Suspicious Activity Detected. Abnormal logins and data access patterns trigger investigations.
+Hims & Hers said it identified suspicious activity and took steps to secure the affected environment.
 
-### 2026-02-07 — Event
+### 2026-02-07 - Event
 
-Access Terminated. Hims & Hers security team revokes the compromised Okta credentials.
+The access window described in the public breach notice ended.
 
-### 2026-03-03 — Event
+### 2026-04-02 - Event
 
-Internal Review Complete. Hims & Hers determines that some affected support tickets contained personal information.
+Hims & Hers filed its California breach notice and began notifying affected individuals.
 
-### 2026-04-02 — Event
+### 2026-04-03 - Event
 
-Public Notice Filed. Hims & Hers submits its California breach notice and begins customer notification.
+BleepingComputer published reporting linking the incident to ShinyHunters and a compromised Okta SSO account.
 
 ## Remediation & Mitigation
 
-Hims & Hers revoked compromised Okta credentials, reset SSO trust relationships, audited access logs, and notified regulatory authorities while offering 12-month credit monitoring. Long-term mitigation includes enforcing mandatory Phish-Resistant MFA on all Okta SSO accounts, implementing anomalous behavior detection, deploying Data Loss Prevention (DLP) to restrict exfiltration of PII, and establishing explicit Zero Trust architecture authorization checks in federated identity systems.
+Hims & Hers said it secured the affected customer service platform, investigated the incident, notified federal law enforcement, and offered 12 months of credit monitoring and identity restoration services to affected individuals. The company also said it was reviewing its policies and procedures following the attack.
+
+For organizations with similar support-platform exposure, the public reporting highlights the need to secure identity-provider access to third-party SaaS tools and to treat support-ticket data as sensitive customer information.
 
 ## Sources & References
 
