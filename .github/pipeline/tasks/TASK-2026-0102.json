@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0102",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "Passaic County Ransomware Attack by Medusa Group",
     "reprocess": true,
@@ -64,7 +64,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #295"
+    },
+    {
+      "timestamp": "2026-04-27T15:38:19.376Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ],
-  "updated": "2026-04-26T23:03:49.699Z"
+  "updated": "2026-04-27T15:38:19.376Z",
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-27T15:38:19.375Z"
 }

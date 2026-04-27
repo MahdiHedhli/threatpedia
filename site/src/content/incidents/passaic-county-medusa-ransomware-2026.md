@@ -48,22 +48,22 @@ sources:
 mitreMappings:
   - techniqueId: T1190
     techniqueName: "Exploit Public-Facing Application"
-    tactic: initial-access
+    tactic: Initial Access
   - techniqueId: T1486
     techniqueName: "Data Encrypted for Impact"
-    tactic: impact
+    tactic: Impact
   - techniqueId: T1021
     techniqueName: "Remote Services"
-    tactic: lateral-movement
+    tactic: Lateral Movement
   - techniqueId: T1048
     techniqueName: "Exfiltration Over Alternative Protocol"
-    tactic: exfiltration
+    tactic: Exfiltration
   - techniqueId: T1489
     techniqueName: "Service Stop"
-    tactic: impact
+    tactic: Impact
   - techniqueId: T1529
     techniqueName: "System Shutdown/Reboot"
-    tactic: impact
+    tactic: Impact
 ---
 
 ## Summary
@@ -113,7 +113,7 @@ Initial mitigation relied upon total network isolation and engaging digital fore
 
 ## Sources & References
 
-- [Comparitech: Passaic County NJ Ransomware Attack](https://www.comparitech.com/blog/information-security/passaic-county-ransomware/)
-- [Recorded Future News: Medusa hits New Jersey county](https://therecord.media/medusa-ransomware-hits-mississippi-hospital-new-jersey-county)
-- [SC Media: Medusa ransomware purportedly hits New Jersey county](https://www.scworld.com/news/medusa-ransomware-purportedly-hits-ummc-new-jersey-county)
-- [CISA: Medusa Ransomware Alerts](https://www.cisa.gov/news-events/alerts/2026/03/16/medusa-ransomware)
+- [Comparitech: Passaic County NJ Ransomware Attack](https://www.comparitech.com/blog/information-security/passaic-county-ransomware/) — Comparitech, 2026-03-10
+- [Recorded Future News: Medusa hits New Jersey county](https://therecord.media/medusa-ransomware-hits-mississippi-hospital-new-jersey-county) — Recorded Future News, 2026-03-15
+- [SC Media: Medusa ransomware purportedly hits New Jersey county](https://www.scworld.com/news/medusa-ransomware-purportedly-hits-ummc-new-jersey-county) — SC Media, 2026-03-15
+- [CISA: Medusa Ransomware Alerts](https://www.cisa.gov/news-events/alerts/2026/03/16/medusa-ransomware) — CISA, 2026-03-16
