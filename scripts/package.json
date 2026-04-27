@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.88.0",
+    "fast-xml-parser": "^5.7.0",
     "js-yaml": "^4.1.1"
   }
 }

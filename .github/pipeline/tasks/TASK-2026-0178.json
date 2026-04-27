@@ -2,15 +2,15 @@
   "task_id": "TASK-2026-0178",
   "type": "threat-actor",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-18T10:08:00Z",
-  "updated": "2026-04-18T10:08:00Z",
+  "updated": "2026-04-20T21:46:02.543Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "input": {
     "topic": "ShinyHunters incident-to-actor consolidation and actor profile enrichment",
     "reprocess": true,
-    "target_file": "site/src/content/incidents/shiny-hunters-leak-site.md",
+    "target_file": "site/src/content/threat-actors/shinyhunters.md",
     "issues": [
       "wrong_collection",
       "actor_profile_enrichment_required",
@@ -19,7 +19,7 @@
     "notes": "Corpus review confirmed that `shiny-hunters-leak-site.md` was an actor profile / operations summary living in the incidents collection. The legacy incident slug now redirects to the existing `threat-actors/shinyhunters.md` profile. Follow up by reconciling any details from the retired incident page that should survive in the canonical actor profile or related incident cross-links."
   },
   "output": {
-    "file_pattern": "site/src/content/{collection}/{slug}.md",
+    "file_pattern": "site/src/content/threat-actors/shinyhunters.md",
     "branch": "pipeline/TASK-2026-0178"
   },
   "acceptance_criteria": {
@@ -38,6 +38,22 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Queued follow-on enrichment after ShinyHunters actor coverage was consolidated out of the incidents collection."
+    },
+    {
+      "timestamp": "2026-04-20T21:45:56.844Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-20T21:46:02.542Z",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated, and PR opened"
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null
 }

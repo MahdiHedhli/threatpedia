@@ -52,7 +52,9 @@ manual operator use; do not wire into the scheduled flow.
 | `scripts/pipeline-discover.mjs` | Node script — single source of truth for feed fetch, scoring, dedup, task emission | Invoked by the workflow above |
 | `.github/pipeline/tasks/TASK-*.json` | Pipeline task files — discovered and dispatched individually | Created by discovery, read/written by dispatcher |
 | `.github/workflows/pipeline-dispatcher.yml` | GitHub Actions cron workflow — dispatches tasks to agents | Every 2 hours + manual dispatch |
+| `.github/workflows/pipeline-post-merge-audit.yml` | GitHub Actions push workflow — re-validates changed merged content on `main` and opens/updates an audit issue on failure | Push to `main` + manual dispatch |
 | `scripts/pipeline-run-task.mjs` | Node script — agent-agnostic task runner and validator | Invoked by the dispatcher, executed under the agent's subscription |
+| `scripts/validate-content-corpus.mjs` | Shared content validator for PR gating and post-merge audits | Invoked by workflows, reads newline-delimited changed-file lists |
 
 `.github/pipeline/config.yml` holds queue limits, circuit-breaker thresholds,
 validation gates, and discovery feed config. It is the single tunable knob
@@ -68,29 +70,36 @@ for the pipeline.
      - **Branch exists + open PR from it** → accumulate onto the existing branch
        (merge latest `main` in so task files stay compatible with the live schema)
      - **Branch exists + NO open PR** → the previous batch was either **merged**
-       (tasks now on `main`) or **closed-without-merging** (rejection). Both
-       cases collapse to: **reset the branch to `origin/main`** so rejected
-       tasks do not silently resurface on the next run, and merged tasks aren't
-       counted as new. Force-push the reset.
-   - Calls `node scripts/pipeline-discover.mjs --days 14 --limit 5 --execute`
-   - Script fetches CISA KEV (+ NVD CVSS enrichment), builds dedup indexes
-     against the live corpus and existing tasks, scores candidates per
-     ROAD-011, allocates a year-namespaced exploitId per ADR 0007, and
-     writes one `TASK-2026-NNNN.json` per surviving candidate to
+       (tasks now on `main`) or **closed-without-merging** (discarded batch). Both
+       cases collapse to: **reset the branch to `origin/main`** so discarded
+       branch-only tasks do not linger on the long-lived discovery branch, and
+       merged tasks aren't counted as new. Force-push the reset.
+   - Calls `node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute`
+   - Script loads `.github/pipeline/config.yml`, installs lane-specific
+     headroom limits, then runs the currently supported discovery lanes:
+     - **zero-day:** CISA KEV + NVD CVSS enrichment
+     - **incident:** CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
+     - **threat-actor promotion:** scans the recent incident corpus within the requested lookback window, skips actors already present in the corpus or pending threat-actor tasks (including known aliases), and promotes only evidence-backed names into new threat-actor tasks
+     - **campaign promotion:** scans the recent incident corpus for named campaign-shaped incidents and strong same-actor clusters, then promotes only conservative, non-duplicate campaign candidates into new campaign tasks
+   - Discovery builds dedup indexes against the live corpus and existing tasks
+     using CVEs, source URLs, normalized titles, output slugs, and rejected
+     candidate keys; allocates a
+     year-namespaced exploitId per ADR 0007 for zero-day candidates; and writes
+     one `TASK-2026-NNNN.json` per surviving candidate to
      `.github/pipeline/tasks/` **on the branch** (not `main`).
    - Commits and pushes the branch. **Branch protection on `main` is
      respected** — nothing pushes directly to `main`.
    - Opens or updates a PR from `pipeline/discovery` to `main` with the
      `pipeline/discovery` label. The PR body enumerates every task on the
      branch with task ID, type, priority, score, auto-cert eligibility,
-     CVE, and topic. **Merge** to accept the whole batch; **close without
-     merging** to reject all staged tasks — the branch-reset logic above
-     ensures rejection is durable.
+     reference, and topic. **Merge** to accept the whole batch; **close without
+     merging** to discard the staged batch. To make a rejection durable across
+     future discovery runs, use the rejection-memory workflow and merge its PR.
    - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
-   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks at
-     `stage: draft` with `status: complete | validation | review` is
+   - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks with
+     `status: pr_open` (plus any legacy `validation | review` stage items) is
      ≥ `queues.editorial.max_pending` (default 50), the dispatcher backs
      off without dispatching more. When the queue drains below
      `backpressure_resume` (default 40), dispatch resumes.
@@ -117,23 +126,39 @@ for the pipeline.
      marks `status: locked` with `locked_by` set and `locked_at`
      timestamped (so the stale-lock sweep will recover it if the agent
      dies mid-task).
+   - Dispatcher bookkeeping is published on the long-lived
+     `pipeline/dispatcher` branch, not pushed directly to `main`.
+     The workflow opens or updates a PR labeled `pipeline/dispatcher`
+     carrying task-state-only changes (dispatch notes, stale-lock
+     releases, dependency blocking). Merge the PR to persist dispatcher
+     state; close it to discard the bookkeeping batch and let the next
+     run reset `pipeline/dispatcher` back to `origin/main`.
+   - If a task already has an open `pipeline/ready` Issue, the dispatcher
+     does **not** open a duplicate Issue on the next tick. It records the
+     existing Issue number in task history once and moves on.
 
 7. **Agent execution** (under the agent's own subscription)
    - Agent reads the task brief, drafts the article into
      `site/src/content/<type>/<slug>.md` on the `pipeline/TASK-XXXX`
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
-     iterates until validation passes, then runs `--complete`.
+     iterates until validation passes, then runs `--open-pr` to create
+     (or reuse) the PR and record `status: pr_open` in one step.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
-     rules: min sources, min H2 sections, min MITRE mappings,
-     `review_status: draft_ai`, build must pass, schema must pass.
-   - Failure leaves the task locked for agent iteration; success flips
-     `status` to `complete` and opens a PR.
+     rules plus exact section/schema normalization: canonical H2 headings,
+     exact source-line format, frontmatter/body source URL parity, canonical
+     MITRE tactic casing, canonical publisher aliases, and canonical
+     `generatedBy` values.
+   - Failure leaves the task locked for agent iteration; success allows the
+     agent to record a real open PR number, which moves the task to
+     `status: pr_open`.
 
 9. **Human review + merge**
    - `auto_merge.enabled: false` today — every PR goes to Kernel K for
-     review. Once merged, the task's history records the final transition.
+     review. Merge state is no longer trusted from the local CLI. A GitHub PR
+     event records the final task transition after the PR is merged (or reverts
+     the task to `pending` if the PR is closed without merge).
 
 ---
 
@@ -141,11 +166,13 @@ for the pipeline.
 
 | Guardrail | Where it lives | Default | Source of truth |
 |---|---|---|---|
-| Corpus + task CVE dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks | Script |
-| Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | CVEs in rejected list skipped at discovery time | File on `main`; see Rejection memory section |
+| Corpus + task dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks using CVEs, URLs, normalized titles, and output slugs | Script |
+| Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | Rejected CVEs and non-CVE candidate keys skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
+| Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
@@ -174,9 +201,18 @@ the reason.
 **Shared schema enum authority:** JavaScript-side schema enums (currently
 `SCHEMA_REVIEW_STATUSES`) live in `scripts/pipeline-schema.mjs` as the
 single source of truth for the pipeline scripts. The runner imports it
-directly; the validator workflow loads it via a small shell-out step.
-The ultimate schema authority remains `site/src/content.config.ts` — the
-JS mirror must be updated in the same PR when the Zod schema changes.
+directly; the shared content validator (`scripts/validate-content-corpus.mjs`)
+also imports it and now backs both the PR validator workflow and the
+post-merge `main` audit. The ultimate schema authority remains
+`site/src/content.config.ts` — the JS mirror must be updated in the same
+PR when the Zod schema changes.
+
+**Post-merge integrity backstop:** merged content changes on `main` are
+re-audited via `.github/workflows/pipeline-post-merge-audit.yml`. The
+workflow reuses the same shared validator as the PR gate, runs a site
+build, and opens or updates a standing Issue (`pipeline/audit-failure`)
+instead of attempting auto-repair. When a later run returns green, the
+workflow closes that Issue automatically.
 
 **Backpressure hysteresis:** the dispatcher pauses draft dispatch when
 the editorial queue hits `max_pending` and stays paused until the queue
@@ -248,13 +284,15 @@ sources: the live corpus and the open task set. Closing an accumulation PR
 without merging left no durable signal, so vetoed candidates came back.
 
 Slice 4c adds **rejection memory**: a repo-visible, PR-gated file that
-records operator-vetoed CVEs. Discovery reads it during dedup. Removing an
-entry (via PR edit) restores discovery eligibility.
+records operator-vetoed discovery candidates. Discovery reads it during
+dedup. Removing an entry (via PR edit) restores discovery eligibility.
 
 ### Where it lives
 
 - **File:** [`.github/pipeline/rejected-candidates.json`](../.github/pipeline/rejected-candidates.json) on `main`
-- **Key:** CVE string, normalized to upper-case on both write and read
+- **Key:** one of:
+  - `cve` — CVE string, normalized to upper-case on both write and read
+  - `candidate_key` — stable non-CVE key (for example incident feed + URL)
 - **Shape:**
   ```json
   {
@@ -268,6 +306,14 @@ entry (via PR edit) restores discovery eligibility.
         "reason": "operator veto",
         "topic": "Apache ActiveMQ ...",
         "rejected_via_pr": 60
+      },
+      {
+        "candidate_key": "incident:ncsc_news:https://www.ncsc.gov.uk/news/example",
+        "candidate_type": "incident",
+        "source_feed": "ncsc_news",
+        "rejected_at": "2026-04-21T19:10:00Z",
+        "reason": "not a bounded incident",
+        "topic": "Example incident candidate"
       }
     ]
   }
@@ -276,19 +322,19 @@ entry (via PR edit) restores discovery eligibility.
 ### How rejection happens
 
 1. Operator runs the `Pipeline: Reject Discovery Candidate` workflow
-   (`workflow_dispatch`), providing `cve`, `reason`, and optionally
-   `topic` / `pr`.
+   (`workflow_dispatch`), providing either `cve` or `candidate_key`, plus
+   `reason`, and optionally `candidate_type`, `source_feed`, `topic`, and `pr`.
 2. The workflow invokes [`scripts/pipeline-reject.mjs`](../scripts/pipeline-reject.mjs)
-   on a fresh branch `pipeline/reject-<CVE>`, which appends a rejection
-   entry and updates `lastUpdated`.
+   on a fresh branch `pipeline/reject-*`, which appends a rejection entry and
+   updates `lastUpdated`.
 3. The workflow opens a PR against `main` labeled `pipeline/rejection`.
    **No direct push to `main`** — Kernel K reviews and merges.
 4. Next discovery run honors the new entry.
 
 **Durable retry path.** The workflow handles pre-existing remote branches
-for the same CVE without operator cleanup:
+for the same rejection target without operator cleanup:
 
-- If no branch `pipeline/reject-<CVE>` exists on the remote → clean start.
+- If no matching `pipeline/reject-*` branch exists on the remote → clean start.
 - If the branch exists and has an **open** rejection PR → the workflow
   errors out with a clear message; the operator resolves that PR (merge
   or close) and re-dispatches.
@@ -303,8 +349,9 @@ push.
 
 ### How discovery honors the file
 
-`pipeline-discover.mjs` builds a `Set<string>` of rejected CVEs at startup,
-in addition to the corpus + tasks dedup set. Any candidate whose CVE is in
+`pipeline-discover.mjs` builds `Set<string>` indexes of rejected CVEs and
+rejected non-CVE candidate keys at startup, in addition to the corpus +
+tasks dedup set. Any candidate whose CVE or candidate key is in
 the set is skipped at the filter stage with a `::notice::` for audit
 visibility. The per-run summary prints the count of rejection skips
 separately from the corpus/task dupe count.
@@ -324,8 +371,6 @@ should reconsider explicitly.)
 
 ### Out of scope for this slice
 
-- Non-CVE rejection keys (topic_hash for non-KEV candidate sources) —
-  the schema is `version: "1.0"` to allow a future extension.
 - Validator-side enforcement — rejection is a discovery-time filter only.
 - Any automatic rejection paths — only the `workflow_dispatch` route.
 
@@ -410,21 +455,23 @@ task's rule is honest about whether the output is new or edited.
 
 **Dry-run discovery** (does not write tasks or commit):
 
-```
+```bash
 # From repo root
-node scripts/pipeline-discover.mjs --days 14 --limit 5
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5
+node scripts/pipeline-discover.mjs --mode incident --days 7 --limit 3
 ```
 
 **Run discovery for real** (writes tasks; commit yourself):
 
-```
-node scripts/pipeline-discover.mjs --days 14 --limit 5 --execute
+```bash
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute
 git add .github/pipeline/tasks/
 git commit -m "chore(pipeline): manual discovery run"
 ```
 
 **From GitHub Actions** — use the `Pipeline: Automated Discovery` workflow's
-**Run workflow** button; choose dry-run by setting `execute: false`.
+**Run workflow** button; choose the lane with `mode` and choose dry-run by
+setting `execute: false`.
 
 **List pending tasks**:
 
@@ -450,10 +497,16 @@ node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --lock
 node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --validate
 ```
 
-**Mark complete**:
+**Open or record a PR in one step**:
 
 ```
-node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --complete
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr
+```
+
+**Record an already-open PR by number**:
+
+```
+node scripts/pipeline-run-task.mjs --task TASK-2026-0071 --open-pr --pr 123
 ```
 
 ---
