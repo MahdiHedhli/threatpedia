@@ -10,8 +10,8 @@ threatActor: Unknown
 attributionConfidence: A4
 reviewStatus: draft_ai
 confidenceGrade: C
-generatedBy: penfold-bot
-generatedDate: 2026-04-20
+generatedBy: kernel-k
+generatedDate: 2026-04-24
 cves: []
 relatedSlugs:
   - "passaic-county-medusa-ransomware-2026"
@@ -47,19 +47,19 @@ sources:
 mitreMappings:
   - techniqueId: T1486
     techniqueName: "Data Encrypted for Impact"
-    tactic: impact
+    tactic: Impact
   - techniqueId: T1490
     techniqueName: "Inhibit System Recovery"
-    tactic: impact
+    tactic: Impact
   - techniqueId: T1059
     techniqueName: "Command and Scripting Interpreter"
-    tactic: execution
+    tactic: Execution
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
-    tactic: privilege-escalation
+    tactic: Privilege Escalation
   - techniqueId: T1021
     techniqueName: "Remote Services"
-    tactic: lateral-movement
+    tactic: Lateral Movement
 ---
 
 ## Summary
@@ -109,7 +109,7 @@ Immediate response included isolating infected systems, engaging third-party for
 
 ## Sources & References
 
-- [CBS San Francisco: Foster City hit by ransomware attack](https://www.cbsnews.com/sanfrancisco/news/foster-city-ransomware-attack-plans-state-of-emergency/)
-- [NBC Bay Area: Foster City declares State of Emergency](https://www.nbcbayarea.com/news/local/foster-city-declares-state-of-emergency-following-cyber-attack/3456789/)
-- [GovTech: Ransomware Breach Halts Foster City Services](https://www.govtech.com/security/ransomware-breach-halts-most-foster-city-services)
-- [CISA: Foster City Ransomware Notice](https://www.cisa.gov/news-events/alerts/2026/03/26/foster-city-ransomware)
+- [CBS San Francisco: Foster City hit by ransomware attack](https://www.cbsnews.com/sanfrancisco/news/foster-city-ransomware-attack-plans-state-of-emergency/) — CBS San Francisco, 2026-03-24
+- [NBC Bay Area: Foster City declares State of Emergency](https://www.nbcbayarea.com/news/local/foster-city-declares-state-of-emergency-following-cyber-attack/3456789/) — NBC Bay Area, 2026-03-24
+- [GovTech: Ransomware Breach Halts Foster City Services](https://www.govtech.com/security/ransomware-breach-halts-most-foster-city-services) — GovTech, 2026-03-25
+- [CISA: Foster City Ransomware Notice](https://www.cisa.gov/news-events/alerts/2026/03/26/foster-city-ransomware) — CISA, 2026-03-26
