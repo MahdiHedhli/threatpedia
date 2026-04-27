@@ -187,9 +187,9 @@ The campaign underscored several durable defensive priorities: harden build pipe
 
 ## Sources & References
 
-1. [CISA: ED 21-01 - Mitigate SolarWinds Orion Code Compromise](https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise) - CISA, 2020-12-13
-2. [CISA: AA20-352A - Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a) - CISA, 2020-12-17
-3. [The White House: Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) - The White House, 2021-04-15
-4. [Mandiant: Highly Evasive Attacker Leverages SolarWinds Supply Chain to Compromise Multiple Global Victims With SUNBURST Backdoor](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) - Mandiant, 2020-12-13
-5. [Microsoft Security: Analyzing Solorigate, the Compromised DLL File That Started a Sophisticated Cyberattack](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) - Microsoft Security, 2020-12-18
-6. [MITRE ATT&CK: SolarWinds Compromise (C0024)](https://attack.mitre.org/campaigns/C0024/) - MITRE ATT&CK, 2025-09-19
+- [CISA: ED 21-01 - Mitigate SolarWinds Orion Code Compromise](https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise) — CISA, 2020-12-13
+- [CISA: AA20-352A - Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a) — CISA, 2020-12-17
+- [The White House: Imposing Costs for Harmful Foreign Activities by the Russian Government](https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/) — The White House, 2021-04-15
+- [Mandiant: Highly Evasive Attacker Leverages SolarWinds Supply Chain to Compromise Multiple Global Victims With SUNBURST Backdoor](https://www.mandiant.com/resources/blog/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor) — Mandiant, 2020-12-13
+- [Microsoft Security: Analyzing Solorigate, the Compromised DLL File That Started a Sophisticated Cyberattack](https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/) — Microsoft Security, 2020-12-18
+- [MITRE ATT&CK: SolarWinds Compromise (C0024)](https://attack.mitre.org/campaigns/C0024/) — MITRE ATT&CK, 2025-09-19

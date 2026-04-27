@@ -1,0 +1,92 @@
+{
+  "task_id": "TASK-2026-0189",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "created": "2026-04-21T07:26:03.005Z",
+  "updated": "2026-04-24T21:32:42.708Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Synacor Zimbra Collaboration Suite (ZCS) Cross-site Scripting Vulnerability (CVE-2025-48700)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-48700",
+      "https://wiki.zimbra.com/wiki/Zimbra_Security_Advisories"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2025-48700",
+      "cves": [
+        "CVE-2025-48700"
+      ],
+      "exploitId": "TP-EXP-2025-0004",
+      "type": "Cross-Site Scripting",
+      "platform": "Synacor Zimbra Collaboration Suite (ZCS)",
+      "severity": "medium",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-20",
+      "cwes": [
+        "CWE-79"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-04-23. CVSS 3.1: 6.1 (MEDIUM) Discovery score: 94/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/synacor-zimbra-collaboration-suite-zcs--cve-2025-48700.md",
+    "branch": "pipeline/TASK-2026-0189",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 94,
+    "auto_certify": true,
+    "cvss": {
+      "score": 6.1,
+      "severity": "MEDIUM",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-21T07:26:03.005Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T07:26:03.005Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 94)"
+    },
+    {
+      "timestamp": "2026-04-24T21:32:42.708Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #232 merged (7fb3920)."
+    }
+  ],
+  "pr_number": 232,
+  "merged_at": "2026-04-24T21:32:42.708Z"
+}

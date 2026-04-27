@@ -4,7 +4,7 @@
   "priority": "P1",
   "status": "pending",
   "input": {
-    "topic": "TrueConf Update Integrity Bypass \u2014 Supply Chain Code Execution",
+    "topic": "TrueConf Update Integrity Bypass — Supply Chain Code Execution",
     "reprocess": true,
     "target_file": "site/src/content/zero-days/trueconf-cve-2026-3502.md",
     "issues": [
@@ -31,7 +31,40 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-25T17:06:11.705Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #265"
+    },
+    {
+      "timestamp": "2026-04-26T07:58:03.452Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #278"
+    },
+    {
+      "timestamp": "2026-04-26T19:25:34.373Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #290"
+    },
+    {
+      "timestamp": "2026-04-27T12:08:06.726Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #302"
     }
-  ]
+  ],
+  "updated": "2026-04-27T12:08:06.726Z"
 }

@@ -31,7 +31,40 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-25T13:03:00.343Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #253"
+    },
+    {
+      "timestamp": "2026-04-25T19:14:37.589Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #269"
+    },
+    {
+      "timestamp": "2026-04-26T09:28:57.642Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #281"
+    },
+    {
+      "timestamp": "2026-04-26T21:02:00.835Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #293"
     }
-  ]
+  ],
+  "updated": "2026-04-26T21:02:00.835Z"
 }

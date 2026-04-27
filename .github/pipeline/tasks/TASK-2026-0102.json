@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0102",
   "type": "incident",
   "priority": "P1",
-  "status": "complete",
+  "status": "pending",
   "input": {
     "topic": "Passaic County Ransomware Attack by Medusa Group",
     "reprocess": true,
@@ -34,21 +34,37 @@
       "note": "Corpus reprocessing — source quality enforcement"
     },
     {
-      "timestamp": "2026-04-20T19:02:22.039Z",
+      "timestamp": "2026-04-25T13:42:22.060Z",
+      "action": "dispatched",
       "from": "pending",
-      "to": "locked",
-      "agent": "dangermouse-bot",
-      "note": "Locked for execution"
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #257"
     },
     {
-      "timestamp": "2026-04-20T19:02:28.040Z",
-      "from": "locked",
-      "to": "complete",
-      "agent": "dangermouse-bot",
-      "note": "Article generated, validated, and PR opened"
+      "timestamp": "2026-04-25T21:01:53.106Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #271"
+    },
+    {
+      "timestamp": "2026-04-26T11:08:59.520Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #283"
+    },
+    {
+      "timestamp": "2026-04-26T23:03:49.699Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #295"
     }
   ],
-  "locked_by": null,
-  "locked_at": null,
-  "updated": "2026-04-20T19:02:28.041Z"
+  "updated": "2026-04-26T23:03:49.699Z"
 }
