@@ -47,19 +47,19 @@ sources:
 mitreMappings:
   - techniqueId: T1566.002
     techniqueName: "Phishing: Spearphishing Link"
-    tactic: initial-access
+    tactic: Initial Access
   - techniqueId: T1187
     techniqueName: Forced Authentication
-    tactic: credential-access
+    tactic: Credential Access
   - techniqueId: T1528
     techniqueName: Steal Application Access Token
-    tactic: credential-access
+    tactic: Credential Access
   - techniqueId: T1598
     techniqueName: Phishing for Information
-    tactic: reconnaissance
+    tactic: Reconnaissance
   - techniqueId: T1550.001
     techniqueName: "Use Alternate Authentication Material: Application Access Token"
-    tactic: lateral-movement
+    tactic: Lateral Movement
 ---
 
 ## Summary
@@ -144,8 +144,8 @@ Contain Spread: Block IOC IP addresses at firewall and proxy level; block Railwa
 
 ## Sources & References
 
-- [The Hacker News: Device Code Phishing Hits 340+ Microsoft Organizations](https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html)
-- [Huntress: Railway PaaS M365 Token Replay Campaign](https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign)
-- [Cloud Security Alliance: OAuth Device Code Phishing Research](https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/)
-- [Infosecurity Magazine: OAuth Phishing Campaigns Surge in 2026](https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/)
-- [CISA: OAuth Device Code Phishing](https://www.cisa.gov/news-events/alerts/2026/03/30/oauth-device-code-phishing)
+- [The Hacker News: Device Code Phishing Hits 340+ Microsoft Organizations](https://thehackernews.com/2026/03/device-code-phishing-hits-340-microsoft.html) — The Hacker News, 2026-03-25
+- [Huntress: Railway PaaS M365 Token Replay Campaign](https://www.huntress.com/blog/railway-paas-m365-token-replay-campaign) — Huntress, 2026-02-19
+- [Cloud Security Alliance: OAuth Device Code Phishing Research](https://labs.cloudsecurityalliance.org/research/csa-research-note-oauth-device-code-phishing-m365-20260325-c/) — Cloud Security Alliance, 2026-03-25
+- [Infosecurity Magazine: OAuth Phishing Campaigns Surge in 2026](https://www.infosecurity-magazine.com/news/oauth-phishing-campaigns/) — Infosecurity Magazine, 2026-03-20
+- [CISA: OAuth Device Code Phishing](https://www.cisa.gov/news-events/alerts/2026/03/30/oauth-device-code-phishing) — CISA, 2026-03-30
