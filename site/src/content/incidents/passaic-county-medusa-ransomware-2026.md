@@ -25,26 +25,26 @@ tags:
   - "double-extortion"
   - "new-jersey"
 sources:
-  - url: https://www.comparitech.com/blog/information-security/passaic-county-ransomware/
+  - url: https://www.comparitech.com/news/cybercriminals-say-they-hacked-passaic-county-nj-and-demand-ransom/
     publisher: Comparitech
     publisherType: vendor
     reliability: R2
-    publicationDate: "2026-03-10"
-  - url: https://therecord.media/medusa-ransomware-hits-mississippi-hospital-new-jersey-county
+    publicationDate: "2026-03-17"
+  - url: https://therecord.media/medusa-ransomware-mississippi-cyber
     publisher: Recorded Future News
     publisherType: media
     reliability: R2
-    publicationDate: "2026-03-15"
-  - url: https://www.scworld.com/news/medusa-ransomware-purportedly-hits-ummc-new-jersey-county
+    publicationDate: "2026-03-17"
+  - url: https://www.scworld.com/brief/medusa-ransomware-purportedly-hits-university-of-mississippi-medical-center-new-jersey-county
     publisher: SC Media
     publisherType: media
     reliability: R2
-    publicationDate: "2026-03-15"
-  - url: https://www.cisa.gov/news-events/alerts/2026/03/16/medusa-ransomware
+    publicationDate: "2026-03-18"
+  - url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a
     publisher: CISA
     publisherType: government
     reliability: R1
-    publicationDate: "2026-03-16"
+    publicationDate: "2025-03-12"
 mitreMappings:
   - techniqueId: T1190
     techniqueName: "Exploit Public-Facing Application"
@@ -110,7 +110,7 @@ Passaic County issues an official public notice announcing a cyberattack directl
 
 Medusa ransomware operators list Passaic County on their extortion leak site, publishing document proofs alongside an $800,000 payment demand deadline.
 
-### 2026-03-16 — Event
+### 2026-03-17 — Event
 
 National cybersecurity monitors and specialized media begin tracking the prolonged outage as part of a wider municipal targeting campaign by the Medusa syndicate.
 
@@ -120,7 +120,7 @@ Initial mitigation relied upon total network isolation and engaging digital fore
 
 ## Sources & References
 
-- [Comparitech: Passaic County NJ Ransomware Attack](https://www.comparitech.com/blog/information-security/passaic-county-ransomware/) — Comparitech, 2026-03-10
-- [Recorded Future News: Medusa hits New Jersey county](https://therecord.media/medusa-ransomware-hits-mississippi-hospital-new-jersey-county) — Recorded Future News, 2026-03-15
-- [SC Media: Medusa ransomware purportedly hits New Jersey county](https://www.scworld.com/news/medusa-ransomware-purportedly-hits-ummc-new-jersey-county) — SC Media, 2026-03-15
-- [CISA: Medusa Ransomware Alerts](https://www.cisa.gov/news-events/alerts/2026/03/16/medusa-ransomware) — CISA, 2026-03-16
+- [Comparitech: Passaic County NJ Ransomware Attack](https://www.comparitech.com/news/cybercriminals-say-they-hacked-passaic-county-nj-and-demand-ransom/) — Comparitech, 2026-03-17
+- [Recorded Future News: Medusa hits New Jersey county](https://therecord.media/medusa-ransomware-mississippi-cyber) — Recorded Future News, 2026-03-17
+- [SC Media: Medusa ransomware purportedly hits New Jersey county](https://www.scworld.com/brief/medusa-ransomware-purportedly-hits-university-of-mississippi-medical-center-new-jersey-county) — SC Media, 2026-03-18
+- [CISA: Medusa Ransomware Advisory](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a) — CISA, 2025-03-12
