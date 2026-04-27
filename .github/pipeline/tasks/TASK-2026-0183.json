@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-21T01:59:07.360Z",
-  "updated": "2026-04-25T13:25:13.210Z",
+  "updated": "2026-04-27T15:27:39.758Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -117,7 +117,15 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated and recorded against PR #256 (API fallback path — bash sandbox unavailable)"
+    },
+    {
+      "timestamp": "2026-04-27T15:27:39.758Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #256 merged (6f4533c)."
     }
   ],
-  "merged_at": "2026-04-22T15:59:21Z"
+  "merged_at": "2026-04-27T15:27:39.758Z"
 }
