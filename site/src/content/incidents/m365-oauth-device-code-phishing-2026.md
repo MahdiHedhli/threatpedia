@@ -110,7 +110,7 @@ Data Exposure Risks: Email content compromise (Exchange Online access via stolen
 
 ## Attribution
 
-Attribution to the EvilTokens PhaaS platform (also tracked as Storm-2372, APT29, UTA0304, UTA0307) is independently confirmed by three security vendors: Palo Alto Networks Unit 42, Huntress, and Sekoia. The platform was launched on the NOIRLEGACY GROUP Telegram channel in mid-February 2026. Infrastructure correlation to Railway.com PaaS and Cloudflare Workers is technically documented. The campaign's scale (340+ organizations), tactical consistency, and persistent infrastructure leave little ambiguity. Attribution confidence is rated as Unknown pending further editorial review.
+Attribution to the EvilTokens PhaaS platform (also tracked as Storm-2372, APT29, UTA0304, UTA0307) is independently confirmed by three security vendors: Palo Alto Networks Unit 42, Huntress, and Sekoia. The platform was launched on the NOIRLEGACY GROUP Telegram channel in mid-February 2026. Infrastructure correlation to Railway.com PaaS and Cloudflare Workers is technically documented. The campaign's scale (340+ organizations), tactical consistency, and persistent infrastructure support a high level of attribution confidence.
 
 ## Timeline
 
