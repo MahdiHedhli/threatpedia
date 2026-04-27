@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0114",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "pr_number": 260,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/260",
   "input": {
@@ -43,7 +43,18 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Schema reprocess: section names, severity format, disclosure timeline format, sources body format. PR #260"
+    },
+    {
+      "timestamp": "2026-04-27T15:36:12.099Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #260 merged (56874b8)."
     }
   ],
-  "updated": "2026-04-25T14:33:15.642Z"
+  "updated": "2026-04-27T15:36:12.099Z",
+  "locked_by": null,
+  "locked_at": null,
+  "merged_at": "2026-04-27T15:36:12.099Z"
 }
