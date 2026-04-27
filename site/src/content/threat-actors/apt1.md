@@ -77,14 +77,14 @@ sources:
     publisher: "Mandiant"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2013-02-19"
+    publicationDate: "2013-02-18"
     accessDate: "2026-04-27"
     archived: false
 ---
 
 ## Executive Summary
 
-APT1, also known as Comment Crew, is a Chinese state-sponsored cyber-espionage group attributed to **People's Liberation Army (PLA) Unit 61398**, based in the Pudong district of Shanghai. The cited public record documents activity from at least 2006 through the 2014 U.S. indictment period, including sustained espionage campaigns targeting more than 140 organizations across multiple industries, with a primary focus on English-speaking countries.
+APT1, also known as Comment Crew, is a Chinese state-sponsored cyber-espionage group attributed to **People's Liberation Army (PLA) Unit 61398**, based in the Pudong district of Shanghai. The cited public record documents activity from at least 2006 through the 2014 U.S. indictment period, including sustained espionage campaigns targeting more than 140 organizations across 20 industries, with a primary focus on English-speaking countries.
 
 APT1 was the subject of Mandiant's landmark 2013 report, which provided one of the first detailed public attributions of a nation-state cyber-espionage operation to a specific military unit. The report, combined with a 2014 U.S. federal indictment of five PLA officers, marked a turning point in public attribution of state-sponsored cyber operations.
 
@@ -132,4 +132,4 @@ In May 2014, the U.S. Department of Justice indicted five named PLA officers of 
 
 - [MITRE ATT&CK: APT1](https://attack.mitre.org/groups/G0006/) — MITRE ATT&CK, 2025-04-25
 - [U.S. Department of Justice: Charges Against Five Chinese Military Hackers](https://www.justice.gov/opa/pr/us-charges-five-chinese-military-hackers-cyber-espionage-against-us-corporations-and-labor) — U.S. Department of Justice, 2014-05-19
-- [Mandiant: APT1 - Exposing One of China's Cyber Espionage Units](https://www.mandiant.com/resources/apt1-exposing-one-of-chinas-cyber-espionage-units) — Mandiant, 2013-02-19
+- [Mandiant: APT1 - Exposing One of China's Cyber Espionage Units](https://www.mandiant.com/resources/apt1-exposing-one-of-chinas-cyber-espionage-units) — Mandiant, 2013-02-18
