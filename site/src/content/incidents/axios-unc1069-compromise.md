@@ -14,7 +14,7 @@ generatedBy: dangermouse-bot
 generatedDate: 2026-03-31
 cves: []
 relatedSlugs:
-  - "teampcp-supply-chain-attack"
+  - "teampcp-supply-chain-campaign-2026"
   - "european-commission-trivy-breach-2026"
   - "trivy-cve-2026-33634"
   - "drift-protocol-dprk-exploit-2026"
@@ -47,7 +47,7 @@ mitreMappings:
     tactic: Initial Access
   - techniqueId: T1195.002
     techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
-    tactic: Resource Development
+    tactic: Initial Access
 ---
 
 ## Summary
@@ -60,7 +60,7 @@ Microsoft later attributed the infrastructure used in the compromise to Sapphire
 
 Axios source code itself was not modified in the malicious releases. Instead, the attacker added a dependency on `plain-crypto-js@4.2.1`, which Microsoft said was a fake runtime dependency used only to trigger an install-time script. During installation or update, the package executed `setup.js`, contacted attacker infrastructure, and retrieved a second-stage remote access trojan.
 
-The Axios maintainer's post-mortem said the packages were published through a compromised maintainer account and that the compromise began with a targeted social-engineering campaign against the lead maintainer. The public record supports a valid-account compromise followed by malicious package publication, but it does not support broader claims about every downstream payload capability on every platform, so this article should stay focused on the package compromise and install-time malware delivery.
+The Axios maintainer's post-mortem said the packages were published through a compromised maintainer account and that the compromise began with a targeted social-engineering campaign against the lead maintainer. The public record supports a valid-account compromise followed by malicious package publication, but it does not support broader claims about every downstream payload capability on every platform.
 
 ## Attack Chain
 
@@ -88,37 +88,37 @@ The incident also had confirmed downstream operational impact. OpenAI said an in
 
 ## Attribution
 
-Microsoft said the account that created `plain-crypto-js` was associated with Sapphire Sleet infrastructure and noted that Sapphire Sleet overlaps with activity other vendors track as UNC1069. That is the basis for linking this incident to UNC1069 at moderate confidence.
+Microsoft said the account that created `plain-crypto-js` was associated with Sapphire Sleet infrastructure and noted overlap with activity other vendors track as UNC1069.
 
-The package maintainer's post-mortem independently supports a targeted social-engineering precursor but does not by itself establish actor identity. The attribution should therefore remain framed as Microsoft-linked rather than as a universally confirmed actor designation.
+The package maintainer's post-mortem supports a targeted social-engineering precursor but does not independently establish actor identity. The attribution is based on the correlation with Microsoft-reported infrastructure.
 
 ## Timeline
 
-### 2026-03-30 - Event
+### 2026-03-30 — Staging Package Published
 
 The attacker published `plain-crypto-js@4.2.0`, which Microsoft later described as a preparatory release used to establish publishing history.
 
-### 2026-03-31 - Event
+### 2026-03-31 — Malicious Axios Versions Published
 
 Malicious versions `axios@1.14.1` and `axios@0.30.4` were published to npm through the compromised maintainer account.
 
-### 2026-03-31 - Event
+### 2026-03-31 — Malicious Packages Removed
 
 The malicious packages were removed after roughly three hours of exposure, and `plain-crypto-js` was subsequently removed from npm as well.
 
-### 2026-04-01 - Event
+### 2026-04-01 — Microsoft Analysis Published
 
 Microsoft published technical analysis and mitigation guidance for the compromise.
 
-### 2026-04-11 - Event
+### 2026-04-11 — OpenAI Response Published
 
 OpenAI published its response describing downstream exposure in an internal GitHub Actions workflow and certificate-rotation steps.
 
 ## Remediation & Mitigation
 
-The Axios maintainer advised affected users to downgrade to safe versions, remove `node_modules/plain-crypto-js`, rotate all secrets and credentials on affected machines, and review network logs for connections to `sfrclak[.]com` or `142.11.206.73` on port 8000. Microsoft also recommended pinning Axios to safe versions, cleaning npm cache, reviewing CI/CD logs for installs of the malicious versions, and adopting trusted publishing with OIDC instead of stored credentials.
+The Axios maintainer advised affected users to downgrade to safe versions, remove `node_modules/plain-crypto-js`, rotate all secrets and credentials on affected machines, and review network logs for connections to `sfrclak[.]com` or `142.11.206[.]73` on port 8000. Microsoft also recommended pinning Axios to safe versions, cleaning npm cache, reviewing CI/CD logs for installs of the malicious versions, and adopting trusted publishing with OIDC instead of stored credentials.
 
-For organizations with possible exposure, the public guidance supports treating developer endpoints and build runners as potentially compromised systems rather than limiting response to a dependency update alone.
+Organizations with possible exposure should treat developer endpoints and build runners as potentially compromised systems rather than limiting response to a dependency update alone.
 
 ## Sources & References
 
