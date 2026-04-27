@@ -53,7 +53,7 @@ mitreMappings:
 
 Passaic County, New Jersey disclosed on March 4, 2026 that a malware attack was affecting county IT systems and phone lines. Later reporting from Comparitech and Recorded Future said the Medusa ransomware operation listed the county on its leak site, demanded $800,000, and posted sample documents to support the claim.
 
-The county did not publicly confirm Medusa's attribution claim. Public reporting also did not establish the initial intrusion vector, the exact systems encrypted, or the confirmed scope of data theft, so the incident should be described narrowly as a county-disclosed malware event later claimed by Medusa.
+The county did not publicly confirm Medusa's attribution claim. Public reporting also did not establish the initial intrusion vector, the exact systems encrypted, or the confirmed scope of data theft. The incident is a county-disclosed malware event later claimed by Medusa.
 
 ## Technical Analysis
 
@@ -85,7 +85,7 @@ There is a credible risk of data exposure because the Medusa leak-site claim inc
 
 The attribution to Medusa rests on the group's public leak-site claim and the publication of sample documents reported by Comparitech and Recorded Future. That is stronger than a rumor, but it is not the same as a county-confirmed attribution.
 
-Because Passaic County did not publicly validate the actor identity, this article should treat Medusa as a claimed perpetrator rather than an officially confirmed one.
+Because Passaic County did not publicly validate the actor identity, Medusa is identified here as a claimed perpetrator rather than an officially confirmed one.
 
 ## Timeline
 
@@ -105,7 +105,7 @@ Comparitech reported a county statement saying most operations had been restored
 
 Passaic County said it was working with federal and state officials to investigate and contain the incident, and later said it had taken measures to address the security event while restoring most operations.
 
-For organizations defending against Medusa-style ransomware activity more generally, CISA recommends hardening remote access, enforcing MFA, segmenting networks, and maintaining tested offline backups. Those steps are general defensive guidance and not evidence about Passaic County's specific environment.
+For organizations defending against Medusa-style ransomware activity more generally, CISA recommends hardening remote access, enforcing MFA, segmenting networks, and maintaining tested offline backups.
 
 ## Sources & References
 
