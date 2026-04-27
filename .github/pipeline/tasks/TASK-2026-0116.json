@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0116",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Cisco FMC Insecure Deserialization — Interlock Ransomware Zero-Day",
     "reprocess": true,
@@ -34,37 +34,44 @@
       "note": "Corpus reprocessing — source quality enforcement"
     },
     {
-      "timestamp": "2026-04-25T15:05:14.357Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-24T22:14:56.942Z",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #262"
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     },
     {
-      "timestamp": "2026-04-26T04:00:06.843Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #275"
+      "timestamp": "2026-04-24T22:24:28.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #247 opened via GitHub API (gh CLI unavailable in sandbox)",
+      "pr_number": 247,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247",
+      "commit": "fbbd1be9586d8c35523aad4b2f3e4c0e9da7567c"
     },
     {
-      "timestamp": "2026-04-26T15:06:08.438Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #287"
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #247 opened; validate:success; all Gemini threads resolved"
     },
     {
-      "timestamp": "2026-04-27T06:45:01.386Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #299"
+      "timestamp": "2026-04-27T15:34:26.588Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #247 merged (056eadb)."
     }
   ],
-  "updated": "2026-04-27T06:45:01.386Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-27T15:34:26.588Z",
+  "pr_number": 247,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/247",
+  "merged_at": "2026-04-27T15:34:26.588Z"
 }

@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-24T18:41:00.531Z",
-  "updated": "2026-04-25T19:14:37.589Z",
+  "updated": "2026-04-27T15:35:20.452Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -74,12 +74,31 @@
       "note": "Auto-discovered from CISA KEV (score: 65)"
     },
     {
-      "timestamp": "2026-04-25T19:14:37.589Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-24T23:17:24.086Z",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #267"
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T23:23:43.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #251 opened: https://github.com/MahdiHedhli/threatpedia/pull/251 | commit 7f926ce56b33e75757cc7994d4fd2fe77396b1b9"
+    },
+    {
+      "timestamp": "2026-04-27T15:35:20.452Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #251 merged (fda05ca)."
     }
-  ]
+  ],
+  "pr_number": 251,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/251",
+  "locked": false,
+  "merged_at": "2026-04-27T15:35:20.452Z"
 }

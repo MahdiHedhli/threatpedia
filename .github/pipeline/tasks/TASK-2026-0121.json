@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0121",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "TrueConf Update Integrity Bypass — Supply Chain Code Execution",
     "reprocess": true,
@@ -34,37 +34,41 @@
       "note": "Corpus reprocessing — source quality enforcement"
     },
     {
-      "timestamp": "2026-04-25T17:06:11.705Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #265"
+      "timestamp": "2026-04-24T22:35:25.000Z",
+      "action": "locked",
+      "agent": "dangermouse-bot"
     },
     {
-      "timestamp": "2026-04-26T07:58:03.452Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #278"
+      "timestamp": "2026-04-24T22:36:00.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "pr_number": 250,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/250",
+      "commit": "8746237b58f41eb2489c4eb1a54225c7002048eb"
     },
     {
-      "timestamp": "2026-04-26T19:25:34.373Z",
-      "action": "dispatched",
+      "timestamp": "2026-04-25T14:18:09.587Z",
+      "action": "pr_opened",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #290"
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #250 opened; validate:success; all Gemini threads resolved"
     },
     {
-      "timestamp": "2026-04-27T12:08:06.726Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #302"
+      "timestamp": "2026-04-27T15:34:42.129Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #250 merged (fdd67e2)."
     }
   ],
-  "updated": "2026-04-27T12:08:06.726Z"
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 250,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/250",
+  "updated": "2026-04-27T15:34:42.129Z",
+  "merged_at": "2026-04-27T15:34:42.129Z"
 }
