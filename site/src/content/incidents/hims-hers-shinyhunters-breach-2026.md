@@ -58,7 +58,7 @@ TechCrunch reported that Hims & Hers described the incident as a social engineer
 
 The company's public notice and TechCrunch's reporting establish that the incident affected a third-party support platform and involved unauthorized access to customer-support tickets during a four-day window in early February. The public record does not establish the full intrusion path beyond that access.
 
-BleepingComputer reported that the attackers used a compromised Okta SSO account to access the Hims & Hers Zendesk instance as part of a broader support-platform intrusion cluster associated with ShinyHunters. Because that attribution detail comes from external reporting rather than from Hims & Hers directly, the technical description for this incident should remain limited to reported account compromise, access to support tickets, and theft of ticket data.
+BleepingComputer reported that the attackers used a compromised Okta SSO account to access the Hims & Hers Zendesk instance as part of a broader support-platform intrusion cluster associated with ShinyHunters. That attribution detail comes from external reporting rather than from Hims & Hers directly, and the public record supports reported account compromise, access to support tickets, and theft of ticket data.
 
 ## Attack Chain
 
@@ -78,13 +78,13 @@ Hims & Hers said it identified suspicious activity on February 5, secured the af
 
 According to the California breach notice and TechCrunch's reporting, the exposed information included customer names and contact information along with other data contained in support tickets. Hims & Hers said customer medical records and communications with healthcare providers on the platform were not impacted.
 
-The public source set does not confirm the total number of affected people or the full range of ticket contents, so the impact should be described as exposure of customer-support data rather than a quantified medical-record breach.
+The public source set does not confirm the total number of affected people or the full range of ticket contents. The confirmed impact is exposure of customer-support data rather than a quantified medical-record breach.
 
 ## Attribution
 
 BleepingComputer linked the incident to ShinyHunters and reported that the attackers used a compromised Okta SSO account to access Zendesk. That reporting places the incident within the same broader support-platform intrusion activity that has been associated with ShinyHunters.
 
-Hims & Hers itself publicly described the breach as a social engineering attack and did not publicly confirm a named threat actor. The attribution in this article should therefore remain framed as reported linkage rather than company-confirmed responsibility.
+Hims & Hers itself publicly described the breach as a social engineering attack and did not publicly confirm a named threat actor. The public attribution remains reported linkage rather than company-confirmed responsibility.
 
 ## Timeline
 
