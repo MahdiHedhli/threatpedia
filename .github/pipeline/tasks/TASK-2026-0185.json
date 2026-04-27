@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/papercut-ng-mf-cve-2023-27351.md",
     "branch": "pipeline/TASK-2026-0185",
-    "pr": true
+    "pr": true,
+    "pr_number": 333,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/333"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -118,7 +120,7 @@
       "note": "Article drafted. Validator PASS 18/18."
     }
   ],
-  "pr_number": 215,
+  "pr_number": 333,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/215",
   "merged_at": "2026-04-24T17:31:56.140Z"
 }
