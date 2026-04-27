@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0099",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations",
     "reprocess": true,
@@ -80,11 +80,20 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #314"
+    },
+    {
+      "timestamp": "2026-04-27T17:47:24.125Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #314."
     }
   ],
-  "updated": "2026-04-27T15:36:27.664Z",
+  "updated": "2026-04-27T17:47:24.125Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 314,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/314"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/314",
+  "merged_at": "2026-04-27T17:44:16Z"
 }
