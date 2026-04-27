@@ -3,15 +3,15 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "complete",
+  "status": "pr_open",
   "created": "2026-04-21T01:59:07.360Z",
-  "updated": "2026-04-22T16:42:40.647Z",
+  "updated": "2026-04-25T13:25:13.210Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
   "locked_at": null,
-  "pr_number": 202,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/202",
+  "pr_number": 256,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/256",
   "input": {
     "topic": "Quest KACE Systems Management Appliance (SMA) Improper Authentication Vulnerability (CVE-2025-32975)",
     "sources": [
@@ -39,7 +39,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md Â§14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -109,6 +109,14 @@
       "to": "complete",
       "agent": "dispatcher",
       "note": "Reconciled merged PR #202."
+    },
+    {
+      "timestamp": "2026-04-25T13:25:13.211Z",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated and recorded against PR #256 (API fallback path — bash sandbox unavailable)"
     }
   ],
   "merged_at": "2026-04-22T15:59:21Z"
