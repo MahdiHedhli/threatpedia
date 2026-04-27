@@ -89,7 +89,7 @@ Customer names, contact information, references to medical conditions, and histo
 
 ## Attribution
 
-The attack is attributed to ShinyHunters (UNC5537). The threat group is known to actively target identity and access management systems as a high-value entry point into enterprise networks, later publishing samples of the stolen data on their dark web leak site for extortion demands.
+The attack is attributed to ShinyHunters (UNC5537) based on the group's dark web leak site claims. The threat group is known to actively target identity and access management systems as a high-value entry point into enterprise networks, later publishing samples of the stolen data on their dark web leak site for extortion demands.
 
 ## Timeline
 
