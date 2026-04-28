@@ -66,22 +66,6 @@
       "note": "Dispatched as Issue #298"
     },
     {
-      "timestamp": "2026-04-28T04:11:14.658Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #335"
-    },
-    {
-      "timestamp": "2026-04-28T07:12:03.876Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #340"
-    },
-    {
       "timestamp": "2026-04-28T12:10:15.066Z",
       "action": "dispatched",
       "from": "pending",

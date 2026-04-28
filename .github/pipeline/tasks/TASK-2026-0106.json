@@ -65,39 +65,7 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #297"
-    },
-    {
-      "timestamp": "2026-04-27T17:47:24.125Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #327"
-    },
-    {
-      "timestamp": "2026-04-28T07:12:03.876Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #338"
-    },
-    {
-      "timestamp": "2026-04-28T10:28:42.081Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #343"
-    },
-    {
-      "timestamp": "2026-04-28T12:10:15.066Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #346"
     }
   ],
-  "updated": "2026-04-28T12:10:15.066Z"
+  "updated": "2026-04-27T04:04:51.433Z"
 }
