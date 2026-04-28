@@ -66,7 +66,7 @@ jobs:
               .filter(s => s.startsWith('http'));
 
             function normalizeUrl(rawUrl) {
-              const value = String(rawUrl || '').trim().replace(/[.,;:]+$/g, '');
+              const value = String(rawUrl || '').trim().replace(/[.,;:'"]+$/g, '');
               if (!value) return null;
               try {
                 const url = new URL(value);
@@ -81,7 +81,7 @@ jobs:
             }
 
             function extractMarkdownUrls(content) {
-              return [...String(content || '').matchAll(/https?:\/\/[^\s)<>\"]+/g)]
+              return [...String(content || '').matchAll(/https?:\/\/[^\s)<>\"']+/g)]
                 .map(match => normalizeUrl(match[0]))
                 .filter(Boolean);
             }
@@ -141,7 +141,7 @@ jobs:
             if (fs.existsSync(tasksDir)) {
               const files = fs.readdirSync(tasksDir);
               for (const f of files) {
-                if (!/^TASK-\d{4}-\d{4}\.json$/.test(f)) continue;
+                if (!/^TASK-\d{4}-\d+\.json$/.test(f)) continue;
                 const full = path.join(tasksDir, f);
                 try {
                   const task = JSON.parse(fs.readFileSync(full, 'utf8'));
@@ -198,12 +198,24 @@ jobs:
             if (fs.existsSync(tasksDir)) {
               const files = fs.readdirSync(tasksDir);
               for (const f of files) {
-                const m = f.match(/^TASK-\d{4}-(\d{4})/);
+                const m = f.match(new RegExp(`^TASK-${year}-(\\d+)\\.json$`));
                 if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
               }
             }
             const taskNum = String(maxNum + 1).padStart(4, '0');
             const taskId = `TASK-${year}-${taskNum}`;
+
+            function acceptanceCriteriaFor(articleType) {
+              return {
+                frontmatter_valid: true,
+                min_sources: 3,
+                min_h2_sections: articleType === 'campaign' ? 7 : (articleType === 'threat-actor' ? 6 : 5),
+                min_mitre_mappings: articleType === 'threat-actor' ? 3 : 1,
+                review_status: 'draft_ai',
+                schema_validation: 'pass',
+                astro_build: true,
+              };
+            }
 
             // ── Build task YAML ──────────────────────────────────────────
             const candidateData = {};
@@ -239,15 +251,7 @@ jobs:
               // Canonical write shape: `acceptance_criteria` (not `acceptance`)
               // and `astro_build` (not `build_passes`) per TASK-2026-0066 /
               // Slice 4b. Readers tolerate the legacy forms for back-compat.
-              acceptance_criteria: {
-                frontmatter_valid: true,
-                min_sources: 3,
-                min_h2_sections: 5,
-                min_mitre_mappings: 1,
-                review_status: 'draft_ai',
-                schema_validation: 'pass',
-                astro_build: true,
-              },
+              acceptance_criteria: acceptanceCriteriaFor(type),
               depends_on: [],
               preconditions: [
                 'editorial queue depth < 50',

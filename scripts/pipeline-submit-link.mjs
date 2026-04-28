@@ -82,7 +82,7 @@ function usage() {
 }
 
 function normalizeUrl(rawUrl) {
-  const value = String(rawUrl || '').trim().replace(/[.,;:]+$/g, '');
+  const value = String(rawUrl || '').trim().replace(/[.,;:'"]+$/g, '');
   if (!value) return null;
   try {
     const url = new URL(value);
@@ -105,7 +105,7 @@ function normalizeTitleKey(value) {
 }
 
 function extractMarkdownUrls(content) {
-  return [...String(content || '').matchAll(/https?:\/\/[^\s)<>"]+/g)]
+  return [...String(content || '').matchAll(/https?:\/\/[^\s)<>"']+/g)]
     .map(match => normalizeUrl(match[0]))
     .filter(Boolean);
 }
@@ -129,7 +129,7 @@ function buildIndexes() {
 
   if (existsSync(TASKS_DIR)) {
     for (const file of readdirSync(TASKS_DIR)) {
-      if (!/^TASK-\d{4}-\d{4}\.json$/.test(file)) continue;
+      if (!/^TASK-\d{4}-\d+\.json$/.test(file)) continue;
       const full = resolve(TASKS_DIR, file);
       const raw = readFileSync(full, 'utf8');
       let task;
@@ -163,18 +163,31 @@ function buildIndexes() {
 }
 
 function nextTaskId() {
+  const currentYear = new Date().getUTCFullYear();
   let maxNum = 0;
-  if (!existsSync(TASKS_DIR)) return `TASK-${new Date().getUTCFullYear()}-0001`;
+  if (!existsSync(TASKS_DIR)) return `TASK-${currentYear}-0001`;
   for (const file of readdirSync(TASKS_DIR)) {
-    const match = file.match(/^TASK-\d{4}-(\d{4})\.json$/);
+    const match = file.match(new RegExp(`^TASK-${currentYear}-(\\d+)\\.json$`));
     if (!match) continue;
     maxNum = Math.max(maxNum, Number.parseInt(match[1], 10));
   }
-  return `TASK-${new Date().getUTCFullYear()}-${String(maxNum + 1).padStart(4, '0')}`;
+  return `TASK-${currentYear}-${String(maxNum + 1).padStart(4, '0')}`;
 }
 
 function filePatternFor(type) {
   return `site/src/content/${type === 'threat-actor' ? 'threat-actors' : `${type}s`}/{slug}.md`;
+}
+
+function acceptanceCriteriaFor(type) {
+  return {
+    frontmatter_valid: true,
+    min_sources: 3,
+    min_h2_sections: type === 'campaign' ? 7 : (type === 'threat-actor' ? 6 : 5),
+    min_mitre_mappings: type === 'threat-actor' ? 3 : 1,
+    review_status: 'draft_ai',
+    schema_validation: 'pass',
+    astro_build: true,
+  };
 }
 
 function buildTask(args, normalizedUrls, taskId) {
@@ -205,15 +218,7 @@ function buildTask(args, normalizedUrls, taskId) {
       'EDITORIAL-WORKFLOW-SPEC.md §14A',
       'INGESTION-SPEC.md §2',
     ],
-    acceptance_criteria: {
-      frontmatter_valid: true,
-      min_sources: 3,
-      min_h2_sections: 5,
-      min_mitre_mappings: 1,
-      review_status: 'draft_ai',
-      schema_validation: 'pass',
-      astro_build: true,
-    },
+    acceptance_criteria: acceptanceCriteriaFor(args.type),
     depends_on: [],
     preconditions: ['editorial queue depth < 50'],
     output: {
