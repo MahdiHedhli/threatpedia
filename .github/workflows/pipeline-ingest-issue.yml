@@ -64,6 +64,78 @@ jobs:
               .split('\n')
               .map(s => s.trim())
               .filter(s => s.startsWith('http'));
+            function normalizeUrl(rawUrl) {
+              const value = String(rawUrl || '').trim().replace(/[.,;:'"()[\]]+$/g, '');
+              if (!value) return null;
+              try {
+                const url = new URL(value);
+                url.hash = '';
+                if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
+                  url.pathname = url.pathname.slice(0, -1);
+                }
+                return url.toString();
+              } catch {
+                return null;
+              }
+            }
+
+            function extractMarkdownUrls(content) {
+              return [...String(content || '').matchAll(/https?:\/\/[^\s)<>\"']+/g)]
+                .map(match => normalizeUrl(match[0]))
+                .filter(Boolean);
+            }
+
+            const normalizedSources = [...new Set(sources.map(normalizeUrl).filter(Boolean))];
+
+            const validTypes = new Set(['incident', 'campaign', 'threat-actor', 'zero-day']);
+            if (!validTypes.has(type)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Invalid article type \`${type}\`. Expected one of: incident, campaign, threat-actor, zero-day.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
+
+            const validSeverities = new Set(['critical', 'high', 'medium', 'low', 'unknown']);
+            if (!validSeverities.has(severity)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Invalid severity \`${severity}\`. Expected one of: critical, high, medium, low, unknown.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
+
+            if (normalizedSources.length === 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '**Pipeline Error:** No valid source URLs were provided. Add at least one http(s) source URL and resubmit.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
 
             // Parse CVEs
             const cves = cvesRaw
@@ -72,23 +144,102 @@ jobs:
 
             // ── Generate task ID ─────────────────────────────────────────
             const now = new Date();
-            const year = now.getFullYear();
+            const year = now.getUTCFullYear();
 
             // Find next available task number
             const fs = require('fs');
             const path = require('path');
             const tasksDir = '.github/pipeline/tasks';
+            const contentDir = 'site/src/content';
+
+            // ── Dedup against queue + existing corpus URLs ────────────────
+            const knownUrls = new Set();
+            if (fs.existsSync(tasksDir)) {
+              const files = fs.readdirSync(tasksDir);
+              for (const f of files) {
+                if (!/^TASK-\d{4}-\d+\.json$/.test(f)) continue;
+                const full = path.join(tasksDir, f);
+                try {
+                  const task = JSON.parse(fs.readFileSync(full, 'utf8'));
+                  for (const source of task.input?.sources || []) {
+                    const normalized = normalizeUrl(source);
+                    if (normalized) knownUrls.add(normalized);
+                  }
+                } catch {}
+              }
+            }
+
+            function collectMarkdownFiles(dir, out = []) {
+              if (!fs.existsSync(dir)) return out;
+              for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) collectMarkdownFiles(full, out);
+                if (entry.isFile() && full.endsWith('.md')) out.push(full);
+              }
+              return out;
+            }
+
+            for (const file of collectMarkdownFiles(contentDir)) {
+              const content = fs.readFileSync(file, 'utf8');
+              for (const url of extractMarkdownUrls(content)) {
+                knownUrls.add(url);
+              }
+            }
+
+            const duplicateSources = normalizedSources.filter(url => knownUrls.has(url));
+            if (duplicateSources.length > 0) {
+              const duplicateLines = duplicateSources.map(url => `- ${url}`).join('\n');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: [
+                  '**Pipeline Dedup Notice:** no task was created because at least one submitted source URL already exists in the corpus or task queue.',
+                  '',
+                  duplicateLines,
+                  '',
+                  'If this is intentionally a follow-on or correction request, update the Issue with new corroborating URLs and context, then resubmit.',
+                ].join('\n'),
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/duplicate']
+              });
+              return;
+            }
 
             let maxNum = 0;
             if (fs.existsSync(tasksDir)) {
               const files = fs.readdirSync(tasksDir);
               for (const f of files) {
-                const m = f.match(/^TASK-\d{4}-(\d{4})/);
+                const m = f.match(new RegExp(`^TASK-${year}-(\\d+)\\.json$`));
                 if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
               }
             }
             const taskNum = String(maxNum + 1).padStart(4, '0');
             const taskId = `TASK-${year}-${taskNum}`;
+
+            function acceptanceCriteriaFor(articleType) {
+              const minH2Sections = {
+                campaign: 7,
+                'threat-actor': 6,
+              };
+              const minMitreMappings = {
+                'threat-actor': 3,
+              };
+
+              return {
+                frontmatter_valid: true,
+                min_sources: 3,
+                min_h2_sections: minH2Sections[articleType] || 5,
+                min_mitre_mappings: minMitreMappings[articleType] || 1,
+                review_status: 'draft_ai',
+                schema_validation: 'pass',
+                astro_build: true,
+              };
+            }
 
             // ── Build task YAML ──────────────────────────────────────────
             const candidateData = {};
@@ -112,7 +263,7 @@ jobs:
               locked_at: null,
               input: {
                 topic: topic,
-                sources: sources,
+                sources: normalizedSources,
                 candidate_data: Object.keys(candidateData).length > 0 ? candidateData : undefined,
                 notes: notes || undefined,
               },
@@ -124,15 +275,7 @@ jobs:
               // Canonical write shape: `acceptance_criteria` (not `acceptance`)
               // and `astro_build` (not `build_passes`) per TASK-2026-0066 /
               // Slice 4b. Readers tolerate the legacy forms for back-compat.
-              acceptance_criteria: {
-                frontmatter_valid: true,
-                min_sources: 3,
-                min_h2_sections: 5,
-                min_mitre_mappings: 1,
-                review_status: 'draft_ai',
-                schema_validation: 'pass',
-                astro_build: true,
-              },
+              acceptance_criteria: acceptanceCriteriaFor(type),
               depends_on: [],
               preconditions: [
                 'editorial queue depth < 50',
@@ -162,8 +305,24 @@ jobs:
             // ── Write task file ──────────────────────────────────────────
             // Write as JSON (easier for Actions to parse than YAML)
             const taskPath = `${tasksDir}/${taskId}.json`;
-            fs.mkdirSync(tasksDir, { recursive: true });
-            fs.writeFileSync(taskPath, JSON.stringify(task, null, 2) + '\n');
+            try {
+              fs.mkdirSync(tasksDir, { recursive: true });
+              fs.writeFileSync(taskPath, JSON.stringify(task, null, 2) + '\n');
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Failed to write task file \`${taskPath}\`: ${error.message}`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
 
             // ── Comment on Issue with task ID ────────────────────────────
             await github.rest.issues.createComment({
@@ -177,7 +336,7 @@ jobs:
                 '|---|---|',
                 `| Type | ${type} |`,
                 `| Priority | ${priority} |`,
-                `| Sources | ${sources.length} URL(s) |`,
+                `| Sources | ${normalizedSources.length} URL(s) |`,
                 `| Stage | draft (pending) |`,
                 `| Branch | \`pipeline/${taskId}\` |`,
                 '',
