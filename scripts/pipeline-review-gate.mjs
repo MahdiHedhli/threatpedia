@@ -16,7 +16,7 @@ const PIPELINE_FILE_RE = /^(?:scripts\/(?:pipeline-|validate-content-corpus|publ
 function parseArgs(argv) {
   const parsed = {
     pr: process.env.PR_NUMBER ? Number.parseInt(process.env.PR_NUMBER, 10) : null,
-    repo: process.env.GITHUB_REPOSITORY || 'MahdiHedhli/threatpedia',
+    repo: process.env.GITHUB_REPOSITORY || null,
     json: false,
   };
 
@@ -33,6 +33,10 @@ function parseArgs(argv) {
 
   if (!Number.isInteger(parsed.pr) || parsed.pr <= 0) {
     throw new Error('Missing required PR number. Use --pr <number> or PR_NUMBER.');
+  }
+
+  if (!parsed.repo) {
+    throw new Error('Missing required repo. Use --repo <owner/name> or GITHUB_REPOSITORY.');
   }
 
   if (!/^[^/]+\/[^/]+$/.test(parsed.repo)) {
@@ -138,6 +142,39 @@ async function listPaginated(path, token) {
   return results;
 }
 
+async function getReviewThreadComments(threadId, token) {
+  const query = `
+    query($threadId: ID!, $after: String) {
+      node(id: $threadId) {
+        ... on PullRequestReviewThread {
+          comments(first: 100, after: $after) {
+            pageInfo { hasNextPage endCursor }
+            nodes {
+              author { login }
+              body
+              path
+              line
+              originalLine
+              createdAt
+            }
+          }
+        }
+      }
+    }`;
+
+  const comments = [];
+  let after = null;
+  while (true) {
+    const data = await githubGraphql(query, { threadId, after }, token);
+    const connection = data.node?.comments;
+    if (!connection) break;
+    comments.push(...connection.nodes);
+    if (!connection.pageInfo.hasNextPage) break;
+    after = connection.pageInfo.endCursor;
+  }
+  return comments;
+}
+
 async function getReviewThreads(owner, repo, prNumber, token) {
   const query = `
     query($owner: String!, $repo: String!, $number: Int!, $after: String) {
@@ -149,7 +186,8 @@ async function getReviewThreads(owner, repo, prNumber, token) {
               id
               isResolved
               isOutdated
-              comments(first: 50) {
+              comments(first: 100) {
+                pageInfo { hasNextPage endCursor }
                 nodes {
                   author { login }
                   body
@@ -170,7 +208,12 @@ async function getReviewThreads(owner, repo, prNumber, token) {
   while (true) {
     const data = await githubGraphql(query, { owner, repo, number: prNumber, after }, token);
     const connection = data.repository.pullRequest.reviewThreads;
-    threads.push(...connection.nodes);
+    for (const thread of connection.nodes) {
+      if (thread.comments?.pageInfo?.hasNextPage) {
+        thread.comments.nodes = await getReviewThreadComments(thread.id, token);
+      }
+      threads.push(thread);
+    }
     if (!connection.pageInfo.hasNextPage) break;
     after = connection.pageInfo.endCursor;
   }
@@ -235,9 +278,16 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
     && !isAiReviewError(review.body)
   );
 
-  const latestAiErrorCommentAt = latestDate(
-    issueComments.filter((comment) => isAiLogin(comment.user?.login, aiLogins) && isAiReviewError(comment.body)),
-    (comment) => comment.created_at,
+  const latestAiErrorAt = latestDate(
+    [
+      ...issueComments
+        .filter((comment) => isAiLogin(comment.user?.login, aiLogins) && isAiReviewError(comment.body))
+        .map((comment) => ({ createdAt: comment.created_at })),
+      ...reviews
+        .filter((review) => isAiLogin(review.user?.login, aiLogins) && isAiReviewError(review.body))
+        .map((review) => ({ createdAt: review.submitted_at })),
+    ],
+    (item) => item.createdAt,
   );
   const latestCurrentHeadAiReviewAt = latestDate(currentHeadAiReviews, (review) => review.submitted_at);
 
@@ -245,7 +295,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
     failures.push('No AI second review exists on the current head SHA.');
   }
 
-  if (latestAiErrorCommentAt && (!latestCurrentHeadAiReviewAt || latestCurrentHeadAiReviewAt < latestAiErrorCommentAt)) {
+  if (latestAiErrorAt && (!latestCurrentHeadAiReviewAt || latestCurrentHeadAiReviewAt < latestAiErrorAt)) {
     failures.push('Latest AI review attempt errored and no later current-head AI review is present.');
   }
 
@@ -301,7 +351,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
         state: review.state,
         submittedAt: review.submitted_at,
       })),
-      latestAiErrorCommentAt,
+      latestAiErrorAt,
       unresolvedAiThreadCount: unresolvedAiThreads.length,
     },
   };
