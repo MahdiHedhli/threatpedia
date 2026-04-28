@@ -65,6 +65,29 @@ jobs:
               .map(s => s.trim())
               .filter(s => s.startsWith('http'));
 
+            function normalizeUrl(rawUrl) {
+              const value = String(rawUrl || '').trim();
+              if (!value) return null;
+              try {
+                const url = new URL(value);
+                url.hash = '';
+                if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
+                  url.pathname = url.pathname.slice(0, -1);
+                }
+                return url.toString();
+              } catch {
+                return null;
+              }
+            }
+
+            function extractMarkdownUrls(content) {
+              return [...String(content || '').matchAll(/https?:\/\/[^\s)<>\"]+/g)]
+                .map(match => normalizeUrl(match[0]))
+                .filter(Boolean);
+            }
+
+            const normalizedSources = [...new Set(sources.map(normalizeUrl).filter(Boolean))];
+
             // Parse CVEs
             const cves = cvesRaw
               ? cvesRaw.split(',').map(c => c.trim()).filter(c => /^CVE-\d{4}-\d{4,}$/.test(c))
@@ -78,6 +101,65 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             const tasksDir = '.github/pipeline/tasks';
+            const contentDir = 'site/src/content';
+
+            // ── Dedup against queue + existing corpus URLs ────────────────
+            const knownUrls = new Set();
+            if (fs.existsSync(tasksDir)) {
+              const files = fs.readdirSync(tasksDir);
+              for (const f of files) {
+                if (!/^TASK-\d{4}-\d{4}\.json$/.test(f)) continue;
+                const full = path.join(tasksDir, f);
+                try {
+                  const task = JSON.parse(fs.readFileSync(full, 'utf8'));
+                  for (const source of task.input?.sources || []) {
+                    const normalized = normalizeUrl(source);
+                    if (normalized) knownUrls.add(normalized);
+                  }
+                } catch {}
+              }
+            }
+
+            function collectMarkdownFiles(dir, out = []) {
+              if (!fs.existsSync(dir)) return out;
+              for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) collectMarkdownFiles(full, out);
+                if (entry.isFile() && full.endsWith('.md')) out.push(full);
+              }
+              return out;
+            }
+
+            for (const file of collectMarkdownFiles(contentDir)) {
+              const content = fs.readFileSync(file, 'utf8');
+              for (const url of extractMarkdownUrls(content)) {
+                knownUrls.add(url);
+              }
+            }
+
+            const duplicateSources = normalizedSources.filter(url => knownUrls.has(url));
+            if (duplicateSources.length > 0) {
+              const duplicateLines = duplicateSources.map(url => `- ${url}`).join('\n');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: [
+                  '**Pipeline Dedup Notice:** no task was created because at least one submitted source URL already exists in the corpus or task queue.',
+                  '',
+                  duplicateLines,
+                  '',
+                  'If this is intentionally a follow-on or correction request, update the Issue with new corroborating URLs and context, then resubmit.',
+                ].join('\n'),
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/duplicate']
+              });
+              return;
+            }
 
             let maxNum = 0;
             if (fs.existsSync(tasksDir)) {
@@ -112,7 +194,7 @@ jobs:
               locked_at: null,
               input: {
                 topic: topic,
-                sources: sources,
+                sources: normalizedSources,
                 candidate_data: Object.keys(candidateData).length > 0 ? candidateData : undefined,
                 notes: notes || undefined,
               },
@@ -177,7 +259,7 @@ jobs:
                 '|---|---|',
                 `| Type | ${type} |`,
                 `| Priority | ${priority} |`,
-                `| Sources | ${sources.length} URL(s) |`,
+                `| Sources | ${normalizedSources.length} URL(s) |`,
                 `| Stage | draft (pending) |`,
                 `| Branch | \`pipeline/${taskId}\` |`,
                 '',

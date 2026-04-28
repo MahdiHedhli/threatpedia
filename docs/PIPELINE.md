@@ -162,11 +162,52 @@ for the pipeline.
 
 ---
 
+## Manual link submission workflow (dedup-safe)
+
+Use this path when you find a candidate article link and want it to enter the
+same queue/validation path as discovery-generated tasks.
+
+1. **Preflight dedup check (local dry-run):**
+
+   ```bash
+   node scripts/pipeline-submit-link.mjs \
+     --type incident \
+     --priority P2 \
+     --topic "OpenSSH regreSSHion root shell access (15-year latent flaw)" \
+     --url "https://www.securityweek.com/openssh-flaw-allowing-full-root-shell-access-lurked-for-15-years/"
+   ```
+
+   - The command scans both:
+     - `.github/pipeline/tasks/*.json` (queue)
+     - `site/src/content/**/*.md` (published corpus)
+   - If any submitted URL is already known, it reports a duplicate and does not
+     write a task.
+   - If no duplicates are found, it reports the next available `TASK-YYYY-NNNN`
+     ID that would be created.
+
+2. **Submit through the standard queue:**
+   - Open **Submit Article Lead** Issue (`.github/ISSUE_TEMPLATE/discovery-submission.yml`).
+   - Paste the same URL(s) in **Source URLs**.
+   - The ingest workflow (`pipeline-ingest-issue.yml`) now performs the same
+     URL dedup guard against queue + corpus before writing a task file.
+
+3. **If dedup blocks the submission:**
+   - The Issue gets a dedup comment and `pipeline/duplicate` label.
+   - Add genuinely new corroborating source URLs and context, then resubmit.
+
+4. **After task creation:**
+   - The task enters the normal dispatcher flow and still must pass
+     `node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN --validate`
+     before PR-open state can be recorded.
+
+---
+
 ## Guardrail quick reference
 
 | Guardrail | Where it lives | Default | Source of truth |
 |---|---|---|---|
 | Corpus + task dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks using CVEs, URLs, normalized titles, and output slugs | Script |
+| Manual link dedup | `pipeline-ingest-issue.yml` + `scripts/pipeline-submit-link.mjs` | Blocks manual submissions when submitted source URLs already exist in corpus/tasks | Workflow + script |
 | Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | Rejected CVEs and non-CVE candidate keys skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
