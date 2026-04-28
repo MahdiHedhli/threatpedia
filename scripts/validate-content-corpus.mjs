@@ -40,6 +40,20 @@ const ZERO_DAY_US_SPELLING_MAP = new Map([
   ['weaponisation', 'weaponization'],
   ['weaponised', 'weaponized'],
 ]);
+const PUBLIC_PROSE_GUARDRAILS = [
+  {
+    label: 'internal article/report framing',
+    regex: /\b(this|the)\s+(article|report|assessment|write[- ]?up|entry)\b/i,
+  },
+  {
+    label: 'editorial workflow leakage',
+    regex: /\b(editorial\s+(workflow|process|scor(?:e|ing))|reviewStatus|draft_ai|draft_human|under_review)\b/i,
+  },
+  {
+    label: 'confidence label leakage',
+    regex: /\b(attribution confidence|confidence grade)\b/i,
+  },
+];
 
 function usage() {
   console.log(`Usage:
@@ -162,6 +176,39 @@ function findH2Section(body, heading) {
 
 function getSourcesSection(body) {
   return findH2Section(body, 'Sources & References')?.content || null;
+}
+
+function getAuthoredBodyWithoutSources(body) {
+  const sourcesSection = findH2Section(body, 'Sources & References');
+  if (!sourcesSection) return stripCodeBlocks(body);
+
+  return stripCodeBlocks(
+    `${body.slice(0, sourcesSection.start)}${' '.repeat(sourcesSection.end - sourcesSection.start)}${body.slice(sourcesSection.end)}`,
+  );
+}
+
+function getPublicProseGuardrailIssues(body) {
+  const authoredBody = getAuthoredBodyWithoutSources(body);
+  const issues = [];
+  const lines = authoredBody.split('\n');
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (!line.trim() || line.startsWith('#')) continue;
+
+    for (const guardrail of PUBLIC_PROSE_GUARDRAILS) {
+      const match = guardrail.regex.exec(line);
+      if (match) {
+        issues.push({
+          line: i + 1,
+          label: guardrail.label,
+          phrase: match[0],
+        });
+      }
+    }
+  }
+
+  return issues;
 }
 
 function getZeroDaySeverityIssues(body) {
@@ -355,6 +402,19 @@ function validateFile(file, newFiles) {
     detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
   });
   if (blankLineIssues > 0) pass = false;
+
+  const publicProseIssues = getPublicProseGuardrailIssues(body);
+  checks.push({
+    name: 'Public prose guardrails',
+    pass: publicProseIssues.length === 0,
+    detail: publicProseIssues.length === 0
+      ? 'No internal process or scoring language detected'
+      : publicProseIssues
+        .slice(0, 3)
+        .map((issue) => `line ${issue.line}: ${issue.label} (${issue.phrase})`)
+        .join(' | '),
+  });
+  if (publicProseIssues.length > 0) pass = false;
 
   if (type === 'zero-day') {
     const severityIssues = getZeroDaySeverityIssues(body);

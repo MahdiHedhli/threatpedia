@@ -50,6 +50,20 @@ const EDITORIAL_WORDS = [
   'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
+const PUBLIC_PROSE_GUARDRAILS = [
+  {
+    label: 'internal article/report framing',
+    regex: /\b(this|the)\s+(article|report|assessment|write[- ]?up|entry)\b/i,
+  },
+  {
+    label: 'editorial workflow leakage',
+    regex: /\b(editorial\s+(workflow|process|scor(?:e|ing))|reviewStatus|draft_ai|draft_human|under_review)\b/i,
+  },
+  {
+    label: 'confidence label leakage',
+    regex: /\b(attribution confidence|confidence grade)\b/i,
+  },
+];
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
@@ -285,16 +299,17 @@ function buildRules(task) {
   5. EDIT-RULE-030: Do NOT use editorial commentary words:
      ${EDITORIAL_WORDS.join(', ')}
   6. Every H2 heading must have a blank line before it
-  7. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
-  8. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
-  9. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
+  7. Public article prose must not mention internal article/report framing, editorial workflow, reviewStatus values, attribution confidence labels, or confidence grades
+  8. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
+  9. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
+  10. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
      — Format: - [Publisher: Title](https://...) — Publisher, YYYY-MM-DD
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  10. MITRE tactic casing must use the canonical ATT&CK vocabulary
-  11. Canonical publisher aliases must be normalized in frontmatter and body
-  12. The Astro build must pass: cd site && npm run build`;
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary
+  12. Canonical publisher aliases must be normalized in frontmatter and body
+  13. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -393,6 +408,46 @@ function getSourcesSection(body) {
   const afterHeading = body.slice(start + headingMatch[0].length);
   const nextH2 = afterHeading.search(/^## /m);
   return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
+}
+
+function stripCodeBlocks(body) {
+  return body.replace(/```[\s\S]*?```/g, (match) => ' '.repeat(match.length));
+}
+
+function getAuthoredBodyWithoutSources(body) {
+  const headingMatch = body.match(/^## Sources & References\s*$/m);
+  if (!headingMatch) return stripCodeBlocks(body);
+
+  const start = body.indexOf(headingMatch[0]);
+  const afterHeading = body.slice(start + headingMatch[0].length);
+  const nextH2 = afterHeading.search(/^## /m);
+  const end = nextH2 === -1 ? body.length : start + headingMatch[0].length + nextH2;
+
+  return stripCodeBlocks(`${body.slice(0, start)}${' '.repeat(end - start)}${body.slice(end)}`);
+}
+
+function getPublicProseGuardrailIssues(body) {
+  const authoredBody = getAuthoredBodyWithoutSources(body);
+  const issues = [];
+  const lines = authoredBody.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim() || line.startsWith('#')) continue;
+
+    for (const guardrail of PUBLIC_PROSE_GUARDRAILS) {
+      const match = guardrail.regex.exec(line);
+      if (match) {
+        issues.push({
+          line: i + 1,
+          label: guardrail.label,
+          phrase: match[0],
+        });
+      }
+    }
+  }
+
+  return issues;
 }
 
 function parseBodySourceEntries(sourcesBody) {
@@ -1317,7 +1372,19 @@ function validateOutput(task, explicitFile) {
       }
     }
 
-    // ── 11. EDIT-RULE-030: blank lines before headings ────────────────────
+    // ── 11. Public prose guardrails ───────────────────────────────────────
+    const publicProseIssues = getPublicProseGuardrailIssues(body);
+    if (publicProseIssues.length > 0) {
+      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring phrase(s) found:`);
+      for (const hit of publicProseIssues.slice(0, 5)) {
+        issues.push(`  → line ${hit.line}: ${hit.label} (${hit.phrase})`);
+      }
+      if (publicProseIssues.length > 5) {
+        issues.push(`  → ...and ${publicProseIssues.length - 5} more`);
+      }
+    }
+
+    // ── 12. EDIT-RULE-030: blank lines before headings ────────────────────
     const allLines = content.split('\n');
     for (let i = 1; i < allLines.length; i++) {
       if (allLines[i].match(/^#{2,3} /) && allLines[i - 1].trim() !== '' && !allLines[i - 1].startsWith('---')) {
@@ -1327,7 +1394,7 @@ function validateOutput(task, explicitFile) {
     }
   }
 
-  // ── 11. Astro build ─────────────────────────────────────────────────────
+  // ── 13. Astro build ─────────────────────────────────────────────────────
   console.log('  Running Astro build...');
   try {
     execSync('npm run build', { cwd: resolve(ROOT, 'site'), stdio: 'pipe' });
