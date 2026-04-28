@@ -79,7 +79,7 @@ On March 11, 2026, Stryker disclosed a destructive cyberattack affecting its int
 
 Handala publicly claimed responsibility and framed the operation as geopolitical retaliation. Multiple analysts linked Handala to broader Iran-aligned activity, but the strongest victim-confirmed facts were narrower: Stryker said the incident was contained to its internal Microsoft environment, that there was no evidence of ransomware or malware, and that its connected medical products were not affected. CISA subsequently urged organizations to harden Microsoft Intune and similar device-management platforms against abuse of privileged administrative access.
 
-By mid-to-late March 2026, Stryker said it was restoring manufacturing, ordering, and shipping systems. Public reporting and company updates showed how compromise of a cloud management plane could cause fast, organization-wide disruption without a conventional ransomware deployment.
+By mid-to-late March 2026, Stryker said it was restoring manufacturing, ordering, and shipping systems. Public reporting and company updates showed how compromise of a cloud management plane could cause organization-wide disruption without a conventional ransomware deployment.
 
 ## Technical Analysis
 
@@ -151,15 +151,15 @@ Inoperable endpoints disrupt ordering, manufacturing support, distribution, and 
 
 The attack disrupted Stryker's internal business systems across multiple geographies and materially affected manufacturing, ordering, and shipment workflows. Stryker stated that its connected medical products remained safe to use, which narrowed the direct patient-safety impact but did not eliminate supply-chain and hospital-operations consequences.
 
-Public reporting varied widely on the number of affected devices. Handala claimed a much larger destructive scope than Stryker itself publicly validated. The defensible takeaway is that the incident wiped a large number of managed endpoints and demonstrated how compromise of a cloud management plane can create fast, organization-wide disruption without deploying traditional malware.
+Public reporting varied widely on the number of affected devices. Handala claimed a much larger destructive scope than Stryker itself publicly validated. Public reporting supports the conclusion that the incident wiped a large number of managed endpoints and demonstrated how compromise of a cloud management plane can create organization-wide disruption without deploying traditional malware.
 
 The BYOD dimension also raised a separate governance problem: when personal devices are enrolled in enterprise management, destructive misuse of that management plane can harm employees directly by erasing authenticator apps, personal data, and recovery mechanisms.
 
 ## Attribution
 
-Handala publicly claimed responsibility for the Stryker attack and tied it to broader geopolitical retaliation messaging. Analysts and journalists also placed the incident in a pattern of Iran-aligned disruptive activity. However, the strongest public facts available at review time supported a more cautious attribution posture than the article previously used.
+Handala publicly claimed responsibility for the Stryker attack and tied it to broader geopolitical retaliation messaging. Analysts and journalists also placed the incident in a pattern of Iran-aligned disruptive activity. Public reporting supports a cautious attribution posture rather than a confirmed state-directed attribution.
 
-The public record supports saying that Handala claimed the attack and that multiple observers described the group as Iran-linked. Some research outlets further associated Handala with broader Void Manticore activity, but that relationship was not validated by Stryker itself and was not necessary to explain the core facts of the incident. The strongest supported framing is that this was a Handala-claimed destructive operation against Stryker's Microsoft management plane, with stronger public evidence for the operational impact than for a formal state-directed attribution.
+The public record indicates that Handala claimed the attack and that multiple observers described the group as Iran-linked. Some research outlets further associated Handala with broader Void Manticore activity, but that relationship was not validated by Stryker itself and was not necessary to explain the core facts of the incident. The incident was a Handala-claimed destructive operation against Stryker's Microsoft management plane. Public reporting provides evidence for the operational impact, though formal state-directed attribution has not been confirmed.
 
 ## Remediation & Mitigation
 
