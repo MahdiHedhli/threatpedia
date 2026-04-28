@@ -318,6 +318,9 @@ function main() {
 try {
   main();
 } catch (error) {
-  console.error(`pipeline-submit-link: ${error.message}`);
+  const detail = error instanceof Error
+    ? error.stack || error.message
+    : String(error);
+  console.error(`pipeline-submit-link: ${detail}`);
   process.exitCode = 1;
 }
