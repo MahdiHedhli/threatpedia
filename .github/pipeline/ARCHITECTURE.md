@@ -142,7 +142,8 @@ Tasks with `depends_on` are not dispatched until all dependencies are `complete`
 ### Deduplication
 - Discovery Action checks existing tasks AND existing articles for CVE coverage
 - Prevents duplicate articles for the same vulnerability
-- Manual submissions are not deduplicated (intentional — humans may re-submit with better context)
+- Manual submission ingest also deduplicates by normalized source URL against existing tasks and corpus content
+- Manual submissions that collide are labeled `pipeline/duplicate` and do not create a task file
 
 ### Validation Gates
 Every article PR runs automated checks before merge:
