@@ -154,13 +154,14 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       direction: 'desc',
       per_page: 5,
     });
-    return data[0] || null;
+    return data.find((pr) => pr.state === 'open') || data[0] || null;
   }
 
   async function loadOpenPrForTask(task) {
-    const knownPr = await loadPrForTask(task);
-    if (knownPr?.state === 'open') return knownPr;
-    if (!task.pr_number) return null;
+    if (task.pr_number) {
+      const knownPr = await loadPrForTask(task);
+      if (knownPr?.state === 'open') return knownPr;
+    }
 
     const headRef = task.output?.branch;
     if (!headRef) return null;
