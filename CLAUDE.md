@@ -113,6 +113,34 @@ Before reporting a task PR as ready, verify all of the following:
 - `gh pr checks` is green
 - unresolved Gemini review threads are actually zero on the live PR
 
+## Automation collision avoidance
+
+Hourly workers, CoWork agents, and GitHub Actions may run at the same time.
+Treat shared repo directories as read/reference locations, not as long-lived
+edit targets.
+
+- use a fresh temp clone or task-scoped worktree for every automation run that
+  writes public repo files
+- keep one task per branch and one PR per task or bounded review fix
+- before selecting work, re-check live GitHub issues, PRs, checks, review
+  threads, and `.github/pipeline/tasks/*.json` on `origin/main`
+- before writing, locking, pushing, opening a PR, approving, or merging,
+  re-check that no other worker has locked the task, opened a covering PR, or
+  changed the current PR head
+- respect `locked_by`, `locked_at`, open PRs, and open `pipeline/ready` issues
+  as coordination state
+- if a lock, branch, PR, or task-state race appears, skip or rebuild cleanly
+  rather than carrying mixed state forward
+- do not edit from a dirty shared checkout; abandon the task-scoped checkout and
+  rebuild from clean state instead
+- review workers may make bounded fixes to existing PRs, but must not start new
+  drafting tasks while acting as reviewers
+- drafting workers may open and remediate their task PRs, but must not merge
+  unless their prompt explicitly grants merge authority and all live gates pass
+- workflow failures in ingest, dispatcher, task-state sync, review gate,
+  validation, post-merge audit, or deploy must be inspected as live pipeline
+  state before assuming the queue is healthy
+
 ## Security expectations
 
 - do not read or touch root secret files unless explicitly instructed
