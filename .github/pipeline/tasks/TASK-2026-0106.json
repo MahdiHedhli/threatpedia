@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0106",
   "type": "incident",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "input": {
     "topic": "Stryker Corporation Wiper Attack by Handala",
     "reprocess": true,
@@ -80,9 +80,19 @@
       "to": "locked",
       "agent": "Mahdi Hedhli",
       "note": "Aligned task review_status acceptance criteria to live under_review article state for reprocess remediation"
+    },
+    {
+      "timestamp": "2026-04-28T13:03:14.085Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #347"
     }
   ],
-  "updated": "2026-04-28T12:46:30Z",
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-04-28T12:45:58.392Z"
+  "updated": "2026-04-28T13:03:14.087Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 347,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/347"
 }
