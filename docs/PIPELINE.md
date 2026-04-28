@@ -136,6 +136,9 @@ for the pipeline.
    - If a task already has an open `pipeline/ready` Issue, the dispatcher
      does **not** open a duplicate Issue on the next tick. It records the
      existing Issue number in task history once and moves on.
+   - If a task is still `pending` on `main` but an open PR already exists for
+     the task branch, the dispatcher treats that PR as covering the task,
+     closes any stale `pipeline/ready` Issue, and skips redispatch.
 
 7. **Agent execution** (under the agent's own subscription)
    - Agent reads the task brief, drafts the article into
