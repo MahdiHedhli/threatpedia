@@ -128,12 +128,13 @@ async function githubGraphql(query, variables, token) {
   return payload.data;
 }
 
-async function listPaginated(path, token) {
+async function listPaginated(path, token, dataExtractor = (payload) => payload) {
   const results = [];
   let page = 1;
   while (true) {
     const separator = path.includes('?') ? '&' : '?';
-    const items = await githubFetch(`${path}${separator}per_page=100&page=${page}`, token);
+    const payload = await githubFetch(`${path}${separator}per_page=100&page=${page}`, token);
+    const items = dataExtractor(payload);
     if (!Array.isArray(items) || items.length === 0) break;
     results.push(...items);
     if (items.length < 100) break;
@@ -143,18 +144,11 @@ async function listPaginated(path, token) {
 }
 
 async function listCheckRuns(owner, repo, ref, token) {
-  const results = [];
-  let page = 1;
-  while (true) {
-    const payload = await githubFetch(
-      `/repos/${owner}/${repo}/commits/${ref}/check-runs?per_page=100&page=${page}`,
-      token,
-    );
-    const checkRuns = payload.check_runs || [];
-    results.push(...checkRuns);
-    if (checkRuns.length < 100) break;
-    page += 1;
-  }
+  const results = await listPaginated(
+    `/repos/${owner}/${repo}/commits/${ref}/check-runs`,
+    token,
+    (payload) => payload.check_runs || [],
+  );
   return { check_runs: results };
 }
 
