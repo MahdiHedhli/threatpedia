@@ -12,6 +12,10 @@ import {
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import {
+  getPublicProseGuardrailIssues,
+  maskTextPreservingNewlines,
+} from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -40,7 +44,6 @@ const ZERO_DAY_US_SPELLING_MAP = new Map([
   ['weaponisation', 'weaponization'],
   ['weaponised', 'weaponized'],
 ]);
-
 function usage() {
   console.log(`Usage:
   node scripts/validate-content-corpus.mjs --files-file <path> [--new-files-file <path>] [--json-out <path>]
@@ -137,7 +140,7 @@ function escapeRegex(value) {
 
 function stripCodeBlocks(body) {
   const codeBlockRegex = /```[\s\S]*?```/g;
-  return body.replace(codeBlockRegex, (match) => ' '.repeat(match.length));
+  return body.replace(codeBlockRegex, maskTextPreservingNewlines);
 }
 
 function findH2Section(body, heading) {
@@ -355,6 +358,19 @@ function validateFile(file, newFiles) {
     detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
   });
   if (blankLineIssues > 0) pass = false;
+
+  const publicProseIssues = getPublicProseGuardrailIssues(body);
+  checks.push({
+    name: 'Public prose guardrails',
+    pass: publicProseIssues.length === 0,
+    detail: publicProseIssues.length === 0
+      ? 'No internal process or scoring language detected'
+      : publicProseIssues
+        .slice(0, 3)
+        .map((issue) => `line ${issue.line}: ${issue.label} (${issue.phrase})`)
+        .join(' | '),
+  });
+  if (publicProseIssues.length > 0) pass = false;
 
   if (type === 'zero-day') {
     const severityIssues = getZeroDaySeverityIssues(body);
