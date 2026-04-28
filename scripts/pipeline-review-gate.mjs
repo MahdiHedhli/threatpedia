@@ -10,8 +10,8 @@
 
 const DEFAULT_AI_REVIEW_LOGINS = ['gemini-code-assist', 'gemini-code-assist[bot]'];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
-const PUBLIC_SITE_FILE_RE = /^site\/src\/(?:content|pages|components|layouts|data)\//;
-const PIPELINE_FILE_RE = /^(?:scripts\/(?:pipeline-|validate-content-corpus|public-prose-guardrails|check-pr-comments)|\.github\/workflows\/pipeline-|\.github\/pipeline\/config\.yml|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
+const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
+const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
 
 function parseArgs(argv) {
   const parsed = {
