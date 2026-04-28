@@ -215,21 +215,25 @@ async function getReviewThreads(owner, repo, prNumber, token) {
 
   const threads = [];
   let after = null;
+  const THREAD_COMMENT_BATCH_SIZE = 10;
   while (true) {
     const data = await githubGraphql(query, { owner, repo, number: prNumber, after }, token);
     const connection = data.repository.pullRequest.reviewThreads;
-    const pageThreads = await Promise.all(connection.nodes.map(async (thread) => {
-      if (thread.comments?.pageInfo?.hasNextPage) {
-        const additionalComments = await getReviewThreadComments(
-          thread.id,
-          token,
-          thread.comments.pageInfo.endCursor,
-        );
-        if (thread.comments) thread.comments.nodes.push(...additionalComments);
-      }
-      return thread;
-    }));
-    threads.push(...pageThreads);
+    for (let index = 0; index < connection.nodes.length; index += THREAD_COMMENT_BATCH_SIZE) {
+      const batch = connection.nodes.slice(index, index + THREAD_COMMENT_BATCH_SIZE);
+      const pageThreads = await Promise.all(batch.map(async (thread) => {
+        if (thread.comments?.pageInfo?.hasNextPage) {
+          const additionalComments = await getReviewThreadComments(
+            thread.id,
+            token,
+            thread.comments.pageInfo.endCursor,
+          );
+          if (thread.comments) thread.comments.nodes.push(...additionalComments);
+        }
+        return thread;
+      }));
+      threads.push(...pageThreads);
+    }
     if (!connection.pageInfo.hasNextPage) break;
     after = connection.pageInfo.endCursor;
   }
@@ -237,9 +241,14 @@ async function getReviewThreads(owner, repo, prNumber, token) {
 }
 
 function latestDate(items, getter) {
-  const dates = items.map(getter).filter(Boolean).map((value) => new Date(value).getTime()).filter(Number.isFinite);
+  const dates = items
+    .map(getter)
+    .filter(Boolean)
+    .map((value) => (value instanceof Date ? value.getTime() : new Date(value).getTime()))
+    .filter(Number.isFinite);
   if (!dates.length) return null;
-  return new Date(Math.max(...dates)).toISOString();
+  const latest = dates.reduce((max, value) => Math.max(max, value), -Infinity);
+  return new Date(latest).toISOString();
 }
 
 async function evaluate({ repo: repoSlug, pr: prNumber }) {
