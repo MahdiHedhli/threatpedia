@@ -8,7 +8,11 @@
  * rebase, or failed AI review attempt.
  */
 
-const DEFAULT_AI_REVIEW_LOGINS = ['gemini-code-assist', 'gemini-code-assist[bot]'];
+const DEFAULT_AI_REVIEW_LOGINS = [
+  'gemini-code-assist',
+  'gemini-code-assist[bot]',
+  'dangermouse-bot',
+];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
 const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
