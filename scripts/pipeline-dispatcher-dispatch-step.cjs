@@ -154,6 +154,27 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       direction: 'desc',
       per_page: 5,
     });
+    return data.find((pr) => pr.state === 'open') || data[0] || null;
+  }
+
+  async function loadOpenPrForTask(task) {
+    if (task.pr_number) {
+      const knownPr = await loadPrForTask(task);
+      if (knownPr?.state === 'open') return knownPr;
+    }
+
+    const headRef = task.output?.branch;
+    if (!headRef) return null;
+
+    const { data } = await github.rest.pulls.list({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      state: 'open',
+      head: `${context.repo.owner}:${headRef}`,
+      sort: 'updated',
+      direction: 'desc',
+      per_page: 1,
+    });
     return data[0] || null;
   }
 
@@ -249,6 +270,23 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       }
 
       const readyForPickup = task.status === 'pending' && task.stage === 'draft';
+      let coveringPr = null;
+      if (readyForPickup) {
+        coveringPr = await loadOpenPrForTask(task);
+      } else if (task.status === 'pr_open' && task.pr_number) {
+        coveringPr = { state: 'open', number: task.pr_number };
+      }
+
+      if (coveringPr?.state === 'open') {
+        for (const issue of issues) {
+          await closePipelineIssue(
+            issue,
+            `${taskId} is already covered by open PR #${coveringPr.number}`
+          );
+        }
+        continue;
+      }
+
       if (!readyForPickup) {
         for (const issue of issues) {
           await closePipelineIssue(
@@ -429,6 +467,36 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
         note: `Blocked by: ${unmet.join(', ')}`,
       });
       saveTask(task);
+      continue;
+    }
+
+    const coveringPr = await loadOpenPrForTask(task);
+    if (coveringPr?.state === 'open') {
+      console.log(`Task ${task.task_id} already has open PR #${coveringPr.number} — skipping dispatch`);
+      const existingIssue = findOpenPipelineIssue(task.task_id);
+      if (existingIssue) {
+        await closePipelineIssue(
+          existingIssue,
+          `${task.task_id} is already covered by open PR #${coveringPr.number}`
+        );
+      }
+
+      const alreadyRecorded = task.history?.some((entry) =>
+        entry.agent === 'dispatcher' &&
+        String(entry.note || '').includes(`open PR #${coveringPr.number}`)
+      );
+      if (!alreadyRecorded) {
+        task.updated = nowIso;
+        appendHistory(task, {
+          timestamp: nowIso,
+          action: 'dispatch_skipped',
+          from: 'pending',
+          to: 'pending',
+          agent: 'dispatcher',
+          note: `Dispatch skipped because open PR #${coveringPr.number} already covers this task.`,
+        });
+        saveTask(task);
+      }
       continue;
     }
 
