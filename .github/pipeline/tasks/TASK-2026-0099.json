@@ -82,18 +82,18 @@
       "note": "Article generated, validated, and recorded against PR #314"
     },
     {
-      "timestamp": "2026-04-27T17:47:24.125Z",
+      "timestamp": "2026-04-27T17:44:27.763Z",
       "action": "merged",
       "from": "pr_open",
       "to": "complete",
-      "agent": "dispatcher",
-      "note": "Reconciled merged PR #314."
+      "agent": "pipeline-task-state",
+      "note": "PR #314 merged (4653ef5)."
     }
   ],
-  "updated": "2026-04-27T17:47:24.125Z",
+  "updated": "2026-04-27T17:44:27.763Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 314,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/314",
-  "merged_at": "2026-04-27T17:44:16Z"
+  "merged_at": "2026-04-27T17:44:27.763Z"
 }

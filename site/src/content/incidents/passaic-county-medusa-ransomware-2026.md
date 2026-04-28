@@ -1,20 +1,19 @@
 ---
 eventId: TP-2026-0033
-title: Passaic County Ransomware Attack by Medusa Group
+title: Passaic County Ransomware Attack Claimed by Medusa
 date: 2026-03-04
 attackType: ransomware
 severity: high
-sector: Government / Municipal Services
-geography: United States (New Jersey)
+sector: Government
+geography: United States
 threatActor: Medusa
 attributionConfidence: A4
 reviewStatus: under_review
 confidenceGrade: C
-generatedBy: new-threat-intel
-generatedDate: 2026-03-04
+generatedBy: penfold-bot
+generatedDate: 2026-04-20
 cves: []
 relatedSlugs:
-  - "foster-city-ransomware-2026"
   - "die-linke-qilin-ransomware-2026"
   - "ummc-medusa-ransomware-2026"
   - "winona-county-ransomware-2026"
@@ -22,165 +21,95 @@ tags:
   - "ransomware"
   - "medusa"
   - "government"
-  - "municipal"
-  - "double-extortion"
   - "new-jersey"
+sources:
+  - url: https://www.passaiccountynj.org/Home/Components/News/News/1275/
+    publisher: Passaic County
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-03-04"
+  - url: https://www.comparitech.com/news/cybercriminals-say-they-hacked-passaic-county-nj-and-demand-ransom/
+    publisher: Comparitech
+    publisherType: vendor
+    reliability: R2
+    publicationDate: "2026-03-17"
+  - url: https://therecord.media/medusa-ransomware-mississippi-cyber
+    publisher: Recorded Future News
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-03-17"
+  - url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a
+    publisher: CISA
+    publisherType: government
+    reliability: R1
+    publicationDate: "2025-03-12"
+mitreMappings:
+  - techniqueId: T1486
+    techniqueName: "Data Encrypted for Impact"
+    tactic: Impact
 ---
-## Executive Summary
 
-On March 4, 2026, Passaic County, New Jersey — a government entity serving nearly 600,000 residents — disclosed a ransomware attack that disrupted county IT systems and telephone infrastructure. The attack caused significant service disruptions affecting county operations and citizen services. Mid-March 2026, the Medusa ransomware group posted Passaic County on their data leak site, claiming responsibility and demanding an $800,000 ransom by end of March, along with posting sample documents as proof of data exfiltration.
+## Summary
 
-Medusa is a known ransomware-as-a-service (RaaS) group that employs double extortion tactics: encrypting victim systems while simultaneously exfiltrating sensitive data. Public reporting tied the county's incident to Medusa via the group's own leak-site claim, but Passaic County has not publicly confirmed that attribution, and details regarding the initial access vector, data compromise scope, and ransom payment status remain undisclosed.
+Passaic County, New Jersey disclosed on March 4, 2026 that a malware attack was affecting county IT systems and phone lines. Later reporting from Comparitech and Recorded Future said the Medusa ransomware operation listed the county on its leak site, demanded $800,000, and posted sample documents to support the claim.
 
-This incident reflects the critical vulnerability of mid-to-large municipal government infrastructure to sophisticated ransomware operators. Unlike smaller municipalities, Passaic County's scale — serving nearly 600,000 residents across hundreds of municipal systems — amplifies both the operational impact and the data exposure risk. The incident underscores the increasing targeting of government agencies as high-value victims for double extortion ransomware campaigns.
+The county did not publicly confirm Medusa's attribution claim. Public reporting also did not establish the initial intrusion vector, the exact systems encrypted, or the confirmed scope of data theft. The incident is a county-disclosed malware event later claimed by Medusa.
 
 ## Technical Analysis
 
-Attack Overview
+The county's public statement confirmed operational disruption to IT systems and phone lines but did not describe the technical entry point or the internal spread of the incident. Comparitech later reported that Medusa claimed responsibility on its leak site and published images it said were stolen county documents.
 
-Threat Actor: Medusa Ransomware Group (RaaS operation)
-Announcement Date: March 4, 2026 (public disclosure of systems compromise)
-Leak Site Posting: Mid-March 2026 with sample files and $800K ransom demand
-Initial Access: Unknown — suspected exploitation of public-facing application or vulnerable service
-Time to Deployment: Medusa typically achieves full encryption + exfiltration within 24 hours of initial access
-Double Extortion: Systems encrypted AND sensitive data exfiltrated to leak site
+CISA's March 2025 advisory describes Medusa as a ransomware operation that commonly combines encryption with extortion pressure, but that advisory is background on the group rather than incident-specific evidence for Passaic County. For this incident, the public record supports only the county's malware disclosure, the reported leak-site claim, and the county's later statement that it was still determining the nature and scope of unauthorized data access.
 
-Medusa Group Capabilities
-Medusa is documented as a sophisticated ransomware group with the following technical characteristics:
+## Attack Chain
 
-Rapid Initial Access: Public reporting has associated Medusa affiliates with fast exploitation of exposed or weakly protected remote services, but no zero-day use has been confirmed in the Passaic County intrusion
-Rapid Lateral Movement: Deploys encryption and exfiltration within 24 hours of initial compromise
-Data Theft: Specialized in exfiltrating large volumes of sensitive data before encryption
-Double Extortion: Combines file encryption with leak site publication and ransom demands
-RaaS Model: Operates as ransomware-as-a-service, likely using affiliate partners for initial access
-Leak Site Operations: Maintains active leak site for publishing victim documents and negotiation
+### Stage 1: County Discloses Malware Attack
 
-Infrastructure Impact
-Passaic County's confirmed impacts include:
+On March 4, 2026, Passaic County said it was aware of a malware attack affecting its IT systems and phone lines and that it was working with federal and state officials to investigate and contain the issue.
 
-IT systems encryption and operational disruption
-Telephone infrastructure affected — phones unavailable county-wide
-Administrative staff unable to access systems or conduct business
-Potential disruption to public-facing services (permit processing, licensing, fee collection)
-Unknown scope of data exfiltration from county databases and file systems
+### Stage 2: Medusa Leak-Site Claim
 
-Unknown Technical Details
-As of April 2026, the following details remain undisclosed:
+On March 17, 2026, Comparitech and Recorded Future reported that the Medusa ransomware operation had listed Passaic County on its leak site, demanded $800,000, and published sample images it said were taken from county systems.
 
-Specific initial access vector (vulnerability exploited, compromised credentials, phishing)
-Whether ransomware variant deployed for encryption is known or novel
-Full scope of systems encrypted across county infrastructure
-What data was exfiltrated (resident PII, employee records, financial data, infrastructure details)
-Whether ransom demand was paid
-Timeline of initial compromise vs. detection
+### Stage 3: Investigation and Partial Service Recovery
 
-## MITRE ATT&CK Mapping
-
-T1190 – Exploit Public-Facing Application
-T1486 – Data Encrypted for Impact
-T1021 – Remote Services (Lateral Movement)
-T1048 – Exfiltration Over Alternative Protocol
-T1489 – Service Stop
-T1529 – System Shutdown/Reboot
-
-Techniques mapped below reflect reported Medusa tradecraft and the county's publicly described service disruption. Initial access vector (T1190) remains suspected, not confirmed, for this specific incident.
-
-## Timeline
-
-March 4, 2026
-Passaic County announces malware attack affecting IT systems and phone infrastructure
-
-March 2026 (Mid-Month)
-Medusa ransomware group posts Passaic County on leak site with sample documents; demands $800K ransom by end of March
-
-March 2026
-County initiates incident response and recovery operations; investigation launched
-
-March 2026 (Late)
-Microsoft publishes analysis detailing Medusa group's zero-day exploitation capabilities and techniques
-
-April 2026
-Passaic County status unknown — attribution not confirmed by county; ransom payment status undisclosed; investigation ongoing
+Comparitech reported a March 18 county statement saying the county had taken measures to address the security incident, restored most operations, and was still determining the nature and scope of unauthorized access to data.
 
 ## Impact Assessment
 
-Service Disruption
+The confirmed operational impact was disruption to county IT systems and phone lines. Public reporting supports a prolonged service interruption, but it does not support precise claims about which resident-facing services were unavailable or whether specific categories of constituent data were exposed.
 
-Population Affected: Nearly 600,000 county residents
-Systems Down: IT systems and telephone infrastructure disrupted
-Administrative Impact: County employees unable to perform normal functions
-Public Services Impact: Potential disruption to licensing, permitting, tax assessment, and other citizen-facing services
-Recovery Status: Ongoing as of April 2026; full restoration timeline unknown
+There is a credible risk of data exposure because the Medusa leak-site claim included sample documents and the county later said it was assessing unauthorized access to data. However, the public source set does not confirm the volume or sensitivity of any affected records.
 
-Data Exposure & Privacy Risk
+## Attribution
 
-Scope Unknown: Medusa posted sample documents on leak site; full data compromise scope not publicly disclosed
-Potential Data at Risk: County databases likely contain resident personal information, financial records, employee data, property records, assessment data, and potentially sensitive infrastructure information
-Residents Served: Nearly 600,000 residents potentially affected by data exposure
-Regulatory Implications: Potential data breach notification requirements under New Jersey privacy laws
-Investigation Status: Data compromise assessment ongoing
+The attribution to Medusa rests on the group's public leak-site claim and the publication of sample documents reported by Comparitech and Recorded Future. That is stronger than a rumor, but it is not the same as a county-confirmed attribution.
 
-Financial & Operational Costs
+Because Passaic County did not publicly validate the actor identity, Medusa is identified here as a claimed perpetrator rather than an officially confirmed one.
 
-Ransomware recovery and system restoration costs (undisclosed)
-Forensic investigation and incident response services
-Potential ransom payment (status unknown; Medusa demanded $800K)
-Data breach notification costs if personal information exposed
-Legal and compliance expenses related to data breach investigation
-Lost productivity from IT systems downtime affecting hundreds of county employees
-Reputational damage and reduced public confidence in county services
+## Timeline
 
-Threat Actor Motivation
+### 2026-03-04 - Event
 
-County government targets are high-value for ransomware operators — large databases, financial systems, and service disruption impact
-Municipal entities often lack sophisticated cybersecurity defenses relative to private sector
-Data exfiltration creates dual pressure: ransom threat + data leak threat
-Public sector entities face political pressure to resolve service disruptions quickly, potentially motivating ransom payment
+Passaic County publicly disclosed a malware attack affecting county IT systems and phone lines.
+
+### 2026-03-17 - Event
+
+Comparitech and Recorded Future reported that Medusa had listed the county on its leak site and demanded $800,000.
+
+### 2026-03-18 - Event
+
+Comparitech reported a county statement saying most operations had been restored while the investigation into unauthorized data access remained ongoing.
 
 ## Remediation & Mitigation
 
-Immediate Response (In Progress)
+Passaic County said it was working with federal and state officials to investigate and contain the incident, and later said it had taken measures to address the security event while restoring most operations.
 
-Incident Containment: Isolation of affected systems to prevent further encryption/exfiltration
-System Recovery: Restoration from clean backups (if available and not encrypted)
-Forensic Investigation: Analysis of attack vector, lateral movement, and data exfiltration scope
-Communication & Notification: Potential data breach notifications to affected residents (if required by law)
-Law Enforcement Engagement: FBI and New Jersey authorities likely involved in investigation
-
-Long-Term Security Improvements
-
-Comprehensive cybersecurity assessment of county IT infrastructure
-Vulnerability scanning and patch management program
-Multi-factor authentication (MFA) deployment for all administrative access
-Network segmentation to isolate critical systems (finance, emergency services)
-Enhanced backup and disaster recovery procedures with offline, immutable backups
-Endpoint detection and response (EDR) deployment
-Security awareness training for county employees
-Incident response plan development and tabletop exercises
-
-Public Sector Recommendations
-
-Government entities should assume ransomware as an inevitable threat and plan accordingly
-Maintain offline, immutable backup systems that cannot be encrypted or accessed by attackers
-Develop contingency plans for operations without IT systems (manual processes, emergency communications)
-Establish relationships with state and federal cybersecurity agencies for rapid incident response support
-Implement zero-trust security principles, especially for remote access and administrative functions
-Conduct regular security audits and penetration testing of public-facing applications
-Establish cyber insurance coverage for ransomware and data breach incidents
+For organizations defending against Medusa-style ransomware activity more generally, CISA recommends hardening remote access, enforcing MFA, segmenting networks, and maintaining tested offline backups.
 
 ## Sources & References
 
-Comparitech — "Cybercriminals say they hacked Passaic County NJ and demand ransom"
-Comparitech Cybersecurity Blog, March 2026
-
-The Record — "Medusa ransomware hits Mississippi hospital, New Jersey county"
-Recorded Future News, March 2026
-
-SC Media — "Medusa ransomware purportedly hits University of Mississippi Medical Center, New Jersey county"
-SC Media, March 2026
-
-The Record — "Medusa ransomware group using zero-days"
-Recorded Future News, March 2026
-
-BlackFog — "State of Ransomware March 2026"
-BlackFog Cyber Defense Research, March 2026
+- [Passaic County: Statement from Passaic County](https://www.passaiccountynj.org/Home/Components/News/News/1275/) — Passaic County, 2026-03-04
+- [Comparitech: Cybercriminals say they hacked Passaic County, NJ and demand ransom](https://www.comparitech.com/news/cybercriminals-say-they-hacked-passaic-county-nj-and-demand-ransom/) — Comparitech, 2026-03-17
+- [Recorded Future News: Medusa ransomware gang claims attacks on prominent Mississippi hospital, New Jersey county](https://therecord.media/medusa-ransomware-mississippi-cyber) — Recorded Future News, 2026-03-17
+- [CISA: #StopRansomware: Medusa Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a) — CISA, 2025-03-12
