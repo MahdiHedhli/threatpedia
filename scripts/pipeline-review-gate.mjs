@@ -142,6 +142,22 @@ async function listPaginated(path, token) {
   return results;
 }
 
+async function listCheckRuns(owner, repo, ref, token) {
+  const results = [];
+  let page = 1;
+  while (true) {
+    const payload = await githubFetch(
+      `/repos/${owner}/${repo}/commits/${ref}/check-runs?per_page=100&page=${page}`,
+      token,
+    );
+    const checkRuns = payload.check_runs || [];
+    results.push(...checkRuns);
+    if (checkRuns.length < 100) break;
+    page += 1;
+  }
+  return { check_runs: results };
+}
+
 async function getReviewThreadComments(threadId, token) {
   const query = `
     query($threadId: ID!, $after: String) {
@@ -210,7 +226,8 @@ async function getReviewThreads(owner, repo, prNumber, token) {
     const connection = data.repository.pullRequest.reviewThreads;
     for (const thread of connection.nodes) {
       if (thread.comments?.pageInfo?.hasNextPage) {
-        thread.comments.nodes = await getReviewThreadComments(thread.id, token);
+        const allComments = await getReviewThreadComments(thread.id, token);
+        if (thread.comments) thread.comments.nodes = allComments;
       }
       threads.push(thread);
     }
@@ -240,7 +257,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
     listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/files`, token),
     listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, token),
     listPaginated(`/repos/${owner}/${repo}/issues/${prNumber}/comments`, token),
-    githubFetch(`/repos/${owner}/${repo}/commits/${pr.head.sha}/check-runs?per_page=100`, token),
+    listCheckRuns(owner, repo, pr.head.sha, token),
     getReviewThreads(owner, repo, prNumber, token),
   ]);
 
@@ -275,6 +292,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
   const currentHeadAiReviews = reviews.filter((review) =>
     isAiLogin(review.user?.login, aiLogins)
     && review.commit_id === pr.head.sha
+    && review.state !== 'DISMISSED'
     && !isAiReviewError(review.body)
   );
 
