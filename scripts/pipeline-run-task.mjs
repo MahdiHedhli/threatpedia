@@ -36,6 +36,7 @@ import {
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import { getPublicProseGuardrailIssues } from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -285,16 +286,17 @@ function buildRules(task) {
   5. EDIT-RULE-030: Do NOT use editorial commentary words:
      ${EDITORIAL_WORDS.join(', ')}
   6. Every H2 heading must have a blank line before it
-  7. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
-  8. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
-  9. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
+  7. Public article prose must not mention internal article/report framing, editorial workflow, reviewStatus values, attribution confidence labels, or confidence grades
+  8. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
+  9. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
+  10. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
      — Format: - [Publisher: Title](https://...) — Publisher, YYYY-MM-DD
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  10. MITRE tactic casing must use the canonical ATT&CK vocabulary
-  11. Canonical publisher aliases must be normalized in frontmatter and body
-  12. The Astro build must pass: cd site && npm run build`;
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary
+  12. Canonical publisher aliases must be normalized in frontmatter and body
+  13. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -1317,7 +1319,19 @@ function validateOutput(task, explicitFile) {
       }
     }
 
-    // ── 11. EDIT-RULE-030: blank lines before headings ────────────────────
+    // ── 11. Public prose guardrails ───────────────────────────────────────
+    const publicProseIssues = getPublicProseGuardrailIssues(body);
+    if (publicProseIssues.length > 0) {
+      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring phrase(s) found:`);
+      for (const hit of publicProseIssues.slice(0, 5)) {
+        issues.push(`  → line ${hit.line}: ${hit.label} (${hit.phrase})`);
+      }
+      if (publicProseIssues.length > 5) {
+        issues.push(`  → ...and ${publicProseIssues.length - 5} more`);
+      }
+    }
+
+    // ── 12. EDIT-RULE-030: blank lines before headings ────────────────────
     const allLines = content.split('\n');
     for (let i = 1; i < allLines.length; i++) {
       if (allLines[i].match(/^#{2,3} /) && allLines[i - 1].trim() !== '' && !allLines[i - 1].startsWith('---')) {
@@ -1327,7 +1341,7 @@ function validateOutput(task, explicitFile) {
     }
   }
 
-  // ── 11. Astro build ─────────────────────────────────────────────────────
+  // ── 13. Astro build ─────────────────────────────────────────────────────
   console.log('  Running Astro build...');
   try {
     execSync('npm run build', { cwd: resolve(ROOT, 'site'), stdio: 'pipe' });
