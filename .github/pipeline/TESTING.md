@@ -17,9 +17,10 @@ Tests are organized by component and labeled with expected behavior.
 
 ### Edge Cases
 - [ ] **T1.4** — Submit Issue with no topic → Action posts error comment, adds `pipeline/error` label, no task file created
-- [ ] **T1.5** — Submit Issue with no source URLs → task created but `sources` array empty (agent must find sources independently)
+- [ ] **T1.5** — Submit Issue with no valid source URLs → Action posts error comment, adds `pipeline/error` label, no task file created
 - [ ] **T1.6** — Submit Issue with malformed CVE (e.g., "CVE-abcd-1234") → CVE filtered out, task created without it
-- [ ] **T1.7** — Submit duplicate topic (same CVE already has a task) → currently creates duplicate; dedup is in discovery Action only. **Known limitation — acceptable for manual submissions** since humans may intentionally re-submit with better context
+- [ ] **T1.7** — Submit duplicate source URL (already present in corpus/task queue) → no task file created, Issue gets dedup comment + `pipeline/duplicate` label
+- [ ] **T1.7a** — Submit source URL copied with trailing punctuation from prose → URL normalization strips the punctuation before dedup/task creation
 - [ ] **T1.8** — Submit Issue on a repo fork → Action should not trigger (scoped to main repo)
 - [ ] **T1.9** — Two Issues submitted simultaneously → each gets unique task ID (sequential numbering from max existing)
 
