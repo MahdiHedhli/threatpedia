@@ -151,15 +151,15 @@ Inoperable endpoints disrupt ordering, manufacturing support, distribution, and 
 
 The attack disrupted Stryker's internal business systems across multiple geographies and materially affected manufacturing, ordering, and shipment workflows. Stryker stated that its connected medical products remained safe to use, which narrowed the direct patient-safety impact but did not eliminate supply-chain and hospital-operations consequences.
 
-Public reporting varied widely on the number of affected devices. Handala claimed a much larger destructive scope than Stryker itself publicly validated. Public reporting supports the conclusion that the incident wiped a large number of managed endpoints and demonstrated how compromise of a cloud management plane can create organization-wide disruption without deploying traditional malware.
+Public reporting varied widely on the number of affected devices. Handala claimed a much larger destructive scope than Stryker itself publicly validated. Public reporting indicates that the incident wiped a large number of managed endpoints and demonstrated how compromise of a cloud management plane can create organization-wide disruption without deploying traditional malware.
 
 The BYOD dimension also raised a separate governance problem: when personal devices are enrolled in enterprise management, destructive misuse of that management plane can harm employees directly by erasing authenticator apps, personal data, and recovery mechanisms.
 
 ## Attribution
 
-Handala publicly claimed responsibility for the Stryker attack and tied it to broader geopolitical retaliation messaging. Analysts and journalists also placed the incident in a pattern of Iran-aligned disruptive activity. Public reporting supports a cautious attribution posture rather than a confirmed state-directed attribution.
+Handala publicly claimed responsibility for the Stryker attack and tied it to broader geopolitical retaliation messaging. Analysts and journalists also placed the incident in a pattern of Iran-aligned disruptive activity.
 
-The public record indicates that Handala claimed the attack and that multiple observers described the group as Iran-linked. Some research outlets further associated Handala with broader Void Manticore activity, but that relationship was not validated by Stryker itself and was not necessary to explain the core facts of the incident. The incident was a Handala-claimed destructive operation against Stryker's Microsoft management plane. Public reporting provides evidence for the operational impact, though formal state-directed attribution has not been confirmed.
+The public record indicates that Handala claimed the attack and that multiple observers described the group as Iran-linked. Some research outlets further associated Handala with broader Void Manticore activity, but that relationship was not validated by Stryker itself. The incident was a Handala-claimed destructive operation against Stryker's Microsoft management plane. Public reporting provides evidence for the operational impact, though formal state-directed attribution has not been confirmed.
 
 ## Remediation & Mitigation
 
