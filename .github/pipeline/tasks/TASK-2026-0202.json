@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-28T19:24:52.825Z",
-  "updated": "2026-04-28T22:12:40.159Z",
+  "updated": "2026-04-28T22:16:36.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-04-28T22:12:40.159Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "ConnectWise ScreenConnect Path Traversal Vulnerability (CVE-2024-1708)",
     "sources": [
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -84,6 +84,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-28T22:16:36.000Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #364 opened by automated zero-day queue worker"
     }
-  ]
+  ],
+  "pr_number": 364,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/364"
 }
