@@ -1,15 +1,15 @@
 const PUBLIC_PROSE_GUARDRAILS = [
   {
     label: 'internal article/report framing',
-    regex: /\bthis\s+(article|report|assessment|write[- \u2013\u2014]?up)\b|\bthis\s+Threatpedia\s+entry\b/i,
+    regex: /\b(?:this\s+(?:article|report|assessment|write[- \u2013\u2014]?up)|these\s+(?:articles|reports|assessments|write[- \u2013\u2014]?ups))\b|\b(?:this\s+Threatpedia\s+entry|these\s+Threatpedia\s+entries)\b/i,
   },
   {
     label: 'editorial workflow leakage',
-    regex: /\b(editorial\s+(workflow|process|scor(?:e|ing))|reviewStatus|draft_ai|draft_human|under_review)\b/i,
+    regex: /\b(editorial\s+(workflow|process|scores?|scoring)|reviewStatus|draft_ai|draft_human|under_review)\b/i,
   },
   {
     label: 'confidence label leakage',
-    regex: /\b(attribution confidence|confidence grade)\b/i,
+    regex: /\b(attribution confidences?|confidence grades?)\b/i,
   },
 ];
 
