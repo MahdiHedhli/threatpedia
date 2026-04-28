@@ -151,8 +151,9 @@ for the pipeline.
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
      rules plus exact section/schema normalization: canonical H2 headings,
      exact source-line format, frontmatter/body source URL parity, canonical
-     MITRE tactic casing, canonical publisher aliases, and canonical
-     `generatedBy` values.
+     MITRE tactic casing, canonical publisher aliases, canonical
+     `generatedBy` values, and public-prose guardrails that block internal
+     editorial/process language from article body text.
    - Failure leaves the task locked for agent iteration; success allows the
      agent to record a real open PR number, which moves the task to
      `status: pr_open`.
@@ -182,6 +183,13 @@ for the pipeline.
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
 | Dependency blocking | `pipeline-dispatcher.yml` | Per-task `depends_on[]` | Task file |
 | Validation gates | `pipeline-run-task.mjs --validate` | See `config.yml` `validation.*` | `config.yml` |
+
+**Public prose guardrails:** generated article body text must not leak internal
+workflow language such as "this article," "this report," `reviewStatus`,
+`draft_ai`, "attribution confidence," or "confidence grade." Those values can
+exist in frontmatter or operator notes where appropriate, but public article
+prose should describe the evidence basis directly rather than narrating
+Threatpedia's internal scoring or editorial process.
 
 **Config authority:** `pipeline-dispatcher.yml` now reads thresholds from
 `.github/pipeline/config.yml` via the authoritative reader
