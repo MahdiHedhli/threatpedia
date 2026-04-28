@@ -8,6 +8,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const TASKS_DIR = resolve(ROOT, '.github/pipeline/tasks');
 const CONTENT_DIR = resolve(ROOT, 'site/src/content');
+const PIPELINE_TASK_YEAR = 2026;
 
 function parseArgs(argv) {
   const args = {
@@ -16,56 +17,59 @@ function parseArgs(argv) {
     severity: 'unknown',
     submittedBy: 'manual-cli',
     execute: false,
+    urls: [],
   };
 
   for (let i = 2; i < argv.length; i += 1) {
     const token = argv[i];
     const next = argv[i + 1];
-    if (token === '--execute') {
-      args.execute = true;
-      continue;
+
+    switch (token) {
+      case '--execute':
+        args.execute = true;
+        break;
+      case '--help':
+      case '-h':
+        args.help = true;
+        break;
+      case '--url':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.urls.push(next.trim());
+        i += 1;
+        break;
+      case '--topic':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.topic = next.trim();
+        i += 1;
+        break;
+      case '--type':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.type = next.trim();
+        i += 1;
+        break;
+      case '--priority':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.priority = next.trim().toUpperCase();
+        i += 1;
+        break;
+      case '--severity':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.severity = next.trim().toLowerCase();
+        i += 1;
+        break;
+      case '--submitted-by':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.submittedBy = next.trim();
+        i += 1;
+        break;
+      case '--notes':
+        if (!next) throw new Error(`Missing value for ${token}`);
+        args.notes = next.trim();
+        i += 1;
+        break;
+      default:
+        throw new Error(`Unknown/invalid argument: ${token}`);
     }
-    if (token === '--url' && next) {
-      args.urls = args.urls || [];
-      args.urls.push(next.trim());
-      i += 1;
-      continue;
-    }
-    if (token === '--topic' && next) {
-      args.topic = next.trim();
-      i += 1;
-      continue;
-    }
-    if (token === '--type' && next) {
-      args.type = next.trim();
-      i += 1;
-      continue;
-    }
-    if (token === '--priority' && next) {
-      args.priority = next.trim().toUpperCase();
-      i += 1;
-      continue;
-    }
-    if (token === '--severity' && next) {
-      args.severity = next.trim().toLowerCase();
-      i += 1;
-      continue;
-    }
-    if (token === '--submitted-by' && next) {
-      args.submittedBy = next.trim();
-      i += 1;
-      continue;
-    }
-    if (token === '--notes' && next) {
-      args.notes = next.trim();
-      i += 1;
-      continue;
-    }
-    if (token === '--help' || token === '-h') {
-      args.help = true;
-      continue;
-    }
-    throw new Error(`Unknown/invalid argument: ${token}`);
   }
 
   return args;
@@ -82,7 +86,7 @@ function usage() {
 }
 
 function normalizeUrl(rawUrl) {
-  const value = String(rawUrl || '').trim().replace(/[.,;:'"]+$/g, '');
+  const value = String(rawUrl || '').trim().replace(/[.,;:'"()[\]]+$/g, '');
   if (!value) return null;
   try {
     const url = new URL(value);
@@ -163,15 +167,14 @@ function buildIndexes() {
 }
 
 function nextTaskId() {
-  const currentYear = new Date().getUTCFullYear();
   let maxNum = 0;
-  if (!existsSync(TASKS_DIR)) return `TASK-${currentYear}-0001`;
+  if (!existsSync(TASKS_DIR)) return `TASK-${PIPELINE_TASK_YEAR}-0001`;
   for (const file of readdirSync(TASKS_DIR)) {
-    const match = file.match(new RegExp(`^TASK-${currentYear}-(\\d+)\\.json$`));
+    const match = file.match(new RegExp(`^TASK-${PIPELINE_TASK_YEAR}-(\\d+)\\.json$`));
     if (!match) continue;
     maxNum = Math.max(maxNum, Number.parseInt(match[1], 10));
   }
-  return `TASK-${currentYear}-${String(maxNum + 1).padStart(4, '0')}`;
+  return `TASK-${PIPELINE_TASK_YEAR}-${String(maxNum + 1).padStart(4, '0')}`;
 }
 
 function filePatternFor(type) {
@@ -179,11 +182,19 @@ function filePatternFor(type) {
 }
 
 function acceptanceCriteriaFor(type) {
+  const minH2Sections = {
+    campaign: 7,
+    'threat-actor': 6,
+  };
+  const minMitreMappings = {
+    'threat-actor': 3,
+  };
+
   return {
     frontmatter_valid: true,
     min_sources: 3,
-    min_h2_sections: type === 'campaign' ? 7 : (type === 'threat-actor' ? 6 : 5),
-    min_mitre_mappings: type === 'threat-actor' ? 3 : 1,
+    min_h2_sections: minH2Sections[type] || 5,
+    min_mitre_mappings: minMitreMappings[type] || 1,
     review_status: 'draft_ai',
     schema_validation: 'pass',
     astro_build: true,
@@ -258,6 +269,8 @@ function main() {
   const validTypes = new Set(['incident', 'campaign', 'threat-actor', 'zero-day']);
   if (!validTypes.has(args.type)) throw new Error(`Invalid --type: ${args.type}`);
   if (!/^P[0-3]$/.test(args.priority)) throw new Error(`Invalid --priority: ${args.priority}`);
+  const validSeverities = new Set(['critical', 'high', 'medium', 'low', 'unknown']);
+  if (!validSeverities.has(args.severity)) throw new Error(`Invalid --severity: ${args.severity}`);
 
   const { knownUrls, knownTitles } = buildIndexes();
   const duplicateUrls = normalizedUrls.filter(url => knownUrls.has(url));
@@ -292,10 +305,19 @@ function main() {
     return;
   }
 
-  mkdirSync(TASKS_DIR, { recursive: true });
-  writeFileSync(taskPath, `${JSON.stringify(task, null, 2)}\n`);
+  try {
+    mkdirSync(TASKS_DIR, { recursive: true });
+    writeFileSync(taskPath, `${JSON.stringify(task, null, 2)}\n`);
+  } catch (error) {
+    throw new Error(`Failed to write task file ${taskPath}: ${error.message}`);
+  }
   console.log(`\nCreated task: ${taskId}`);
   console.log(`Path: ${taskPath}`);
 }
 
-main();
+try {
+  main();
+} catch (error) {
+  console.error(`pipeline-submit-link: ${error.message}`);
+  process.exitCode = 1;
+}

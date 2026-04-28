@@ -65,8 +65,10 @@ jobs:
               .map(s => s.trim())
               .filter(s => s.startsWith('http'));
 
+            const PIPELINE_TASK_YEAR = 2026;
+
             function normalizeUrl(rawUrl) {
-              const value = String(rawUrl || '').trim().replace(/[.,;:'"]+$/g, '');
+              const value = String(rawUrl || '').trim().replace(/[.,;:'"()[\]]+$/g, '');
               if (!value) return null;
               try {
                 const url = new URL(value);
@@ -105,6 +107,23 @@ jobs:
               return;
             }
 
+            const validSeverities = new Set(['critical', 'high', 'medium', 'low', 'unknown']);
+            if (!validSeverities.has(severity)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Invalid severity \`${severity}\`. Expected one of: critical, high, medium, low, unknown.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
+
             if (normalizedSources.length === 0) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -128,7 +147,7 @@ jobs:
 
             // ── Generate task ID ─────────────────────────────────────────
             const now = new Date();
-            const year = now.getFullYear();
+            const year = PIPELINE_TASK_YEAR;
 
             // Find next available task number
             const fs = require('fs');
@@ -206,11 +225,19 @@ jobs:
             const taskId = `TASK-${year}-${taskNum}`;
 
             function acceptanceCriteriaFor(articleType) {
+              const minH2Sections = {
+                campaign: 7,
+                'threat-actor': 6,
+              };
+              const minMitreMappings = {
+                'threat-actor': 3,
+              };
+
               return {
                 frontmatter_valid: true,
                 min_sources: 3,
-                min_h2_sections: articleType === 'campaign' ? 7 : (articleType === 'threat-actor' ? 6 : 5),
-                min_mitre_mappings: articleType === 'threat-actor' ? 3 : 1,
+                min_h2_sections: minH2Sections[articleType] || 5,
+                min_mitre_mappings: minMitreMappings[articleType] || 1,
                 review_status: 'draft_ai',
                 schema_validation: 'pass',
                 astro_build: true,
@@ -281,8 +308,24 @@ jobs:
             // ── Write task file ──────────────────────────────────────────
             // Write as JSON (easier for Actions to parse than YAML)
             const taskPath = `${tasksDir}/${taskId}.json`;
-            fs.mkdirSync(tasksDir, { recursive: true });
-            fs.writeFileSync(taskPath, JSON.stringify(task, null, 2) + '\n');
+            try {
+              fs.mkdirSync(tasksDir, { recursive: true });
+              fs.writeFileSync(taskPath, JSON.stringify(task, null, 2) + '\n');
+            } catch (error) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Failed to write task file \`${taskPath}\`: ${error.message}`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
 
             // ── Comment on Issue with task ID ────────────────────────────
             await github.rest.issues.createComment({
