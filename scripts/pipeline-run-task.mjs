@@ -36,6 +36,7 @@ import {
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import { getPublicProseGuardrailIssues } from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -50,20 +51,6 @@ const EDITORIAL_WORDS = [
   'sophisticated', 'unprecedented', 'exceptionally',
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
-const PUBLIC_PROSE_GUARDRAILS = [
-  {
-    label: 'internal article/report framing',
-    regex: /\b(this|the)\s+(article|report|assessment|write[- ]?up|entry)\b/i,
-  },
-  {
-    label: 'editorial workflow leakage',
-    regex: /\b(editorial\s+(workflow|process|scor(?:e|ing))|reviewStatus|draft_ai|draft_human|under_review)\b/i,
-  },
-  {
-    label: 'confidence label leakage',
-    regex: /\b(attribution confidence|confidence grade)\b/i,
-  },
-];
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
@@ -408,46 +395,6 @@ function getSourcesSection(body) {
   const afterHeading = body.slice(start + headingMatch[0].length);
   const nextH2 = afterHeading.search(/^## /m);
   return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
-}
-
-function stripCodeBlocks(body) {
-  return body.replace(/```[\s\S]*?```/g, (match) => ' '.repeat(match.length));
-}
-
-function getAuthoredBodyWithoutSources(body) {
-  const headingMatch = body.match(/^## Sources & References\s*$/m);
-  if (!headingMatch) return stripCodeBlocks(body);
-
-  const start = body.indexOf(headingMatch[0]);
-  const afterHeading = body.slice(start + headingMatch[0].length);
-  const nextH2 = afterHeading.search(/^## /m);
-  const end = nextH2 === -1 ? body.length : start + headingMatch[0].length + nextH2;
-
-  return stripCodeBlocks(`${body.slice(0, start)}${' '.repeat(end - start)}${body.slice(end)}`);
-}
-
-function getPublicProseGuardrailIssues(body) {
-  const authoredBody = getAuthoredBodyWithoutSources(body);
-  const issues = [];
-  const lines = authoredBody.split('\n');
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (!line.trim() || line.startsWith('#')) continue;
-
-    for (const guardrail of PUBLIC_PROSE_GUARDRAILS) {
-      const match = guardrail.regex.exec(line);
-      if (match) {
-        issues.push({
-          line: i + 1,
-          label: guardrail.label,
-          phrase: match[0],
-        });
-      }
-    }
-  }
-
-  return issues;
 }
 
 function parseBodySourceEntries(sourcesBody) {
