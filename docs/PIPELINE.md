@@ -158,7 +158,21 @@ for the pipeline.
      agent to record a real open PR number, which moves the task to
      `status: pr_open`.
 
-9. **Human review + merge**
+9. **Review readiness gate**
+   - `.github/workflows/pipeline-review-gate.yml` runs
+     `node scripts/pipeline-review-gate.mjs --pr <number>` against live
+     GitHub state for public content, site, and pipeline PRs.
+   - For content-collection PRs, the gate requires a successful current-head
+     `validate` check. Green checks from an older head SHA do not count.
+   - For public content/site/pipeline PRs, the gate requires an AI second
+     review on the current head SHA, no unresolved current AI review threads,
+     and no later AI review-error comment without a successful replacement
+     review.
+   - Worker status comments are treated as informational only. A comment that
+     says `merge_ready` does not override current-head checks, review state,
+     unresolved AI threads, or review errors.
+
+10. **Human review + merge**
    - `auto_merge.enabled: false` today — every PR goes to Kernel K for
      review. Merge state is no longer trusted from the local CLI. A GitHub PR
      event records the final task transition after the PR is merged (or reverts
@@ -222,6 +236,7 @@ same queue/validation path as discovery-generated tasks.
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
+| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist or `dangermouse-bot`, zero unresolved AI review threads | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
