@@ -8,7 +8,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const TASKS_DIR = resolve(ROOT, '.github/pipeline/tasks');
 const CONTENT_DIR = resolve(ROOT, 'site/src/content');
-const PIPELINE_TASK_YEAR = 2026;
+const PIPELINE_TASK_YEAR = new Date().getUTCFullYear();
 
 function parseArgs(argv) {
   const args = {

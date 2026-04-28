@@ -64,9 +64,6 @@ jobs:
               .split('\n')
               .map(s => s.trim())
               .filter(s => s.startsWith('http'));
-
-            const PIPELINE_TASK_YEAR = 2026;
-
             function normalizeUrl(rawUrl) {
               const value = String(rawUrl || '').trim().replace(/[.,;:'"()[\]]+$/g, '');
               if (!value) return null;
@@ -147,7 +144,7 @@ jobs:
 
             // ── Generate task ID ─────────────────────────────────────────
             const now = new Date();
-            const year = PIPELINE_TASK_YEAR;
+            const year = now.getUTCFullYear();
 
             // Find next available task number
             const fs = require('fs');
