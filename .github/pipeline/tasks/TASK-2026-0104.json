@@ -72,7 +72,15 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #326"
+    },
+    {
+      "timestamp": "2026-04-28T04:11:14.658Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #337"
     }
   ],
-  "updated": "2026-04-27T17:47:24.125Z"
+  "updated": "2026-04-28T04:11:14.658Z"
 }
