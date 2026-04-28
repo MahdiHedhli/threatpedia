@@ -182,6 +182,9 @@ same queue/validation path as discovery-generated tasks.
      - `site/src/content/**/*.md` (published corpus)
    - If any submitted URL is already known, it reports a duplicate and does not
      write a task.
+   - If the topic appears similar to an existing task/article, it reports an
+     informational overlap warning but still lets URL dedup be the blocking
+     check.
    - If no duplicates are found, it reports the next available `TASK-YYYY-NNNN`
      ID that would be created.
 

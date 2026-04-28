@@ -66,7 +66,7 @@ jobs:
               .filter(s => s.startsWith('http'));
 
             function normalizeUrl(rawUrl) {
-              const value = String(rawUrl || '').trim();
+              const value = String(rawUrl || '').trim().replace(/[.,;:]+$/g, '');
               if (!value) return null;
               try {
                 const url = new URL(value);
@@ -87,6 +87,39 @@ jobs:
             }
 
             const normalizedSources = [...new Set(sources.map(normalizeUrl).filter(Boolean))];
+
+            const validTypes = new Set(['incident', 'campaign', 'threat-actor', 'zero-day']);
+            if (!validTypes.has(type)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `**Pipeline Error:** Invalid article type \`${type}\`. Expected one of: incident, campaign, threat-actor, zero-day.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
+
+            if (normalizedSources.length === 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '**Pipeline Error:** No valid source URLs were provided. Add at least one http(s) source URL and resubmit.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['pipeline/error']
+              });
+              return;
+            }
 
             // Parse CVEs
             const cves = cvesRaw

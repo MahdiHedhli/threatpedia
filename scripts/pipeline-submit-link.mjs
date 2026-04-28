@@ -82,7 +82,7 @@ function usage() {
 }
 
 function normalizeUrl(rawUrl) {
-  const value = String(rawUrl || '').trim();
+  const value = String(rawUrl || '').trim().replace(/[.,;:]+$/g, '');
   if (!value) return null;
   try {
     const url = new URL(value);
@@ -263,13 +263,15 @@ function main() {
   console.log(`  Type: ${args.type} | Priority: ${args.priority}`);
   console.log(`  URLs: ${normalizedUrls.length}`);
 
-  if (duplicateUrls.length > 0 || duplicateTitlePath) {
-    console.log('\nDUPLICATE DETECTED — task not created.');
+  if (duplicateTitlePath) {
+    console.log(`\nPotential topic overlap: ${duplicateTitlePath}`);
+    console.log('This is informational only; URL dedup remains the blocking check.');
+  }
+
+  if (duplicateUrls.length > 0) {
+    console.log('\nDUPLICATE DETECTED - task not created.');
     for (const url of duplicateUrls) {
-      console.log(`  • URL already known: ${url}`);
-    }
-    if (duplicateTitlePath) {
-      console.log(`  • Topic appears already covered: ${duplicateTitlePath}`);
+      console.log(`  - URL already known: ${url}`);
     }
     process.exitCode = 2;
     return;
