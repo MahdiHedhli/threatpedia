@@ -79,7 +79,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
   }
 
   function parseTaskIdFromIssue(issue) {
-    const titleMatch = String(issue.title || '').match(/\[PIPELINE\]\s+(TASK-\d{4}-\d+):/);
+    const titleMatch = String(issue.title || '').match(/\[PIPELINE\]\s+(TASK-\d{4}-\d{4}):/);
     if (titleMatch) return titleMatch[1];
     const bodyMatch = String(issue.body || '').match(/## Pipeline Task: `([^`]+)`/);
     return bodyMatch ? bodyMatch[1] : null;
@@ -160,6 +160,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
   async function loadOpenPrForTask(task) {
     const knownPr = await loadPrForTask(task);
     if (knownPr?.state === 'open') return knownPr;
+    if (!task.pr_number) return null;
 
     const headRef = task.output?.branch;
     if (!headRef) return null;
@@ -171,7 +172,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       head: `${context.repo.owner}:${headRef}`,
       sort: 'updated',
       direction: 'desc',
-      per_page: 5,
+      per_page: 1,
     });
     return data[0] || null;
   }
@@ -268,7 +269,12 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       }
 
       const readyForPickup = task.status === 'pending' && task.stage === 'draft';
-      const coveringPr = await loadOpenPrForTask(task);
+      let coveringPr = null;
+      if (readyForPickup) {
+        coveringPr = await loadOpenPrForTask(task);
+      } else if (task.status === 'pr_open' && task.pr_number) {
+        coveringPr = { state: 'open', number: task.pr_number };
+      }
 
       if (coveringPr?.state === 'open') {
         for (const issue of issues) {
