@@ -224,13 +224,14 @@ async function getReviewThreads(owner, repo, prNumber, token) {
   while (true) {
     const data = await githubGraphql(query, { owner, repo, number: prNumber, after }, token);
     const connection = data.repository.pullRequest.reviewThreads;
-    for (const thread of connection.nodes) {
+    const pageThreads = await Promise.all(connection.nodes.map(async (thread) => {
       if (thread.comments?.pageInfo?.hasNextPage) {
         const allComments = await getReviewThreadComments(thread.id, token);
         if (thread.comments) thread.comments.nodes = allComments;
       }
-      threads.push(thread);
-    }
+      return thread;
+    }));
+    threads.push(...pageThreads);
     if (!connection.pageInfo.hasNextPage) break;
     after = connection.pageInfo.endCursor;
   }
@@ -253,13 +254,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
   const aiLogins = getAiLogins();
 
   const pr = await githubFetch(`/repos/${owner}/${repo}/pulls/${prNumber}`, token);
-  const [files, reviews, issueComments, checkRunsPayload, threads] = await Promise.all([
-    listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/files`, token),
-    listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, token),
-    listPaginated(`/repos/${owner}/${repo}/issues/${prNumber}/comments`, token),
-    listCheckRuns(owner, repo, pr.head.sha, token),
-    getReviewThreads(owner, repo, prNumber, token),
-  ]);
+  const files = await listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/files`, token);
 
   const changedPaths = files.map((file) => file.filename);
   const relevantPaths = changedPaths.filter(isRelevantFile);
@@ -282,6 +277,13 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
       files: { changed: changedPaths, relevant: relevantPaths, content: contentPaths },
     };
   }
+
+  const [reviews, issueComments, checkRunsPayload, threads] = await Promise.all([
+    listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, token),
+    listPaginated(`/repos/${owner}/${repo}/issues/${prNumber}/comments`, token),
+    listCheckRuns(owner, repo, pr.head.sha, token),
+    getReviewThreads(owner, repo, prNumber, token),
+  ]);
 
   const validateChecks = (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
   const passingValidate = validateChecks.find((check) => check.status === 'completed' && check.conclusion === 'success');
