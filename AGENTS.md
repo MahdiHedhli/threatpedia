@@ -94,13 +94,18 @@ when working on corpus or pipeline integrity.
 - do not call a PR merge-ready based only on local state; live GitHub PR state
   is the source of truth
 
-## Task isolation discipline
+## Per-task isolation discipline
 
-For pipeline tasks and task-scoped content work:
+For pipeline tasks and task-scoped content work, this section defines the
+per-task isolation rule. The next section defines cross-worker automation
+collision rules.
 
 - use one fresh worktree or other clean dedicated checkout per task
 - run `node scripts/pipeline-run-task.mjs --task ... --lock` only from that
   clean task-scoped checkout
+- after `--lock`, verify `git status --short` shows only the intended task
+  JSON or article paths; if adjacent task files, branch renames, or unexpected
+  paths appear, abandon the checkout and rebuild cleanly
 - if you hit a branch mismatch, unrelated dirty paths, or unexpected spillover,
   stop and rebuild from clean state rather than renaming branches mid-flight or
   carrying cleanup commits
@@ -116,9 +121,9 @@ Before reporting a task PR as ready, verify all of the following:
 
 ## Automation collision avoidance
 
-Hourly workers, CoWork agents, and GitHub Actions may run at the same time.
-Treat shared repo directories as read/reference locations, not as long-lived
-edit targets.
+Hourly workers, AI agents (Codex, CoWork/Claude, and Gemini), and GitHub
+Actions may run at the same time. Treat shared repo directories as
+read/reference locations, not as long-lived edit targets.
 
 - use a fresh temp clone or task-scoped worktree for every automation run that
   writes public repo files
@@ -130,12 +135,19 @@ edit targets.
   changed the current PR head
 - respect `locked_by`, `locked_at`, open PRs, and open `pipeline/ready` issues
   as coordination state
+- see `docs/PIPELINE.md` for canonical task-state and queue semantics
 - if a lock, branch, PR, or task-state race appears, skip or rebuild cleanly
   rather than carrying mixed state forward
 - do not edit from a dirty shared checkout; abandon the task-scoped checkout and
   rebuild from clean state instead
+- at session end, remove disposable temp directories when safe; if cleanup would
+  require force-deleting refs, stashes, or branches, leave them in place and
+  report the cleanup debt rather than using destructive commands
 - review workers may make bounded fixes to existing PRs, but must not start new
   drafting tasks while acting as reviewers
+- a bounded review fix is limited to files already in the PR diff or directly
+  flagged by reviewer feedback, avoids new feature or content expansion, and
+  preserves the original PR scope
 - drafting workers may open and remediate their task PRs, but must not merge
   unless their prompt explicitly grants merge authority and all live gates pass
 - workflow failures in ingest, dispatcher, task-state sync, review gate,
