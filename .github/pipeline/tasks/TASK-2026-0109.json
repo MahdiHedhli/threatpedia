@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0109",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
     "reprocess": true,
@@ -72,7 +72,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #344"
+    },
+    {
+      "timestamp": "2026-04-28T18:40:09.759Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ],
-  "updated": "2026-04-28T12:10:15.066Z"
+  "updated": "2026-04-28T18:40:09.759Z",
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-28T18:40:09.758Z"
 }
