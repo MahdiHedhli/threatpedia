@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-28T19:24:52.825Z",
-  "updated": "2026-04-28T19:24:52.825Z",
+  "updated": "2026-04-28T22:12:40.159Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-28T22:12:40.159Z",
   "input": {
     "topic": "ConnectWise ScreenConnect Path Traversal Vulnerability (CVE-2024-1708)",
     "sources": [
@@ -77,6 +77,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 98)"
+    },
+    {
+      "timestamp": "2026-04-28T22:12:40.159Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
