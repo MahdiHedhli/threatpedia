@@ -152,7 +152,7 @@ async function listCheckRuns(owner, repo, ref, token) {
   return { check_runs: results };
 }
 
-async function getReviewThreadComments(threadId, token) {
+async function getReviewThreadComments(threadId, token, after = null) {
   const query = `
     query($threadId: ID!, $after: String) {
       node(id: $threadId) {
@@ -173,14 +173,14 @@ async function getReviewThreadComments(threadId, token) {
     }`;
 
   const comments = [];
-  let after = null;
+  let cursor = after;
   while (true) {
-    const data = await githubGraphql(query, { threadId, after }, token);
+    const data = await githubGraphql(query, { threadId, after: cursor }, token);
     const connection = data.node?.comments;
     if (!connection) break;
     comments.push(...connection.nodes);
     if (!connection.pageInfo.hasNextPage) break;
-    after = connection.pageInfo.endCursor;
+    cursor = connection.pageInfo.endCursor;
   }
   return comments;
 }
@@ -220,8 +220,12 @@ async function getReviewThreads(owner, repo, prNumber, token) {
     const connection = data.repository.pullRequest.reviewThreads;
     const pageThreads = await Promise.all(connection.nodes.map(async (thread) => {
       if (thread.comments?.pageInfo?.hasNextPage) {
-        const allComments = await getReviewThreadComments(thread.id, token);
-        if (thread.comments) thread.comments.nodes = allComments;
+        const additionalComments = await getReviewThreadComments(
+          thread.id,
+          token,
+          thread.comments.pageInfo.endCursor,
+        );
+        if (thread.comments) thread.comments.nodes.push(...additionalComments);
       }
       return thread;
     }));
