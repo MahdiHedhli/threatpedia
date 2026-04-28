@@ -114,19 +114,19 @@ Because the exploit was public and iterated by the community, defenders should a
 
 ## Disclosure Timeline
 
-2026-04-03 — Public exploit release
+### 2026-04-03 — Public exploit release
 
 BlueHammer proof-of-concept code was publicly released under the Nightmare-Eclipse handle following public complaints about Microsoft's disclosure handling.
 
-2026-04-06 — Media coverage and independent validation
+### 2026-04-06 — Media coverage and independent validation
 
 BleepingComputer reported the disclosure and independent validation context, including Will Dormann's description of the exploit as a local privilege-escalation issue.
 
-2026-04-14 — Vendor patch released
+### 2026-04-14 — Vendor patch
 
 Microsoft addressed the flaw as CVE-2026-33825 in the April 2026 security updates. Patch Tuesday advisory published.
 
-2026-04-17 — Active exploitation confirmed
+### 2026-04-17 — Active exploitation confirmed
 
 Public reporting confirmed Huntress had observed BlueHammer exploitation in attacks dating back to April 10.
 
