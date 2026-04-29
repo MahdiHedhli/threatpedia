@@ -89,7 +89,15 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Rotated the execution branch from bot/reprocess-task-2026-0152 to pipeline/TASK-2026-0152 because the old remote branch carried a large unrelated stale diff and no open PR."
+    },
+    {
+      "timestamp": "2026-04-29T04:07:51.838Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #374 already covers this task."
     }
   ],
-  "updated": "2026-04-29T01:05:00Z"
+  "updated": "2026-04-29T04:07:51.838Z"
 }
