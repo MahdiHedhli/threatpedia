@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0152",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "MCP ecosystem coordinated vulnerability disclosure",
     "reprocess": true,
@@ -112,11 +112,20 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #374 already covers this task."
+    },
+    {
+      "timestamp": "2026-04-29T07:53:20.749Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #374 merged (c82c343)."
     }
   ],
-  "updated": "2026-04-29T04:07:51.838Z",
+  "updated": "2026-04-29T07:53:20.749Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 374,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/374"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/374",
+  "merged_at": "2026-04-29T07:53:20.749Z"
 }

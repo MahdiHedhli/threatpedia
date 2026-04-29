@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0103",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns",
     "reprocess": true,
@@ -47,11 +47,20 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #382"
+    },
+    {
+      "timestamp": "2026-04-29T07:53:36.521Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #382 merged (f8ed254)."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-29T06:49:40.274Z",
+  "updated": "2026-04-29T07:53:36.521Z",
   "pr_number": 382,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/382"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/382",
+  "merged_at": "2026-04-29T07:53:36.521Z"
 }
