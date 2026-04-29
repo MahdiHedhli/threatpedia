@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-2026-0206",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-29T17:02:08.525Z",
+  "updated": "2026-04-29T17:02:08.525Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "ILOVEYOU Worm Outbreak",
+    "sources": [
+      "https://www.gao.gov/products/t-aimd-00-181",
+      "https://www.sei.cmu.edu/certsite/advisories/CA-2000-04.html",
+      "https://usa.kaspersky.com/blog/cybersecurity-history-iloveyou/26869"
+    ],
+    "notes": "Historical corpus seed HIST-INC-003. Route article creation through GPT-5.5. Create a new incident article; keep reviewStatus draft_ai; do not certify without human source review; preserve attribution uncertainty."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0206",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-29T17:02:08.525Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
