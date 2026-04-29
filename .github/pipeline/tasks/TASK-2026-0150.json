@@ -33,7 +33,15 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Campaign corpus review - removed duplicate SolarWinds campaign variant and queued canonical reprocessing."
+    },
+    {
+      "timestamp": "2026-04-29T04:07:51.838Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #375"
     }
   ],
-  "updated": "2026-04-17T19:00:00Z"
+  "updated": "2026-04-29T04:07:51.838Z"
 }
