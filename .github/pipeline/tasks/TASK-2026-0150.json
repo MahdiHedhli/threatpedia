@@ -57,7 +57,15 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #386"
+    },
+    {
+      "timestamp": "2026-04-29T11:57:05.230Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #390 already covers this task."
     }
   ],
-  "updated": "2026-04-29T10:21:40.024Z"
+  "updated": "2026-04-29T11:57:05.230Z"
 }
