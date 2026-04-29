@@ -117,13 +117,11 @@ UMMC said clinics resumed normal operations on March 2 after nine days of disrup
 
 The confirmed impact was operational. AP reported that the ransomware attack forced UMMC to close roughly three dozen clinics across Mississippi and cancel elective procedures. UMMC's own statements confirm that the organization had to rely on manual care workflows, paper documentation, and improvised communications while network systems were unavailable.
 
-The disruption also affected time-sensitive clinical services. AP and UMMC both said cancer care required special triage during the outage, and UMMC later reported that chemotherapy services restarted on February 23 before the broader return to normal clinic operations on March 2. Public sources reviewed here do not independently confirm the volume or type of any data stolen from UMMC, so the strongest support is for a major care-delivery disruption with unresolved public questions about any data-compromise scope.
+The disruption also affected time-sensitive clinical services. AP and UMMC both said cancer care required special triage during the outage, and UMMC later reported that chemotherapy services restarted on February 23 before the broader return to normal clinic operations on March 2. While Medusa later claimed to have exfiltrated data, the public sources cited here do not independently confirm the volume or type of any data stolen from UMMC. The confirmed impact remains a care-delivery disruption with unresolved questions about the scope of any data compromise.
 
 ## Attribution
 
-UMMC publicly described the event as ransomware but did not publicly attribute it to a named threat actor in the materials reviewed here. The later Medusa linkage comes from the group's own public claim as reported by The Record, which said the gang demanded $800,000 and threatened to leak allegedly stolen data.
-
-Because the victim did not publicly validate that claim in the same terms, the safest posture is to treat Medusa as a claimed attribution rather than a confirmed one.
+UMMC publicly described the event as ransomware but did not attribute it to a specific threat actor. The Record reported that the Medusa ransomware group later claimed responsibility, demanded $800,000, and threatened to leak allegedly stolen data. UMMC did not publicly confirm the identity of the attackers or the validity of the exfiltration claims.
 
 ## Timeline
 
@@ -149,7 +147,7 @@ The Record reported that Medusa claimed responsibility for the incident and thre
 
 ## Remediation & Mitigation
 
-UMMC's public response centered on containment and continuity of care: shutting down connected systems, keeping hospitals and emergency departments open, using downtime procedures, and prioritizing time-sensitive patients until clinics fully reopened. Those public steps show the value of tested manual workflows and recovery plans for healthcare environments where care cannot pause.
+UMMC's public response centered on containment and continuity of care: shutting down connected systems, keeping hospitals and emergency departments open, using downtime procedures, and prioritizing time-sensitive patients until clinics fully reopened. These steps highlight the importance of tested manual workflows and recovery plans for healthcare environments that require continuous operation.
 
 For broader defense against Medusa activity, Microsoft said in April 2026 that organizations should harden web-facing systems, enforce MFA on approved remote-management tools, turn on tamper protection for security tooling, and use controls that help block credential theft and ransomware behavior. For healthcare operators, the UMMC incident also reinforces the need to rehearse downtime procedures for electronic health record outages and to maintain restoration paths that can support urgent care before full system normalization.
 
