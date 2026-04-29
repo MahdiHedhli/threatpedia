@@ -12,11 +12,32 @@ jobs:
     permissions:
       contents: write
       issues: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v6
 
+      - name: Checkout ingest branch
+        id: branch
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          BRANCH="pipeline/ingest-issue-${ISSUE_NUMBER}"
+
+          git fetch origin main
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+            git merge --no-edit origin/main
+          else
+            git checkout -b "$BRANCH"
+          fi
+
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
       - name: Parse Issue and create task
+        id: parse
         uses: actions/github-script@v8
         with:
           script: |
@@ -218,6 +239,25 @@ jobs:
                 if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
               }
             }
+
+            const openPulls = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            for (const pr of openPulls) {
+              const prFiles = await github.paginate(github.rest.pulls.listFiles, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                per_page: 100,
+              });
+              for (const file of prFiles) {
+                const m = file.filename.match(new RegExp(`^${tasksDir}/TASK-${year}-(\\d+)\\.json$`));
+                if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
+              }
+            }
             const taskNum = String(maxNum + 1).padStart(4, '0');
             const taskId = `TASK-${year}-${taskNum}`;
 
@@ -324,41 +364,175 @@ jobs:
               return;
             }
 
-            // ── Comment on Issue with task ID ────────────────────────────
+            core.setOutput('has_task', 'true');
+            core.setOutput('task_id', taskId);
+            core.setOutput('task_path', taskPath);
+            core.setOutput('type', type);
+            core.setOutput('priority', priority);
+            core.setOutput('source_count', String(normalizedSources.length));
+
+      - name: Commit task file
+        id: commit
+        if: steps.parse.outputs.has_task == 'true'
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/pipeline/tasks/
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore(pipeline): ingest manual submission from Issue #${{ github.event.issue.number }}"
+          git push -u origin "$BRANCH"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create task PR
+        id: pr
+        if: steps.parse.outputs.has_task == 'true' && steps.commit.outputs.has_changes == 'true'
+        uses: actions/github-script@v8
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          TASK_ID: ${{ steps.parse.outputs.task_id }}
+          TASK_PATH: ${{ steps.parse.outputs.task_path }}
+          TYPE: ${{ steps.parse.outputs.type }}
+          PRIORITY: ${{ steps.parse.outputs.priority }}
+          SOURCE_COUNT: ${{ steps.parse.outputs.source_count }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = process.env.BRANCH;
+            const taskId = process.env.TASK_ID;
+            const taskPath = process.env.TASK_PATH;
+            const type = process.env.TYPE;
+            const priority = process.env.PRIORITY;
+            const sourceCount = process.env.SOURCE_COUNT;
+            const issueNumber = context.payload.issue.number;
+            const label = 'pipeline/ingest';
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch (error) {
+              if (error.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: label,
+                  color: '1d76db',
+                  description: 'Manual pipeline ingestion task PR',
+                });
+              } else {
+                throw error;
+              }
+            }
+
+            const title = `Pipeline ingest task — ${taskId} from Issue #${issueNumber}`;
+            const body = [
+              '## Pipeline ingest task',
+              '',
+              `This PR adds task file \`${taskPath}\` for manual submission Issue #${issueNumber}.`,
+              '',
+              '| Field | Value |',
+              '|---|---|',
+              `| Task | \`${taskId}\` |`,
+              `| Type | ${type} |`,
+              `| Priority | ${priority} |`,
+              `| Sources | ${sourceCount} URL(s) |`,
+              `| Article branch | \`pipeline/${taskId}\` |`,
+              '',
+              'After this PR merges, the dispatcher can pick up the task and create the article PR.',
+            ].join('\n');
+
+            const { data: existing } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${branch}`,
+              per_page: 5,
+            });
+
+            let pr;
+            if (existing.length > 0) {
+              pr = existing[0];
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                title,
+                body,
+              });
+            } else {
+              const created = await github.rest.pulls.create({
+                owner,
+                repo,
+                head: branch,
+                base: 'main',
+                title,
+                body,
+              });
+              pr = created.data;
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: pr.number,
+              labels: [label, `type/${type}`],
+            });
+
+            core.setOutput('number', String(pr.number));
+            core.setOutput('url', pr.html_url);
+
+      - name: Comment on source Issue
+        if: steps.pr.outputs.number != ''
+        uses: actions/github-script@v8
+        env:
+          TASK_ID: ${{ steps.parse.outputs.task_id }}
+          TASK_PATH: ${{ steps.parse.outputs.task_path }}
+          TYPE: ${{ steps.parse.outputs.type }}
+          PRIORITY: ${{ steps.parse.outputs.priority }}
+          SOURCE_COUNT: ${{ steps.parse.outputs.source_count }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.issue.number;
+            const taskId = process.env.TASK_ID;
+            const taskPath = process.env.TASK_PATH;
+            const type = process.env.TYPE;
+            const priority = process.env.PRIORITY;
+            const sourceCount = process.env.SOURCE_COUNT;
+            const prNumber = process.env.PR_NUMBER;
+            const prUrl = process.env.PR_URL;
+
             await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
+              owner,
+              repo,
+              issue_number,
               body: [
-                `**Pipeline Task Created:** \`${taskId}\``,
+                `**Pipeline Task PR Created:** \`${taskId}\``,
                 '',
                 '| Field | Value |',
                 '|---|---|',
                 `| Type | ${type} |`,
                 `| Priority | ${priority} |`,
-                `| Sources | ${normalizedSources.length} URL(s) |`,
-                `| Stage | draft (pending) |`,
-                `| Branch | \`pipeline/${taskId}\` |`,
+                `| Sources | ${sourceCount} URL(s) |`,
+                `| Stage | draft (pending task PR) |`,
+                `| Article Branch | \`pipeline/${taskId}\` |`,
+                `| Task PR | [#${prNumber}](${prUrl}) |`,
                 '',
-                'The task is queued for the next dispatcher run. An agent will pick it up, generate the article, and open a PR for validation.',
+                'The task will be queued for dispatcher pickup after the task PR merges.',
                 '',
-                `Task file: [\`${taskPath}\`](/${taskPath})`,
+                `Task file: \`${taskPath}\``,
               ].join('\n'),
             });
 
-            // ── Add tracking label ───────────────────────────────────────
             await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              labels: ['pipeline/queued', `type/${type}`]
+              owner,
+              repo,
+              issue_number,
+              labels: ['pipeline/queued', `type/${type}`],
             });
-
-      - name: Commit task file
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/pipeline/tasks/
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore(pipeline): ingest manual submission from Issue #${{ github.event.issue.number }}"
-          git push
