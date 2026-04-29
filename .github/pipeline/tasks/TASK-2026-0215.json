@@ -4,20 +4,20 @@
   "type": "incident",
   "priority": "P0",
   "status": "pending",
-  "created": "2026-04-29T17:02:09.355Z",
-  "updated": "2026-04-29T17:02:09.355Z",
+  "created": "2026-04-29T17:02:09.263Z",
+  "updated": "2026-04-29T17:02:09.263Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "U.S. Office of Personnel Management Breach",
+    "topic": "Sony Pictures Destructive Attack",
     "sources": [
-      "https://www.opm.gov/cybersecurity-resource-center",
-      "https://www.gao.gov/products/gao-17-614",
-      "https://www.opm.gov/news/testimony/114th-congress/under-attack-federal-cybersecurity-and-the-opm-data-breach.pdf"
+      "https://www.fbi.gov/contact-us/field-offices/sandiego/news/press-releases/update-on-sony-investigation",
+      "https://www.justice.gov/opa/pr/update-sony-investigation",
+      "https://www.justice.gov/archives/opa/press-release/file/1092091/dl"
     ],
-    "notes": "Historical corpus seed HIST-INC-013. Route article creation through GPT-5.5. Create a new incident article; keep reviewStatus draft_ai; do not certify without human source review; preserve attribution uncertainty."
+    "notes": "Historical corpus seed HIST-INC-012. Draft as an incident article grounded in the listed primary or authoritative sources; keep attribution uncertainty explicit where sources differ."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -44,7 +44,7 @@
   },
   "history": [
     {
-      "timestamp": "2026-04-29T17:02:09.355Z",
+      "timestamp": "2026-04-29T17:02:09.263Z",
       "action": "created",
       "from": "none",
       "to": "pending",

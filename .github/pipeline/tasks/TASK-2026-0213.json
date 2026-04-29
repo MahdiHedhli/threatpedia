@@ -4,20 +4,20 @@
   "type": "incident",
   "priority": "P0",
   "status": "pending",
-  "created": "2026-04-29T17:02:09.171Z",
-  "updated": "2026-04-29T17:02:09.171Z",
+  "created": "2026-04-29T17:02:09.076Z",
+  "updated": "2026-04-29T17:02:09.076Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Target POS Data Breach",
+    "topic": "Shamoon / Saudi Aramco Wiper Attack",
     "sources": [
-      "https://corporate.target.com/press/release/2014/01/target-provides-update-on-data-breach-and-financial-performance",
-      "https://www.commerce.senate.gov/services/files/24d3c229-4f2f-405d-b8db-a3a67f183883",
-      "https://www.texasattorneygeneral.gov/news/releases/ag-paxton-announces-185-million-settlement-target-resolve-2013-data-breach"
+      "https://attack.mitre.org/software/S0140",
+      "https://www.cfr.org/cyber-operations/compromise-of-saudi-aramco-and-rasgas",
+      "https://www.ibm.com/think/x-force/the-full-shamoon-how-the-devastating-malware-was-inserted-into-networks"
     ],
-    "notes": "Historical corpus seed HIST-INC-011. Route article creation through GPT-5.5. Create a new incident article; keep reviewStatus draft_ai; do not certify without human source review; preserve attribution uncertainty."
+    "notes": "Historical corpus seed HIST-INC-010. Draft as an incident article grounded in the listed primary or authoritative sources; keep attribution uncertainty explicit where sources differ."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -44,7 +44,7 @@
   },
   "history": [
     {
-      "timestamp": "2026-04-29T17:02:09.171Z",
+      "timestamp": "2026-04-29T17:02:09.076Z",
       "action": "created",
       "from": "none",
       "to": "pending",

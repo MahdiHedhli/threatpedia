@@ -4,20 +4,20 @@
   "type": "incident",
   "priority": "P0",
   "status": "pending",
-  "created": "2026-04-29T17:02:08.797Z",
-  "updated": "2026-04-29T17:02:08.797Z",
+  "created": "2026-04-29T17:02:08.708Z",
+  "updated": "2026-04-29T17:02:08.708Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Estonia DDoS Attacks",
+    "topic": "SQL Slammer Worm",
     "sources": [
-      "https://ccdcoe.org/library/publications/analysis-of-the-2007-cyber-attacks-against-estonia-from-the-information-warfare-perspective",
-      "https://www.cfr.org/cyber-operations/cyber-attacks-against-estonia",
-      "https://www.europarl.europa.eu/meetdocs/2009_2014/documents/sede/dv/sede150611natocyberattacks_/sede150611natocyberattacks_en.pdf"
+      "https://www.caida.org/catalog/papers/2003_sapphire2/sapphire",
+      "https://news.microsoft.com/2003/01/25/microsoft-statement-on-the-slammer-worm-attack",
+      "https://learn.microsoft.com/en-us/security-updates/securitybulletins/2002/ms02-039"
     ],
-    "notes": "Historical corpus seed HIST-INC-006. Route article creation through GPT-5.5. Create a new incident article; keep reviewStatus draft_ai; do not certify without human source review; preserve attribution uncertainty."
+    "notes": "Historical corpus seed HIST-INC-005. Draft as an incident article grounded in the listed primary or authoritative sources; keep attribution uncertainty explicit where sources differ."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -44,7 +44,7 @@
   },
   "history": [
     {
-      "timestamp": "2026-04-29T17:02:08.797Z",
+      "timestamp": "2026-04-29T17:02:08.708Z",
       "action": "created",
       "from": "none",
       "to": "pending",
