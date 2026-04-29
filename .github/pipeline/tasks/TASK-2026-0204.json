@@ -8,7 +8,7 @@
   "updated": "2026-04-29T19:24:22.000Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
+  "locked_by": "MahdiHedhli",
   "locked_at": "2026-04-29T19:24:22.000Z",
   "input": {
     "topic": "GitHub internal Git infrastructure RCE (CVE-2026-3854)",
@@ -63,7 +63,7 @@
       "timestamp": "2026-04-29T19:13:17.371Z",
       "from": "pending",
       "to": "locked",
-      "agent": "unknown",
+      "agent": "MahdiHedhli",
       "note": "Locked for execution"
     },
     {
