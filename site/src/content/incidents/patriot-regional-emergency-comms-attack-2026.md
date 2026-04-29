@@ -1,209 +1,136 @@
 ---
 eventId: TP-2026-0048
-title: Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns
+title: "Patriot Regional Emergency Communications Center Cyberattack"
 date: 2026-04-01
-attackType: ransomware
+attackType: disruption
 severity: high
 sector: Government / Emergency Services
 geography: United States (Massachusetts)
 threatActor: Unknown
 attributionConfidence: A4
-reviewStatus: under_review
+reviewStatus: draft_ai
 confidenceGrade: C
-generatedBy: new-threat-intel-automation
-generatedDate: 2026-04-01
+generatedBy: kernel-k
+generatedDate: 2026-04-29
 cves: []
 relatedSlugs:
   - "foster-city-ransomware-2026"
   - "winona-county-ransomware-2026"
 tags:
-  - "ransomware"
   - "emergency-services"
   - "government"
-  - "municipal"
   - "massachusetts"
-  - "911"
+  - "public-safety"
+  - "service-disruption"
   - "codered"
   - "crisis24"
+sources:
+  - url: "https://therecord.media/massachusetts-emergency-alert-cyberattack"
+    publisher: "The Record"
+    publisherType: media
+    reliability: R1
+    publicationDate: "2026-04-03"
+    accessDate: "2026-04-29"
+    archived: false
+  - url: "https://www.boston25news.com/news/local/middlesex-county-town-impacted-by-cyber-attack/N3RNZWIKI5A5NLMNFFWMLO3W5M/"
+    publisher: "Boston 25 News"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-01"
+    accessDate: "2026-04-29"
+    archived: false
+  - url: "https://www.govtech.com/security/massachusetts-towns-impacted-by-emergency-comms-cyber-attack"
+    publisher: "Government Technology"
+    publisherType: media
+    reliability: R2
+    publicationDate: "2026-04-02"
+    accessDate: "2026-04-29"
+    archived: false
+  - url: "https://www.town.pepperell.ma.us/228"
+    publisher: "Town of Pepperell"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-04-29"
+    accessDate: "2026-04-29"
+    archived: false
+mitreMappings:
+  - techniqueId: "T1499"
+    techniqueName: "Endpoint Denial of Service"
+    tactic: "Impact"
+    notes: "Public reporting confirms a cyberattack disrupted PRECC town and public-safety computer systems plus non-emergency phone service, though the precise intrusion method remains undisclosed."
 ---
-## Executive Summary
 
-A cyberattack on the Patriot Regional Emergency Communications Center in Pepperell, Massachusetts, on April 1, 2026, disrupted emergency and business phone lines for police, fire, and EMS departments serving four regional towns: Pepperell, Dunstable, Townsend, and Ashby. The attack disabled non-emergency telephone services while critical 911 emergency dispatch systems remained operational on separate, protected infrastructure. This incident highlights the critical vulnerability of emergency services infrastructure to cyberattacks and the ongoing risk posed by inadequately secured communications systems.
+## Summary
 
-The Patriot Regional Emergency Communications Center serves as the central dispatch hub for multiple agencies across the region. Emergency notifications are coordinated through the CodeRED platform, whose parent company Crisis24 suffered a significant ransomware attack in November 2025. The April attack on Patriot Regional ECC may represent either a separate incident or a secondary exploitation of vulnerabilities exposed during the November Crisis24 breach.
-Public reporting has linked the affected center to CodeRED-connected systems, but it has not established a confirmed causal link between this incident and the prior Crisis24 intrusion. That overlap should therefore be treated as contextual risk, not proven attack lineage.
+The Patriot Regional Emergency Communications Center (PRECC) in Pepperell, Massachusetts disclosed a cyberattack that disrupted town and public-safety computer systems serving several northern Massachusetts communities. Public reporting said the incident affected non-emergency and business phone lines, while 9-1-1 service remained operational on separate infrastructure.
 
-The attack's impact on non-emergency communications demonstrates a significant gap in emergency services resilience. While 911 remains operational, the inability to receive non-emergency calls, dispatch information, and administrative communications severely hampers response coordination and public service delivery. Law enforcement, fire services, and EMS agencies reverted to manual and backup procedures during the outage.
-
-## Timeline
-
-2025-11-XX — Crisis24 Breach
-CodeRED Parent Company Ransomware Attack
-Crisis24 (parent company of CodeRED emergency notification platform) suffers ransomware attack. Hackers compromise the platform and steal municipal officials' credentials across dozens of U.S. municipalities. Vulnerabilities or access pathways exposed during this breach potentially extend to connected emergency services networks.
-
-2026-04-01 — 06:00 AM (Approx.)
-Cyberattack Begins
-Attacker compromises Patriot Regional Emergency Communications Center systems. Attack vector not yet disclosed; possibilities include ransomware deployment, direct intrusion, or exploitation of Crisis24-related vulnerabilities.
-
-2026-04-01 — 08:30 AM (Approx.)
-Service Disruption Detected
-Emergency and business phone lines go offline. Center personnel detect the outage. 911 systems continue operating on separate infrastructure, preventing public safety crisis. Non-emergency dispatch operations transition to manual procedures and radio communications.
-
-2026-04-01 — Ongoing
-Response & Investigation
-Incident response teams mobilized. Law enforcement, fire, and EMS agencies operate under manual dispatch procedures. Investigation underway to determine attack vector, scope of compromise, and restoration timeline. Regional emergency services coordination disrupted.
+The affected regional hub supports emergency communications for Pepperell and other member towns, including Ashby, Dunstable, Groton, and Townsend. Officials said they engaged outside cybersecurity specialists, their insurance provider, and state and federal law enforcement partners after learning of the attack. Public reporting also noted that experts were still determining whether any information had been accessed or stolen.
 
 ## Technical Analysis
 
-Systems Affected: Patriot Regional Emergency Communications Center telephone exchange and related business/administrative communications systems. 911 emergency dispatch systems operated on separate infrastructure and remained functional. This suggests intentional network segmentation protected critical 911 systems but non-emergency communications infrastructure lacked equivalent protection.
+What is publicly confirmed is limited but clear: the incident affected town and public-safety computer systems and took non-emergency and business phone lines offline. Boston 25 and The Record both reported that officials first learned of the issue early Tuesday morning, and GovTech reported that some towns disabled system connections to PRECC after the breach notice.
 
-### Possible Attack Vector 1: CodeRED / Crisis24 Credential Leverage
+Public reporting did not identify the exact intrusion vector, malware family, or root cause. The Record noted that the PRECC environment is linked to CodeRED, an emergency notification service that had its own November 2025 cyber incident at parent company Crisis24. That relationship is relevant context, but the available reporting does not establish that the PRECC intrusion was caused by the earlier CodeRED breach or by reuse of any Crisis24-exposed credentials.
 
-Attacker uses credentials obtained in November 2025 Crisis24 breach to access CodeRED platform or systems connected to it. CodeRED integration with Patriot Regional ECC provides network access pathway. Attacker pivots from CodeRED systems into emergency communications center infrastructure.
+## Attack Chain
 
-### Possible Attack Vector 2: Direct Intrusion / Ransomware
+### Stage 1: Cyberattack Discovered at PRECC
 
-Attacker gains initial access to Patriot Regional ECC systems through unpatched vulnerabilities, exposed services, or compromised credentials. Malware deployed to disrupt or encrypt communications systems. Ransomware infection would render phone systems unavailable.
+Officials in member towns said PRECC and local public-safety teams became aware of the cyberattack early on Tuesday, March 31, 2026.
 
-System Isolation Phase
+### Stage 2: Communications Systems Disrupted
 
-Telephone and business communication systems taken offline to prevent spread of malware or to comply with ransomware attack protocols. 911 systems, operating on separate infrastructure, remain unaffected. Emergency dispatch continues with reduced efficiency using radio and manual procedures.
+The intrusion affected town and public-safety computer systems and caused non-emergency and business phone lines to go out of service across multiple departments and towns.
 
-Service Degradation
+### Stage 3: Segmented 9-1-1 Infrastructure Holds
 
-Non-emergency phone lines unavailable. Agencies unable to receive public calls for non-emergency assistance. Administrative communications disrupted. Regional emergency services coordination hampered. Public services requiring telephone access (business licensing, permits, etc.) delayed.
+Despite the disruption, officials said 9-1-1 services continued operating. Public reporting attributed that continuity to separate emergency infrastructure rather than full service recovery across the entire environment.
 
-Infrastructure Resilience Observation: The continued operation of 911 systems indicates adequate network segmentation between emergency dispatch infrastructure and administrative/non-emergency communications. However, the non-emergency systems lack equivalent protection, suggesting security investments were prioritized to 911 systems at the expense of broader emergency services communications infrastructure. This creates a single point of failure for non-emergency services.
+### Stage 4: Containment and Workarounds
 
-CodeRED Connection: CodeRED emergency notification platform (Crisis24, parent company) suffered ransomware attack in November 2025. Public reporting on the Patriot Regional incident notes that a system linked to CodeRED was affected, but it has not confirmed whether the April 2026 disruption was caused by reuse of Crisis24-exposed credentials, a separate direct intrusion, or an unrelated system fault triggered during incident response.
-
-Known Attack Indicators
-
-Target: Patriot Regional Emergency Communications Center
-Location: Pepperell, Massachusetts
-Date: April 1, 2026
-Affected Systems: Telephone exchange, business communications
-Protected Systems: 911 dispatch (separate infrastructure)
-Possible Relationship: Crisis24 breach (November 2025) credential exploitation
+Affected towns said they engaged outside cybersecurity specialists and law-enforcement partners, while some agencies disabled connections to PRECC and shifted communications to mutual-aid channels, radio, and alternate phone-routing procedures.
 
 ## Impact Assessment
 
-Emergency Services Operations: Non-emergency dispatch and communications severely disrupted. Police, fire, and EMS departments unable to receive non-emergency calls from the public. Internal communications affected, requiring emergency service coordination through radio backup systems and manual procedures. While 911 emergency calls continued, response coordination capability was reduced.
+The operational impact fell on non-emergency and business communications for police, fire, and EMS departments tied to PRECC. GovTech reported service disruption in Pepperell, Dunstable, Townsend, Ashby, and Groton, with Townsend restoring some affected lines sooner than the others.
 
-Public Safety Risk: Non-emergency calls (welfare checks, minor accidents, traffic violations) could not be routed to appropriate agencies. Public unable to report non-emergency issues through normal phone channels. Backup radio systems and emergency personnel radio frequencies became congested as agencies compensated for phone line loss. Response time to non-emergency calls likely increased significantly.
+The incident did not shut down emergency dispatch entirely, but it reduced resilience across the broader public-safety environment. When a regional communications center loses non-emergency and administrative channels, agencies still have to absorb call-routing changes, backup procedures, and coordination overhead during the response period.
 
-Administrative Services Disruption: Regional municipalities served by Patriot Regional ECC unable to conduct routine administrative functions dependent on telephone communications. Police desk operations, fire dispatch administration, EMS call-taking systems all affected. Regional mutual aid coordination complicated.
+## Attribution
 
-Economic Impact: Emergency services unable to provide full range of services during outage. Regional business and residents unable to contact non-emergency services (animal control, traffic complaints, civil standby requests). Long-term impact depends on restoration timeline.
+No public source reviewed for this rewrite identified the responsible threat actor, attack origin, or a confirmed malware family. GovTech explicitly reported that town officials did not indicate where the attack originated or what type of attack it was.
 
-Critical Infrastructure Vulnerability Exposure: The incident demonstrates a significant vulnerability in emergency services infrastructure. Cyberattacks against regional emergency communications centers can have cascading impacts across multiple towns and agencies. The incident highlights the national vulnerability of emergency services infrastructure to well-resourced threat actors.
+The prior November 2025 CodeRED and Crisis24 incident remains context rather than attribution evidence for the April 2026 PRECC disruption. The safer public posture is therefore to keep attribution at `Unknown` and avoid treating the earlier vendor breach as a proven parent cause.
 
-## Historical Context
+## Timeline
 
-Crisis24 November 2025 Breach: The parent company of CodeRED emergency notification platform suffered a significant ransomware attack in November 2025. The Patriot Regional incident occurred months later, but currently available reporting only supports noting the prior Crisis24 breach as relevant sector context, not as a confirmed parent cause of the April 2026 disruption.
+### 2026-03-31 — PRECC and member towns discover the intrusion
 
-Emergency Services Sector Trend: Attacks against emergency services infrastructure have increased significantly in 2025-2026. Multiple municipalities have experienced ransomware attacks on 911 systems, PSAP (Public Safety Answering Point) communications, and regional dispatch centers. The sector remains undersecured relative to its critical infrastructure status. Federal guidance and funding for emergency services cybersecurity infrastructure remains inadequate.
+Town officials said they first became aware of the cyberattack early Tuesday morning.
 
-Supply Chain Risk in Emergency Services: The reliance of emergency services on third-party platforms (CodeRED, dispatch software, communications systems) creates supply chain vulnerability. A breach of a platform provider can enable secondary exploitation of all connected emergency services organizations. Patriot Regional ECC's experience demonstrates the real-world consequences of inadequately secured supply chain relationships.
+### 2026-04-01 — Pepperell discloses the cyberattack publicly
+
+Boston 25 reported that Pepperell officials said the cyberattack affected public-safety computer systems while 9-1-1 service continued operating normally.
+
+### 2026-04-02 — Regional impact across multiple towns is reported
+
+GovTech reported disruption in Pepperell, Dunstable, Townsend, Ashby, and Groton, and said some towns disabled connections to PRECC while response and restoration work continued.
+
+### 2026-04-03 — The Record reports federal-law-enforcement notification
+
+The Record said federal law enforcement had been notified and that investigators were still determining whether any information had been accessed or stolen.
 
 ## Remediation & Mitigation
 
-Immediate Actions (Post-Incident):
-1. Isolate affected systems from network to prevent malware spread.
-2. Activate emergency backup communications procedures (radio dispatch, manual call logging).
-3. Coordinate with state emergency management agency and CISA for incident response support.
-4. Preserve forensic evidence from all compromised systems.
-5. Coordinate with local law enforcement and FBI for investigation and attribution.
+1. Keep 9-1-1 services isolated from administrative and non-emergency communications infrastructure.
+2. Disable or segment affected regional-center connections during active incident response, as Dunstable reported doing.
+3. Use alternate numbers, mutual-aid channels, and radio procedures for non-emergency operations until service is restored.
+4. Review authentication, connectivity, and vendor exposure around linked emergency-notification platforms such as CodeRED without assuming they were the attack path.
+5. Preserve logs and system state for joint review by outside responders and state or federal law-enforcement partners.
 
-System-Level Hardening:
-1. Implement network segmentation to isolate critical 911 systems from non-emergency communications.
-2. Require multi-factor authentication for all administrative access to communications systems.
-3. Implement endpoint detection and response (EDR) for early threat detection.
-4. Deploy intrusion detection systems (IDS) on emergency services networks.
-5. Establish immutable backup procedures for all critical emergency communications systems.
+## Sources & References
 
-Supply Chain Risk Management:
-1. Audit all third-party platforms and integrations (CodeRED, dispatch systems, CAD systems).
-2. Implement vendor security assessment program requiring regular audits and vulnerability disclosures.
-3. Review and restrict API access and integration permissions to minimum necessary.
-4. Establish incident response procedures specific to supply chain breaches (third-party platform compromise).
-5. Require vendors to implement multi-factor authentication and strong credential management.
-
-Resilience & Redundancy:
-1. Implement redundant communications pathways independent of primary telephone system (backup radio channels).
-2. Establish mutual aid agreements with neighboring emergency communications centers for dispatch coverage during outages.
-3. Test backup procedures quarterly to ensure effectiveness during actual outages.
-4. Implement geographic failover systems for critical emergency dispatch functions.
-5. Consider regionalized backup dispatch center agreements across state or regional boundaries.
-
-Federal & State Support:
-1. Request CISA technical assistance for emergency services infrastructure assessment.
-2. Apply for federal FEMA or DHS grants for cybersecurity infrastructure improvements.
-3. Seek state emergency management agency support for regional emergency services cybersecurity coordination.
-4. Participate in information sharing networks (ISACs) for emergency services threat intelligence.
-5. Advocate for increased federal cybersecurity funding for small emergency services organizations.
-
-Sources & References
-
-1.
-The Record (Recorded Future) — Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns
-https://therecord.media/
-
-2.
-Boston 25 News — Emergency Communications Center Suffers Cyberattack in Massachusetts
-https://www.boston25news.com/
-
-3.
-GovTech — Emergency Services Cyberattack: Regional Dispatch Center Disruption
-https://www.govtech.com/
-
-4.
-CISA (Cybersecurity and Infrastructure Security Agency) — Emergency Services Sector Guidance and Threat Alerts
-https://www.cisa.gov/
-
-5.
-FBI — Ransomware Attacks Against Emergency Services Infrastructure
-https://www.fbi.gov/
-
-6.
-Massachusetts Emergency Management Agency — Regional Emergency Services Cybersecurity Coordination
-https://www.mass.gov/
-
-Key Takeaways
-
-Critical Infrastructure Target: Cyberattack on regional emergency communications center serving four Massachusetts towns
-Partial Disruption: Non-emergency phone lines down; 911 emergency systems operational (separate infrastructure)
-Manual Fallback: Agencies reverted to radio dispatch and manual procedures during outage
-Supply Chain Risk: Possible connection to Crisis24 ransomware breach (November 2025) and CodeRED platform compromise
-Service Area: Pepperell, Dunstable, Townsend, Ashby, Massachusetts
-Investigation: Ongoing; attack vector not yet publicly disclosed
-
-Affected Agencies
-
-Pepperell Police Department
-Dunstable Police Department
-Townsend Police Department
-Ashby Police Department
-Regional Fire Departments (EMS)
-Regional Emergency Medical Services
-
-Systems Impact
-
-Offline: Telephone exchange (emergency + non-emergency)
-Offline: Business communications systems
-Offline: Administrative dispatch functions
-Protected: 911 emergency systems (separate infrastructure)
-Active: Radio dispatch backup systems
-
-Related Incidents
-Winona County Ransomware (2026)
-Foster City Ransomware Attack
-Crisis24 CodeRED Breach (November 2025)
-Emergency Services Sector Cybersecurity Trends
-
-Critical Infrastructure Context
-
-CISA Sector: Emergency Services
-Infrastructure Type: Regional Dispatch Center
-Resilience Status: Partially Protected (911 vs non-emergency gap)
-Threat Level: Growing (2025-2026 trend)
+- [The Record: Massachusetts emergency communications system impacted by cyberattack](https://therecord.media/massachusetts-emergency-alert-cyberattack) — The Record, 2026-04-03
+- [Boston 25 News: Middlesex County town impacted by cyber attack](https://www.boston25news.com/news/local/middlesex-county-town-impacted-by-cyber-attack/N3RNZWIKI5A5NLMNFFWMLO3W5M/) — Boston 25 News, 2026-04-01
+- [Government Technology: Massachusetts Towns Impacted by Emergency Comms Cyber Attack](https://www.govtech.com/security/massachusetts-towns-impacted-by-emergency-comms-cyber-attack) — Government Technology, 2026-04-02
+- [Town of Pepperell: Patriot Regional Emergency Communications Center](https://www.town.pepperell.ma.us/228) — Town of Pepperell, 2026-04-29
