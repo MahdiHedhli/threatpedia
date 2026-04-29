@@ -87,7 +87,7 @@ mitreMappings:
 
 On February 19, 2026, the University of Mississippi Medical Center (UMMC) disclosed a ransomware attack that disrupted its electronic health record platform, phone systems, and other connected operations. UMMC canceled clinic operations statewide and elective procedures while moving hospitals and emergency departments to paper-based downtime procedures.
 
-Public reporting and later UMMC updates show that the disruption lasted through the end of February. Clinics resumed normal operations on March 2, 2026, after what UMMC described as a nine-day ordeal. Hospitals and emergency departments remained open during the response, and UMMC prioritized time-sensitive care such as chemotherapy as systems were restored.
+Public reporting and later UMMC updates show that the disruption lasted through the end of February. Clinics resumed normal operations on March 2, 2026, after a nine-day disruption. Hospitals and emergency departments remained open during the response, and UMMC prioritized time-sensitive care such as chemotherapy as systems were restored.
 
 ## Technical Analysis
 
@@ -117,7 +117,7 @@ UMMC said clinics resumed normal operations on March 2 after nine days of disrup
 
 The confirmed impact was operational. AP reported that the ransomware attack forced UMMC to close roughly three dozen clinics across Mississippi and cancel elective procedures. UMMC's own statements confirm that the organization had to rely on manual care workflows, paper documentation, and improvised communications while network systems were unavailable.
 
-The disruption also affected time-sensitive clinical services. AP and UMMC both said cancer care required special triage during the outage, and UMMC later reported that chemotherapy services restarted on February 23 before the broader return to normal clinic operations on March 2. While Medusa later claimed to have exfiltrated data, the public sources cited here do not independently confirm the volume or type of any data stolen from UMMC. The confirmed impact remains a care-delivery disruption with unresolved questions about the scope of any data compromise.
+The disruption also affected time-sensitive clinical services. AP and UMMC both said cancer care required special triage during the outage, and UMMC later reported that chemotherapy services restarted on February 23 before the broader return to normal clinic operations on March 2. While Medusa later claimed to have exfiltrated data, public reporting does not independently confirm the volume or type of any data stolen from UMMC. The confirmed impact remains a care-delivery disruption with unresolved questions about the scope of any data compromise.
 
 ## Attribution
 
