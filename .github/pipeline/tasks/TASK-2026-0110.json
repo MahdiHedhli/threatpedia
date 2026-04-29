@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0110",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Operation TrueChaos: TrueConf Zero-Day Exploitation (CVE-2026-3502)",
     "reprocess": true,
@@ -10,7 +10,7 @@
     "issues": [
       "missing_sources"
     ],
-    "notes": "No sources in frontmatter; No Sources/References section in body; Zero sources anywhere \u2014 needs full source reconstruction"
+    "notes": "No sources in frontmatter; No Sources/References section in body; Zero sources anywhere — needs full source reconstruction"
   },
   "output": {
     "file_pattern": "site/src/content/incidents/trueconf-cve-2026-3502-zero-day.md",
@@ -31,7 +31,26 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-29T08:59:51.212Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T09:00:15Z",
+      "action": "completed",
+      "from": "locked",
+      "to": "complete",
+      "agent": "kernel-k",
+      "note": "Superseded by TASK-2026-0101 and merged PR #381: the canonical incident site/src/content/incidents/operation-truechaos-trueconf-zero-day-2026.md already covers the TrueConf CVE-2026-3502 intrusion, so this legacy CVE-only incident rewrite should not be re-run as a separate article."
     }
-  ]
+  ],
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-29T09:00:15Z"
 }
