@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0104",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "RansomHouse Threat Actor Profile | Threatpedia",
     "reprocess": true,
@@ -88,7 +88,15 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #367"
+    },
+    {
+      "timestamp": "2026-04-29T01:05:00Z",
+      "action": "completed",
+      "from": "pending",
+      "to": "complete",
+      "agent": "kernel-k",
+      "note": "Superseded by TASK-2026-0180: the legacy incident slug now redirects to the canonical threat-actors/ransomhouse.md profile, so this incident-scoped rewrite is no longer the correct execution path."
     }
   ],
-  "updated": "2026-04-28T23:15:45.654Z"
+  "updated": "2026-04-29T01:05:00Z"
 }
