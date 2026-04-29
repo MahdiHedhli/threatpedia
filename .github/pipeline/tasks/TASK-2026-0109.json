@@ -87,9 +87,17 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #366"
+    },
+    {
+      "timestamp": "2026-04-28T23:15:45.654Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #366 already covers this task."
     }
   ],
-  "updated": "2026-04-28T23:00:21.584Z",
+  "updated": "2026-04-28T23:15:45.654Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 366,
