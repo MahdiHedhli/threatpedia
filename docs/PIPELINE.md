@@ -165,7 +165,7 @@ for the pipeline.
    - The workflow runs automatically for PR lifecycle and review events.
      Issue comments only trigger it when the comment explicitly contains
      `/review-gate` or `/pipeline review-gate`, so routine `/gemini review`
-     prompts and worker status comments do not create premature red checks.
+     prompts and worker status comments do not create unnecessary workflow failures.
    - For content-collection PRs, the gate requires a successful current-head
      `validate` check. Green checks from an older head SHA do not count.
    - For public content/site/pipeline PRs, the gate requires an AI second
