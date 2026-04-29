@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "complete",
   "created": "2026-04-21T01:59:07.361Z",
-  "updated": "2026-04-24T17:31:56.140Z",
+  "updated": "2026-04-29T17:30:55.123Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/papercut-ng-mf-cve-2023-27351.md",
     "branch": "pipeline/TASK-2026-0185",
-    "pr": true
+    "pr": true,
+    "pr_number": 333,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/333"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -100,9 +102,33 @@
       "to": "complete",
       "agent": "pipeline-task-state",
       "note": "PR #215 merged (a5dab2e)."
+    },
+    {
+      "timestamp": "2026-04-27T20:34:54Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T20:36:11Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article drafted. Validator PASS 18/18."
+    },
+    {
+      "timestamp": "2026-04-29T17:30:55.123Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #333 merged (bf97a01)."
     }
   ],
-  "pr_number": 215,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/215",
-  "merged_at": "2026-04-24T17:31:56.140Z"
+  "pr_number": 333,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/333",
+  "merged_at": "2026-04-29T17:30:55.123Z"
 }
