@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "complete",
+  "status": "pr_open",
   "created": "2026-04-21T01:59:07.361Z",
-  "updated": "2026-04-24T17:31:56.140Z",
+  "updated": "2026-04-27T20:36:11Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-27T20:34:54Z",
   "input": {
     "topic": "PaperCut NG/MF Improper Authentication Vulnerability (CVE-2023-27351)",
     "sources": [
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -55,7 +55,9 @@
   "output": {
     "file_pattern": "site/src/content/zero-days/papercut-ng-mf-cve-2023-27351.md",
     "branch": "pipeline/TASK-2026-0185",
-    "pr": true
+    "pr": true,
+    "pr_number": 333,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/333"
   },
   "discovery": {
     "feed": "CISA_KEV",
@@ -100,9 +102,25 @@
       "to": "complete",
       "agent": "pipeline-task-state",
       "note": "PR #215 merged (a5dab2e)."
+    },
+    {
+      "timestamp": "2026-04-27T20:34:54Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T20:36:11Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article drafted. Validator PASS 18/18."
     }
   ],
-  "pr_number": 215,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/215",
+  "pr_number": 333,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/333",
   "merged_at": "2026-04-24T17:31:56.140Z"
 }
