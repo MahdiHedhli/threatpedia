@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-29T02:54:44.000Z",
-  "updated": "2026-04-29T23:16:50Z",
+  "updated": "2026-04-29T23:46:05.037Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-04-29T19:24:22.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "GitHub internal Git infrastructure RCE (CVE-2026-3854)",
     "sources": [
@@ -89,8 +89,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Resolved 4 outstanding Gemini review threads (second-pass: from-state fix, patchDate, zero-day tag, timeline format). All 10 threads now resolved. PR #409 gate-green."
+    },
+    {
+      "timestamp": "2026-04-29T23:46:05.037Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #409 merged (dcb003e)."
     }
   ],
   "pr_number": 409,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/409"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/409",
+  "merged_at": "2026-04-29T23:46:05.037Z"
 }
