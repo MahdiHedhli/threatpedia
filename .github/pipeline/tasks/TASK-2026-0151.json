@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0151",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "blocked",
   "input": {
     "topic": "Operation Aurora campaign canonical reconciliation",
     "reprocess": true,
@@ -49,7 +49,25 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #379"
+    },
+    {
+      "timestamp": "2026-04-29T15:42:54.059Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T15:43:10Z",
+      "action": "blocked",
+      "from": "locked",
+      "to": "blocked",
+      "agent": "Mahdi Hedhli",
+      "note": "Blocked in place: target campaign file site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md does not exist on main, and the only live public Operation Aurora content currently exists as the incident article site/src/content/incidents/operation-aurora-espionage-2009.md. This needs a canonical content-shape decision before the task can be drafted or closed as complete."
     }
   ],
-  "updated": "2026-04-29T06:42:15.962Z"
+  "updated": "2026-04-29T15:43:10Z",
+  "locked_by": null,
+  "locked_at": null
 }
