@@ -104,9 +104,17 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #374"
+    },
+    {
+      "timestamp": "2026-04-29T04:07:51.838Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #374 already covers this task."
     }
   ],
-  "updated": "2026-04-29T03:26:11.461Z",
+  "updated": "2026-04-29T04:07:51.838Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 374,
