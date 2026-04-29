@@ -75,6 +75,14 @@
       "note": "PR #409 opened. Validator: PASS. Commit: ab768c9d1f282c859cdd9ba4a3816ff5fc88430f"
     },
     {
+      "timestamp": "2026-04-29T19:58:37.795Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #409 already covers this task."
+    },
+    {
       "timestamp": "2026-04-29T23:16:50Z",
       "action": "gemini_resolved",
       "from": "pr_open",
