@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-29T17:02:08.425Z",
-  "updated": "2026-04-29T17:54:39.103Z",
+  "updated": "2026-04-29T23:51:17.976Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-04-29T23:51:17.976Z",
   "input": {
     "topic": "Melissa Macro Virus Outbreak",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #405"
+    },
+    {
+      "timestamp": "2026-04-29T23:51:17.976Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
