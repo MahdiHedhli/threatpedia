@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-04-29T02:54:44.000Z",
-  "updated": "2026-04-29T19:24:22.000Z",
+  "updated": "2026-04-29T23:16:50Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": "MahdiHedhli",
@@ -29,8 +29,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -73,6 +73,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #409 opened. Validator: PASS. Commit: ab768c9d1f282c859cdd9ba4a3816ff5fc88430f"
+    },
+    {
+      "timestamp": "2026-04-29T23:16:50Z",
+      "action": "gemini_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Resolved 4 outstanding Gemini review threads (second-pass: from-state fix, patchDate, zero-day tag, timeline format). All 10 threads now resolved. PR #409 gate-green."
     }
   ],
   "pr_number": 409,
