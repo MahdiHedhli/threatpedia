@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0111",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "input": {
     "topic": "University of Mississippi Medical Center Medusa Ransomware Attack",
     "reprocess": true,
@@ -58,9 +58,19 @@
       "to": "locked",
       "agent": "kernel-k",
       "note": "Rotated the execution branch from bot/reprocess-task-2026-0111 to pipeline/TASK-2026-0111 because the old remote branch carried a large unrelated stale diff and no open PR."
+    },
+    {
+      "timestamp": "2026-04-29T09:11:32.029Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #385"
     }
   ],
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-04-29T09:06:07.875Z",
-  "updated": "2026-04-29T09:10:52Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-29T09:11:32.030Z",
+  "pr_number": 385,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/385"
 }
