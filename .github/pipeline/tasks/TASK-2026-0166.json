@@ -113,7 +113,7 @@
         {
             "timestamp": "2026-04-27T20:21:35Z",
             "action": "locked",
-            "from": "pending",
+            "from": "complete",
             "to": "locked",
             "agent": "dangermouse-bot",
             "note": "Locked for execution — drafting zero-day article"
