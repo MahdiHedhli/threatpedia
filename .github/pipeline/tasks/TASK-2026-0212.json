@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-2026-0212",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-29T17:02:08.976Z",
+  "updated": "2026-04-29T17:02:08.976Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "DigiNotar Certificate Authority Compromise",
+    "sources": [
+      "https://learn.microsoft.com/en-us/security-updates/securityadvisories/2011/2607712",
+      "https://blog.mozilla.org/security/2011/09/02/diginotar-removal-follow-up",
+      "https://www.sec.gov/Archives/edgar/data/1044777/000119312511241796/dex992.htm"
+    ],
+    "notes": "Historical corpus seed HIST-INC-009. Draft as an incident article grounded in the listed primary or authoritative sources; keep attribution uncertainty explicit where sources differ."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0212",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-29T17:02:08.976Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

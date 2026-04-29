@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-2026-0208",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-04-29T17:02:08.616Z",
+  "updated": "2026-04-29T17:02:08.616Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Code Red and Nimda Worm Outbreaks",
+    "sources": [
+      "https://www.caida.org/archive/code-red",
+      "https://news.microsoft.com/2001/07/30/government-and-industry-groups-warn-code-red-internet-worm-ready-for-serious-strike-urge-preventative-measures",
+      "https://www.sei.cmu.edu/documents/2332/2001_001_001_83522.pdf"
+    ],
+    "notes": "Historical corpus seed HIST-INC-004. Draft as an incident article grounded in the listed primary or authoritative sources; keep attribution uncertainty explicit where sources differ."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0208",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-29T17:02:08.616Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
