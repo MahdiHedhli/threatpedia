@@ -69,7 +69,7 @@
     {
       "timestamp": "2026-04-29T19:24:22.000Z",
       "action": "pr_opened",
-      "from": "pending",
+      "from": "locked",
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #409 opened. Validator: PASS. Commit: ab768c9d1f282c859cdd9ba4a3816ff5fc88430f"
