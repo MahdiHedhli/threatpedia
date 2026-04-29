@@ -2,7 +2,9 @@
   "task_id": "TASK-2026-0114",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
+  "pr_number": 329,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/329",
   "input": {
     "topic": "BlueHammer \u2014 Windows Defender LPE via VSS Race Condition",
     "reprocess": true,
@@ -15,7 +17,9 @@
   },
   "output": {
     "file_pattern": "site/src/content/zero-days/bluehammer-windows-defender-lpe-2026.md",
-    "branch": "bot/reprocess-task-2026-0114"
+    "branch": "bot/reprocess-task-2026-0114",
+    "pr_number": 329,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/329"
   },
   "acceptance_criteria": {
     "min_sources": 3,
@@ -33,6 +37,51 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Corpus reprocessing \u2014 source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-25T14:33:15.642Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Schema reprocess: section names, severity format, disclosure timeline format, sources body format. PR #260"
+    },
+    {
+      "timestamp": "2026-04-27T15:36:12.099Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #260 merged (56874b8)."
+    },
+    {
+      "timestamp": "2026-04-27T20:16:56Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for reprocess execution \u2014 fix H2 headings and source body format"
+    },
+    {
+      "timestamp": "2026-04-27T20:18:28Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #329 opened via GitHub API (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-28T20:10:00Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "PR #329 merged (52ed9da). Task state sync \u2014 post-merge bookkeeping."
     }
-  ]
+  ],
+  "updated": "2026-04-28T20:10:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "merged_at": "2026-04-28T19:17:35Z",
+  "merge_commit_sha": "52ed9da6ab62f4b8fb65192a3d24eda69f46a940"
 }

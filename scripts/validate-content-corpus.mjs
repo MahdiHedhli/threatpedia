@@ -12,12 +12,38 @@ import {
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import {
+  getPublicProseGuardrailIssues,
+  maskTextPreservingNewlines,
+} from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
-
+const ZERO_DAY_SEVERITY_METRICS = [
+  'Exploitability',
+  'Impact',
+  'Weaponization Risk',
+  'Patch Urgency',
+  'Detection Coverage',
+];
+const ZERO_DAY_US_SPELLING_MAP = new Map([
+  ['authorised', 'authorized'],
+  ['unauthorised', 'unauthorized'],
+  ['behaviour', 'behavior'],
+  ['behaviours', 'behaviors'],
+  ['catalogue', 'catalog'],
+  ['colour', 'color'],
+  ['colours', 'colors'],
+  ['defence', 'defense'],
+  ['defences', 'defenses'],
+  ['organisation', 'organization'],
+  ['organisations', 'organizations'],
+  ['sanitisation', 'sanitization'],
+  ['weaponisation', 'weaponization'],
+  ['weaponised', 'weaponized'],
+]);
 function usage() {
   console.log(`Usage:
   node scripts/validate-content-corpus.mjs --files-file <path> [--new-files-file <path>] [--json-out <path>]
@@ -108,16 +134,82 @@ function getBodyH2Headings(body) {
   return [...bodyWithoutCodeBlocks.matchAll(/^## (.+)$/gm)].map(([, heading]) => heading.trim());
 }
 
-function getSourcesSection(body) {
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripCodeBlocks(body) {
   const codeBlockRegex = /```[\s\S]*?```/g;
-  const bodyWithoutCodeBlocks = body.replace(codeBlockRegex, (match) => ' '.repeat(match.length));
-  const headingMatch = bodyWithoutCodeBlocks.match(/^## Sources & References\s*$/m);
+  return body.replace(codeBlockRegex, maskTextPreservingNewlines);
+}
+
+function findH2Section(body, heading) {
+  const bodyWithoutCodeBlocks = stripCodeBlocks(body);
+  const headingRegex = new RegExp(`^## ${escapeRegex(heading)}\\s*$`, 'm');
+  const headingMatch = headingRegex.exec(bodyWithoutCodeBlocks);
   if (!headingMatch) return null;
+
   const start = headingMatch.index;
-  const afterHeading = body.slice(start + headingMatch[0].length);
-  const afterHeadingNoCode = bodyWithoutCodeBlocks.slice(start + headingMatch[0].length);
+  const contentStart = start + headingMatch[0].length;
+  const afterHeading = body.slice(contentStart);
+  const afterHeadingNoCode = bodyWithoutCodeBlocks.slice(contentStart);
   const nextH2 = afterHeadingNoCode.search(/^## /m);
-  return nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2);
+  const end = nextH2 === -1 ? body.length : contentStart + nextH2;
+
+  return {
+    start,
+    end,
+    content: nextH2 === -1 ? afterHeading : afterHeading.slice(0, nextH2),
+  };
+}
+
+function getSourcesSection(body) {
+  return findH2Section(body, 'Sources & References')?.content || null;
+}
+
+function getZeroDaySeverityIssues(body) {
+  const section = findH2Section(body, 'Severity Assessment');
+  if (!section) return ['Missing Severity Assessment section'];
+
+  const issues = [];
+  for (const metric of ZERO_DAY_SEVERITY_METRICS) {
+    const metricRegex = new RegExp(
+      `^-\\s+(?:\\*\\*)?${escapeRegex(metric)}(?:\\*\\*)?:\\s*([0-9]+(?:\\.[0-9]+)?)\\s*\\/\\s*([0-9]+)\\b`,
+      'mi',
+    );
+    const match = metricRegex.exec(section.content);
+    if (!match) {
+      issues.push(`${metric} missing numeric X/10 score`);
+      continue;
+    }
+
+    const score = Number(match[1]);
+    const denominator = Number(match[2]);
+    if (denominator !== 10 || Number.isNaN(score) || score < 0 || score > 10) {
+      issues.push(`${metric} uses ${match[1]}/${match[2]}, expected 0-10/10`);
+    }
+  }
+
+  return issues;
+}
+
+function getZeroDayBritishSpellingIssues(body) {
+  let authoredBody = body;
+  const sourcesSection = findH2Section(body, 'Sources & References');
+  if (sourcesSection) {
+    authoredBody = `${body.slice(0, sourcesSection.start)}${' '.repeat(sourcesSection.end - sourcesSection.start)}${body.slice(sourcesSection.end)}`;
+  }
+  authoredBody = stripCodeBlocks(authoredBody);
+
+  const issues = [];
+  for (const [british, american] of ZERO_DAY_US_SPELLING_MAP.entries()) {
+    const matches = authoredBody.match(new RegExp(`\\b${escapeRegex(british)}\\b`, 'gi')) || [];
+    if (matches.length > 0) {
+      issues.push(`${british} -> ${american} (${matches.length})`);
+    }
+  }
+
+  return issues;
 }
 
 function parseBodySourceEntries(sourcesBody) {
@@ -266,6 +358,37 @@ function validateFile(file, newFiles) {
     detail: blankLineIssues > 0 ? `${blankLineIssues} issue(s)` : undefined,
   });
   if (blankLineIssues > 0) pass = false;
+
+  const publicProseIssues = getPublicProseGuardrailIssues(body);
+  checks.push({
+    name: 'Public prose guardrails',
+    pass: publicProseIssues.length === 0,
+    detail: publicProseIssues.length === 0
+      ? 'No internal process or scoring language detected'
+      : publicProseIssues
+        .slice(0, 3)
+        .map((issue) => `line ${issue.line}: ${issue.label} (${issue.phrase})`)
+        .join(' | '),
+  });
+  if (publicProseIssues.length > 0) pass = false;
+
+  if (type === 'zero-day') {
+    const severityIssues = getZeroDaySeverityIssues(body);
+    checks.push({
+      name: 'Zero-day Severity Assessment uses X/10 scale',
+      pass: severityIssues.length === 0,
+      detail: severityIssues.length === 0 ? 'All five severity metrics use 0-10/10' : severityIssues.join(' | '),
+    });
+    if (severityIssues.length > 0) pass = false;
+
+    const spellingIssues = getZeroDayBritishSpellingIssues(body);
+    checks.push({
+      name: 'Zero-day authored text uses US spelling',
+      pass: spellingIssues.length === 0,
+      detail: spellingIssues.length === 0 ? 'No en-GB spellings detected in authored prose' : spellingIssues.join(' | '),
+    });
+    if (spellingIssues.length > 0) pass = false;
+  }
 
   const mitreMappings = Array.isArray(fm.mitreMappings) ? fm.mitreMappings : [];
   checks.push({

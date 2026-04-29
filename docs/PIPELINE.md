@@ -136,6 +136,9 @@ for the pipeline.
    - If a task already has an open `pipeline/ready` Issue, the dispatcher
      does **not** open a duplicate Issue on the next tick. It records the
      existing Issue number in task history once and moves on.
+   - If a task is still `pending` on `main` but an open PR already exists for
+     the task branch, the dispatcher treats that PR as covering the task,
+     closes any stale `pipeline/ready` Issue, and skips redispatch.
 
 7. **Agent execution** (under the agent's own subscription)
    - Agent reads the task brief, drafts the article into
@@ -148,17 +151,75 @@ for the pipeline.
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
      rules plus exact section/schema normalization: canonical H2 headings,
      exact source-line format, frontmatter/body source URL parity, canonical
-     MITRE tactic casing, canonical publisher aliases, and canonical
-     `generatedBy` values.
+     MITRE tactic casing, canonical publisher aliases, canonical
+     `generatedBy` values, and public-prose guardrails that block internal
+     editorial/process language from article body text.
    - Failure leaves the task locked for agent iteration; success allows the
      agent to record a real open PR number, which moves the task to
      `status: pr_open`.
 
-9. **Human review + merge**
+9. **Review readiness gate**
+   - `.github/workflows/pipeline-review-gate.yml` runs
+     `node scripts/pipeline-review-gate.mjs --pr <number>` against live
+     GitHub state for public content, site, and pipeline PRs.
+   - For content-collection PRs, the gate requires a successful current-head
+     `validate` check. Green checks from an older head SHA do not count.
+   - For public content/site/pipeline PRs, the gate requires an AI second
+     review on the current head SHA, no unresolved current AI review threads,
+     and no later AI review-error comment without a successful replacement
+     review.
+   - Worker status comments are treated as informational only. A comment that
+     says `merge_ready` does not override current-head checks, review state,
+     unresolved AI threads, or review errors.
+
+10. **Human review + merge**
    - `auto_merge.enabled: false` today — every PR goes to Kernel K for
      review. Merge state is no longer trusted from the local CLI. A GitHub PR
      event records the final task transition after the PR is merged (or reverts
      the task to `pending` if the PR is closed without merge).
+
+---
+
+## Manual link submission workflow (dedup-safe)
+
+Use this path when you find a candidate article link and want it to enter the
+same queue/validation path as discovery-generated tasks.
+
+1. **Preflight dedup check (local dry-run):**
+
+   ```bash
+   node scripts/pipeline-submit-link.mjs \
+     --type incident \
+     --priority P2 \
+     --topic "OpenSSH regreSSHion root shell access (15-year latent flaw)" \
+     --url "https://www.securityweek.com/openssh-flaw-allowing-full-root-shell-access-lurked-for-15-years/"
+   ```
+
+   - The command scans both:
+     - `.github/pipeline/tasks/*.json` (queue)
+     - `site/src/content/**/*.md` (published corpus)
+   - If any submitted URL is already known, it reports a duplicate and does not
+     write a task.
+   - If the topic appears similar to an existing task/article, it reports an
+     informational overlap warning but still lets URL dedup be the blocking
+     check.
+   - If no duplicates are found, it reports the next available `TASK-YYYY-NNNN`
+     ID that would be created.
+
+2. **Submit through the standard queue:**
+   - Open **Submit Article Lead** Issue (`.github/ISSUE_TEMPLATE/discovery-submission.yml`).
+   - Paste the same URL(s) in **Source URLs**.
+   - The ingest workflow (`pipeline-ingest-issue.yml`) now performs the same
+     URL dedup guard against queue + corpus before writing a task file.
+
+3. **If dedup blocks the submission:**
+   - The Issue gets a dedup comment and `pipeline/duplicate` label.
+   - Add genuinely new corroborating source URLs and context, then resubmit.
+
+4. **After task creation:**
+   - The task enters the normal dispatcher flow and still must pass
+     `node scripts/pipeline-run-task.mjs --task TASK-YYYY-NNNN --validate`
+     before PR-open state can be recorded.
 
 ---
 
@@ -167,6 +228,7 @@ for the pipeline.
 | Guardrail | Where it lives | Default | Source of truth |
 |---|---|---|---|
 | Corpus + task dedup | `pipeline-discover.mjs` | Scans all content collections + all existing tasks using CVEs, URLs, normalized titles, and output slugs | Script |
+| Manual link dedup | `pipeline-ingest-issue.yml` + `scripts/pipeline-submit-link.mjs` | Blocks manual submissions when submitted source URLs already exist in corpus/tasks | Workflow + script |
 | Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | Rejected CVEs and non-CVE candidate keys skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
@@ -174,11 +236,19 @@ for the pipeline.
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
+| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist or `dangermouse-bot`, zero unresolved AI review threads | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
 | Dependency blocking | `pipeline-dispatcher.yml` | Per-task `depends_on[]` | Task file |
 | Validation gates | `pipeline-run-task.mjs --validate` | See `config.yml` `validation.*` | `config.yml` |
+
+**Public prose guardrails:** generated article body text must not leak internal
+workflow language such as "this article," "this report," `reviewStatus`,
+`draft_ai`, "attribution confidence," or "confidence grade." Those values can
+exist in frontmatter or operator notes where appropriate, but public article
+prose should describe the evidence basis directly rather than narrating
+Threatpedia's internal scoring or editorial process.
 
 **Config authority:** `pipeline-dispatcher.yml` now reads thresholds from
 `.github/pipeline/config.yml` via the authoritative reader

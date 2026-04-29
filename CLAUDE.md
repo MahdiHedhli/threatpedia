@@ -93,13 +93,18 @@ when working on corpus or pipeline integrity.
 - do not call a PR merge-ready based only on local state; live GitHub PR state
   is the source of truth
 
-## Task isolation discipline
+## Per-task isolation discipline
 
-For pipeline tasks and task-scoped content work:
+For pipeline tasks and task-scoped content work, this section defines the
+per-task isolation rule. The next section defines cross-worker automation
+collision rules.
 
 - use one fresh worktree or other clean dedicated checkout per task
 - run `node scripts/pipeline-run-task.mjs --task ... --lock` only from that
   clean task-scoped checkout
+- after `--lock`, verify `git status --short` shows only the intended task
+  JSON or article paths; if adjacent task files, branch renames, or unexpected
+  paths appear, abandon the checkout and rebuild cleanly
 - if you hit a branch mismatch, unrelated dirty paths, or unexpected spillover,
   stop and rebuild from clean state rather than renaming branches mid-flight or
   carrying cleanup commits
@@ -112,6 +117,41 @@ Before reporting a task PR as ready, verify all of the following:
 - local validation passes for every modified article or task file in the branch
 - `gh pr checks` is green
 - unresolved Gemini review threads are actually zero on the live PR
+
+## Automation collision avoidance
+
+Hourly workers, AI agents (Codex, CoWork/Claude, and Gemini), and GitHub
+Actions may run at the same time. Treat shared repo directories as
+read/reference locations, not as long-lived edit targets.
+
+- use a fresh temp clone or task-scoped worktree for every automation run that
+  writes public repo files
+- keep one task per branch and one PR per task or bounded review fix
+- before selecting work, re-check live GitHub issues, PRs, checks, review
+  threads, and `.github/pipeline/tasks/*.json` on `origin/main`
+- before writing, locking, pushing, opening a PR, approving, or merging,
+  re-check that no other worker has locked the task, opened a covering PR, or
+  changed the current PR head
+- respect `locked_by`, `locked_at`, open PRs, and open `pipeline/ready` issues
+  as coordination state
+- see `docs/PIPELINE.md` for canonical task-state and queue semantics
+- if a lock, branch, PR, or task-state race appears, skip or rebuild cleanly
+  rather than carrying mixed state forward
+- do not edit from a dirty shared checkout; abandon the task-scoped checkout and
+  rebuild from clean state instead
+- at session end, remove disposable temp directories when safe; if cleanup would
+  require force-deleting refs, stashes, or branches, leave them in place and
+  report the cleanup debt rather than using destructive commands
+- review workers may make bounded fixes to existing PRs, but must not start new
+  drafting tasks while acting as reviewers
+- a bounded review fix is limited to files already in the PR diff or directly
+  flagged by reviewer feedback, avoids new feature or content expansion, and
+  preserves the original PR scope
+- drafting workers may open and remediate their task PRs, but must not merge
+  unless their prompt explicitly grants merge authority and all live gates pass
+- workflow failures in ingest, dispatcher, task-state sync, review gate,
+  validation, post-merge audit, or deploy must be inspected as live pipeline
+  state before assuming the queue is healthy
 
 ## Security expectations
 

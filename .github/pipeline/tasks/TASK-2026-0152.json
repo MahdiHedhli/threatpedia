@@ -35,6 +35,54 @@
       "note": "Campaign corpus review - removed MCP campaign article and queued reprocessing under a non-campaign taxonomy."
     },
     {
+      "timestamp": "2026-04-25T17:06:11.705Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #266"
+    },
+    {
+      "timestamp": "2026-04-26T07:58:03.452Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #279"
+    },
+    {
+      "timestamp": "2026-04-26T19:25:34.373Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #291"
+    },
+    {
+      "timestamp": "2026-04-27T12:08:06.726Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #303"
+    },
+    {
+      "timestamp": "2026-04-28T17:59:13.771Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #352"
+    },
+    {
+      "timestamp": "2026-04-28T23:15:45.654Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #368"
+    },
+    {
       "timestamp": "2026-04-29T01:05:00Z",
       "action": "updated",
       "from": "pending",

@@ -84,22 +84,22 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
       cyber historians, intelligence analysts, subject matter experts, and augmented by AI.
     </p>
     <div class="stats-bar">
-      <div class="stat">
+      <a href="/incidents/" class="stat" aria-label="Browse incidents">
         <div class="stat-value">{incidents.length}</div>
         <div class="stat-label">Events Catalogued</div>
-      </div>
-      <div class="stat">
+      </a>
+      <a href="/campaigns/" class="stat" aria-label="Browse campaigns">
         <div class="stat-value">{campaigns.length}</div>
         <div class="stat-label">Campaigns Tracked</div>
-      </div>
-      <div class="stat">
+      </a>
+      <a href="/threat-actors/" class="stat" aria-label="Browse threat actors">
         <div class="stat-value">{actors.length}</div>
         <div class="stat-label">APT Groups Tracked</div>
-      </div>
-      <div class="stat">
+      </a>
+      <a href="/zero-days/" class="stat" aria-label="Browse zero-days">
         <div class="stat-value">{zeroDays.length}</div>
         <div class="stat-label">Zero-Days Tracked</div>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -320,9 +320,27 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     flex: 1;
     padding: 20px 22px;
     border-right: 1px solid var(--border);
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.2s;
   }
 
   .stat:last-child { border-right: none; }
+
+  .stat:hover {
+    background: rgba(232, 160, 32, 0.04);
+    outline: 1px solid var(--amber-dim);
+    outline-offset: -1px;
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+  }
+
+  .stat:focus-visible {
+    outline: 1px solid var(--amber);
+    outline-offset: -1px;
+  }
 
   .stat-value {
     font-family: 'Playfair Display', serif;

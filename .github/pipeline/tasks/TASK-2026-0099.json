@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0099",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "Microsoft 365 OAuth Device Code Phishing Campaign Hits 340+ Organizations",
     "reprocess": true,
@@ -32,7 +32,68 @@
       "from": "none",
       "to": "pending",
       "agent": "dangermouse-bot",
-      "note": "Corpus reprocessing \u2014 source quality enforcement"
+      "note": "Corpus reprocessing — source quality enforcement"
+    },
+    {
+      "timestamp": "2026-04-25T13:03:00.343Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #254"
+    },
+    {
+      "timestamp": "2026-04-25T21:01:53.106Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #270"
+    },
+    {
+      "timestamp": "2026-04-26T11:08:59.520Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #282"
+    },
+    {
+      "timestamp": "2026-04-26T23:03:49.699Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #294"
+    },
+    {
+      "timestamp": "2026-04-27T15:35:09.056Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T15:36:27.664Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #314"
+    },
+    {
+      "timestamp": "2026-04-27T17:44:27.763Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #314 merged (4653ef5)."
     }
-  ]
+  ],
+  "updated": "2026-04-27T17:44:27.763Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 314,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/314",
+  "merged_at": "2026-04-27T17:44:27.763Z"
 }
