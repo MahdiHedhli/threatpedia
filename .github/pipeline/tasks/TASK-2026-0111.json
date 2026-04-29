@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0111",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "University of Mississippi Medical Center Medusa Ransomware Attack",
     "reprocess": true,
@@ -66,11 +66,20 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #385"
+    },
+    {
+      "timestamp": "2026-04-29T16:19:41.698Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #385 merged (9f9b000)."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-29T09:11:32.030Z",
+  "updated": "2026-04-29T16:19:41.698Z",
   "pr_number": 385,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/385"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/385",
+  "merged_at": "2026-04-29T16:19:41.698Z"
 }
