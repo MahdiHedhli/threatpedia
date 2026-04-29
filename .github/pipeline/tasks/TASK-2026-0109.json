@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0109",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "input": {
     "topic": "CVE-2026-33634 — Trivy GitHub Actions Vulnerability Analysis",
     "reprocess": true,
@@ -74,6 +74,21 @@
       "note": "Dispatched as Issue #344"
     },
     {
+      "timestamp": "2026-04-28T18:40:09.759Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-28T23:00:21.584Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #366"
+    },
+    {
       "timestamp": "2026-04-28T23:15:45.654Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -82,5 +97,9 @@
       "note": "Dispatch skipped because open PR #366 already covers this task."
     }
   ],
-  "updated": "2026-04-28T23:15:45.654Z"
+  "updated": "2026-04-28T23:15:45.654Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 366,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/366"
 }
