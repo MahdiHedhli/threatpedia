@@ -125,23 +125,23 @@ UMMC publicly described the event as ransomware but did not attribute it to a sp
 
 ## Timeline
 
-### 2026-02-19 - UMMC begins downtime operations after the attack
+### 2026-02-19 — UMMC begins downtime operations after the attack
 
 UMMC later identified February 19 as the day of the cyberattack. Clinics closed, hospitals and emergency departments stayed open, and staff began shifting care delivery to manual processes.
 
-### 2026-02-20 - UMMC confirms a ransomware attack
+### 2026-02-20 — UMMC confirms a ransomware attack
 
 UMMC said it had experienced a ransomware attack, that the electronic health record and phone systems were not operational, and that statewide clinics and elective procedures had been canceled while urgent care was prioritized.
 
-### 2026-02-27 - UMMC reports progress toward restoration
+### 2026-02-27 — UMMC reports progress toward restoration
 
 UMMC said it had shut down network and connected systems to contain the damage, had continued hospital-based care through downtime procedures, and had started seeing urgent clinic patients with a goal of partial normal scheduling on the following Monday.
 
-### 2026-03-02 - Clinics resume normal operations
+### 2026-03-02 — Clinics resume normal operations
 
 UMMC said clinics resumed normal operations on March 2 after nine days of disruption. The same update described ongoing manual care work during the outage and said chemotherapy had resumed on February 23.
 
-### 2026-03-17 - Medusa publicly claims responsibility
+### 2026-03-17 — Medusa publicly claims responsibility
 
 The Record reported that Medusa claimed responsibility for the incident and threatened to leak allegedly stolen data if a ransom was not paid. UMMC declined to comment on the threat.
 
