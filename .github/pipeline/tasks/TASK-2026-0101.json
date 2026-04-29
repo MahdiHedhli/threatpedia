@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0101",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "input": {
     "topic": "Operation TrueChaos: TrueConf Zero-Day Supply Chain Attack on Southeast Asian Governments",
     "reprocess": true,
@@ -39,9 +39,19 @@
       "to": "locked",
       "agent": "Mahdi Hedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T06:44:01.155Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #381"
     }
   ],
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-04-29T06:42:02.979Z",
-  "updated": "2026-04-29T06:42:02.981Z"
+  "locked_by": null,
+  "locked_at": null,
+  "updated": "2026-04-29T06:44:01.156Z",
+  "pr_number": 381,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/381"
 }
