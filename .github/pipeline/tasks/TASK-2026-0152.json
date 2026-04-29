@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0152",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "input": {
     "topic": "MCP ecosystem coordinated vulnerability disclosure",
     "reprocess": true,
@@ -89,7 +89,16 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Rotated the execution branch from bot/reprocess-task-2026-0152 to pipeline/TASK-2026-0152 because the old remote branch carried a large unrelated stale diff and no open PR."
+    },
+    {
+      "timestamp": "2026-04-29T03:22:20.811Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ],
-  "updated": "2026-04-29T01:05:00Z"
+  "updated": "2026-04-29T03:22:20.811Z",
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-29T03:22:20.811Z"
 }
