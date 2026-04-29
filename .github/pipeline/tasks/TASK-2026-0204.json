@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-29T02:54:44.000Z",
-  "updated": "2026-04-29T19:13:17.371Z",
+  "updated": "2026-04-29T19:24:22.000Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "unknown",
-  "locked_at": "2026-04-29T19:13:17.371Z",
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-04-29T19:24:22.000Z",
   "input": {
     "topic": "GitHub internal Git infrastructure RCE (CVE-2026-3854)",
     "sources": [
@@ -29,8 +29,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -65,6 +65,16 @@
       "to": "locked",
       "agent": "unknown",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T19:24:22.000Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #409 opened. Validator: PASS. Commit: ab768c9d1f282c859cdd9ba4a3816ff5fc88430f"
     }
-  ]
+  ],
+  "pr_number": 409,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/409"
 }
