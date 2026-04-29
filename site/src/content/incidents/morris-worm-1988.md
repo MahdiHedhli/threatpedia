@@ -110,27 +110,27 @@ The FBI investigation identified Robert Tappan Morris, then a Cornell graduate s
 
 Morris was indicted in 1989 and convicted in 1990 under the Computer Fraud and Abuse Act. The sentence did not include prison time; he received probation, a fine, and community service. The case established that unauthorized propagation across protected systems could trigger criminal liability even when the program did not destroy data.
 
-Available sources describe the incident as an uncontrolled release by an individual rather than a state or organized criminal operation. The article therefore treats Morris as the responsible actor while avoiding claims about destructive intent beyond the source record.
+Available sources describe the incident as an uncontrolled release by an individual rather than a state or organized criminal operation.
 
 ## Timeline
 
-### 1988-11-02 - Worm Released
+### 1988-11-02 — Worm Released
 
 The Morris Worm was released from an MIT computer around 8:30 p.m. Eastern time and began spreading across Internet-connected Unix systems.
 
-### 1988-11-03 - Broad Disruption Recognized
+### 1988-11-03 — Broad Disruption Recognized
 
 Within 24 hours, roughly 6,000 of the early Internet's approximately 60,000 connected computers had been affected. Universities, research laboratories, and government-linked organizations worked to analyze and remove the worm.
 
-### 1988-11 - CERT/CC Established
+### 1988-11 — CERT/CC Established
 
 In the aftermath, DARPA asked the Carnegie Mellon Software Engineering Institute to establish a computer emergency response team. That organization became the CERT Coordination Center.
 
-### 1989 - Federal Indictment
+### 1989 — Federal Indictment
 
 Federal prosecutors indicted Morris under the Computer Fraud and Abuse Act.
 
-### 1990 - Conviction
+### 1990 — Conviction
 
 Morris was convicted, becoming the first person found guilty under the 1986 Computer Fraud and Abuse Act.
 
