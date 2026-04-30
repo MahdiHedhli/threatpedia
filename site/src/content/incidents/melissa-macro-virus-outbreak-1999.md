@@ -13,8 +13,7 @@ confidenceGrade: A
 generatedBy: kernel-k
 generatedDate: 2026-04-29
 cves: []
-relatedSlugs:
-  - morris-worm-1988
+relatedSlugs: []
 tags:
   - melissa-virus
   - macro-malware
@@ -63,7 +62,7 @@ mitreMappings:
 
 ## Summary
 
-The Melissa Macro Virus outbreak began spreading widely on March 26, 1999 after an infected Microsoft Word document was posted to an Internet newsgroup and then propagated through Microsoft Outlook address books. The malware combined a Word macro, deceptive email text, and automated mailing to the first 50 entries in a victim's Outlook address book.
+The Melissa Macro Virus outbreak began spreading on March 26, 1999 after an infected Microsoft Word document was posted to an Internet newsgroup and then propagated through Microsoft Outlook address books. The malware combined a Word macro, deceptive email text, and automated mailing to the first 50 entries in a victim's Outlook address book.
 
 The outbreak did not primarily destroy files or steal money. Its impact came from scale. The FBI reports that email servers at more than 300 corporations and government agencies worldwide were overloaded, some systems had to be shut down, approximately one million email accounts were disrupted, and cleanup and repair costs were estimated at about $80 million.
 
@@ -99,7 +98,7 @@ The high volume of automatically generated mail overwhelmed email infrastructure
 
 ### Stage 5: Containment and Cleanup
 
-Cybersecurity teams contained the broad spread within days, but organizations needed additional time to remove infections and restore normal service. NIST later identified Melissa as part of the renewed worm wave that followed the Morris Worm era.
+Cybersecurity teams contained the spread within days, but organizations needed additional time to remove infections and restore normal service. NIST later identified Melissa as part of the renewed worm wave that followed the Morris Worm era.
 
 ## Impact Assessment
 
@@ -107,9 +106,9 @@ The FBI reported worldwide impact across more than 300 corporations and governme
 
 The Department of Justice described the National Infrastructure Protection Center's response as a fast warning and coordination effort. Within hours of learning about Melissa, NIPC coordinated with Department of Defense cyber response components and the CERT Coordination Center at Carnegie Mellon University to distribute warnings intended to reduce damage.
 
-NIST treated Melissa as a milestone in the return of widespread worms. Its June 2000 bulletin stated that Melissa marked the first time in ten years that the Internet had experienced a widespread worm, and it placed Melissa alongside Explorer.zip and ILOVEYOU as examples of email-attachment malware that could spread worldwide within hours.
+NIST treated Melissa as a milestone in the return of worms. Its June 2000 bulletin stated that Melissa marked the first time in ten years that the Internet had experienced a worm, and it placed Melissa alongside Explorer.zip and ILOVEYOU as examples of email-attachment malware that could spread worldwide within hours.
 
-The incident also exposed the systemic risk of software homogeneity. NIST noted that Melissa and ILOVEYOU spread rapidly because of widespread Microsoft Outlook use. That common platform made email automation efficient for defenders and users, but it also gave the malware a large, consistent propagation surface.
+The incident also exposed the systemic risk of software homogeneity. NIST noted that Melissa and ILOVEYOU used Microsoft Outlook address-book functionality as a propagation path. That common platform made email automation efficient for defenders and users, but it also gave the malware a large, consistent propagation surface.
 
 ## Attribution
 
@@ -127,7 +126,7 @@ Smith used a hijacked AOL account to post a Microsoft Word document carrying Mel
 
 ### 1999-03-26 — Outbreak Begins
 
-Melissa began spreading widely across the Internet through infected Word attachments and Outlook address-book mailing.
+Melissa began propagating across the Internet through infected Word attachments and Outlook address-book mailing.
 
 ### 1999-03-26 — Federal and CERT Warnings
 
@@ -143,7 +142,7 @@ Smith pleaded guilty. DOJ's FY 1999 accountability report described the plea as 
 
 ### 2000-06 — NIST Retrospective
 
-NIST's ITL Bulletin placed Melissa in a timeline of major 1999 and 2000 hacking events and identified it as a milestone in the emergence of widespread email worms.
+NIST's ITL Bulletin placed Melissa in a timeline of major 1999 and 2000 hacking events and identified it as a milestone in the emergence of email worms.
 
 ### 2002-05 — Sentencing
 
