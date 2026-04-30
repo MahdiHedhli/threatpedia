@@ -1,8 +1,6 @@
 name: "Pipeline: Review Gate"
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:
     types: [submitted, dismissed]
   issue_comment:
@@ -50,7 +48,7 @@ jobs:
             workflow_dispatch)
               number="${{ inputs.pr_number }}"
               ;;
-            pull_request|pull_request_review)
+            pull_request_review)
               number="${{ github.event.pull_request.number }}"
               ;;
             issue_comment)
