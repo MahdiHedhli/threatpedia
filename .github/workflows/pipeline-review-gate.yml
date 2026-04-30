@@ -21,8 +21,16 @@ permissions:
 jobs:
   review-gate:
     if: |
-      github.event_name != 'issue_comment' ||
+      github.event_name == 'workflow_dispatch' ||
       (
+        github.event_name == 'pull_request_review' &&
+        contains(
+          fromJSON('["gemini-code-assist", "gemini-code-assist[bot]", "dangermouse-bot"]'),
+          github.event.review.user.login
+        )
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
         github.event.issue.pull_request &&
         (
           startsWith(github.event.comment.body, '/review-gate') ||
