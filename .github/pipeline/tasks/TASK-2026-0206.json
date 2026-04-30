@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-29T17:02:08.425Z",
-  "updated": "2026-04-29T17:54:39.103Z",
+  "updated": "2026-04-29T23:55:39.176Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -58,6 +58,23 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #405"
+    },
+    {
+      "timestamp": "2026-04-29T23:51:17.976Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T23:55:39.175Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #413"
     }
-  ]
+  ],
+  "pr_number": 413,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/413"
 }
