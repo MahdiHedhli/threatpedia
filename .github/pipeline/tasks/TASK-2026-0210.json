@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-04-29T17:02:08.797Z",
-  "updated": "2026-04-30T05:41:29.453Z",
+  "updated": "2026-04-30T05:52:14.998Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-04-30T05:41:29.453Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Estonia DDoS Attacks",
     "sources": [
@@ -65,6 +65,16 @@
       "to": "locked",
       "agent": "Mahdi Hedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-30T05:52:14.998Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #427"
     }
-  ]
+  ],
+  "pr_number": 427,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/427"
 }
