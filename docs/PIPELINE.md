@@ -165,8 +165,8 @@ for the pipeline.
    - The workflow runs automatically for PR review events, including AI review
      submission and dismissal. It does not run on every PR push because
      push-time runs race current-head validation and current-head AI review
-     creation, producing status check failures that are expected to pass only
-     after a later review.
+     creation, producing status check failures until the current-head
+     validation and AI review requirements for that PR have completed.
      Issue comments only trigger it when the comment starts with `/review-gate`
      or `/pipeline review-gate`, so routine `/gemini review` prompts and worker
      status comments that merely mention the command do not create unnecessary
