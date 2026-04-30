@@ -109,7 +109,7 @@ The operational impact centered on destructive malware and business disruption. 
 
 The confidentiality impact included proprietary information, employee personally identifiable information, and confidential communications. The DOJ complaint described stolen data being distributed publicly and included pre-release movie material, internal documents, and financial records in the categories of leaked information.
 
-The use of public threats and demands distinguished the incident from data theft events that do not involve public exposure. Guardians of Peace issued demands and threats tied to Sony Pictures and theaters distributing "The Interview." The FBI described the attack as an effort to harm a U.S. business and suppress expression.
+The use of public threats and demands distinguished the incident from data theft events that do not involve public exposure. Guardians of Peace issued demands and threats tied to Sony Pictures and theaters distributing "The Interview." The FBI characterized the attack as an effort to harm a U.S. business and suppress the right of expression.
 
 ## Attribution
 
