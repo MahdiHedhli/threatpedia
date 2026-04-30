@@ -29,7 +29,7 @@ sources:
     publisher: U.S. Office of Personnel Management
     publisherType: government
     reliability: R1
-    publicationDate: "2026-04-30"
+    publicationDate: "2015-07-09"
     accessDate: "2026-04-30"
     archived: false
   - url: https://www.gao.gov/products/gao-17-614
@@ -111,9 +111,9 @@ OPM said it announced two separate but related cybersecurity incidents in 2015 i
 
 OPM Director Katherine Archuleta testified before the Senate Committee on Homeland Security and Governmental Affairs in a hearing titled "Under Attack: Federal Cybersecurity and the OPM Data Breach."
 
-### 2015-07-01 — Impacted Population and Data Categories Clarified
+### 2015-07-09 — Impacted Population and Data Categories Clarified
 
-OPM's public resource center later recorded the impact as approximately 21.5 million individuals in the background-investigation-records incident and approximately 4.2 million individuals in the personnel-records incident.
+OPM's public resource center records the impact as approximately 21.5 million individuals in the background-investigation-records incident and approximately 4.2 million individuals in the personnel-records incident.
 
 ### 2017-08-03 — GAO Publishes Post-Breach Security Review
 
@@ -133,6 +133,6 @@ For organizations that manage high-sensitivity identity data, the incident suppo
 
 ## Sources & References
 
-- [U.S. Office of Personnel Management: Cybersecurity Resource Center](https://www.opm.gov/cybersecurity-resource-center) — U.S. Office of Personnel Management, 2026-04-30
+- [U.S. Office of Personnel Management: Cybersecurity Resource Center](https://www.opm.gov/cybersecurity-resource-center) — U.S. Office of Personnel Management, 2015-07-09
 - [U.S. Government Accountability Office: Information Security: OPM Has Improved Controls, but Further Efforts Are Needed](https://www.gao.gov/products/gao-17-614) — U.S. Government Accountability Office, 2017-08-03
 - [U.S. Office of Personnel Management: Under Attack: Federal Cybersecurity and the OPM Data Breach](https://www.opm.gov/news/testimony/114th-congress/under-attack-federal-cybersecurity-and-the-opm-data-breach.pdf) — U.S. Office of Personnel Management, 2015-06-25
