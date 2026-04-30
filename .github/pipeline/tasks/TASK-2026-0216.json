@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-04-29T17:02:09.355Z",
   "updated": "2026-04-30T21:30:55.528Z",
   "source": "manual_submission",
@@ -60,12 +60,29 @@
       "note": "Dispatched as Issue #443"
     },
     {
+      "timestamp": "2026-04-30T20:04:43.963Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-30T20:09:44.210Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #447"
+    },
+    {
       "timestamp": "2026-04-30T21:30:55.528Z",
       "action": "dispatch_skipped",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #447 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 447,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/447"
 }
