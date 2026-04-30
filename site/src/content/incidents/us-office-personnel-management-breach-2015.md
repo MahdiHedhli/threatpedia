@@ -91,9 +91,9 @@ OPM said it partnered with US-CERT and the FBI to investigate and determine the 
 
 The impact was concentrated in federal personnel and background-investigation data. OPM reported approximately 21.5 million individuals affected by the background-investigation-records incident, including 19.7 million applicants and 1.8 million non-applicants. OPM separately reported approximately 4.2 million individuals affected by the personnel-records incident.
 
-The sensitivity of the data created long-term identity and counterintelligence risk. The background-investigation data could include Social Security numbers, residency and education history, employment history, information about family members and contacts, health history, criminal history, financial history, interview findings, fingerprints, and account credentials used for background-investigation forms.
+The sensitivity of the data created identity and counterintelligence risk. The background-investigation data could include Social Security numbers, residency and education history, employment history, information about family members and contacts, health history, criminal history, financial history, interview findings, fingerprints, and account credentials used for background-investigation forms.
 
-The public record also shows sustained remediation obligations. GAO found that OPM had taken post-breach actions but had not completed all work needed to prevent, mitigate, and respond to breaches involving sensitive personal and background-investigation information.
+The public record also shows remediation obligations. GAO found that OPM had taken post-breach actions but had not completed all work needed to prevent, mitigate, and respond to breaches involving sensitive personal and background-investigation information.
 
 ## Attribution
 
