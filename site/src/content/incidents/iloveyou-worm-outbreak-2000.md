@@ -119,7 +119,7 @@ The archived FBI testimony states that investigative work by the FBI's New York 
 
 That same testimony states that Onel de Guzman was charged on June 29, 2000 with fraud, theft, malicious mischief, and violation of the Devices Regulation Act. It also states that the charges were dropped in August by Philippine judicial authorities and that the prosecution was hampered by the lack of a specific computer crime statute at the time.
 
-Based on that record, the article treats Onel de Guzman as a suspected individual author rather than a judicially confirmed perpetrator. The available sources do not support state or organized-crime attribution.
+Onel de Guzman is identified as a suspected individual author rather than a judicially confirmed perpetrator. The available sources do not support state or organized-crime attribution.
 
 ## Timeline
 
