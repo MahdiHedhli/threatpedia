@@ -13,7 +13,7 @@ confidenceGrade: A
 generatedBy: kernel-k
 generatedDate: 2026-04-30
 cves: []
-relatedSlugs: []
+relatedSlugs: [lazarus-group]
 tags:
   - sony-pictures
   - destructive-malware
