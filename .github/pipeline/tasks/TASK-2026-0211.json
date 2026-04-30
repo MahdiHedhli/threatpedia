@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-04-29T17:02:08.886Z",
-  "updated": "2026-04-30T13:14:54.417Z",
+  "updated": "2026-04-30T14:30:55.458Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -73,6 +73,14 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #433"
+    },
+    {
+      "timestamp": "2026-04-30T14:30:55.458Z",
+      "action": "dispatch_skipped",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #433 already covers this task."
     }
   ],
   "pr_number": 433,
