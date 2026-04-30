@@ -87,7 +87,7 @@ DigiNotar operated several certificate authorities, including public SSL service
 
 The incident first became public after a fraudulent certificate for Google domains was presented to users. Google reported attempted SSL man-in-the-middle attacks, and Mozilla said Google informed it that at least one fraudulent certificate for public Google websites had been issued by DigiNotar. Microsoft described the risk as spoofing, phishing, or man-in-the-middle attacks against browser users.
 
-Fox-IT's interim report described a wider compromise. Investigators found that hackers had obtained administrator rights on multiple DigiNotar systems, including CA systems, and that malicious tools and certificate-generation scripts were present. Fox-IT also reported deleted log traces, unpatched public web servers, missing antivirus protection on investigated servers, and weak separation between critical CA systems and management infrastructure.
+Fox-IT's interim report described the extent of the compromise. Investigators found that hackers had obtained administrator rights on multiple DigiNotar systems, including CA systems, and that malicious tools and certificate-generation scripts were present. Fox-IT also reported deleted log traces, unpatched public web servers, missing antivirus protection on investigated servers, and weak separation between critical CA systems and management infrastructure.
 
 The certificate inventory remained difficult to bound because at least one fraudulent Google certificate was not found in the CA system records. Fox-IT therefore monitored OCSP responder traffic to identify known and unknown certificate serial numbers and changed DigiNotar's OCSP response behavior so unknown serials under its authority would be treated as revoked.
 
@@ -95,7 +95,7 @@ The certificate inventory remained difficult to bound because at least one fraud
 
 ### Stage 1: Certificate Authority Environment Compromise
 
-The attacker gained administrator-level access inside DigiNotar's environment. Fox-IT reported traces of hacker activity on CA servers and described all CA servers as members of the same Windows domain, giving an attacker with domain administrator rights broad access to the certificate authority environment.
+The attacker gained administrator-level access inside DigiNotar's environment. Fox-IT reported traces of hacker activity on CA servers and described all CA servers as members of the same Windows domain, giving an attacker with domain administrator rights access to the certificate authority environment.
 
 ### Stage 2: Fraudulent Certificate Issuance
 
@@ -147,7 +147,7 @@ Google reported attempted SSL man-in-the-middle attacks against Google users, Mo
 
 ### 2011-09-02 — Mozilla Removes DigiNotar Trust
 
-Mozilla described complete removal of DigiNotar from its trusted root program and later removed the Dutch government certificate exemption after the government's assessment changed.
+Mozilla described the removal of DigiNotar from its trusted root program and later removed the Dutch government certificate exemption after the government's assessment changed.
 
 ### 2011-09-05 — Fox-IT Publishes Interim Report
 
