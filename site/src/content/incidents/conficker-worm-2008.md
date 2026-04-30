@@ -130,9 +130,9 @@ The response also became a DNS security case study. ICANN's review says the coor
 
 ## Attribution
 
-The public sources used here do not identify a confirmed author, sponsor, or organization behind Conficker. Microsoft characterized the worm as a criminal attack and offered a reward for information leading to the arrest and conviction of those responsible for launching the malware.
+No confirmed author, sponsor, or organization has been identified in public reporting for the Conficker worm. Microsoft characterized the activity as a criminal attack and offered a reward for information leading to the arrest and conviction of those responsible.
 
-The sources support criminal intent and botnet operation, but they do not support state attribution or a named threat actor.
+Reporting indicates criminal intent and botnet operation, but does not establish state attribution or link the activity to a specific named threat actor.
 
 ## Timeline
 
