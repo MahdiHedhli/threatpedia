@@ -18,6 +18,10 @@ permissions:
   issues: read
   pull-requests: read
 
+concurrency:
+  group: review-gate-${{ github.repository }}-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
+  cancel-in-progress: true
+
 jobs:
   review-gate:
     if: |
