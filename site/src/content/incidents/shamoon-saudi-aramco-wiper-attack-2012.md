@@ -58,25 +58,25 @@ mitreMappings:
 
 ## Summary
 
-The Shamoon attack against Saudi Aramco on August 15, 2012 was one of the most prominent destructive corporate cyber incidents of its period. The Council on Foreign Relations states that threat actors wiped data from approximately 35,000 computers belonging to Saudi Aramco, while the Saudi Press Agency later reported that about 30,000 workstations were affected and restored.
+The Shamoon attack against Saudi Aramco on August 15, 2012 was a destructive corporate cyber incident documented by multiple public sources. The Council on Foreign Relations states that threat actors wiped data from approximately 35,000 computers belonging to Saudi Aramco, while the Saudi Press Agency later reported that about 30,000 workstations were affected and restored.
 
-The malware involved in the attack became widely known as Shamoon, also called Disttrack. MITRE describes Shamoon as wiper malware first used in 2012, while CFR says the malware stole passwords, wiped data, and prevented computers from rebooting. Public reporting also linked a follow-on disruption at RasGas in Qatar less than two weeks later, although the public record is more cautious on whether every technical detail of that later event matched the Saudi Aramco case.
+The malware involved in the attack is identified as Shamoon, also called Disttrack. MITRE describes Shamoon as wiper malware first used in 2012, while CFR says the malware stole passwords, wiped data, and prevented computers from rebooting. Public reporting also linked a follow-on disruption at RasGas in Qatar less than two weeks later, although the public record is more cautious on whether every technical detail of that later event matched the Saudi Aramco case.
 
-The attack was strategically significant because it showed that destructive malware could impose major business disruption even when industrial production systems remained isolated. Saudi Press Agency reported that Saudi Aramco's production plants and hydrocarbon exploration systems were unaffected, but the business network impact still required a large-scale internal recovery effort.
+The attack was strategically significant because it showed that destructive malware could impose business disruption even when industrial production systems remained isolated. Saudi Press Agency reported that Saudi Aramco's production plants and hydrocarbon exploration systems were unaffected, but the business network impact still required an extensive internal recovery effort.
 
 ## Technical Analysis
 
 MITRE's Shamoon software profile describes the malware as Windows wiper malware used in 2012 and later reappearing in 2016 and 2018. MITRE states that Shamoon attempts to overwrite operating system files and disk structures, including the master boot record, and can reboot systems after wiping is complete. Those characteristics align with CFR's description of a malware event that wiped data and rendered machines unable to boot.
 
-The public record available in the selected sources is stronger on destructive outcome than on the exact 2012 intrusion sequence. CFR says Shamoon stole passwords and wiped data. MITRE separately documents Shamoon as malware that has used HTTP for command-and-control, copied itself to remote machines, and used Windows service or task-based execution in some observed cases, but those family-level behaviors should not be overstated as fully confirmed details of the Saudi Aramco intrusion itself.
+The public record available in the selected sources is stronger on destructive outcome than on the exact 2012 intrusion sequence. CFR says Shamoon stole passwords and wiped data. MITRE separately documents Shamoon as malware that has used HTTP for command-and-control, copied itself to remote machines, and used Windows service or task-based execution in some observed cases, but those family-level behaviors may not directly apply to the Saudi Aramco intrusion itself.
 
-What is clear from the source set is that the malware was designed for disruption rather than covert persistence. The incident did not center on ransomware demands or data-theft monetization. It centered on destroying workstation data at scale and forcing a large enterprise to isolate, rebuild, and restore large parts of its business computing environment.
+The malware was designed for disruption rather than covert persistence. The incident did not center on ransomware demands or data-theft monetization. It centered on destroying workstation data at scale and forcing a large enterprise to isolate, rebuild, and restore large parts of its business computing environment.
 
 ## Attack Chain
 
 ### Stage 1: Initial Compromise Remained Publicly Unclear
 
-The selected sources do not provide a definitive, incident-specific public account of the original intrusion vector into Saudi Aramco. Threatpedia therefore keeps the initial access description narrow rather than inferring an unconfirmed entry path.
+The selected sources do not provide a definitive, incident-specific public account of the original intrusion vector into Saudi Aramco. No further inference on the entry path is drawn from the available sources.
 
 ### Stage 2: Malware Deployment in the Corporate Windows Environment
 
@@ -86,7 +86,7 @@ CFR reports that malware used in the incident stole passwords, wiped data, and p
 
 MITRE states that Shamoon has been seen overwriting operating system files and disk structures such as the master boot record. CFR's account of the Saudi Aramco incident describes a destructive event that wiped data on tens of thousands of computers and left them unbootable.
 
-### Stage 4: Broad Corporate IT Disruption
+### Stage 4: Corporate IT Disruption
 
 As the destructive phase spread, Saudi Aramco isolated electronic systems from outside access. Saudi Press Agency later reported that the virus had impacted about 30,000 workstations but did not affect the company's isolated production and exploration systems.
 
@@ -96,9 +96,9 @@ CFR reports that less than two weeks after the Aramco incident, RasGas in Qatar 
 
 ## Impact Assessment
 
-The Saudi Aramco incident caused large-scale business IT damage. CFR states that approximately 35,000 computers were wiped. Saudi Press Agency later reported that about 30,000 workstations were affected and that main internal network services had to be restored before employees fully resumed normal business.
+The Saudi Aramco incident caused business IT damage. CFR states that approximately 35,000 computers were wiped. Saudi Press Agency later reported that about 30,000 workstations were affected and that main internal network services had to be restored before employees fully resumed normal business.
 
-The destructive scope mattered because Saudi Aramco was and remains one of the world's largest oil companies. Even though the malware did not affect production plants or hydrocarbon exploration systems, the attack demonstrated that destructive endpoint attacks on business networks could still create severe operational strain, recovery cost, and reputational impact.
+The destructive scope mattered because Saudi Aramco was and remains one of the world's largest oil companies. Even though the malware did not affect production plants or hydrocarbon exploration systems, the attack demonstrated that destructive endpoint attacks on business networks could still create operational strain, recovery cost, and reputational impact.
 
 The event also helped define a category of state-linked or state-adjacent destructive cyber operations aimed at commercial infrastructure. CFR characterizes the case as a signal of growing Iranian cyber capability and willingness to use destructive cyber effects in regional competition, while still relying on intelligence-based attribution rather than public technical proof alone.
 
@@ -106,9 +106,9 @@ The event also helped define a category of state-linked or state-adjacent destru
 
 Attribution should remain explicit but cautious. CFR says hackers calling themselves the "Cutting Sword of Justice" claimed responsibility for the Saudi Aramco incident. The same CFR account states that U.S. intelligence sources attributed the attack to Iran and lists Iran as the suspected state sponsor.
 
-MITRE's Shamoon software page says the malware was first used in 2012 by an Iranian group known as the "Cutting Sword of Justice." That is stronger than a generic unknown attribution, but it still does not amount to public judicial proof tying the Saudi Aramco event to a single fully confirmed state command structure.
+MITRE's Shamoon software page says the malware was first used in 2012 by an Iranian group known as the "Cutting Sword of Justice." That is stronger than a generic unknown attribution, but it does not constitute public judicial proof tying the Saudi Aramco event to a single confirmed state command structure.
 
-Threatpedia should therefore treat the incident as a claimed Cutting Sword of Justice operation with suspected Iran-linked sponsorship or direction, while keeping the final attribution judgment conservative.
+The incident is documented as a claimed Cutting Sword of Justice operation with suspected Iran-linked sponsorship or direction based on U.S. intelligence reporting, without independent technical proof in the public record.
 
 ## Timeline
 
