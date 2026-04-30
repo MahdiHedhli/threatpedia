@@ -28,7 +28,7 @@ sources:
     publisher: FBI
     publisherType: government
     reliability: R1
-    publicationDate: "2026-04-29"
+    publicationDate: "2002-05-01"
     accessDate: "2026-04-29"
     archived: false
   - url: https://www.justice.gov/archive/ag/annualreports/ar99/fullrep.htm
@@ -158,6 +158,6 @@ Modern controls for Melissa-like behavior include blocking or sandboxing macro-e
 
 ## Sources & References
 
-- [FBI: Melissa Virus](https://www.fbi.gov/history/famous-cases/melissa-virus) — FBI, 2026-04-29
+- [FBI: Melissa Virus](https://www.fbi.gov/history/famous-cases/melissa-virus) — FBI, 2002-05-01
 - [U.S. Department of Justice: Fiscal Year 1999 Annual Accountability Report](https://www.justice.gov/archive/ag/annualreports/ar99/fullrep.htm) — U.S. Department of Justice, 2000-03-31
 - [NIST: ITL Bulletin, June 2000, Mitigating Emerging Hacker Threats](https://csrc.nist.gov/csrc/media/publications/shared/documents/itl-bulletin/itlbul2000-06.pdf) — NIST, 2000-06-01
