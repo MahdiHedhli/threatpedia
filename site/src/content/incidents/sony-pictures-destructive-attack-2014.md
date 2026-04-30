@@ -60,7 +60,7 @@ mitreMappings:
     tactic: Impact
     notes: The FBI and DOJ described destructive malware that rendered thousands of Sony Pictures computers inoperable, while the criminal complaint described overwriting disk structures.
   - techniqueId: T1566.001
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: Spearphishing Attachment
     tactic: Initial Access
     notes: The DOJ criminal complaint described spear-phishing emails sent to Sony Pictures employees before the overt destructive phase.
 ---
