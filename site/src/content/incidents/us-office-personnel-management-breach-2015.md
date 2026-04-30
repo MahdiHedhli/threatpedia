@@ -55,7 +55,7 @@ mitreMappings:
 
 ## Summary
 
-The U.S. Office of Personnel Management breach was a 2015 federal data breach involving two separate but related cybersecurity incidents. OPM said the incidents affected Federal Government employees, contractors, and others through the theft of personnel records and background investigation records.
+The U.S. Office of Personnel Management breach was a 2015 federal data breach involving two separate but related cybersecurity incidents. OPM said the incidents affected Federal Government employees, contractors, and others through the theft of personnel records and background-investigation records.
 
 OPM reported that approximately 21.5 million individuals were impacted by the background-investigation-records incident and approximately 4.2 million individuals were impacted by the personnel-records incident. Most people in the personnel-records incident were also affected by the background-investigation incident, while approximately 600,000 people were impacted only by the personnel-records incident.
 
@@ -65,7 +65,7 @@ The exposed data included Social Security numbers and other sensitive informatio
 
 The public OPM record describes the breach as malicious cyber activity that resulted in the exposure of background-investigation and personnel data. OPM said the background-investigation incident involved records for current, former, and prospective Federal employees and contractors, including people who applied for background investigations and non-applicants such as spouses or cohabitants.
 
-The selected public sources do not identify a specific initial-access method, malware family, command-and-control path, or confirmed intrusion timeline. They support a high-confidence finding that sensitive records were stolen from OPM-managed systems, but they do not support assigning the intrusion to a named actor.
+Public records do not identify a specific initial-access method, malware family, command-and-control path, or confirmed intrusion timeline. Available documentation supports a finding that sensitive records were stolen from OPM-managed systems, but does not assign the intrusion to a named actor.
 
 GAO reviewed OPM's post-breach security work and found that OPM had implemented or made progress toward implementing 19 US-CERT recommendations. GAO also found that some actions were incomplete or needed further improvement, including completion-date tracking, corrective-action validation, selected encryption requirements, and oversight of contractor-operated systems.
 
@@ -73,7 +73,7 @@ GAO reviewed OPM's post-breach security work and found that OPM had implemented 
 
 ### Stage 1: Unauthorized Access to OPM Data Environments
 
-OPM's public resource center states that malicious cyber activity affected OPM systems and resulted in the theft of personnel records and background-investigation records. The selected public sources do not establish how access was first obtained.
+OPM's public resource center states that malicious cyber activity affected OPM systems and resulted in the theft of personnel records and background-investigation records. Public records do not establish how access was first obtained.
 
 ### Stage 2: Collection of Personnel and Background-Investigation Records
 
@@ -97,9 +97,9 @@ The public record also shows sustained remediation obligations. GAO found that O
 
 ## Attribution
 
-The selected official sources do not name a confirmed threat actor responsible for the OPM breach. OPM's public resource center discusses malicious cyber activity and its impact, while GAO focuses on OPM's controls and post-breach remediation status.
+Official sources do not name a confirmed threat actor responsible for the OPM breach. OPM's public resource center discusses malicious cyber activity and its impact, while GAO focuses on OPM's controls and post-breach remediation status.
 
-Because the public sources used here do not establish a named actor, the attribution remains Unknown. This avoids converting external reporting or political characterization into a corpus-level actor assignment.
+Because available documentation does not establish a named actor, the attribution remains Unknown.
 
 ## Timeline
 
