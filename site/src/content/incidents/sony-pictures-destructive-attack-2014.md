@@ -162,6 +162,6 @@ The DOJ said the FBI and prosecutors provided victims and private-sector partner
 ## Sources & References
 
 - [FBI: Update on Sony Investigation](https://www.fbi.gov/contact-us/field-offices/sandiego/news/press-releases/update-on-sony-investigation) — FBI, 2014-12-19
-- [U.S. Department of Justice: Update in Sony Investigation](https://www.justice.gov/archives/opa/pr/update-sony-investigation) — U.S. Department of Justice, 2014-12-19
+- [U.S. Department of Justice: Update on Sony Investigation](https://www.justice.gov/archives/opa/pr/update-sony-investigation) — U.S. Department of Justice, 2014-12-19
 - [U.S. Department of Justice: Criminal Complaint Against Park Jin Hyok](https://www.justice.gov/archives/opa/press-release/file/1092091/dl) — U.S. Department of Justice, 2018-06-08
 - [U.S. Department of Justice: North Korean Regime-Backed Programmer Charged With Conspiracy to Conduct Multiple Cyber Attacks and Intrusions](https://www.justice.gov/archives/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and) — U.S. Department of Justice, 2018-09-06
