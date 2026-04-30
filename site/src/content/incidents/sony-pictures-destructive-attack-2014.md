@@ -79,7 +79,7 @@ The public technical record describes both access activity and destructive paylo
 
 The 2018 DOJ criminal complaint provides more detail about alleged preparation and access. It describes spear-phishing emails sent to Sony Pictures employees in 2014 and states that some accounts were not accessed after the first Guardians of Peace email on November 21, which the complaint viewed as consistent with the accounts being used to gain access before the rest of the attack was implemented.
 
-The complaint also describes destructive behavior that impaired later forensics. It states that the harmful component overwrote the master file table and master boot record, making a forensic reconstruction of all activity during the intrusion unavailable. Connection logs still showed when confidential Sony Pictures data had been exfiltrated.
+The complaint also describes destructive behavior that impaired later forensics. It states that the harmful component overwrote the master file table and master boot record, making a forensic reconstruction of activity during the intrusion unavailable. Connection logs still showed when confidential Sony Pictures data had been exfiltrated.
 
 ## Attack Chain
 
@@ -93,7 +93,7 @@ The FBI reported that proprietary information, employee personally identifiable 
 
 ### Stage 3: Destructive Malware Deployment
 
-The destructive phase rendered thousands of Sony Pictures computers inoperable. The DOJ complaint described disk-structure damage involving the master file table and master boot record, which limited forensic reconstruction of the intrusion through endpoint forensics.
+The destructive phase rendered thousands of Sony Pictures computers inoperable. The DOJ complaint described disk-structure damage involving the master file table and master boot record, which limited reconstruction of the intrusion through endpoint forensics.
 
 ### Stage 4: Public Claim and Leak Activity
 
@@ -109,13 +109,13 @@ The operational impact centered on destructive malware and business disruption. 
 
 The confidentiality impact included proprietary information, employee personally identifiable information, and confidential communications. The DOJ complaint described stolen data being distributed publicly and included pre-release movie material, internal documents, and financial records in the categories of leaked information.
 
-The coercive element distinguished the incident from data theft events that do not involve public exposure or threats. Guardians of Peace issued demands and threats tied to Sony Pictures and theaters distributing "The Interview." The FBI described the attack as an effort to harm a U.S. business and suppress expression.
+The use of public threats and demands distinguished the incident from data theft events that do not involve public exposure. Guardians of Peace issued demands and threats tied to Sony Pictures and theaters distributing "The Interview." The FBI described the attack as an effort to harm a U.S. business and suppress expression.
 
 ## Attribution
 
 The attribution is based on public U.S. government findings. The FBI concluded on December 19, 2014 that the North Korean government was responsible for the Sony Pictures attack, citing malware-code similarities, encryption and data-deletion similarities, infrastructure overlap, and similarity to a 2013 attack against South Korean banks and media outlets.
 
-The DOJ's 2018 charging announcement and criminal complaint connected the Sony Pictures attack to Park Jin Hyok, Chosun Expo Joint Venture, and a North Korean government-sponsored hacking team known in private-sector reporting as Lazarus Group. The complaint remains an allegation unless proven in court, but it provides a detailed public basis for the U.S. government's attribution.
+The DOJ's 2018 charging announcement and criminal complaint connected the Sony Pictures attack to Park Jin Hyok, Chosun Expo Joint Venture, and a North Korean government-sponsored hacking team known in private-sector reporting as Lazarus Group. The complaint remains an allegation unless proven in court, but it provides a public basis for the U.S. government's attribution.
 
 ## Timeline
 
