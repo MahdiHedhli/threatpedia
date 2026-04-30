@@ -122,7 +122,7 @@ Microsoft documented that Conficker variants blocked access to many security-rel
 
 ## Impact Assessment
 
-Conficker affected home and enterprise networks globally. ICANN's review states that estimates of infected host populations varied, but all exceeded millions of personal computers. The same report states that infections were found in home networks, business networks, and large multinational enterprise networks.
+Conficker affected home and enterprise networks globally. ICANN's review states that estimates of infected host populations varied, but all exceeded millions of personal computers. The same report states that infections were found in home networks, business networks, and multinational enterprise networks.
 
 The operational impact extended beyond host infection counts. Conficker interfered with security remediation by blocking security-related websites and stopping system or security services. It also forced defenders to coordinate across endpoint protection, patch management, network hygiene, DNS operations, registry operations, and law enforcement.
 
@@ -168,7 +168,7 @@ ICANN published its Conficker Summary and Review, documenting the worm's DNS-rel
 
 CISA's immediate prevention guidance was to ensure all systems had the MS08-067 patch, disable AutoRun functionality, maintain current antivirus software, and avoid unsolicited links, messages, and untrusted downloads. Microsoft Security Intelligence similarly recommended applying MS08-067, applying the AutoPlay-related KB971029 update, and changing weak passwords.
 
-Enterprise remediation required isolating infected systems, removing the worm with trusted tools, restoring disabled services, and preventing reinfection through patching and credential hygiene. Blocking security websites and disabling update services made it important to use offline or trusted cleanup paths when infected systems could not reach vendor sites.
+Enterprise remediation required isolating infected systems, removing the worm with trusted tools, restoring disabled services, and preventing reinfection through patching and credential hygiene. Blocking security websites and disabling update services required offline or trusted cleanup paths when infected systems could not reach vendor sites.
 
 At the infrastructure level, the Conficker response demonstrated the utility of coordinated domain blocking, sinkholing, and registry or registrar cooperation when malware relies on domain-generation algorithms. ICANN's review emphasized that those measures disrupted command communications even though they did not by themselves eradicate infections from endpoints.
 
