@@ -4,6 +4,7 @@
   "type": "incident",
   "priority": "P0",
   "status": "pr_open",
+  "merged_at": null,
   "created": "2026-04-29T17:02:09.263Z",
   "updated": "2026-04-30T17:49:14.340Z",
   "source": "manual_submission",
