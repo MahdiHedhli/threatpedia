@@ -6,12 +6,12 @@ attackType: Email Worm
 severity: high
 sector: Cross-Sector
 geography: Global
-threatActor: Onel de Guzman (reported)
+threatActor: Onel de Guzman (suspected)
 attributionConfidence: A3
 reviewStatus: draft_ai
 confidenceGrade: A
 generatedBy: kernel-k
-generatedDate: 2026-04-30
+generatedDate: 2026-04-29
 cves: []
 relatedSlugs:
   - melissa-macro-virus-outbreak-1999
@@ -21,142 +21,148 @@ tags:
   - email-worm
   - vbscript
   - microsoft-outlook
+  - mirc
   - social-engineering
   - file-overwrite
   - cert-cc
+  - philippines
 sources:
   - url: https://www.gao.gov/products/t-aimd-00-181
     publisher: U.S. Government Accountability Office
     publisherType: government
     reliability: R1
     publicationDate: "2000-05-18"
-    accessDate: "2026-04-30"
+    accessDate: "2026-04-29"
     archived: false
   - url: https://www.sei.cmu.edu/documents/507/2000_019_001_496188.pdf
-    publisher: CERT Coordination Center
+    publisher: Carnegie Mellon Software Engineering Institute
     publisherType: research
     reliability: R1
-    publicationDate: "2000-05-04"
-    accessDate: "2026-04-30"
+    publicationDate: "2000-05-09"
+    accessDate: "2026-04-29"
     archived: false
-  - url: https://usa.kaspersky.com/blog/cybersecurity-history-iloveyou/26869/
-    publisher: Kaspersky
-    publisherType: vendor
-    reliability: R2
-    publicationDate: "2022-08-08"
-    accessDate: "2026-04-30"
+  - url: https://archives.fbi.gov/archives/news/testimony/cyber-security
+    publisher: FBI
+    publisherType: government
+    reliability: R1
+    publicationDate: "2001-08-29"
+    accessDate: "2026-04-29"
     archived: false
 mitreMappings:
   - techniqueId: T1566.001
     techniqueName: "Phishing: Spearphishing Attachment"
     tactic: Initial Access
-    notes: ILOVEYOU arrived as an email attachment named LOVE-LETTER-FOR-YOU.TXT.VBS with the subject line ILOVEYOU and a short social-engineering message.
+    notes: The worm arrived as an email with the subject "ILOVEYOU" and a VBS attachment named "LOVE-LETTER-FOR-YOU.TXT.VBS".
   - techniqueId: T1204.002
     techniqueName: "User Execution: Malicious File"
     tactic: Execution
-    notes: The worm executed after a recipient opened the VBScript attachment on a Windows system with Windows Scripting Host enabled.
-  - techniqueId: T1485
-    techniqueName: Data Destruction
-    tactic: Impact
-    notes: CERT/CC documented file overwrite behavior affecting VBS, VBE, JS, JSE, CSS, WSH, SCT, HTA, JPG, JPEG, MP2, and MP3 file types.
+    notes: Infection required the recipient to open the attached VBS file.
+  - techniqueId: T1059.005
+    techniqueName: "Command and Scripting Interpreter: Visual Basic"
+    tactic: Execution
+    notes: The worm payload was written in VBScript and required Windows Scripting Host to run.
 ---
 
 ## Summary
 
-The ILOVEYOU worm outbreak began on May 4, 2000 and used email, social engineering, and VBScript execution on Microsoft Windows systems to spread through address books. CERT/CC described the worm as a malicious VBScript program affecting systems with Windows Scripting Host enabled, and GAO described it as both a virus and a worm because it propagated through networks while also damaging files.
+The ILOVEYOU worm outbreak began spreading globally on May 4, 2000 through email messages that used the subject line "ILOVEYOU" and an attachment named `LOVE-LETTER-FOR-YOU.TXT.VBS`. CERT/CC described it as a malicious VBScript worm that could also spread through Windows file sharing, Internet Relay Chat, USENET, and possibly webpages after a user executed the script.
 
-ILOVEYOU arrived with the subject line `ILOVEYOU`, the attachment `LOVE-LETTER-FOR-YOU.TXT.VBS`, and body text asking the recipient to check the attached love letter. When a recipient opened the attachment, the worm used Microsoft Outlook to send itself to entries in the user's address books. CERT/CC also documented propagation paths through Windows file sharing, IRC, USENET news, and possibly webpages.
+The outbreak disrupted both public- and private-sector operations. GAO reported that the worm affected most federal agencies, while an archived FBI testimony later stated that at least 14 federal agencies were penetrated. CERT/CC reported on May 8, 2000 that it had received reports from more than 650 sites indicating that more than 500,000 individual systems were affected.
 
-The incident disrupted organizations across government and the private sector. CERT/CC reported that, by 5:00 p.m. EDT on May 8, 2000, it had received reports from more than 650 sites covering more than 500,000 affected systems. GAO used the incident to examine weaknesses in federal alerting and coordination for computer-based threats.
+The public investigative record in the sources available here points to the Philippines and names Onel de Guzman as the suspected author, but the case did not end in a conviction. The incident remains a reference point for email-borne malware, cross-network self-propagation, and the operational risk created when scripting, address-book automation, and user trust are combined.
 
 ## Technical Analysis
 
-ILOVEYOU was written in VBScript and depended on Windows Scripting Host. The initial lure used a double-extension filename, `LOVE-LETTER-FOR-YOU.TXT.VBS`, which made the attachment appear more like a text file in environments where known file extensions were hidden or visually deemphasized.
+CERT/CC stated that the Love Letter worm affected systems running Microsoft Windows with Windows Scripting Host enabled. GAO described the attachment as a Visual Basic Script file and noted that systems were not affected unless the recipient opened and ran the attachment.
 
-When executed, the worm attempted to use Microsoft Outlook to mail copies of itself to entries in all Outlook address books. That design made trusted sender relationships part of the propagation path: recipients often recognized the sender because the message came from a previously infected contact.
+Once executed, the worm attempted to send copies of itself through Microsoft Outlook to all entries in all address books. CERT/CC also documented additional propagation paths through Windows file sharing, IRC, USENET, and possibly webpages. In IRC environments, the worm created a `script.ini` file so that mIRC would send a copy of the worm to users who joined infected channels.
 
-CERT/CC documented multiple additional behaviors. The worm searched files and overwrote or modified file types including script files, image files, web files, and music files. It also attempted to create a `script.ini` file in directories associated with the mIRC client, enabling IRC-based distribution when an affected user joined channels.
+The payload also altered local files and system settings. CERT/CC reported that the worm replaced `.vbs` and `.vbe` files with copies of itself, converted several other script-related file types to `.vbs`, added `.vbs` copies alongside `.jpg` and `.jpeg` files, and hid original `.mp3` and `.mp2` files while dropping script copies in the same directories. CERT/CC further reported that the worm changed Internet Explorer start-page settings toward URLs associated with `WIN-BUGSFIX.exe`, and GAO reported that it attempted to install a password-stealing program that would activate after Internet Explorer was opened and the system was rebooted.
 
-Kaspersky's retrospective describes the same operational pattern as an evolution of Melissa's address-book propagation. ILOVEYOU extended that pattern by mailing itself to all address-book entries rather than a limited subset and by adding file damage and credential-theft-related behavior.
+The operational damage came from both propagation volume and file manipulation. GAO reported overwhelmed email systems and lost files, while CERT/CC warned that file recovery could be difficult or impossible because affected files were overwritten by worm code rather than simply deleted.
 
 ## Attack Chain
 
-### Stage 1: Email Delivery
+### Stage 1: Social Engineering Email Delivery
 
-The recipient receives an email with the subject `ILOVEYOU`, a short message requesting that the recipient check the attached love letter, and an attachment named `LOVE-LETTER-FOR-YOU.TXT.VBS`.
+Recipients received email messages with the subject line "ILOVEYOU" and a VBS attachment named `LOVE-LETTER-FOR-YOU.TXT.VBS`. CERT/CC reported that the message body read, "kindly check the attached LOVELETTER coming from me."
 
-### Stage 2: User Execution
+### Stage 2: User Execution of the Script
 
-The recipient opens the VBScript attachment. On Windows systems with Windows Scripting Host enabled, the script executes in the user's context.
+The worm required the recipient to open the attachment on a Windows system with Windows Scripting Host enabled. GAO noted that deleting the email without running the attachment was sufficient to avoid infection.
 
 ### Stage 3: Outlook Address Book Propagation
 
-After execution, the worm attempts to send copies of itself through Microsoft Outlook to entries in all address books. Each recipient becomes a potential propagation point if they open the attachment.
+After execution, the worm attempted to use Microsoft Outlook to send copies of itself to all entries in all address books. GAO contrasted this behavior with Melissa, which had mailed itself only to the first 50 contacts in a victim's Outlook address book.
 
-### Stage 4: File Modification
+### Stage 4: Secondary Spread Through Files and IRC
 
-The worm examines local files and overwrites or modifies selected file types. CERT/CC documented effects against script, image, web, and media files, including JPG, JPEG, MP2, and MP3 handling.
+CERT/CC reported that the worm replaced or added script copies to several file types on fixed and network drives, creating additional execution paths when users later opened those files. It also created an mIRC script so that infected users would automatically send the worm to other IRC participants through DCC file transfer.
 
-### Stage 5: Secondary Propagation Channels
+### Stage 5: System and Network Degradation
 
-The worm attempts to use mIRC by creating a `script.ini` file in directories containing mIRC-related files. CERT/CC also listed Windows file sharing, USENET news, and possible webpage distribution as propagation routes.
-
-### Stage 6: Variants and Filter Bypass
-
-Variants used alternate subject lines and themes such as Mother's Day, Joke, and Very Funny. GAO reported that variants retriggered disruptions because they bypassed filters created to block the original ILOVEYOU messages.
+As infected systems sent large volumes of mail and modified local or shared files, organizations experienced email outages, network congestion, and cleanup workload. CERT/CC reported considerable network degradation from the mail, file, and web traffic generated by the worm.
 
 ## Impact Assessment
 
-CERT/CC's May 2000 advisory reported more than 650 affected reporting sites and more than 500,000 affected systems by May 8. It also reported site-level network degradation caused by mail, file, and web traffic generated by the worm.
+The early spread was broad. GAO reported that by 6:00 p.m. on May 4, 2000, CERT/CC had received more than 400 direct reports involving more than 420,000 Internet hosts. CERT/CC then reported on May 8 that more than 650 individual sites had reported more than 500,000 affected systems.
 
-GAO reported that the worm affected Microsoft Windows users and disrupted private businesses and government agencies. It documented a response timeline in which private-sector, federal, and defense organizations learned of and escalated the incident during the early morning hours of May 4, 2000.
+The disruption crossed sectors and borders. GAO reported that large corporations including AT&T, TWA, and Ford Motor Company were affected, along with media outlets, state governments, school systems, and credit unions. GAO also reported international disruption affecting the International Monetary Fund, the British Parliament, Belgium's banking system, and organizations across multiple European countries.
 
-The operational impact came from propagation volume, file modification, and response workload. Organizations had to block messages, update antivirus signatures, communicate warnings, remove infections, and manage variants that changed subjects or attachment names after the original filters were deployed.
+Federal impact was also material. GAO stated that most federal agencies were affected and that some incurred system and file damage while many others spent substantial staff time restoring email service. The archived FBI testimony later stated that at least 14 federal agencies were penetrated, including the Department of Defense, the Social Security Administration, the CIA, NASA, and congressional offices.
 
-The incident also exposed coordination limits. GAO concluded that the response showed the challenge of timely warning for information-based threats and the need for national warning capabilities that could coordinate across agencies, private-sector entities, state and local governments, and international partners.
+The total economic loss remained uncertain in the contemporary record. GAO said initial damage estimates ranged from $100 million to over $10 billion, but it also stated that it did not have a basis for commenting on the overall loss because affected organizations were unlikely to fully disclose the true extent of their damage.
 
 ## Attribution
 
-Public attribution should be treated carefully. The GAO and CERT/CC sources used for the incident's technical and operational facts do not provide a court-proven attribution. Kaspersky's later retrospective identifies Onel de Guzman as the reported creator and states that he was not punished because of evidence limits and the absence of applicable cybercrime law in the Philippines at the time.
+The archived FBI testimony states that investigative work by the FBI's New York Field Office, with assistance from the National Infrastructure Protection Center, traced the source of the worm to the Philippines within 24 hours. The FBI then worked with the Philippines' National Bureau of Investigation to identify the perpetrator.
 
-The available sources support individual criminal or disruptive malware authorship rather than state activity, espionage, or extortion. Because the core government and CERT sources focus on behavior and response rather than legal attribution, the named-individual attribution should be read as reported authorship rather than a conviction-based finding.
+That same testimony states that Onel de Guzman was charged on June 29, 2000 with fraud, theft, malicious mischief, and violation of the Devices Regulation Act. It also states that the charges were dropped in August by Philippine judicial authorities and that the prosecution was hampered by the lack of a specific computer crime statute at the time.
+
+Based on that record, the article treats Onel de Guzman as a suspected individual author rather than a judicially confirmed perpetrator. The available sources do not support state or organized-crime attribution.
 
 ## Timeline
 
-### 2000-05-04 — Initial Outbreak
+### 2000-05-04 — Outbreak Begins
 
-The ILOVEYOU worm began spreading through email. CERT/CC listed May 4, 2000 as the original release date of its Love Letter advisory.
+The ILOVEYOU worm began spreading globally through email messages carrying the `LOVE-LETTER-FOR-YOU.TXT.VBS` attachment.
 
-### 2000-05-04 — Federal and Private-Sector Escalation
+### 2000-05-04 — Rapid Reporting and Federal Warning Activity
 
-GAO reported that the Financial Services Information Sharing and Analysis Center posted an alert at approximately 3:00 a.m. EDT, that NIPC was notified at 5:45 a.m. EDT, and that DOD's Joint Task Force-Computer Network Defense was alerted at 6:40 a.m. EDT.
+GAO reported that private-sector and federal warning channels began circulating alerts during the morning of May 4, and that CERT/CC had received more than 400 direct reports involving more than 420,000 Internet hosts by 6:00 p.m.
 
-### 2000-05-08 — CERT/CC Impact Count
+### 2000-05-08 — CERT/CC Reports More Than 500,000 Affected Systems
 
-By 5:00 p.m. EDT on May 8, CERT/CC had received reports from more than 650 sites indicating more than 500,000 affected systems.
+CERT/CC reported that it had received reports from more than 650 sites indicating that more than 500,000 individual systems were affected.
 
-### 2000-05-09 — CERT/CC Advisory Revision
+### 2000-05-18 — GAO Testifies on Federal Response
 
-CERT/CC revised the Love Letter advisory on May 9, 2000, adding variant and response details as the outbreak continued.
+GAO testified before the U.S. Senate on the worm's spread, federal impact, and the need for improved national alert and coordination capabilities.
 
-### 2000-05-18 — GAO Testimony
+### 2000-06-14 — Philippines Approves E-Commerce Act
 
-GAO published testimony before the Senate Banking Committee's Subcommittee on Financial Institutions, using ILOVEYOU to evaluate alerting and coordination capabilities for critical infrastructure protection.
+The archived FBI testimony states that the Philippines approved the E-Commerce Act, which criminalized computer hacking and virus propagation.
 
-### 2022-08-08 — Kaspersky Retrospective
+### 2000-06-29 — Charges Filed Against Onel de Guzman
 
-Kaspersky published a retrospective that summarized the worm's propagation, variants, Outlook security changes, and reported attribution to Onel de Guzman.
+According to the archived FBI testimony, Philippine authorities charged Onel de Guzman with fraud, theft, malicious mischief, and violation of the Devices Regulation Act.
+
+### 2000-08 — Charges Dropped
+
+The archived FBI testimony states that the charges were later dropped in August 2000 by Philippine judicial authorities.
 
 ## Remediation & Mitigation
 
-Immediate response centered on blocking ILOVEYOU messages and variants, updating antivirus signatures, removing affected scripts and files, and communicating warnings not to execute unexpected VBScript attachments even when they appeared to come from known senders.
+CERT/CC recommended that users update anti-virus products, because vendors had released updated tools and virus databases for the worm. It also recommended disabling Windows Scripting Host, which the worm required for execution, while noting that doing so could remove desired functionality.
 
-CERT/CC recommended disabling Windows Scripting Host where it was not needed, filtering or blocking VBS attachments, applying vendor antivirus updates, and using mail-server controls to stop known attachment names and variants. It also recommended educating users not to execute emailed code without firsthand knowledge of its origin.
+CERT/CC also recommended disabling active scripting in Internet Explorer, disabling automatic DCC reception in IRC clients, and using email filtering to block known ILOVEYOU subject lines and executable attachment types. It cautioned that subject-line filters alone would not stop variants that changed the email subject.
 
-The longer-term mitigation lesson was that email clients and scripting environments needed safer defaults. Kaspersky notes that Microsoft later released an Outlook security update that restricted script execution and warned when external programs attempted to access the address book or send mail automatically.
+GAO framed the broader lesson as a warning and coordination problem as much as a malware problem. Its testimony argued that ILOVEYOU showed the difficulty of issuing timely warnings for information-based threats and the need for stronger national warning capabilities across government and private-sector networks.
+
+Modern defenses against ILOVEYOU-like behavior include blocking scriptable attachments, restricting programmatic access to address books, disabling unnecessary legacy scripting features, and treating trusted-sender email as untrusted until the attachment origin is verified through another channel.
 
 ## Sources & References
 
 - [U.S. Government Accountability Office: Critical Infrastructure Protection: 'ILOVEYOU' Computer Virus Highlights Need for Improved Alert and Coordination Capabilities](https://www.gao.gov/products/t-aimd-00-181) — U.S. Government Accountability Office, 2000-05-18
-- [CERT Coordination Center: 2000 CERT Advisories, CA-2000-04 Love Letter Worm](https://www.sei.cmu.edu/documents/507/2000_019_001_496188.pdf) — CERT Coordination Center, 2000-05-04
-- [Kaspersky: Evolution of security: the story of the ILOVEYOU worm](https://usa.kaspersky.com/blog/cybersecurity-history-iloveyou/26869/) — Kaspersky, 2022-08-08
+- [Carnegie Mellon Software Engineering Institute: CERT Advisory CA-2000-04 Love Letter Worm](https://www.sei.cmu.edu/documents/507/2000_019_001_496188.pdf) — Carnegie Mellon Software Engineering Institute, 2000-05-09
+- [FBI: Cyber Security](https://archives.fbi.gov/archives/news/testimony/cyber-security) — FBI, 2001-08-29
