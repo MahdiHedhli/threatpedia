@@ -99,10 +99,6 @@ Attackers installed malware on Target point-of-sale systems. The Senate report c
 
 The Senate report described malware on a Target server designed to move stolen data through Target's network and firewall. It also cited reporting that stolen data began leaving through an external FTP server on December 2 and that the attackers collected 11 GB of stolen information using a Russia-based server.
 
-### Stage 5: Public Disclosure and Regulatory Response
-
-Target publicly confirmed the payment-card incident on December 19, 2013 and later disclosed additional customer-contact information exposure. State attorneys general reached an $18.5 million settlement with Target in 2017 that required security-program, assessment, encryption, segmentation, and access-control commitments.
-
 ## Impact Assessment
 
 Target's public statements and regulatory settlement describe two affected data categories. Payment-card data for approximately 40 million credit and debit card accounts may have been impacted during the November 27 to December 15, 2013 in-store purchase window. Separate guest information for up to 70 million individuals included names, mailing addresses, phone numbers, or email addresses.
@@ -117,7 +113,7 @@ No public source in the selected record identifies a confirmed named threat acto
 
 ## Timeline
 
-### 2013-11-12 — Vendor-Credential Access Reported
+### 2013-11-12 — Initial Access via Vendor Credentials
 
 The Texas Attorney General's settlement announcement states that attackers accessed Target's gateway server through credentials stolen from a third-party vendor around November 12, 2013.
 
@@ -129,7 +125,7 @@ The Senate Commerce staff report cited public reporting that attackers first ins
 
 Target said approximately 40 million credit and debit card accounts may have been impacted for guests who made purchases in U.S. stores between November 27 and December 15, 2013.
 
-### 2013-12-02 — Exfiltration Activity Reported
+### 2013-12-02 — Data Exfiltration Activity Begins
 
 The Senate report cited public analysis that stolen data began being sent to an external FTP server through another compromised Target server on December 2.
 
