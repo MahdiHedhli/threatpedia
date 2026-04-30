@@ -25,8 +25,8 @@ jobs:
       (
         github.event.issue.pull_request &&
         (
-          contains(github.event.comment.body, '/review-gate') ||
-          contains(github.event.comment.body, '/pipeline review-gate')
+          startsWith(github.event.comment.body, '/review-gate') ||
+          startsWith(github.event.comment.body, '/pipeline review-gate')
         )
       )
     runs-on: ubuntu-latest
