@@ -6,7 +6,7 @@ attackType: Destructive Malware and Data Theft
 severity: critical
 sector: Entertainment
 geography: United States
-threatActor: North Korean government / Lazarus Group
+threatActor: Lazarus Group
 attributionConfidence: A1
 reviewStatus: draft_ai
 confidenceGrade: A
@@ -115,7 +115,7 @@ The use of public threats and demands distinguished the incident from data theft
 
 The attribution is based on public U.S. government findings. The FBI concluded on December 19, 2014 that the North Korean government was responsible for the Sony Pictures attack, citing malware-code similarities, encryption and data-deletion similarities, infrastructure overlap, and similarity to a 2013 attack against South Korean banks and media outlets.
 
-The DOJ's 2018 charging announcement and criminal complaint connected the Sony Pictures attack to Park Jin Hyok, Chosun Expo Joint Venture, and a North Korean government-sponsored hacking team known in private-sector reporting as Lazarus Group. The complaint remains an allegation unless proven in court, but it provides the public basis for the U.S. government's attribution.
+The DOJ's 2018 charging announcement and criminal complaint connected the Sony Pictures attack to Park Jin Hyok, Chosun Expo Joint Venture, and a North Korean government-sponsored hacking team known in private-sector reporting as Lazarus Group. The 2018 DOJ criminal complaint provides the public basis for the U.S. government's attribution.
 
 ## Timeline
 
