@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-29T17:02:08.886Z",
-  "updated": "2026-04-30T14:30:55.458Z",
+  "updated": "2026-04-30T16:09:06.607Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -60,12 +60,38 @@
       "note": "Dispatched as Issue #429"
     },
     {
+      "timestamp": "2026-04-30T13:09:12.682Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-30T13:14:54.416Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #433"
+    },
+    {
       "timestamp": "2026-04-30T14:30:55.458Z",
       "action": "dispatch_skipped",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #433 already covers this task."
+    },
+    {
+      "timestamp": "2026-04-30T16:09:06.607Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #433 merged (f46cb9b)."
     }
-  ]
+  ],
+  "pr_number": 433,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/433",
+  "merged_at": "2026-04-30T16:09:06.607Z"
 }
