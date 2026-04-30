@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-29T17:02:08.708Z",
-  "updated": "2026-04-29T17:02:08.708Z",
+  "updated": "2026-04-30T04:16:57.096Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-30T04:16:57.095Z",
   "input": {
     "topic": "SQL Slammer Worm",
     "sources": [
@@ -50,6 +50,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-04-30T04:16:57.096Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ]
 }
