@@ -162,10 +162,15 @@ for the pipeline.
    - `.github/workflows/pipeline-review-gate.yml` runs
      `node scripts/pipeline-review-gate.mjs --pr <number>` against live
      GitHub state for public content, site, and pipeline PRs.
-   - The workflow runs automatically for PR lifecycle and review events.
-     Issue comments only trigger it when the comment explicitly contains
-     `/review-gate` or `/pipeline review-gate`, so routine `/gemini review`
-     prompts and worker status comments do not create unnecessary workflow failures.
+   - The workflow runs automatically for PR review events, including AI review
+     submission and dismissal. It does not run on every PR push because
+     push-time runs race current-head validation and current-head AI review
+     creation, producing status check failures until the current-head
+     validation and AI review requirements for that PR have completed.
+     Issue comments only trigger it when the comment starts with `/review-gate`
+     or `/pipeline review-gate`, so routine `/gemini review` prompts and worker
+     status comments that merely mention the command do not create unnecessary
+     workflow failures.
    - For content-collection PRs, the gate requires a successful current-head
      `validate` check. Green checks from an older head SHA do not count.
    - For public content/site/pipeline PRs, the gate requires an AI second
