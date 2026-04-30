@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-29T17:02:08.525Z",
-  "updated": "2026-04-29T17:54:39.103Z",
+  "updated": "2026-04-30T01:56:52.106Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-30T01:56:52.105Z",
   "input": {
     "topic": "ILOVEYOU Worm Outbreak",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #406"
+    },
+    {
+      "timestamp": "2026-04-30T01:56:52.106Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ]
 }
