@@ -1,0 +1,105 @@
+{
+  "task_id": "TASK-2026-0204",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "created": "2026-04-29T02:54:44.000Z",
+  "updated": "2026-04-29T23:46:05.037Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "GitHub internal Git infrastructure RCE (CVE-2026-3854)",
+    "sources": [
+      "https://www.wiz.io/blog/github-rce-vulnerability-cve-2026-3854",
+      "https://github.blog/security/securing-the-git-push-pipeline-responding-to-a-critical-remote-code-execution-vulnerability"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "sector": "Enterprise",
+      "geography": "Global",
+      "threat_actor": "N/A",
+      "cves": [
+        "CVE-2026-3854"
+      ]
+    },
+    "notes": "Manual submission from Issue #373. Draft a zero-day article from the listed Wiz and GitHub sources. Cover affected GitHub.com backend storage nodes and GitHub Enterprise Server, GitHub.com mitigation within six hours, supported GHES patches, and customer upgrade guidance. Treat repository and secret exposure claims as source-attributed and avoid exploit-step reproduction beyond source-supported behavior."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0204",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-29T02:54:44.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #373; repaired via PR after the original ingest push was rejected by main protection."
+    },
+    {
+      "timestamp": "2026-04-29T19:13:17.371Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T19:24:22.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #409 opened. Validator: PASS. Commit: ab768c9d1f282c859cdd9ba4a3816ff5fc88430f"
+    },
+    {
+      "timestamp": "2026-04-29T19:58:37.795Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #409 already covers this task."
+    },
+    {
+      "timestamp": "2026-04-29T23:16:50Z",
+      "action": "gemini_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Resolved 4 outstanding Gemini review threads (second-pass: from-state fix, patchDate, zero-day tag, timeline format). All 10 threads now resolved. PR #409 gate-green."
+    },
+    {
+      "timestamp": "2026-04-29T23:46:05.037Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #409 merged (dcb003e)."
+    }
+  ],
+  "pr_number": 409,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/409",
+  "merged_at": "2026-04-29T23:46:05.037Z"
+}

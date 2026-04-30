@@ -1,8 +1,6 @@
 name: "Pipeline: Review Gate"
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:
     types: [submitted, dismissed]
   issue_comment:
@@ -22,7 +20,15 @@ permissions:
 
 jobs:
   review-gate:
-    if: github.event_name != 'issue_comment' || github.event.issue.pull_request
+    if: |
+      github.event_name != 'issue_comment' ||
+      (
+        github.event.issue.pull_request &&
+        (
+          startsWith(github.event.comment.body, '/review-gate') ||
+          startsWith(github.event.comment.body, '/pipeline review-gate')
+        )
+      )
     runs-on: ubuntu-latest
 
     steps:
@@ -42,7 +48,7 @@ jobs:
             workflow_dispatch)
               number="${{ inputs.pr_number }}"
               ;;
-            pull_request|pull_request_review)
+            pull_request_review)
               number="${{ github.event.pull_request.number }}"
               ;;
             issue_comment)

@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-04-28T19:24:52.826Z",
-  "updated": "2026-04-28T19:24:52.826Z",
+  "updated": "2026-04-29T17:06:43.835Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -77,6 +77,32 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 91)"
+    },
+    {
+      "timestamp": "2026-04-28T22:17:40.760Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-28T22:19:47.000Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #365 opened by automated zero-day queue worker"
+    },
+    {
+      "timestamp": "2026-04-29T17:06:43.835Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #365 merged (53bdd79)."
     }
-  ]
+  ],
+  "pr_number": 365,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/365",
+  "merged_at": "2026-04-29T17:06:43.835Z"
 }

@@ -1,127 +1,135 @@
 {
-    "task_id": "TASK-2026-0184",
-    "stage": "draft",
-    "type": "zero-day",
-    "priority": "P0",
-    "status": "pr_open",
-    "created": "2026-04-21T01:59:07.361Z",
-    "updated": "2026-04-24T17:30:05.146Z",
-    "source": "auto_discovery",
-    "submitted_by": "pipeline-discovery",
-    "locked_by": "dangermouse-bot",
-    "locked_at": "2026-04-27T20:30:30Z",
-    "input": {
-        "topic": "Kentico Xperience Path Traversal Vulnerability (CVE-2025-2749)",
-        "sources": [
-            "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
-            "https://nvd.nist.gov/vuln/detail/CVE-2025-2749",
-            "https://devnet.kentico.com/download/hotfixes"
-        ],
-        "candidate_data": {
-            "cve": "CVE-2025-2749",
-            "cves": [
-                "CVE-2025-2749"
-            ],
-            "exploitId": "TP-EXP-2025-0003",
-            "type": "Path Traversal",
-            "platform": "Kentico Kentico Xperience",
-            "severity": "high",
-            "cisaKev": true,
-            "disclosedDate": "2026-04-20",
-            "cwes": [
-                "CWE-22",
-                "CWE-434"
-            ],
-            "knownRansomwareUse": false
-        },
-        "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-05-04. CVSS 3.1: 7.2 (HIGH) Discovery score: 96/100 (auto-certify eligible)."
-    },
-    "specs": [
-        "DATA-STANDARDS-v1.0.md",
-        "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  "task_id": "TASK-2026-0184",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "created": "2026-04-21T01:59:07.361Z",
+  "updated": "2026-04-28T23:45:12.435Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Kentico Xperience Path Traversal Vulnerability (CVE-2025-2749)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-2749",
+      "https://devnet.kentico.com/download/hotfixes"
     ],
-    "acceptance_criteria": {
-        "frontmatter_valid": true,
-        "min_sources": 3,
-        "min_h2_sections": 5,
-        "min_mitre_mappings": 1,
-        "review_status": "draft_ai",
-        "schema_validation": "pass",
-        "astro_build": true
+    "candidate_data": {
+      "cve": "CVE-2025-2749",
+      "cves": [
+        "CVE-2025-2749"
+      ],
+      "exploitId": "TP-EXP-2025-0003",
+      "type": "Path Traversal",
+      "platform": "Kentico Kentico Xperience",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-20",
+      "cwes": [
+        "CWE-22",
+        "CWE-434"
+      ],
+      "knownRansomwareUse": false
     },
-    "depends_on": [],
-    "preconditions": [
-        "editorial queue depth < 50"
-    ],
-    "output": {
-        "file_pattern": "site/src/content/zero-days/kentico-kentico-xperience-cve-2025-2749.md",
-        "branch": "pipeline/TASK-2026-0184",
-        "pr": true,
-        "pr_number": 332,
-        "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/332"
-    },
-    "discovery": {
-        "feed": "CISA_KEV",
-        "score": 96,
-        "auto_certify": true,
-        "cvss": {
-            "score": 7.2,
-            "severity": "HIGH",
-            "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
-            "version": "3.1"
-        },
-        "discovered_at": "2026-04-21T01:59:07.361Z"
-    },
-    "history": [
-        {
-            "timestamp": "2026-04-21T01:59:07.361Z",
-            "action": "created",
-            "from": "none",
-            "to": "pending",
-            "agent": "pipeline-discovery",
-            "note": "Auto-discovered from CISA KEV (score: 96)"
-        },
-        {
-            "timestamp": "2026-04-24T14:34:11.370Z",
-            "from": "pending",
-            "to": "locked",
-            "agent": "dangermouse-bot",
-            "note": "Locked for execution"
-        },
-        {
-            "timestamp": "2026-04-24T14:36:37.123Z",
-            "action": "pr_opened",
-            "from": "locked",
-            "to": "pr_open",
-            "agent": "dangermouse-bot",
-            "note": "PR #214 opened via GitHub API fallback (gh not available)"
-        },
-        {
-            "timestamp": "2026-04-24T17:30:05.146Z",
-            "action": "merged",
-            "from": "pr_open",
-            "to": "complete",
-            "agent": "pipeline-task-state",
-            "note": "PR #214 merged (7727505)."
-        },
-        {
-            "timestamp": "2026-04-27T20:30:30Z",
-            "action": "locked",
-            "from": "pending",
-            "to": "locked",
-            "agent": "dangermouse-bot",
-            "note": "Locked for execution"
-        },
-        {
-            "timestamp": "2026-04-27T20:31:42Z",
-            "action": "pr_opened",
-            "from": "locked",
-            "to": "pr_open",
-            "agent": "dangermouse-bot",
-            "note": "Article drafted. Validator PASS 18/18."
-        }
-    ],
+    "notes": "CISA KEV entry added 2026-04-20. Required action by 2026-05-04. CVSS 3.1: 7.2 (HIGH) Discovery score: 96/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/kentico-kentico-xperience-cve-2025-2749.md",
+    "branch": "pipeline/TASK-2026-0184",
+    "pr": true,
     "pr_number": 332,
-    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/332",
-    "merged_at": null
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/332"
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 96,
+    "auto_certify": true,
+    "cvss": {
+      "score": 7.2,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-21T01:59:07.361Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-21T01:59:07.361Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 96)"
+    },
+    {
+      "timestamp": "2026-04-24T14:34:11.370Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-24T14:36:37.123Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #214 opened via GitHub API fallback (gh not available)"
+    },
+    {
+      "timestamp": "2026-04-24T17:30:05.146Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #214 merged (7727505)."
+    },
+    {
+      "timestamp": "2026-04-27T20:30:30Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-27T20:31:42Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article drafted. Validator PASS 18/18."
+    },
+    {
+      "timestamp": "2026-04-28T23:45:12.435Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #332 merged (22ab9f3)."
+    }
+  ],
+  "pr_number": 332,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/332",
+  "merged_at": "2026-04-28T23:45:12.435Z"
 }

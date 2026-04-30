@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0152",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "input": {
     "topic": "MCP ecosystem coordinated vulnerability disclosure",
     "reprocess": true,
@@ -15,7 +15,7 @@
   },
   "output": {
     "file_pattern": "site/src/content/incidents/mcp-ecosystem-vulnerability-disclosure-2026.md",
-    "branch": "bot/reprocess-task-2026-0152"
+    "branch": "pipeline/TASK-2026-0152"
   },
   "acceptance_criteria": {
     "min_sources": 3,
@@ -73,7 +73,59 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #352"
+    },
+    {
+      "timestamp": "2026-04-28T23:15:45.654Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #368"
+    },
+    {
+      "timestamp": "2026-04-29T01:05:00Z",
+      "action": "updated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Rotated the execution branch from bot/reprocess-task-2026-0152 to pipeline/TASK-2026-0152 because the old remote branch carried a large unrelated stale diff and no open PR."
+    },
+    {
+      "timestamp": "2026-04-29T03:22:20.811Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-04-29T03:26:11.461Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #374"
+    },
+    {
+      "timestamp": "2026-04-29T04:07:51.838Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #374 already covers this task."
+    },
+    {
+      "timestamp": "2026-04-29T07:53:20.749Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #374 merged (c82c343)."
     }
   ],
-  "updated": "2026-04-28T17:59:13.771Z"
+  "updated": "2026-04-29T07:53:20.749Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 374,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/374",
+  "merged_at": "2026-04-29T07:53:20.749Z"
 }
