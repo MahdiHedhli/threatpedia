@@ -113,9 +113,7 @@ Target also disclosed business impact. In January 2014, the company lowered its 
 
 ## Attribution
 
-No public source in the selected record identifies a confirmed named threat actor responsible for the Target breach. The sources support criminal data-theft activity, stolen vendor credentials, POS malware, and data exfiltration, but they do not support assigning the incident to a specific group.
-
-For Threatpedia, the safest attribution is Unknown with A4 confidence. The article therefore avoids naming a malware operator, state sponsor, or criminal crew unless later authoritative sources provide stronger evidence.
+No public source in the selected record identifies a confirmed named threat actor responsible for the Target breach. The sources support criminal data-theft activity, stolen vendor credentials, POS malware, and data exfiltration, but they do not support assigning the incident to a specific group, malware operator, state sponsor, or named criminal crew.
 
 ## Timeline
 
