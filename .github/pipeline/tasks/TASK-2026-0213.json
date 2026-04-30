@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-29T17:02:09.076Z",
-  "updated": "2026-04-30T07:08:08.058Z",
+  "updated": "2026-04-30T16:42:16.968Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-30T16:42:16.967Z",
   "input": {
     "topic": "Shamoon / Saudi Aramco Wiper Attack",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #431"
+    },
+    {
+      "timestamp": "2026-04-30T16:42:16.968Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ]
 }
