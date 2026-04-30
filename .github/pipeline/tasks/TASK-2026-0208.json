@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-04-29T17:02:08.616Z",
-  "updated": "2026-04-29T17:02:08.616Z",
+  "updated": "2026-04-30T03:33:36.644Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-04-30T03:33:36.643Z",
   "input": {
     "topic": "Code Red and Nimda Worm Outbreaks",
     "sources": [
@@ -50,6 +50,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-04-30T03:33:36.644Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ]
 }
