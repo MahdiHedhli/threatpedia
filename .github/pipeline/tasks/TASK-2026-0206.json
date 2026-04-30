@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-04-29T17:02:08.425Z",
-  "updated": "2026-04-29T23:55:39.176Z",
+  "updated": "2026-04-30T00:40:37.204Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -73,8 +73,17 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #413"
+    },
+    {
+      "timestamp": "2026-04-30T00:40:37.204Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #413 merged (453e562)."
     }
   ],
   "pr_number": 413,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/413"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/413",
+  "merged_at": "2026-04-30T00:40:37.204Z"
 }
