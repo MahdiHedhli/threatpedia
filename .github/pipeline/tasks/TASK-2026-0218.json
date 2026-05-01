@@ -20,7 +20,7 @@
     "candidate_data": {
       "severity": "critical"
     },
-    "notes": "Smoke-test incident pipeline seed for a high-impact healthcare ransomware incident; draft conservatively from UnitedHealth/HHS sources and avoid unsupported attribution beyond public evidence."
+    "notes": "Smoke-test incident pipeline seed for a healthcare ransomware incident; draft conservatively from UnitedHealth/HHS sources and avoid unsupported attribution beyond public evidence."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -30,7 +30,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 8,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
