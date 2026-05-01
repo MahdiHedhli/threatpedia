@@ -24,8 +24,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,

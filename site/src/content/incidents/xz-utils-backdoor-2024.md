@@ -113,7 +113,7 @@ The incident prompted vendor response and security discussion around maintainer 
 
 No government or law enforcement agency has publicly attributed CVE-2024-3094 to a specific actor or nation-state. The GitHub account "Jia Tan" (also identified as JiaT75) conducted the campaign but no confirmed real-world identity has been established. Researchers and commentators have noted characteristics of the campaign — the multi-year duration and the targeting of SSH authentication infrastructure — that are consistent with state-sponsored adversary tradecraft, but these observations do not constitute confirmed attribution.
 
-The attacker used an email address and timezone patterns noted by some researchers as potentially consistent with Eastern European or Asian working hours; however, such indicators can be trivially manipulated and should not be treated as conclusive.
+The attacker used an email address and timezone patterns noted by some researchers as potentially consistent with Eastern European or Asian working hours; however, such indicators can be manipulated and should not be treated as conclusive.
 
 CISA's alert and NVD's CVE record do not attribute the incident to any specific actor. Freund's original disclosure on the oss-security list similarly presents the technical findings without actor attribution.
 
@@ -139,7 +139,7 @@ Andres Freund publishes his findings to the oss-security mailing list, documenti
 
 CISA publishes an alert urging immediate downgrade to XZ Utils 5.4.6 or an earlier unaffected version.
 
-### 2024-03-30 — Broad Vendor Response
+### 2024-03-30 — Coordinated Vendor Response
 
 Ubuntu, Arch Linux, Alpine Linux, Gentoo, and additional distributions confirm their stable releases were not affected. Package maintainers remove the compromised versions from testing and unstable channels across remaining affected distributions.
 
