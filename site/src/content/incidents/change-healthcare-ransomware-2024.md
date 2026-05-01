@@ -161,7 +161,14 @@ UHG disconnected Change Healthcare systems following detection to contain the ra
 
 The core control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
 
-HHS OCR and CISA have each recommended the following controls to reduce exposure to similar attacks: enforce MFA on all remote access systems and administrative consoles; implement network segmentation to limit lateral movement between clinical, administrative, and financial systems; apply the principle of least privilege to service accounts and administrator credentials; maintain offline and tested backups of critical data and systems; conduct regular vulnerability assessments of internet-facing systems and remote access infrastructure; and establish and test incident response and business continuity plans that account for third-party healthcare IT dependencies.
+HHS OCR and CISA have each recommended the following controls to reduce exposure to similar attacks:
+
+- Enforce MFA on all remote access systems and administrative consoles.
+- Implement network segmentation to limit lateral movement between clinical, administrative, and financial systems.
+- Apply the principle of least privilege to service accounts and administrator credentials.
+- Maintain offline and tested backups of critical data and systems.
+- Conduct regular vulnerability assessments of internet-facing systems and remote access infrastructure.
+- Establish and test incident response and business continuity plans that account for third-party healthcare IT dependencies.
 
 Organizations that rely on healthcare clearinghouses or transaction processors should assess their vendor concentration risk and establish contingency procedures that do not depend on single points of failure in their revenue cycle operations.
 
