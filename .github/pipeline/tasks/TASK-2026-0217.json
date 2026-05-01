@@ -42,7 +42,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -89,7 +89,7 @@
       "from": "pending",
       "to": "in_progress",
       "agent": "dangermouse-bot",
-      "note": "Locked by queue worker run #87 \u2014 drafting zero-day article for CVE-2026-41940"
+      "note": "Locked by queue worker run #87 — drafting zero-day article for CVE-2026-41940"
     },
     {
       "timestamp": "2026-05-01T00:25:46.000Z",
@@ -98,6 +98,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #449 opened via GitHub API (gh absent in sandbox). URL: https://github.com/MahdiHedhli/threatpedia/pull/449"
+    },
+    {
+      "timestamp": "2026-05-01T01:01:00Z",
+      "event": "pending_review_gate",
+      "actor": "dangermouse-bot",
+      "run": 87,
+      "note": "Content drafted and validated. 4 rounds of Gemini review applied (9 threads resolved). Awaiting Gemini review on HEAD 0780ae0a for review-gate pass."
     }
-  ]
+  ],
+  "head_sha": "0780ae0a0b71dc760d253f1b9e7e873737e5e324"
 }
