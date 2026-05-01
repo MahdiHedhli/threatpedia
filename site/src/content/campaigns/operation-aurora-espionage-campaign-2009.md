@@ -76,7 +76,7 @@ mitreMappings:
 
 ## Executive Summary
 
-Operation Aurora was a 2009 espionage operation publicly disclosed by Google in January 2010 after intrusions affected Google and other major technology companies. Public reporting described theft of intellectual property and targeting of accounts associated with Chinese human-rights activism, placing the activity at the intersection of industrial espionage and political intelligence collection.
+Operation Aurora was a 2009 espionage operation publicly disclosed by Google in January 2010 after intrusions affected Google and other technology companies. Public reporting described theft of intellectual property and targeting of accounts associated with Chinese human-rights activism, placing the activity at the intersection of industrial espionage and political intelligence collection.
 
 Operation Aurora extended across multiple organizations through a coordinated activity set involving targeted delivery, exploitation of Internet Explorer CVE-2010-0249, Hydraq/Aurora malware, and follow-on access to high-value corporate systems.
 
@@ -84,17 +84,17 @@ Public sources connect the activity to operators in China, but the exact public 
 
 ## Technical Analysis
 
-The clearest technical path involved targeted delivery to employees at high-value technology firms. Victims were directed to malicious web content, and successful exploitation of CVE-2010-0249 in Internet Explorer gave the operators code execution on exposed endpoints. The exploitation chain installed Hydraq, also referred to as Aurora, which provided remote access for follow-on activity.
+The documented technical path involved targeted delivery to employees at high-value technology firms. Victims were directed to malicious web content, and successful exploitation of CVE-2010-0249 in Internet Explorer gave the operators code execution on exposed endpoints. The exploitation chain installed Hydraq, also referred to as Aurora, which provided remote access for follow-on activity.
 
 The operators used that access to pursue systems holding strategic value rather than criminal monetization. Google described theft of intellectual property and attempted access to Gmail accounts tied to Chinese human-rights advocates. McAfee reporting and later ATT&CK references connected the activity to web exploitation, remote access malware, and collection activity against technology-sector victims.
 
-The stable technical picture is targeted delivery, client-side exploitation, remote access malware, internal discovery, and collection from systems containing source code or sensitive communications.
+The consistent technical picture is targeted delivery, client-side exploitation, remote access malware, internal discovery, and collection from systems containing source code or sensitive communications.
 
 ## Attack Chain
 
 ### Stage 1: Target Selection
 
-Operators selected employees and organizations with access to valuable technology, source code, or sensitive communications.
+Operators selected employees and organizations with access to strategic technology, source code, or sensitive communications.
 
 ### Stage 2: Targeted Delivery
 
