@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0151",
   "type": "campaign",
   "priority": "P2",
-  "status": "blocked",
+  "status": "complete",
   "input": {
     "topic": "Operation Aurora campaign canonical reconciliation",
     "reprocess": true,
@@ -65,9 +65,44 @@
       "to": "blocked",
       "agent": "Mahdi Hedhli",
       "note": "Blocked in place: target campaign file site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md does not exist on main, and the only live public Operation Aurora content currently exists as the incident article site/src/content/incidents/operation-aurora-espionage-2009.md. This needs a canonical content-shape decision before the task can be drafted or closed as complete."
+    },
+    {
+      "timestamp": "2026-05-01T15:40:00Z",
+      "action": "unblocked",
+      "from": "blocked",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Resolved the content-shape blocker by preserving the existing incident article and creating the missing canonical campaign article at the task output path."
+    },
+    {
+      "timestamp": "2026-05-01T15:47:04.225Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution",
+      "action": "locked"
+    },
+    {
+      "timestamp": "2026-05-01T15:55:00Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #455"
+    },
+    {
+      "timestamp": "2026-05-01T18:13:15.202Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #455 merged (fe4f16c)."
     }
   ],
-  "updated": "2026-04-29T15:43:10Z",
+  "updated": "2026-05-01T18:13:15.202Z",
   "locked_by": null,
-  "locked_at": null
+  "locked_at": null,
+  "pr_number": 455,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/455",
+  "merged_at": "2026-05-01T18:13:15.202Z"
 }
