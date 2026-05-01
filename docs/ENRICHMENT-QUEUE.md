@@ -121,8 +121,8 @@ an enrichment task and which queue type applies.
 
 Recommended model routing:
 
-- GPT-5.5 for this project when running in ChatGPT/Codex.
-- Claude Opus 4.7 for CoWork when the task is attribution-heavy,
+- Use a high-capability model when running in ChatGPT/Codex.
+- Use an advanced model for CoWork when the task is attribution-heavy,
   thin-source, canon-sensitive, or repeatedly ambiguous.
 
 Classifier responsibilities:
@@ -139,8 +139,8 @@ after a clear enrichment task exists.
 
 Recommended model routing:
 
-- Sonnet 4.6 for bounded source-backed updates.
-- Escalate to Opus 4.7 only when the update becomes attribution-heavy,
+- Use a cost-effective model for bounded source-backed updates.
+- Escalate to a high-capability model only when the update becomes attribution-heavy,
   canonicalization-sensitive, or repeatedly fails review.
 
 Executor responsibilities:
