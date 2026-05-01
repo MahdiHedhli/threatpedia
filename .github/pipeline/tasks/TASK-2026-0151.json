@@ -83,7 +83,7 @@
       "action": "locked"
     },
     {
-      "timestamp": "2026-05-01T15:50:13.099Z",
+      "timestamp": "2026-05-01T15:55:00Z",
       "from": "locked",
       "to": "pr_open",
       "agent": "Mahdi Hedhli",
@@ -91,7 +91,7 @@
       "note": "Article generated, validated, and recorded against PR #455"
     }
   ],
-  "updated": "2026-05-01T15:50:13.099Z",
+  "updated": "2026-05-01T15:55:00Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 455,
