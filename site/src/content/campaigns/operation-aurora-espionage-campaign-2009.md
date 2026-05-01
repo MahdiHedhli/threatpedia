@@ -80,7 +80,7 @@ Operation Aurora was a 2009 espionage operation publicly disclosed by Google in 
 
 Operation Aurora extended across multiple organizations through a coordinated activity set involving targeted delivery, exploitation of Internet Explorer CVE-2010-0249, Hydraq/Aurora malware, and follow-on access to high-value corporate systems.
 
-Public sources connect the activity to operators in China, but the exact public group label remains less settled than later campaigns with formal government attribution. Attribution is noted as unknown pending further formal government attribution.
+Public sources connect the activity to operators in China, but the exact public group label remains less settled than later campaigns with formal government attribution.
 
 ## Technical Analysis
 
@@ -152,9 +152,9 @@ Microsoft issued an out-of-band security update for CVE-2010-0249, closing the I
 
 ## Remediation & Mitigation
 
-Operation Aurora remains relevant because it showed how targeted client-side exploitation can become strategic enterprise access. Defenders should reduce browser attack surface, patch client software quickly when active exploitation is confirmed, and monitor high-value development and communications systems for unusual access, staging, or exfiltration.
+Operation Aurora remains relevant because it showed how targeted client-side exploitation can become strategic enterprise access. Defenders should reduce browser attack surface, patch client software when active exploitation is confirmed, and monitor high-value development and communications systems for unusual access, staging, or exfiltration.
 
-The operation also supports stronger controls around source-code environments and politically sensitive communications. Useful controls include browser isolation for high-risk users, egress monitoring, stronger identity protections around repository access, and segmentation between user workstations and systems that store intellectual property.
+The operation also supports controls around source-code environments and politically sensitive communications. Useful controls include browser isolation for high-risk users, egress monitoring, identity protections around repository access, and segmentation between user workstations and systems that store intellectual property.
 
 
 ## Sources & References
