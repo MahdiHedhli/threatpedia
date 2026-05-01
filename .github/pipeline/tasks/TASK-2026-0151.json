@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0151",
   "type": "campaign",
   "priority": "P2",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Operation Aurora campaign canonical reconciliation",
     "reprocess": true,
@@ -89,12 +89,20 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #455"
+    },
+    {
+      "timestamp": "2026-05-01T18:13:15.202Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #455 merged (fe4f16c)."
     }
   ],
-  "updated": "2026-05-01T15:55:00Z",
+  "updated": "2026-05-01T18:13:15.202Z",
   "locked_by": null,
   "locked_at": null,
   "pr_number": 455,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/455",
-  "merged_at": null
+  "merged_at": "2026-05-01T18:13:15.202Z"
 }
