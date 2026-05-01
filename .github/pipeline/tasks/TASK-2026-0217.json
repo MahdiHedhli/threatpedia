@@ -1,0 +1,125 @@
+{
+  "task_id": "TASK-2026-0217",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pr_open",
+  "pr_number": 449,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/449",
+  "created": "2026-04-30T19:09:49.629Z",
+  "updated": "2026-05-01T05:00:00.000Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-01T00:10:00.000Z",
+  "input": {
+    "topic": "WebPros cPanel & WHM and WP2 (WordPress Squared) Missing Authentication for Critical Function Vulnerability (CVE-2026-41940)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-41940",
+      "https://support.cpanel.net/hc/en-us/articles/40073787579671-cPanel-WHM-Security-Update-04-28-2026",
+      "https://docs.cpanel.net/release-notes/release-notes/",
+      "https://docs.wpsquared.com/changelogs/versions/changelog/#13617",
+      "https://www.vulncheck.com/advisories/cpanel-and-whm-authentication-bypass-via-login-flow"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-41940",
+      "cves": [
+        "CVE-2026-41940"
+      ],
+      "exploitId": "TP-EXP-2026-0017",
+      "type": "Authentication Bypass",
+      "platform": "WebPros cPanel & WHM and WP2 (WordPress Squared)",
+      "severity": "critical",
+      "cisaKev": true,
+      "disclosedDate": "2026-04-30",
+      "cwes": [
+        "CWE-306"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-04-30. Required action by 2026-05-03. CVSS 3.1: 9.8 (CRITICAL). Discovery score: 100/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/webpros-cpanel-and-whm-and-wp2-wordpress-sq-cve-2026-41940.md",
+    "branch": "pipeline/TASK-2026-0217",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 100,
+    "auto_certify": true,
+    "cvss": {
+      "score": 9.8,
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-04-30T19:09:49.629Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-30T19:09:49.629Z",
+      "event": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 100)"
+    },
+    {
+      "timestamp": "2026-05-01T00:10:00.000Z",
+      "event": "locked",
+      "from": "pending",
+      "to": "in_progress",
+      "agent": "dangermouse-bot",
+      "note": "Locked by queue worker run #87 \u2014 drafting zero-day article for CVE-2026-41940"
+    },
+    {
+      "timestamp": "2026-05-01T00:25:46.000Z",
+      "event": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #449 opened via GitHub API (gh absent in sandbox). URL: https://github.com/MahdiHedhli/threatpedia/pull/449"
+    },
+    {
+      "timestamp": "2026-05-01T01:01:00Z",
+      "event": "pending_review_gate",
+      "actor": "dangermouse-bot",
+      "run": 87,
+      "note": "Content drafted and validated. 4 rounds of Gemini review applied (9 threads resolved). Awaiting Gemini review on HEAD 0780ae0a for review-gate pass."
+    },
+    {
+      "timestamp": "2026-05-01T01:10:00.000Z",
+      "event": "merge_ready",
+      "actor": "dangermouse-bot",
+      "run": 88,
+      "note": "Run #88 assessment: validate=pass (HEAD f5452269), build=pass, Gemini threads=9/9 resolved, no remaining actionable findings. Merge-ready \u2014 awaiting human approval from MahdiHedhli."
+    },
+    {
+      "timestamp": "2026-05-01T05:00:00.000Z",
+      "event": "no_op_check",
+      "actor": "dangermouse-bot",
+      "run": 95,
+      "note": "Run #95: zero-day queue exhausted (0 pipeline/ready issues, 0 pending task files). PR #449 HEAD updated to e0737dff (3 merge commits from origin/main). validate=pass, review-gate=pass, Gemini threads=0 unresolved. Still merge_ready \u2014 awaiting MahdiHedhli CODEOWNERS approval. CISA KEV deadline: 2026-05-03."
+    }
+  ],
+  "head_sha": "e0737dff8c8988b47cd3a08d481c20b5a250444a"
+}
