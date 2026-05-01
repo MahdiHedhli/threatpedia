@@ -49,6 +49,11 @@ sources:
     publisherType: government
     reliability: R1
     publicationDate: "2023-12-19"
+  - url: "https://www.sec.gov/Archives/edgar/data/731766/000073176625000063/unh-20241231.htm"
+    publisher: "U.S. Securities and Exchange Commission"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2025-02-27"
 mitreMappings:
   - techniqueId: "T1078"
     techniqueName: "Valid Accounts"
@@ -68,9 +73,9 @@ mitreMappings:
 
 On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (UHG) and one of the largest healthcare technology companies in the United States — experienced a ransomware attack attributed to the ALPHV/BlackCat ransomware group. Change Healthcare processes approximately 15 billion healthcare transactions annually, representing roughly one-third of all U.S. patient records. The attack caused disruption across the U.S. healthcare system, affecting pharmacies, hospitals, insurers, and provider billing operations for weeks.
 
-UnitedHealth Group disclosed the incident to the U.S. Securities and Exchange Commission on February 21, 2024. In subsequent public updates and Congressional testimony, UHG confirmed that threat actors accessed Change Healthcare's systems through a compromised Citrix remote access portal that lacked multi-factor authentication. Approximately 6 TB of data was exfiltrated before ransomware was deployed. By October 2024, UHG had sent breach notifications to over 100 million individuals, making this the largest healthcare data breach in U.S. history by notification volume.
+UnitedHealth Group disclosed the incident to the U.S. Securities and Exchange Commission on February 21, 2024. In subsequent public updates and Congressional testimony, UHG confirmed that threat actors accessed Change Healthcare's systems through a compromised Citrix remote access portal that lacked multi-factor authentication. Approximately 6 TB of data was exfiltrated before ransomware was deployed. UHG's 2024 annual report confirmed the total number of individuals impacted was approximately 190 million, making this the largest healthcare data breach notification event in U.S. history.
 
-The ALPHV/BlackCat ransomware group claimed responsibility for the attack. UHG CEO Andrew Witty confirmed the group's identity in Congressional testimony in May 2024. UHG provided over $6 billion in accelerated payments and interest-free loans to affected healthcare providers to offset cash flow disruption during the outage period.
+The ALPHV/BlackCat ransomware group claimed responsibility and was identified as the responsible actor in CISA and HHS advisories. UHG provided over $6 billion in accelerated payments and interest-free loans to affected healthcare providers to offset cash flow disruption during the outage period.
 
 ## Technical Analysis
 
@@ -110,7 +115,7 @@ The operational impact of the attack extended across the U.S. healthcare sector 
 
 UnitedHealth Group reported providing over $6 billion in accelerated payments and no-interest loans to affected healthcare providers to address the financial disruption caused by the outage. The company also disclosed costs exceeding $870 million attributed to the cyberattack as of mid-2024 SEC filings, with full recovery costs expected to exceed $1 billion.
 
-By October 2024, UHG had issued breach notifications to over 100 million individuals, the largest volume in the history of U.S. healthcare data breach notifications under HIPAA. The affected data included: names, addresses, dates of birth, phone numbers, Social Security numbers, driver's license and state ID numbers, passport numbers, health insurance member IDs, medical record numbers, diagnoses, medication information, and financial and banking information for a subset of individuals.
+UHG's 2024 annual report confirmed the total number of individuals impacted was approximately 190 million, the largest HIPAA breach notification event in U.S. history. The affected data included: names, addresses, dates of birth, phone numbers, Social Security numbers, driver's license and state ID numbers, passport numbers, health insurance member IDs, medical record numbers, diagnoses, medication information, and financial and banking information for a subset of individuals.
 
 The HHS Office for Civil Rights opened an investigation into UHG's HIPAA compliance and issued specific guidance clarifying that Change Healthcare — as a business associate — bore primary responsibility for breach notification to affected covered entities and, in some cases, directly to affected individuals.
 
@@ -119,6 +124,8 @@ The HHS Office for Civil Rights opened an investigation into UHG's HIPAA complia
 ALPHV/BlackCat, a ransomware-as-a-service operation, claimed responsibility for the attack on its data leak site. The group stated it had exfiltrated 6 TB of data including PHI and financial records. CISA advisory AA23-353A, published in December 2023, documented ALPHV/BlackCat's targeting of healthcare sector organizations and the technical indicators associated with the group.
 
 UHG CEO Andrew Witty confirmed before Congress in May 2024 that the ransomware group responsible was identified as ALPHV/BlackCat. UHG did not publicly dispute the group's claim of responsibility. The attribution is consistent with law enforcement assessments of ALPHV/BlackCat's operations during this period, though no government attribution statement specific to the Change Healthcare incident has been independently published by CISA or the FBI.
+
+The attribution rests on public vendor confirmation and the group's own claim of responsibility; no independent government statement names ALPHV/BlackCat for this specific incident.
 
 ## Timeline
 
@@ -146,15 +153,15 @@ UHG publishes an April update confirming that protected health information was c
 
 UHG CEO Andrew Witty testifies before the U.S. Senate Finance Committee and House Energy and Commerce Committee, confirming that the Citrix portal used for initial access lacked multi-factor authentication and that the company paid a ransom demand.
 
-### 2024-10-24 — Breach Notifications Reach 100 Million
+### 2025-02-27 — Impacted Population Confirmed
 
-UHG reports to HHS that breach notifications have been sent to over 100 million individuals, establishing the Change Healthcare attack as the largest healthcare data breach notification event in U.S. history.
+UHG's 2024 annual report, filed with the SEC, confirms the total number of individuals impacted by the Change Healthcare cyberattack was approximately 190 million, the largest HIPAA breach notification event in U.S. history.
 
 ## Remediation & Mitigation
 
 UHG disconnected Change Healthcare systems following detection to contain the ransomware deployment. Restoration of pharmacy connectivity and claims processing was conducted over a period of weeks, with some services restored in phases beginning in early March 2024. Full system restoration across all Change Healthcare services extended through late spring 2024.
 
-The primary control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
+The core control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
 
 HHS OCR and CISA have each recommended the following controls to reduce exposure to similar attacks: enforce MFA on all remote access systems and administrative consoles; implement network segmentation to limit lateral movement between clinical, administrative, and financial systems; apply the principle of least privilege to service accounts and administrator credentials; maintain offline and tested backups of critical data and systems; conduct regular vulnerability assessments of internet-facing systems and remote access infrastructure; and establish and test incident response and business continuity plans that account for third-party healthcare IT dependencies.
 
@@ -167,3 +174,4 @@ Organizations that rely on healthcare clearinghouses or transaction processors s
 - [U.S. Securities and Exchange Commission: UNH Form 8-K — February 21, 2024](https://www.sec.gov/Archives/edgar/data/731766/000073176624000045/unh-20240221.htm) — U.S. Securities and Exchange Commission, 2024-02-21
 - [U.S. Department of Health and Human Services: Change Healthcare Cybersecurity Incident Bulletin](https://www.hhs.gov/hipaa/for-professionals/special-topics/change-healthcare-cybersecurity-incident-bulletin/index.html) — U.S. Department of Health and Human Services, 2024-04-19
 - [CISA: #StopRansomware: ALPHV Blackcat — Advisory AA23-353A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a) — CISA, 2023-12-19
+- [U.S. Securities and Exchange Commission: UnitedHealth Group Annual Report 2024 (Form 10-K)](https://www.sec.gov/Archives/edgar/data/731766/000073176625000063/unh-20241231.htm) — U.S. Securities and Exchange Commission, 2025-02-27
