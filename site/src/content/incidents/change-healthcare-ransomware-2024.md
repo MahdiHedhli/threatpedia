@@ -75,7 +75,7 @@ On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (
 
 UnitedHealth Group disclosed the incident to the U.S. Securities and Exchange Commission on February 21, 2024. In subsequent public updates and Congressional testimony, UHG confirmed that threat actors accessed Change Healthcare's systems through a compromised Citrix remote access portal that lacked multi-factor authentication. Approximately 6 TB of data was exfiltrated before ransomware was deployed. UHG's 2024 annual report confirmed the total number of individuals impacted was approximately 190 million, making this the largest healthcare data breach notification event in U.S. history.
 
-The ALPHV/BlackCat ransomware group claimed responsibility and was identified as the responsible actor in CISA and HHS advisories. UHG provided over $6 billion in accelerated payments and interest-free loans to affected healthcare providers to offset cash flow disruption during the outage period.
+The ALPHV/BlackCat ransomware group claimed responsibility for the attack, which aligns with CISA and HHS advisories documenting the group's pattern of targeting the healthcare sector. UHG provided over $6 billion in accelerated payments and interest-free loans to affected healthcare providers to offset cash flow disruption during the outage period.
 
 ## Technical Analysis
 
@@ -124,8 +124,6 @@ The HHS Office for Civil Rights opened an investigation into UHG's HIPAA complia
 ALPHV/BlackCat, a ransomware-as-a-service operation, claimed responsibility for the attack on its data leak site. The group stated it had exfiltrated 6 TB of data including PHI and financial records. CISA advisory AA23-353A, published in December 2023, documented ALPHV/BlackCat's targeting of healthcare sector organizations and the technical indicators associated with the group.
 
 UHG CEO Andrew Witty confirmed before Congress in May 2024 that the ransomware group responsible was identified as ALPHV/BlackCat. UHG did not publicly dispute the group's claim of responsibility. The attribution is consistent with law enforcement assessments of ALPHV/BlackCat's operations during this period, though no government attribution statement specific to the Change Healthcare incident has been independently published by CISA or the FBI.
-
-The attribution rests on public vendor confirmation and the group's own claim of responsibility; no independent government statement names ALPHV/BlackCat for this specific incident.
 
 ## Timeline
 
