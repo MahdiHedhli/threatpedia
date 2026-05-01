@@ -60,6 +60,11 @@ manual operator use; do not wire into the scheduled flow.
 validation gates, and discovery feed config. It is the single tunable knob
 for the pipeline.
 
+The proposed enrichment lane is documented separately in
+[`docs/ENRICHMENT-QUEUE.md`](ENRICHMENT-QUEUE.md). That lane is not implemented
+yet; it should wait until the incident, campaign, threat-actor, and zero-day
+discovery queues are open, validated, and stable.
+
 ---
 
 ## The lifecycle of a single task
