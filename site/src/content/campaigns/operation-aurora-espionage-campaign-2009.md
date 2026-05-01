@@ -78,17 +78,17 @@ mitreMappings:
 
 Operation Aurora was a 2009 espionage operation publicly disclosed by Google in January 2010 after intrusions affected Google and other major technology companies. Public reporting described theft of intellectual property and targeting of accounts associated with Chinese human-rights activism, placing the activity at the intersection of industrial espionage and political intelligence collection.
 
-The operation belongs in the campaign corpus because it was broader than a single victim intrusion. The public record describes a coordinated activity set involving targeted delivery, exploitation of Internet Explorer CVE-2010-0249, Hydraq/Aurora malware, and follow-on access to high-value corporate systems. The existing incident article remains the bounded public-disclosure event; this campaign record captures the broader operation and links back to that incident.
+Operation Aurora extended across multiple organizations through a coordinated activity set involving targeted delivery, exploitation of Internet Explorer CVE-2010-0249, Hydraq/Aurora malware, and follow-on access to high-value corporate systems.
 
-Public sources connect the activity to operators in China, but the exact public group label remains less settled than later campaigns with formal government attribution. This record therefore treats the actor as unknown while preserving the China-linked context described by the cited sources.
+Public sources connect the activity to operators in China, but the exact public group label remains less settled than later campaigns with formal government attribution. Attribution is noted as unknown pending further formal government attribution.
 
 ## Technical Analysis
 
 The clearest technical path involved targeted delivery to employees at high-value technology firms. Victims were directed to malicious web content, and successful exploitation of CVE-2010-0249 in Internet Explorer gave the operators code execution on exposed endpoints. The exploitation chain installed Hydraq, also referred to as Aurora, which provided remote access for follow-on activity.
 
-The operators used that access to pursue systems holding strategic value rather than broad criminal monetization. Google described theft of intellectual property and attempted access to Gmail accounts tied to Chinese human-rights advocates. McAfee reporting and later ATT&CK references connected the activity to web exploitation, remote access malware, and collection activity against technology-sector victims.
+The operators used that access to pursue systems holding strategic value rather than criminal monetization. Google described theft of intellectual property and attempted access to Gmail accounts tied to Chinese human-rights advocates. McAfee reporting and later ATT&CK references connected the activity to web exploitation, remote access malware, and collection activity against technology-sector victims.
 
-The source base is older and less complete than modern campaign reporting, so infrastructure ownership, full victim count, and exact operator identity should remain conservative. The stable technical picture is targeted delivery, client-side exploitation, remote access malware, internal discovery, and collection from systems containing source code or sensitive communications.
+The stable technical picture is targeted delivery, client-side exploitation, remote access malware, internal discovery, and collection from systems containing source code or sensitive communications.
 
 ## Attack Chain
 
@@ -130,23 +130,23 @@ T1005 - Data from Local System: Operators pursued source code and other high-val
 
 ## Timeline
 
-### 2009-06-01 - Activity Window Begins
+### 2009-06-01 — Activity Window Begins
 
 Public retrospective reporting places Operation Aurora activity in motion by mid-2009, before the public disclosure cycle began.
 
-### 2009-12-01 - Google Investigates Intrusion Activity
+### 2009-12-01 — Google Investigates Intrusion Activity
 
-Google's internal investigation connected its compromise to broader malicious activity affecting other companies.
+Google's internal investigation connected its compromise to malicious activity affecting other companies.
 
-### 2010-01-12 - Google Publicly Discloses the Intrusions
+### 2010-01-12 — Google Publicly Discloses the Intrusions
 
 Google disclosed the attack activity and described both intellectual property theft and targeting related to Chinese human-rights activism.
 
-### 2010-01-14 - CISA and McAfee Publish Public Guidance
+### 2010-01-14 — CISA and McAfee Publish Public Guidance
 
 CISA issued an alert on the Google China cyber attack, and McAfee published technical details that helped define the Operation Aurora label.
 
-### 2010-01-21 - Microsoft Releases Out-of-Band Patch
+### 2010-01-21 — Microsoft Releases Out-of-Band Patch
 
 Microsoft issued an out-of-band security update for CVE-2010-0249, closing the Internet Explorer exploit path used in the operation.
 
@@ -156,7 +156,6 @@ Operation Aurora remains relevant because it showed how targeted client-side exp
 
 The operation also supports stronger controls around source-code environments and politically sensitive communications. Useful controls include browser isolation for high-risk users, egress monitoring, stronger identity protections around repository access, and segmentation between user workstations and systems that store intellectual property.
 
-For historical reconciliation, the key data-quality rule is to keep this campaign article separate from the incident article. The incident record captures the bounded disclosure and victim-specific event; this record captures the broader operation without inflating the public attribution or victim details beyond what the sources support.
 
 ## Sources & References
 
