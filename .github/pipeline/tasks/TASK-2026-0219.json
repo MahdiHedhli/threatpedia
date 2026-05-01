@@ -74,7 +74,7 @@
       "timestamp": "2026-05-01T18:15:00.000Z",
       "from": "locked",
       "to": "pr_open",
-      "agent": "new-threat-intel",
+      "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #462"
     }
