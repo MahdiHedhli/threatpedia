@@ -3,15 +3,15 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "pr_number": 449,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/449",
   "created": "2026-04-30T19:09:49.629Z",
-  "updated": "2026-05-01T05:00:00.000Z",
+  "updated": "2026-05-01T15:43:11.133Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-01T00:10:00.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "WebPros cPanel & WHM and WP2 (WordPress Squared) Missing Authentication for Critical Function Vulnerability (CVE-2026-41940)",
     "sources": [
@@ -42,7 +42,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -89,7 +89,7 @@
       "from": "pending",
       "to": "in_progress",
       "agent": "dangermouse-bot",
-      "note": "Locked by queue worker run #87 \u2014 drafting zero-day article for CVE-2026-41940"
+      "note": "Locked by queue worker run #87 — drafting zero-day article for CVE-2026-41940"
     },
     {
       "timestamp": "2026-05-01T00:25:46.000Z",
@@ -111,15 +111,24 @@
       "event": "merge_ready",
       "actor": "dangermouse-bot",
       "run": 88,
-      "note": "Run #88 assessment: validate=pass (HEAD f5452269), build=pass, Gemini threads=9/9 resolved, no remaining actionable findings. Merge-ready \u2014 awaiting human approval from MahdiHedhli."
+      "note": "Run #88 assessment: validate=pass (HEAD f5452269), build=pass, Gemini threads=9/9 resolved, no remaining actionable findings. Merge-ready — awaiting human approval from MahdiHedhli."
     },
     {
       "timestamp": "2026-05-01T05:00:00.000Z",
       "event": "no_op_check",
       "actor": "dangermouse-bot",
       "run": 95,
-      "note": "Run #95: zero-day queue exhausted (0 pipeline/ready issues, 0 pending task files). PR #449 HEAD updated to e0737dff (3 merge commits from origin/main). validate=pass, review-gate=pass, Gemini threads=0 unresolved. Still merge_ready \u2014 awaiting MahdiHedhli CODEOWNERS approval. CISA KEV deadline: 2026-05-03."
+      "note": "Run #95: zero-day queue exhausted (0 pipeline/ready issues, 0 pending task files). PR #449 HEAD updated to e0737dff (3 merge commits from origin/main). validate=pass, review-gate=pass, Gemini threads=0 unresolved. Still merge_ready — awaiting MahdiHedhli CODEOWNERS approval. CISA KEV deadline: 2026-05-03."
+    },
+    {
+      "timestamp": "2026-05-01T15:43:11.133Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #449 merged (e035b04)."
     }
   ],
-  "head_sha": "e0737dff8c8988b47cd3a08d481c20b5a250444a"
+  "head_sha": "e0737dff8c8988b47cd3a08d481c20b5a250444a",
+  "merged_at": "2026-05-01T15:43:11.133Z"
 }
