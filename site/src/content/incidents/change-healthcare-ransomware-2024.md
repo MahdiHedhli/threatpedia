@@ -66,7 +66,7 @@ mitreMappings:
 
 ## Summary
 
-On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (UHG) and one of the largest healthcare technology companies in the United States — suffered a ransomware attack attributed to the ALPHV/BlackCat ransomware group. Change Healthcare processes approximately 15 billion healthcare transactions annually, representing roughly one-third of all U.S. patient records. The attack caused immediate disruption across the U.S. healthcare system, affecting pharmacies, hospitals, insurers, and provider billing operations for weeks.
+On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (UHG) and one of the largest healthcare technology companies in the United States — experienced a ransomware attack attributed to the ALPHV/BlackCat ransomware group. Change Healthcare processes approximately 15 billion healthcare transactions annually, representing roughly one-third of all U.S. patient records. The attack caused disruption across the U.S. healthcare system, affecting pharmacies, hospitals, insurers, and provider billing operations for weeks.
 
 UnitedHealth Group disclosed the incident to the U.S. Securities and Exchange Commission on February 21, 2024. In subsequent public updates and Congressional testimony, UHG confirmed that threat actors accessed Change Healthcare's systems through a compromised Citrix remote access portal that lacked multi-factor authentication. Approximately 6 TB of data was exfiltrated before ransomware was deployed. By October 2024, UHG had sent breach notifications to over 100 million individuals, making this the largest healthcare data breach in U.S. history by notification volume.
 
@@ -74,11 +74,11 @@ The ALPHV/BlackCat ransomware group claimed responsibility and was identified as
 
 ## Technical Analysis
 
-The attacker gained initial access through Change Healthcare's Citrix remote access infrastructure using compromised employee credentials. UHG CEO Andrew Witty testified before Congress that the Citrix portal used to gain initial entry was not protected by multi-factor authentication (MFA). This single control gap allowed the attacker to authenticate as a legitimate user and establish a foothold within Change Healthcare's environment.
+The attacker gained initial access through Change Healthcare's Citrix remote access infrastructure using compromised employee credentials. UHG CEO Andrew Witty testified before Congress that the Citrix portal used to gain initial entry was not protected by multi-factor authentication (MFA). This control gap allowed the attacker to authenticate as a legitimate user and establish a foothold within Change Healthcare's environment.
 
 Following initial access, the attacker conducted reconnaissance and lateral movement over an undisclosed period before deploying ransomware. ALPHV/BlackCat is a ransomware-as-a-service (RaaS) operation whose affiliates use a Rust-based ransomware payload capable of targeting Windows, Linux, and VMware ESXi systems. The group employs double-extortion tactics, exfiltrating data prior to encryption to create additional leverage for ransom demands.
 
-Approximately 6 TB of data was exfiltrated from Change Healthcare systems. The data contained protected health information (PHI), personally identifiable information (PII), and financial records belonging to patients, providers, and insurers. Following data exfiltration, ransomware was deployed to encrypt systems supporting Change Healthcare's transaction processing infrastructure, causing the immediate loss of connectivity between Change Healthcare and approximately 67,000 pharmacies, hospitals, and other provider systems.
+Approximately 6 TB of data was exfiltrated from Change Healthcare systems. The data contained protected health information (PHI), personally identifiable information (PII), and financial records belonging to patients, providers, and insurers. Following data exfiltration, ransomware was deployed to encrypt systems supporting Change Healthcare's transaction processing infrastructure, causing the loss of connectivity between Change Healthcare and approximately 67,000 pharmacies, hospitals, and other provider systems.
 
 The CISA advisory AA23-353A, published in December 2023 before this incident, documented ALPHV/BlackCat's pattern of targeting healthcare sector organizations and the technical indicators associated with the group's tooling.
 
@@ -102,7 +102,7 @@ Prior to ransomware deployment, the attacker exfiltrated approximately 6 TB of d
 
 ### Stage 5: Ransomware Deployment
 
-The attacker deployed ALPHV/BlackCat ransomware across Change Healthcare's environment, encrypting systems that supported healthcare transaction processing, claims adjudication, pharmacy connectivity, and prior authorization workflows. The encryption caused an immediate outage affecting interconnected healthcare organizations across the United States.
+The attacker deployed ALPHV/BlackCat ransomware across Change Healthcare's environment, encrypting systems that supported healthcare transaction processing, claims adjudication, pharmacy connectivity, and prior authorization workflows. The encryption caused an outage affecting interconnected healthcare organizations across the United States.
 
 ## Impact Assessment
 
@@ -154,7 +154,7 @@ UHG reports to HHS that breach notifications have been sent to over 100 million 
 
 ## Remediation & Mitigation
 
-UHG disconnected Change Healthcare systems immediately following detection to contain the ransomware deployment. Restoration of pharmacy connectivity and claims processing was conducted over a period of weeks, with some services restored in phases beginning in early March 2024. Full system restoration across all Change Healthcare services extended through late spring 2024.
+UHG disconnected Change Healthcare systems following detection to contain the ransomware deployment. Restoration of pharmacy connectivity and claims processing was conducted over a period of weeks, with some services restored in phases beginning in early March 2024. Full system restoration across all Change Healthcare services extended through late spring 2024.
 
 The core control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
 
