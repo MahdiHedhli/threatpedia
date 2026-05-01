@@ -111,9 +111,9 @@ The incident prompted vendor response and security discussion around maintainer 
 
 ## Attribution
 
-No government or law enforcement agency has publicly attributed CVE-2024-3094 to a specific actor or nation-state. The GitHub account "Jia Tan" (also identified as JiaT75) conducted the campaign but no confirmed real-world identity has been established. Researchers and commentators have noted characteristics of the campaign — the multi-year patience, the technical precision, the targeting of SSH authentication infrastructure — that are consistent with state-sponsored adversary tradecraft, but these observations do not constitute confirmed attribution.
+No government or law enforcement agency has publicly attributed CVE-2024-3094 to a specific actor or nation-state. The GitHub account "Jia Tan" (also identified as JiaT75) conducted the campaign but no confirmed real-world identity has been established. Researchers and commentators have noted characteristics of the campaign — the multi-year duration and the targeting of SSH authentication infrastructure — that are consistent with state-sponsored adversary tradecraft, but these observations do not constitute confirmed attribution.
 
-The attacker used an email address and timezone patterns noted by some researchers as potentially consistent with Eastern European or Asian working hours; however, such indicators can be trivially manipulated and should not be treated as conclusive. The task notes for this incident direct a conservative approach: unsupported attribution is not included here, and the actor is listed as Unknown.
+The attacker used an email address and timezone patterns noted by some researchers as potentially consistent with Eastern European or Asian working hours; however, such indicators can be trivially manipulated and should not be treated as conclusive.
 
 CISA's alert and NVD's CVE record do not attribute the incident to any specific actor. Freund's original disclosure on the oss-security list similarly presents the technical findings without actor attribution.
 
