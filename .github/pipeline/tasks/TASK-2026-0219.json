@@ -30,7 +30,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 8,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
