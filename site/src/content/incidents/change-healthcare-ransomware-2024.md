@@ -13,7 +13,8 @@ confidenceGrade: B
 generatedBy: new-threat-intel
 generatedDate: 2026-05-01
 cves: []
-relatedSlugs: []
+relatedSlugs:
+  - blackcat-alphv
 tags:
   - ransomware
   - healthcare
@@ -65,7 +66,7 @@ mitreMappings:
 
 ## Summary
 
-On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (UHG) and one of the largest healthcare technology companies in the United States — suffered a ransomware attack attributed to the ALPHV/BlackCat ransomware group. Change Healthcare processes approximately 15 billion healthcare transactions annually, representing roughly one-third of all U.S. patient records. The attack caused immediate and widespread disruption across the U.S. healthcare system, affecting pharmacies, hospitals, insurers, and provider billing operations for weeks.
+On February 21, 2024, Change Healthcare — a subsidiary of UnitedHealth Group (UHG) and one of the largest healthcare technology companies in the United States — suffered a ransomware attack attributed to the ALPHV/BlackCat ransomware group. Change Healthcare processes approximately 15 billion healthcare transactions annually, representing roughly one-third of all U.S. patient records. The attack caused immediate disruption across the U.S. healthcare system, affecting pharmacies, hospitals, insurers, and provider billing operations for weeks.
 
 UnitedHealth Group disclosed the incident to the U.S. Securities and Exchange Commission on February 21, 2024. In subsequent public updates and Congressional testimony, UHG confirmed that threat actors accessed Change Healthcare's systems through a compromised Citrix remote access portal that lacked multi-factor authentication. Approximately 6 TB of data was exfiltrated before ransomware was deployed. By October 2024, UHG had sent breach notifications to over 100 million individuals, making this the largest healthcare data breach in U.S. history by notification volume.
 
@@ -105,7 +106,7 @@ The attacker deployed ALPHV/BlackCat ransomware across Change Healthcare's envir
 
 ## Impact Assessment
 
-The operational impact of the attack extended across the U.S. healthcare sector for weeks following February 21, 2024. Approximately 67,000 pharmacies reported disruptions to prescription processing and insurance verification. Hospitals and provider practices lost access to electronic claims submission, prior authorization, and eligibility verification systems. Revenue cycle operations for healthcare providers were severely disrupted, leading to cash flow shortfalls.
+The operational impact of the attack extended across the U.S. healthcare sector for weeks following February 21, 2024. Approximately 67,000 pharmacies reported disruptions to prescription processing and insurance verification. Hospitals and provider practices lost access to electronic claims submission, prior authorization, and eligibility verification systems. Revenue cycle operations for healthcare providers were disrupted, leading to cash flow shortfalls.
 
 UnitedHealth Group reported providing over $6 billion in accelerated payments and no-interest loans to affected healthcare providers to address the financial disruption caused by the outage. The company also disclosed costs exceeding $870 million attributed to the cyberattack as of mid-2024 SEC filings, with full recovery costs expected to exceed $1 billion.
 
@@ -147,7 +148,7 @@ UHG publishes an April update confirming that protected health information was c
 
 UHG CEO Andrew Witty testifies before the U.S. Senate Finance Committee and House Energy and Commerce Committee, confirming that the Citrix portal used for initial access lacked multi-factor authentication and that the company paid a ransom demand.
 
-### 2024-10-00 — Breach Notifications Reach 100 Million
+### 2024-10-24 — Breach Notifications Reach 100 Million
 
 UHG reports to HHS that breach notifications have been sent to over 100 million individuals, establishing the Change Healthcare attack as the largest healthcare data breach notification event in U.S. history.
 
@@ -155,7 +156,7 @@ UHG reports to HHS that breach notifications have been sent to over 100 million 
 
 UHG disconnected Change Healthcare systems immediately following detection to contain the ransomware deployment. Restoration of pharmacy connectivity and claims processing was conducted over a period of weeks, with some services restored in phases beginning in early March 2024. Full system restoration across all Change Healthcare services extended through late spring 2024.
 
-The core preventable control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
+The core control failure identified in public disclosures was the absence of multi-factor authentication on the Citrix remote access portal. Healthcare organizations should enforce MFA on all remote access infrastructure, including VPN and virtual desktop environments. The CISA advisory AA23-353A provides specific ALPHV/BlackCat indicators of compromise and recommended mitigations that apply to healthcare sector organizations.
 
 HHS OCR and CISA have each recommended the following controls to reduce exposure to similar attacks: enforce MFA on all remote access systems and administrative consoles; implement network segmentation to limit lateral movement between clinical, administrative, and financial systems; apply the principle of least privilege to service accounts and administrator credentials; maintain offline and tested backups of critical data and systems; conduct regular vulnerability assessments of internet-facing systems and remote access infrastructure; and establish and test incident response and business continuity plans that account for third-party healthcare IT dependencies.
 
