@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-01T16:50:06.083Z",
-  "updated": "2026-05-01T16:50:06.083Z",
+  "updated": "2026-05-01T18:04:10.485Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -53,6 +53,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-01T18:04:10.485Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #459"
     }
   ]
 }
