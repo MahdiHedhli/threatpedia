@@ -55,6 +55,14 @@
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
     },
     {
+      "timestamp": "2026-05-01T18:05:00.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
       "timestamp": "2026-05-01T18:15:00.000Z",
       "from": "locked",
       "to": "pr_open",

@@ -65,17 +65,17 @@ mitreMappings:
 
 ## Summary
 
-In late March 2024, Microsoft engineer Andres Freund discovered that versions 5.6.0 and 5.6.1 of XZ Utils — a widely used open-source data compression library — contained a backdoor inserted through the project's build system. The backdoor, tracked as CVE-2024-3094, was designed to interfere with authentication in OpenSSH servers on affected Linux systems by patching the systemd-linked sshd process. The attacker introduced the backdoor through a multi-year social engineering campaign targeting the XZ Utils maintainer, operating under the false identity "Jia Tan" before achieving write access to the project.
+In late March 2024, Microsoft engineer Andres Freund discovered that versions 5.6.0 and 5.6.1 of XZ Utils — an open-source data compression library — contained a backdoor inserted through the project's build system. The backdoor, tracked as CVE-2024-3094, was designed to interfere with authentication in OpenSSH servers on affected Linux systems by patching the systemd-linked sshd process. The attacker introduced the backdoor through a multi-year social engineering campaign targeting the XZ Utils maintainer, operating under the false identity "Jia Tan" before achieving write access to the project.
 
-CISA issued an alert on March 29, 2024, urging users and administrators to immediately downgrade to an uncompromised version of XZ Utils. Red Hat, Fedora, Debian, openSUSE, and other Linux distributions issued advisories confirming exposure and removing the affected versions from their repositories and package feeds. The backdoor was detected before the affected versions reached stable releases of any major distribution, limiting the impact on internet-facing Linux servers using vulnerable package configurations.
+CISA issued an alert on March 29, 2024, urging users and administrators to downgrade to an uncompromised version of XZ Utils. Red Hat, Fedora, Debian, openSUSE, and other Linux distributions issued advisories confirming exposure and removing the affected versions from their repositories and package feeds. The backdoor was detected before the affected versions reached stable releases of any distribution, limiting the impact on internet-facing Linux servers using vulnerable package configurations.
 
-The incident showed that multi-year social engineering campaigns targeting open-source project maintainers can introduce backdoors into widely distributed software. Attribution has not been established publicly and no government has formally identified the responsible actor.
+The incident showed that multi-year social engineering campaigns targeting open-source project maintainers can introduce backdoors into distributed software. Attribution has not been established publicly and no government has formally identified the responsible actor.
 
 ## Technical Analysis
 
 The backdoor was introduced through modifications to the XZ Utils build system rather than directly to the library's C source code, making it harder to detect through standard code review. The malicious payload was embedded in binary test files included in the source distribution and activated via a modified build configuration script (`m4/build-to-host.m4`). This approach injected the backdoor at build time rather than at runtime from source, so users who built the library from source without the malicious test files would not be affected.
 
-On systems where XZ Utils was linked against systemd (a configuration common in several major Linux distributions including Fedora Rawhide and Fedora 40 at the time), the malicious liblzma library was loaded by sshd at process startup through systemd's dependency chain. The backdoor hook in liblzma intercepted the RSA key decryption function used by OpenSSH, enabling a holder of the attacker's private key to authenticate to the affected sshd without a valid user credential. The attack specifically required sshd to be systemd-linked, which is not universal across all Linux distributions.
+On systems where XZ Utils was linked against systemd (a configuration common in several Linux distributions, including Fedora Rawhide and Fedora 40 at the time), the malicious liblzma library was loaded by sshd at process startup through systemd's dependency chain. The backdoor hook in liblzma intercepted the RSA key decryption function used by OpenSSH, enabling a holder of the attacker's private key to authenticate to the affected sshd without a valid user credential. The attack specifically required sshd to be systemd-linked, which is not universal across all Linux distributions.
 
 Freund's discovery was incidental: while investigating slight performance regressions in SSH login times on Debian sid, he identified unusual CPU usage patterns during sshd authentication and traced them to the modified liblzma. The detection occurred before the affected packages reached stable releases in Debian, Ubuntu, or Red Hat Enterprise Linux, which contributed to limiting real-world deployment of the backdoor.
 
@@ -103,7 +103,7 @@ On March 29, 2024, Andres Freund published findings to the oss-security mailing 
 
 ## Impact Assessment
 
-The direct operational impact of CVE-2024-3094 was contained by early detection. No confirmed exploitation of the backdoor in production environments has been publicly documented. The affected versions (5.6.0 and 5.6.1) did not reach stable releases of any major Linux distribution before discovery, limiting the population of publicly exposed systems.
+The direct operational impact of CVE-2024-3094 was contained by early detection. No confirmed exploitation of the backdoor in production environments has been publicly documented. The affected versions (5.6.0 and 5.6.1) did not reach stable releases of any Linux distribution before discovery, limiting the population of publicly exposed systems.
 
 Had the backdoor reached stable Linux distribution releases, the potential impact would have included silent authentication bypass on SSH servers linked to systemd-enabled XZ Utils. The attacker's private key, held by the unknown actor, would have been the sole mechanism for authentication via the backdoor, making exploitation contingent on the attacker's operational choices.
 
@@ -137,7 +137,7 @@ Andres Freund publishes his findings to the oss-security mailing list, documenti
 
 ### 2024-03-29 — CISA Alert Published
 
-CISA publishes an alert urging immediate downgrade to XZ Utils 5.4.6 or an earlier unaffected version.
+CISA publishes an alert urging downgrade to XZ Utils 5.4.6 or an earlier unaffected version.
 
 ### 2024-03-30 — Coordinated Vendor Response
 
