@@ -3,15 +3,15 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "pr_number": 449,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/449",
   "created": "2026-04-30T19:09:49.629Z",
-  "updated": "2026-05-01T05:00:00.000Z",
+  "updated": "2026-05-01T16:14:00Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-01T00:10:00.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "WebPros cPanel & WHM and WP2 (WordPress Squared) Missing Authentication for Critical Function Vulnerability (CVE-2026-41940)",
     "sources": [
@@ -119,7 +119,20 @@
       "actor": "dangermouse-bot",
       "run": 95,
       "note": "Run #95: zero-day queue exhausted (0 pipeline/ready issues, 0 pending task files). PR #449 HEAD updated to e0737dff (3 merge commits from origin/main). validate=pass, review-gate=pass, Gemini threads=0 unresolved. Still merge_ready \u2014 awaiting MahdiHedhli CODEOWNERS approval. CISA KEV deadline: 2026-05-03."
+    },
+    {
+      "timestamp": "2026-05-01T16:14:00Z",
+      "event": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "run": 96,
+      "note": "PR #449 merged by MahdiHedhli at 2026-05-01T15:42:58Z. merge_commit=e035b04e. CISA KEV CVE-2026-41940 article now live on main. Deadline 2026-05-03 met."
     }
   ],
-  "head_sha": "e0737dff8c8988b47cd3a08d481c20b5a250444a"
+  "head_sha": "7503bf7e8e61dbe9089a1f4350b5e8a9fa5f31a7",
+  "locked": false,
+  "merge_commit_sha": "e035b04e3fa3ec476fa386fe8c43720270b3839e",
+  "merged_at": "2026-05-01T15:42:58Z",
+  "merged_by": "MahdiHedhli"
 }
