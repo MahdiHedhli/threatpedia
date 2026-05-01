@@ -36,7 +36,7 @@ articles.
 - No automated merge-to-main.
 - No automatic attribution upgrades.
 - No cosmetic rewrite queue.
-- No broad retagging or canonicalization without explicit review.
+- No bulk retagging or canonicalization without explicit review.
 - No private-repo coordination mirror for routine enrichment state.
 
 ## Queue Types
@@ -86,12 +86,12 @@ Examples:
 ### `enrichment/no-op`
 
 The source was evaluated and intentionally discarded. This should capture the
-reason so weak signals are not repeatedly reprocessed.
+reason so low-signal inputs are not repeatedly reprocessed.
 
 Example reasons:
 
 - Exact duplicate, no new information.
-- Weak blog repetition.
+- Low-signal blog repetition.
 - Unsupported speculation.
 - Marketing language only.
 - Source conflicts with stronger primary reporting.
@@ -109,7 +109,7 @@ for duplicates:
 | `possible_canonical_conflict` | Source may require split, merge, rename, or scope review. | Create `enrichment/canonical-review`. |
 | `relationship_signal` | Source suggests a missing or stale cross-reference. | Create `enrichment/linkage`. |
 
-The classifier must prefer false negatives over noisy enrichment. Weak signals
+The classifier must prefer false negatives over noisy enrichment. Low-signal inputs
 should be dropped with a no-op reason rather than promoted into patch work.
 
 ## Worker Separation
@@ -197,7 +197,7 @@ Suggested fields for a future task shape:
 Suggested cadence:
 
 - High-impact active zero-days: daily while active, then weekly until expiry.
-- Major incidents: weekly for 45 to 60 days after last update.
+- High-severity incidents: weekly for 45 to 60 days after last update.
 - Ongoing campaigns: weekly while active, then weekly for 60 days.
 - Threat actors: monthly, unless tied to a recent incident or campaign.
 
