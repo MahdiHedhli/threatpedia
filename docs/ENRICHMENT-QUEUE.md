@@ -86,12 +86,12 @@ Examples:
 ### `enrichment/no-op`
 
 The source was evaluated and intentionally discarded. This should capture the
-reason so low-signal inputs are not repeatedly reprocessed.
+reason so inputs with insufficient evidence are not repeatedly reprocessed.
 
 Example reasons:
 
 - Exact duplicate, no new information.
-- Low-signal blog repetition.
+- Blog repetition without new evidence.
 - Unsupported speculation.
 - Marketing language only.
 - Source conflicts with stronger primary reporting.
@@ -109,8 +109,9 @@ for duplicates:
 | `possible_canonical_conflict` | Source may require split, merge, rename, or scope review. | Create `enrichment/canonical-review`. |
 | `relationship_signal` | Source suggests a missing or stale cross-reference. | Create `enrichment/linkage`. |
 
-The classifier must prefer false negatives over noisy enrichment. Low-signal inputs
-should be dropped with a no-op reason rather than promoted into patch work.
+The classifier must prefer false negatives over enrichment with low confidence.
+Inputs with insufficient evidence should be dropped with a no-op reason rather
+than promoted into patch work.
 
 ## Worker Separation
 
@@ -122,8 +123,8 @@ an enrichment task and which queue type applies.
 Recommended model routing:
 
 - Use a high-capability model when running in ChatGPT/Codex.
-- Use an advanced model for CoWork when the task is attribution-heavy,
-  thin-source, canon-sensitive, or repeatedly ambiguous.
+- Use an advanced model for CoWork when the task uses limited sources, affects
+  established canon, or has conflicting source data.
 
 Classifier responsibilities:
 
@@ -140,8 +141,8 @@ after a clear enrichment task exists.
 Recommended model routing:
 
 - Use a cost-effective model for bounded source-backed updates.
-- Escalate to a high-capability model only when the update becomes attribution-heavy,
-  canonicalization-sensitive, or repeatedly fails review.
+- Escalate to a high-capability model only when the update uses limited sources,
+  affects canonicalization, or fails review.
 
 Executor responsibilities:
 
@@ -157,7 +158,7 @@ Every enrichment PR must satisfy the same controls as a standard article PR:
 
 - Local shared validation passes.
 - GitHub validation passes on the current head SHA.
-- Current-head AI review is clean.
+- Current-head AI review has zero unresolved threads.
 - Actionable Gemini or non-author review threads are zero.
 - Source/body parity is preserved.
 - No internal process or confidence-scoring language leaks into public prose.
@@ -196,7 +197,7 @@ Suggested fields for a future task shape:
 
 Suggested cadence:
 
-- High-impact active zero-days: daily while active, then weekly until expiry.
+- Active zero-days with high CVSS scores: daily while active, then weekly until expiry.
 - High-severity incidents: weekly for 45 to 60 days after last update.
 - Ongoing campaigns: weekly while active, then weekly for 60 days.
 - Threat actors: monthly, unless tied to a recent incident or campaign.
@@ -229,7 +230,7 @@ insufficiently sourced.
 4. Add an `enrichment/no-op` memory path so exact duplicates are not repeatedly
    reconsidered.
 5. Add `enrichment/candidate` task emission behind a manual flag.
-6. Run one controlled enrichment pilot on a low-risk incident or zero-day.
+6. Run one controlled enrichment pilot on a non-critical incident or zero-day.
 7. Add watch-queue task shape and expiry rules.
 8. Only after the pilot passes all gates, consider a recurring enrichment
    classifier.
