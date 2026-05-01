@@ -46,6 +46,12 @@ sources:
     reliability: R1
     publicationDate: "2024-03-29"
     accessDate: "2026-05-01"
+  - url: "https://tukaani.org/xz/"
+    publisher: "XZ Utils"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2026-05-01"
+    accessDate: "2026-05-01"
 mitreMappings:
   - techniqueId: "T1195.001"
     techniqueName: "Supply Chain Compromise: Compromise Software Dependencies and Development Tools"
@@ -55,19 +61,15 @@ mitreMappings:
     techniqueName: "Compromise Host Software Binary"
     tactic: "Persistence"
     notes: "The malicious build system modifications caused liblzma to inject a backdoor payload into sshd on affected Linux distributions."
-  - techniqueId: "T1036"
-    techniqueName: "Masquerading"
-    tactic: "Defense Evasion"
-    notes: "The attacker used a false identity (Jia Tan) maintained over years, contributing legitimate code to build trust before inserting the backdoor."
 ---
 
 ## Summary
 
-In late March 2024, Microsoft engineer Andres Freund discovered that versions 5.6.0 and 5.6.1 of XZ Utils — a widely used open-source data compression library — contained a backdoor inserted through the project's build system. The backdoor, tracked as CVE-2024-3094, was designed to interfere with authentication in OpenSSH servers on affected Linux systems by patching the systemd-linked sshd process. The attacker introduced the backdoor through a carefully constructed social engineering campaign targeting the XZ Utils maintainer, operating under the false identity "Jia Tan" over approximately two years before achieving write access to the project.
+In late March 2024, Microsoft engineer Andres Freund discovered that versions 5.6.0 and 5.6.1 of XZ Utils — a widely used open-source data compression library — contained a backdoor inserted through the project's build system. The backdoor, tracked as CVE-2024-3094, was designed to interfere with authentication in OpenSSH servers on affected Linux systems by patching the systemd-linked sshd process. The attacker introduced the backdoor through a multi-year social engineering campaign targeting the XZ Utils maintainer, operating under the false identity "Jia Tan" before achieving write access to the project.
 
-CISA issued an alert on March 29, 2024, urging users and administrators to immediately downgrade to an uncompromised version of XZ Utils. Red Hat, Fedora, Debian, openSUSE, and other major Linux distributions issued advisories confirming exposure and removing the affected versions from their repositories and package feeds. The backdoor was detected before the affected versions reached stable releases of any major distribution, limiting the impact of what could have been a widespread SSH authentication bypass affecting internet-facing Linux servers globally.
+CISA issued an alert on March 29, 2024, urging users and administrators to immediately downgrade to an uncompromised version of XZ Utils. Red Hat, Fedora, Debian, openSUSE, and other Linux distributions issued advisories confirming exposure and removing the affected versions from their repositories and package feeds. The backdoor was detected before the affected versions reached stable releases of any major distribution, limiting the impact on internet-facing Linux servers using vulnerable package configurations.
 
-The incident demonstrated a multi-year, patient adversary capable of building trust within open-source maintainer communities through sustained, legitimate-appearing contribution before inserting a targeted, technically advanced backdoor. Attribution has not been established publicly and no government has formally identified the responsible actor.
+The incident showed that multi-year social engineering campaigns targeting open-source project maintainers can introduce backdoors into widely distributed software. Attribution has not been established publicly and no government has formally identified the responsible actor.
 
 ## Technical Analysis
 
@@ -103,9 +105,9 @@ On March 29, 2024, Andres Freund published findings to the oss-security mailing 
 
 The direct operational impact of CVE-2024-3094 was contained by early detection. No confirmed exploitation of the backdoor in production environments has been publicly documented. The affected versions (5.6.0 and 5.6.1) did not reach stable releases of any major Linux distribution before discovery, limiting the population of publicly exposed systems.
 
-Had the backdoor reached stable Linux distribution releases, the potential impact would have included silent authentication bypass on SSH servers linked to systemd-enabled XZ Utils, affecting a large proportion of internet-facing Linux servers. The attacker's private key, held by the unknown actor, would have been the sole mechanism for authentication via the backdoor, making mass exploitation contingent on the attacker's operational choices.
+Had the backdoor reached stable Linux distribution releases, the potential impact would have included silent authentication bypass on SSH servers linked to systemd-enabled XZ Utils. The attacker's private key, held by the unknown actor, would have been the sole mechanism for authentication via the backdoor, making exploitation contingent on the attacker's operational choices.
 
-The broader impact of the incident is the demonstration that patient, multi-year social engineering campaigns targeting open-source project maintainers can successfully introduce backdoors into widely distributed software. This has elevated industry discussion around maintainer vetting, code review practices, binary artifact verification, and the sustainability of open-source infrastructure maintained by individual volunteers.
+The incident prompted vendor response and security discussion around maintainer vetting, code review practices, binary artifact verification, and the sustainability of open-source infrastructure maintained by individual volunteers.
 
 ## Attribution
 
@@ -117,15 +119,15 @@ CISA's alert and NVD's CVE record do not attribute the incident to any specific 
 
 ## Timeline
 
-### 2022-00-00 — Jia Tan Begins Contributing to XZ Utils
+### 2022 — Jia Tan Begins Contributing to XZ Utils
 
 The GitHub identity Jia Tan starts submitting patches and improvements to the XZ Utils project, building a legitimate contributor history over time.
 
-### 2024-02-00 — XZ Utils 5.6.0 Released
+### 2024-02-24 — XZ Utils 5.6.0 Released
 
 XZ Utils version 5.6.0, containing the backdoor, is published. The release is adopted by several rolling-release Linux distribution channels.
 
-### 2024-03-00 — XZ Utils 5.6.1 Released
+### 2024-03-09 — XZ Utils 5.6.1 Released
 
 A follow-up release 5.6.1 is published, also containing the backdoor. Some distribution channels that had held back 5.6.0 adopt 5.6.1.
 
@@ -155,3 +157,4 @@ Longer-term mitigations relevant to supply-chain attacks of this type include: v
 - [Openwall: Backdoor in upstream xz/liblzma leading to SSH server compromise](https://www.openwall.com/lists/oss-security/2024/03/29/4) — Openwall, 2024-03-29
 - [Red Hat: Urgent Security Alert for Fedora 40 and Rawhide Users](https://www.redhat.com/en/blog/urgent-security-alert-fedora-40-and-rawhide-users) — Red Hat, 2024-03-29
 - [National Vulnerability Database: CVE-2024-3094](https://nvd.nist.gov/vuln/detail/CVE-2024-3094) — National Vulnerability Database, 2024-03-29
+- [XZ Utils: Security issues](https://tukaani.org/xz/) — XZ Utils, 2026-05-01
