@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-01T16:50:06.083Z",
-  "updated": "2026-05-01T16:50:06.083Z",
+  "updated": "2026-05-01T18:15:00.000Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -24,8 +24,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -53,6 +53,16 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-01T18:15:00.000Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "new-threat-intel",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #462"
     }
-  ]
+  ],
+  "pr_number": 462,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/462"
 }
