@@ -54,12 +54,14 @@ jobs:
             # toward merge readiness.
             pr_status=$(gh pr view "${pr_number}" --json statusCheckRollup)
             failing_or_pending_checks=$(echo "$pr_status" | jq '
+              def allowed_conclusion: . == "SUCCESS" or . == "SKIPPED" or . == "NEUTRAL";
+              def allowed_state: . == "SUCCESS" or . == "SKIPPED" or . == "NEUTRAL";
               [
                 .statusCheckRollup[]?
                 | select(
                     (has("status") and .status != "COMPLETED")
-                    or (has("conclusion") and ((.conclusion // "PENDING") != "SUCCESS"))
-                    or (has("state") and .state != "SUCCESS")
+                    or (has("conclusion") and ((.conclusion // "PENDING") | allowed_conclusion | not))
+                    or (has("state") and (.state | allowed_state | not))
                   )
               ] | length
             ')
