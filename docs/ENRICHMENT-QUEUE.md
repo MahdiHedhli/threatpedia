@@ -10,7 +10,7 @@ validated, and stable.
 ## Problem
 
 The discovery pipeline currently uses deduplication to prevent duplicate task
-creation. That protects the queue from churn, but it can also hide useful
+creation. That protects the queue from churn, but it can also suppress
 follow-up reporting. A source that is a duplicate for article creation can
 still contain new victim counts, attribution updates, patch guidance, campaign
 links, actor links, timeline detail, or corrections.
@@ -58,7 +58,7 @@ An active or recently closed entity should be periodically checked for updates.
 Suggested watch windows:
 
 - Zero-days: 60 days after active exploitation or patch stabilization.
-- Incidents: 45 to 60 days after last meaningful public update.
+- Incidents: 45 to 60 days after the last public update.
 - Campaigns: while ongoing, plus 60 days after conclusion.
 - Threat actors: ongoing, lower cadence, only for high-confidence reporting.
 
@@ -117,7 +117,7 @@ than promoted into patch work.
 
 ### Enrichment Classifier
 
-The classifier is the high-judgment lane. It decides whether a source creates
+The classifier is the primary decision lane. It decides whether a source creates
 an enrichment task and which queue type applies.
 
 Recommended model routing:
