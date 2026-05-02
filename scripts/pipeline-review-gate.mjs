@@ -22,6 +22,7 @@ function parseArgs(argv) {
     pr: process.env.PR_NUMBER ? Number.parseInt(process.env.PR_NUMBER, 10) : null,
     repo: process.env.GITHUB_REPOSITORY || null,
     json: false,
+    validateWaitSeconds: parseNonNegativeInteger(process.env.VALIDATE_CHECK_WAIT_SECONDS, 0),
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -29,6 +30,9 @@ function parseArgs(argv) {
     if (arg === '--pr' && argv[i + 1]) parsed.pr = Number.parseInt(argv[++i], 10);
     else if (arg === '--repo' && argv[i + 1]) parsed.repo = argv[++i];
     else if (arg === '--json') parsed.json = true;
+    else if (arg === '--validate-wait-seconds' && argv[i + 1]) {
+      parsed.validateWaitSeconds = parseNonNegativeInteger(argv[++i], 0);
+    }
     else if (arg === '--help' || arg === '-h') {
       printHelp();
       process.exit(0);
@@ -50,12 +54,19 @@ function parseArgs(argv) {
   return parsed;
 }
 
+function parseNonNegativeInteger(value, fallback) {
+  if (value === undefined || value === null || value === '') return fallback;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed >= 0 ? parsed : fallback;
+}
+
 function printHelp() {
-  console.log(`Usage: node scripts/pipeline-review-gate.mjs --pr <number> [--repo owner/name] [--json]
+  console.log(`Usage: node scripts/pipeline-review-gate.mjs --pr <number> [--repo owner/name] [--json] [--validate-wait-seconds seconds]
 
 Environment:
   GITHUB_TOKEN or GITHUB_PAT must be present.
   AI_REVIEW_LOGINS may override the comma-separated AI reviewer login list.
+  VALIDATE_CHECK_WAIT_SECONDS may wait for current-head validation before evaluating.
 `);
 }
 
@@ -154,6 +165,33 @@ async function listCheckRuns(owner, repo, ref, token) {
     (payload) => payload.check_runs || [],
   );
   return { check_runs: results };
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function getValidateChecks(checkRunsPayload) {
+  return (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
+}
+
+async function listCheckRunsAfterValidateSettles(owner, repo, ref, token, waitSeconds) {
+  const deadline = Date.now() + (waitSeconds * 1000);
+  let latest = await listCheckRuns(owner, repo, ref, token);
+
+  while (waitSeconds > 0 && Date.now() < deadline) {
+    const validateChecks = getValidateChecks(latest);
+    const completedValidate = validateChecks.find((check) => check.status === 'completed');
+    if (completedValidate) break;
+
+    const remainingMs = deadline - Date.now();
+    await sleep(Math.min(5000, Math.max(1000, remainingMs)));
+    latest = await listCheckRuns(owner, repo, ref, token);
+  }
+
+  return latest;
 }
 
 async function getReviewThreadComments(threadId, token, after = null) {
@@ -255,7 +293,7 @@ function latestDate(items, getter) {
   return new Date(latest).toISOString();
 }
 
-async function evaluate({ repo: repoSlug, pr: prNumber }) {
+async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 }) {
   const token = getToken();
   if (!token) {
     throw new Error('GITHUB_TOKEN or GITHUB_PAT is required. Do not read local secret files for this gate.');
@@ -292,11 +330,11 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
   const [reviews, issueComments, checkRunsPayload, threads] = await Promise.all([
     listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, token),
     listPaginated(`/repos/${owner}/${repo}/issues/${prNumber}/comments`, token),
-    listCheckRuns(owner, repo, pr.head.sha, token),
+    listCheckRunsAfterValidateSettles(owner, repo, pr.head.sha, token, validateWaitSeconds),
     getReviewThreads(owner, repo, prNumber, token),
   ]);
 
-  const validateChecks = (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
+  const validateChecks = getValidateChecks(checkRunsPayload);
   const passingValidate = validateChecks.find((check) => check.status === 'completed' && check.conclusion === 'success');
   if (requiresValidation && !passingValidate) {
     failures.push('No successful Pipeline: Validate Article PR "validate" check exists on the current head SHA.');
