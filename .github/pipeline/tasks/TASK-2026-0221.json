@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-02T00:13:48.251Z",
-  "updated": "2026-05-02T01:20:15.420Z",
+  "updated": "2026-05-02T13:43:01.616Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
-  "locked_by": "Kernel K",
-  "locked_at": "2026-05-02T01:20:15.420Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "HAFNIUM Exchange Server exploitation campaign",
     "sources": [
@@ -68,6 +68,16 @@
       "to": "locked",
       "agent": "Kernel K",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-02T13:43:01.616Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #474"
     }
-  ]
+  ],
+  "pr_number": 474,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/474"
 }
