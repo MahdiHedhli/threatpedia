@@ -177,14 +177,35 @@ function getValidateChecks(checkRunsPayload) {
   return (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
 }
 
+function checkRunTimestamp(check) {
+  const candidates = [
+    check.completed_at,
+    check.started_at,
+    check.created_at,
+  ];
+
+  for (const candidate of candidates) {
+    const timestamp = new Date(candidate).getTime();
+    if (Number.isFinite(timestamp)) return timestamp;
+  }
+
+  return 0;
+}
+
+function getLatestValidateCheck(checkRunsPayload) {
+  const [latest] = getValidateChecks(checkRunsPayload)
+    .slice()
+    .sort((left, right) => checkRunTimestamp(right) - checkRunTimestamp(left));
+  return latest || null;
+}
+
 async function listCheckRunsAfterValidateSettles(owner, repo, ref, token, waitSeconds) {
   const deadline = Date.now() + (waitSeconds * 1000);
   let latest = await listCheckRuns(owner, repo, ref, token);
 
   while (waitSeconds > 0 && Date.now() < deadline) {
-    const validateChecks = getValidateChecks(latest);
-    const completedValidate = validateChecks.find((check) => check.status === 'completed');
-    if (completedValidate) break;
+    const latestValidate = getLatestValidateCheck(latest);
+    if (latestValidate?.status === 'completed') break;
 
     const remainingMs = deadline - Date.now();
     await sleep(Math.min(5000, Math.max(1000, remainingMs)));
@@ -335,9 +356,10 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
   ]);
 
   const validateChecks = getValidateChecks(checkRunsPayload);
-  const passingValidate = validateChecks.find((check) => check.status === 'completed' && check.conclusion === 'success');
+  const latestValidate = getLatestValidateCheck(checkRunsPayload);
+  const passingValidate = latestValidate?.status === 'completed' && latestValidate.conclusion === 'success';
   if (requiresValidation && !passingValidate) {
-    failures.push('No successful Pipeline: Validate Article PR "validate" check exists on the current head SHA.');
+    failures.push('No latest successful Pipeline: Validate Article PR "validate" check exists on the current head SHA.');
   }
 
   const currentHeadAiReviews = reviews.filter((review) =>
@@ -415,6 +437,12 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
         startedAt: check.started_at,
         completedAt: check.completed_at,
       })),
+      latestValidateCheck: latestValidate ? {
+        status: latestValidate.status,
+        conclusion: latestValidate.conclusion,
+        startedAt: latestValidate.started_at,
+        completedAt: latestValidate.completed_at,
+      } : null,
       aiReviewsOnHead: currentHeadAiReviews.map((review) => ({
         author: review.user?.login || 'unknown',
         state: review.state,
