@@ -330,7 +330,7 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
   const [reviews, issueComments, checkRunsPayload, threads] = await Promise.all([
     listPaginated(`/repos/${owner}/${repo}/pulls/${prNumber}/reviews`, token),
     listPaginated(`/repos/${owner}/${repo}/issues/${prNumber}/comments`, token),
-    listCheckRunsAfterValidateSettles(owner, repo, pr.head.sha, token, validateWaitSeconds),
+    listCheckRunsAfterValidateSettles(owner, repo, pr.head.sha, token, requiresValidation ? validateWaitSeconds : 0),
     getReviewThreads(owner, repo, prNumber, token),
   ]);
 
