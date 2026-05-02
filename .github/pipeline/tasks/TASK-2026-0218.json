@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-01T16:50:00.588Z",
-  "updated": "2026-05-01T19:46:25.203Z",
+  "updated": "2026-05-02T00:02:53.041Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -85,8 +85,17 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #461 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-02T00:02:53.041Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #461 merged (8a83418)."
     }
   ],
   "pr_number": 461,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/461"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/461",
+  "merged_at": "2026-05-02T00:02:53.041Z"
 }
