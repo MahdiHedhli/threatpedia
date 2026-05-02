@@ -12,7 +12,7 @@
   "locked_at": "2026-05-02T03:15:00.000Z",
   "pr_number": 472,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/472",
-  "head_sha": "8c52f0acf3077df721eea0b0f99225ff12f3b73a",
+  "head_sha": "515feda5db9317e13031b912365129a8405f330b",
   "input": {
     "topic": "Linux Kernel Incorrect Resource Transfer Between Spheres Vulnerability (CVE-2026-31431)",
     "sources": [
