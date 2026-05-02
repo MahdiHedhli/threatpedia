@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-02T00:13:48.251Z",
-  "updated": "2026-05-02T01:17:52.323Z",
+  "updated": "2026-05-02T01:20:15.420Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-02T01:20:15.420Z",
   "input": {
     "topic": "HAFNIUM Exchange Server exploitation campaign",
     "sources": [
@@ -61,6 +61,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #469"
+    },
+    {
+      "timestamp": "2026-05-02T01:20:15.420Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
