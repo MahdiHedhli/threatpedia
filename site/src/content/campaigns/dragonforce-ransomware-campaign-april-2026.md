@@ -13,7 +13,7 @@ attributionConfidence: A4
 reviewStatus: "under_review"
 confidenceGrade: C
 generatedBy: "dangermouse-bot"
-generatedDate: 2026-04-18
+generatedDate: 2026-05-04
 cves: []
 relatedIncidents: []
 tags:
@@ -154,5 +154,5 @@ Detection should focus on the pre-impact stages as much as the encryption event 
 - [CISA: #StopRansomware Guide](https://www.cisa.gov/sites/default/files/2023-10/StopRansomware-Guide-508C-v3_1.pdf) — CISA, 2023-10-19
 - [Darktrace: Tracking a Dragon - Investigating a DragonForce-Affiliated Ransomware Attack](https://www.darktrace.com/blog/tracking-a-dragon-investigating-a-dragonforce-affiliated-ransomware-attack-with-darktrace) — Darktrace, 2025-11-05
 - [Ransomware.live: DragonForce Group Profile](https://www.ransomware.live/group/dragonforce) — Ransomware.live, 2026-05-04
-- [DeXpose: Dragonforce Strikes AT Packaging in Latest Ransomware Attack](https://www.dexpose.io/dragonforce-strikes-at-packaging-in-latest-ransomware-attack/) — DeXpose, 2026-04-02
-- [Hendry Adrian: Belgian-listed Fountain Hit by Ransomware; Dragonforce Claims Attack and Data Exfiltration](https://www.hendryadrian.com/belgian-listed-fountain-hit-by-ransomware-dragonforce-claims-attack-and-data-exfiltration/) — Hendry Adrian, 2026-04-07
+- [DeXpose: DragonForce Strikes AT Packaging in Latest Ransomware Attack](https://www.dexpose.io/dragonforce-strikes-at-packaging-in-latest-ransomware-attack/) — DeXpose, 2026-04-02
+- [Hendry Adrian: Belgian-listed Fountain Hit by Ransomware; DragonForce Claims Attack and Data Exfiltration](https://www.hendryadrian.com/belgian-listed-fountain-hit-by-ransomware-dragonforce-claims-attack-and-data-exfiltration/) — Hendry Adrian, 2026-04-07
