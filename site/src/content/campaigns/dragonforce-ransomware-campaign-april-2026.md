@@ -81,17 +81,17 @@ mitreMappings:
 
 This entry tracks a DragonForce-branded extortion cluster visible in public reporting across early April 2026, when multiple victim claims and secondary reporting tied the same ransomware brand to organizations in different sectors. The coverage is campaign-shaped rather than incident-shaped: the public record is stronger on the repeated use of the DragonForce extortion brand and leak-site workflow than on complete victim-by-victim forensic disclosure.
 
-The strongest public evidence supports DragonForce as the extortion brand behind the cluster, but not every claimed victim detail or leak volume can be independently verified from public reporting alone. For that reason, this page treats the April 2026 wave as a campaign-level record of a multi-victim extortion push and leaves room for victim-specific incident articles to be created separately where evidence is stronger.
+The strongest public evidence supports DragonForce as the extortion brand behind the cluster, but not every claimed victim detail or leak volume can be independently verified from public reporting alone. The April 2026 wave represents a campaign-level record of a multi-victim extortion push.
 
 ## Technical Analysis
 
 DragonForce operates as a ransomware-as-a-service ecosystem. Public reporting from late 2025 into 2026 describes affiliates using common intrusion pathways such as purchased credentials, phishing, exposed remote administration surfaces, and vulnerable edge systems before shifting into credential theft, lateral movement, and data staging. Once inside a victim environment, the operators or affiliates move toward double extortion: steal data first, then encrypt systems and threaten publication on the leak site.
 
-The April 2026 cluster fits that model, but the source base is uneven. Leak-site tracking and victim-specific reporting show DragonForce claims surfacing against multiple organizations in rapid succession, including AT Packaging in the United States and Fountain in Belgium. Darktrace's November 2025 case study helps characterize DragonForce-affiliate tradecraft, but it does not independently verify each April 2026 victim claim. The public record is therefore stronger on the extortion workflow and branding consistency than on low-level per-victim forensic artifacts, which is another reason this belongs in the campaign collection rather than as a single canonical incident.
+The April 2026 cluster fits that model, though the available public evidence varies in detail across the claimed victims. Leak-site tracking and victim-specific reporting show DragonForce claims surfacing against multiple organizations in rapid succession, including AT Packaging in the United States and Fountain in Belgium. Darktrace's November 2025 case study helps characterize DragonForce-affiliate tradecraft, but it does not independently verify each April 2026 victim claim. The public record is more robust regarding the extortion workflow and branding consistency than on low-level per-victim forensic artifacts.
 
 The campaign is characterized by breadth and tempo. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either an active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
 
-This is also a reminder that extortion clusters should not be flattened into one victim story. A ransomware program can run many parallel intrusions under a single brand and leak-site narrative. Tracking that activity as a campaign helps preserve the distinction between the operator ecosystem and the downstream victim incidents.
+A ransomware program can run many parallel intrusions under a single brand and leak-site narrative.
 
 ## Attack Chain
 
