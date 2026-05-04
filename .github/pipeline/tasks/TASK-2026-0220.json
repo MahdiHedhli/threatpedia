@@ -1,0 +1,92 @@
+{
+  "task_id": "TASK-2026-0220",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-01T19:02:09.903Z",
+  "updated": "2026-05-02T03:56:51.496Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Linux Kernel Incorrect Resource Transfer Between Spheres Vulnerability (CVE-2026-31431)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-31431",
+      "https://lore.kernel.org/linux-cve-announce/2026042214-CVE-2026-31431-3d65@gregkh/",
+      "https://xint.io/blog/copy-fail-linux-distributions#the-fix-6",
+      "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/about/"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-31431",
+      "cves": [
+        "CVE-2026-31431"
+      ],
+      "exploitId": "TP-EXP-2026-0018",
+      "type": "Remote Code Execution",
+      "platform": "Linux Kernel",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-05-01",
+      "cwes": [
+        "CWE-699"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-05-01. Required action by 2026-05-15. CVSS 3.1: 7.8 (HIGH). Discovery score: 97/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/linux-kernel-cve-2026-31431.md",
+    "branch": "pipeline/TASK-2026-0220",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 97,
+    "auto_certify": true,
+    "cvss": {
+      "score": 7.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-05-01T19:02:09.903Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-01T19:02:09.903Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 97)"
+    },
+    {
+      "timestamp": "2026-05-02T03:56:51.496Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #472 already covers this task."
+    }
+  ]
+}

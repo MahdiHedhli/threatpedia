@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-05-02T00:13:48.251Z",
-  "updated": "2026-05-02T13:43:01.616Z",
+  "updated": "2026-05-02T13:52:12.437Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -76,6 +76,14 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #474"
+    },
+    {
+      "timestamp": "2026-05-02T13:52:12.437Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #474 already covers this task."
     }
   ],
   "pr_number": 474,
