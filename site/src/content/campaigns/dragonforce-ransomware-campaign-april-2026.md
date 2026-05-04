@@ -91,8 +91,6 @@ The April 2026 cluster fits that model, though available documentation varies in
 
 The campaign involved victims across multiple sectors within a short timeframe. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either an active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
 
-A ransomware program can run many parallel intrusions under a single brand and leak-site narrative.
-
 ## Attack Chain
 
 ### Stage 1: Access Acquisition
