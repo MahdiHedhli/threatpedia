@@ -89,6 +89,10 @@ DragonForce operates as a ransomware-as-a-service ecosystem. Public reporting fr
 
 The April 2026 cluster fits that model, but the source base is uneven. Leak-site tracking and victim-specific reporting show DragonForce claims surfacing against multiple organizations in rapid succession, including AT Packaging in the United States and Fountain in Belgium. Darktrace's November 2025 case study helps characterize DragonForce-affiliate tradecraft, but it does not independently verify each April 2026 victim claim. The public record is therefore stronger on the extortion workflow and branding consistency than on low-level per-victim forensic artifacts, which is another reason this belongs in the campaign collection rather than as a single canonical incident.
 
+The campaign's significance lies in breadth and tempo. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either a highly active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
+
+This is also a reminder that extortion clusters should not be flattened into one victim story. A ransomware program can run many parallel intrusions under a single brand and leak-site narrative. Tracking that activity as a campaign helps preserve the distinction between the operator ecosystem and the downstream victim incidents.
+
 ## Attack Chain
 
 ### Stage 1: Access Acquisition
@@ -139,16 +143,6 @@ Open-source reporting on AT Packaging helps anchor the broader cluster in a docu
 
 Secondary reporting on Fountain adds another victim-specific disclosure inside the same early-April period, reinforcing that the campaign record is based on multiple public claims rather than a single company event.
 
-## Historical Context
-
-The campaign's significance lies in breadth and tempo. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either a highly active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
-
-This is also a reminder that extortion clusters should not be flattened into one victim story. A ransomware program can run many parallel intrusions under a single brand and leak-site narrative. Tracking that activity as a campaign helps preserve the distinction between the operator ecosystem and the downstream victim incidents.
-
-By 2025-2026, DragonForce had matured from earlier branding associated with hacktivist or loosely organized activity into a more recognizable ransomware and extortion program. Reporting consistently describes a financially motivated operation with affiliate characteristics, leak-site discipline, and reuse of common post-compromise tooling.
-
-The April 2026 multi-victim burst sits within that broader shift. It is best read as an example of DragonForce operating as a recurring extortion brand rather than as proof that a single tightly controlled core team personally executed every intrusion in the cluster.
-
 ## Remediation & Mitigation
 
 Organizations facing DragonForce-style extortion risk should harden the parts of the environment that make affiliate operations cheap: exposed remote access, weak credential hygiene, under-monitored privileged accounts, and flat internal networks. Immutable backups, rapid credential rotation, and rehearsed ransomware response playbooks remain critical, but they are not enough if defenders do not also account for pre-encryption data theft.
@@ -157,8 +151,8 @@ Detection should focus on the pre-impact stages as much as the encryption event 
 
 ## Sources & References
 
-1. [CISA: #StopRansomware Guide](https://www.cisa.gov/sites/default/files/2023-10/StopRansomware-Guide-508C-v3_1.pdf) - CISA, 2023-10-19
-2. [Darktrace: Tracking a Dragon - Investigating a DragonForce-Affiliated Ransomware Attack](https://www.darktrace.com/blog/tracking-a-dragon-investigating-a-dragonforce-affiliated-ransomware-attack-with-darktrace) - Darktrace, 2025-11-05
-3. [Ransomware.live: DragonForce Group Profile](https://www.ransomware.live/group/dragonforce) - Ransomware.live, accessed 2026-05-04
-4. [DeXpose: DragonForce Strikes at Packaging in Latest Ransomware Attack](https://www.dexpose.io/dragonforce-strikes-at-packaging-in-latest-ransomware-attack/) - DeXpose, 2026-04-02
-5. [Hendry Adrian: Belgian-listed Fountain Hit by Ransomware; Dragonforce Claims Attack and Data Exfiltration](https://www.hendryadrian.com/belgian-listed-fountain-hit-by-ransomware-dragonforce-claims-attack-and-data-exfiltration/) - Hendry Adrian, 2026-04-07
+- [CISA: #StopRansomware Guide](https://www.cisa.gov/sites/default/files/2023-10/StopRansomware-Guide-508C-v3_1.pdf) — CISA, 2023-10-19
+- [Darktrace: Tracking a Dragon - Investigating a DragonForce-Affiliated Ransomware Attack](https://www.darktrace.com/blog/tracking-a-dragon-investigating-a-dragonforce-affiliated-ransomware-attack-with-darktrace) — Darktrace, 2025-11-05
+- [Ransomware.live: DragonForce Group Profile](https://www.ransomware.live/group/dragonforce) — Ransomware.live, 2026-05-04
+- [DeXpose: Dragonforce Strikes AT Packaging in Latest Ransomware Attack](https://www.dexpose.io/dragonforce-strikes-at-packaging-in-latest-ransomware-attack/) — DeXpose, 2026-04-02
+- [Hendry Adrian: Belgian-listed Fountain Hit by Ransomware; Dragonforce Claims Attack and Data Exfiltration](https://www.hendryadrian.com/belgian-listed-fountain-hit-by-ransomware-dragonforce-claims-attack-and-data-exfiltration/) — Hendry Adrian, 2026-04-07
