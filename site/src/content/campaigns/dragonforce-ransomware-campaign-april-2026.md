@@ -89,7 +89,7 @@ DragonForce operates as a ransomware-as-a-service ecosystem. Public reporting fr
 
 The April 2026 cluster fits that model, but the source base is uneven. Leak-site tracking and victim-specific reporting show DragonForce claims surfacing against multiple organizations in rapid succession, including AT Packaging in the United States and Fountain in Belgium. Darktrace's November 2025 case study helps characterize DragonForce-affiliate tradecraft, but it does not independently verify each April 2026 victim claim. The public record is therefore stronger on the extortion workflow and branding consistency than on low-level per-victim forensic artifacts, which is another reason this belongs in the campaign collection rather than as a single canonical incident.
 
-The campaign's significance lies in breadth and tempo. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either a highly active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
+The campaign is characterized by breadth and tempo. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either an active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
 
 This is also a reminder that extortion clusters should not be flattened into one victim story. A ransomware program can run many parallel intrusions under a single brand and leak-site narrative. Tracking that activity as a campaign helps preserve the distinction between the operator ecosystem and the downstream victim incidents.
 
@@ -131,15 +131,15 @@ T1490 - Inhibit System Recovery: Ransomware tradecraft associated with DragonFor
 
 ## Timeline
 
-### 2026-04-01 to 2026-04-07 - Multi-Victim Claim Wave
+### 2026-04-01 to 2026-04-07 — Multi-Victim Claim Wave
 
 DragonForce-linked victim disclosures and secondary reporting surface across a compressed window in early April 2026, indicating a campaign-level extortion burst rather than an isolated single victim event.
 
-### 2026-04-02 - AT Packaging Reporting Surfaces
+### 2026-04-02 — AT Packaging Reporting Surfaces
 
 Open-source reporting on AT Packaging helps anchor the broader cluster in a documented victim disclosure window tied to DragonForce-branded extortion claims.
 
-### 2026-04-07 - Fountain Reporting Surfaces
+### 2026-04-07 — Fountain Reporting Surfaces
 
 Secondary reporting on Fountain adds another victim-specific disclosure inside the same early-April period, reinforcing that the campaign record is based on multiple public claims rather than a single company event.
 
