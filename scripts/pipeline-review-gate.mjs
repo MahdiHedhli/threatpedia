@@ -185,6 +185,7 @@ function checkRunTimestamp(check) {
   ];
 
   for (const candidate of candidates) {
+    if (!candidate) continue;
     const timestamp = new Date(candidate).getTime();
     if (Number.isFinite(timestamp)) return timestamp;
   }
