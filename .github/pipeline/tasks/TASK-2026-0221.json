@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-02T00:13:48.251Z",
   "updated": "2026-05-02T13:52:12.437Z",
   "source": "manual_submission",
@@ -63,6 +63,21 @@
       "note": "Dispatched as Issue #469"
     },
     {
+      "timestamp": "2026-05-02T01:20:15.420Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-02T13:43:01.616Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #474"
+    },
+    {
       "timestamp": "2026-05-02T13:52:12.437Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -70,5 +85,7 @@
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #474 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 474,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/474"
 }
