@@ -1,6 +1,16 @@
 name: "Pipeline: Review Gate"
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "site/src/**"
+      - "site/package*.json"
+      - "site/astro.config.*"
+      - "scripts/**"
+      - ".github/workflows/**"
+      - ".github/pipeline/config.yml"
+      - "docs/PIPELINE.md"
   pull_request_review:
     types: [submitted, dismissed]
   issue_comment:
@@ -28,6 +38,7 @@ concurrency:
 jobs:
   review-gate:
     if: |
+      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'pull_request_review' &&
@@ -63,6 +74,9 @@ jobs:
             workflow_dispatch)
               number="${{ inputs.pr_number }}"
               ;;
+            pull_request)
+              number="${{ github.event.pull_request.number }}"
+              ;;
             pull_request_review)
               number="${{ github.event.pull_request.number }}"
               ;;
@@ -81,4 +95,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.pr.outputs.number }}
+          VALIDATE_CHECK_WAIT_SECONDS: "120"
         run: node scripts/pipeline-review-gate.mjs --pr "$PR_NUMBER"
