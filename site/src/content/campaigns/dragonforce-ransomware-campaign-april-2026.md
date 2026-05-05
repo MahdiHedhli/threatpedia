@@ -79,7 +79,7 @@ mitreMappings:
 
 ## Executive Summary
 
-This entry tracks a DragonForce-branded extortion cluster visible in public reporting across early April 2026, when multiple victim claims and secondary reporting tied the same ransomware brand to organizations in different sectors. The coverage is campaign-shaped rather than incident-shaped: the public record is stronger on the repeated use of the DragonForce extortion brand and leak-site workflow than on complete victim-by-victim forensic disclosure.
+This entry tracks a DragonForce-branded extortion cluster visible in public reporting across early April 2026, when multiple victim claims and secondary reporting tied the same ransomware brand to organizations in different sectors. The coverage is campaign-shaped rather than incident-shaped: the public record is stronger on the repeated use of the DragonForce extortion brand and leak-site workflow than on victim-by-victim forensic disclosure.
 
 The strongest public evidence supports DragonForce as the extortion brand behind the cluster, but not every claimed victim detail or leak volume can be independently verified from public reporting alone. The April 2026 wave represents a campaign-level record of a multi-victim extortion push.
 
@@ -89,7 +89,7 @@ DragonForce operates as a ransomware-as-a-service ecosystem. Public reporting fr
 
 The April 2026 cluster fits that model, though available documentation varies in detail across the claimed victims. Leak-site tracking and victim-specific reporting show DragonForce claims surfacing against multiple organizations in a short timeframe, including AT Packaging in the United States and Fountain in Belgium. Darktrace's November 2025 case study helps characterize DragonForce-affiliate tradecraft, but it does not independently verify each April 2026 victim claim. Available documentation provides more detail about the extortion workflow and branding consistency than about low-level per-victim forensic artifacts.
 
-The campaign involved victims across multiple sectors within a short timeframe. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either an active affiliate ecosystem or a coordinated announcement cycle under a single extortion brand. Even where victim claims are not independently validated in full, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
+The campaign involved victims across multiple sectors within a short timeframe. Manufacturing, packaging, and other sectors appeared in the same public-claim window, suggesting either an active affiliate ecosystem or a coordinated announcement cycle under one extortion brand. Even where victim claims are not independently validated, the operational impact for listed organizations can include system outages, breach notification costs, regulatory exposure, and follow-on criminal use of stolen data.
 
 ## Attack Chain
 
@@ -131,7 +131,7 @@ T1490 - Inhibit System Recovery: Ransomware tradecraft associated with DragonFor
 
 ### 2026-04-01 to 2026-04-07 — Multi-Victim Claim Wave
 
-DragonForce-linked victim disclosures and secondary reporting surface across a compressed window in early April 2026, indicating a campaign-level extortion burst rather than an isolated single victim event.
+DragonForce-linked victim disclosures and secondary reporting surface across a compressed window in early April 2026, indicating a campaign-level extortion burst rather than an isolated victim event.
 
 ### 2026-04-02 — AT Packaging Reporting Surfaces
 
@@ -139,7 +139,7 @@ Open-source reporting on AT Packaging helps anchor the broader cluster in a docu
 
 ### 2026-04-07 — Fountain Reporting Surfaces
 
-Secondary reporting on Fountain adds another victim-specific disclosure inside the same early-April period, reinforcing that the campaign record is based on multiple public claims rather than a single company event.
+Secondary reporting on Fountain adds another victim-specific disclosure inside the same early-April period, reinforcing that the campaign record is based on multiple public claims rather than one company event.
 
 ## Remediation & Mitigation
 
