@@ -30,8 +30,12 @@ import yaml from 'js-yaml';
 // The validator workflow loads the same enum via its CLI. Both track the
 // authoritative definitions in site/src/content.config.ts manually.
 import {
+  SCHEMA_ATTACK_VERSION_PATTERN,
+  SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
+  SCHEMA_ATLAS_VERSION_PATTERN,
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
   SCHEMA_GENERATED_BY_VALUES,
+  SCHEMA_MAPPING_CONFIDENCE_VALUES,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
@@ -52,6 +56,9 @@ const EDITORIAL_WORDS = [
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
+const ATTACK_VERSION_RE = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
+const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
+const ATLAS_VERSION_RE = new RegExp(SCHEMA_ATLAS_VERSION_PATTERN);
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -103,6 +110,25 @@ const SOURCE_SCHEMA = `  Each source object requires:
     archived: boolean (default false)
     archiveUrl: string (optional, valid URL)`;
 
+const MITRE_MAPPING_SCHEMA = `    Each MITRE ATT&CK mapping requires:
+      techniqueId: string (e.g., "T1566.001")
+      techniqueName: string (e.g., "Phishing: Spearphishing Attachment")
+      tactic: string (optional, canonical ATT&CK tactic casing)
+      attackVersion: string (optional, e.g., "v19"; attack_version is tolerated for legacy DATA-STANDARDS text)
+      confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
+      evidence: string (optional, source-supported rationale)
+      notes: string (optional, context for this article)`;
+
+const ATLAS_MAPPING_SCHEMA = `  atlasMappings: array of MITRE ATLAS mapping objects (optional; only for article-supported adversarial AI/ML behavior)
+    Each ATLAS mapping requires:
+      techniqueId: string (e.g., "AML.T0042")
+      techniqueName: string
+      tactic: string (optional)
+      atlasVersion: string (optional, e.g., "5.6.0")
+      confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
+      evidence: string (optional, source-supported rationale)
+      notes: string (optional)`;
+
 // ── Schemas per content type ────────────────────────────────────────────────
 const SCHEMAS = {
   incident: {
@@ -127,11 +153,8 @@ const SCHEMAS = {
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
-    Each mapping requires:
-      techniqueId: string (e.g., "T1566.001")
-      techniqueName: string (e.g., "Phishing: Spearphishing Attachment")
-      tactic: string (optional, e.g., "Initial Access")
-      notes: string (optional, context for this article)`,
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Summary — 2-3 paragraphs: what happened, who was affected, scope
   ## Technical Analysis — attack mechanism, tools used, vulnerability details
@@ -168,7 +191,9 @@ ${SOURCE_SCHEMA}
   tags: array of strings
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
-  mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1`,
+  mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 6):
   ## Executive Summary — campaign overview, objectives, scope, current status
   ## Technical Analysis — tools, techniques, infrastructure, operator workflow
@@ -196,11 +221,8 @@ ${SOURCE_SCHEMA}
   targetGeographies: array of strings
   tools: array of strings — known malware and tools
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 3
-    Each mapping requires:
-      techniqueId: string
-      techniqueName: string
-      tactic: string (optional)
-      notes: string (optional)
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}
   attributionConfidence: enum (optional) — A1 through A6
   attributionRationale: string (optional, max 500 chars)
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
@@ -247,11 +269,8 @@ ${SOURCE_SCHEMA}`,
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
-    Each mapping requires:
-      techniqueId: string
-      techniqueName: string
-      tactic: string (optional)
-      notes: string (optional)`,
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Severity Assessment — Exploitability, Impact, Weaponization Risk, Patch Urgency, Detection Coverage (scored X/10)
   ## Summary — what the vulnerability is, scope of affected systems, significance
@@ -294,9 +313,10 @@ function buildRules(task) {
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  11. MITRE tactic casing must use the canonical ATT&CK vocabulary
-  12. Canonical publisher aliases must be normalized in frontmatter and body
-  13. The Astro build must pass: cd site && npm run build`;
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; optional metadata must use attackVersion vNN[.N], confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}, and non-empty evidence when present
+  12. atlasMappings are optional and only allowed for source-supported adversarial AI/ML behavior; techniqueId must match AML.T####[.###]
+  13. Canonical publisher aliases must be normalized in frontmatter and body
+  14. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -1028,6 +1048,7 @@ ${buildRules(task)}
      → Follow the frontmatter schema and body structure above
      → Include structured source objects in frontmatter (not just body text)
      → Include MITRE ATT&CK mappings in frontmatter mitreMappings array
+     → Include ATLAS mappings only when article-supported adversarial AI/ML behavior exists
      → Ensure all acceptance criteria are met
   4. Validate:         node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate
   5. Fix any issues and re-validate until ALL CHECKS PASSED
@@ -1217,6 +1238,62 @@ function validateOutput(task, explicitFile) {
           issues.push(`MITRE mapping ${i + 1}: tactic "${tactic}" is not in the canonical ATT&CK tactic list`);
         } else if (canonicalTactic !== tactic) {
           issues.push(`MITRE mapping ${i + 1}: tactic "${tactic}" should use canonical casing "${canonicalTactic}"`);
+        }
+      }
+
+      const attackVersion = mapping.attackVersion ?? mapping.attack_version;
+      if (attackVersion !== undefined) {
+        const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
+        if (!ATTACK_VERSION_RE.test(version)) {
+          issues.push(`MITRE mapping ${i + 1}: attackVersion must match vNN[.N]`);
+        }
+      }
+
+      if (
+        mapping.confidence !== undefined &&
+        !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
+      ) {
+        issues.push(`MITRE mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
+      }
+
+      if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
+        issues.push(`MITRE mapping ${i + 1}: evidence must be a non-empty string`);
+      }
+    }
+
+    const atlasMappings = frontmatter.atlasMappings;
+    if (atlasMappings !== undefined && !Array.isArray(atlasMappings)) {
+      issues.push('atlasMappings must be an array when present');
+    }
+
+    if (Array.isArray(atlasMappings)) {
+      for (let i = 0; i < atlasMappings.length; i++) {
+        const mapping = atlasMappings[i] || {};
+        const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
+        if (!ATLAS_TECHNIQUE_ID_RE.test(techniqueId)) {
+          issues.push(`ATLAS mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format AML.T####[.###]`);
+        }
+
+        if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
+          issues.push(`ATLAS mapping ${i + 1}: missing techniqueName`);
+        }
+
+        if (
+          mapping.confidence !== undefined &&
+          !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
+        ) {
+          issues.push(`ATLAS mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
+        }
+
+        if (mapping.atlasVersion !== undefined) {
+          const atlasVersion = typeof mapping.atlasVersion === 'string' ? mapping.atlasVersion.trim() : '';
+          if (!ATLAS_VERSION_RE.test(atlasVersion)) {
+            issues.push(`ATLAS mapping ${i + 1}: atlasVersion must match N.N.N`);
+          }
+        }
+
+        if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
+          issues.push(`ATLAS mapping ${i + 1}: evidence must be a non-empty string`);
         }
       }
     }
