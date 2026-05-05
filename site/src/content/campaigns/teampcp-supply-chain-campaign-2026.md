@@ -108,7 +108,7 @@ The TeamPCP supply chain campaign was a coordinated multi-ecosystem intrusion op
 
 The campaign is distinctive in three respects. First, it targeted **security tools themselves** rather than general-purpose libraries, abusing the privileged CI/CD position those tools occupy. Second, it used **force-pushed version tags** against trusted repositories, so downstream consumers pinning to what they believed were immutable semantic versions silently began executing attacker-controlled code. Third, it cascaded into **multiple independent victim incidents** involving Mercor, Cisco, European Commission, and other downstream organizations.
 
-The TeamPCP operation is tracked at campaign level because it spans multiple package ecosystems, tooling compromises, and downstream victim events. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). Constituent victim events are linked in the Timeline and the associated records.
+The TeamPCP operation is tracked at campaign level because it spans multiple package ecosystems, tooling compromises, and downstream victim events. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). Constituent victim events are detailed in the Timeline and the associated incident records.
 
 ## Technical Analysis
 
