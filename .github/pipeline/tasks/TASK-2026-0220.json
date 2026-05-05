@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-01T19:02:09.903Z",
-  "updated": "2026-05-02T03:56:51.496Z",
+  "updated": "2026-05-04T18:53:34.747Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-02T03:15:00.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "pr_number": 472,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/472",
   "head_sha": "515feda5db9317e13031b912365129a8405f330b",
@@ -97,7 +97,7 @@
       "from": "locked",
       "to": "pr_open",
       "agent": "dangermouse-bot",
-      "note": "PR #472 opened: feat(zero-days): TASK-2026-0220 \u2014 Linux Kernel CVE-2026-31431 Copy Fail LPE"
+      "note": "PR #472 opened: feat(zero-days): TASK-2026-0220 — Linux Kernel CVE-2026-31431 Copy Fail LPE"
     },
     {
       "timestamp": "2026-05-02T03:56:51.496Z",
@@ -106,6 +106,15 @@
       "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #472 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-04T18:53:34.747Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #472 merged (4c3450c)."
     }
-  ]
+  ],
+  "merged_at": "2026-05-04T18:53:34.747Z"
 }
