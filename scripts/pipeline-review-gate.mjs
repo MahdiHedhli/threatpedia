@@ -178,19 +178,8 @@ function getValidateChecks(checkRunsPayload) {
 }
 
 function checkRunTimestamp(check) {
-  const candidates = [
-    check.completed_at,
-    check.started_at,
-    check.created_at,
-  ];
-
-  for (const candidate of candidates) {
-    if (!candidate) continue;
-    const timestamp = new Date(candidate).getTime();
-    if (Number.isFinite(timestamp)) return timestamp;
-  }
-
-  return 0;
+  const timestamp = new Date(check.created_at).getTime();
+  return Number.isFinite(timestamp) ? timestamp : 0;
 }
 
 function getLatestValidateCheck(checkRunsPayload) {
