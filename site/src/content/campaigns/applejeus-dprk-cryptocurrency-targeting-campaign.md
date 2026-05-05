@@ -81,7 +81,7 @@ mitreMappings:
 
 AppleJeus is a DPRK-linked campaign family built around malicious cryptocurrency trading and wallet applications. CISA, FBI, and the U.S. Department of the Treasury described AppleJeus as North Korean government malicious activity used to target cryptocurrency exchanges, financial services firms, and other organizations through applications that looked like legitimate trading platforms. MITRE tracks AppleJeus as downloader malware used by Lazarus Group against companies across energy, finance, government, industry, technology, and telecommunications sectors.
 
-The strongest public evidence supports Lazarus Group attribution and a campaign window beginning with AppleJeus reporting in 2018 and extending through multiple versions identified by U.S. government reporting in 2020. AppleJeus is best treated as a campaign-level record because the public sources describe repeated tooling, infrastructure, lure patterns, and cross-platform variants rather than a single bounded intrusion.
+Public evidence supports Lazarus Group attribution and a campaign window beginning with AppleJeus reporting in 2018 and extending through multiple versions identified by U.S. government reporting in 2020. AppleJeus is treated as a campaign-level record because available documentation describes repeated tooling, infrastructure, lure patterns, and cross-platform variants rather than a single bounded intrusion.
 
 ## Technical Analysis
 
@@ -89,7 +89,7 @@ AppleJeus operators used the trust model around cryptocurrency software as the i
 
 The campaign evolved across Windows and macOS implementations. CISA's advisory catalogued seven AppleJeus versions and described Windows MSI installers, macOS DMG packages, valid-looking certificates, updater components, scheduled tasks, LaunchDaemon persistence, and staged command-and-control traffic. Kaspersky's 2020 reporting described AppleJeus activity after the initial 2018 operation, including fake cryptocurrency-related websites, Telegram-linked lures, and a two-stage infection pattern where a downloaded application fetched a later payload from a remote server.
 
-Public reporting ties AppleJeus to cryptocurrency theft objectives, but the sources do not support treating every DPRK cryptocurrency intrusion as AppleJeus. The campaign label is most appropriate where reporting identifies AppleJeus malware, AppleJeus-branded tooling, or the specific trojanized cryptocurrency application pattern described by CISA, Kaspersky, and MITRE.
+Public reporting ties AppleJeus to cryptocurrency theft objectives, but available documentation does not support treating every DPRK cryptocurrency intrusion as AppleJeus. The campaign label is applied where reporting identifies AppleJeus malware, AppleJeus-branded tooling, or the specific trojanized cryptocurrency application pattern described by CISA, Kaspersky, and MITRE.
 
 ## Attack Chain
 
@@ -137,27 +137,27 @@ T1041 - Exfiltration Over C2 Channel: AppleJeus collected host information and t
 
 ## Timeline
 
-### 2018-08-01 - Initial AppleJeus Reporting Window
+### 2018-08-01 — Initial AppleJeus Reporting Window
 
 Public reporting in August 2018 described AppleJeus as a Lazarus-linked operation using trojanized cryptocurrency trading software against a cryptocurrency exchange.
 
-### 2019-10-01 - JMT Trading Variant Identified
+### 2019-10-01 — JMT Trading Variant Identified
 
 CISA documented a 2019 AppleJeus variant known as JMT Trading that used legitimate-looking cryptocurrency application branding and distribution infrastructure.
 
-### 2020-01-08 - Kaspersky Reports AppleJeus Sequel Activity
+### 2020-01-08 — Kaspersky Reports AppleJeus Sequel Activity
 
 Kaspersky reported that Lazarus continued AppleJeus activity with revised macOS and Windows tradecraft, fake cryptocurrency-related websites, and Telegram-linked lures.
 
-### 2020-12-01 - Ants2Whale Version Identified
+### 2020-12-01 — Ants2Whale Version Identified
 
 CISA described a late-2020 AppleJeus version called Ants2Whale, adding another example of the repeated cryptocurrency-company lure pattern.
 
-### 2021-02-17 - CISA, FBI, and Treasury Publicly Release Joint Advisory
+### 2021-02-17 — CISA, FBI, and Treasury Publicly Release Joint Advisory
 
 U.S. government agencies released a joint advisory describing AppleJeus malware versions, affected sectors, and recommended mitigation guidance.
 
-### 2021-04-15 - CISA Advisory Revised
+### 2021-04-15 — CISA Advisory Revised
 
 CISA revised the AppleJeus advisory, including a MITRE ATT&CK technique update for macOS shell execution.
 
