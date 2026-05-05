@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-02T00:14:04.603Z",
-  "updated": "2026-05-05T18:20:40.303Z",
+  "updated": "2026-05-05T19:56:39.581Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -76,8 +76,17 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #481"
+    },
+    {
+      "timestamp": "2026-05-05T19:56:39.581Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #481."
     }
   ],
   "pr_number": 481,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/481"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/481",
+  "merged_at": "2026-05-05T19:24:26Z"
 }
