@@ -364,7 +364,7 @@ function validateFile(file, newFiles) {
     name: 'Public prose guardrails',
     pass: publicProseIssues.length === 0,
     detail: publicProseIssues.length === 0
-      ? 'No internal process or scoring language detected'
+      ? 'No internal process, scoring, or content-model language detected'
       : publicProseIssues
         .slice(0, 3)
         .map((issue) => `line ${issue.line}: ${issue.label} (${issue.phrase})`)

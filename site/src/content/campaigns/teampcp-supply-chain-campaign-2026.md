@@ -106,9 +106,9 @@ mitreMappings:
 
 The TeamPCP supply chain campaign was a coordinated multi-ecosystem intrusion operation running from late February through early April 2026, in which the TeamPCP actor cluster (also self-identifying as DeadCatx3, PCPcat, and ShellForce) compromised widely trusted developer security tooling — including Aqua Security's Trivy and setup-trivy GitHub Actions, Checkmarx's KICS GitHub Action, and the LiteLLM PyPI package — and used that access to harvest cloud credentials and secrets from downstream CI/CD environments at scale.
 
-The campaign is distinctive in three respects. First, it targeted **security tools themselves** rather than general-purpose libraries, abusing the privileged CI/CD position those tools occupy. Second, it used **force-pushed version tags** against trusted repositories, so downstream consumers pinning to what they believed were immutable semantic versions silently began executing attacker-controlled code. Third, it cascaded into **multiple independent victim incidents** — Mercor, Cisco, European Commission, and others — that Threatpedia maintains as separate incident pages.
+The campaign is distinctive in three respects. First, it targeted **security tools themselves** rather than general-purpose libraries, abusing the privileged CI/CD position those tools occupy. Second, it used **force-pushed version tags** against trusted repositories, so downstream consumers pinning to what they believed were immutable semantic versions silently began executing attacker-controlled code. Third, it cascaded into **multiple independent victim incidents** involving Mercor, Cisco, European Commission, and other downstream organizations.
 
-This article is the canonical **campaign-level** record of the TeamPCP operation. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). The constituent victim events are tracked as individual incident articles linked under Timeline and the related-incident list in frontmatter.
+The TeamPCP operation is tracked at campaign level because it spans multiple package ecosystems, tooling compromises, and downstream victim events. The actor itself is profiled at [`/threat-actors/teampcp/`](/threat-actors/teampcp/). Constituent victim events are linked under Timeline and in the related-incident list in frontmatter.
 
 ## Technical Analysis
 
@@ -120,7 +120,7 @@ TeamPCP's operation combined three reinforcing techniques:
 
 **TeamPCP Cloud Stealer payload.** The payload — tracked across vendor reports under labels including "CanisterWorm" — enumerated the runner environment for cloud-provider credentials (AWS access keys, GCP service-account JSON, Azure client secrets), Kubernetes kubeconfigs, SSH private keys, GitHub PATs, and npm/PyPI publishing tokens. Harvested material was layered-encrypted (AES-256 + RSA-4096), chunked, and exfiltrated to attacker infrastructure hosted behind Cloudflare tunnel domains (including `plug-tab-protective-relay.trycloudflare.com`) and a staging IP at `45.148.10.212`, blending into normal CI/CD egress.
 
-The cascading effect: credentials harvested in one victim's CI/CD environment frequently provided initial access to that victim's cloud-production infrastructure, producing the secondary incidents tracked separately on Threatpedia.
+The cascading effect: credentials harvested in one victim's CI/CD environment frequently provided initial access to that victim's cloud-production infrastructure, producing secondary incidents beyond the original package compromises.
 
 ## Attack Chain
 
@@ -142,7 +142,7 @@ Payloads deployed via Stages 2 and 3 enumerate runner environment for cloud cred
 
 ### Stage 5: Downstream victim intrusions
 
-Credentials harvested in Stages 2–4 are used to access victim cloud-production infrastructure, producing individually-tracked incidents including the Mercor AI LiteLLM-path breach, the Cisco Trivy-path breach, and the European Commission Trivy-path breach. These are the constituent incidents Threatpedia maintains as separate articles.
+Credentials harvested in Stages 2–4 are used to access victim cloud-production infrastructure, producing downstream incidents including the Mercor AI LiteLLM-path breach, the Cisco Trivy-path breach, and the European Commission Trivy-path breach.
 
 ## MITRE ATT&CK Mapping
 
@@ -161,7 +161,7 @@ Credentials harvested in Stages 2–4 are used to access victim cloud-production
 
 ### Impact
 
-- **T1496 — Resource Hijacking (inferred for a subset of downstream compromises)** and further downstream action-on-objectives are tracked on the constituent incident pages.
+- **T1496 — Resource Hijacking (inferred for a subset of downstream compromises)** and further downstream action-on-objectives are tracked with the constituent victim records.
 
 ## Timeline
 

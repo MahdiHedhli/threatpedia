@@ -1322,7 +1322,7 @@ function validateOutput(task, explicitFile) {
     // ── 11. Public prose guardrails ───────────────────────────────────────
     const publicProseIssues = getPublicProseGuardrailIssues(body);
     if (publicProseIssues.length > 0) {
-      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring phrase(s) found:`);
+      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring/content-model phrase(s) found:`);
       for (const hit of publicProseIssues.slice(0, 5)) {
         issues.push(`  → line ${hit.line}: ${hit.label} (${hit.phrase})`);
       }
