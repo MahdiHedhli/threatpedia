@@ -13,7 +13,7 @@ const PUBLIC_PROSE_GUARDRAILS = [
   },
   {
     label: 'internal content-model leakage',
-    regex: /\bThreatpedia(?:'s)?\b|\b(?:incident|campaign|threat[- ]actor|zero[- ]day)\s+(?:articles?|pages?|collections?)\b|\b(?:incidents|campaigns|threat[- ]actors|zero[- ]days)\s+collections?\b|\b(?:this\s+page\s+treats|leaves?\s+room\s+for\s+victim[- ]specific\s+incident\s+articles?)\b/i,
+    regex: /\bThreatpedia(?:'s)?\b|\b(?:related[- ])?(?:incident|campaign|threat[- ]actor|zero[- ]day)s?\s+(?:articles?|pages?|collections?|lists?)\b|\b(?:this\s+page\s+treats|leaves?\s+room\s+for\s+victim[- ]specific\s+incident\s+articles?)\b|\b(?:frontmatter|slugs?)\b/i,
   },
 ];
 
