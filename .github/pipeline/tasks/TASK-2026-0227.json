@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0227",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-06T13:17:00.000Z",
+  "updated": "2026-05-06T13:17:00.000Z",
+  "source": "automated_submission",
+  "submitted_by": "claude-campaign-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "WannaCry Ransomware Campaign — Global Lazarus Group Operation (2017)",
+    "sources": [
+      "https://www.justice.gov/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and",
+      "https://www.ncsc.gov.uk/news/uk-and-key-allies-say-north-korea-behind-wannacry-attack",
+      "https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "related_incident_slugs": ["wannacry-ransomware-2017"]
+    },
+    "notes": "WannaCry is the campaign-level article covering the broader Lazarus Group (North Korea) operation: EternalBlue exploitation infrastructure, global worm propagation, cryptocurrency ransom mechanics, NHS/critical infrastructure targeting, and multi-government attribution. The incident article (wannacry-ransomware-2017) covers the bounded 2017-05-12 event. The campaign article should cover the coordinated operation context, actor infrastructure, and confirmed attribution from DOJ indictment and Five Eyes joint advisory. Draft conservatively from DOJ, NCSC UK, and CISA sources. Do not inflate victim counts or financial impact beyond confirmed figures. Keep Lazarus Group attribution at supported confidence level."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0227",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-06T13:17:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "claude-campaign-worker",
+      "note": "Smoke-test seed task — campaign lane. Topic: WannaCry Ransomware Campaign (Lazarus Group, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: wannacry-ransomware-2017."
+    }
+  ]
+}
