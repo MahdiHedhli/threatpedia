@@ -111,7 +111,7 @@ Incident response was initiated. Affected systems were isolated. Law enforcement
 
 No actor has claimed responsibility for the Patriot Regional ECC attack. No government agency has publicly attributed the incident. The attack vector remains undisclosed in available public reporting.
 
-The contextual proximity to the November 2025 Crisis24 ransomware breach is noted in reporting, but available sources have not confirmed whether the two incidents share a common actor, whether credentials exposed in the November breach were used in the April attack, or whether the incidents are unrelated. Attribution confidence is A4 — not established from public sources.
+The contextual proximity to the November 2025 Crisis24 ransomware breach is noted in reporting, but available sources have not confirmed whether the two incidents share a common actor, whether credentials exposed in the November breach were used in the April attack, or whether the incidents are unrelated. No actor or mechanism has been publicly identified.
 
 ## Timeline
 
