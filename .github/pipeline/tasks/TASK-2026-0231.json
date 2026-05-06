@@ -1,5 +1,5 @@
 {
-  "task_id": "TASK-2026-0229",
+  "task_id": "TASK-2026-0231",
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
@@ -22,8 +22,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -51,6 +51,12 @@
       "to": "pending",
       "agent": "tp-queue-worker-campaigns",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-06T23:30:00Z",
+      "action": "renumbered",
+      "note": "Renamed from TASK-2026-0229 to TASK-2026-0231 to resolve task ID collision with discovery branch (pipeline-discovery allocated TASK-2026-0229 for CVE-2026-0300 zero-day at 2026-05-06T19:27Z, 50 minutes before this seed was created).",
+      "agent": "tp-queue-worker-campaigns"
     }
   ]
 }
