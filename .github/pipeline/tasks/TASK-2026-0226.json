@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-06T00:45:00.000Z",
-  "updated": "2026-05-06T12:55:28.512Z",
+  "updated": "2026-05-06T14:22:33.420Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -31,7 +31,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
     "site/src/content.config.ts"
   ],
   "acceptance_criteria": {
@@ -76,8 +76,17 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #500"
+    },
+    {
+      "timestamp": "2026-05-06T14:22:33.420Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #500 merged (838c8ab)."
     }
   ],
   "pr_number": 500,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/500"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/500",
+  "merged_at": "2026-05-06T14:22:33.420Z"
 }
