@@ -1227,8 +1227,14 @@ function validateOutput(task, explicitFile) {
     for (let i = 0; i < mitreMappings.length; i++) {
       const mapping = mitreMappings[i] || {};
       const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-      if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
+      if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
+        issues.push(`MITRE mapping ${i + 1}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
+      } else if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
         issues.push(`MITRE mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
+      }
+
+      if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
+        issues.push(`MITRE mapping ${i + 1}: missing techniqueName`);
       }
 
       if (mapping.tactic) {

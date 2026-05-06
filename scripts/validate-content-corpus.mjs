@@ -419,6 +419,15 @@ function validateFile(file, newFiles) {
   const mitreMetadataIssues = [];
   for (let i = 0; i < mitreMappings.length; i += 1) {
     const mapping = mitreMappings[i] || {};
+    const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
+    if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
+      mitreMetadataIssues.push(`mapping ${i + 1}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
+    } else if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
+      mitreMetadataIssues.push(`mapping ${i + 1}: invalid techniqueId "${techniqueId}"`);
+    }
+    if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
+      mitreMetadataIssues.push(`mapping ${i + 1}: missing techniqueName`);
+    }
     const attackVersion = mapping.attackVersion ?? mapping.attack_version;
     if (attackVersion !== undefined) {
       const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
@@ -437,10 +446,10 @@ function validateFile(file, newFiles) {
     }
   }
   checks.push({
-    name: 'MITRE mapping metadata',
+    name: 'MITRE mapping fields and metadata',
     pass: mitreMetadataIssues.length === 0,
     detail: mitreMetadataIssues.length === 0
-      ? 'Optional mapping metadata is valid'
+      ? 'Required fields and optional metadata are valid'
       : mitreMetadataIssues.join(' | '),
   });
   if (mitreMetadataIssues.length > 0) pass = false;
