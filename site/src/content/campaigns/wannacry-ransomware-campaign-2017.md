@@ -73,7 +73,7 @@ mitreMappings:
 
 ## Executive Summary
 
-WannaCry was a ransomware campaign that began on 2017-05-12 and spread globally within hours, exploiting a vulnerability in the Windows SMBv1 protocol to propagate as a self-replicating worm. The campaign caused significant disruption to critical infrastructure across multiple sectors, with the UK National Health Service among the most publicly documented victims. The UK National Cyber Security Centre (NCSC), in coordination with allied governments, publicly attributed WannaCry to North Korea in December 2017. The U.S. Department of Justice filed criminal charges in September 2018 against a North Korean national identified as associated with the Lazarus Group, a threat actor assessed to operate on behalf of the North Korean government.
+WannaCry was a ransomware campaign that began on 2017-05-12 and spread globally within hours, exploiting a vulnerability in the Windows SMBv1 protocol to propagate as a self-replicating worm. The campaign caused disruption to critical infrastructure across multiple sectors, with the UK National Health Service among the most publicly documented victims. The UK National Cyber Security Centre (NCSC), in coordination with allied governments, publicly attributed WannaCry to North Korea in December 2017. The U.S. Department of Justice filed criminal charges in September 2018 against a North Korean national identified as associated with the Lazarus Group, a threat actor assessed to operate on behalf of the North Korean government.
 
 The campaign exploited CVE-2017-0144 and CVE-2017-0145 using the EternalBlue exploit and the DoublePulsar backdoor to infect systems running unpatched SMBv1. A kill switch embedded in the malware was identified by a security researcher on 2017-05-12, which limited the spread of the primary variant. The campaign is operationally distinct from the NotPetya destructive wiper operation, which used overlapping EternalBlue infrastructure but is attributed to a different actor and had a different objective.
 
@@ -81,7 +81,7 @@ The campaign exploited CVE-2017-0144 and CVE-2017-0145 using the EternalBlue exp
 
 WannaCry propagated through exploitation of CVE-2017-0144, a critical vulnerability in the Windows SMBv1 implementation. The exploit, publicly known as EternalBlue, allowed unauthenticated remote code execution on exposed Windows systems. WannaCry scanned for reachable hosts on TCP port 445 and attempted exploitation without requiring any user interaction on target systems.
 
-Upon successful exploitation, WannaCry installed the DoublePulsar kernel-level backdoor implant, which was then used to inject and execute the WannaCry ransomware payload. The payload encrypted files matching a defined list of extensions across accessible drives and network shares. Victims were presented with a ransom demand denominated in Bitcoin, with a stated deadline after which the demanded amount would increase before files would allegedly be permanently deleted.
+Upon successful exploitation, WannaCry installed the DoublePulsar kernel-level backdoor implant, which was then used to inject and execute the WannaCry ransomware payload. The payload encrypted files matching a defined list of extensions across accessible drives and network shares. Victims were presented with a ransom demand denominated in Bitcoin, with a stated deadline after which the demanded amount would increase with a threat that files would be permanently deleted.
 
 The malware included a kill switch mechanism: on execution, it queried an unregistered domain. If the domain resolved, the malware exited without proceeding. On 2017-05-12, a security researcher registered the queried domain, which caused subsequently executed instances of the primary WannaCry variant to halt. Existing infections that had already completed the propagation and encryption cycle were not affected by the kill switch registration.
 
@@ -143,7 +143,7 @@ WannaCry began spreading globally, exploiting unpatched Windows systems via Eter
 
 ### 2017-05-15 — Primary Spread Subsides
 
-The rate of new WannaCry infections declined substantially following kill switch registration and emergency patching efforts. CISA and partner agencies continued issuing guidance for affected organizations.
+The rate of new WannaCry infections declined following kill switch registration and emergency patching efforts. CISA and partner agencies continued issuing guidance for affected organizations.
 
 ### 2017-12-19 — Five Eyes Attribution to North Korea
 
