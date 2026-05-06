@@ -141,7 +141,7 @@ A group publicly released a collection of exploits including EternalBlue and Ete
 
 ### 2017-06-27 — NotPetya Deployment via M.E.Doc Update
 
-The compromised M.E.Doc update was distributed, triggering the initial wave of infections across Ukrainian organizations. Within hours, the malware propagated to multinational corporations through lateral movement from Ukrainian entry points. CISA published an alert on indicators associated with the attack on the same day.
+The compromised M.E.Doc update was distributed, triggering the initial wave of infections across Ukrainian organizations. Within hours, the malware propagated to multinational corporations through lateral movement from Ukrainian entry points. CISA published an alert on indicators associated with the attack on 2017-07-01.
 
 ### 2017-06-28 — Primary Spread Subsides
 
