@@ -67,9 +67,9 @@ mitreMappings:
 
 On April 1, 2026, a cyberattack on the Patriot Regional Emergency Communications Center in Pepperell, Massachusetts, disrupted telephone and administrative communications for police, fire, and EMS departments serving four regional towns: Pepperell, Dunstable, Townsend, and Ashby. Non-emergency phone lines were disabled; 911 emergency dispatch systems remained operational on separate, protected infrastructure. Agencies reverted to radio-based manual dispatch procedures during the outage.
 
-The attack vector has not been publicly disclosed. Public reporting notes that the affected center used the CodeRED emergency notification platform, whose parent company Crisis24 suffered a ransomware attack in November 2025. Available reporting has not established a confirmed causal link between the prior Crisis24 breach and the April 2026 disruption; that contextual overlap should be treated as a sector-level risk indicator rather than a proven attack chain.
+The attack vector has not been publicly disclosed. Public reporting notes that the affected center used the CodeRED emergency notification platform, whose parent company Crisis24 suffered a ransomware attack in November 2025. Available reporting has not established a confirmed causal link between the prior Crisis24 breach and the April 2026 disruption; the contextual overlap does not constitute a confirmed attack chain in available public reporting.
 
-The incident demonstrates the exposure of regional emergency communications infrastructure to cyberattack. The continued operation of 911 systems indicates effective network segmentation between emergency dispatch and administrative telephone infrastructure, but non-emergency systems lacked equivalent protection.
+The incident affected regional emergency communications infrastructure. The continued operation of 911 systems indicates effective network segmentation between emergency dispatch and administrative telephone infrastructure, but non-emergency systems lacked equivalent protection.
 
 ## Technical Analysis
 
@@ -103,7 +103,7 @@ Incident response was initiated. Affected systems were isolated. Law enforcement
 
 **Scope:** Four towns — Pepperell, Dunstable, Townsend, and Ashby — lost normal non-emergency telephone access to police, fire, and EMS dispatch. The duration of the outage was not specified in available public reporting.
 
-**Network segmentation:** The continued operation of 911 infrastructure confirms that emergency dispatch was isolated from the affected administrative and telephone systems. This segmentation limited the impact of the attack to non-emergency functions and prevented a public safety crisis.
+**Network segmentation:** The continued operation of 911 infrastructure confirms that emergency dispatch was isolated from the affected administrative and telephone systems. This segmentation limited the impact of the attack to non-emergency functions.
 
 ## Attribution
 
@@ -129,7 +129,7 @@ Incident response teams mobilized. Affected systems isolated. Investigation into
 
 **Immediate response:** Isolate affected systems from the network. Activate backup radio dispatch and manual call-logging procedures. Engage state emergency management and CISA for technical assistance. Preserve forensic artifacts for investigation and attribution.
 
-**Network architecture:** Emergency services networks should maintain strict segmentation between 911 dispatch infrastructure and administrative or third-party-connected systems. Segmentation should be validated through periodic testing, not assumed.
+**Network architecture:** Emergency services networks should maintain strict segmentation between 911 dispatch infrastructure and administrative or third-party-connected systems. Segmentation should be validated through periodic testing and documented verification procedures.
 
 **Third-party platform risk:** Audit integrations with vendors such as CodeRED, CAD systems, and dispatch platform providers. Review and restrict API permissions to minimum necessary access. Establish incident response procedures specific to supply chain or platform compromise events.
 
