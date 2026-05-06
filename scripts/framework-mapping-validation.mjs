@@ -131,7 +131,7 @@ export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
         issues.push(`${label}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
       }
 
-      if (atlasVersion !== undefined) {
+      if (atlasVersion != null && atlasVersion !== '') {
         const version = typeof atlasVersion === 'string' ? atlasVersion.trim() : '';
         if (!ATLAS_VERSION_RE.test(version)) {
           issues.push(`${label}: atlasVersion must match N.N.N`);
