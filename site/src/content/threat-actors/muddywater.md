@@ -144,7 +144,7 @@ MuddyWater's tradecraft includes obfuscating scripts, using legitimate administr
 
 Attribution to Iran's Ministry of Intelligence and Security is documented in the public record. U.S. Cyber Command stated in January 2022 that MuddyWater is a subordinate element within MOIS, and the February 2022 joint advisory from FBI, CISA, CNMF, and UK NCSC repeated that assessment while describing global government and commercial targeting.
 
-The alias boundary remains important. MITRE lists Earth Vetala, MERCURY, Static Kitten, Seedworm, TEMP.Zagros, Mango Sandstorm, TA450, and MuddyKrill as associated group names for MuddyWater. These names are considered public tracking aliases or overlapping reporting labels; attribution of Iran-nexus activity to MuddyWater requires direct evidence or cited source linkage.
+MITRE lists Earth Vetala, MERCURY, Static Kitten, Seedworm, TEMP.Zagros, Mango Sandstorm, TA450, and MuddyKrill as associated group names for MuddyWater. These names are considered public tracking aliases or overlapping reporting labels; attribution of Iran-nexus activity to MuddyWater requires direct evidence or cited source linkage.
 
 ## MITRE ATT&CK Profile
 
