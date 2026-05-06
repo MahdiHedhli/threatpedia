@@ -121,23 +121,15 @@ On reboot, the custom MBR bootloader displayed a screen resembling a ransom dema
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
-
 T1195.002 - Supply Chain Compromise: Compromise Software Supply Chain: Sandworm compromised the M.E.Doc update infrastructure to distribute the NotPetya wiper to organizations that had installed the legitimate Ukrainian accounting software and received the trojanized update.
 
-### Credential Access
-
 T1003.001 - OS Credential Dumping: LSASS Memory: NotPetya included a Mimikatz-derived component that extracted credentials from LSASS memory. Harvested credentials were used for lateral movement to hosts not vulnerable to EternalBlue, enabling propagation across patched network segments.
-
-### Lateral Movement
 
 T1210 - Exploitation of Remote Services: NotPetya used EternalBlue (CVE-2017-0144) and EternalRomance (CVE-2017-0145) to exploit unpatched SMBv1 on reachable hosts, achieving unauthenticated remote code execution for lateral propagation.
 
 T1047 - Windows Management Instrumentation: NotPetya used WMIC with harvested credentials to remotely execute the wiper payload on reachable hosts that were not vulnerable to EternalBlue, leveraging WMI as a lateral movement mechanism.
 
 T1021.002 - Remote Services: SMB/Windows Admin Shares: NotPetya used PsExec with harvested credentials to copy and execute its payload via Windows administrative shares (ADMIN$, C$), enabling propagation to patched hosts immune to the SMB exploit vector.
-
-### Impact
 
 T1485 - Data Destruction: NotPetya overwrote the Master Boot Record and encrypted the Master File Table using a discarded key, rendering affected systems unrecoverable. The ransom demand interface was non-functional; the operation was destructive by design.
 
@@ -171,7 +163,7 @@ The U.S. Department of Justice unsealed a grand jury indictment charging six nam
 
 Applying Microsoft Security Bulletin MS17-010 eliminates the EternalBlue and EternalRomance SMBv1 exploitation vectors used for lateral movement. Organizations should also disable SMBv1 on all systems where it is not operationally required.
 
-Implementing supply chain security controls reduces exposure to software update compromise: validating the integrity and authenticity of software updates before deployment, monitoring for anomalous behavior in update processes, and maintaining the ability to isolate or roll back updates can limit the blast radius of supply chain attacks.
+Implementing supply chain security controls reduces exposure to software update compromise: validating the integrity and authenticity of software updates before deployment, monitoring for anomalous behavior in update processes, and maintaining the ability to isolate or roll back updates can limit the scope of damage of supply chain attacks.
 
 Credential hygiene measures reduce the effectiveness of the credential-based lateral movement component: disabling WDigest authentication prevents plaintext credential storage in LSASS memory; deploying Local Administrator Password Solution (LAPS) ensures unique local administrator passwords per host; and restricting WMIC and PsExec execution via endpoint controls limits the remote execution techniques used by NotPetya.
 
