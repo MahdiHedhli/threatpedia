@@ -157,11 +157,11 @@ Review and restrict MSP remote access to only the systems and accounts required 
 
 Monitor MSP-to-client network sessions for anomalous patterns, including access at unusual hours, access to systems outside the MSP's defined service scope, or bulk data transfers not associated with routine operations.
 
-Require MSPs to implement and demonstrate multi-factor authentication on all accounts with access to client environments. Single-factor authentication on MSP credentials is a control gap given the credential-harvesting tradecraft documented in this campaign.
+Require MSPs to implement and demonstrate multi-factor authentication on all accounts with access to client environments. Single-factor authentication on MSP credentials leaves accounts vulnerable to credential-harvesting techniques.
 
 Audit and review third-party software and remote management agent deployments in client environments. MSP agents installed for legitimate purposes can be supplemented with additional tooling once an MSP environment is compromised.
 
-Apply network segmentation to limit lateral movement from MSP access points into other client environments. Systems accessible via a single MSP credential set represent an expanded exposure surface.
+Apply network segmentation to limit lateral movement from MSP access points into other client environments. Systems accessible via a single MSP credential set increase the exposure surface.
 
 Review CISA Alert AA21-200B and related government advisories for current APT10 indicators and detection guidance applicable to MSP environments.
 
