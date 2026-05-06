@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-06T13:17:00.000Z",
-  "updated": "2026-05-06T15:08:01.659Z",
+  "updated": "2026-05-06T17:57:23.507Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
@@ -64,6 +64,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #506"
+    },
+    {
+      "timestamp": "2026-05-06T17:57:23.507Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #512 already covers this task."
     }
   ]
 }
