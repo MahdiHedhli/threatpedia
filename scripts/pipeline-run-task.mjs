@@ -32,10 +32,15 @@ import yaml from 'js-yaml';
 import {
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
   SCHEMA_GENERATED_BY_VALUES,
+  SCHEMA_MAPPING_CONFIDENCE_VALUES,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import {
+  getAtlasMappingValidationIssues,
+  getMitreMappingValidationIssues,
+} from './framework-mapping-validation.mjs';
 import { getPublicProseGuardrailIssues } from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -103,6 +108,25 @@ const SOURCE_SCHEMA = `  Each source object requires:
     archived: boolean (default false)
     archiveUrl: string (optional, valid URL)`;
 
+const MITRE_MAPPING_SCHEMA = `    Each MITRE ATT&CK mapping requires:
+      techniqueId: string (e.g., "T1566.001")
+      techniqueName: string (e.g., "Phishing: Spearphishing Attachment")
+      tactic: string (optional, canonical ATT&CK tactic casing)
+      attackVersion: string (optional, e.g., "v19"; attack_version is tolerated for legacy DATA-STANDARDS text)
+      confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
+      evidence: string (optional, source-supported rationale)
+      notes: string (optional, context for this article)`;
+
+const ATLAS_MAPPING_SCHEMA = `  atlasMappings: array of MITRE ATLAS mapping objects (optional; only for article-supported adversarial AI/ML behavior)
+    Each ATLAS mapping requires:
+      techniqueId: string (e.g., "AML.T0042")
+      techniqueName: string
+      tactic: string (optional)
+      atlasVersion: string (optional, e.g., "5.6.0")
+      confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
+      evidence: string (optional, source-supported rationale)
+      notes: string (optional)`;
+
 // ── Schemas per content type ────────────────────────────────────────────────
 const SCHEMAS = {
   incident: {
@@ -127,11 +151,8 @@ const SCHEMAS = {
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
-    Each mapping requires:
-      techniqueId: string (e.g., "T1566.001")
-      techniqueName: string (e.g., "Phishing: Spearphishing Attachment")
-      tactic: string (optional, e.g., "Initial Access")
-      notes: string (optional, context for this article)`,
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Summary — 2-3 paragraphs: what happened, who was affected, scope
   ## Technical Analysis — attack mechanism, tools used, vulnerability details
@@ -168,7 +189,9 @@ ${SOURCE_SCHEMA}
   tags: array of strings
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
-  mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1`,
+  mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 6):
   ## Executive Summary — campaign overview, objectives, scope, current status
   ## Technical Analysis — tools, techniques, infrastructure, operator workflow
@@ -196,11 +219,8 @@ ${SOURCE_SCHEMA}
   targetGeographies: array of strings
   tools: array of strings — known malware and tools
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 3
-    Each mapping requires:
-      techniqueId: string
-      techniqueName: string
-      tactic: string (optional)
-      notes: string (optional)
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}
   attributionConfidence: enum (optional) — A1 through A6
   attributionRationale: string (optional, max 500 chars)
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
@@ -247,11 +267,8 @@ ${SOURCE_SCHEMA}`,
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
-    Each mapping requires:
-      techniqueId: string
-      techniqueName: string
-      tactic: string (optional)
-      notes: string (optional)`,
+${MITRE_MAPPING_SCHEMA}
+${ATLAS_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Severity Assessment — Exploitability, Impact, Weaponization Risk, Patch Urgency, Detection Coverage (scored X/10)
   ## Summary — what the vulnerability is, scope of affected systems, significance
@@ -294,9 +311,10 @@ function buildRules(task) {
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  11. MITRE tactic casing must use the canonical ATT&CK vocabulary
-  12. Canonical publisher aliases must be normalized in frontmatter and body
-  13. The Astro build must pass: cd site && npm run build`;
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; optional metadata must use attackVersion vNN[.N], confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}, and non-empty evidence when present
+  12. atlasMappings are optional and only allowed for source-supported adversarial AI/ML behavior; techniqueId must match AML.T####[.###]
+  13. Canonical publisher aliases must be normalized in frontmatter and body
+  14. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -1028,6 +1046,7 @@ ${buildRules(task)}
      → Follow the frontmatter schema and body structure above
      → Include structured source objects in frontmatter (not just body text)
      → Include MITRE ATT&CK mappings in frontmatter mitreMappings array
+     → Include ATLAS mappings only when article-supported adversarial AI/ML behavior exists
      → Ensure all acceptance criteria are met
   4. Validate:         node scripts/pipeline-run-task.mjs --task ${task.task_id} --validate
   5. Fix any issues and re-validate until ALL CHECKS PASSED
@@ -1203,13 +1222,10 @@ function validateOutput(task, explicitFile) {
       issues.push(`Only ${mitreMappings.length} MITRE mapping(s) in frontmatter (need ${minMitre}+). Add mitreMappings array with techniqueId, techniqueName fields.`);
     }
 
+    issues.push(...getMitreMappingValidationIssues(mitreMappings));
+
     for (let i = 0; i < mitreMappings.length; i++) {
       const mapping = mitreMappings[i] || {};
-      const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-      if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
-        issues.push(`MITRE mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
-      }
-
       if (mapping.tactic) {
         const tactic = String(mapping.tactic).trim();
         const canonicalTactic = findCanonicalCaseMatch(tactic, SCHEMA_MITRE_TACTICS);
@@ -1220,6 +1236,9 @@ function validateOutput(task, explicitFile) {
         }
       }
     }
+
+    const atlasMappings = frontmatter.atlasMappings;
+    issues.push(...getAtlasMappingValidationIssues(atlasMappings));
 
     // ── 8. Exact H2 section headings ───────────────────────────────────────
     const requiredH2 = SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || [];
