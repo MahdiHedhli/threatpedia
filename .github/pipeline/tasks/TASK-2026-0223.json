@@ -5,13 +5,13 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-05T23:32:35.744Z",
-  "updated": "2026-05-06T01:26:50.003Z",
+  "updated": "2026-05-06T01:51:00.149Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Operation Cloud Hopper — APT10 Managed Service Provider Espionage Campaign",
+    "topic": "Operation Cloud Hopper \u2014 APT10 Managed Service Provider Espionage Campaign",
     "sources": [
       "https://www.ncsc.gov.uk/news/ncsc-supports-doj-indictment-of-two-chinese-nationals",
       "https://www.cisa.gov/uscert/ncas/alerts/aa21-200b",
@@ -24,8 +24,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,

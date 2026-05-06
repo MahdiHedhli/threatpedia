@@ -69,7 +69,7 @@ mitreMappings:
 
 Operation Cloud Hopper was a multi-year cyber espionage campaign conducted by APT10, a threat group publicly attributed by the United States, United Kingdom, Australia, Canada, Japan, and New Zealand to the Chinese Ministry of State Security (MSS). The campaign targeted managed service providers (MSPs) as an indirect access route into MSP client organizations across multiple sectors and regions.
 
-Rather than attacking end-target organizations directly, APT10 focused on compromising MSPs and exploiting their trusted, privileged access to client networks. This approach allowed the group to reach numerous targets through a contained set of initial intrusions. Public disclosure proceeded in stages between 2017 and 2018, culminating in U.S. Department of Justice indictments of two Chinese nationals and coordinated multi-nation attribution in December 2018.
+Rather than attacking end-target organizations directly, APT10 focused on compromising MSPs and exploiting their trusted, privileged access to client networks. This approach allowed the group to reach multiple targets through a contained set of initial intrusions. Public disclosure proceeded in stages between 2017 and 2018, concluding with U.S. Department of Justice indictments of two Chinese nationals and coordinated multi-nation attribution in December 2018.
 
 ## Technical Analysis
 
@@ -153,7 +153,7 @@ CISA published Alert AA21-200B documenting observed TTPs across Chinese state-sp
 
 Organizations using managed service providers should treat MSP access pathways as high-risk entry points requiring the same scrutiny as direct privileged access.
 
-Review and restrict MSP remote access to only the systems and accounts required for defined service operations. Persistent, extensive MSP credentials increase the potential impact of MSP compromise.
+Review and restrict MSP remote access to only the systems and accounts required for defined service operations. Persistent MSP credentials with access to multiple systems increase the potential impact of MSP compromise.
 
 Monitor MSP-to-client network sessions for anomalous patterns, including access at unusual hours, access to systems outside the MSP's defined service scope, or bulk data transfers not associated with routine operations.
 
