@@ -85,7 +85,7 @@ Upon successful exploitation, WannaCry installed the DoublePulsar kernel-level b
 
 The malware included a kill switch mechanism: on execution, it queried an unregistered domain. If the domain resolved, the malware exited without proceeding. On 2017-05-12, a security researcher registered the queried domain, which caused subsequently executed instances of the primary WannaCry variant to halt. Existing infections that had already completed the propagation and encryption cycle were not affected by the kill switch registration.
 
-Attribution of WannaCry to the Lazarus Group rests on the NCSC's December 2017 joint advisory with allied partners and the DOJ's September 2018 criminal complaint against Park Jin Hyok, who was charged with conspiracy to conduct destructive cyberattacks and fraud on behalf of the North Korean government.
+Attribution of WannaCry to the Lazarus Group is based on the NCSC's December 2017 joint advisory with allied partners and the DOJ's September 2018 criminal complaint against Park Jin Hyok, who was charged with conspiracy to conduct destructive cyberattacks and fraud on behalf of the North Korean government.
 
 ## Attack Chain
 
@@ -135,7 +135,7 @@ Microsoft released Security Bulletin MS17-010 addressing CVE-2017-0144 and relat
 
 ### 2017-04-14 — EternalBlue Published
 
-A group publicly released a collection of exploits including EternalBlue and DoublePulsar, which exploited the SMBv1 vulnerabilities that MS17-010 had patched. This public release made the exploitation tools widely accessible.
+A group publicly released a collection of exploits including EternalBlue and DoublePulsar, which exploited the SMBv1 vulnerabilities that MS17-010 had patched. This public release made the exploitation tools publicly available.
 
 ### 2017-05-12 — WannaCry Campaign Begins
 
