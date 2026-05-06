@@ -11,7 +11,7 @@ attributionConfidence: A4
 reviewStatus: draft_ai
 confidenceGrade: C
 generatedBy: new-threat-intel-automation
-generatedDate: 2026-04-01
+generatedDate: 2026-05-06
 cves: []
 relatedSlugs:
   - "foster-city-ransomware-2026"
