@@ -1,6 +1,6 @@
 ---
 campaignId: "TP-CAMP-2013-0001"
-title: "Carbanak Banking Campaign: Multi-Year Financial Institution Heists"
+title: "Carbanak Banking Campaign: Multi-Year Financial Institution Operations"
 startDate: 2013-01-01
 endDate: 2018-03-26
 ongoing: false
@@ -67,7 +67,7 @@ mitreMappings:
 
 ## Executive Summary
 
-The Carbanak Banking Campaign was a multi-year financially motivated intrusion campaign attributed by Europol and associated law enforcement to a criminal group operating under the Carbanak and Anunak designations. The campaign targeted financial institutions globally, with confirmed operations documented from 2013 through 2018. The group accessed internal banking systems and ATM management infrastructure to facilitate large-scale fraudulent transfers and ATM cashouts.
+The Carbanak Banking Campaign was a multi-year financially motivated intrusion campaign attributed by Europol and associated law enforcement to a criminal group operating under the Carbanak and Anunak designations. The campaign targeted financial institutions globally, with confirmed operations documented from 2013 through 2018. The group accessed internal banking systems and ATM management infrastructure to facilitate fraudulent transfers and ATM cashouts.
 
 Europol reported losses of up to EUR 1 billion across more than 100 financial institutions in approximately 40 countries. In March 2018, Spanish authorities arrested the identified leader of the operation in coordination with Europol, Europol's European Cybercrime Centre (EC3), the FBI, and law enforcement from multiple countries. The Carbanak Group is operationally distinct from — though frequently discussed in proximity to — FIN7, a separate criminal actor that used overlapping tooling for different targeting objectives.
 
@@ -77,7 +77,7 @@ The Carbanak Group gained initial access to financial institution networks throu
 
 Inside compromised networks, operators spent extended periods — in some cases several months — conducting surveillance and reconnaissance before initiating financial extraction. Operators used keyloggers to capture credentials belonging to bank employees with access to transaction systems and ATM management platforms. Screen capture capabilities in the Carbanak backdoor allowed operators to observe banking workflows directly and learn the internal procedures of targeted institutions.
 
-Financial extraction was conducted through two primary mechanisms. For ATM cashouts, operators accessed ATM management systems and programmed dispensing events timed to coordinated pickups by money mules at physical ATM locations. For larger-scale transfers, operators accessed internal interbank systems and SWIFT infrastructure to initiate fraudulent transfers to attacker-controlled accounts.
+Financial extraction was conducted through two primary mechanisms. For ATM cashouts, operators accessed ATM management systems and programmed dispensing events timed to coordinated pickups by money mules at physical ATM locations. For high-value transfers, operators accessed internal interbank systems and SWIFT infrastructure to initiate fraudulent transfers to attacker-controlled accounts.
 
 ## Attack Chain
 
