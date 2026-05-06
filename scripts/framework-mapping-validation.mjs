@@ -37,13 +37,13 @@ export function getMitreMappingValidationIssues(mappings, options = {}) {
     const label = mappingLabel(labelPrefix, i);
     const mapping = mappings[i] || {};
     const techniqueId = trimOptionalString(mapping.techniqueId);
+    const attackVersion = mapping.attackVersion ?? mapping.attack_version;
 
     if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
       issues.push(`${label}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
     } else if (!MITRE_TECHNIQUE_ID_RE.test(techniqueId)) {
       issues.push(`${label}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
     } else {
-      const attackVersion = mapping.attackVersion ?? mapping.attack_version;
       const shouldUsePinnedAttackData = isPinnedAttackVersion(attackVersion);
       const technique = shouldUsePinnedAttackData ? getAttackEnterpriseTechnique(techniqueId) : null;
       if (shouldUsePinnedAttackData && !technique) {
@@ -63,7 +63,6 @@ export function getMitreMappingValidationIssues(mappings, options = {}) {
       issues.push(`${label}: missing techniqueName`);
     }
 
-    const attackVersion = mapping.attackVersion ?? mapping.attack_version;
     if (attackVersion !== undefined) {
       const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
       if (!ATTACK_VERSION_RE.test(version)) {
