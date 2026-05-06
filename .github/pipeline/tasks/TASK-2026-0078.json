@@ -47,11 +47,19 @@
       "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #222"
+    },
+    {
+      "timestamp": "2026-05-06T12:30:00.000Z",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Source reconstruction: added GTIG attribution URL, specific CISA advisory, GHSA-2x9r-6wxq-hrr7. PR #498 opened."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-04-24T17:57:31.387Z",
-  "pr_number": 222,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/222"
+  "updated": "2026-05-06T12:30:00.000Z",
+  "pr_number": 498,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/498"
 }
