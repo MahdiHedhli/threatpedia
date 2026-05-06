@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-06T00:45:00.000Z",
-  "updated": "2026-05-06T01:51:00.149Z",
+  "updated": "2026-05-06T01:54:41.791Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-06T01:54:41.790Z",
   "input": {
     "topic": "MuddyWater Iranian state-sponsored threat actor profile",
     "sources": [
@@ -71,6 +71,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #489"
+    },
+    {
+      "timestamp": "2026-05-06T01:54:41.791Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
