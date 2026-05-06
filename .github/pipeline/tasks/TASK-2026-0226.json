@@ -31,7 +31,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts"
   ],
   "acceptance_criteria": {
@@ -66,7 +66,8 @@
       "from": "pending",
       "to": "locked",
       "agent": "Mahdi Hedhli",
-      "note": "Locked for execution"
+      "note": "Locked for execution",
+      "action": "locked"
     },
     {
       "timestamp": "2026-05-06T12:55:28.511Z",

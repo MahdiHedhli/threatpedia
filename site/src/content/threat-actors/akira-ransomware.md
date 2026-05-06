@@ -111,15 +111,15 @@ The operation is associated with double-extortion ransomware activity: operators
 
 ## Notable Campaigns
 
-### 2023 - Emergence and Multi-Extortion Operations
+### 2023 — Emergence and Multi-Extortion Operations
 
 SentinelOne and CISA reporting place Akira activity beginning in March 2023. Early reporting described the operation's data leak site, ransom negotiation process, and use of Windows ransomware payloads that appended the `.akira` extension to encrypted files. CISA later reported that Akira activity expanded to Linux and VMware ESXi environments, including the Megazord and Akira_v2 variants.
 
-### 2024 - Joint Government Advisory on Akira Tactics
+### 2024 — Joint Government Advisory on Akira Tactics
 
 The April 2024 joint advisory from FBI, CISA, Europol EC3, and NCSC-NL documented Akira indicators of compromise and tactics, techniques, and procedures observed through FBI investigations and trusted third-party reporting. The advisory described initial access through VPN services without multifactor authentication, known Cisco vulnerabilities, external remote services, phishing, and valid account abuse.
 
-### 2025 - SonicWall SSL VPN Targeting
+### 2025 — SonicWall SSL VPN Targeting
 
 Arctic Wolf reported a 2025 surge of Akira ransomware activity involving SonicWall SSL VPN access. Its September 2025 reporting described malicious SSL VPN logins, Impacket SMB activity, short dwell times, and rapid ransomware deployment. Arctic Wolf assessed that some activity may involve credentials previously exposed through SonicWall CVE-2024-40766 rather than a single confirmed new exploit path.
 
