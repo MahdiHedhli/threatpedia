@@ -6,7 +6,7 @@
   "status": "pending",
   "created": "2026-05-05T23:32:35.744Z",
   "updated": "2026-05-05T23:32:35.744Z",
-  "source": "manual_submission",
+  "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
   "locked_at": null,
@@ -52,7 +52,7 @@
       "from": "none",
       "to": "pending",
       "agent": "claude-campaign-worker",
-      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+      "note": "Automated link submission via tp-queue-worker (campaign lane)"
     }
   ]
 }
