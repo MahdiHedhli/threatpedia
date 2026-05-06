@@ -69,13 +69,13 @@ mitreMappings:
 
 Operation Cloud Hopper was a multi-year cyber espionage campaign conducted by APT10, a threat group publicly attributed by the United States, United Kingdom, Australia, Canada, Japan, and New Zealand to the Chinese Ministry of State Security (MSS). The campaign targeted managed service providers (MSPs) as an indirect access route into MSP client organizations across multiple sectors and regions.
 
-Rather than attacking end-target organizations directly, APT10 focused on compromising MSPs and exploiting their trusted, privileged access to client networks. This approach allowed the group to reach a wide range of targets through a contained set of initial intrusions. Public disclosure proceeded in stages between 2017 and 2018, culminating in U.S. Department of Justice indictments of two Chinese nationals and coordinated multi-nation attribution in December 2018.
+Rather than attacking end-target organizations directly, APT10 focused on compromising MSPs and exploiting their trusted, privileged access to client networks. This approach allowed the group to reach numerous targets through a contained set of initial intrusions. Public disclosure proceeded in stages between 2017 and 2018, culminating in U.S. Department of Justice indictments of two Chinese nationals and coordinated multi-nation attribution in December 2018.
 
 ## Technical Analysis
 
 APT10 gained initial footholds in MSP environments through targeted spear-phishing campaigns using malicious attachments. Once inside an MSP environment, the group deployed custom and modified remote access tools — including RedLeaves, PlugX, and ANEL — to maintain persistence and support lateral movement.
 
-The defining technique of Cloud Hopper was the abuse of trusted administrative relationships between MSPs and their clients. MSPs routinely hold authenticated, privileged access to client networks for support and maintenance. APT10 harvested MSP credentials and leveraged these existing trust relationships to pivot into client environments without requiring separate intrusion operations against each individual target.
+A primary technique of Cloud Hopper was the abuse of trusted administrative relationships between MSPs and their clients. MSPs routinely hold authenticated, privileged access to client networks for support and maintenance. APT10 harvested MSP credentials and leveraged these existing trust relationships to pivot into client environments without requiring separate intrusion operations against each individual target.
 
 Within client networks, operators conducted reconnaissance, sought additional credentials, and collected intelligence material aligned with state espionage priorities. The use of legitimate MSP access pathways made distinguishing intrusion activity from routine administrative traffic more difficult for defenders lacking visibility into MSP-to-client network flows.
 
@@ -131,7 +131,7 @@ Government advisories and public reporting indicate APT10 Cloud Hopper activity 
 
 ### 2017-04-03 — PwC and BAE Systems Publish Technical Report
 
-PwC and BAE Systems jointly released a technical report attributing Operation Cloud Hopper to APT10 and documenting the MSP-pivot tradecraft, tooling, and scope of the campaign. This represented the first major public technical characterization of the operation.
+PwC and BAE Systems jointly released a technical report attributing Operation Cloud Hopper to APT10 and documenting the MSP-pivot tradecraft, tooling, and scope of the campaign. This represented the first public technical characterization of the operation.
 
 ### 2018-10-04 — U.S. and Allied Governments Issue MSP Security Advisory
 
@@ -153,15 +153,15 @@ CISA published Alert AA21-200B documenting observed TTPs across Chinese state-sp
 
 Organizations using managed service providers should treat MSP access pathways as high-risk entry points requiring the same scrutiny as direct privileged access.
 
-Review and restrict MSP remote access to only the systems and accounts required for defined service operations. Persistent, broad-scope MSP credentials increase the potential impact of MSP compromise.
+Review and restrict MSP remote access to only the systems and accounts required for defined service operations. Persistent, extensive MSP credentials increase the potential impact of MSP compromise.
 
 Monitor MSP-to-client network sessions for anomalous patterns, including access at unusual hours, access to systems outside the MSP's defined service scope, or bulk data transfers not associated with routine operations.
 
-Require MSPs to implement and demonstrate multi-factor authentication on all accounts with access to client environments. Single-factor authentication on MSP credentials is a critical control gap given the credential-harvesting tradecraft documented in this campaign.
+Require MSPs to implement and demonstrate multi-factor authentication on all accounts with access to client environments. Single-factor authentication on MSP credentials is a control gap given the credential-harvesting tradecraft documented in this campaign.
 
 Audit and review third-party software and remote management agent deployments in client environments. MSP agents installed for legitimate purposes can be supplemented with additional tooling once an MSP environment is compromised.
 
-Apply network segmentation to limit lateral movement from MSP access points into broader client environments. Systems accessible via a single MSP credential set represent an expanded exposure surface.
+Apply network segmentation to limit lateral movement from MSP access points into other client environments. Systems accessible via a single MSP credential set represent an expanded exposure surface.
 
 Review CISA Alert AA21-200B and related government advisories for current APT10 indicators and detection guidance applicable to MSP environments.
 
