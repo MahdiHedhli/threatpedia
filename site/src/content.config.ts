@@ -44,6 +44,8 @@ const mitreTactic = z.enum([
   'Execution',
   'Persistence',
   'Privilege Escalation',
+  'Stealth',
+  'Defense Impairment',
   'Defense Evasion',
   'Credential Access',
   'Discovery',
@@ -54,6 +56,8 @@ const mitreTactic = z.enum([
   'Impact',
   'Impair Process Control',
 ]);
+
+const mappingConfidence = z.enum(['confirmed', 'probable', 'possible']);
 
 /** Source citation schema per SOURCE-SPEC v1.0 */
 const sourceSchema = z.object({
@@ -69,9 +73,24 @@ const sourceSchema = z.object({
 
 /** MITRE ATT&CK mapping schema */
 const mitreMapping = z.object({
-  techniqueId: z.string(),
+  techniqueId: z.string().regex(/^T\d{4}(?:\.\d{3})?$/),
   techniqueName: z.string(),
   tactic: mitreTactic.optional(),
+  attackVersion: z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),
+  attack_version: z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),
+  confidence: mappingConfidence.optional(),
+  evidence: z.string().min(1).optional(),
+  notes: z.string().optional(),
+});
+
+/** MITRE ATLAS mapping schema */
+const atlasMapping = z.object({
+  techniqueId: z.string().regex(/^AML\.T\d{4}(?:\.\d{3})?$/),
+  techniqueName: z.string(),
+  tactic: z.string().optional(),
+  atlasVersion: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+  confidence: mappingConfidence.optional(),
+  evidence: z.string().min(1).optional(),
   notes: z.string().optional(),
 });
 
@@ -113,6 +132,7 @@ const incidents = defineCollection({
 
     // MITRE
     mitreMappings: z.array(mitreMapping).default([]),
+    atlasMappings: z.array(atlasMapping).default([]),
   }),
 });
 
@@ -156,6 +176,7 @@ const campaigns = defineCollection({
 
     // MITRE
     mitreMappings: z.array(mitreMapping).min(1),
+    atlasMappings: z.array(atlasMapping).default([]),
   }).superRefine((data, ctx) => {
     if (data.ongoing && data.endDate) {
       ctx.addIssue({
@@ -213,6 +234,7 @@ const threatActors = defineCollection({
     targetGeographies: z.array(z.string()).default([]),
     tools: z.array(z.string()).default([]),
     mitreMappings: z.array(mitreMapping).default([]),
+    atlasMappings: z.array(atlasMapping).default([]),
 
     // Quality
     attributionConfidence: attributionConfidence.optional(),
@@ -265,6 +287,7 @@ const zeroDays = defineCollection({
 
     // MITRE
     mitreMappings: z.array(mitreMapping).default([]),
+    atlasMappings: z.array(atlasMapping).default([]),
   }),
 });
 
