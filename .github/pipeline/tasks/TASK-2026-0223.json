@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-05T23:32:35.744Z",
-  "updated": "2026-05-06T01:22:07.552Z",
+  "updated": "2026-05-06T01:26:50.003Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-06T01:22:07.552Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Operation Cloud Hopper — APT10 Managed Service Provider Espionage Campaign",
     "sources": [
@@ -56,10 +56,19 @@
     },
     {
       "timestamp": "2026-05-06T01:22:07.552Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-06T01:26:50.003Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article generated, validated (PASS), and recorded against PR #487"
     },
     {
       "timestamp": "2026-05-06T01:51:00.149Z",
