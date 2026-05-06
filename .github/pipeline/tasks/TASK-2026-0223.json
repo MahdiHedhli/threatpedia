@@ -3,15 +3,15 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-05T23:32:35.744Z",
-  "updated": "2026-05-06T01:51:00.149Z",
+  "updated": "2026-05-06T12:58:11.737Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Operation Cloud Hopper \u2014 APT10 Managed Service Provider Espionage Campaign",
+    "topic": "Operation Cloud Hopper — APT10 Managed Service Provider Espionage Campaign",
     "sources": [
       "https://www.ncsc.gov.uk/news/ncsc-supports-doj-indictment-of-two-chinese-nationals",
       "https://www.cisa.gov/uscert/ncas/alerts/aa21-200b",
@@ -24,8 +24,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -77,6 +77,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #487 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-06T12:58:11.737Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #487 merged (bb862eb)."
     }
-  ]
+  ],
+  "pr_number": 487,
+  "merged_at": "2026-05-06T12:58:11.737Z"
 }
