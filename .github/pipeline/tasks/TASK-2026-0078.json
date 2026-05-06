@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0078",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "input": {
     "topic": "Axios npm Package Compromise by UNC1069",
     "reprocess": true,
@@ -63,12 +63,20 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Source reconstruction: 6 verified sources added (GTIG, CISA advisory, MS, GHSA, Snyk, postmortem). reviewStatus corrected to draft_ai. PR #499."
+    },
+    {
+      "timestamp": "2026-05-06T14:32:04.701Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #499 merged (7cf0a6b)."
     }
   ],
   "locked_by": null,
   "locked_at": null,
-  "updated": "2026-05-06T12:45:00.000Z",
+  "updated": "2026-05-06T14:32:04.701Z",
   "pr_number": 499,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/499",
-  "merged_at": null
+  "merged_at": "2026-05-06T14:32:04.701Z"
 }
