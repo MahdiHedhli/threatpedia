@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-05T23:32:44.606Z",
-  "updated": "2026-05-06T01:51:00.149Z",
+  "updated": "2026-05-06T02:19:29.580Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-06T02:19:29.580Z",
   "input": {
     "topic": "Carbanak Banking Campaign — Multi-Year Financial Institution Heists (2013-2018)",
     "sources": [
@@ -61,6 +61,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #488"
+    },
+    {
+      "timestamp": "2026-05-06T02:19:29.580Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
