@@ -1,6 +1,6 @@
 ---
 eventId: TP-2026-0048
-title: Patriot Regional Emergency Communications Center Cyberattack Disrupts Massachusetts Towns
+title: Patriot Regional ECC Cyberattack Disrupts Massachusetts Towns
 date: 2026-04-01
 attackType: ransomware
 severity: high
