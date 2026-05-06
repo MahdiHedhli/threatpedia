@@ -36,6 +36,7 @@ import {
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
   SCHEMA_GENERATED_BY_VALUES,
   SCHEMA_MAPPING_CONFIDENCE_VALUES,
+  SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
@@ -59,6 +60,7 @@ const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s
 const ATTACK_VERSION_RE = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
 const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
 const ATLAS_VERSION_RE = new RegExp(SCHEMA_ATLAS_VERSION_PATTERN);
+const MITRE_TECHNIQUE_ID_RE = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -1229,7 +1231,7 @@ function validateOutput(task, explicitFile) {
       const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
       if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
         issues.push(`MITRE mapping ${i + 1}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
-      } else if (!/^T\d{4}(\.\d{3})?$/.test(techniqueId)) {
+      } else if (!MITRE_TECHNIQUE_ID_RE.test(techniqueId)) {
         issues.push(`MITRE mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
       }
 

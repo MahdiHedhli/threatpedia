@@ -71,6 +71,7 @@ export const SCHEMA_MAPPING_CONFIDENCE_VALUES = Object.freeze([
 export const SCHEMA_ATTACK_VERSION_PATTERN = '^v\\d+(?:\\.\\d+)?$';
 export const SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN = '^AML\\.T\\d{4}(?:\\.\\d{3})?$';
 export const SCHEMA_ATLAS_VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
+export const SCHEMA_MITRE_TECHNIQUE_ID_PATTERN = '^T\\d{4}(?:\\.\\d{3})?$';
 
 /**
  * Canonical generatedBy identities currently recognized in the corpus.
@@ -157,6 +158,7 @@ export const SCHEMA = Object.freeze({
   attackVersionPattern: SCHEMA_ATTACK_VERSION_PATTERN,
   atlasTechniqueIdPattern: SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
   atlasVersionPattern: SCHEMA_ATLAS_VERSION_PATTERN,
+  mitreTechniqueIdPattern: SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   generatedByValues: SCHEMA_GENERATED_BY_VALUES,
   requiredH2ByType: SCHEMA_REQUIRED_H2_BY_TYPE,
   canonicalPublisherAliases: SCHEMA_CANONICAL_PUBLISHER_ALIASES,
@@ -190,7 +192,7 @@ function selfTest() {
       throw new Error(`SCHEMA_MAPPING_CONFIDENCE_VALUES element invalid: ${JSON.stringify(v)}`);
     }
   }
-  for (const pattern of [SCHEMA_ATTACK_VERSION_PATTERN, SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN, SCHEMA_ATLAS_VERSION_PATTERN]) {
+  for (const pattern of [SCHEMA_ATTACK_VERSION_PATTERN, SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN, SCHEMA_ATLAS_VERSION_PATTERN, SCHEMA_MITRE_TECHNIQUE_ID_PATTERN]) {
     new RegExp(pattern);
   }
 
