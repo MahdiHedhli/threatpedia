@@ -115,11 +115,11 @@ Public government and research reporting describes MuddyWater as active since at
 
 The 2022 joint cybersecurity advisory describes MuddyWater activity against government and commercial networks across multiple regions. The advisory identifies telecommunications, defense, local government, and oil and natural gas organizations as part of the observed target set and provides intrusion patterns including spearphishing, exploitation of known vulnerabilities, and the use of open-source tools.
 
-### 2021 -- Middle East Government Intrusion Tracked by Mandiant
+### 2021 — Middle East Government Intrusion Tracked by Mandiant
 
 Mandiant reported a 2021 intrusion at a Middle East government customer under the UNC3313 cluster. Mandiant assessed with moderate confidence that UNC3313 was associated with TEMP.Zagros, which open sources report as MuddyWater. The intrusion involved targeted phishing, public remote-access software, and malware families including GRAMDOOR and STARWHALE.
 
-### 2022 -- Public Disclosure of MOIS-Linked Malware Activity
+### 2022 — Public Disclosure of MOIS-Linked Malware Activity
 
 U.S. Cyber Command's Cyber National Mission Force publicly disclosed malware samples and tools associated with Iranian intelligence actors tracked as MuddyWater. The disclosure described the group's use of open-source tools, side-loading DLLs, obfuscated PowerShell, and JavaScript components used to connect to malicious infrastructure.
 
