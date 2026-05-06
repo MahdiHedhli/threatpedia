@@ -48,7 +48,7 @@ sources:
     accessDate: "2026-05-06"
     archived: false
   - url: "https://github.com/axios/axios/issues/10636"
-    publisher: "GitHub — Axios Project Postmortem"
+    publisher: "Axios Maintainers"
     publisherType: community
     reliability: R1
     publicationDate: "2026-03-31"
@@ -152,6 +152,6 @@ Organizations with possible exposure should treat developer endpoints and build 
 - [Google Cloud Blog (GTIG): North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — Google Cloud Blog (GTIG), 2026-04-02
 - [CISA: Supply Chain Compromise Impacts Axios Node Package Manager (2026-04-20)](https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager) — CISA, 2026-04-20
 - [Microsoft Security Blog: Mitigating the Axios npm supply chain compromise](https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/) — Microsoft Security Blog, 2026-04-01
-- [GitHub — Axios Project Postmortem: Post-mortem issue #10636](https://github.com/axios/axios/issues/10636) — GitHub — Axios Project Postmortem, 2026-03-31
-- [GitHub Advisory Database: GHSA-2x9r-6wxq-hrr7 (axios npm supply chain compromise)](https://github.com/advisories/GHSA-2x9r-6wxq-hrr7) — GitHub Advisory Database, 2026-03-31
+- [Axios Maintainers: Post-mortem issue #10636](https://github.com/axios/axios/issues/10636) — Axios Maintainers, 2026-03-31
+- [GitHub Advisory Database: GHSA-2x9r-6wxq-hrr7](https://github.com/advisories/GHSA-2x9r-6wxq-hrr7) — GitHub Advisory Database, 2026-03-31
 - [Snyk: Axios npm Package Compromised — Supply Chain Attack Delivers Cross-Platform RAT](https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/) — Snyk, 2026-04-01
