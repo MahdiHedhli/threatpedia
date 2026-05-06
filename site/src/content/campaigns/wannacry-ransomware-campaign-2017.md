@@ -111,19 +111,11 @@ Concurrently with the encryption and ransom phases, WannaCry continued scanning 
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
-
 T1190 - Exploit Public-Facing Application: WannaCry used the EternalBlue exploit targeting CVE-2017-0144 in the Windows SMBv1 protocol to achieve unauthenticated remote code execution on vulnerable systems exposed to network access, with no user interaction required.
-
-### Execution
 
 T1059.003 - Command and Scripting Interpreter: Windows Command Shell: The DoublePulsar kernel implant facilitated execution of the WannaCry ransomware payload via Windows command shell mechanisms on compromised hosts.
 
-### Lateral Movement
-
 T1210 - Exploitation of Remote Services: WannaCry propagated laterally within internal networks by scanning reachable hosts for SMBv1 exposure and reapplying the EternalBlue/DoublePulsar exploitation chain without requiring credentials or user interaction on target systems.
-
-### Impact
 
 T1486 - Data Encrypted for Impact: WannaCry encrypted user files on infected systems and presented ransom demands denominated in Bitcoin. The encryption rendered affected files inaccessible pending ransom payment or recovery from backup.
 
