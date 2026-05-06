@@ -7,6 +7,14 @@
     "sha256": "fe8d7b9e7793673d87ee839330320cdedc25357a128734c3fda625f28362be2d",
     "bytes": 154547
   },
+  "upstreamNormalizations": [
+    {
+      "field": "subtechnique-of",
+      "from": "{{maschine_compromise.id}}",
+      "to": "{{machine_compromise.id}}",
+      "reason": "MITRE ATLAS v5.6.0 upstream YAML uses a misspelled Machine Compromise anchor."
+    }
+  ],
   "techniqueCount": 170,
   "activeTechniqueCount": 170,
   "techniques": [
@@ -2076,7 +2084,7 @@
       "kind": "subtechnique",
       "revoked": false,
       "deprecated": false,
-      "subtechniqueOf": "{{maschine_compromise.id}}",
+      "subtechniqueOf": "{{machine_compromise.id}}",
       "tactics": [],
       "createdDate": "2026-03-30T00:00:00.000Z",
       "modifiedDate": "2026-03-30T00:00:00.000Z"
@@ -2087,7 +2095,7 @@
       "kind": "subtechnique",
       "revoked": false,
       "deprecated": false,
-      "subtechniqueOf": "{{maschine_compromise.id}}",
+      "subtechniqueOf": "{{machine_compromise.id}}",
       "tactics": [],
       "createdDate": "2026-03-30T00:00:00.000Z",
       "modifiedDate": "2026-03-30T00:00:00.000Z"

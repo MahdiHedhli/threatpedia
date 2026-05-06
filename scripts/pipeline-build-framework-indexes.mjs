@@ -4,9 +4,18 @@ import { createHash } from 'crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import yaml from 'js-yaml';
+import {
+  SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
+  SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
+} from './pipeline-schema.mjs';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
 const OUT_DIR = resolve(ROOT, '.github/pipeline/data/frameworks');
+const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
+const MITRE_TECHNIQUE_ID_RE = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
+const ATLAS_REFERENCE_NORMALIZATIONS = Object.freeze({
+  '{{maschine_compromise.id}}': '{{machine_compromise.id}}',
+});
 
 function usage() {
   console.log(`Usage:
@@ -74,9 +83,14 @@ function findAttackTechniqueId(object) {
   const ref = object.external_references?.find((entry) => (
     entry?.source_name === 'mitre-attack' &&
     typeof entry.external_id === 'string' &&
-    /^T\d{4}(?:\.\d{3})?$/.test(entry.external_id)
+    MITRE_TECHNIQUE_ID_RE.test(entry.external_id)
   ));
   return ref?.external_id || null;
+}
+
+function normalizeAtlasReference(value) {
+  if (!value) return null;
+  return ATLAS_REFERENCE_NORMALIZATIONS[value] || value;
 }
 
 function buildAttackIndex(args) {
@@ -126,18 +140,26 @@ function buildAtlasIndex(args) {
       kind: String(object.id).includes('.', 'AML.T0000'.length) ? 'subtechnique' : 'technique',
       revoked: false,
       deprecated: false,
-      subtechniqueOf: object['subtechnique-of'] || null,
+      subtechniqueOf: normalizeAtlasReference(object['subtechnique-of']),
       tactics: Array.isArray(object.tactics) ? [...object.tactics].sort() : [],
       createdDate: object.created_date || null,
       modifiedDate: object.modified_date || null,
     }))
-    .filter((object) => /^AML\.T\d{4}(?:\.\d{3})?$/.test(object.id))
+    .filter((object) => ATLAS_TECHNIQUE_ID_RE.test(object.id))
     .sort((a, b) => compareTechniqueIds(a.id, b.id));
 
   return {
     framework: 'MITRE ATLAS',
     version: 'v5.6.0',
     source: sourceMetadata(args['atlas-source'], args['atlas-url'], args['atlas-github-sha']),
+    upstreamNormalizations: [
+      {
+        field: 'subtechnique-of',
+        from: '{{maschine_compromise.id}}',
+        to: '{{machine_compromise.id}}',
+        reason: 'MITRE ATLAS v5.6.0 upstream YAML uses a misspelled Machine Compromise anchor.',
+      },
+    ],
     techniqueCount: techniques.length,
     activeTechniqueCount: techniques.filter((technique) => !technique.revoked && !technique.deprecated).length,
     techniques,

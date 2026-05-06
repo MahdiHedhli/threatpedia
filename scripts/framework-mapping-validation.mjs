@@ -100,11 +100,11 @@ export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
       const label = mappingLabel(labelPrefix, i);
       const mapping = atlasMappings[i] || {};
       const techniqueId = trimOptionalString(mapping.techniqueId);
+      const atlasVersion = mapping.atlasVersion ?? mapping.atlas_version;
 
       if (!ATLAS_TECHNIQUE_ID_RE.test(techniqueId)) {
         issues.push(`${label}: invalid techniqueId "${techniqueId}" — expected format AML.T####[.###]`);
       } else {
-        const atlasVersion = mapping.atlasVersion;
         const shouldUsePinnedAtlasData = isPinnedAtlasVersion(atlasVersion);
         const technique = shouldUsePinnedAtlasData ? getAtlasTechnique(techniqueId) : null;
         if (shouldUsePinnedAtlasData && !technique) {
@@ -131,9 +131,9 @@ export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
         issues.push(`${label}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
       }
 
-      if (mapping.atlasVersion !== undefined) {
-        const atlasVersion = typeof mapping.atlasVersion === 'string' ? mapping.atlasVersion.trim() : '';
-        if (!ATLAS_VERSION_RE.test(atlasVersion)) {
+      if (atlasVersion !== undefined) {
+        const version = typeof atlasVersion === 'string' ? atlasVersion.trim() : '';
+        if (!ATLAS_VERSION_RE.test(version)) {
           issues.push(`${label}: atlasVersion must match N.N.N`);
         }
       }
