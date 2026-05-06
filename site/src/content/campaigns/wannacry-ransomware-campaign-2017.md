@@ -9,7 +9,7 @@ severity: critical
 sector: "Multi-sector — Healthcare, Government, Telecommunications, Transportation, Finance"
 geography: "Global"
 threatActor: "Lazarus Group"
-attributionConfidence: A3
+attributionConfidence: A1
 reviewStatus: "draft_ai"
 confidenceGrade: B
 generatedBy: "new-threat-intel-automation"
