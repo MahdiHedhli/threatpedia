@@ -13,9 +13,7 @@ confidenceGrade: C
 generatedBy: new-threat-intel-automation
 generatedDate: 2026-05-06
 cves: []
-relatedSlugs:
-  - "foster-city-ransomware-2026"
-  - "winona-county-ransomware-2026"
+relatedSlugs: []
 tags:
   - "ransomware"
   - "emergency-services"
