@@ -70,7 +70,7 @@
       "from": "locked",
       "to": "pr_open",
       "agent": "claude-campaign-worker",
-      "note": "PR #512 opened via GitHub API fallback (gh not available in sandbox). Local content validator passed (campaign schema + 7 canonical H2 sections + 4 MITRE mappings + 3 government R1 sources). Astro build blocked by sandbox EPERM/NOSPC \u2014 GitHub CI will run actual build."
+      "note": "PR #512 opened via GitHub API fallback (gh not available in sandbox). Local content validator passed (campaign schema + 7 canonical H2 sections + 6 MITRE mappings + 3 government R1 sources). Astro build blocked by sandbox EPERM/NOSPC \u2014 GitHub CI will run actual build."
     }
   ],
   "pr_number": 512,
