@@ -149,8 +149,8 @@ Organizations with possible exposure should treat developer endpoints and build 
 
 ## Sources & References
 
-- [Google Cloud Blog (GTIG): North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — Google Cloud Blog (GTIG), 2026-04-02
-- [CISA: Supply Chain Compromise Impacts Axios Node Package Manager (2026-04-20)](https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager) — CISA, 2026-04-20
+- [Google Cloud Blog (GTIG): North Korea-Nexus Threat Actor Targets Axios NPM Package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — Google Cloud Blog (GTIG), 2026-04-02
+- [CISA: Supply Chain Compromise Impacts Axios Node Package Manager](https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager) — CISA, 2026-04-20
 - [Microsoft Security Blog: Mitigating the Axios npm supply chain compromise](https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/) — Microsoft Security Blog, 2026-04-01
 - [Axios Maintainers: Post-mortem issue #10636](https://github.com/axios/axios/issues/10636) — Axios Maintainers, 2026-03-31
 - [GitHub Advisory Database: GHSA-2x9r-6wxq-hrr7](https://github.com/advisories/GHSA-2x9r-6wxq-hrr7) — GitHub Advisory Database, 2026-03-31
