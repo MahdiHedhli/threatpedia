@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-06T13:17:00.000Z",
-  "updated": "2026-05-06T13:17:00.000Z",
+  "updated": "2026-05-06T15:13:40.085Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "claude-campaign-worker",
+  "locked_at": "2026-05-06T15:13:40.085Z",
   "input": {
     "topic": "WannaCry Ransomware Campaign — Global Lazarus Group Operation (2017)",
     "sources": [
@@ -19,7 +19,9 @@
     ],
     "candidate_data": {
       "severity": "critical",
-      "related_incident_slugs": ["wannacry-ransomware-2017"]
+      "related_incident_slugs": [
+        "wannacry-ransomware-2017"
+      ]
     },
     "notes": "WannaCry is the campaign-level article covering the broader Lazarus Group (North Korea) operation: EternalBlue exploitation infrastructure, global worm propagation, cryptocurrency ransom mechanics, NHS/critical infrastructure targeting, and multi-government attribution. The incident article (wannacry-ransomware-2017) covers the bounded 2017-05-12 event. The campaign article should cover the coordinated operation context, actor infrastructure, and confirmed attribution from DOJ indictment and Five Eyes joint advisory. Draft conservatively from DOJ, NCSC UK, and CISA sources. Do not inflate victim counts or financial impact beyond confirmed figures. Keep Lazarus Group attribution at supported confidence level."
   },
@@ -54,6 +56,13 @@
       "to": "pending",
       "agent": "claude-campaign-worker",
       "note": "Smoke-test seed task — campaign lane. Topic: WannaCry Ransomware Campaign (Lazarus Group, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: wannacry-ransomware-2017."
+    },
+    {
+      "timestamp": "2026-05-06T15:13:40.085Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "claude-campaign-worker",
+      "note": "Locked for execution"
     }
   ]
 }
