@@ -104,7 +104,7 @@ sources:
     accessDate: "2026-05-06"
     archived: false
   - url: "https://cloud.google.com/blog/topics/threat-intelligence/telegram-malware-iranian-espionage/"
-    publisher: "Google Cloud"
+    publisher: "Mandiant"
     publisherType: vendor
     reliability: R1
     publicationDate: "2022-02-24"
@@ -114,7 +114,7 @@ sources:
 
 ## Executive Summary
 
-MuddyWater is an Iranian state-sponsored cyber-espionage group publicly identified by U.S. Cyber Command and a joint advisory from the FBI, CISA, CNMF, and UK NCSC as a subordinate element within Iran's Ministry of Intelligence and Security. The group is tracked by MITRE ATT&CK as G0069 and is also reported under aliases including Static Kitten, Seedworm, TEMP.Zagros, MERCURY, Mango Sandstorm, and Earth Vetala.
+MuddyWater is an Iranian state-sponsored cyber-espionage group publicly identified by U.S. Cyber Command and a joint advisory from the FBI, CISA, U.S. Cyber Command Cyber National Mission Force (CNMF), and UK NCSC as a subordinate element within Iran's Ministry of Intelligence and Security (MOIS). The group is tracked by MITRE ATT&CK as G0069 and is also reported under aliases including Static Kitten, Seedworm, TEMP.Zagros, MERCURY, Mango Sandstorm, and Earth Vetala.
 
 Public government and research reporting describes MuddyWater as active since at least 2017. Its operations have targeted government and private-sector organizations across telecommunications, defense, local government, finance, and oil and natural gas sectors in the Middle East, Asia, Africa, Europe, and North America. MuddyWater maintains an espionage-focused profile, with technical activity built around phishing, exploitation of known vulnerabilities, remote access tooling, credential collection, and post-compromise staging.
 
@@ -163,4 +163,4 @@ The alias boundary remains important. MITRE lists Earth Vetala, MERCURY, Static 
 - [CISA: Iranian Government-Sponsored Actors Conduct Cyber Operations Against Global Government and Commercial Networks](https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-055a) — CISA, 2022-02-24
 - [U.S. Cyber Command: Iranian intel cyber suite of malware uses open source tools](https://www.cybercom.mil/Media/News/Article/2897570/iranian-intel-cyber-suite-of-malware-uses-open-source-tools/) — U.S. Cyber Command, 2022-01-12
 - [MITRE ATT&CK: MuddyWater](https://attack.mitre.org/groups/G0069/) — MITRE ATT&CK, 2026-04-23
-- [Google Cloud: Left On Read: Telegram Malware Spotted in Latest Iranian Cyber Espionage Activity](https://cloud.google.com/blog/topics/threat-intelligence/telegram-malware-iranian-espionage/) — Google Cloud, 2022-02-24
+- [Mandiant: Left On Read: Telegram Malware Spotted in Latest Iranian Cyber Espionage Activity](https://cloud.google.com/blog/topics/threat-intelligence/telegram-malware-iranian-espionage/) — Mandiant, 2022-02-24
