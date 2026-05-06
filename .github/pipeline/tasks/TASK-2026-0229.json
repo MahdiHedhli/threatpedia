@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0229",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-06T20:14:44.898Z",
+  "updated": "2026-05-06T20:14:44.898Z",
+  "source": "manual_submission",
+  "submitted_by": "tp-queue-worker-campaigns",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Salt Typhoon Telecom Intrusion Campaign",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-335a",
+      "https://www.fbi.gov/news/press-releases/fbi-and-cisa-release-joint-statement-on-peoples-republic-of-china-targeting-of-commercial-telecommunications-infrastructure",
+      "https://www.cisa.gov/sites/default/files/2024-12/guidance-on-mobile-communications-best-practices.pdf",
+      "https://www.microsoft.com/en-us/security/blog/2024/10/09/salt-typhoon-targets-telecommunications-companies-worldwide"
+    ],
+    "notes": "CISA, FBI joint advisory on Salt Typhoon telecommunications intrusion campaign. Government sources primary. Scope: documented compromise of US and global telecom providers; do not add unconfirmed victim attribution or speculative geopolitical conclusions beyond sourced material."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0229",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-06T20:14:44.898Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
