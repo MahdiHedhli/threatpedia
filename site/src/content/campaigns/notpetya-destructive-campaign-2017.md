@@ -133,7 +133,9 @@ T1003.001 - OS Credential Dumping: LSASS Memory: NotPetya included a Mimikatz-de
 
 T1210 - Exploitation of Remote Services: NotPetya used EternalBlue (CVE-2017-0144) and EternalRomance (CVE-2017-0145) to exploit unpatched SMBv1 on reachable hosts, achieving unauthenticated remote code execution for lateral propagation.
 
-T1047 - Windows Management Instrumentation: NotPetya used WMIC with harvested credentials to remotely execute the wiper on reachable hosts immune to EternalBlue. T1021.002 - Remote Services: SMB/Windows Admin Shares: NotPetya used PsExec to copy and execute its payload via Windows administrative shares on patched hosts.
+T1047 - Windows Management Instrumentation: NotPetya used WMIC with harvested credentials to remotely execute the wiper payload on reachable hosts that were not vulnerable to EternalBlue, leveraging WMI as a lateral movement mechanism.
+
+T1021.002 - Remote Services: SMB/Windows Admin Shares: NotPetya used PsExec with harvested credentials to copy and execute its payload via Windows administrative shares (ADMIN$, C$), enabling propagation to patched hosts immune to the SMB exploit vector.
 
 ### Impact
 
