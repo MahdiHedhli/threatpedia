@@ -114,9 +114,9 @@ sources:
 
 ## Executive Summary
 
-MuddyWater is an Iranian state-sponsored cyber-espionage group publicly identified by U.S. Cyber Command and a joint FBI, CISA, U.S. Cyber Command Cyber National Mission Force, and UK NCSC advisory as a subordinate element within Iran's Ministry of Intelligence and Security. The group is tracked by MITRE ATT&CK as G0069 and is also reported under aliases including Static Kitten, Seedworm, TEMP.Zagros, MERCURY, Mango Sandstorm, and Earth Vetala.
+MuddyWater is an Iranian state-sponsored cyber-espionage group publicly identified by U.S. Cyber Command and a joint advisory from the FBI, CISA, CNMF, and UK NCSC as a subordinate element within Iran's Ministry of Intelligence and Security. The group is tracked by MITRE ATT&CK as G0069 and is also reported under aliases including Static Kitten, Seedworm, TEMP.Zagros, MERCURY, Mango Sandstorm, and Earth Vetala.
 
-Public government and research reporting describes MuddyWater as active since at least 2017. Its operations have targeted government and private-sector organizations across telecommunications, defense, local government, finance, and oil and natural gas sectors in the Middle East, Asia, Africa, Europe, and North America. The public evidence supports an espionage-focused profile, with technical activity built around phishing, exploitation of known vulnerabilities, remote access tooling, credential collection, and post-compromise staging.
+Public government and research reporting describes MuddyWater as active since at least 2017. Its operations have targeted government and private-sector organizations across telecommunications, defense, local government, finance, and oil and natural gas sectors in the Middle East, Asia, Africa, Europe, and North America. MuddyWater maintains an espionage-focused profile, with technical activity built around phishing, exploitation of known vulnerabilities, remote access tooling, credential collection, and post-compromise staging.
 
 ## Notable Campaigns
 
@@ -126,11 +126,11 @@ The 2022 joint cybersecurity advisory describes MuddyWater activity against gove
 
 ### 2021 — Middle East Government Intrusion Tracked by Mandiant
 
-Mandiant reported a 2021 intrusion at a Middle East government customer under the UNC3313 cluster. Mandiant assessed with moderate confidence that UNC3313 was associated with TEMP.Zagros, which open sources report as MuddyWater. The intrusion involved targeted phishing, public remote-access software, and malware families including GRAMDOOR and STARWHALE.
+Mandiant reported a 2021 intrusion at a Middle East government customer under the UNC3313 cluster. Mandiant assessed with moderate confidence that UNC3313 was associated with TEMP.Zagros, which public reporting associates with MuddyWater. The intrusion involved targeted phishing, public remote-access software, and malware families including GRAMDOOR and STARWHALE.
 
 ### 2022 — Public Disclosure of MOIS-Linked Malware Activity
 
-U.S. Cyber Command's Cyber National Mission Force publicly disclosed malware samples and tools associated with Iranian intelligence actors tracked as MuddyWater. The disclosure described the group's use of open-source tools, side-loading DLLs, obfuscated PowerShell, and JavaScript components used to connect to malicious infrastructure.
+U.S. Cyber Command's Cyber National Mission Force publicly disclosed malware samples and tools associated with Iranian intelligence actors tracked as MuddyWater. The disclosure described the group's use of open-source tools, side-loading DLLs, obfuscated PowerShell, and JavaScript components used to connect to attacker-controlled infrastructure.
 
 ## Technical Capabilities
 
@@ -138,13 +138,13 @@ MuddyWater operations rely on social engineering and known-vulnerability exploit
 
 The group's tooling has included POWERSTATS, POWGOOP, MORIAGENT, Small Sieve, Canopy, STARWHALE, and GRAMDOOR. CISA and MITRE reporting also document PowerShell, JavaScript, Visual Basic, command shell activity, DLL side-loading, credential-dumping utilities, and staged tool transfer during post-compromise operations.
 
-MuddyWater's tradecraft includes obfuscating scripts, using legitimate administrative tools, collecting credentials, and transferring additional payloads after initial access. The available public reporting supports a profile of a persistent intelligence-collection group that blends custom tooling with publicly available offensive security tools and remote access software.
+MuddyWater's tradecraft includes obfuscating scripts, using legitimate administrative tools, collecting credentials, and transferring additional payloads after initial access. MuddyWater is a persistent intelligence-collection group that blends custom tooling with publicly available offensive security tools and remote access software.
 
 ## Attribution
 
 Attribution to Iran's Ministry of Intelligence and Security is documented in the public record. U.S. Cyber Command stated in January 2022 that MuddyWater is a subordinate element within MOIS, and the February 2022 joint advisory from FBI, CISA, CNMF, and UK NCSC repeated that assessment while describing global government and commercial targeting.
 
-The alias boundary remains important. MITRE lists Earth Vetala, MERCURY, Static Kitten, Seedworm, TEMP.Zagros, Mango Sandstorm, TA450, and MuddyKrill as associated group names for MuddyWater. This profile treats those names as public tracking aliases or overlapping reporting labels and does not assume that every Iran-nexus intrusion using similar tools is MuddyWater unless a cited source makes that link.
+The alias boundary remains important. MITRE lists Earth Vetala, MERCURY, Static Kitten, Seedworm, TEMP.Zagros, Mango Sandstorm, TA450, and MuddyKrill as associated group names for MuddyWater. These names are considered public tracking aliases or overlapping reporting labels; attribution of Iran-nexus activity to MuddyWater requires direct evidence or cited source linkage.
 
 ## MITRE ATT&CK Profile
 
