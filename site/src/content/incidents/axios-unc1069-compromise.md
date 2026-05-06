@@ -1,6 +1,6 @@
 ---
 eventId: TP-2026-0015
-title: Axios npm Package Compromise Linked to UNC1069
+title: Axios npm Package Compromise by UNC1069
 date: 2026-03-31
 attackType: supply-chain
 severity: critical
@@ -8,10 +8,10 @@ sector: Technology / Open Source
 geography: Global
 threatActor: UNC1069
 attributionConfidence: A4
-reviewStatus: certified
+reviewStatus: draft_ai
 confidenceGrade: C
 generatedBy: dangermouse-bot
-generatedDate: 2026-03-31
+generatedDate: 2026-05-06
 cves: []
 relatedSlugs:
   - "teampcp-supply-chain-campaign-2026"
@@ -26,21 +26,48 @@ tags:
   - "rat"
   - "supply-chain"
 sources:
-  - url: https://github.com/axios/axios/issues/10636
-    publisher: GitHub
+  - url: "https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package"
+    publisher: "Google Cloud Blog (GTIG)"
     publisherType: vendor
     reliability: R1
     publicationDate: "2026-04-02"
-  - url: https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/
-    publisher: Microsoft Security Blog
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-04-20"
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/"
+    publisher: "Microsoft Security Blog"
     publisherType: vendor
     reliability: R1
     publicationDate: "2026-04-01"
-  - url: https://openai.com/index/axios-developer-tool-compromise/
-    publisher: OpenAI
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://github.com/axios/axios/issues/10636"
+    publisher: "GitHub — Axios Project Postmortem"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2026-03-31"
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://github.com/advisories/GHSA-2x9r-6wxq-hrr7"
+    publisher: "GitHub Advisory Database"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2026-03-31"
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/"
+    publisher: "Snyk"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2026-04-11"
+    publicationDate: "2026-04-01"
+    accessDate: "2026-05-06"
+    archived: false
 mitreMappings:
   - techniqueId: T1078
     techniqueName: "Valid Accounts"
@@ -122,6 +149,9 @@ Organizations with possible exposure should treat developer endpoints and build 
 
 ## Sources & References
 
-- [GitHub: Post Mortem - axios npm supply chain compromise](https://github.com/axios/axios/issues/10636) — GitHub, 2026-04-02
+- [Google Cloud Blog (GTIG): North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — Google Cloud / GTIG, 2026-04-02
+- [CISA Alert: Supply Chain Compromise Impacts Axios Node Package Manager](https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager) — CISA, 2026-04-20
 - [Microsoft Security Blog: Mitigating the Axios npm supply chain compromise](https://www.microsoft.com/en-us/security/blog/2026/04/01/mitigating-the-axios-npm-supply-chain-compromise/) — Microsoft Security Blog, 2026-04-01
-- [OpenAI: Our response to the Axios developer tool compromise](https://openai.com/index/axios-developer-tool-compromise/) — OpenAI, 2026-04-11
+- [Axios GitHub: Post-mortem issue #10636](https://github.com/axios/axios/issues/10636) — Axios maintainers, 2026-03-31
+- [GitHub Advisory GHSA-2x9r-6wxq-hrr7](https://github.com/advisories/GHSA-2x9r-6wxq-hrr7) — GitHub Advisory Database, 2026-03-31
+- [Snyk: Axios npm Package Compromised — Supply Chain Attack Delivers Cross-Platform RAT](https://snyk.io/blog/axios-npm-package-compromised-supply-chain-attack-delivers-cross-platform/) — Snyk, 2026-04-01
