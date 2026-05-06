@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-06T13:17:00.000Z",
-  "updated": "2026-05-06T13:17:00.000Z",
+  "updated": "2026-05-06T15:08:01.659Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
@@ -19,7 +19,9 @@
     ],
     "candidate_data": {
       "severity": "critical",
-      "related_incident_slugs": ["notpetya-wiper-attack-2017"]
+      "related_incident_slugs": [
+        "notpetya-wiper-attack-2017"
+      ]
     },
     "notes": "NotPetya campaign-level article covering the broader Sandworm (GRU Unit 74455) destructive operation: M.E.Doc supply chain compromise as initial vector, worm propagation mechanics, global financial and industrial impact, and multi-government attribution (DOJ indictment of six GRU officers, NCSC UK/Five Eyes joint attribution). The incident article (notpetya-wiper-attack-2017) covers the bounded 2017-06-27 event. The campaign article should cover actor infrastructure, supply chain staging, confirmed attribution posture, and operational scope. Draft conservatively from DOJ, NCSC UK, and CISA sources. Do not overstate losses or victim counts beyond confirmed figures (Maersk, Merck, FedEx/TNT, Mondelez disclosed figures only). Clearly distinguish from WannaCry — different actor, different objective (destruction vs. ransomware)."
   },
@@ -54,6 +56,14 @@
       "to": "pending",
       "agent": "claude-campaign-worker",
       "note": "Smoke-test seed task — campaign lane. Topic: NotPetya Destructive Campaign (Sandworm/GRU, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: notpetya-wiper-attack-2017."
+    },
+    {
+      "timestamp": "2026-05-06T15:08:01.659Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #506"
     }
   ]
 }
