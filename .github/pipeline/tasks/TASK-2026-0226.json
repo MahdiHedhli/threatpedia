@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-2026-0226",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-06T00:45:00.000Z",
+  "updated": "2026-05-06T00:45:00.000Z",
+  "source": "manual_submission",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Akira ransomware threat actor profile",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a",
+      "https://arcticwolf.com/resources/news/akira-ransomware-breaching-mfa-protected-sonicwall-vpn-accounts/",
+      "https://www.sentinelone.com/anthology/akira/"
+    ],
+    "candidate_data": {
+      "actor_name": "Akira",
+      "aliases": [
+        "Akira ransomware"
+      ],
+      "origin": "Unknown",
+      "affiliation": "Cybercriminal",
+      "motivation": "Financial",
+      "active_since": "2023"
+    },
+    "notes": "Threat-actor smoke-test seed for Akira ransomware. Draft conservatively from CISA/FBI/Europol/NCSC-NL advisory plus vendor reporting. Keep attribution unknown/cybercriminal unless sources support a stronger claim; do not infer lineage from overlap with other ransomware crews."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/akira-ransomware.md",
+    "branch": "pipeline/TASK-2026-0226",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-06T00:45:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Threat-actor smoke-test seed via task-only PR"
+    }
+  ]
+}
