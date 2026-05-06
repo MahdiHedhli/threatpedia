@@ -46,6 +46,8 @@ export const SCHEMA_MITRE_TACTICS = Object.freeze([
   'Execution',
   'Persistence',
   'Privilege Escalation',
+  'Stealth',
+  'Defense Impairment',
   'Defense Evasion',
   'Credential Access',
   'Discovery',
@@ -56,6 +58,20 @@ export const SCHEMA_MITRE_TACTICS = Object.freeze([
   'Impact',
   'Impair Process Control',
 ]);
+
+/**
+ * Optional mapping metadata shared by ATT&CK and ATLAS mappings.
+ */
+export const SCHEMA_MAPPING_CONFIDENCE_VALUES = Object.freeze([
+  'confirmed',
+  'probable',
+  'possible',
+]);
+
+export const SCHEMA_ATTACK_VERSION_PATTERN = '^v\\d+(?:\\.\\d+)?$';
+export const SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN = '^AML\\.T\\d{4}(?:\\.\\d{3})?$';
+export const SCHEMA_ATLAS_VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
+export const SCHEMA_MITRE_TECHNIQUE_ID_PATTERN = '^T\\d{4}(?:\\.\\d{3})?$';
 
 /**
  * Canonical generatedBy identities currently recognized in the corpus.
@@ -138,6 +154,11 @@ export const SCHEMA_CANONICAL_PUBLISHER_ALIASES = Object.freeze({
 export const SCHEMA = Object.freeze({
   reviewStatuses: SCHEMA_REVIEW_STATUSES,
   mitreTactics: SCHEMA_MITRE_TACTICS,
+  mappingConfidenceValues: SCHEMA_MAPPING_CONFIDENCE_VALUES,
+  attackVersionPattern: SCHEMA_ATTACK_VERSION_PATTERN,
+  atlasTechniqueIdPattern: SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
+  atlasVersionPattern: SCHEMA_ATLAS_VERSION_PATTERN,
+  mitreTechniqueIdPattern: SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   generatedByValues: SCHEMA_GENERATED_BY_VALUES,
   requiredH2ByType: SCHEMA_REQUIRED_H2_BY_TYPE,
   canonicalPublisherAliases: SCHEMA_CANONICAL_PUBLISHER_ALIASES,
@@ -161,6 +182,18 @@ function selfTest() {
     if (typeof v !== 'string' || v.trim() === '') {
       throw new Error(`SCHEMA_MITRE_TACTICS element invalid: ${JSON.stringify(v)}`);
     }
+  }
+
+  if (!Array.isArray(SCHEMA_MAPPING_CONFIDENCE_VALUES) || SCHEMA_MAPPING_CONFIDENCE_VALUES.length !== 3) {
+    throw new Error(`SCHEMA_MAPPING_CONFIDENCE_VALUES expected 3 entries, got ${JSON.stringify(SCHEMA_MAPPING_CONFIDENCE_VALUES)}`);
+  }
+  for (const v of SCHEMA_MAPPING_CONFIDENCE_VALUES) {
+    if (typeof v !== 'string' || !/^[a-z]+$/.test(v)) {
+      throw new Error(`SCHEMA_MAPPING_CONFIDENCE_VALUES element invalid: ${JSON.stringify(v)}`);
+    }
+  }
+  for (const pattern of [SCHEMA_ATTACK_VERSION_PATTERN, SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN, SCHEMA_ATLAS_VERSION_PATTERN, SCHEMA_MITRE_TECHNIQUE_ID_PATTERN]) {
+    new RegExp(pattern);
   }
 
   if (!Array.isArray(SCHEMA_GENERATED_BY_VALUES) || SCHEMA_GENERATED_BY_VALUES.length < 1) {

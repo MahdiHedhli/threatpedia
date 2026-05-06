@@ -13,6 +13,10 @@ import {
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
 import {
+  getAtlasMappingValidationIssues,
+  getMitreMappingValidationIssues,
+} from './framework-mapping-validation.mjs';
+import {
   getPublicProseGuardrailIssues,
   maskTextPreservingNewlines,
 } from './public-prose-guardrails.mjs';
@@ -408,6 +412,31 @@ function validateFile(file, newFiles) {
     detail: invalidTactics.length === 0 ? 'Canonical ATT&CK tactic casing' : invalidTactics.join(', '),
   });
   if (invalidTactics.length > 0) pass = false;
+
+  const mitreMetadataIssues = getMitreMappingValidationIssues(mitreMappings, {
+    labelPrefix: 'mapping',
+  });
+  checks.push({
+    name: 'MITRE mapping fields and metadata',
+    pass: mitreMetadataIssues.length === 0,
+    detail: mitreMetadataIssues.length === 0
+      ? 'Required fields and optional metadata are valid'
+      : mitreMetadataIssues.join(' | '),
+  });
+  if (mitreMetadataIssues.length > 0) pass = false;
+
+  const atlasMappings = fm.atlasMappings;
+  const atlasIssues = getAtlasMappingValidationIssues(atlasMappings, {
+    labelPrefix: 'mapping',
+  });
+  checks.push({
+    name: 'ATLAS mappings',
+    pass: atlasIssues.length === 0,
+    detail: atlasIssues.length === 0
+      ? `${Array.isArray(atlasMappings) ? atlasMappings.length : 0} optional mapping(s)`
+      : atlasIssues.join(' | '),
+  });
+  if (atlasIssues.length > 0) pass = false;
 
   const sources = Array.isArray(fm.sources) ? fm.sources : [];
   const publisherAliasViolations = [];
