@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-05T23:32:44.606Z",
-  "updated": "2026-05-06T02:20:00.000Z",
+  "updated": "2026-05-06T04:41:45.722Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
@@ -80,6 +80,16 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Article drafted, local validator PASS, PR #492 opened via GitHub API fallback"
+    },
+    {
+      "timestamp": "2026-05-06T04:41:45.722Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #492 merged (aa53f83)."
     }
-  ]
+  ],
+  "pr_number": 492,
+  "merged_at": "2026-05-06T04:41:45.722Z"
 }
