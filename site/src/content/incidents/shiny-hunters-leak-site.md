@@ -37,16 +37,16 @@ sources:
 mitreMappings:
   - techniqueId: T1078.004
     techniqueName: "Valid Accounts: Cloud Accounts"
-    tactic: initial-access
+    tactic: Initial Access
   - techniqueId: T1537
     techniqueName: "Transfer Data to Cloud Account"
-    tactic: exfiltration
+    tactic: Exfiltration
   - techniqueId: T1048
     techniqueName: "Exfiltration Over Alternative Protocol"
-    tactic: exfiltration
+    tactic: Exfiltration
   - techniqueId: T1657
     techniqueName: "Financial Theft"
-    tactic: impact
+    tactic: Impact
 ---
 
 ## Summary
@@ -121,6 +121,6 @@ Implement robust egress monitoring to detect large, anomalous data transfers tha
 
 ## Sources & References
 
-- [CISA: ShinyHunters Leak Site Advisory](https://www.cisa.gov/news-events/alerts/2026/04/10/shinyhunters-leak-site)
-- [Bleeping Computer: ShinyHunters Resurfaces](https://www.bleepingcomputer.com/news/security/shinyhunters-resurfaces/)
-- [Dark Reading: ShinyHunters Operations](https://www.darkreading.com/cyberattacks-data-breaches/shinyhunters-leak-site-activity/)
+- [CISA: ShinyHunters Leak Site Advisory](https://www.cisa.gov/news-events/alerts/2026/04/10/shinyhunters-leak-site) — CISA, 2026-04-10
+- [Bleeping Computer: ShinyHunters Resurfaces](https://www.bleepingcomputer.com/news/security/shinyhunters-resurfaces/) — Bleeping Computer, 2026-03-20
+- [Dark Reading: ShinyHunters Operations](https://www.darkreading.com/cyberattacks-data-breaches/shinyhunters-leak-site-activity/) — Dark Reading, 2026-03-25
