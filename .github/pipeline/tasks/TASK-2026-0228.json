@@ -3,15 +3,15 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-06T13:17:00.000Z",
-  "updated": "2026-05-06T13:17:00.000Z",
+  "updated": "2026-05-06T16:26:34.000Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-06T16:19:52.392Z",
   "input": {
-    "topic": "NotPetya Destructive Campaign — Sandworm Global Wiper Operation (2017)",
+    "topic": "NotPetya Destructive Campaign \u2014 Sandworm Global Wiper Operation (2017)",
     "sources": [
       "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and",
       "https://www.ncsc.gov.uk/news/russian-military-almost-certainly-responsible-destructive-2017-cyber-attack",
@@ -19,14 +19,16 @@
     ],
     "candidate_data": {
       "severity": "critical",
-      "related_incident_slugs": ["notpetya-wiper-attack-2017"]
+      "related_incident_slugs": [
+        "notpetya-wiper-attack-2017"
+      ]
     },
-    "notes": "NotPetya campaign-level article covering the broader Sandworm (GRU Unit 74455) destructive operation: M.E.Doc supply chain compromise as initial vector, worm propagation mechanics, global financial and industrial impact, and multi-government attribution (DOJ indictment of six GRU officers, NCSC UK/Five Eyes joint attribution). The incident article (notpetya-wiper-attack-2017) covers the bounded 2017-06-27 event. The campaign article should cover actor infrastructure, supply chain staging, confirmed attribution posture, and operational scope. Draft conservatively from DOJ, NCSC UK, and CISA sources. Do not overstate losses or victim counts beyond confirmed figures (Maersk, Merck, FedEx/TNT, Mondelez disclosed figures only). Clearly distinguish from WannaCry — different actor, different objective (destruction vs. ransomware)."
+    "notes": "NotPetya campaign-level article covering the broader Sandworm (GRU Unit 74455) destructive operation: M.E.Doc supply chain compromise as initial vector, worm propagation mechanics, global financial and industrial impact, and multi-government attribution (DOJ indictment of six GRU officers, NCSC UK/Five Eyes joint attribution). The incident article (notpetya-wiper-attack-2017) covers the bounded 2017-06-27 event. The campaign article should cover actor infrastructure, supply chain staging, confirmed attribution posture, and operational scope. Draft conservatively from DOJ, NCSC UK, and CISA sources. Do not overstate losses or victim counts beyond confirmed figures (Maersk, Merck, FedEx/TNT, Mondelez disclosed figures only). Clearly distinguish from WannaCry \u2014 different actor, different objective (destruction vs. ransomware)."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -53,7 +55,25 @@
       "from": "none",
       "to": "pending",
       "agent": "claude-campaign-worker",
-      "note": "Smoke-test seed task — campaign lane. Topic: NotPetya Destructive Campaign (Sandworm/GRU, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: notpetya-wiper-attack-2017."
+      "note": "Smoke-test seed task \u2014 campaign lane. Topic: NotPetya Destructive Campaign (Sandworm/GRU, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: notpetya-wiper-attack-2017."
+    },
+    {
+      "timestamp": "2026-05-06T16:19:52.392Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-06T16:26:34.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "claude-campaign-worker",
+      "note": "PR #512 opened via GitHub API fallback (gh not available in sandbox). Local content validator passed (campaign schema + 7 canonical H2 sections + 6 MITRE mappings + 3 government R1 sources). Astro build blocked by sandbox EPERM/NOSPC \u2014 GitHub CI will run actual build."
     }
-  ]
+  ],
+  "pr_number": 512,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/512",
+  "merged_at": null
 }
