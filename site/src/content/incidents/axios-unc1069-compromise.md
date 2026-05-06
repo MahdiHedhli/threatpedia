@@ -11,7 +11,7 @@ attributionConfidence: A4
 reviewStatus: draft_ai
 confidenceGrade: B
 generatedBy: kernel-k
-generatedDate: 2026-04-24
+generatedDate: 2026-05-06
 cves: []
 relatedSlugs: []
 tags:
@@ -58,12 +58,26 @@ sources:
     publicationDate: "2026-03-31"
     accessDate: "2026-04-24"
     archived: false
-  - url: "https://www.cisa.gov/resources-tools/resources/defending-against-software-supply-chain-attacks"
+  - url: "https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package"
+    publisher: "Google Cloud Blog (GTIG)"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2026-04-02"
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager"
     publisher: "CISA"
     publisherType: government
     reliability: R1
-    publicationDate: "2021-04-26"
-    accessDate: "2026-04-24"
+    publicationDate: "2026-04-20"
+    accessDate: "2026-05-06"
+    archived: false
+  - url: "https://github.com/advisories/GHSA-2x9r-6wxq-hrr7"
+    publisher: "GitHub Advisory Database"
+    publisherType: community
+    reliability: R1
+    publicationDate: "2026-03-31"
+    accessDate: "2026-05-06"
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
@@ -181,4 +195,6 @@ CISA and NIST software supply chain guidance supports this response model: ident
 - [Wiz: Axios NPM Distribution Compromised in Supply Chain Attack](https://www.wiz.io/blog/axios-npm-compromised-in-supply-chain-attack) — Wiz, 2026-03-31
 - [Datadog Security Labs: Compromised axios npm package delivers cross-platform RAT](https://securitylabs.datadoghq.com/articles/axios-npm-supply-chain-compromise/) — Datadog Security Labs, 2026-04-01
 - [Axios: Post Mortem: axios npm supply chain compromise](https://github.com/axios/axios/issues/10636) — Axios, 2026-03-31
-- [CISA: Defending Against Software Supply Chain Attacks](https://www.cisa.gov/resources-tools/resources/defending-against-software-supply-chain-attacks) — CISA, 2021-04-26
+- [Google Cloud Blog (GTIG): North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package](https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package) — Google Cloud / GTIG, 2026-04-02
+- [CISA Alert: Supply Chain Compromise Impacts Axios Node Package Manager](https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager) — CISA, 2026-04-20
+- [GitHub Advisory GHSA-2x9r-6wxq-hrr7: axios npm supply chain compromise](https://github.com/advisories/GHSA-2x9r-6wxq-hrr7) — GitHub Advisory Database, 2026-03-31
