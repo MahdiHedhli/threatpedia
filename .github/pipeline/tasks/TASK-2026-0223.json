@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0223",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-05T23:32:35.744Z",
+  "updated": "2026-05-05T23:32:35.744Z",
+  "source": "automated_submission",
+  "submitted_by": "claude-campaign-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Operation Cloud Hopper — APT10 Managed Service Provider Espionage Campaign",
+    "sources": [
+      "https://www.ncsc.gov.uk/news/ncsc-supports-doj-indictment-of-two-chinese-nationals",
+      "https://www.cisa.gov/uscert/ncas/alerts/aa21-200b",
+      "https://www.pwc.com/gx/en/issues/cybersecurity/cyber-threat-intelligence/operation-cloud-hopper.html"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Operation Cloud Hopper: sustained APT10 campaign (2016-2017) targeting managed service providers to pivot into client networks globally. Attributed to PRC Ministry of State Security by US, UK, Australia, Canada, Japan, and New Zealand. Draft conservatively from NCSC advisory, CISA AA21-200B, and PWC technical report. Avoid unsupported victim enumeration; use confirmed government attribution language only."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0223",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-05T23:32:35.744Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "claude-campaign-worker",
+      "note": "Automated link submission via tp-queue-worker (campaign lane)"
+    }
+  ]
+}
