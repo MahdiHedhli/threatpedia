@@ -54,7 +54,7 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "dangermouse-bot",
+      "agent": "claude-campaign-worker",
       "note": "Smoke-test seed task \u2014 campaign lane. Topic: NotPetya Destructive Campaign (Sandworm/GRU, 2017). Dedup clean: no existing campaign article, no open PR/issue. Related incident article: notpetya-wiper-attack-2017."
     },
     {
@@ -74,5 +74,6 @@
     }
   ],
   "pr_number": 512,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/512"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/512",
+  "merged_at": null
 }
