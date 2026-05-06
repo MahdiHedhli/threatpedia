@@ -38,6 +38,7 @@ tools:
   - "GRAMDOOR"
   - "ScreenConnect"
   - "LaZagne"
+  - "Mimikatz"
 mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Phishing: Spearphishing Attachment"
@@ -59,6 +60,14 @@ mitreMappings:
     techniqueName: "Ingress Tool Transfer"
     tactic: "Command and Control"
     notes: "The group has staged and transferred additional malware, remote access tools, and scripts during post-compromise operations."
+  - techniqueId: "T1074"
+    techniqueName: "Data Staged"
+    tactic: "Collection"
+    notes: "MITRE reporting documents local data staging during MuddyWater-linked activity."
+  - techniqueId: "T1041"
+    techniqueName: "Exfiltration Over C2 Channel"
+    tactic: "Exfiltration"
+    notes: "MITRE reporting documents exfiltration over command-and-control or cloud storage services in MuddyWater-linked activity."
 attributionConfidence: A1
 attributionRationale: "U.S. Cyber Command and a joint FBI/CISA/CNMF/NCSC-UK advisory publicly identify MuddyWater as a subordinate element within Iran's Ministry of Intelligence and Security."
 reviewStatus: "draft_ai"
