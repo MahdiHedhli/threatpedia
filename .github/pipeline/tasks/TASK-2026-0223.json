@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-05T23:32:35.744Z",
-  "updated": "2026-05-05T23:32:35.744Z",
+  "updated": "2026-05-06T01:51:00.149Z",
   "source": "automated_submission",
   "submitted_by": "claude-campaign-worker",
   "locked_by": null,
@@ -53,6 +53,14 @@
       "to": "pending",
       "agent": "claude-campaign-worker",
       "note": "Automated link submission via tp-queue-worker (campaign lane)"
+    },
+    {
+      "timestamp": "2026-05-06T01:51:00.149Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #487 already covers this task."
     }
   ]
 }
