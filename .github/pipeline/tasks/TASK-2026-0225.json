@@ -1,0 +1,68 @@
+{
+  "task_id": "TASK-2026-0225",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-06T00:45:00.000Z",
+  "updated": "2026-05-06T00:45:00.000Z",
+  "source": "manual_submission",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "MuddyWater Iranian state-sponsored threat actor profile",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-055a",
+      "https://attack.mitre.org/groups/G0069/",
+      "https://cloud.google.com/blog/topics/threat-intelligence/muddywater-iranian-apt-targeting-israel"
+    ],
+    "candidate_data": {
+      "actor_name": "MuddyWater",
+      "aliases": [
+        "Static Kitten",
+        "Seedworm",
+        "TEMP.Zagros",
+        "MERCURY"
+      ],
+      "origin": "Iran",
+      "affiliation": "Iranian Ministry of Intelligence and Security",
+      "motivation": "Espionage",
+      "active_since": "2017"
+    },
+    "notes": "Threat-actor smoke-test seed for MuddyWater. Draft conservatively from CISA/FBI/NSA/CNMF/NCSC-UK advisory, MITRE ATT&CK, and Mandiant/Google reporting. Preserve alias boundaries and avoid treating all Iranian activity as MuddyWater unless directly supported."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/muddywater.md",
+    "branch": "pipeline/TASK-2026-0225",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-06T00:45:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Threat-actor smoke-test seed via task-only PR"
+    }
+  ]
+}
