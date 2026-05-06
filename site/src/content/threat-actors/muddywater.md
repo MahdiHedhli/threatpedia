@@ -111,7 +111,7 @@ Public government and research reporting describes MuddyWater as active since at
 
 ## Notable Campaigns
 
-### 2017-present -- Government and Commercial Network Targeting
+### 2017-present — Government and Commercial Network Targeting
 
 The 2022 joint cybersecurity advisory describes MuddyWater activity against government and commercial networks across multiple regions. The advisory identifies telecommunications, defense, local government, and oil and natural gas organizations as part of the observed target set and provides intrusion patterns including spearphishing, exploitation of known vulnerabilities, and the use of open-source tools.
 
@@ -125,7 +125,7 @@ U.S. Cyber Command's Cyber National Mission Force publicly disclosed malware sam
 
 ## Technical Capabilities
 
-MuddyWater operations rely heavily on social engineering and known-vulnerability exploitation rather than only custom malware. Public reporting describes spearphishing emails, malicious documents, archive files, and links used to initiate access. The group has also exploited publicly known vulnerabilities and used legitimate remote access or remote management tools to maintain access in victim environments.
+MuddyWater operations rely on social engineering and known-vulnerability exploitation rather than only custom malware. Public reporting describes spearphishing emails, malicious documents, archive files, and links used to initiate access. The group has also exploited publicly known vulnerabilities and used legitimate remote access or remote management tools to maintain access in victim environments.
 
 The group's tooling has included POWERSTATS, POWGOOP, MORIAGENT, Small Sieve, Canopy, STARWHALE, and GRAMDOOR. CISA and MITRE reporting also document PowerShell, JavaScript, Visual Basic, command shell activity, DLL side-loading, credential-dumping utilities, and staged tool transfer during post-compromise operations.
 
@@ -133,7 +133,7 @@ MuddyWater's tradecraft includes obfuscating scripts, using legitimate administr
 
 ## Attribution
 
-Attribution to Iran's Ministry of Intelligence and Security is strong in the public record. U.S. Cyber Command stated in January 2022 that MuddyWater is a subordinate element within MOIS, and the February 2022 joint advisory from FBI, CISA, CNMF, and UK NCSC repeated that assessment while describing global government and commercial targeting.
+Attribution to Iran's Ministry of Intelligence and Security is documented in the public record. U.S. Cyber Command stated in January 2022 that MuddyWater is a subordinate element within MOIS, and the February 2022 joint advisory from FBI, CISA, CNMF, and UK NCSC repeated that assessment while describing global government and commercial targeting.
 
 The alias boundary remains important. MITRE lists Earth Vetala, MERCURY, Static Kitten, Seedworm, TEMP.Zagros, Mango Sandstorm, TA450, and MuddyKrill as associated group names for MuddyWater. This profile treats those names as public tracking aliases or overlapping reporting labels and does not assume that every Iran-nexus intrusion using similar tools is MuddyWater unless a cited source makes that link.
 
