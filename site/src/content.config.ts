@@ -73,7 +73,7 @@ const sourceSchema = z.object({
 
 /** MITRE ATT&CK mapping schema */
 const mitreMapping = z.object({
-  techniqueId: z.string(),
+  techniqueId: z.string().regex(/^T\d{4}(?:\.\d{3})?$/),
   techniqueName: z.string(),
   tactic: mitreTactic.optional(),
   attackVersion: z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),

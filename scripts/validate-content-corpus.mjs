@@ -6,17 +6,16 @@ import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
 
 import {
-  SCHEMA_ATTACK_VERSION_PATTERN,
-  SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
-  SCHEMA_ATLAS_VERSION_PATTERN,
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
   SCHEMA_GENERATED_BY_VALUES,
-  SCHEMA_MAPPING_CONFIDENCE_VALUES,
-  SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import {
+  getAtlasMappingValidationIssues,
+  getMitreMappingValidationIssues,
+} from './framework-mapping-validation.mjs';
 import {
   getPublicProseGuardrailIssues,
   maskTextPreservingNewlines,
@@ -26,10 +25,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
-const ATTACK_VERSION_RE = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
-const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
-const ATLAS_VERSION_RE = new RegExp(SCHEMA_ATLAS_VERSION_PATTERN);
-const MITRE_TECHNIQUE_ID_RE = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
 const ZERO_DAY_SEVERITY_METRICS = [
   'Exploitability',
   'Impact',
@@ -418,35 +413,9 @@ function validateFile(file, newFiles) {
   });
   if (invalidTactics.length > 0) pass = false;
 
-  const mitreMetadataIssues = [];
-  for (let i = 0; i < mitreMappings.length; i += 1) {
-    const mapping = mitreMappings[i] || {};
-    const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-    if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
-      mitreMetadataIssues.push(`mapping ${i + 1}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
-    } else if (!MITRE_TECHNIQUE_ID_RE.test(techniqueId)) {
-      mitreMetadataIssues.push(`mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
-    }
-    if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
-      mitreMetadataIssues.push(`mapping ${i + 1}: missing techniqueName`);
-    }
-    const attackVersion = mapping.attackVersion ?? mapping.attack_version;
-    if (attackVersion !== undefined) {
-      const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
-      if (!ATTACK_VERSION_RE.test(version)) {
-        mitreMetadataIssues.push(`mapping ${i + 1}: attackVersion must match vNN[.N]`);
-      }
-    }
-    if (
-      mapping.confidence !== undefined &&
-      !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
-    ) {
-      mitreMetadataIssues.push(`mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
-    }
-    if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
-      mitreMetadataIssues.push(`mapping ${i + 1}: evidence must be a non-empty string`);
-    }
-  }
+  const mitreMetadataIssues = getMitreMappingValidationIssues(mitreMappings, {
+    labelPrefix: 'mapping',
+  });
   checks.push({
     name: 'MITRE mapping fields and metadata',
     pass: mitreMetadataIssues.length === 0,
@@ -457,37 +426,9 @@ function validateFile(file, newFiles) {
   if (mitreMetadataIssues.length > 0) pass = false;
 
   const atlasMappings = fm.atlasMappings;
-  const atlasIssues = [];
-  if (atlasMappings !== undefined && !Array.isArray(atlasMappings)) {
-    atlasIssues.push('atlasMappings must be an array when present');
-  }
-  if (Array.isArray(atlasMappings)) {
-    for (let i = 0; i < atlasMappings.length; i += 1) {
-      const mapping = atlasMappings[i] || {};
-      const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-      if (!ATLAS_TECHNIQUE_ID_RE.test(techniqueId)) {
-        atlasIssues.push(`mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format AML.T####[.###]`);
-      }
-      if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
-        atlasIssues.push(`mapping ${i + 1}: missing techniqueName`);
-      }
-      if (
-        mapping.confidence !== undefined &&
-        !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
-      ) {
-        atlasIssues.push(`mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
-      }
-      if (mapping.atlasVersion !== undefined) {
-        const atlasVersion = typeof mapping.atlasVersion === 'string' ? mapping.atlasVersion.trim() : '';
-        if (!ATLAS_VERSION_RE.test(atlasVersion)) {
-          atlasIssues.push(`mapping ${i + 1}: atlasVersion must match N.N.N`);
-        }
-      }
-      if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
-        atlasIssues.push(`mapping ${i + 1}: evidence must be a non-empty string`);
-      }
-    }
-  }
+  const atlasIssues = getAtlasMappingValidationIssues(atlasMappings, {
+    labelPrefix: 'mapping',
+  });
   checks.push({
     name: 'ATLAS mappings',
     pass: atlasIssues.length === 0,

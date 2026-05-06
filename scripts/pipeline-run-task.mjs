@@ -30,17 +30,17 @@ import yaml from 'js-yaml';
 // The validator workflow loads the same enum via its CLI. Both track the
 // authoritative definitions in site/src/content.config.ts manually.
 import {
-  SCHEMA_ATTACK_VERSION_PATTERN,
-  SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
-  SCHEMA_ATLAS_VERSION_PATTERN,
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
   SCHEMA_GENERATED_BY_VALUES,
   SCHEMA_MAPPING_CONFIDENCE_VALUES,
-  SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
   SCHEMA_REVIEW_STATUSES,
 } from './pipeline-schema.mjs';
+import {
+  getAtlasMappingValidationIssues,
+  getMitreMappingValidationIssues,
+} from './framework-mapping-validation.mjs';
 import { getPublicProseGuardrailIssues } from './public-prose-guardrails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -57,10 +57,6 @@ const EDITORIAL_WORDS = [
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
-const ATTACK_VERSION_RE = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
-const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
-const ATLAS_VERSION_RE = new RegExp(SCHEMA_ATLAS_VERSION_PATTERN);
-const MITRE_TECHNIQUE_ID_RE = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -1226,19 +1222,10 @@ function validateOutput(task, explicitFile) {
       issues.push(`Only ${mitreMappings.length} MITRE mapping(s) in frontmatter (need ${minMitre}+). Add mitreMappings array with techniqueId, techniqueName fields.`);
     }
 
+    issues.push(...getMitreMappingValidationIssues(mitreMappings));
+
     for (let i = 0; i < mitreMappings.length; i++) {
       const mapping = mitreMappings[i] || {};
-      const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-      if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
-        issues.push(`MITRE mapping ${i + 1}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
-      } else if (!MITRE_TECHNIQUE_ID_RE.test(techniqueId)) {
-        issues.push(`MITRE mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
-      }
-
-      if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
-        issues.push(`MITRE mapping ${i + 1}: missing techniqueName`);
-      }
-
       if (mapping.tactic) {
         const tactic = String(mapping.tactic).trim();
         const canonicalTactic = findCanonicalCaseMatch(tactic, SCHEMA_MITRE_TACTICS);
@@ -1248,63 +1235,10 @@ function validateOutput(task, explicitFile) {
           issues.push(`MITRE mapping ${i + 1}: tactic "${tactic}" should use canonical casing "${canonicalTactic}"`);
         }
       }
-
-      const attackVersion = mapping.attackVersion ?? mapping.attack_version;
-      if (attackVersion !== undefined) {
-        const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
-        if (!ATTACK_VERSION_RE.test(version)) {
-          issues.push(`MITRE mapping ${i + 1}: attackVersion must match vNN[.N]`);
-        }
-      }
-
-      if (
-        mapping.confidence !== undefined &&
-        !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
-      ) {
-        issues.push(`MITRE mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
-      }
-
-      if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
-        issues.push(`MITRE mapping ${i + 1}: evidence must be a non-empty string`);
-      }
     }
 
     const atlasMappings = frontmatter.atlasMappings;
-    if (atlasMappings !== undefined && !Array.isArray(atlasMappings)) {
-      issues.push('atlasMappings must be an array when present');
-    }
-
-    if (Array.isArray(atlasMappings)) {
-      for (let i = 0; i < atlasMappings.length; i++) {
-        const mapping = atlasMappings[i] || {};
-        const techniqueId = mapping.techniqueId ? String(mapping.techniqueId).trim() : '';
-        if (!ATLAS_TECHNIQUE_ID_RE.test(techniqueId)) {
-          issues.push(`ATLAS mapping ${i + 1}: invalid techniqueId "${techniqueId}" — expected format AML.T####[.###]`);
-        }
-
-        if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
-          issues.push(`ATLAS mapping ${i + 1}: missing techniqueName`);
-        }
-
-        if (
-          mapping.confidence !== undefined &&
-          !SCHEMA_MAPPING_CONFIDENCE_VALUES.includes(String(mapping.confidence).trim())
-        ) {
-          issues.push(`ATLAS mapping ${i + 1}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
-        }
-
-        if (mapping.atlasVersion !== undefined) {
-          const atlasVersion = typeof mapping.atlasVersion === 'string' ? mapping.atlasVersion.trim() : '';
-          if (!ATLAS_VERSION_RE.test(atlasVersion)) {
-            issues.push(`ATLAS mapping ${i + 1}: atlasVersion must match N.N.N`);
-          }
-        }
-
-        if (mapping.evidence !== undefined && (typeof mapping.evidence !== 'string' || mapping.evidence.trim() === '')) {
-          issues.push(`ATLAS mapping ${i + 1}: evidence must be a non-empty string`);
-        }
-      }
-    }
+    issues.push(...getAtlasMappingValidationIssues(atlasMappings));
 
     // ── 8. Exact H2 section headings ───────────────────────────────────────
     const requiredH2 = SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || [];
