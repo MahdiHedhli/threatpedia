@@ -2,14 +2,16 @@
 
 import { createHash } from 'crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
 import {
   SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
   SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
 } from './pipeline-schema.mjs';
 
-const ROOT = resolve(new URL('..', import.meta.url).pathname);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '..');
 const OUT_DIR = resolve(ROOT, '.github/pipeline/data/frameworks');
 const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
 const MITRE_TECHNIQUE_ID_RE = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
