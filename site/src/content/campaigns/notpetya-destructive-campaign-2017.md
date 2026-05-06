@@ -169,7 +169,7 @@ Credential hygiene measures reduce the effectiveness of the credential-based lat
 
 Network segmentation limits the propagation of worm-style lateral movement. Firewall rules blocking inbound SMB from untrusted network zones and between endpoint segments reduce the reach of EternalBlue-based propagation. Isolating operational technology and critical infrastructure networks from corporate IT networks limits cross-environment propagation.
 
-Maintaining offline, immutable backups with tested restoration procedures is essential for recovery from destructive operations. NotPetya's MBR and MFT overwrite made encrypted files unrecoverable; organizations without offline backups faced complete system rebuilds.
+Maintaining offline, immutable backups with tested restoration procedures is essential for recovery from destructive operations. NotPetya's MBR and MFT overwrite made encrypted files unrecoverable; organizations without offline backups faced system rebuilds.
 
 ## Sources & References
 
