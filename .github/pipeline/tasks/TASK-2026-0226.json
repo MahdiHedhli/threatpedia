@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-06T00:45:00.000Z",
-  "updated": "2026-05-06T00:45:00.000Z",
+  "updated": "2026-05-06T07:13:38.005Z",
   "source": "manual_submission",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -60,6 +60,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Threat-actor smoke-test seed via task-only PR"
+    },
+    {
+      "timestamp": "2026-05-06T07:13:38.005Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #495"
     }
   ]
 }
