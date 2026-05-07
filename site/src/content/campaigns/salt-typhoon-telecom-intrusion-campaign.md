@@ -74,7 +74,7 @@ mitreMappings:
 
 ## Executive Summary
 
-Salt Typhoon, a People's Republic of China (PRC) state-sponsored threat actor, conducted an intrusion campaign against U.S. telecommunications providers in 2024. The FBI and CISA confirmed that actors compromised the networks of multiple U.S. telecommunications companies and gained access to lawful intercept systems used for court-authorized surveillance operations. The actors also collected call detail records for multiple customers and, for a smaller targeted group, obtained actual communications content.
+Salt Typhoon, a People's Republic of China (PRC) state-sponsored threat actor, conducted an intrusion campaign against U.S. telecommunications providers in 2024. The FBI and CISA confirmed that actors compromised the networks of multiple U.S. telecommunications companies and gained access to lawful intercept systems used for court-authorized surveillance operations. The actors also collected call detail records for multiple customers and, for a smaller targeted group, obtained communications content.
 
 The FBI and CISA issued joint statements in October and November 2024 attributing the activity to PRC-affiliated actors. CISA published advisory AA24-335a in November 2024, documenting intrusion methods and providing hardening guidance for telecommunications network defenders. CISA subsequently released additional mobile communications security guidance in December 2024, aimed at reducing exposure for government personnel and other high-risk individuals.
 
@@ -84,7 +84,7 @@ Microsoft Security published independent research in October 2024 linking the ac
 
 The actors gained access to telecommunications provider networks by exploiting vulnerabilities in network edge devices and telecommunications infrastructure components. Once inside provider environments, they maintained persistent access using valid credentials and moved through internal networks to reach communications-handling systems, including lawful intercept infrastructure implemented under the Communications Assistance for Law Enforcement Act (CALEA).
 
-Access to CALEA-compliant systems gave the actors visibility into the metadata surrounding court-authorized surveillance orders, including details about targeted subjects, law enforcement agency contacts, and intercept activation records. In addition to lawful intercept system access, the actors collected call detail records across multiple customer populations and obtained the actual content of calls and text messages for a smaller, targeted subset of individuals.
+Access to CALEA-compliant systems gave the actors visibility into the metadata surrounding court-authorized surveillance orders, including details about targeted subjects, law enforcement agency contacts, and intercept activation records. In addition to lawful intercept system access, the actors collected call detail records across multiple customer populations and obtained the content of calls and text messages for a smaller, targeted subset of individuals.
 
 Advisory AA24-335a noted that the actors maintained access within provider networks for an extended period before detection. The advisory also noted that activity affected telecommunications providers outside the United States, consistent with Microsoft's reporting of global targeting.
 
@@ -128,7 +128,7 @@ Advisory AA24-335a and accompanying FBI and CISA statements confirm that the int
 
 ### 2024-10-09 — Microsoft Publishes Research
 
-Microsoft Security published research identifying Salt Typhoon activity targeting telecommunications companies, providing the first major public attribution of the activity to a named threat cluster.
+Microsoft Security published research identifying Salt Typhoon activity targeting telecommunications companies, providing the first public attribution of the activity to a named threat cluster.
 
 ### 2024-10-25 — FBI and CISA Issue Joint Statement
 
@@ -146,7 +146,7 @@ CISA released guidance on mobile communications best practices for high-risk ind
 
 Advisory AA24-335a provided hardening guidance for telecommunications network operators. Defenders should apply available patches for vulnerabilities in network edge devices and telecommunications equipment on a priority basis, as exploitation of such devices was the documented initial access method. Network segmentation should isolate lawful intercept systems from general-purpose internal networks to limit the lateral movement paths available to actors who gain a foothold in provider environments.
 
-Robust logging and monitoring of configuration changes and administrative access to network devices is essential for detecting unauthorized activity. Multi-factor authentication should be enforced on all administrative interfaces for telecommunications management systems, and account access rights for systems that process lawful intercept requests and subscriber data should be audited regularly.
+Logging and monitoring of configuration changes and administrative access to network devices supports detection of unauthorized activity. Multi-factor authentication should be enforced on all administrative interfaces for telecommunications management systems, and account access rights for systems that process lawful intercept requests and subscriber data should be audited regularly.
 
 For individuals assessed as high-risk targets, CISA's December 2024 mobile communications guidance recommended using end-to-end encrypted communications applications, adopting hardware security keys for authentication, and avoiding SMS-based two-factor authentication, which is vulnerable to interception through carrier infrastructure.
 
