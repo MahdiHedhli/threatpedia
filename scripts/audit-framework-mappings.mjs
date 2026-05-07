@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
@@ -47,9 +47,19 @@ function parseArgs(argv) {
       usage();
       process.exit(0);
     } else if (arg === '--markdown-out') {
-      args.markdownOut = resolve(ROOT, argv[++i] || '');
+      const value = argv[++i];
+      if (!value) {
+        console.error('--markdown-out requires a path');
+        process.exit(1);
+      }
+      args.markdownOut = resolve(ROOT, value);
     } else if (arg === '--json-out') {
-      args.jsonOut = resolve(ROOT, argv[++i] || '');
+      const value = argv[++i];
+      if (!value) {
+        console.error('--json-out requires a path');
+        process.exit(1);
+      }
+      args.jsonOut = resolve(ROOT, value);
     } else {
       console.error(`Unknown argument: ${arg}`);
       usage();
@@ -76,7 +86,7 @@ function listContentFiles(dir = CONTENT_ROOT) {
 
 function parseFrontmatter(filePath) {
   const content = readFileSync(filePath, 'utf8');
-  const match = content.match(/^---\n([\s\S]*?)\n---\n?/);
+  const match = content.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
   if (!match) {
     return { data: null, error: 'No YAML frontmatter found' };
   }
