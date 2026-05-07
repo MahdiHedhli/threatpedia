@@ -25,15 +25,15 @@
       "exploitId": "TP-EXP-2026-0019",
       "type": "Unclassified",
       "platform": "Palo Alto Networks PAN-OS",
-      "severity": "high",
+      "severity": "critical",
       "cisaKev": true,
-      "disclosedDate": "2026-05-06",
+      "disclosedDate": "2026-05-05",
       "cwes": [
         "CWE-787"
       ],
       "knownRansomwareUse": false
     },
-    "notes": "CISA KEV entry added 2026-05-06. Required action by 2026-05-09. Discovery score: 65/100."
+    "notes": "Palo Alto advisory published 2026-05-05 with CVSS 9.3 critical severity and observed exploitation. CISA KEV entry added 2026-05-06. Required action by 2026-05-09. Discovery score: 65/100."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -61,7 +61,7 @@
     "feed": "CISA_KEV",
     "score": 65,
     "auto_certify": false,
-    "cvss": null,
+    "cvss": 9.3,
     "discovered_at": "2026-05-06T19:27:42.126Z"
   },
   "history": [
