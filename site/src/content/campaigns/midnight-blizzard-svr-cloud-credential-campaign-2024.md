@@ -83,7 +83,7 @@ Midnight Blizzard, a threat actor attributed to the Russian Foreign Intelligence
 
 CISA, the FBI, NSA, and international partners published advisory AA24-057a in February 2024, documenting the tactics used by SVR actors to gain initial access to cloud environments. The advisory specifically noted that actors shifted to targeting cloud accounts after victim organizations migrated from on-premises systems, using password spraying, credential phishing, and token theft techniques against cloud service providers.
 
-Microsoft disclosed in January 2024 that its own corporate email environment had been accessed by Midnight Blizzard beginning in November 2023, with the actors targeting the accounts of senior leadership and personnel in cybersecurity and legal functions. This disclosure provided technical detail corroborating the advisory and extended public understanding of the campaign scope.
+Microsoft disclosed in January 2024 that its own corporate email environment had been accessed by Midnight Blizzard beginning in November 2023, with the actors targeting the accounts of senior leadership and personnel in cybersecurity and legal functions. This disclosure provided technical detail corroborating the advisory and provided additional context on the campaign scope.
 
 ## Technical Analysis
 
@@ -103,7 +103,7 @@ The actors obtained valid credentials for cloud accounts through spear-phishing 
 
 ### Stage 2: Initial Cloud Authentication
 
-Using obtained credentials, the actors authenticated to cloud service platforms. The use of residential proxy infrastructure routed initial authentication attempts through IP addresses that did not immediately indicate attacker-controlled infrastructure.
+Using obtained credentials, the actors authenticated to cloud service platforms. The use of residential proxy infrastructure routed initial authentication attempts through IP addresses that did not indicate attacker-controlled infrastructure.
 
 ### Stage 3: Token and Session Persistence
 
