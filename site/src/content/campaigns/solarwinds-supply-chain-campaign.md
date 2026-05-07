@@ -10,10 +10,10 @@ sector: "Government"
 geography: "Global"
 threatActor: "APT29"
 attributionConfidence: A1
-reviewStatus: "draft_human"
+reviewStatus: "draft_ai"
 confidenceGrade: A
-generatedBy: "kernel-k"
-generatedDate: 2026-04-17
+generatedBy: "dangermouse-bot"
+generatedDate: 2026-05-07
 cves: []
 relatedIncidents:
   - "solarwinds-orion-supply-chain-compromise-2020"
@@ -70,23 +70,23 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "APT29 inserted SUNBURST into signed SolarWinds Orion builds distributed through the normal update channel."
   - techniqueId: "T1071.001"
-    techniqueName: "Application Layer Protocol: Web Protocols"
+    techniqueName: "Web Protocols"
     tactic: "Command and Control"
     notes: "SUNBURST blended its C2 into Orion Improvement Program HTTP traffic."
   - techniqueId: "T1098.001"
-    techniqueName: "Account Manipulation: Additional Cloud Credentials"
+    techniqueName: "Additional Cloud Credentials"
     tactic: "Persistence"
     notes: "Operators added credentials to OAuth applications and service principals during follow-on cloud exploitation."
   - techniqueId: "T1484.002"
-    techniqueName: "Domain or Tenant Policy Modification: Trust Modification"
+    techniqueName: "Trust Modification"
     tactic: "Defense Evasion"
     notes: "APT29 modified federation trust settings to abuse forged SAML tokens in victim cloud environments."
   - techniqueId: "T1114.002"
-    techniqueName: "Email Collection: Remote Email Collection"
+    techniqueName: "Remote Email Collection"
     tactic: "Collection"
     notes: "High-value targets had mailboxes collected after the Orion compromise was used as initial access."
 ---
@@ -135,23 +135,23 @@ The final objective was long-dwell access to executive communications, policy do
 
 ### Initial Access
 
-T1195.002 - Supply Chain Compromise: Compromise Software Supply Chain: The campaign's defining access vector was the insertion of SUNBURST into signed Orion software releases.
+T1195.002 - Compromise Software Supply Chain: The campaign's defining access vector was the insertion of SUNBURST into signed Orion software releases.
 
 ### Command and Control
 
-T1071.001 - Application Layer Protocol: Web Protocols: SUNBURST used web traffic patterns that mimicked Orion telemetry to hide C2.
+T1071.001 - Web Protocols: SUNBURST used web traffic patterns that mimicked Orion telemetry to hide C2.
 
 ### Persistence
 
-T1098.001 - Account Manipulation: Additional Cloud Credentials: Follow-on activity included adding or hijacking credentials on cloud application objects.
+T1098.001 - Additional Cloud Credentials: Follow-on activity included adding or hijacking credentials on cloud application objects.
 
 ### Defense Evasion
 
-T1484.002 - Domain or Tenant Policy Modification: Trust Modification: Operators modified federation trust material to support forged SAML token abuse.
+T1484.002 - Trust Modification: Operators modified federation trust material to support forged SAML token abuse.
 
 ### Collection
 
-T1114.002 - Email Collection: Remote Email Collection: Mailbox access and export were central to the intelligence objective of the campaign.
+T1114.002 - Remote Email Collection: Mailbox access and export were central to the intelligence objective of the campaign.
 
 ## Timeline
 
