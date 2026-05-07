@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "in_progress",
   "created": "2026-05-06T20:15:20.074Z",
-  "updated": "2026-05-07T15:17:15Z",
+  "updated": "2026-05-07T19:12:46Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
   "locked_by": "dangermouse-bot",
@@ -74,8 +74,17 @@
       "to": "in_progress",
       "agent": "tp-queue-worker-campaigns",
       "note": "Remediation push 3d30515: removed subjective intensifier \"intentional\" from timeline entry (Gemini thread 3203418971); aligned T1090.003 MITRE body with frontmatter notes (Gemini thread 3203464986). Both threads replied to with applied dispositions. Validate: PASS. Fresh /gemini review triggered. Awaiting async Gemini re-review and Kernel K merge approval."
+    },
+    {
+      "timestamp": "2026-05-07T19:12:46Z",
+      "action": "metadata_fix",
+      "from": "in_progress",
+      "to": "in_progress",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "Metadata fix: added pr_url field (Gemini thread 3203859962) and synchronized updated timestamp with latest history entry (Gemini thread 3203859940)."
     }
   ],
   "pr_number": 524,
-  "branch": "pipeline/TASK-2026-0230"
+  "branch": "pipeline/TASK-2026-0230",
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/524"
 }
