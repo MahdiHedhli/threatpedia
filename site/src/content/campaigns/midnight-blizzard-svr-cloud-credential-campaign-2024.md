@@ -117,7 +117,7 @@ The actors accessed cloud-hosted email accounts and file storage services, colle
 
 T1566.002 - Spearphishing Link: The actors sent targeted spear-phishing messages containing links to credential-harvesting infrastructure to obtain valid cloud account credentials from personnel at targeted organizations.
 
-T1110.003 - Password Spraying: Advisory AA24-057a documented password spraying activity against cloud authentication endpoints, including targeting of dormant accounts and service accounts with potentially weaker monitoring controls.
+T1110.003 - Password Spraying: Advisory AA24-057a documented password spraying activity against cloud authentication endpoints, including targeting of dormant accounts and service accounts with potentially less robust monitoring controls.
 
 T1078.004 - Cloud Accounts: Authenticated access using valid cloud credentials allowed the actors to operate within the normal authentication flows of cloud service providers, accessing email and file storage services as authenticated users.
 
