@@ -1,71 +1,81 @@
 {
-    "task_id": "TASK-2026-0230",
-    "stage": "draft",
-    "type": "campaign",
-    "priority": "P1",
-    "status": "in_progress",
-    "created": "2026-05-06T20:15:20.074Z",
-    "updated": "2026-05-07T15:17:15Z",
-    "source": "manual_submission",
-    "submitted_by": "tp-queue-worker-campaigns",
-    "locked_by": "dangermouse-bot",
-    "locked_at": "2026-05-07T15:13:29.683Z",
-    "input": {
-        "topic": "Midnight Blizzard SVR Spear-Phishing and Credential Theft Campaign 2024",
-        "sources": [
-            "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-057a",
-            "https://www.ncsc.gov.uk/news/uk-and-allies-expose-russian-intelligence-services-targeting-political-and-diplomatic-entities",
-            "https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack",
-            "https://www.cisa.gov/news-events/alerts/2024/03/05/cisa-and-partner-agencies-release-advisory-midnight-blizzard"
-        ],
-        "notes": "CISA, NCSC UK advisory on Midnight Blizzard (APT29/SVR) credential phishing and access campaign targeting government and technology entities in 2024. Government sources primary. Scope: documented TTPs; do not add unsupported victim attribution, geopolitical conclusions, or extend scope beyond sourced advisory material."
-    },
-    "specs": [
-        "DATA-STANDARDS-v1.0.md",
-        "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-        "INGESTION-SPEC.md \u00a72"
+  "task_id": "TASK-2026-0230",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "in_progress",
+  "created": "2026-05-06T20:15:20.074Z",
+  "updated": "2026-05-07T15:17:15Z",
+  "source": "manual_submission",
+  "submitted_by": "tp-queue-worker-campaigns",
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-07T15:13:29.683Z",
+  "input": {
+    "topic": "Midnight Blizzard SVR Spear-Phishing and Credential Theft Campaign 2024",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-057a",
+      "https://www.ncsc.gov.uk/news/uk-and-allies-expose-russian-intelligence-services-targeting-political-and-diplomatic-entities",
+      "https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack",
+      "https://www.cisa.gov/news-events/alerts/2024/03/05/cisa-and-partner-agencies-release-advisory-midnight-blizzard"
     ],
-    "acceptance_criteria": {
-        "frontmatter_valid": true,
-        "min_sources": 3,
-        "min_h2_sections": 7,
-        "min_mitre_mappings": 1,
-        "review_status": "draft_ai",
-        "schema_validation": "pass",
-        "astro_build": true
+    "notes": "CISA, NCSC UK advisory on Midnight Blizzard (APT29/SVR) credential phishing and access campaign targeting government and technology entities in 2024. Government sources primary. Scope: documented TTPs; do not add unsupported victim attribution, geopolitical conclusions, or extend scope beyond sourced advisory material."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0230",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-06T20:15:20.074Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
     },
-    "depends_on": [],
-    "preconditions": [
-        "editorial queue depth < 50"
-    ],
-    "output": {
-        "file_pattern": "site/src/content/campaigns/{slug}.md",
-        "branch": "pipeline/TASK-2026-0230",
-        "pr": true
+    {
+      "timestamp": "2026-05-07T15:13:29.683Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     },
-    "history": [
-        {
-            "timestamp": "2026-05-06T20:15:20.074Z",
-            "action": "created",
-            "from": "none",
-            "to": "pending",
-            "agent": "tp-queue-worker-campaigns",
-            "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
-        },
-        {
-            "timestamp": "2026-05-07T15:13:29.683Z",
-            "from": "pending",
-            "to": "locked",
-            "agent": "dangermouse-bot",
-            "note": "Locked for execution"
-        },
-        {
-            "timestamp": "2026-05-07T15:17:15Z",
-            "action": "pr_opened",
-            "from": "pending",
-            "to": "in_progress",
-            "agent": "tp-queue-worker-campaigns",
-            "note": "PR #524 opened: https://github.com/MahdiHedhli/threatpedia/pull/524. Local validator: PASS. Astro build: PASS. Awaiting GitHub CI validation and review."
-        }
-    ]
+    {
+      "timestamp": "2026-05-07T15:17:15Z",
+      "action": "pr_opened",
+      "from": "pending",
+      "to": "in_progress",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "PR #524 opened: https://github.com/MahdiHedhli/threatpedia/pull/524. Local validator: PASS. Astro build: PASS. Awaiting GitHub CI validation and review."
+    },
+    {
+      "timestamp": "2026-05-07T18:14:25Z",
+      "action": "remediation",
+      "from": "in_progress",
+      "to": "in_progress",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "Remediation push 3d30515: removed subjective intensifier \"intentional\" from timeline entry (Gemini thread 3203418971); aligned T1090.003 MITRE body with frontmatter notes (Gemini thread 3203464986). Both threads replied to with applied dispositions. Validate: PASS. Fresh /gemini review triggered. Awaiting async Gemini re-review and Kernel K merge approval."
+    }
+  ],
+  "pr_number": 524,
+  "branch": "pipeline/TASK-2026-0230"
 }
