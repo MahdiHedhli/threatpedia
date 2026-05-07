@@ -376,7 +376,7 @@ function ensureTaskAcceptedOnMain(task, action) {
     console.error(`  Expected task_id "${task.task_id}", found "${mainTask.task_id || '(missing)'}".`);
     process.exit(1);
   }
-  if (['complete', 'failed', 'archived'].includes(mainTask.status)) {
+  if (mainTask.status !== 'pending') {
     console.error(`  ERROR: Refusing to ${action} ${task.task_id} because origin/main status is ${mainTask.status}.`);
     console.error('  Rebuild from current main and select an eligible pending task instead.');
     process.exit(1);
