@@ -89,6 +89,7 @@ const atlasMapping = z.object({
   techniqueName: z.string(),
   tactic: z.string().optional(),
   atlasVersion: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+  atlas_version: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
   confidence: mappingConfidence.optional(),
   evidence: z.string().min(1).optional(),
   notes: z.string().optional(),
