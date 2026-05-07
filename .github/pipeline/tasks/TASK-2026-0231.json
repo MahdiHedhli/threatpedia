@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-06T20:14:44.898Z",
-  "updated": "2026-05-07T14:25:00.000Z",
+  "updated": "2026-05-07T16:10:34.753Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-07T14:16:42.025Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Salt Typhoon Telecom Intrusion Campaign",
     "sources": [
@@ -22,8 +22,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -79,8 +79,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #521 opened: https://github.com/MahdiHedhli/threatpedia/pull/521. Local validation PASS, Astro build PASS."
+    },
+    {
+      "timestamp": "2026-05-07T16:10:34.753Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #521 merged (17a3749)."
     }
   ],
   "pr_number": 521,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/521"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/521",
+  "merged_at": "2026-05-07T16:10:34.753Z"
 }
