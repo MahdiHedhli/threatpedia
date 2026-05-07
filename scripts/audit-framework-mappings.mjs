@@ -11,12 +11,20 @@ import {
   isPinnedAttackVersion,
   normalizeFrameworkName,
 } from './framework-data.mjs';
-import { SCHEMA_MITRE_TACTICS } from './pipeline-schema.mjs';
+import {
+  SCHEMA_ATTACK_VERSION_PATTERN,
+  SCHEMA_MITRE_TACTICS,
+  SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
+} from './pipeline-schema.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const CONTENT_ROOT = resolve(ROOT, 'site/src/content');
-const DEFAULT_MARKDOWN_OUT = resolve(ROOT, '.github/pipeline/reports/framework-mapping-audit-2026-05-07.md');
+const REPORT_DATE = new Date().toISOString().slice(0, 10);
+const DEFAULT_MARKDOWN_OUT = resolve(ROOT, `.github/pipeline/reports/framework-mapping-audit-${REPORT_DATE}.md`);
+const FRONTMATTER_REGEX = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
+const CANONICAL_ID_REGEX = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
+const ATTACK_VERSION_REGEX = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
 
 const TACTIC_SLUG_BY_NAME = new Map(
   SCHEMA_MITRE_TACTICS.map((name) => [name, name.toLowerCase().replace(/\s+/g, '-')]),
@@ -86,7 +94,7 @@ function listContentFiles(dir = CONTENT_ROOT) {
 
 function parseFrontmatter(filePath) {
   const content = readFileSync(filePath, 'utf8');
-  const match = content.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+  const match = content.match(FRONTMATTER_REGEX);
   if (!match) {
     return { data: null, error: 'No YAML frontmatter found' };
   }
@@ -112,7 +120,8 @@ function analyzeMapping(file, collection, mapping, index) {
   const techniqueId = normalizeFrameworkName(mapping?.techniqueId);
   const techniqueName = normalizeFrameworkName(mapping?.techniqueName);
   const tactic = normalizeFrameworkName(mapping?.tactic);
-  const attackVersion = mapping?.attackVersion ?? mapping?.attack_version;
+  const attackVersion = mapping?.['attack-version'] ?? mapping?.attackVersion ?? mapping?.attack_version;
+  const normalizedAttackVersion = attackVersion == null ? '' : String(attackVersion).trim();
   const label = `${relative(ROOT, file)}#mitreMappings[${index}]`;
 
   if (!techniqueId) {
@@ -126,18 +135,36 @@ function analyzeMapping(file, collection, mapping, index) {
     return findings;
   }
 
-  if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
+  let effectiveTechniqueId = techniqueId;
+  if (!CANONICAL_ID_REGEX.test(techniqueId)) {
+    if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
+      effectiveTechniqueId = techniqueId.replace('-', '.');
+      findings.push({
+        severity: 'fixable',
+        category: 'noncanonical-technique-id-separator',
+        label,
+        collection,
+        techniqueId,
+        recommended: effectiveTechniqueId,
+        message: `Use canonical dot separator: ${effectiveTechniqueId}.`,
+      });
+    }
+  }
+
+  if (normalizedAttackVersion && !ATTACK_VERSION_REGEX.test(normalizedAttackVersion)) {
     findings.push({
-      severity: 'fixable',
-      category: 'noncanonical-technique-id-separator',
+      severity: 'error',
+      category: 'invalid-attack-version',
       label,
       collection,
       techniqueId,
-      message: `Use canonical dot separator: ${techniqueId.replace('-', '.')}.`,
+      attackVersion,
+      message: 'attack-version must match vNN[.N].',
     });
+    return findings;
   }
 
-  if (!isPinnedAttackVersion(attackVersion)) {
+  if (normalizedAttackVersion && !isPinnedAttackVersion(normalizedAttackVersion)) {
     findings.push({
       severity: 'info',
       category: 'legacy-or-nonpinned-attack-version',
@@ -150,14 +177,14 @@ function analyzeMapping(file, collection, mapping, index) {
     return findings;
   }
 
-  const technique = getAttackEnterpriseTechnique(techniqueId);
+  const technique = getAttackEnterpriseTechnique(effectiveTechniqueId);
   if (!technique) {
     findings.push({
       severity: 'error',
       category: 'unknown-technique-id',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       message: `Technique ID is not present in pinned ATT&CK Enterprise ${getAttackEnterpriseData().version}.`,
     });
     return findings;
@@ -169,9 +196,9 @@ function analyzeMapping(file, collection, mapping, index) {
       category: technique.revoked ? 'revoked-technique' : 'deprecated-technique',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       officialName: technique.name,
-      message: `${techniqueId} is ${technique.revoked ? 'revoked' : 'deprecated'} in pinned ATT&CK Enterprise ${getAttackEnterpriseData().version}.`,
+      message: `${effectiveTechniqueId} is ${technique.revoked ? 'revoked' : 'deprecated'} in pinned ATT&CK Enterprise ${getAttackEnterpriseData().version}.`,
     });
   }
 
@@ -182,7 +209,7 @@ function analyzeMapping(file, collection, mapping, index) {
       category: 'technique-name-mismatch',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       current: techniqueName,
       recommended: officialName,
       message: `Technique name should match ATT&CK ${getAttackEnterpriseData().version}: ${officialName}.`,
@@ -195,9 +222,9 @@ function analyzeMapping(file, collection, mapping, index) {
       category: 'missing-attack-version',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       recommended: getAttackEnterpriseData().version,
-      message: `Mapping is missing attackVersion/attack_version metadata.`,
+      message: `Mapping is missing attack-version metadata.`,
     });
   }
 
@@ -207,7 +234,7 @@ function analyzeMapping(file, collection, mapping, index) {
       category: 'missing-confidence',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       message: 'Mapping is missing confidence metadata.',
     });
   }
@@ -218,7 +245,7 @@ function analyzeMapping(file, collection, mapping, index) {
       category: 'missing-evidence',
       label,
       collection,
-      techniqueId,
+      techniqueId: effectiveTechniqueId,
       message: 'Mapping is missing evidence metadata.',
     });
   }
@@ -231,7 +258,7 @@ function analyzeMapping(file, collection, mapping, index) {
         category: 'unknown-tactic',
         label,
         collection,
-        techniqueId,
+        techniqueId: effectiveTechniqueId,
         current: tactic,
         message: `Tactic is not in the current schema enum.`,
       });
@@ -242,7 +269,7 @@ function analyzeMapping(file, collection, mapping, index) {
         category: tactic === 'Defense Evasion' ? 'v19-defense-evasion-split-candidate' : 'tactic-mismatch',
         label,
         collection,
-        techniqueId,
+        techniqueId: effectiveTechniqueId,
         current: tactic,
         recommended: officialTactics,
         message: `Mapped tactic "${tactic}" is not among ATT&CK ${getAttackEnterpriseData().version} tactics: ${officialTactics}.`,

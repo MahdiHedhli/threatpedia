@@ -76,6 +76,7 @@ const mitreMapping = z.object({
   techniqueId: z.string().regex(/^T\d{4}(?:\.\d{3})?$/),
   techniqueName: z.string(),
   tactic: mitreTactic.optional(),
+  'attack-version': z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),
   attackVersion: z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),
   attack_version: z.string().regex(/^v\d+(?:\.\d+)?$/).optional(),
   confidence: mappingConfidence.optional(),
@@ -88,8 +89,22 @@ const atlasMapping = z.object({
   techniqueId: z.string().regex(/^AML\.T\d{4}(?:\.\d{3})?$/),
   techniqueName: z.string(),
   tactic: z.string().optional(),
+  'atlas-version': z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
   atlasVersion: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
   atlas_version: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+  confidence: mappingConfidence.optional(),
+  evidence: z.string().min(1).optional(),
+  notes: z.string().optional(),
+});
+
+/** Generic framework mapping schema; ATLAS is the first supported framework. */
+const frameworkMapping = z.object({
+  framework: z.enum(['mitre-atlas']),
+  version: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+  'mapping-id': z.string().regex(/^AML\.T\d{4}(?:\.\d{3})?$/),
+  'mapping-name': z.string(),
+  'tactic-id': z.string().optional(),
+  'tactic-name': z.string().optional(),
   confidence: mappingConfidence.optional(),
   evidence: z.string().min(1).optional(),
   notes: z.string().optional(),
@@ -134,6 +149,7 @@ const incidents = defineCollection({
     // MITRE
     mitreMappings: z.array(mitreMapping).default([]),
     atlasMappings: z.array(atlasMapping).default([]),
+    'framework-mappings': z.array(frameworkMapping).default([]),
   }),
 });
 
@@ -178,6 +194,7 @@ const campaigns = defineCollection({
     // MITRE
     mitreMappings: z.array(mitreMapping).min(1),
     atlasMappings: z.array(atlasMapping).default([]),
+    'framework-mappings': z.array(frameworkMapping).default([]),
   }).superRefine((data, ctx) => {
     if (data.ongoing && data.endDate) {
       ctx.addIssue({
@@ -236,6 +253,7 @@ const threatActors = defineCollection({
     tools: z.array(z.string()).default([]),
     mitreMappings: z.array(mitreMapping).default([]),
     atlasMappings: z.array(atlasMapping).default([]),
+    'framework-mappings': z.array(frameworkMapping).default([]),
 
     // Quality
     attributionConfidence: attributionConfidence.optional(),
@@ -289,6 +307,7 @@ const zeroDays = defineCollection({
     // MITRE
     mitreMappings: z.array(mitreMapping).default([]),
     atlasMappings: z.array(atlasMapping).default([]),
+    'framework-mappings': z.array(frameworkMapping).default([]),
   }),
 });
 

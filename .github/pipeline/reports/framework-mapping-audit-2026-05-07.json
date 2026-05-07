@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T13:11:08.564Z",
+  "generatedAt": "2026-05-07T13:32:57.421Z",
   "attackVersion": "v19.0",
   "source": {
     "url": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-19.0.json",
@@ -70,7 +70,7 @@
       "collection": "campaigns",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -105,7 +105,7 @@
       "collection": "campaigns",
       "techniqueId": "T1204.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -140,7 +140,7 @@
       "collection": "campaigns",
       "techniqueId": "T1543.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -175,7 +175,7 @@
       "collection": "campaigns",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -200,7 +200,7 @@
       "collection": "campaigns",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -235,7 +235,7 @@
       "collection": "campaigns",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -270,7 +270,7 @@
       "collection": "campaigns",
       "techniqueId": "T1547.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -305,7 +305,7 @@
       "collection": "campaigns",
       "techniqueId": "T1056.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -340,7 +340,7 @@
       "collection": "campaigns",
       "techniqueId": "T1219",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -365,7 +365,7 @@
       "collection": "campaigns",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -400,7 +400,7 @@
       "collection": "campaigns",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -425,7 +425,7 @@
       "collection": "campaigns",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -450,7 +450,7 @@
       "collection": "campaigns",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -475,7 +475,7 @@
       "collection": "campaigns",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -500,7 +500,7 @@
       "collection": "campaigns",
       "techniqueId": "T1557",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -525,7 +525,7 @@
       "collection": "campaigns",
       "techniqueId": "T1528",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -550,7 +550,7 @@
       "collection": "campaigns",
       "techniqueId": "T1539",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -575,7 +575,7 @@
       "collection": "campaigns",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -610,7 +610,7 @@
       "collection": "campaigns",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -645,7 +645,7 @@
       "collection": "campaigns",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -670,7 +670,7 @@
       "collection": "campaigns",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -705,7 +705,7 @@
       "collection": "campaigns",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -730,7 +730,7 @@
       "collection": "campaigns",
       "techniqueId": "T1528",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -765,7 +765,7 @@
       "collection": "campaigns",
       "techniqueId": "T1550.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -810,7 +810,7 @@
       "collection": "campaigns",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -845,7 +845,7 @@
       "collection": "campaigns",
       "techniqueId": "T1003.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -870,7 +870,7 @@
       "collection": "campaigns",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -895,7 +895,7 @@
       "collection": "campaigns",
       "techniqueId": "T1047",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -940,7 +940,7 @@
       "collection": "campaigns",
       "techniqueId": "T1021.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -965,7 +965,7 @@
       "collection": "campaigns",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1000,7 +1000,7 @@
       "collection": "campaigns",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1025,7 +1025,7 @@
       "collection": "campaigns",
       "techniqueId": "T1189",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1050,7 +1050,7 @@
       "collection": "campaigns",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1075,7 +1075,7 @@
       "collection": "campaigns",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1100,7 +1100,7 @@
       "collection": "campaigns",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1135,7 +1135,7 @@
       "collection": "campaigns",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1160,7 +1160,7 @@
       "collection": "campaigns",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1205,7 +1205,7 @@
       "collection": "campaigns",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1230,7 +1230,7 @@
       "collection": "campaigns",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1264,7 +1264,7 @@
       "collection": "campaigns",
       "techniqueId": "T1574.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1299,7 +1299,7 @@
       "collection": "campaigns",
       "techniqueId": "T1021.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1324,7 +1324,7 @@
       "collection": "campaigns",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1391,7 +1391,7 @@
       "collection": "campaigns",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1426,7 +1426,7 @@
       "collection": "campaigns",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1461,7 +1461,7 @@
       "collection": "campaigns",
       "techniqueId": "T1098.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1496,7 +1496,7 @@
       "collection": "campaigns",
       "techniqueId": "T1484.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1541,7 +1541,7 @@
       "collection": "campaigns",
       "techniqueId": "T1114.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1576,7 +1576,7 @@
       "collection": "campaigns",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1611,7 +1611,7 @@
       "collection": "campaigns",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1636,7 +1636,7 @@
       "collection": "campaigns",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1661,7 +1661,7 @@
       "collection": "campaigns",
       "techniqueId": "T1027",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1696,7 +1696,7 @@
       "collection": "campaigns",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1721,7 +1721,7 @@
       "collection": "campaigns",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1746,7 +1746,7 @@
       "collection": "campaigns",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1781,7 +1781,7 @@
       "collection": "campaigns",
       "techniqueId": "T1059.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1816,7 +1816,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1851,7 +1851,7 @@
       "collection": "incidents",
       "techniqueId": "T1204.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1886,7 +1886,7 @@
       "collection": "incidents",
       "techniqueId": "T1078.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1921,7 +1921,7 @@
       "collection": "incidents",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1946,7 +1946,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -1981,7 +1981,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2006,7 +2006,7 @@
       "collection": "incidents",
       "techniqueId": "T1071",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2031,7 +2031,7 @@
       "collection": "incidents",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2056,7 +2056,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2091,7 +2091,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2116,7 +2116,7 @@
       "collection": "incidents",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2141,7 +2141,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2166,7 +2166,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2191,7 +2191,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2216,7 +2216,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2251,7 +2251,7 @@
       "collection": "incidents",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2276,7 +2276,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2301,7 +2301,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2326,7 +2326,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2351,7 +2351,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2376,7 +2376,7 @@
       "collection": "incidents",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2401,7 +2401,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2426,7 +2426,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2451,7 +2451,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2476,7 +2476,7 @@
       "collection": "incidents",
       "techniqueId": "T1189",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2501,7 +2501,7 @@
       "collection": "incidents",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2526,7 +2526,7 @@
       "collection": "incidents",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2561,7 +2561,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2596,7 +2596,7 @@
       "collection": "incidents",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2621,7 +2621,7 @@
       "collection": "incidents",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2646,7 +2646,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2681,7 +2681,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2706,7 +2706,7 @@
       "collection": "incidents",
       "techniqueId": "T1498",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2731,7 +2731,7 @@
       "collection": "incidents",
       "techniqueId": "T1133",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2756,7 +2756,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2781,7 +2781,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2806,7 +2806,7 @@
       "collection": "incidents",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2831,7 +2831,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2856,7 +2856,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2881,7 +2881,7 @@
       "collection": "incidents",
       "techniqueId": "T1048",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2906,7 +2906,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2931,7 +2931,7 @@
       "collection": "incidents",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2956,7 +2956,7 @@
       "collection": "incidents",
       "techniqueId": "T1110",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -2981,7 +2981,7 @@
       "collection": "incidents",
       "techniqueId": "T1091",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3006,7 +3006,7 @@
       "collection": "incidents",
       "techniqueId": "T1105",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3041,7 +3041,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3076,7 +3076,7 @@
       "collection": "incidents",
       "techniqueId": "T1499.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3111,7 +3111,7 @@
       "collection": "incidents",
       "techniqueId": "T1561.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3136,7 +3136,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3161,7 +3161,7 @@
       "collection": "incidents",
       "techniqueId": "T1048",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3186,7 +3186,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3211,7 +3211,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3236,7 +3236,7 @@
       "collection": "incidents",
       "techniqueId": "T1557",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3271,7 +3271,7 @@
       "collection": "incidents",
       "techniqueId": "T1588.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3296,7 +3296,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3321,7 +3321,7 @@
       "collection": "incidents",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3356,7 +3356,7 @@
       "collection": "incidents",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3381,7 +3381,7 @@
       "collection": "incidents",
       "techniqueId": "T1565",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3406,7 +3406,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3431,7 +3431,7 @@
       "collection": "incidents",
       "techniqueId": "T1083",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3456,7 +3456,7 @@
       "collection": "incidents",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3481,7 +3481,7 @@
       "collection": "incidents",
       "techniqueId": "T1498",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3516,7 +3516,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3541,7 +3541,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3576,7 +3576,7 @@
       "collection": "incidents",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3601,7 +3601,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3626,7 +3626,7 @@
       "collection": "incidents",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3651,7 +3651,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3676,7 +3676,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3711,7 +3711,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3736,7 +3736,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3761,7 +3761,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3786,7 +3786,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3821,7 +3821,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3856,7 +3856,7 @@
       "collection": "incidents",
       "techniqueId": "T1204.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3891,7 +3891,7 @@
       "collection": "incidents",
       "techniqueId": "T1059.005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3916,7 +3916,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3941,7 +3941,7 @@
       "collection": "incidents",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -3966,7 +3966,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4001,7 +4001,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4026,7 +4026,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4061,7 +4061,7 @@
       "collection": "incidents",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4086,7 +4086,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4121,7 +4121,7 @@
       "collection": "incidents",
       "techniqueId": "T1059.006",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4156,7 +4156,7 @@
       "collection": "incidents",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4181,7 +4181,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4216,7 +4216,7 @@
       "collection": "incidents",
       "techniqueId": "T1552.005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4251,7 +4251,7 @@
       "collection": "incidents",
       "techniqueId": "T1078.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4296,7 +4296,7 @@
       "collection": "incidents",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4321,7 +4321,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4346,7 +4346,7 @@
       "collection": "incidents",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4381,7 +4381,7 @@
       "collection": "incidents",
       "techniqueId": "T1588.006",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4416,7 +4416,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4441,7 +4441,7 @@
       "collection": "incidents",
       "techniqueId": "T1528",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4476,7 +4476,7 @@
       "collection": "incidents",
       "techniqueId": "T1550.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4511,7 +4511,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4536,7 +4536,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4561,7 +4561,7 @@
       "collection": "incidents",
       "techniqueId": "T1021.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4586,7 +4586,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4611,7 +4611,7 @@
       "collection": "incidents",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4636,7 +4636,7 @@
       "collection": "incidents",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4661,7 +4661,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4686,7 +4686,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4711,7 +4711,7 @@
       "collection": "incidents",
       "techniqueId": "T1560",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4736,7 +4736,7 @@
       "collection": "incidents",
       "techniqueId": "T1071",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4761,7 +4761,7 @@
       "collection": "incidents",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4786,7 +4786,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4821,7 +4821,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4856,7 +4856,7 @@
       "collection": "incidents",
       "techniqueId": "T1204.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4881,7 +4881,7 @@
       "collection": "incidents",
       "techniqueId": "T1499",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4916,7 +4916,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4941,7 +4941,7 @@
       "collection": "incidents",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -4976,7 +4976,7 @@
       "collection": "incidents",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5001,7 +5001,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5026,7 +5026,7 @@
       "collection": "incidents",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5051,7 +5051,7 @@
       "collection": "incidents",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5076,7 +5076,7 @@
       "collection": "incidents",
       "techniqueId": "T1499",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5101,7 +5101,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5126,7 +5126,7 @@
       "collection": "incidents",
       "techniqueId": "T1059.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5151,7 +5151,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5176,7 +5176,7 @@
       "collection": "incidents",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5201,7 +5201,7 @@
       "collection": "incidents",
       "techniqueId": "T1588.006",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5236,7 +5236,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5261,7 +5261,7 @@
       "collection": "incidents",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5296,7 +5296,7 @@
       "collection": "incidents",
       "techniqueId": "T1561.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5331,7 +5331,7 @@
       "collection": "incidents",
       "techniqueId": "T1003.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5366,7 +5366,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5391,7 +5391,7 @@
       "collection": "incidents",
       "techniqueId": "T1189",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5416,7 +5416,7 @@
       "collection": "incidents",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5441,7 +5441,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5476,7 +5476,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5520,7 +5520,7 @@
       "collection": "incidents",
       "techniqueId": "T1574.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5555,7 +5555,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5580,7 +5580,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5605,7 +5605,7 @@
       "collection": "incidents",
       "techniqueId": "T1489",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5630,7 +5630,7 @@
       "collection": "incidents",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5665,7 +5665,7 @@
       "collection": "incidents",
       "techniqueId": "T1561.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5700,7 +5700,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5735,7 +5735,7 @@
       "collection": "incidents",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5760,7 +5760,7 @@
       "collection": "incidents",
       "techniqueId": "T1027",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5795,7 +5795,7 @@
       "collection": "incidents",
       "techniqueId": "T1036",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5830,7 +5830,7 @@
       "collection": "incidents",
       "techniqueId": "T1083",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5855,7 +5855,7 @@
       "collection": "incidents",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5880,7 +5880,7 @@
       "collection": "incidents",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5905,7 +5905,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5930,7 +5930,7 @@
       "collection": "incidents",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5955,7 +5955,7 @@
       "collection": "incidents",
       "techniqueId": "T1046",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -5980,7 +5980,7 @@
       "collection": "incidents",
       "techniqueId": "T1498",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6005,7 +6005,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6030,7 +6030,7 @@
       "collection": "incidents",
       "techniqueId": "T1072",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6055,7 +6055,7 @@
       "collection": "incidents",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6080,7 +6080,7 @@
       "collection": "incidents",
       "techniqueId": "T1091",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6105,7 +6105,7 @@
       "collection": "incidents",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6138,7 +6138,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6163,7 +6163,7 @@
       "collection": "incidents",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6188,7 +6188,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6213,7 +6213,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6238,7 +6238,7 @@
       "collection": "incidents",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6273,7 +6273,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6298,7 +6298,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6323,7 +6323,7 @@
       "collection": "incidents",
       "techniqueId": "T1098",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6358,7 +6358,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6393,7 +6393,7 @@
       "collection": "incidents",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6428,7 +6428,7 @@
       "collection": "incidents",
       "techniqueId": "T1021.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6453,7 +6453,7 @@
       "collection": "incidents",
       "techniqueId": "T1489",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6486,7 +6486,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6511,7 +6511,7 @@
       "collection": "incidents",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6536,7 +6536,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6561,7 +6561,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6586,7 +6586,7 @@
       "collection": "incidents",
       "techniqueId": "T1087",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6611,7 +6611,7 @@
       "collection": "incidents",
       "techniqueId": "T1021",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6636,7 +6636,7 @@
       "collection": "incidents",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6661,7 +6661,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6686,7 +6686,7 @@
       "collection": "incidents",
       "techniqueId": "T1531",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6711,7 +6711,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6746,7 +6746,7 @@
       "collection": "incidents",
       "techniqueId": "T1003.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6781,7 +6781,7 @@
       "collection": "incidents",
       "techniqueId": "T1090.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6806,7 +6806,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6831,7 +6831,7 @@
       "collection": "incidents",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6856,7 +6856,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6881,7 +6881,7 @@
       "collection": "incidents",
       "techniqueId": "T1570",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6906,7 +6906,7 @@
       "collection": "incidents",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6931,7 +6931,7 @@
       "collection": "incidents",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6956,7 +6956,7 @@
       "collection": "incidents",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -6991,7 +6991,7 @@
       "collection": "incidents",
       "techniqueId": "T1195.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7016,7 +7016,7 @@
       "collection": "incidents",
       "techniqueId": "T1554",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7041,7 +7041,7 @@
       "collection": "incidents",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7076,7 +7076,7 @@
       "collection": "incidents",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7101,7 +7101,7 @@
       "collection": "incidents",
       "techniqueId": "T1539",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7126,7 +7126,7 @@
       "collection": "incidents",
       "techniqueId": "T1114",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7151,7 +7151,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7176,7 +7176,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1133",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7211,7 +7211,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7246,7 +7246,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1560.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7281,7 +7281,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7306,7 +7306,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7331,7 +7331,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7366,7 +7366,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7401,7 +7401,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7426,7 +7426,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7451,7 +7451,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7486,7 +7486,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1560.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7521,7 +7521,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7546,7 +7546,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7581,7 +7581,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7625,7 +7625,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1574.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7670,7 +7670,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7705,7 +7705,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7740,7 +7740,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1588.006",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7765,7 +7765,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7800,7 +7800,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7835,7 +7835,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1484.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7880,7 +7880,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7915,7 +7915,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1550.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7940,7 +7940,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -7975,7 +7975,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8010,7 +8010,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8035,7 +8035,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8070,7 +8070,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8095,7 +8095,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8120,7 +8120,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8155,7 +8155,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8180,7 +8180,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8215,7 +8215,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8250,7 +8250,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8294,7 +8294,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1574.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8329,7 +8329,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8354,7 +8354,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8379,7 +8379,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8404,7 +8404,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8439,7 +8439,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8464,7 +8464,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1489",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8489,7 +8489,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8514,7 +8514,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8549,7 +8549,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8574,7 +8574,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8599,7 +8599,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8634,7 +8634,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1021.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8659,7 +8659,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8694,7 +8694,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8719,7 +8719,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1055",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8764,7 +8764,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8789,7 +8789,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1528",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8824,7 +8824,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1550.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8859,7 +8859,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8884,7 +8884,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8919,7 +8919,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8944,7 +8944,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -8979,7 +8979,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9004,7 +9004,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9039,7 +9039,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9074,7 +9074,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9099,7 +9099,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9124,7 +9124,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9149,7 +9149,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1611",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9184,7 +9184,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9219,7 +9219,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9244,7 +9244,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9279,7 +9279,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9314,7 +9314,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1491.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9349,7 +9349,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9384,7 +9384,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9409,7 +9409,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9434,7 +9434,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9459,7 +9459,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9484,7 +9484,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9509,7 +9509,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9534,7 +9534,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9559,7 +9559,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9584,7 +9584,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9609,7 +9609,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9634,7 +9634,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9659,7 +9659,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1589",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9694,7 +9694,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9719,7 +9719,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9754,7 +9754,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9789,7 +9789,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1003.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9814,7 +9814,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1105",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9839,7 +9839,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1074",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9864,7 +9864,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1041",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9889,7 +9889,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9914,7 +9914,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9939,7 +9939,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9964,7 +9964,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -9999,7 +9999,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10024,7 +10024,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10049,7 +10049,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1490",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10074,7 +10074,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10109,7 +10109,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1021.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10153,7 +10153,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1562.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10188,7 +10188,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10213,7 +10213,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10238,7 +10238,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10263,7 +10263,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1557",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10288,7 +10288,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1014",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10323,7 +10323,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1485",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10358,7 +10358,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10393,7 +10393,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10437,7 +10437,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1562.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10482,7 +10482,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10507,7 +10507,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1621",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10541,7 +10541,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1656",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10586,7 +10586,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10611,7 +10611,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10646,7 +10646,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1530",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10671,7 +10671,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1567",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10696,7 +10696,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10731,7 +10731,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10766,7 +10766,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1528",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10801,7 +10801,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1098.005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10836,7 +10836,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10871,7 +10871,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10906,7 +10906,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10931,7 +10931,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -10966,7 +10966,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11001,7 +11001,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11026,7 +11026,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1199",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11061,7 +11061,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1071.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11086,7 +11086,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1027",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11131,7 +11131,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11166,7 +11166,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1566.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11201,7 +11201,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1556.006",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11226,7 +11226,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1213",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11251,7 +11251,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1657",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11276,7 +11276,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1218",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11321,7 +11321,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1090.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11346,7 +11346,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11371,7 +11371,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11406,7 +11406,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1059.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11431,7 +11431,7 @@
       "collection": "threat-actors",
       "techniqueId": "T1055",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11466,7 +11466,7 @@
       "collection": "zero-days",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11501,7 +11501,7 @@
       "collection": "zero-days",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11526,7 +11526,7 @@
       "collection": "zero-days",
       "techniqueId": "T1189",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11551,7 +11551,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11576,7 +11576,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11601,7 +11601,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11626,7 +11626,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11651,7 +11651,7 @@
       "collection": "zero-days",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11676,7 +11676,7 @@
       "collection": "zero-days",
       "techniqueId": "T1189",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11701,7 +11701,7 @@
       "collection": "zero-days",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11726,7 +11726,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11761,7 +11761,7 @@
       "collection": "zero-days",
       "techniqueId": "T1565.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11786,7 +11786,7 @@
       "collection": "zero-days",
       "techniqueId": "T1548",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11811,7 +11811,7 @@
       "collection": "zero-days",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11836,7 +11836,7 @@
       "collection": "zero-days",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11871,7 +11871,7 @@
       "collection": "zero-days",
       "techniqueId": "T1083",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11896,7 +11896,7 @@
       "collection": "zero-days",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11921,7 +11921,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11946,7 +11946,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11971,7 +11971,7 @@
       "collection": "zero-days",
       "techniqueId": "T1133",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -11996,7 +11996,7 @@
       "collection": "zero-days",
       "techniqueId": "T1649",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12021,7 +12021,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12046,7 +12046,7 @@
       "collection": "zero-days",
       "techniqueId": "T1083",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12081,7 +12081,7 @@
       "collection": "zero-days",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12106,7 +12106,7 @@
       "collection": "zero-days",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12131,7 +12131,7 @@
       "collection": "zero-days",
       "techniqueId": "T1486",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12156,7 +12156,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12191,7 +12191,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12226,7 +12226,7 @@
       "collection": "zero-days",
       "techniqueId": "T1498.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12251,7 +12251,7 @@
       "collection": "zero-days",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12276,7 +12276,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12301,7 +12301,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12326,7 +12326,7 @@
       "collection": "zero-days",
       "techniqueId": "T1072",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12351,7 +12351,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12386,7 +12386,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12411,7 +12411,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12436,7 +12436,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12461,7 +12461,7 @@
       "collection": "zero-days",
       "techniqueId": "T1083",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12486,7 +12486,7 @@
       "collection": "zero-days",
       "techniqueId": "T1552",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12511,7 +12511,7 @@
       "collection": "zero-days",
       "techniqueId": "T1005",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12546,7 +12546,7 @@
       "collection": "zero-days",
       "techniqueId": "T1552.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12571,7 +12571,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12606,7 +12606,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12641,7 +12641,7 @@
       "collection": "zero-days",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12666,7 +12666,7 @@
       "collection": "zero-days",
       "techniqueId": "T1496",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12691,7 +12691,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12726,7 +12726,7 @@
       "collection": "zero-days",
       "techniqueId": "T1136.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12761,7 +12761,7 @@
       "collection": "zero-days",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12786,7 +12786,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12811,7 +12811,7 @@
       "collection": "zero-days",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12846,7 +12846,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12881,7 +12881,7 @@
       "collection": "zero-days",
       "techniqueId": "T1548.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12906,7 +12906,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12931,7 +12931,7 @@
       "collection": "zero-days",
       "techniqueId": "T1105",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12956,7 +12956,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -12981,7 +12981,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13016,7 +13016,7 @@
       "collection": "zero-days",
       "techniqueId": "T1552.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13041,7 +13041,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13066,7 +13066,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13091,7 +13091,7 @@
       "collection": "zero-days",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13126,7 +13126,7 @@
       "collection": "zero-days",
       "techniqueId": "T1566.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13151,7 +13151,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13176,7 +13176,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13211,7 +13211,7 @@
       "collection": "zero-days",
       "techniqueId": "T1574.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13256,7 +13256,7 @@
       "collection": "zero-days",
       "techniqueId": "T1204.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13281,7 +13281,7 @@
       "collection": "zero-days",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13306,7 +13306,7 @@
       "collection": "zero-days",
       "techniqueId": "T1068",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13340,7 +13340,7 @@
       "collection": "zero-days",
       "techniqueId": "T1562",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13375,7 +13375,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13400,7 +13400,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13435,7 +13435,7 @@
       "collection": "zero-days",
       "techniqueId": "T1589.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13460,7 +13460,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13485,7 +13485,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13520,7 +13520,7 @@
       "collection": "zero-days",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13555,7 +13555,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.007",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13580,7 +13580,7 @@
       "collection": "zero-days",
       "techniqueId": "T1548",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13605,7 +13605,7 @@
       "collection": "zero-days",
       "techniqueId": "T1098",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13630,7 +13630,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13665,7 +13665,7 @@
       "collection": "zero-days",
       "techniqueId": "T1505.003",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13690,7 +13690,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13715,7 +13715,7 @@
       "collection": "zero-days",
       "techniqueId": "T1210",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13740,7 +13740,7 @@
       "collection": "zero-days",
       "techniqueId": "T1091",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13765,7 +13765,7 @@
       "collection": "zero-days",
       "techniqueId": "T1203",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13798,7 +13798,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.007",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13823,7 +13823,7 @@
       "collection": "zero-days",
       "techniqueId": "T1185",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13858,7 +13858,7 @@
       "collection": "zero-days",
       "techniqueId": "T1195.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13902,7 +13902,7 @@
       "collection": "zero-days",
       "techniqueId": "T1574.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13947,7 +13947,7 @@
       "collection": "zero-days",
       "techniqueId": "T1071.001",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -13982,7 +13982,7 @@
       "collection": "zero-days",
       "techniqueId": "T1553.002",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -14017,7 +14017,7 @@
       "collection": "zero-days",
       "techniqueId": "T1190",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -14052,7 +14052,7 @@
       "collection": "zero-days",
       "techniqueId": "T1059.004",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
@@ -14077,7 +14077,7 @@
       "collection": "zero-days",
       "techniqueId": "T1078",
       "recommended": "v19.0",
-      "message": "Mapping is missing attackVersion/attack_version metadata."
+      "message": "Mapping is missing attack-version metadata."
     },
     {
       "severity": "metadata-gap",
