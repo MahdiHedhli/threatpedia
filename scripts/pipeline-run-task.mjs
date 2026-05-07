@@ -39,6 +39,7 @@ import {
 } from './pipeline-schema.mjs';
 import {
   getAtlasMappingValidationIssues,
+  getFrameworkMappingValidationIssues,
   getMitreMappingValidationIssues,
 } from './framework-mapping-validation.mjs';
 import { getPublicProseGuardrailIssues } from './public-prose-guardrails.mjs';
@@ -112,20 +113,23 @@ const MITRE_MAPPING_SCHEMA = `    Each MITRE ATT&CK mapping requires:
       techniqueId: string (e.g., "T1566.001")
       techniqueName: string (e.g., "Phishing: Spearphishing Attachment")
       tactic: string (optional, canonical ATT&CK tactic casing)
-      attackVersion: string (optional, e.g., "v19"; attack_version is tolerated for legacy DATA-STANDARDS text)
+      attack-version: string (optional, e.g., "v19"; attackVersion and attack_version are tolerated only as compatibility aliases)
       confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
       evidence: string (optional, source-supported rationale)
       notes: string (optional, context for this article)`;
 
-const ATLAS_MAPPING_SCHEMA = `  atlasMappings: array of MITRE ATLAS mapping objects (optional; only for article-supported adversarial AI/ML behavior)
-    Each ATLAS mapping requires:
-      techniqueId: string (e.g., "AML.T0042")
-      techniqueName: string
-      tactic: string (optional)
-      atlasVersion: string (optional, e.g., "5.6.0")
+const FRAMEWORK_MAPPING_SCHEMA = `  framework-mappings: array of generic framework mapping objects (optional; currently only for article-supported adversarial AI/ML behavior)
+    For MITRE ATLAS mappings:
+      framework: "mitre-atlas"
+      version: string (optional, e.g., "5.6.0")
+      mapping-id: string (e.g., "AML.T0042")
+      mapping-name: string
+      tactic-id: string (optional)
+      tactic-name: string (optional)
       confidence: enum (optional) — ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}
       evidence: string (optional, source-supported rationale)
-      notes: string (optional)`;
+      notes: string (optional)
+    atlasMappings is tolerated only as a compatibility alias while old PRs are migrated`;
 
 // ── Schemas per content type ────────────────────────────────────────────────
 const SCHEMAS = {
@@ -152,7 +156,7 @@ const SCHEMAS = {
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Summary — 2-3 paragraphs: what happened, who was affected, scope
   ## Technical Analysis — attack mechanism, tools used, vulnerability details
@@ -191,7 +195,7 @@ ${ATLAS_MAPPING_SCHEMA}`,
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 6):
   ## Executive Summary — campaign overview, objectives, scope, current status
   ## Technical Analysis — tools, techniques, infrastructure, operator workflow
@@ -220,7 +224,7 @@ ${ATLAS_MAPPING_SCHEMA}`,
   tools: array of strings — known malware and tools
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 3
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}
+${FRAMEWORK_MAPPING_SCHEMA}
   attributionConfidence: enum (optional) — A1 through A6
   attributionRationale: string (optional, max 500 chars)
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
@@ -268,7 +272,7 @@ ${SOURCE_SCHEMA}`,
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Severity Assessment — Exploitability, Impact, Weaponization Risk, Patch Urgency, Detection Coverage (scored X/10)
   ## Summary — what the vulnerability is, scope of affected systems, significance
@@ -311,8 +315,8 @@ function buildRules(task) {
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; optional metadata must use attackVersion vNN[.N], confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}, and non-empty evidence when present
-  12. atlasMappings are optional and only allowed for source-supported adversarial AI/ML behavior; techniqueId must match AML.T####[.###]
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; optional metadata must use attack-version vNN[.N], confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}, and non-empty evidence when present
+  12. framework-mappings are optional and currently only allowed for source-supported adversarial AI/ML behavior; MITRE ATLAS entries require framework: mitre-atlas and mapping-id AML.T####[.###]
   13. Canonical publisher aliases must be normalized in frontmatter and body
   14. The Astro build must pass: cd site && npm run build`;
 }
@@ -1239,6 +1243,8 @@ function validateOutput(task, explicitFile) {
 
     const atlasMappings = frontmatter.atlasMappings;
     issues.push(...getAtlasMappingValidationIssues(atlasMappings));
+    const frameworkMappings = frontmatter['framework-mappings'] ?? frontmatter.frameworkMappings;
+    issues.push(...getFrameworkMappingValidationIssues(frameworkMappings));
 
     // ── 8. Exact H2 section headings ───────────────────────────────────────
     const requiredH2 = SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || [];
