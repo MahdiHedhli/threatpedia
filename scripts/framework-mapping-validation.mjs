@@ -5,6 +5,15 @@ import {
   SCHEMA_MAPPING_CONFIDENCE_VALUES,
   SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
 } from './pipeline-schema.mjs';
+import {
+  getAtlasData,
+  getAtlasTechnique,
+  getAttackEnterpriseData,
+  getAttackEnterpriseTechnique,
+  isPinnedAtlasVersion,
+  isPinnedAttackVersion,
+  normalizeFrameworkName,
+} from './framework-data.mjs';
 
 const ATTACK_VERSION_RE = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
 const ATLAS_TECHNIQUE_ID_RE = new RegExp(SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN);
@@ -22,23 +31,38 @@ function trimOptionalString(value) {
 export function getMitreMappingValidationIssues(mappings, options = {}) {
   const labelPrefix = options.labelPrefix || 'MITRE mapping';
   const issues = [];
+  const attackData = getAttackEnterpriseData();
 
   for (let i = 0; i < mappings.length; i += 1) {
     const label = mappingLabel(labelPrefix, i);
     const mapping = mappings[i] || {};
     const techniqueId = trimOptionalString(mapping.techniqueId);
+    const attackVersion = mapping.attackVersion ?? mapping.attack_version;
 
     if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
       issues.push(`${label}: techniqueId "${techniqueId}" should use canonical "." separator (${techniqueId.replace('-', '.')})`);
     } else if (!MITRE_TECHNIQUE_ID_RE.test(techniqueId)) {
       issues.push(`${label}: invalid techniqueId "${techniqueId}" — expected format T####[.###]`);
+    } else {
+      const shouldUsePinnedAttackData = isPinnedAttackVersion(attackVersion);
+      const technique = shouldUsePinnedAttackData ? getAttackEnterpriseTechnique(techniqueId) : null;
+      if (shouldUsePinnedAttackData && !technique) {
+        issues.push(`${label}: techniqueId "${techniqueId}" is not present in ATT&CK Enterprise ${attackData.version}`);
+      } else if (technique?.revoked || technique?.deprecated) {
+        issues.push(`${label}: techniqueId "${techniqueId}" is ${technique.revoked ? 'revoked' : 'deprecated'} in ATT&CK Enterprise ${attackData.version}`);
+      } else if (technique) {
+        const providedName = normalizeFrameworkName(mapping.techniqueName);
+        const officialName = normalizeFrameworkName(technique.name);
+        if (providedName && providedName !== officialName) {
+          issues.push(`${label}: techniqueName "${providedName}" should match ATT&CK Enterprise ${attackData.version} name "${officialName}"`);
+        }
+      }
     }
 
     if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
       issues.push(`${label}: missing techniqueName`);
     }
 
-    const attackVersion = mapping.attackVersion ?? mapping.attack_version;
     if (attackVersion !== undefined) {
       const version = typeof attackVersion === 'string' ? attackVersion.trim() : '';
       if (!ATTACK_VERSION_RE.test(version)) {
@@ -64,6 +88,7 @@ export function getMitreMappingValidationIssues(mappings, options = {}) {
 export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
   const labelPrefix = options.labelPrefix || 'ATLAS mapping';
   const issues = [];
+  const atlasData = getAtlasData();
 
   if (atlasMappings !== undefined && !Array.isArray(atlasMappings)) {
     issues.push('atlasMappings must be an array when present');
@@ -74,9 +99,24 @@ export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
       const label = mappingLabel(labelPrefix, i);
       const mapping = atlasMappings[i] || {};
       const techniqueId = trimOptionalString(mapping.techniqueId);
+      const atlasVersion = mapping.atlasVersion ?? mapping.atlas_version;
 
       if (!ATLAS_TECHNIQUE_ID_RE.test(techniqueId)) {
         issues.push(`${label}: invalid techniqueId "${techniqueId}" — expected format AML.T####[.###]`);
+      } else {
+        const shouldUsePinnedAtlasData = isPinnedAtlasVersion(atlasVersion);
+        const technique = shouldUsePinnedAtlasData ? getAtlasTechnique(techniqueId) : null;
+        if (shouldUsePinnedAtlasData && !technique) {
+          issues.push(`${label}: techniqueId "${techniqueId}" is not present in MITRE ATLAS ${atlasData.version}`);
+        } else if (technique?.revoked || technique?.deprecated) {
+          issues.push(`${label}: techniqueId "${techniqueId}" is ${technique.revoked ? 'revoked' : 'deprecated'} in MITRE ATLAS ${atlasData.version}`);
+        } else if (technique) {
+          const providedName = normalizeFrameworkName(mapping.techniqueName);
+          const officialName = normalizeFrameworkName(technique.name);
+          if (providedName && providedName !== officialName) {
+            issues.push(`${label}: techniqueName "${providedName}" should match MITRE ATLAS ${atlasData.version} name "${officialName}"`);
+          }
+        }
       }
 
       if (!mapping.techniqueName || String(mapping.techniqueName).trim() === '') {
@@ -90,9 +130,9 @@ export function getAtlasMappingValidationIssues(atlasMappings, options = {}) {
         issues.push(`${label}: confidence must be ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}`);
       }
 
-      if (mapping.atlasVersion !== undefined) {
-        const atlasVersion = typeof mapping.atlasVersion === 'string' ? mapping.atlasVersion.trim() : '';
-        if (!ATLAS_VERSION_RE.test(atlasVersion)) {
+      if (atlasVersion != null && atlasVersion !== '') {
+        const version = typeof atlasVersion === 'string' ? atlasVersion.trim() : '';
+        if (!ATLAS_VERSION_RE.test(version)) {
           issues.push(`${label}: atlasVersion must match N.N.N`);
         }
       }
