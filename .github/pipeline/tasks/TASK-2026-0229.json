@@ -54,7 +54,7 @@
     "feed": "CISA_KEV",
     "score": 65,
     "auto_certify": false,
-    "cvss": "9.3",
+    "cvss": 9.3,
     "discovered_at": "2026-05-06T19:27:42.126Z"
   },
   "history": [
