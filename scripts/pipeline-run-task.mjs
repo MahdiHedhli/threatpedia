@@ -350,6 +350,39 @@ function loadTask(taskId) {
   return { data: JSON.parse(readFileSync(filePath, 'utf8')), path: filePath };
 }
 
+function loadMainTask(taskId) {
+  const taskPath = `.github/pipeline/tasks/${taskId}.json`;
+  try {
+    const raw = execFileSync('git', ['show', `origin/main:${taskPath}`], {
+      encoding: 'utf8',
+      cwd: ROOT,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    return JSON.parse(raw);
+  } catch (error) {
+    const stderr = error.stderr ? error.stderr.toString().trim() : error.message;
+    console.error(`  ERROR: Refusing to execute ${taskId} because ${taskPath} is not available on origin/main.`);
+    console.error('  Discovery or seed tasks must be accepted on main before workers can lock them or open article PRs.');
+    console.error('  Merge the queue-state PR first, fetch origin/main, and rebuild the task branch from main before retrying.');
+    if (stderr) console.error(`  Git check: ${stderr}`);
+    process.exit(1);
+  }
+}
+
+function ensureTaskAcceptedOnMain(task, action) {
+  const mainTask = loadMainTask(task.task_id);
+  if (mainTask.task_id !== task.task_id) {
+    console.error(`  ERROR: origin/main task identity mismatch for ${task.task_id}.`);
+    console.error(`  Expected task_id "${task.task_id}", found "${mainTask.task_id || '(missing)'}".`);
+    process.exit(1);
+  }
+  if (['complete', 'failed', 'archived'].includes(mainTask.status)) {
+    console.error(`  ERROR: Refusing to ${action} ${task.task_id} because origin/main status is ${mainTask.status}.`);
+    console.error('  Rebuild from current main and select an eligible pending task instead.');
+    process.exit(1);
+  }
+}
+
 function saveTask(task, filePath) {
   task.updated = new Date().toISOString();
   writeFileSync(filePath, JSON.stringify(task, null, 2) + '\n');
@@ -1487,12 +1520,14 @@ if (args.action === 'list') {
       showBrief(task);
       break;
     case 'lock':
+      ensureTaskAcceptedOnMain(task, args.action);
       lockTask(task, filePath);
       break;
     case 'validate':
       validateOutput(task, args.file);
       break;
     case 'open-pr':
+      ensureTaskAcceptedOnMain(task, args.action);
       openPrTask(task, filePath, args.prNumber, args.file, args.usedDeprecatedComplete);
       break;
   }
