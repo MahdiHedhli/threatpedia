@@ -112,21 +112,13 @@ The actors collected call detail records across multiple customer bases and obta
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
+T1190 - Exploit Public-Facing Application: Salt Typhoon exploited vulnerabilities in telecommunications network edge devices and routers to gain initial footholds in targeted provider environments, as documented in advisory AA24-335a.
 
-T1190 - Exploit Public-Facing Application: The actors exploited vulnerabilities in telecommunications network edge devices to gain entry into targeted provider environments. Advisory AA24-335a documented this as the primary initial access vector.
+T1078 - Valid Accounts: The actors used compromised credentials to maintain persistent access across targeted telecommunications provider networks over an extended period.
 
-### Persistence
+T1557 - Adversary-in-the-Middle: Salt Typhoon accessed lawful intercept systems and telecommunications backbone infrastructure, enabling interception of call metadata for multiple customer bases and communications content for a targeted subset of individuals.
 
-T1078 - Valid Accounts: Salt Typhoon used compromised credentials to maintain long-term access across provider networks. Use of valid accounts reduced the actors' reliance on repeated exploitation and enabled access to multiple internal systems.
-
-### Collection
-
-T1557 - Adversary-in-the-Middle: The actors gained access to telecommunications backbone infrastructure and CALEA-compliant lawful intercept systems. This position allowed collection of call metadata at scale and interception of communications content for targeted individuals.
-
-### Command and Control
-
-T1071 - Application Layer Protocol: Command and control traffic was conducted over standard application layer protocols within the compromised provider environments, blending with normal network traffic.
+T1071 - Application Layer Protocol: Command and control activity used standard application layer protocols to blend with normal network communications within targeted provider environments.
 
 ## Timeline
 
