@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-06T19:27:42.126Z",
-  "updated": "2026-05-07T01:15:00.000Z",
+  "updated": "2026-05-07T18:28:45.176Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-07T01:10:00.000Z",
+  "locked_by": null,
+  "locked_at": null,
   "pr_number": 517,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/517",
   "input": {
@@ -21,19 +21,26 @@
     ],
     "candidate_data": {
       "cve": "CVE-2026-0300",
-      "cves": ["CVE-2026-0300"],
+      "cves": [
+        "CVE-2026-0300"
+      ],
       "exploitId": "TP-EXP-2026-0019",
       "type": "Buffer Overflow / RCE",
       "platform": "Palo Alto Networks PAN-OS",
       "severity": "critical",
       "cisaKev": true,
       "disclosedDate": "2026-05-05",
-      "cwes": ["CWE-787"],
+      "cwes": [
+        "CWE-787"
+      ],
       "knownRansomwareUse": false
     },
     "notes": "CISA KEV entry added 2026-05-06. Required action by 2026-05-09. Discovery score: 65/100. CVSS 9.3 CRITICAL. Limited active exploitation confirmed."
   },
-  "specs": ["DATA-STANDARDS-v1.0.md", "EDITORIAL-WORKFLOW-SPEC.md §14A"],
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
@@ -44,7 +51,9 @@
     "astro_build": true
   },
   "depends_on": [],
-  "preconditions": ["editorial queue depth < 50"],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
   "output": {
     "file_pattern": "site/src/content/zero-days/palo-alto-networks-pan-os-cve-2026-0300.md",
     "branch": "pipeline/TASK-2026-0229",
@@ -81,6 +90,15 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #517 opened: https://github.com/MahdiHedhli/threatpedia/pull/517"
+    },
+    {
+      "timestamp": "2026-05-07T18:28:45.176Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #517 merged (c29a9d1)."
     }
-  ]
+  ],
+  "merged_at": "2026-05-07T18:28:45.176Z"
 }
