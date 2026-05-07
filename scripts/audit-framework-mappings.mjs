@@ -25,6 +25,7 @@ const DEFAULT_MARKDOWN_OUT = resolve(ROOT, `.github/pipeline/reports/framework-m
 const FRONTMATTER_REGEX = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
 const CANONICAL_ID_REGEX = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
 const ATTACK_VERSION_REGEX = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
+const DEFAULT_FINDINGS_TABLE_LIMIT = 50;
 
 const TACTIC_SLUG_BY_NAME = new Map(
   SCHEMA_MITRE_TACTICS.map((name) => [name, name.toLowerCase().replace(/\s+/g, '-')]),
@@ -352,7 +353,7 @@ function markdownTable(rows) {
   ].join('\n');
 }
 
-function renderFindings(findings, predicate, limit = 50) {
+function renderFindings(findings, predicate, limit = DEFAULT_FINDINGS_TABLE_LIMIT) {
   const selected = findings.filter(predicate);
   if (selected.length === 0) return '_None._\n';
 
@@ -425,7 +426,7 @@ ${renderFindings(report.findings, (finding) => finding.severity === 'review-requ
 ${renderFindings(report.findings, (finding) => ['error', 'warning'].includes(finding.severity))}
 ## Metadata Gaps
 
-${renderFindings(report.findings, (finding) => finding.severity === 'metadata-gap', 100)}
+${renderFindings(report.findings, (finding) => finding.severity === 'metadata-gap')}
 ## Recommended Next Step
 
 Open a follow-up migration PR that applies only mechanically safe technique-name corrections first. Handle v19 tactic split candidates in a separate source-supported review pass; do not bulk-reclassify Defense Evasion mappings without checking article evidence.

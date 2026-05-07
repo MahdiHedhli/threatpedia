@@ -1,6 +1,6 @@
 # Framework Mapping Corpus Audit
 
-Generated: 2026-05-07T13:32:57.421Z
+Generated: 2026-05-07T15:55:30.758Z
 
 Pinned framework data:
 
@@ -223,59 +223,9 @@ _120 additional finding(s) omitted from this table; see JSON output if generated
 | metadata-gap | missing-evidence | site/src/content/campaigns/frostarmada-soho-dns-hijacking-2026.md#mitreMappings[2] | Mapping is missing evidence metadata. |
 | metadata-gap | missing-attack-version | site/src/content/campaigns/frostarmada-soho-dns-hijacking-2026.md#mitreMappings[3] | Mapping is missing attack-version metadata. |
 | metadata-gap | missing-confidence | site/src/content/campaigns/frostarmada-soho-dns-hijacking-2026.md#mitreMappings[3] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/frostarmada-soho-dns-hijacking-2026.md#mitreMappings[3] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[0] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[0] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[0] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[1] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[1] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[1] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[2] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[2] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[2] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[3] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[3] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/hafnium-exchange-server-exploitation-campaign-2021.md#mitreMappings[3] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[0] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[0] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[0] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[1] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[1] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[1] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[2] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[2] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/m365-oauth-device-code-phishing-2026.md#mitreMappings[2] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[0] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[0] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[0] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[1] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[1] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[1] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[2] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[2] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[2] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[3] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[3] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[3] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[4] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[4] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[4] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[5] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[5] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/notpetya-destructive-campaign-2017.md#mitreMappings[5] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[0] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[0] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[0] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[1] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[1] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[1] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[2] | Mapping is missing attack-version metadata. |
-| metadata-gap | missing-confidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[2] | Mapping is missing confidence metadata. |
-| metadata-gap | missing-evidence | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[2] | Mapping is missing evidence metadata. |
-| metadata-gap | missing-attack-version | site/src/content/campaigns/operation-aurora-espionage-campaign-2009.md#mitreMappings[3] | Mapping is missing attack-version metadata. |
 
 
-_1331 additional finding(s) omitted from this table; see JSON output if generated._
+_1381 additional finding(s) omitted from this table; see JSON output if generated._
 
 ## Recommended Next Step
 
