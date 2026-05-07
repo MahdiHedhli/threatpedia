@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-06T20:15:20.074Z",
-  "updated": "2026-05-06T20:15:20.074Z",
+  "updated": "2026-05-07T15:09:43.297Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
   "locked_by": null,
@@ -51,6 +51,14 @@
       "to": "pending",
       "agent": "tp-queue-worker-campaigns",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-07T15:09:43.297Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #522"
     }
   ]
 }

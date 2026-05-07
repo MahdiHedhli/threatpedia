@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-06T20:14:44.898Z",
-  "updated": "2026-05-06T20:14:44.898Z",
+  "updated": "2026-05-07T15:09:43.297Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
   "locked_by": null,
@@ -22,8 +22,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -63,6 +63,14 @@
       "action": "branch_ref_corrected",
       "note": "Fixed output.branch from pipeline/TASK-2026-0229 to pipeline/TASK-2026-0231 to match renumbered task ID. The previous rename commit updated the filename and task_id but left the output.branch stale, which would have caused a branch collision with the existing zero-day PR #517 on pipeline/TASK-2026-0229.",
       "agent": "tp-queue-worker-campaigns"
+    },
+    {
+      "timestamp": "2026-05-07T15:09:43.297Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #521 already covers this task."
     }
   ]
 }
