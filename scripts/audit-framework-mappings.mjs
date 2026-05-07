@@ -26,6 +26,7 @@ const FRONTMATTER_REGEX = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
 const CANONICAL_ID_REGEX = new RegExp(SCHEMA_MITRE_TECHNIQUE_ID_PATTERN);
 const ATTACK_VERSION_REGEX = new RegExp(SCHEMA_ATTACK_VERSION_PATTERN);
 const DEFAULT_FINDINGS_TABLE_LIMIT = 50;
+const NONCANONICAL_SUBTECHNIQUE_ID_REGEX = /^T\d{4}[-–]\d{3}$/;
 
 const TACTIC_SLUG_BY_NAME = new Map(
   SCHEMA_MITRE_TACTICS.map((name) => [name, name.toLowerCase().replace(/\s+/g, '-')]),
@@ -138,8 +139,8 @@ function analyzeMapping(file, collection, mapping, index) {
 
   let effectiveTechniqueId = techniqueId;
   if (!CANONICAL_ID_REGEX.test(techniqueId)) {
-    if (/^T\d{4}-\d{3}$/.test(techniqueId)) {
-      effectiveTechniqueId = techniqueId.replace('-', '.');
+    if (NONCANONICAL_SUBTECHNIQUE_ID_REGEX.test(techniqueId)) {
+      effectiveTechniqueId = techniqueId.replace(/[-–]/, '.');
       findings.push({
         severity: 'fixable',
         category: 'noncanonical-technique-id-separator',

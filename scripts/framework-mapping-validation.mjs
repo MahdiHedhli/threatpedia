@@ -189,9 +189,9 @@ export function getFrameworkMappingValidationIssues(frameworkMappings, options =
       continue;
     }
 
-    if (!ATLAS_TECHNIQUE_ID_RE.test(mappingId)) {
+    if (framework === 'mitre-atlas' && !ATLAS_TECHNIQUE_ID_RE.test(mappingId)) {
       issues.push(`${label}: invalid mapping-id "${mappingId}" — expected format AML.T####[.###]`);
-    } else {
+    } else if (framework === 'mitre-atlas') {
       const shouldUsePinnedAtlasData = isPinnedAtlasVersion(version);
       const technique = shouldUsePinnedAtlasData ? getAtlasTechnique(mappingId) : null;
       if (shouldUsePinnedAtlasData && !technique) {
