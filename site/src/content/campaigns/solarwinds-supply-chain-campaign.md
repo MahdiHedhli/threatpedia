@@ -134,13 +134,9 @@ The final objective was long-dwell access to executive communications, policy do
 ## MITRE ATT&CK Mapping
 
 T1195.002 - Compromise Software Supply Chain: The campaign's defining access vector was the insertion of SUNBURST into signed Orion software releases.
-
 T1071.001 - Web Protocols: SUNBURST used web traffic patterns that mimicked Orion telemetry to hide C2.
-
 T1098.001 - Additional Cloud Credentials: Follow-on activity included adding or hijacking credentials on cloud application objects.
-
 T1484.002 - Trust Modification: Operators modified federation trust material to support forged SAML token abuse.
-
 T1114.002 - Remote Email Collection: Mailbox access and export were central to the intelligence objective of the campaign.
 
 ## Timeline
