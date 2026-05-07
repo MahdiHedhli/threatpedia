@@ -14,6 +14,7 @@ import {
 } from './pipeline-schema.mjs';
 import {
   getAtlasMappingValidationIssues,
+  getFrameworkMappingValidationIssues,
   getMitreMappingValidationIssues,
 } from './framework-mapping-validation.mjs';
 import {
@@ -437,6 +438,19 @@ function validateFile(file, newFiles) {
       : atlasIssues.join(' | '),
   });
   if (atlasIssues.length > 0) pass = false;
+
+  const frameworkMappings = fm['framework-mappings'] ?? fm.frameworkMappings;
+  const frameworkIssues = getFrameworkMappingValidationIssues(frameworkMappings, {
+    labelPrefix: 'mapping',
+  });
+  checks.push({
+    name: 'Generic framework mappings',
+    pass: frameworkIssues.length === 0,
+    detail: frameworkIssues.length === 0
+      ? `${Array.isArray(frameworkMappings) ? frameworkMappings.length : 0} optional mapping(s)`
+      : frameworkIssues.join(' | '),
+  });
+  if (frameworkIssues.length > 0) pass = false;
 
   const sources = Array.isArray(fm.sources) ? fm.sources : [];
   const publisherAliasViolations = [];

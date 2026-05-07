@@ -68,6 +68,10 @@ export const SCHEMA_MAPPING_CONFIDENCE_VALUES = Object.freeze([
   'possible',
 ]);
 
+export const SCHEMA_FRAMEWORK_MAPPING_VALUES = Object.freeze([
+  'mitre-atlas',
+]);
+
 export const SCHEMA_ATTACK_VERSION_PATTERN = '^v\\d+(?:\\.\\d+)?$';
 export const SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN = '^AML\\.T\\d{4}(?:\\.\\d{3})?$';
 export const SCHEMA_ATLAS_VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
@@ -155,6 +159,7 @@ export const SCHEMA = Object.freeze({
   reviewStatuses: SCHEMA_REVIEW_STATUSES,
   mitreTactics: SCHEMA_MITRE_TACTICS,
   mappingConfidenceValues: SCHEMA_MAPPING_CONFIDENCE_VALUES,
+  frameworkMappingValues: SCHEMA_FRAMEWORK_MAPPING_VALUES,
   attackVersionPattern: SCHEMA_ATTACK_VERSION_PATTERN,
   atlasTechniqueIdPattern: SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
   atlasVersionPattern: SCHEMA_ATLAS_VERSION_PATTERN,
