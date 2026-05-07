@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-06T20:14:44.898Z",
-  "updated": "2026-05-07T14:16:42.026Z",
+  "updated": "2026-05-07T14:25:00.000Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
   "locked_by": "dangermouse-bot",
@@ -22,8 +22,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -41,7 +41,8 @@
   "output": {
     "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0231",
-    "pr": true
+    "pr": true,
+    "slug": "salt-typhoon-telecom-intrusion-campaign"
   },
   "history": [
     {
@@ -70,6 +71,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-07T14:25:00.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #521 opened: https://github.com/MahdiHedhli/threatpedia/pull/521. Local validation PASS, Astro build PASS."
     }
-  ]
+  ],
+  "pr_number": 521,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/521"
 }
