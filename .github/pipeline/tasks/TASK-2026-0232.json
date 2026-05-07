@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-07T19:29:01.872Z",
-  "updated": "2026-05-07T22:18:45Z",
+  "updated": "2026-05-07T23:50:02.238Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -37,7 +37,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -84,7 +84,7 @@
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
-      "note": "Task locked by queue worker \u2014 drafting CVE-2026-6973 Ivanti EPMM Improper Input Validation RCE (P0, CISA KEV deadline 2026-05-10)"
+      "note": "Task locked by queue worker — drafting CVE-2026-6973 Ivanti EPMM Improper Input Validation RCE (P0, CISA KEV deadline 2026-05-10)"
     },
     {
       "timestamp": "2026-05-07T22:18:09Z",
@@ -93,9 +93,18 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #530 opened: https://github.com/MahdiHedhli/threatpedia/pull/530. Validator: PASS. Awaiting GitHub CI and review."
+    },
+    {
+      "timestamp": "2026-05-07T23:50:02.238Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #530 merged (90b5295)."
     }
   ],
   "branch": "pipeline/TASK-2026-0232",
   "pr_number": 530,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/530"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/530",
+  "merged_at": "2026-05-07T23:50:02.238Z"
 }
