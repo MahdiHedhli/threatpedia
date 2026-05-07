@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0150",
   "type": "campaign",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "input": {
     "topic": "SolarWinds campaign canonical reconciliation",
     "reprocess": true,
@@ -41,9 +41,19 @@
       "to": "locked",
       "agent": "tp-queue-worker-campaigns",
       "note": "Locked for reprocess: fix ATT&CK v19 techniqueName fields and update review metadata."
+    },
+    {
+      "timestamp": "2026-05-07T19:18:08Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "tp-queue-worker-campaigns",
+      "note": "PR #527 opened: https://github.com/MahdiHedhli/threatpedia/pull/527. Fixed ATT&CK v19 techniqueName fields (×5), updated reviewStatus/generatedBy/generatedDate. Local validator: PASS (all 19 checks). Gemini review triggered. MahdiHedhli review requested."
     }
   ],
-  "updated": "2026-05-07T19:16:22Z",
+  "updated": "2026-05-07T19:18:08Z",
   "locked_by": "tp-queue-worker-campaigns",
-  "locked_at": "2026-05-07T19:16:22Z"
+  "locked_at": "2026-05-07T19:16:22Z",
+  "pr_number": 527,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/527"
 }
