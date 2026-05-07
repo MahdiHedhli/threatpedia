@@ -113,6 +113,9 @@ YAML frontmatter fields (all required unless marked optional):
     - techniqueId: string (T1234 or T1234.001)
       techniqueName: string
       tactic: string (Initial Access, Execution, Persistence, etc.)
+      attack-version: string (use "v19" or "v19.0" for new mappings)
+      confidence: confirmed | probable | possible
+      evidence: string (source-supported rationale)
       notes: string (evidence for this mapping)`,
     bodySpec: `
 Required H2 sections IN THIS ORDER (use exactly these headings):
@@ -189,7 +192,7 @@ YAML frontmatter fields (all required unless marked optional):
   relatedIncidents: array of strings (optional) — linked incident slugs; campaigns should reference confirmed constituent incidents where available
   tags: array of strings
   sources: array of source objects (minimum 3, same schema as incidents; at least 1 government source)
-  mitreMappings: array of MITRE objects (minimum 1, same schema as incidents)`,
+  mitreMappings: array of MITRE objects (minimum 1, same schema as incidents; use ATT&CK v19 for new mappings)`,
     bodySpec: `
 Required H2 sections IN THIS ORDER:
 
@@ -233,7 +236,7 @@ YAML frontmatter fields (all required unless marked optional):
   targetGeographies: array of strings (optional)
   tools: array of strings (optional) — known malware/tool names
   knownTools: array of strings (optional) — same as tools, for schema compatibility
-  mitreMappings: array of MITRE objects (optional)
+  mitreMappings: array of MITRE objects (optional; use ATT&CK v19 for new mappings)
   reviewStatus: must be "draft_ai"
   generatedBy: must be "ai_ingestion"
   generatedDate: date — today's date
@@ -341,7 +344,9 @@ function buildSystemPrompt(type) {
 
 You produce factual, well-sourced articles. You NEVER fabricate sources — every URL, publisher, and date must be real and verifiable. If you cannot find real sources, use placeholder URLs with a <!-- FIXME: SOURCE RECOVERY REQUIRED --> comment.
 
-You NEVER fabricate MITRE ATT&CK technique IDs. Every T-code must be a real technique from ATT&CK v16+. If unsure, omit rather than guess.
+You NEVER fabricate MITRE ATT&CK technique IDs. Every T-code must be a real technique from pinned ATT&CK Enterprise v19.0 for new articles unless the task explicitly preserves a legacy article version. If unsure, omit rather than guess.
+
+You add MITRE ATLAS only when the article evidence shows adversarial AI/ML behavior: an AI/ML system was targeted, abused as attacker tooling, bypassed as a security control, or compromised in the ML supply chain. ATLAS is separate from ATT&CK; do not mix AML IDs into mitreMappings.
 
 FORMATTING RULES (EDITORIAL-WORKFLOW-SPEC §14A — strictly enforced):
 - Blank line before and after EVERY heading (## and ###)

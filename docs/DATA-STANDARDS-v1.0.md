@@ -284,7 +284,7 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
   "technique_id": "T1190",
   "technique_name": "Exploit Public-Facing Application",
   "tactic": "Initial Access",
-  "attack_version": "v15.1",
+  "attack_version": "v19.0",
   "confidence": "confirmed",
   "evidence": "CVE-2023-50224 exploited per DOJ press release"
 }
@@ -293,6 +293,28 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
 **`confidence` enum:** `confirmed` | `probable` | `possible`. Required.
 
 **Required:** `technique_id`, `attack_version`, `confidence`, `evidence`. Speculative mappings without evidence are rejected (RULE-009, RULE-012).
+
+**Current pipeline rule:** New article work uses ATT&CK Enterprise v19.0 by default. Legacy `attackVersion` / `attack_version` aliases may be tolerated by validators during migration, but new frontmatter should use `attack-version` where the public Astro schema supports it.
+
+**ATT&CK v19 caution:** Do not bulk-preserve or reassign `Defense Evasion` tactic mappings after the v19 tactic split without article-supported review. If the source evidence does not support a tactic, omit the mapping instead of guessing.
+
+### 4.4.1 Generic Framework and MITRE ATLAS Mapping
+
+MITRE ATLAS is a separate framework from ATT&CK. ATLAS mappings are optional and apply only when article evidence shows adversarial AI/ML behavior, such as an AI/ML system being targeted, abused as attacker tooling, bypassed as a security control, or compromised in the ML supply chain.
+
+Current Astro frontmatter uses the generic `framework-mappings` array for ATLAS:
+
+```yaml
+framework-mappings:
+  - framework: "mitre-atlas"
+    version: "5.6.0"
+    mapping-id: "AML.T0042"
+    mapping-name: "Example ATLAS technique name"
+    confidence: "possible"
+    evidence: "Source-supported rationale for why this article maps to the ATLAS technique."
+```
+
+Do not put ATLAS `AML.*` identifiers in `mitreMappings`; ATT&CK and ATLAS mappings remain additive and separate.
 
 ### 4.5 Source Schema
 
