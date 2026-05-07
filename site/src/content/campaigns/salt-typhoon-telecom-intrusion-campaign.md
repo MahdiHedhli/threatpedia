@@ -65,7 +65,7 @@ mitreMappings:
   - techniqueId: "T1557"
     techniqueName: "Adversary-in-the-Middle"
     tactic: "Collection"
-    notes: "Salt Typhoon accessed lawful intercept systems and telecommunications backbone infrastructure, enabling interception of call metadata for a broad customer base and communications content for a targeted subset of individuals."
+    notes: "Salt Typhoon accessed lawful intercept systems and telecommunications backbone infrastructure, enabling interception of call metadata for multiple customer bases and communications content for a targeted subset of individuals."
   - techniqueId: "T1071"
     techniqueName: "Application Layer Protocol"
     tactic: "Command and Control"
@@ -74,7 +74,7 @@ mitreMappings:
 
 ## Executive Summary
 
-Salt Typhoon, a People's Republic of China (PRC) state-sponsored threat actor, conducted an intrusion campaign against U.S. telecommunications providers in 2024. The FBI and CISA confirmed that actors compromised the networks of multiple U.S. telecommunications companies and gained access to lawful intercept systems used for court-authorized surveillance operations. The actors also collected call detail records for a broad set of customers and, for a smaller targeted group, obtained actual communications content.
+Salt Typhoon, a People's Republic of China (PRC) state-sponsored threat actor, conducted an intrusion campaign against U.S. telecommunications providers in 2024. The FBI and CISA confirmed that actors compromised the networks of multiple U.S. telecommunications companies and gained access to lawful intercept systems used for court-authorized surveillance operations. The actors also collected call detail records for multiple customers and, for a smaller targeted group, obtained actual communications content.
 
 The FBI and CISA issued joint statements in October and November 2024 attributing the activity to PRC-affiliated actors. CISA published advisory AA24-335a in November 2024, documenting intrusion methods and providing hardening guidance for telecommunications network defenders. CISA subsequently released additional mobile communications security guidance in December 2024, aimed at reducing exposure for government personnel and other high-risk individuals.
 
@@ -84,7 +84,7 @@ Microsoft Security published independent research in October 2024 linking the ac
 
 The actors gained access to telecommunications provider networks by exploiting vulnerabilities in network edge devices and telecommunications infrastructure components. Once inside provider environments, they maintained persistent access using valid credentials and moved through internal networks to reach communications-handling systems, including lawful intercept infrastructure implemented under the Communications Assistance for Law Enforcement Act (CALEA).
 
-Access to CALEA-compliant systems gave the actors visibility into the metadata surrounding court-authorized surveillance orders, including details about targeted subjects, law enforcement agency contacts, and intercept activation records. In addition to lawful intercept system access, the actors collected call detail records across a broader customer population and obtained the actual content of calls and text messages for a smaller, targeted subset of individuals.
+Access to CALEA-compliant systems gave the actors visibility into the metadata surrounding court-authorized surveillance orders, including details about targeted subjects, law enforcement agency contacts, and intercept activation records. In addition to lawful intercept system access, the actors collected call detail records across multiple customer populations and obtained the actual content of calls and text messages for a smaller, targeted subset of individuals.
 
 Advisory AA24-335a noted that the actors maintained access within provider networks for an extended period before detection. The advisory also noted that activity affected telecommunications providers outside the United States, consistent with Microsoft's reporting of global targeting.
 
@@ -108,7 +108,7 @@ The campaign included access to CALEA-compliant lawful intercept systems. These 
 
 ### Stage 5: Data Collection
 
-The actors collected call detail records across a broad customer base and obtained communications content — calls and text messages — for a smaller set of targeted individuals. The advisory confirmed that the collection targeted individuals associated with government and political activities.
+The actors collected call detail records across multiple customer bases and obtained communications content — calls and text messages — for a smaller set of targeted individuals. The advisory confirmed that the collection targeted individuals associated with government and political activities.
 
 ## MITRE ATT&CK Mapping
 
@@ -118,7 +118,7 @@ T1190 - Exploit Public-Facing Application: The actors exploited vulnerabilities 
 
 ### Persistence
 
-T1078 - Valid Accounts: Salt Typhoon used compromised credentials to maintain long-term access across provider networks. Use of valid accounts reduced the actors' reliance on repeated exploitation and enabled access to a broader set of internal systems.
+T1078 - Valid Accounts: Salt Typhoon used compromised credentials to maintain long-term access across provider networks. Use of valid accounts reduced the actors' reliance on repeated exploitation and enabled access to multiple internal systems.
 
 ### Collection
 
