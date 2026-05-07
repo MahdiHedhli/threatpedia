@@ -123,7 +123,7 @@ T1078.004 - Cloud Accounts: Authenticated access using valid cloud credentials a
 
 T1550.001 - Application Access Token: After initial access, the actors used OAuth and application access tokens to authenticate to cloud services, maintaining access without requiring repeated use of stolen passwords.
 
-T1090.003 - Multi-hop Proxy: Residential proxy infrastructure provided the actors with IP addresses associated with legitimate commercial or residential services, obscuring the geographic origin of authentication and access activity.
+T1090.003 - Multi-hop Proxy: Advisory AA24-057a noted the use of residential proxy networks and IP addresses associated with legitimate commercial or residential services, obscuring the geographic origin of authentication activity.
 
 ## Timeline
 
@@ -145,7 +145,7 @@ Microsoft Security published guidance for responders on the Midnight Blizzard in
 
 ### 2024-02-26 — CISA and Partners Publish AA24-057a
 
-CISA, the FBI, NSA, and international partners including NCSC UK published advisory AA24-057a, documenting SVR tactics for cloud access and providing hardening guidance. The advisory noted that the campaign reflected an intentional adaptation to cloud-hosted environments as organizations migrated from on-premises infrastructure.
+CISA, the FBI, NSA, and international partners including NCSC UK published advisory AA24-057a, documenting SVR tactics for cloud access and providing hardening guidance. The advisory noted that the campaign reflected an adaptation to cloud-hosted environments as organizations migrated from on-premises infrastructure.
 
 ### 2024-03-05 — CISA Releases Companion Alert
 
