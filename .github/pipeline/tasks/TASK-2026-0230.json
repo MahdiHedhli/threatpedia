@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "in_progress",
+  "status": "complete",
   "created": "2026-05-06T20:15:20.074Z",
-  "updated": "2026-05-07T19:12:46Z",
+  "updated": "2026-05-07T20:41:51.449Z",
   "source": "manual_submission",
   "submitted_by": "tp-queue-worker-campaigns",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-07T15:13:29.683Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Midnight Blizzard SVR Spear-Phishing and Credential Theft Campaign 2024",
     "sources": [
@@ -82,9 +82,18 @@
       "to": "in_progress",
       "agent": "tp-queue-worker-campaigns",
       "note": "Metadata fix: added pr_url field (Gemini thread 3203859962) and synchronized updated timestamp with latest history entry (Gemini thread 3203859940)."
+    },
+    {
+      "timestamp": "2026-05-07T20:41:51.449Z",
+      "action": "merged",
+      "from": "in_progress",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #524 merged (ed769a6)."
     }
   ],
   "pr_number": 524,
   "branch": "pipeline/TASK-2026-0230",
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/524"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/524",
+  "merged_at": "2026-05-07T20:41:51.449Z"
 }
