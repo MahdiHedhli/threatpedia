@@ -69,7 +69,7 @@ mitreMappings:
     notes: "After obtaining credentials, the actors authenticated using valid cloud accounts to access email and file storage systems, maintaining persistent access through legitimate authentication flows."
   - techniqueId: "T1550.001"
     techniqueName: "Application Access Token"
-    tactic: "Defense Evasion"
+    tactic: "Lateral Movement"
     notes: "The actors used stolen OAuth tokens and application access tokens to authenticate to cloud services without requiring repeated credential use, reducing detection opportunities."
   - techniqueId: "T1090.003"
     techniqueName: "Multi-hop Proxy"
@@ -115,15 +115,15 @@ The actors accessed cloud-hosted email accounts and file storage services, colle
 
 ## MITRE ATT&CK Mapping
 
-T1566.002 - Phishing: Spearphishing Link: The actors sent targeted spear-phishing messages containing links to credential-harvesting infrastructure to obtain valid cloud account credentials from personnel at targeted organizations.
+T1566.002 - Spearphishing Link: The actors sent targeted spear-phishing messages containing links to credential-harvesting infrastructure to obtain valid cloud account credentials from personnel at targeted organizations.
 
-T1110.003 - Brute Force: Password Spraying: Advisory AA24-057a documented password spraying activity against cloud authentication endpoints, including targeting of dormant accounts and service accounts with potentially weaker monitoring controls.
+T1110.003 - Password Spraying: Advisory AA24-057a documented password spraying activity against cloud authentication endpoints, including targeting of dormant accounts and service accounts with potentially weaker monitoring controls.
 
-T1078.004 - Valid Accounts: Cloud Accounts: Authenticated access using valid cloud credentials allowed the actors to operate within the normal authentication flows of cloud service providers, accessing email and file storage services as authenticated users.
+T1078.004 - Cloud Accounts: Authenticated access using valid cloud credentials allowed the actors to operate within the normal authentication flows of cloud service providers, accessing email and file storage services as authenticated users.
 
-T1550.001 - Use Alternate Authentication Material: Application Access Token: After initial access, the actors used OAuth and application access tokens to authenticate to cloud services, maintaining access without requiring repeated use of stolen passwords.
+T1550.001 - Application Access Token: After initial access, the actors used OAuth and application access tokens to authenticate to cloud services, maintaining access without requiring repeated use of stolen passwords.
 
-T1090.003 - Proxy: Multi-hop Proxy: Residential proxy infrastructure provided the actors with IP addresses associated with legitimate commercial or residential services, obscuring the geographic origin of authentication and access activity.
+T1090.003 - Multi-hop Proxy: Residential proxy infrastructure provided the actors with IP addresses associated with legitimate commercial or residential services, obscuring the geographic origin of authentication and access activity.
 
 ## Timeline
 
