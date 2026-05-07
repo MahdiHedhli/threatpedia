@@ -118,7 +118,7 @@ const MITRE_MAPPING_SCHEMA = `    Each MITRE ATT&CK mapping requires:
       evidence: string (optional, source-supported rationale)
       notes: string (optional, context for this article)`;
 
-const ATLAS_MAPPING_SCHEMA = `  framework-mappings: array of generic framework mapping objects (optional; currently only for article-supported adversarial AI/ML behavior)
+const FRAMEWORK_MAPPING_SCHEMA = `  framework-mappings: array of generic framework mapping objects (optional; currently only for article-supported adversarial AI/ML behavior)
     For MITRE ATLAS mappings:
       framework: "mitre-atlas"
       version: string (optional, e.g., "5.6.0")
@@ -156,7 +156,7 @@ const SCHEMAS = {
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Summary — 2-3 paragraphs: what happened, who was affected, scope
   ## Technical Analysis — attack mechanism, tools used, vulnerability details
@@ -195,7 +195,7 @@ ${ATLAS_MAPPING_SCHEMA}`,
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 6):
   ## Executive Summary — campaign overview, objectives, scope, current status
   ## Technical Analysis — tools, techniques, infrastructure, operator workflow
@@ -224,7 +224,7 @@ ${ATLAS_MAPPING_SCHEMA}`,
   tools: array of strings — known malware and tools
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 3
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}
+${FRAMEWORK_MAPPING_SCHEMA}
   attributionConfidence: enum (optional) — A1 through A6
   attributionRationale: string (optional, max 500 chars)
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
@@ -272,7 +272,7 @@ ${SOURCE_SCHEMA}`,
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
-${ATLAS_MAPPING_SCHEMA}`,
+${FRAMEWORK_MAPPING_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Severity Assessment — Exploitability, Impact, Weaponization Risk, Patch Urgency, Detection Coverage (scored X/10)
   ## Summary — what the vulnerability is, scope of affected systems, significance

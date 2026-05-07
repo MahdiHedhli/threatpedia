@@ -168,11 +168,11 @@ export function getFrameworkMappingValidationIssues(frameworkMappings, options =
   const issues = [];
   const atlasData = getAtlasData();
 
-  if (frameworkMappings !== undefined && !Array.isArray(frameworkMappings)) {
-    issues.push('framework-mappings must be an array when present');
+  if (frameworkMappings === undefined) {
+    return issues;
   }
-
   if (!Array.isArray(frameworkMappings)) {
+    issues.push('framework-mappings must be an array when present');
     return issues;
   }
 
