@@ -3,13 +3,15 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-06T19:27:42.126Z",
-  "updated": "2026-05-07T01:10:00.000Z",
+  "updated": "2026-05-07T01:15:00.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": "dangermouse-bot",
   "locked_at": "2026-05-07T01:10:00.000Z",
+  "pr_number": 517,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/517",
   "input": {
     "topic": "Palo Alto Networks PAN-OS Out-of-bounds Write Vulnerability (CVE-2026-0300)",
     "sources": [
@@ -71,6 +73,14 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Task locked by queue worker — drafting CVE-2026-0300 PAN-OS buffer overflow (P1, CISA KEV deadline 2026-05-09)"
+    },
+    {
+      "timestamp": "2026-05-07T01:15:00.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #517 opened: https://github.com/MahdiHedhli/threatpedia/pull/517"
     }
   ]
 }
