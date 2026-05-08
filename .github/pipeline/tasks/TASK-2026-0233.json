@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0233",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-08T02:13:48.897Z",
+  "updated": "2026-05-08T02:13:48.897Z",
+  "source": "manual_submission",
+  "submitted_by": "cowork-campaign-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Lazarus Group Ronin Bridge Cryptocurrency Heist Campaign 2022",
+    "sources": [
+      "https://home.treasury.gov/news/press-releases/jy0768",
+      "https://www.fbi.gov/news/press-releases/fbi-confirms-north-korean-lazarus-group-responsible-for-harmony-horizon-bridge-theft",
+      "https://ofac.treasury.gov/recent-actions/04142022",
+      "https://www.justice.gov/opa/pr/justice-department-announces-charges-and-sanctions-against-north-korean-cryptocurrency"
+    ],
+    "notes": "The March 2022 Ronin Network Bridge theft of approximately 173,600 ETH and 25.5 million USDC (~$625M at time of theft) is the largest confirmed cryptocurrency theft attributed to a state-sponsored actor. Draft conservatively from US Treasury OFAC designation, FBI attribution statement, and DOJ sources. Do not speculate on internal Lazarus infrastructure beyond what is officially attributed. Use USD values at time of theft, not current prices. Keep attribution to Lazarus Group per OFAC/FBI statements."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0233",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T02:13:48.897Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "cowork-campaign-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

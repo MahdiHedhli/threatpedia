@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0234",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-08T02:13:55.838Z",
+  "updated": "2026-05-08T02:13:55.838Z",
+  "source": "manual_submission",
+  "submitted_by": "cowork-campaign-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "LockBit Global Ransomware-as-a-Service Campaign and Operation Cronos Law Enforcement Disruption",
+    "sources": [
+      "https://www.justice.gov/opa/pr/us-leads-international-action-against-lockbit-ransomware-group",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-075a",
+      "https://www.europol.europa.eu/media-press/newsroom/news/lockbit-power-cut-europol-national-police-agencies-dismantle-prolific-ransomware-group",
+      "https://www.fbi.gov/investigate/cyber/lockbit-ransomware"
+    ],
+    "notes": "LockBit operated as the world's most prolific ransomware-as-a-service (RaaS) operation from at least 2020 until Operation Cronos (February 2024), when a coalition of law enforcement agencies seized its infrastructure. The campaign article should cover LockBit's affiliate model, key variants (LockBit 2.0, LockBit 3.0/Black), documented sector targeting, and the international disruption operation. Draft conservatively from CISA advisory AA23-075A, DOJ press releases, Europol, and NCA. Do not speculate on total victim counts or financial impact beyond confirmed law enforcement statements. Keep attribution to the LockBit group per DOJ/NCA sources."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0234",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T02:13:55.838Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "cowork-campaign-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
