@@ -1,5 +1,5 @@
 {
-  "task_id": "TASK-2026-0236",
+  "task_id": "TASK-2026-0258",
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
@@ -50,7 +50,7 @@
   ],
   "output": {
     "file_pattern": "site/src/content/threat-actors/equation-group.md",
-    "branch": "pipeline/TASK-2026-0236",
+    "branch": "pipeline/TASK-2026-0258",
     "pr": true
   },
   "history": [
