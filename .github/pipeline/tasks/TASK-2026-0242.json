@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0242",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-08T15:25:00.000Z",
+  "source": "historical_corpus_backlog",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "DarkSide threat actor profile",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-131a",
+      "https://www.cisa.gov/news-events/alerts/2021/05/19/update-cisa-fbi-joint-cybersecurity-advisory-darkside-ransomware",
+      "https://www.justice.gov/opa/pr/department-justice-seizes-23-million-cryptocurrency-paid-ransomware-extortionists-darkside"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ACTOR-007",
+      "actor_name": "DarkSide",
+      "actor_type": "ransomware / extortion",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2020"
+    },
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-007. Colonial Pipeline-era ransomware actor. Keep DarkSide/BlackMatter lineage claims evidence-bound."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "task exists on origin/main before lock/open-pr execution"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/darkside.md",
+    "branch": "pipeline/TASK-2026-0242",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T15:25:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical threat-actor backlog seed from HIST-ACTOR-007"
+    }
+  ]
+}
