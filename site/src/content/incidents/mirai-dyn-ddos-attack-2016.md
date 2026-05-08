@@ -106,11 +106,11 @@ The longer-term impact was the security lesson around unmanaged IoT devices. CIS
 
 ## Attribution
 
-Public sources do not establish a confirmed actor responsible for launching the Dyn DDoS attack. The attack used Mirai-infected devices, but public reporting did not conclusively identify the operator that directed the traffic at Dyn.
+Public sources do not establish a confirmed actor responsible for launching the Dyn DDoS attack. The attack used Mirai-infected devices, but public reporting did not identify the operator that directed the traffic at Dyn.
 
 The U.S. Department of Justice later announced guilty pleas from Paras Jha, Josiah White, and Dalton Norman for creating and operating Mirai and related botnets. DOJ stated that the original Mirai botnet targeted IoT devices, reached hundreds of thousands of compromised devices at peak, and was used to conduct DDoS attacks before Jha posted Mirai source code on a criminal forum in fall 2016.
 
-That DOJ case supports attribution for the creation and operation of the original Mirai botnet. It does not, by itself, establish that those defendants launched the Dyn attack. Threatpedia therefore records the specific Dyn incident actor as unknown while describing Mirai as the malware and botnet family involved.
+That DOJ case supports attribution for the creation and operation of the original Mirai botnet. It does not, by itself, establish that those defendants launched the Dyn attack. The specific Dyn incident actor remains unknown, though Mirai is identified as the malware and botnet family involved.
 
 ## Timeline
 
