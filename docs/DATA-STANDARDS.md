@@ -203,12 +203,12 @@ Each source is a structured object. URL strings alone are not acceptable.
 
 ```json
 {
-  "technique_id": "T1566.001",
-  "technique_name": "Spearphishing Attachment",
+  "techniqueId": "T1566.001",
+  "techniqueName": "Spearphishing Attachment",
   "tactic": "Initial Access",
   "confidence": "confirmed | probable | possible",
   "evidence": "Free text describing evidence for this mapping",
-  "attack_version": "v15",
+  "attack-version": "v19.0",
   "mapped_by": "reviewer_id",
   "mapped_date": "YYYY-MM-DD",
   "source_refs": ["SRC-0001", "SRC-0002"]
@@ -226,9 +226,26 @@ Each source is a structured object. URL strings alone are not acceptable.
 ### Mapping Rules
 
 - Every technique mapping must include an `evidence` field — speculative mappings without evidence are rejected
-- The `attack_version` field is required — ATT&CK evolves and mappings must be versioned to remain accurate
+- New technique mappings should use ATT&CK Enterprise v19.0 unless a task explicitly preserves an older article version; ATT&CK evolves and mappings must be versioned to remain accurate
 - Kill Chain stage is derived automatically from ATT&CK tactic — reviewers do not enter both manually
 - Sub-techniques (e.g., `T1566.001`) are preferred over parent techniques where evidence supports specificity
+- ATT&CK v19 split cases, especially legacy `Defense Evasion` mappings, require source-supported review before reclassification
+
+### MITRE ATLAS and Generic Framework Mappings
+
+ATLAS is separate from ATT&CK and uses `AML.*` identifiers. Add ATLAS only when article evidence supports adversarial AI/ML behavior: an AI/ML system was targeted, abused as attacker tooling, bypassed as a security control, or compromised in the ML supply chain.
+
+Current Astro frontmatter stores ATLAS in `framework-mappings`, not `mitreMappings`:
+
+```yaml
+framework-mappings:
+  - framework: "mitre-atlas"
+    version: "5.6.0"
+    mapping-id: "AML.T0042"
+    mapping-name: "Example ATLAS technique name"
+    confidence: "possible"
+    evidence: "Source-supported rationale for this ATLAS mapping."
+```
 
 ---
 
@@ -285,10 +302,10 @@ Automatically enforced before any article enters the human review queue.
 | RULE-006 | `attribution_rationale` required if confidence is A1–A4 |
 | RULE-007 | `target_countries` must be valid ISO 3166-1 alpha-2 codes |
 | RULE-008 | `cves_exploited` entries must match `CVE-YYYY-NNNNN` format |
-| RULE-009 | All ATT&CK `technique_id` values must exist in the declared `attack_version` |
+| RULE-009 | All ATT&CK `techniqueId` values must exist in the declared `attack-version` |
 | RULE-010 | `impact_severity` required before article enters review queue |
 | RULE-011 | `archived_url` required for all sources at certification (not submission) |
-| RULE-012 | `attack_version` required on all ATT&CK technique mappings |
+| RULE-012 | `attack-version` required on all ATT&CK technique mappings |
 
 ---
 
