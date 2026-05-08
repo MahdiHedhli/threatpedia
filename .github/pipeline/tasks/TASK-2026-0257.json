@@ -22,7 +22,9 @@
       "actor_name": "BlackSuit / Royal lineage",
       "actor_type": "ransomware / extortion",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap-canonicalization-required"
+      "source_status": "gap-canonicalization-required",
+      "origin": "Russia",
+      "active_since": "2022"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-041. Canonical split/merge-sensitive task. Decide whether final output should be BlackSuit, Royal, or a lineage-focused profile based only on source-supported evidence."
   },
