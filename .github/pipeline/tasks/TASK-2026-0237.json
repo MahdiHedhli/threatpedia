@@ -22,7 +22,9 @@
       "actor_name": "Dragonfly / Energetic Bear",
       "actor_type": "state-linked ICS espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2010"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-002. Canonicalize Dragonfly and Energetic Bear carefully; keep ICS and energy-sector targeting source-bound."
   },
