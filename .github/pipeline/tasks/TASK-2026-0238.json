@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-2026-0238",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-08T15:25:00.000Z",
+  "source": "historical_corpus_backlog",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "TEMP.Veles / XENOTIME threat actor profile",
+    "sources": [
+      "https://attack.mitre.org/groups/G0088/",
+      "https://www.cisa.gov/sites/default/files/documents/MAR-17-352-01%20HatMan%20-%20Safety%20System%20Targeted%20Malware%20%28Update%20B%29.pdf",
+      "https://cloud.google.com/blog/topics/threat-intelligence/attackers-deploy-new-ics-attack-framework-triton",
+      "https://www.dragos.com/threat/xenotime/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ACTOR-003",
+      "actor_name": "TEMP.Veles / XENOTIME",
+      "actor_type": "ICS threat actor",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap"
+    },
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-003. ICS safety-system actor tied to TRITON/TRISIS reporting. Do not overclaim sponsor identity unless directly supported."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "task exists on origin/main before lock/open-pr execution"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/temp-veles-xenotime.md",
+    "branch": "pipeline/TASK-2026-0238",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T15:25:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical threat-actor backlog seed from HIST-ACTOR-003"
+    }
+  ]
+}

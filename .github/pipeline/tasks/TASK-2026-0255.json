@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0255",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-08T15:25:00.000Z",
+  "source": "historical_corpus_backlog",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "FIN6 threat actor profile",
+    "sources": [
+      "https://attack.mitre.org/groups/G0037/",
+      "https://cloud.google.com/blog/topics/threat-intelligence/pick-six-intercepting-a-fin6-intrusion",
+      "https://ctid.mitre.org/projects/fin6-adversary-emulation-plan/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ACTOR-038",
+      "actor_name": "FIN6",
+      "actor_type": "cybercrime",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap"
+    },
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-038. Payment-card/e-commerce cybercrime actor. Keep FIN6 relationships to other criminal clusters conservative."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "task exists on origin/main before lock/open-pr execution"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/fin6.md",
+    "branch": "pipeline/TASK-2026-0255",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T15:25:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical threat-actor backlog seed from HIST-ACTOR-038"
+    }
+  ]
+}
