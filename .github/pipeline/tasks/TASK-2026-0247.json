@@ -22,7 +22,9 @@
       "actor_name": "APT34 / OilRig",
       "actor_type": "state-linked espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Iran",
+      "active_since": "2014"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-012. Iran-linked regional espionage actor. Check alias overlap with OilRig/Helix Kitten/Peach Sandstorm carefully."
   },
