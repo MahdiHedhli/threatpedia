@@ -11,21 +11,24 @@
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Lazarus Group Operation SmoothOperator — 3CX Software Supply Chain Compromise",
+    "topic": "Lazarus Group Operation SmoothOperator \u2014 3CX Software Supply Chain Compromise",
     "sources": [
       "https://www.cisa.gov/news-events/alerts/2023/03/30/supply-chain-attack-against-3cxdesktopapp",
       "https://www.sentinelone.com/blog/smoothoperator-ongoing-campaign-trojanized-3cx-software",
       "https://www.mandiant.com/resources/blog/3cx-software-supply-chain-compromise"
     ],
     "candidate_data": {
-      "severity": "critical"
+      "severity": "critical",
+      "actor_name": "Lazarus Group",
+      "origin": "North Korea",
+      "active_since": "2023-03"
     },
-    "notes": "DPRK-attributed software supply chain compromise in which Lazarus Group (UNC4736/Zinc) trojanized the 3CX DesktopApp VoIP client to deliver ICONIC infostealer and POOLRAT malware against enterprise targets in financial services, critical infrastructure, and technology sectors globally. March–April 2023. Attributed to North Korea by CISA, Mandiant, CrowdStrike, and SentinelOne. Distinct from existing Lazarus articles (AppleJeus cryptocurrency campaign and Ronin Bridge heist); this is a multi-stage software supply chain attack with a second-stage supply chain element embedded. Conservative attribution: North Korea/Lazarus Group confirmed by multiple vendors and US government; no hard sub-cluster label beyond UNC4736 required."
+    "notes": "DPRK-attributed software supply chain compromise in which Lazarus Group (UNC4736/Zinc) trojanized the 3CX DesktopApp VoIP client to deliver ICONIC infostealer and POOLRAT malware against enterprise targets in financial services, critical infrastructure, and technology sectors globally. March\u2013April 2023. Attributed to North Korea by CISA, Mandiant, CrowdStrike, and SentinelOne. Distinct from existing Lazarus articles (AppleJeus cryptocurrency campaign and Ronin Bridge heist); this is a multi-stage software supply chain attack with a second-stage supply chain element embedded. Conservative attribution: North Korea/Lazarus Group confirmed by multiple vendors and US government; no hard sub-cluster label beyond UNC4736 required."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
