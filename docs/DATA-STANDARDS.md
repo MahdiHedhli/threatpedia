@@ -203,8 +203,8 @@ Each source is a structured object. URL strings alone are not acceptable.
 
 ```json
 {
-  "technique_id": "T1566.001",
-  "technique_name": "Spearphishing Attachment",
+  "techniqueId": "T1566.001",
+  "techniqueName": "Spearphishing Attachment",
   "tactic": "Initial Access",
   "confidence": "confirmed | probable | possible",
   "evidence": "Free text describing evidence for this mapping",
@@ -302,10 +302,10 @@ Automatically enforced before any article enters the human review queue.
 | RULE-006 | `attribution_rationale` required if confidence is A1–A4 |
 | RULE-007 | `target_countries` must be valid ISO 3166-1 alpha-2 codes |
 | RULE-008 | `cves_exploited` entries must match `CVE-YYYY-NNNNN` format |
-| RULE-009 | All ATT&CK `technique_id` values must exist in the declared `attack_version` |
+| RULE-009 | All ATT&CK `techniqueId` values must exist in the declared `attack-version` |
 | RULE-010 | `impact_severity` required before article enters review queue |
 | RULE-011 | `archived_url` required for all sources at certification (not submission) |
-| RULE-012 | `attack_version` required on all ATT&CK technique mappings |
+| RULE-012 | `attack-version` required on all ATT&CK technique mappings |
 
 ---
 

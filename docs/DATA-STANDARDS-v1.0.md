@@ -281,8 +281,8 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
 
 ```json
 {
-  "technique_id": "T1190",
-  "technique_name": "Exploit Public-Facing Application",
+  "techniqueId": "T1190",
+  "techniqueName": "Exploit Public-Facing Application",
   "tactic": "Initial Access",
   "attack-version": "v19.0",
   "confidence": "confirmed",
@@ -292,7 +292,7 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
 
 **`confidence` enum:** `confirmed` | `probable` | `possible`. Required.
 
-**Required:** `technique_id`, `attack-version`, `confidence`, `evidence`. Speculative mappings without evidence are rejected (RULE-009, RULE-012).
+**Required:** `techniqueId`, `techniqueName`, `attack-version`, `confidence`, `evidence`. Speculative mappings without evidence are rejected (RULE-009, RULE-012).
 
 **Current pipeline rule:** New article work uses ATT&CK Enterprise v19.0 by default. Legacy `attackVersion` / `attack_version` aliases may be tolerated by validators during migration, but new frontmatter should use `attack-version` where the public Astro schema supports it.
 
@@ -484,7 +484,7 @@ The confidence score is a 0–100 integer computed from deterministic, externall
 | Source count (3-6 = 10pts, 6-9 = 18pts, 10+ = 25pts) | 25 | RULE-004 |
 | Source publisher diversity (gov + media + vendor + research) | 15 | publisher_type field |
 | All CVEs validated against NVD | 15 | NVD API at compute time |
-| All ATT&CK techniques exist in declared `attack_version` | 15 | ATT&CK STIX bundle |
+| All ATT&CK techniques exist in declared `attack-version` | 15 | ATT&CK STIX bundle |
 | Attribution confidence | 10 | Admiralty A1=10, A2=8, A3=6, A4=4, A5=2, A6=0 |
 | All sources have valid `archived_url` | 10 | RULE-011 |
 | All required sections present | 10 | §6 |
@@ -611,10 +611,10 @@ Sightings rows are immutable. Corrections happen by inserting a new row with `co
 | RULE-006 | `attribution_rationale` required if confidence is A1–A4 | v0.1 |
 | RULE-007 | `target_countries` must use ISO 3166-1 α-2 | v0.1 |
 | RULE-008 | `cves_exploited` entries match `CVE-YYYY-NNNNN` | v0.1 |
-| RULE-009 | All ATT&CK `technique_id` values must exist in declared `attack_version` | v0.1 |
+| RULE-009 | All ATT&CK `techniqueId` values must exist in declared `attack-version` | v0.1 |
 | RULE-010 | `impact_severity` required before article enters review queue | v0.1 |
 | RULE-011 | `archived_url` required for all sources at certification | v0.1 |
-| RULE-012 | `attack_version` required on all ATT&CK technique mappings | v0.1 |
+| RULE-012 | `attack-version` required on all ATT&CK technique mappings | v0.1 |
 | RULE-013 | `last_observed`, `current`, `ongoing_status` are not writable on entities | v1.0 |
 | RULE-014 | Sightings table is append-only | v1.0 |
 | RULE-015 | Incidents with `status=ongoing` and `date_start` >180 days ago are flagged | v1.0 |
