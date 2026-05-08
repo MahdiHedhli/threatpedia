@@ -22,7 +22,9 @@
       "actor_name": "APT32 / OceanLotus",
       "actor_type": "state-linked espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Vietnam",
+      "active_since": "2012"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-010. Vietnam-linked/OceanLotus profile. Use source wording for sponsorship and target geography; do not infer government control beyond cited assessments."
   },
