@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T22:25:23.337Z",
+  "updated": "2026-05-08T22:36:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -51,7 +51,9 @@
   "output": {
     "file_pattern": "site/src/content/threat-actors/blacksuit-royal-lineage.md",
     "branch": "pipeline/TASK-2026-0257",
-    "pr": true
+    "pr": true,
+    "pr_number": 566,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/566"
   },
   "history": [
     {
@@ -64,10 +66,19 @@
     },
     {
       "timestamp": "2026-05-08T22:25:23.336Z",
+      "action": "lock",
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
-      "note": "Locked for execution"
+      "note": "Locked for drafting by threat-actor queue worker"
+    },
+    {
+      "timestamp": "2026-05-08T22:36:00.000Z",
+      "action": "open_pr",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #566 opened via GitHub API. Local Astro build skipped (FUSE-mount EPERM in sandbox \u2014 pre-existing). All content/frontmatter checks pass. GitHub CI validate is authoritative gate."
     }
   ]
 }
