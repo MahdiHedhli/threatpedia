@@ -34,6 +34,14 @@
       "note": "Corpus reprocessing \u2014 source quality enforcement"
     },
     {
+      "timestamp": "2026-05-08T00:00:00.000Z",
+      "action": "completed",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "Prior article completion before reprocess \u2014 original article lacked sources (reprocess issued). Timestamp estimated; original history entry was overwritten during reprocess lock."
+    },
+    {
       "timestamp": "2026-05-08T17:23:56.000Z",
       "action": "locked",
       "from": "pending",
@@ -52,5 +60,6 @@
   ],
   "locked_by": null,
   "locked_at": null,
-  "stage": "draft"
+  "stage": "draft",
+  "merged_at": null
 }

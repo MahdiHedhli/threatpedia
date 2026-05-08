@@ -84,7 +84,7 @@ mitreMappings:
 
 On March 19, 2026, a threat actor tracked as TeamPCP executed a coordinated supply chain attack against the Trivy open source vulnerability scanner, compromising its official GitHub Actions workflows and distribution infrastructure. The attack, assigned CVE-2026-33634 with a CVSS4B score of 9.4, allowed malicious code to execute inside CI/CD pipelines of any organization using the compromised Trivy actions or downloading the weaponized binary releases. Over the following days, the same actor expanded the campaign to additional widely-used open source security tooling including Checkmarx KICS, LiteLLM, and Telnyx.
 
-The attack resulted in broad credential theft from CI/CD environments across more than 1,000 enterprise software-as-a-service environments, according to subsequent industry reporting. Stolen credentials later surfaced in double-extortion operations conducted by a separate group, Vect ransomware, confirming that harvested data was monetized through downstream criminal channels.
+The attack resulted in credential theft from CI/CD environments across more than 1,000 enterprise software-as-a-service environments, according to subsequent industry reporting. Stolen credentials later surfaced in double-extortion operations conducted by a separate group, Vect ransomware, confirming that harvested data was monetized through downstream criminal channels.
 
 ## Technical Analysis
 
@@ -110,7 +110,7 @@ The credential harvesting phase proceeded silently within normal pipeline execut
 
 ## Impact Assessment
 
-CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the near-maximum severity of a supply chain compromise affecting a broadly deployed security scanning tool. Aqua Security reported that Trivy was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including major technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
+CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the severity of a supply chain compromise affecting a widely deployed security scanning tool. Aqua Security reported that Trivy was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
 
 Industry analysis identified more than 1,000 enterprise SaaS environments as having been affected by credential theft during the campaign window. The subsequent involvement of Vect ransomware in publishing stolen victim data confirmed that harvested credentials were transferred to or sold to criminal operators conducting double-extortion campaigns.
 
