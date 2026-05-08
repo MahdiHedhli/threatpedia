@@ -55,14 +55,14 @@ mitreMappings:
   - techniqueId: T1498
     techniqueName: Network Denial of Service
     tactic: Impact
-    notes: The attack used large-scale distributed traffic to disrupt Dyn's managed DNS infrastructure, making downstream customer services unreachable for many users.
+    notes: The attack used distributed traffic to disrupt Dyn's managed DNS infrastructure, making downstream customer services unreachable for many users.
 ---
 
 ## Summary
 
 On October 21, 2016, a series of distributed denial-of-service attacks targeted Dyn, a managed DNS provider whose customers included major internet services. Because Dyn provided authoritative DNS service for many domains, disruption to Dyn's infrastructure made affected customer services difficult or impossible to reach for users in parts of North America and Europe.
 
-The attack is historically significant because it paired internet infrastructure dependence with an Internet-of-Things botnet. CISA had warned a week earlier that Mirai and similar IoT botnets could execute large-scale DDoS attacks after the Mirai source code was released publicly. ThousandEyes reported that Mirai-infected consumer devices were one source of the Dyn attack traffic, while noting that the exact target and complete traffic composition were not fully known from public evidence.
+The attack paired internet infrastructure dependence with an Internet-of-Things botnet. CISA had warned a week earlier that Mirai and similar IoT botnets could execute DDoS attacks after the Mirai source code was released publicly. ThousandEyes reported that Mirai-infected consumer devices were one source of the Dyn attack traffic, while noting that the exact target and complete traffic composition were not fully known from public evidence.
 
 The incident did not involve public evidence of data theft from Dyn customers. Its impact was availability-focused: DNS resolution failures and packet loss made services intermittently unreachable. The event became a baseline case for IoT device hardening, DNS dependency risk, and the systemic effects of DDoS attacks against shared internet infrastructure.
 
@@ -70,9 +70,9 @@ The incident did not involve public evidence of data theft from Dyn customers. I
 
 Dyn's role in the incident was authoritative DNS service. When users attempted to reach a customer domain and did not already have a fresh DNS answer cached, recursive resolvers needed to query Dyn-operated authoritative servers. If those servers were unavailable or unreachable, customer services could appear offline even when their application infrastructure remained operational.
 
-ThousandEyes observed the disruption in multiple phases over roughly 18 hours. The first phase centered on the U.S. East Coast and expanded into other regions. A later phase produced broader global impact, with monitoring data showing that between 25 and 75 percent of queries to Dyn went unanswered in observed vantage points during parts of the event.
+ThousandEyes observed the disruption in multiple phases over roughly 18 hours. The first phase centered on the U.S. East Coast and expanded into other regions. A later phase produced global impact, with monitoring data showing that between 25 and 75 percent of queries to Dyn went unanswered in observed vantage points during parts of the event.
 
-The botnet component came from Mirai and related IoT malware activity. CISA described Mirai as malware that scanned for vulnerable IoT devices and attempted access with a short list of common default usernames and passwords. Affected device classes included routers, cameras, and digital video recorders. Akamai's Q3 2016 reporting described Mirai as driving two record-setting DDoS attacks observed earlier in the quarter, showing that the same malware family had already reached high-volume attack capacity before the Dyn incident.
+The botnet component came from Mirai and related IoT malware activity. CISA described Mirai as malware that scanned for vulnerable IoT devices and attempted access with a short list of common default usernames and passwords. Affected device classes included routers, cameras, and digital video recorders. Akamai's Q3 2016 reporting described Mirai as driving two high-volume DDoS attacks observed earlier in the quarter, showing that the same malware family had already reached high-volume attack capacity before the Dyn incident.
 
 ## Attack Chain
 
@@ -86,7 +86,7 @@ Compromised devices enrolled into a botnet that could receive instructions from 
 
 ### Stage 3: DNS Infrastructure Targeting
 
-On October 21, 2016, traffic was directed at Dyn's managed DNS infrastructure. ThousandEyes reported a series of large-scale DDoS attacks against Dyn over the course of the day, with Mirai-infected consumer devices identified as one source of attack traffic.
+On October 21, 2016, traffic was directed at Dyn's managed DNS infrastructure. ThousandEyes reported a series of DDoS attacks against Dyn over the course of the day, with Mirai-infected consumer devices identified as one source of attack traffic.
 
 ### Stage 4: Authoritative DNS Unavailability
 
@@ -98,9 +98,9 @@ Dyn and upstream network providers mitigated the attack in phases. ThousandEyes 
 
 ## Impact Assessment
 
-The incident disrupted access to widely used internet services rather than compromising those services directly. ThousandEyes named affected Dyn customers and monitored services including Spotify, Amazon, HBO Now, Twitter, GitHub, Pinterest, CNN, and others, and observed more than 1,200 impacted domains in its monitored set during one hour of the outage.
+The incident disrupted access to internet services rather than compromising those services directly. ThousandEyes named affected Dyn customers and monitored services including Spotify, Amazon, HBO Now, Twitter, GitHub, Pinterest, CNN, and others, and observed more than 1,200 impacted domains in its monitored set during one hour of the outage.
 
-The operational impact was broad because DNS is a shared dependency. A DDoS attack against one managed DNS provider created cascading availability problems for unrelated customer services, including media, software development, social networking, commerce, and SaaS platforms. Users experienced service outages even when the downstream service providers' application stacks were not themselves the primary DDoS target.
+The operational impact affected numerous services because DNS is a shared dependency. A DDoS attack against one managed DNS provider created cascading availability problems for unrelated customer services, including media, software development, social networking, commerce, and SaaS platforms. Users experienced service outages even when the downstream service providers' application stacks were not themselves the primary DDoS target.
 
 The longer-term impact was the security lesson around unmanaged IoT devices. CISA's guidance emphasized replacing default passwords, disabling unnecessary services such as UPnP, monitoring Telnet-related activity, and applying vendor updates. The incident also reinforced the need for DNS redundancy, DDoS mitigation planning, and dependency mapping for internet-facing services.
 
@@ -108,7 +108,7 @@ The longer-term impact was the security lesson around unmanaged IoT devices. CIS
 
 Public sources do not establish a confirmed actor responsible for launching the Dyn DDoS attack. The attack used Mirai-infected devices, but public reporting did not conclusively identify the operator that directed the traffic at Dyn.
 
-The U.S. Department of Justice later announced guilty pleas from Paras Jha, Josiah White, and Dalton Norman for creating and operating Mirai and related botnets. DOJ stated that the original Mirai botnet targeted IoT devices, reached hundreds of thousands of compromised devices at peak, and was used to conduct powerful DDoS attacks before Jha posted Mirai source code on a criminal forum in fall 2016.
+The U.S. Department of Justice later announced guilty pleas from Paras Jha, Josiah White, and Dalton Norman for creating and operating Mirai and related botnets. DOJ stated that the original Mirai botnet targeted IoT devices, reached hundreds of thousands of compromised devices at peak, and was used to conduct DDoS attacks before Jha posted Mirai source code on a criminal forum in fall 2016.
 
 That DOJ case supports attribution for the creation and operation of the original Mirai botnet. It does not, by itself, establish that those defendants launched the Dyn attack. Threatpedia therefore records the specific Dyn incident actor as unknown while describing Mirai as the malware and botnet family involved.
 
@@ -120,11 +120,11 @@ After major Mirai-driven DDoS activity earlier in 2016, Mirai source code was po
 
 ### 2016-10-14 — CISA Issues Mirai DDoS Alert
 
-CISA published Alert TA16-288A warning that Mirai and other IoT botnets could execute large-scale DDoS attacks and recommending hardening steps for exposed IoT devices.
+CISA published Alert TA16-288A warning that Mirai and other IoT botnets could execute DDoS attacks and recommending hardening steps for exposed IoT devices.
 
 ### 2016-10-21 — Dyn DNS Infrastructure Attacked
 
-Dyn experienced multiple large-scale DDoS waves against its managed DNS infrastructure. ThousandEyes observed regional and global availability effects across affected customer domains.
+Dyn experienced multiple DDoS waves against its managed DNS infrastructure. ThousandEyes observed regional and global availability effects across affected customer domains.
 
 ### 2016-11-15 — Akamai Publishes Q3 Mirai Context
 
