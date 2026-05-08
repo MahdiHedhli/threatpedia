@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T01:04:00.000Z",
-  "updated": "2026-05-08T13:39:14.641Z",
+  "updated": "2026-05-08T13:40:53.066Z",
   "source": "historical-corpus",
   "submitted_by": "kernel-k",
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-05-08T13:39:14.640Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Mirai / Dyn DNS DDoS Attack",
     "sources": [
@@ -69,6 +69,16 @@
       "to": "locked",
       "agent": "Mahdi Hedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-08T13:40:53.066Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #535"
     }
-  ]
+  ],
+  "pr_number": 535,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/535"
 }
