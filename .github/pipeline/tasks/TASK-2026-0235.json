@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-08T02:13:55.838Z",
-  "updated": "2026-05-08T02:13:55.838Z",
+  "updated": "2026-05-08T14:20:59.378Z",
   "source": "manual_submission",
   "submitted_by": "cowork-campaign-worker",
   "locked_by": null,
@@ -51,6 +51,14 @@
       "to": "pending",
       "agent": "cowork-campaign-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-08T14:20:59.378Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #537"
     }
   ]
 }
