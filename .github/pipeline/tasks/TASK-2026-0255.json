@@ -22,7 +22,9 @@
       "actor_name": "FIN6",
       "actor_type": "cybercrime",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Unknown",
+      "active_since": "2015"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-038. Payment-card/e-commerce cybercrime actor. Keep FIN6 relationships to other criminal clusters conservative."
   },
