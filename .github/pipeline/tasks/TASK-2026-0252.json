@@ -22,7 +22,9 @@
       "actor_name": "Mustang Panda",
       "actor_type": "state-linked espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "China",
+      "active_since": "2012"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-017. China-linked diplomatic targeting actor. Verify source fit for Mustang Panda aliases and avoid mixing with unrelated PRC actors."
   },
