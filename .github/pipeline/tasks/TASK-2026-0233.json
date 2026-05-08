@@ -1,0 +1,74 @@
+{
+  "task_id": "TASK-2026-0233",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "locked",
+  "created": "2026-05-08T01:04:00.000Z",
+  "updated": "2026-05-08T13:39:14.641Z",
+  "source": "historical-corpus",
+  "submitted_by": "kernel-k",
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-05-08T13:39:14.640Z",
+  "input": {
+    "topic": "Mirai / Dyn DNS DDoS Attack",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2016/10/14/heightened-ddos-threat-posed-mirai-and-other-botnets",
+      "https://www.justice.gov/archives/opa/pr/justice-department-announces-charges-and-guilty-pleas-three-computer-crime-cases-involving",
+      "https://www.thousandeyes.com/blog/dyn-dns-ddos-attack/",
+      "https://www.akamai.com/it/newsroom/press-release/akamai-releases-third-quarter-2016-state-of-the-internet-security-report1"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-015",
+      "collection": "incidents",
+      "eventId": "TP-2016-0002",
+      "target_file": "site/src/content/incidents/mirai-dyn-ddos-attack-2016.md",
+      "severity": "critical",
+      "known_actor": "Unknown",
+      "known_malware": "Mirai"
+    },
+    "notes": "P0 historical corpus gap: Mirai/Dyn DNS DDoS attack. Draft conservatively from CISA, DOJ, ThousandEyes, and Akamai sources. Keep attribution to the specific Dyn operator unknown; DOJ supports attribution for Mirai creators/operators, not a public finding that they launched the Dyn attack."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "incident lane has fewer than 3 open article PRs"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/mirai-dyn-ddos-attack-2016.md",
+    "branch": "kernel-k/TASK-2026-0233-mirai-dyn-ddos",
+    "pr": true,
+    "article_slug": "mirai-dyn-ddos-attack-2016"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T01:04:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual historical-corpus seed from HIST-INC-015 after live dedup found no Mirai/Dyn incident article, open PR, open issue, or active task."
+    },
+    {
+      "timestamp": "2026-05-08T13:39:14.641Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
+    }
+  ]
+}
