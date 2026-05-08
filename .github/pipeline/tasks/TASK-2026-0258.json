@@ -26,7 +26,7 @@
       "origin": "United States",
       "active_since": "2001"
     },
-    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-001. Historic advanced tooling actor. Preserve uncertainty around state sponsorship and avoid unsupported identity claims beyond cited source language."
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-001. High-capability tooling actor with sophisticated espionage capabilities. Preserve uncertainty around state sponsorship and avoid unsupported identity claims beyond cited source language."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
