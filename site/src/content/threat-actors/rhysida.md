@@ -29,18 +29,54 @@ mitreMappings:
     techniqueName: "Valid Accounts"
     tactic: "Initial Access"
     notes: "Rhysida actors authenticate to internal VPN access points using compromised valid credentials for initial access and persistence."
+  - techniqueId: "T1016"
+    techniqueName: "System Network Configuration Discovery"
+    tactic: "Discovery"
+    notes: "Actors use ipconfig to enumerate network configuration on compromised hosts."
+  - techniqueId: "T1033"
+    techniqueName: "System Owner/User Discovery"
+    tactic: "Discovery"
+    notes: "Actors use whoami to identify the current user context on compromised systems."
+  - techniqueId: "T1482"
+    techniqueName: "Domain Trust Discovery"
+    tactic: "Discovery"
+    notes: "Actors use nltest to enumerate domain trusts and ADRecon for broader Active Directory reconnaissance."
   - techniqueId: "T1021.001"
     techniqueName: "Remote Desktop Protocol"
     tactic: "Lateral Movement"
     notes: "Rhysida actors create RDP connections to move laterally through victim networks after establishing initial access."
+  - techniqueId: "T1021.004"
+    techniqueName: "SSH"
+    tactic: "Lateral Movement"
+    notes: "Actors use PuTTy for SSH tunneling to facilitate lateral movement within victim environments."
   - techniqueId: "T1003.003"
     techniqueName: "NTDS"
     tactic: "Credential Access"
     notes: "Rhysida actors dump the NTDS.dit database from domain controllers using ntdsutil to extract Active Directory credential hashes."
+  - techniqueId: "T1219"
+    techniqueName: "Remote Access Tools"
+    tactic: "Command and Control"
+    notes: "AnyDesk is deployed on compromised systems to provide persistent remote access for actors."
+  - techniqueId: "T1567.002"
+    techniqueName: "Exfiltration to Cloud Storage"
+    tactic: "Exfiltration"
+    notes: "Actors use AZCopy and Azure Storage Explorer to transfer collected data to actor-controlled Azure cloud storage prior to ransomware deployment."
+  - techniqueId: "T1070"
+    techniqueName: "Indicator Removal"
+    tactic: "Defense Evasion"
+    notes: "Rhysida actors clear Windows event logs using wevtutil to hinder forensic investigation prior to ransomware deployment."
+  - techniqueId: "T1070.004"
+    techniqueName: "File Deletion"
+    tactic: "Defense Evasion"
+    notes: "The Rhysida ransomware binary deletes itself via PowerShell from a hidden command window following encryption."
   - techniqueId: "T1486"
     techniqueName: "Data Encrypted for Impact"
     tactic: "Impact"
     notes: "Rhysida ransomware encrypts victim data using a 4096-bit RSA key with ChaCha20 algorithm, appending a .rhysida extension to encrypted files."
+  - techniqueId: "T1657"
+    techniqueName: "Financial Theft"
+    tactic: "Impact"
+    notes: "Rhysida operates a double-extortion model, demanding Bitcoin ransom payments and threatening publication of exfiltrated data on a Tor-based leak site."
 attributionConfidence: A3
 attributionRationale: "Documented through FBI and CISA joint investigations with published IOCs and TTPs. No specific country attribution or individual indictments in public government reporting."
 reviewStatus: "draft_ai"
@@ -120,11 +156,11 @@ Multiple independent government and vendor sources document this as a distinct o
 
 **Credential Access**: NTDS.dit database dumping via ntdsutil (T1003.003) to extract domain-wide credential hashes.
 
-**Collection and Exfiltration**: Data staged in local directories before exfiltration via AZCopy (T1059.009) and Azure Storage Explorer to cloud storage (T1530).
+**Exfiltration**: Data staged in local directories before exfiltration via AZCopy and Azure Storage Explorer to actor-controlled cloud storage (T1567.002).
 
 **Command and Control**: AnyDesk remote access tool (T1219) for persistent access.
 
-**Defense Evasion**: Windows event log clearing via wevtutil (T1070.001); self-deletion of ransomware binary post-encryption (T1070.004).
+**Defense Evasion**: Windows event log clearing via wevtutil (T1070); self-deletion of ransomware binary post-encryption (T1070.004).
 
 **Impact**: RSA-4096 + ChaCha20 data encryption (T1486); double extortion with threatened publication of exfiltrated data (T1657).
 
