@@ -22,7 +22,9 @@
       "actor_name": "DarkSide",
       "actor_type": "ransomware / extortion",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2020"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-007. Colonial Pipeline-era ransomware actor. Keep DarkSide/BlackMatter lineage claims evidence-bound."
   },
