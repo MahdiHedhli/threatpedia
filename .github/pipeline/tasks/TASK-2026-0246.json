@@ -22,7 +22,9 @@
       "actor_name": "APT33 / Elfin",
       "actor_type": "state-linked espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Iran",
+      "active_since": "2013"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-011. Iran-linked aviation/energy targeting actor. Verify alias and Microsoft naming before final canonical prose."
   },
