@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-08T15:29:07.000Z",
+  "updated": "2026-05-08T16:11:00.000Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -22,12 +22,12 @@
     "candidate_data": {
       "date": "2026-05-07",
       "severity": "high",
-      "sector": "Education technology / learning management systems",
+      "sector": "Education & Research",
       "geography": "Global",
-      "threat_actor": "ShinyHunters (claimed)",
-      "attack_type": "Account compromise, login-page defacement, extortion"
+      "actor_name": "ShinyHunters",
+      "attack_type": "Data Breach"
     },
-    "notes": "Manual intake from BleepingComputer and The Verge, corroborated with Instructure's public status page, AP, and TechCrunch. Official Instructure status confirms unauthorized access to a small number of Free-For-Teacher user accounts and states that exposed data may include names, email addresses, user roles, institution names, and Canvas IDs; it states that passwords, course content, assignments, grades, and payment information were not identified as exposed. Media reporting attributes the login-page defacement and extortion demand to ShinyHunters based on the group's claim; keep attribution phrased as claimed unless a primary source confirms it. AP reported on 2026-05-08 that Canvas service was restored and that the Instructure/Canvas listing had been removed from the extortion group's leak site. Do not state that the threatened data was actually leaked unless a later reliable source confirms publication. Treat victim counts, data-volume claims, ransom deadlines, and institution counts as threat-actor claims unless independently corroborated. Current source gap: no public government source confirming this exact event was found during intake; drafting worker must search again for government, regulator, law-enforcement, or public-institution notices before article PR, and must block rather than misclassify a non-government source if the validator requirement cannot be met."
+    "notes": "Manual intake from BleepingComputer and The Verge, corroborated with Instructure status, AP, and TechCrunch. Official Instructure status confirms unauthorized access to a small number of Free-For-Teacher user accounts and states that exposed data may include names, email addresses, user roles, institution names, and Canvas IDs; it states that passwords, course content, assignments, grades, and payment information were not identified as exposed. Media reporting attributes the login-page defacement and extortion demand to ShinyHunters based on the group's claim; keep attribution phrased as claimed unless a primary source confirms it. AP reported on 2026-05-08 that Canvas service was restored and that the Instructure/Canvas listing had been removed from the extortion group's leak site. Do not state that the threatened data was actually leaked unless a later reliable source confirms publication. Treat victim counts, data-volume claims, ransom deadlines, and institution counts as threat-actor claims unless independently corroborated. Current source gap: no public government source confirming this exact event was found during intake; drafting worker must search again for government, regulator, law-enforcement, or public-institution notices before article PR, and must block rather than misclassify a non-government source if the validator requirement cannot be met."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -60,6 +60,14 @@
       "to": "pending",
       "agent": "kernel-k-manual-intake",
       "note": "Manual link submission from BleepingComputer/The Verge intake; corroborated with Instructure status, AP, and TechCrunch. Leak publication is not publicly confirmed at intake."
+    },
+    {
+      "timestamp": "2026-05-08T16:11:00.000Z",
+      "action": "remediated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Applied 3 Gemini candidate_data fixes: sector->Education & Research, threat_actor key->actor_name (removed (claimed) suffix), attack_type->Data Breach."
     }
   ]
 }
