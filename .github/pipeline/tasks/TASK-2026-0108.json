@@ -2,7 +2,7 @@
   "task_id": "TASK-2026-0108",
   "type": "incident",
   "priority": "P0",
-  "status": "complete",
+  "status": "pr_open",
   "input": {
     "topic": "Qilin EDR Killer Campaign",
     "reprocess": true,
@@ -40,7 +40,26 @@
       "to": "complete",
       "agent": "kernel-k",
       "note": "Superseded by TASK-2026-0179: the placeholder incident slug was retired and the canonical Qilin rebuild already completed via PR #70."
+    },
+    {
+      "timestamp": "2026-05-08T17:16:41.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Incident worker run #238 \u2014 drafting Qilin EDR Killer article"
+    },
+    {
+      "timestamp": "2026-05-08T17:20:39.000Z",
+      "action": "pr_open",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article drafted: tp-article-qilin-edr-killer.md (TP-2026-0054). Local validator PASS. Opening PR."
     }
   ],
-  "updated": "2026-04-29T01:05:00Z"
+  "updated": "2026-04-29T01:05:00Z",
+  "locked_by": null,
+  "locked_at": null,
+  "stage": "draft"
 }
