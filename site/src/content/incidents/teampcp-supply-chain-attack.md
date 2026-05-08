@@ -18,7 +18,6 @@ relatedSlugs:
   - "cisco-trivy-supply-chain-breach-2026"
   - "european-commission-trivy-breach-2026"
   - "mercor-litellm-supply-chain-breach-2026"
-  - "teampcp-supply-chain-campaign-2026"
 tags:
   - "supply-chain"
   - "github-actions"
@@ -69,7 +68,7 @@ mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
-    notes: "TeamPCP force-pushed malicious code to 76 of 77 version tags in the aquasecurity/trivy-action repository and all 7 tags in aquasecurity/setup-trivy, poisoning a widely-trusted open source security scanning tool and its associated GitHub Action."
+    notes: "TeamPCP force-pushed malicious code to 76 of 77 version tags in the aquasecurity/trivy-action repository and all 7 tags in aquasecurity/setup-trivy, poisoning an open source security scanning tool and its associated GitHub Action."
   - techniqueId: "T1552.001"
     techniqueName: "Credentials In Files"
     tactic: "Credential Access"
@@ -85,12 +84,12 @@ mitreMappings:
   - techniqueId: "T1584"
     techniqueName: "Compromise Infrastructure"
     tactic: "Resource Development"
-    notes: "TeamPCP compromised the official Trivy distribution infrastructure across GitHub Releases, Docker Hub, GitHub Container Registry (GHCR), Amazon ECR Public, and deb/rpm package repositories to distribute the malicious binary at scale."
+    notes: "TeamPCP compromised the official Trivy distribution infrastructure across GitHub Releases, Docker Hub, GitHub Container Registry (GHCR), Amazon ECR Public, and deb/rpm package repositories to distribute the malicious binary across official channels."
 ---
 
 ## Summary
 
-On March 19, 2026, a threat actor tracked as TeamPCP executed a coordinated supply chain attack against the Trivy open source vulnerability scanner, compromising its official GitHub Actions workflows and distribution infrastructure. The attack, assigned CVE-2026-33634 with a CVSS4B score of 9.4, allowed malicious code to execute inside CI/CD pipelines of any organization using the compromised Trivy actions or downloading the weaponized binary releases. Over the following days, the same actor expanded the campaign to additional widely-used open source security tooling including Checkmarx KICS, LiteLLM, and Telnyx.
+On March 19, 2026, a threat actor tracked as TeamPCP executed a coordinated supply chain attack against the Trivy open source vulnerability scanner, compromising its official GitHub Actions workflows and distribution infrastructure. The attack, assigned CVE-2026-33634 with a CVSS4B score of 9.4, allowed malicious code to execute inside CI/CD pipelines of any organization using the compromised Trivy actions or downloading the weaponized binary releases. Over the following days, the same actor expanded the campaign to additional open source security tooling including Checkmarx KICS, LiteLLM, and Telnyx.
 
 The attack resulted in credential theft from CI/CD environments across more than 1,000 enterprise software-as-a-service environments, according to subsequent industry reporting. Stolen credentials later surfaced in double-extortion operations conducted by a separate group, Vect ransomware, confirming that harvested data was monetized through downstream criminal channels.
 
@@ -118,7 +117,7 @@ The credential harvesting phase proceeded silently within normal pipeline execut
 
 ## Impact Assessment
 
-CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the severity of a supply chain compromise affecting a security scanning tool that Aqua Security reported was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
+CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the severity of a supply chain compromise affecting a widely deployed security scanning tool. Aqua Security reported that Trivy was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
 
 Industry analysis identified more than 1,000 enterprise SaaS environments as having been affected by credential theft during the campaign window. The subsequent involvement of Vect ransomware in publishing stolen victim data confirmed that harvested credentials were transferred to or sold to criminal operators conducting double-extortion campaigns.
 
@@ -131,7 +130,7 @@ The campaign is attributed to a threat actor tracked as TeamPCP. Some security v
 | Date | Event |
 |---|---|
 | 2026-03-19 | TeamPCP force-pushes malicious commits to aquasecurity/trivy-action (76/77 tags) and aquasecurity/setup-trivy (all 7 tags); weaponized v0.69.4 binary distributed via all official channels. |
-| 2026-03-19–22 | TeamPCP Cloud Stealer executes in CI/CD environments of organizations running affected Trivy pipelines; credential harvesting begins at scale. |
+| 2026-03-19–22 | TeamPCP Cloud Stealer executes in CI/CD environments of organizations running affected Trivy pipelines; credential harvesting begins. |
 | ~2026-03-22 | Sysdig detects anomalous activity; initial public reporting begins. |
 | ~2026-03-23 | Aqua Security removes malicious tags and releases; issues security advisory for CVE-2026-33634. |
 | ~2026-03-23 | TeamPCP pivots to Checkmarx/ast-github-action using credentials stolen from Trivy campaign victims; LiteLLM and Telnyx distributions also compromised. |
