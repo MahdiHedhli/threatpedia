@@ -22,7 +22,9 @@
       "actor_name": "Hafnium",
       "actor_type": "China-linked exploitation cluster",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "China",
+      "active_since": "2021"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-004. Exchange ProxyLogon actor profile. Keep campaign and actor boundaries clear; avoid treating all Exchange exploitation as Hafnium."
   },
