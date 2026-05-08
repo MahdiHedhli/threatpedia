@@ -22,7 +22,9 @@
       "actor_name": "REvil / Sodinokibi",
       "actor_type": "ransomware / extortion",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2019"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-006. Kaseya and REvil/Sodinokibi actor profile. Use DOJ/FBI language for named operators only where directly cited."
   },
