@@ -1,66 +1,91 @@
 {
   "task_id": "TASK-2026-0237",
   "stage": "draft",
-  "type": "threat-actor",
-  "priority": "P0",
-  "status": "pending",
-  "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
-  "source": "historical_corpus_backlog",
-  "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pr_open",
+  "created": "2026-05-08T19:07:43.492Z",
+  "updated": "2026-05-08T19:25:00.000Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-08T19:20:00.000Z",
   "input": {
-    "topic": "Dragonfly / Energetic Bear threat actor profile",
+    "topic": "BerriAI LiteLLM SQL Injection Vulnerability (CVE-2026-42208)",
     "sources": [
-      "https://attack.mitre.org/groups/G0035/",
-      "https://www.cisa.gov/ncas/alerts/TA17-293A",
-      "https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/dragonfly-energy-sector-cyber-attacks"
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-42208",
+      "https://github.com/BerriAI/litellm/security/advisories/GHSA-r75f-5x8p-qvmc"
     ],
     "candidate_data": {
-      "historical_id": "HIST-ACTOR-002",
-      "actor_name": "Dragonfly / Energetic Bear",
-      "actor_type": "state-linked ICS espionage",
-      "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap",
-      "origin": "Russia",
-      "active_since": "2010"
+      "cve": "CVE-2026-42208",
+      "cves": ["CVE-2026-42208"],
+      "exploitId": "TP-EXP-2026-0021",
+      "type": "SQL Injection",
+      "platform": "BerriAI LiteLLM",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-05-08",
+      "cwes": ["CWE-89"],
+      "knownRansomwareUse": false
     },
-    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-002. Canonicalize Dragonfly and Energetic Bear carefully; keep ICS and energy-sector targeting source-bound."
+    "notes": "CISA KEV entry added 2026-05-08. Required action by 2026-05-11. Discovery score: 65/100."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "site/src/content.config.ts",
-    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 6,
-    "min_mitre_mappings": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
     "astro_build": true
   },
   "depends_on": [],
   "preconditions": [
-    "editorial queue depth < 50",
-    "task exists on origin/main before lock/open-pr execution"
+    "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/threat-actors/dragonfly-energetic-bear.md",
+    "file_pattern": "site/src/content/zero-days/berriai-litellm-cve-2026-42208.md",
     "branch": "pipeline/TASK-2026-0237",
     "pr": true
   },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 65,
+    "auto_certify": false,
+    "cvss": null,
+    "discovered_at": "2026-05-08T19:07:43.492Z"
+  },
+  "pr_number": 554,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/554",
   "history": [
     {
-      "timestamp": "2026-05-08T15:25:00.000Z",
+      "timestamp": "2026-05-08T19:07:43.492Z",
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "Kernel K",
-      "note": "Historical threat-actor backlog seed from HIST-ACTOR-002"
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 65)"
+    },
+    {
+      "timestamp": "2026-05-08T19:20:00.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Run #244 zero-day worker — drafting article"
+    },
+    {
+      "timestamp": "2026-05-08T19:25:00.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #554 opened — https://github.com/MahdiHedhli/threatpedia/pull/554"
     }
   ]
 }
