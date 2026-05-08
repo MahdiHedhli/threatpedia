@@ -315,10 +315,12 @@ function buildRules(task) {
      — Every frontmatter source URL must appear in the body exactly once
      — No orphan sources: every body source entry must have a matching frontmatter source object
      — No plain-text sources: every body entry must be a markdown hyperlink
-  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; optional metadata must use attack-version vNN[.N], confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')}, and non-empty evidence when present
-  12. framework-mappings are optional and currently only allowed for source-supported adversarial AI/ML behavior; MITRE ATLAS entries require framework: mitre-atlas and mapping-id AML.T####[.###]
-  13. Canonical publisher aliases must be normalized in frontmatter and body
-  14. The Astro build must pass: cd site && npm run build`;
+  11. MITRE tactic casing must use the canonical ATT&CK vocabulary; new mappings should declare attack-version "v19" or "v19.0" unless preserving a legacy article version; optional metadata must use confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')} and non-empty evidence when present
+  12. Do not bulk-assign or preserve Defense Evasion for ATT&CK v19 split cases without article-supported review; use the pinned v19 data and omit uncertain mappings rather than guessing
+  13. framework-mappings are optional and currently only allowed for source-supported adversarial AI/ML behavior; MITRE ATLAS entries require framework: mitre-atlas and mapping-id AML.T####[.###]
+  14. Do not add ATLAS because a topic is broadly AI-adjacent; require article evidence that an AI/ML system was targeted, abused as tooling, bypassed as a control, or compromised in the ML supply chain
+  15. Canonical publisher aliases must be normalized in frontmatter and body
+  16. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
