@@ -22,7 +22,9 @@
       "actor_name": "APT37 / Reaper",
       "actor_type": "state-linked espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "North Korea",
+      "active_since": "2012"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-014. DPRK-linked regional espionage actor. Do not conflate with Lazarus/APT38 unless source-specific."
   },
