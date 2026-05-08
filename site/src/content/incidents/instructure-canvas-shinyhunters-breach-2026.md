@@ -1,6 +1,6 @@
 ---
 eventId: TP-2026-0056
-title: "Instructure Canvas ShinyHunters Breach: Mass Data Theft and Login Portal Defacement, May 2026"
+title: "Instructure Canvas ShinyHunters Breach: Data Theft and Login Portal Defacement, May 2026"
 date: 2026-05-07
 attackType: Data Breach
 severity: high
@@ -110,7 +110,7 @@ On May 7, 2026, after Instructure did not publicly engage with the group, ShinyH
 
 ## Impact Assessment
 
-Canvas is used by approximately 41 percent of higher education institutions in the United States, as well as K–12 schools and institutions internationally. ShinyHunters' claim of 275 million affected individuals, if accurate, would represent one of the largest educational data breaches on record.
+Canvas is used by approximately 41 percent of higher education institutions in the United States, as well as K–12 schools and institutions internationally. ShinyHunters' claim of 275 million affected individuals, if accurate, would represent a substantial breach by reported volume.
 
 Instructure's confirmed scope covers names, email addresses, student identification numbers, and messages between users. Passwords, dates of birth, government identifiers, and financial information were not identified as compromised according to Instructure.
 
@@ -120,19 +120,37 @@ Multiple universities issued notices to their communities acknowledging the inci
 
 This incident is attributed to ShinyHunters based on the group's public claim of responsibility, the defacement content consistent with prior ShinyHunters operations, and BleepingComputer reporting. Attribution is assessed at A4: the claim is public, credible given the group's prior activity, and corroborated by the defacement itself, but has not been confirmed by a government or law enforcement source as of May 8, 2026.
 
-ShinyHunters has been associated with prior large-scale data theft and extortion operations. BleepingComputer reported that this breach represents a second Instructure intrusion by the group, with the defacement message referencing a prior compromise that the group characterized as having been addressed by Instructure with security patches rather than ransom payment. The relationship between ShinyHunters and other intrusion clusters such as UNC5537 has been reported by security researchers but is not formally confirmed.
+ShinyHunters has been associated with prior data theft and extortion operations. BleepingComputer reported that this breach represents a second Instructure intrusion by the group, with the defacement message referencing a prior compromise that the group characterized as having been addressed by Instructure with security patches rather than ransom payment. The relationship between ShinyHunters and other intrusion clusters such as UNC5537 has been reported by security researchers but is not formally confirmed.
 
 ## Timeline
 
-| Date | Event |
-|---|---|
-| 2026-04-29 | Instructure detects unauthorized activity in Canvas systems and revokes intruder access. |
-| 2026-05-01 | Instructure publicly discloses a cybersecurity incident; characterizes scope as limited. |
-| 2026-05-03 | ShinyHunters distributes ransom letter claiming 275 million records from approximately 9,000 institutions; sets May 12 deadline. |
-| 2026-05-04 | Multiple universities including Rutgers issue community notices about the Canvas security incident. |
-| 2026-05-07 | ShinyHunters defaces Canvas login portals at approximately 330 institutions; defacement removed in approximately 30 minutes. |
-| 2026-05-07 | Instructure reports service restoration on status page; does not address scope discrepancy. |
-| 2026-05-08 | AP News reports Canvas service restored and Instructure listing removed from ShinyHunters leak site. |
+### 2026-04-29 — Unauthorized Access Detected and Revoked
+
+Instructure detects unauthorized activity in Canvas systems and revokes intruder access.
+
+### 2026-05-01 — Public Disclosure
+
+Instructure publicly discloses a cybersecurity incident; characterizes scope as limited.
+
+### 2026-05-03 — Extortion Demand
+
+ShinyHunters distributes a ransom letter claiming 275 million records from approximately 9,000 institutions and sets a May 12, 2026 deadline.
+
+### 2026-05-04 — University Notifications
+
+Multiple universities including Rutgers issue community notices about the Canvas security incident.
+
+### 2026-05-07 — Login Portal Defacements
+
+ShinyHunters defaces Canvas login portals at approximately 330 institutions; defacement removed in approximately 30 minutes.
+
+### 2026-05-07 — Service Restoration
+
+Instructure reports service restoration on its status page; does not address scope discrepancy.
+
+### 2026-05-08 — Leak Site Update
+
+AP News reports Canvas service restored and Instructure listing removed from ShinyHunters leak site.
 
 ## Remediation & Mitigation
 
@@ -140,7 +158,7 @@ Instructure has stated that passwords were not exposed in this incident. No imme
 
 Institutions that communicate with students and staff through Canvas messaging should alert their communities to the risk of phishing messages referencing Canvas account information, course materials, or institutional identifiers that may have been obtained from the exposed dataset.
 
-Higher education institutions that depend on third-party learning management system providers should review vendor agreements and incident notification requirements. The gap between Instructure's initial scope characterization and the threat actor's public data volume claim, and the delay between detection and public disclosure, illustrate the risk of relying solely on a single vendor's communications during an active incident.
+Higher education institutions that depend on third-party learning management system providers should review vendor agreements and incident notification requirements. The gap between Instructure's initial scope characterization and the threat actor's public data volume claim, and the delay between detection and public disclosure, illustrate the risk of relying on a single vendor's communications during an active incident.
 
 ## Sources & References
 

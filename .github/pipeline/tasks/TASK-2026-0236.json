@@ -50,7 +50,8 @@
   "output": {
     "file_pattern": "site/src/content/incidents/instructure-canvas-shinyhunters-breach-2026.md",
     "branch": "pipeline/TASK-2026-0236",
-    "pr": 556
+    "pr": 556,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/556"
   },
   "history": [
     {
