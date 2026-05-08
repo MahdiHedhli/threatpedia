@@ -22,7 +22,9 @@
       "actor_name": "LAPSUS$",
       "actor_type": "extortion / social engineering",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Unknown",
+      "active_since": "2021"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-008. Identity/social-engineering extortion actor. Preserve juvenile/identity claims only where official sources support them."
   },
