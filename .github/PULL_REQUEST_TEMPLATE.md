@@ -17,7 +17,8 @@
 ### For Incident Reports
 - [ ] Title follows convention: `Org/Target — Attack Type (TP-YYYY-NNNN)`
 - [ ] At least 2 independent sources cited
-- [ ] MITRE ATT&CK techniques mapped (where applicable)
+- [ ] MITRE ATT&CK v19 techniques mapped where source-supported; uncertain mappings omitted
+- [ ] MITRE ATLAS added only through `framework-mappings` when article evidence shows adversarial AI/ML behavior
 - [ ] Threat actor attribution includes confidence level
 - [ ] Severity rating justified in the report body
 - [ ] No sensitive/embargoed information disclosed prematurely

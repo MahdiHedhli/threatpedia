@@ -159,6 +159,20 @@ discovery queues are open, validated, and stable.
      MITRE tactic casing, canonical publisher aliases, canonical
      `generatedBy` values, and public-prose guardrails that block internal
      editorial/process language from article body text.
+   - Framework mappings are validated against the public schema mirror and
+     pinned framework data where available. New ATT&CK mappings should declare
+     `attack-version: "v19"` or `attack-version: "v19.0"` unless the task is
+     deliberately preserving an older article version. `attackVersion` and
+     `attack_version` remain compatibility aliases for legacy content and
+     in-flight PRs.
+   - ATT&CK v19 split cases, especially legacy `Defense Evasion` mappings,
+     require source-supported review before reclassification. Workers should
+     omit uncertain mappings rather than bulk-reassigning tactics.
+   - MITRE ATLAS is modeled separately through optional `framework-mappings`
+     entries with `framework: "mitre-atlas"` and `mapping-id:
+     "AML.T####[.###]"`. Add ATLAS only when article evidence supports
+     adversarial AI/ML behavior; do not use ATLAS for merely AI-adjacent
+     topics.
    - Failure leaves the task locked for agent iteration; success allows the
      agent to record a real open PR number, which moves the task to
      `status: pr_open`.
