@@ -57,6 +57,13 @@ sources:
     publicationDate: "2026-03-26"
     accessDate: "2026-05-08"
     archived: false
+  - url: "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-33634"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-03-26"
+    accessDate: "2026-05-08"
+    archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Compromise Software Supply Chain"
@@ -146,3 +153,4 @@ For the fallback exfiltration technique, organizations should monitor for unexpe
 - [Kaspersky: Trojanization of Trivy, Checkmarx, and LiteLLM Solutions](https://www.kaspersky.com/blog/critical-supply-chain-attack-trivy-litellm-checkmarx-teampcp/55510/) — Kaspersky, 2026-03-24
 - [The Hacker News: Trivy Hack Spreads Infostealer via Docker, Triggers Worm and Kubernetes Wiper](https://thehackernews.com/2026/03/trivy-hack-spreads-infostealer-via.html) — The Hacker News, 2026-03-22
 - [Sysdig: TeamPCP Expands — Supply Chain Compromise Spreads from Trivy to Checkmarx GitHub Actions](https://sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions/) — Sysdig, 2026-03-26
+- [CISA: Aquasecurity Trivy Embedded Malicious Code Vulnerability (CVE-2026-33634)](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-33634) — CISA, 2026-03-26
