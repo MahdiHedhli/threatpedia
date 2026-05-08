@@ -43,7 +43,8 @@ The `incident-review.yml` workflow then:
    - Are sources credible and independently verifiable?
    - Is the threat actor attribution accurate? Is the confidence level appropriate?
    - Is the severity rating justified?
-   - Are MITRE ATT&CK mappings correct?
+   - Are MITRE ATT&CK v19 mappings source-supported and correctly named?
+   - Are ATLAS mappings present only when the article evidence supports adversarial AI/ML behavior?
    - Are cross-links to related incidents present and bidirectional?
 3. Approve, request changes, or comment
 4. Once approved by a CODEOWNERS reviewer, merge to `main`
