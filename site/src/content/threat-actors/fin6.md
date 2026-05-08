@@ -109,7 +109,7 @@ sources:
 
 ## Executive Summary
 
-FIN6 is a financially motivated cybercriminal group active since at least 2015, documented primarily for large-scale theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — notably FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through dark web marketplaces.
+FIN6 is a financially motivated cybercriminal group active since at least 2015, documented primarily for large-scale theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through dark web marketplaces.
 
 Beginning around 2018, public reporting documented FIN6 activity associated with ransomware deployment against compromised enterprise environments, representing an operational shift or expansion from card theft to broader extortion. Available evidence does not establish FIN6's country of origin or identify specific operators.
 

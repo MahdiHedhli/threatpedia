@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T21:29:22.696Z",
+  "updated": "2026-05-08T21:40:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -51,7 +51,9 @@
   "output": {
     "file_pattern": "site/src/content/threat-actors/fin6.md",
     "branch": "pipeline/TASK-2026-0255",
-    "pr": true
+    "pr": true,
+    "pr_number": 564,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564"
   },
   "history": [
     {
@@ -68,6 +70,14 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-08T21:40:00.000Z",
+      "action": "pr_open",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #564 opened \u2014 feat(threat-actors): FIN6 payment-card cybercriminal profile"
     }
   ]
 }
