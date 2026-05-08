@@ -101,11 +101,7 @@ Following the theft, the threat actor moved stolen assets through additional add
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
-
 T1078 - Valid Accounts: The threat actor obtained private keys controlling five of the nine Ronin Network validator nodes. These keys constituted valid authorization credentials for the bridge 5-of-9 multi-signature withdrawal scheme. Possession of five keys was sufficient to authorize any withdrawal transaction, enabling the threat actor to act as legitimate validator nodes and drain the bridge without exploiting a vulnerability in the smart contract code itself.
-
-### Impact
 
 T1657 - Financial Theft: Using the compromised validator keys, the threat actor submitted fraudulent withdrawal transactions that drained approximately 173,600 ETH and 25.5 million USDC from the Ronin Bridge. U.S. Treasury OFAC designated the primary receiving address on 2022-04-14 and attributed the theft to the Lazarus Group in coordination with the U.S. Department of Justice. The approximately $625 million value at the time of theft represented the largest publicly confirmed state-sponsored cryptocurrency theft at that time.
 
@@ -125,7 +121,7 @@ The U.S. Department of the Treasury OFAC designated the Ethereum address associa
 
 ### 2022-06-23 — FBI Confirms Lazarus Group Attribution for Harmony Horizon Bridge Theft
 
-The Federal Bureau of Investigation confirmed that the Lazarus Group was responsible for a separate cryptocurrency theft from the Harmony Horizon Bridge in June 2022. While distinct from the Ronin heist, the FBI attribution for this second major bridge exploit during 2022 corroborates the broader pattern of Lazarus Group targeting of cross-chain bridge infrastructure as documented by U.S. government agencies.
+The Federal Bureau of Investigation confirmed that the Lazarus Group was responsible for a separate cryptocurrency theft from the Harmony Horizon Bridge in June 2022. While distinct from the Ronin heist, the FBI attribution for this second major bridge exploit during 2022 corroborates the pattern of Lazarus Group targeting of cross-chain bridge infrastructure as documented by U.S. government agencies.
 
 ## Remediation & Mitigation
 
