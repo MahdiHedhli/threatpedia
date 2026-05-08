@@ -88,13 +88,21 @@ The infection chain is initiated by a malicious Dynamic Link Library named `msim
 
 Once loaded, the DLL executes a multi-stage payload:
 
-**Stage 1 — User-mode preparation.** The DLL neutralizes user-mode API hooks maintained by EDR agents to intercept calls to sensitive Windows API functions. It also obfuscates control flow and API invocation patterns to complicate dynamic analysis and sandbox detection.
+### Stage 1: User-mode preparation
 
-**Stage 2 — Vulnerable driver deployment.** The loader drops and installs `rwdrv.sys`, a digitally signed but exploitable driver derived from the ThrottleStop CPU management utility. Because the driver carries a legitimate digital signature, it passes Windows Driver Signature Enforcement checks. The driver provides the kernel execution context required for the subsequent EDR disablement stage.
+The DLL neutralizes user-mode API hooks maintained by EDR agents to intercept calls to sensitive Windows API functions. It also obfuscates control flow and API invocation patterns to complicate dynamic analysis and sandbox detection.
 
-**Stage 3 — Kernel callback erasure.** With kernel-level access established, the EDR killer locates the callback notification routine tables that EDR products populate via `PsSetCreateProcessNotifyRoutine`, `PsSetCreateThreadNotifyRoutine`, and `PsSetLoadImageNotifyRoutine`. These callbacks are the primary mechanism by which EDR agents observe process lifecycle events. The component overwrites the registered callback pointers with empty or no-op routines, rendering the EDR blind to process activity without terminating its own process — a deliberate choice that avoids triggering tamper protection mechanisms that monitor for direct EDR process termination attempts.
+### Stage 2: Vulnerable driver deployment
 
-**Stage 4 — ETW suppression.** The component suppresses Event Tracing for Windows event generation, reducing telemetry available to both the local agent and downstream security operations tooling.
+The loader drops and installs `rwdrv.sys`, a digitally signed but exploitable driver derived from the ThrottleStop CPU management utility. Because the driver carries a legitimate digital signature, it passes Windows Driver Signature Enforcement checks. The driver provides the kernel execution context required for the subsequent EDR disablement stage.
+
+### Stage 3: Kernel callback erasure
+
+With kernel-level access established, the EDR killer locates the callback notification routine tables that EDR products populate via `PsSetCreateProcessNotifyRoutine`, `PsSetCreateThreadNotifyRoutine`, and `PsSetLoadImageNotifyRoutine`. These callbacks are the primary mechanism by which EDR agents observe process lifecycle events. The component overwrites the registered callback pointers with empty or no-op routines, rendering the EDR blind to process activity without terminating its own process — a deliberate choice that avoids triggering tamper protection mechanisms that monitor for direct EDR process termination attempts.
+
+### Stage 4: ETW suppression
+
+The component suppresses Event Tracing for Windows event generation, reducing telemetry available to both the local agent and downstream security operations tooling.
 
 The main EDR killer payload is decrypted and executed entirely in memory, leaving no on-disk artifact at execution time.
 
@@ -108,9 +116,9 @@ Talos analysis of at least one intrusion identified an extended pre-encryption d
 
 ## Impact Assessment
 
-The EDR killer component is capable of neutralizing monitoring by more than 300 security products, representing coverage across virtually the entire endpoint security vendor ecosystem. Organizations relying solely on user-space EDR tamper protection as a defense against targeted pre-encryption disablement are exposed to this technique.
+The EDR killer component is capable of neutralizing monitoring by more than 300 security products, representing coverage across the endpoint security vendor ecosystem. Organizations relying solely on user-space EDR tamper protection as a defense against targeted pre-encryption disablement are exposed to this technique.
 
-Qilin recorded more than 700 ransomware attacks during 2025 according to industry tracking, placing the group among the most prolific ransomware operators globally. The group's campaigns span multiple sectors including healthcare, government, financial services, manufacturing, and critical infrastructure. The deployment of this EDR killer across affiliate operations from mid-2025 onward meaningfully increased the operational effectiveness and potential impact of each intrusion.
+Qilin recorded more than 700 ransomware attacks during 2025 according to industry tracking, placing the group among the most prolific ransomware operators globally. The group's campaigns span multiple sectors including healthcare, government, financial services, manufacturing, and critical infrastructure. The deployment of this EDR killer across affiliate operations from mid-2025 onward increased the operational effectiveness and potential impact of each intrusion.
 
 ## Attribution
 
