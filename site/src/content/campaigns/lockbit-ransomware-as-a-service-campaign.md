@@ -90,7 +90,7 @@ mitreMappings:
 
 ## Executive Summary
 
-LockBit operated as a ransomware-as-a-service (RaaS) platform from at least January 2020 through February 2024, when a coordinated international law enforcement action designated Operation Cronos disrupted its infrastructure. The platform enabled affiliates to conduct ransomware attacks against organizations across multiple critical infrastructure sectors worldwide in exchange for a share of extorted ransom payments. LockBit progressed through major variants including LockBit 2.0 and LockBit 3.0 (also known as LockBit Black), with each iteration expanding affiliate tooling and operational capability.
+LockBit operated as a ransomware-as-a-service (RaaS) platform from at least January 2020 through February 2024, when a coordinated international law enforcement action designated Operation Cronos disrupted its infrastructure. The platform enabled affiliates to conduct ransomware attacks against organizations across multiple critical infrastructure sectors worldwide in exchange for a share of extorted ransom payments. LockBit progressed through documented variants including LockBit 2.0 and LockBit 3.0 (also known as LockBit Black), with each iteration expanding affiliate tooling and operational capability.
 
 The Cybersecurity and Infrastructure Security Agency, the Federal Bureau of Investigation, and international partners identified LockBit as the most deployed ransomware variant globally as of the period covered by CISA advisory AA23-075A (March 2023). The U.S. Department of Justice, the UK National Crime Agency, Europol, and law enforcement agencies from multiple countries coordinated Operation Cronos on February 20, 2024, seizing LockBit's public-facing infrastructure, obtaining decryption keys from seized servers, and unsealing criminal charges against identified LockBit operators and affiliates.
 
@@ -98,7 +98,7 @@ The Cybersecurity and Infrastructure Security Agency, the Federal Bureau of Inve
 
 LockBit operated as a closed RaaS platform in which a core operator group developed, maintained, and leased the LockBit encryptor and supporting infrastructure to vetted affiliates. Affiliates conducted intrusions independently, deploying LockBit encryptors against victim organizations and negotiating ransom payments through LockBit's operator-managed leak site and payment portal. The platform provided affiliates with a customizable encryptor binary, a Tor-based negotiation panel, and a data leak site for publishing exfiltrated data when victims declined to pay.
 
-CISA advisory AA23-075A documents that LockBit affiliates used diverse initial access techniques, including exploitation of vulnerabilities in public-facing applications, abuse of Remote Desktop Protocol and VPN services with compromised or brute-forced credentials, and phishing. The advisory identifies sectors targeted by LockBit affiliates as including financial services, food and agriculture, education, energy, government and emergency services, healthcare, information technology, manufacturing, and transportation. This breadth of targeting reflected the open affiliate recruitment model, which did not restrict affiliates by geography or sector.
+CISA advisory AA23-075A documents that LockBit affiliates used multiple initial access techniques, including exploitation of vulnerabilities in public-facing applications, abuse of Remote Desktop Protocol and VPN services with compromised or brute-forced credentials, and phishing. The advisory identifies sectors targeted by LockBit affiliates as including financial services, food and agriculture, education, energy, government and emergency services, healthcare, information technology, manufacturing, and transportation. This range of targeting reflected the open affiliate recruitment model, which did not restrict affiliates by geography or sector.
 
 LockBit 2.0, released in mid-2021, added automated lateral movement capabilities and built-in group policy abuse for Active Directory environments. LockBit 3.0 (LockBit Black), released in mid-2022, introduced a bug bounty program for identifying vulnerabilities in LockBit infrastructure and incorporated components from the leaked Conti ransomware source code and elements from BlackMatter.
 
@@ -108,11 +108,11 @@ Post-encryption, LockBit affiliates typically exfiltrated victim data prior to d
 
 ### Stage 1: Initial Access
 
-LockBit affiliates obtained initial access through multiple documented vectors. CISA advisory AA23-075A identifies exploitation of known vulnerabilities in public-facing systems, abuse of RDP and VPN services using valid or compromised credentials, and phishing as primary documented initial access methods. The decentralized affiliate model resulted in varied initial access tradecraft across LockBit-attributed intrusions.
+LockBit affiliates obtained initial access through multiple documented vectors. CISA advisory AA23-075A identifies exploitation of known vulnerabilities in public-facing systems, abuse of RDP and VPN services using valid or compromised credentials, and phishing as primary documented initial access methods. The decentralized affiliate model resulted in different initial access tradecraft across LockBit-attributed intrusions.
 
 ### Stage 2: Persistence and Lateral Movement
 
-Following initial access, affiliates established persistence using living-off-the-land techniques and legitimate remote management tools. LockBit 2.0 introduced automated lateral movement capabilities including propagation through Active Directory group policy abuse. Affiliates used credential-harvesting tools and network discovery to identify high-value systems including domain controllers, backup servers, and file servers as targets for the encryption phase.
+Following initial access, affiliates established persistence using living-off-the-land techniques and legitimate remote management tools. LockBit 2.0 introduced automated lateral movement capabilities including propagation through Active Directory group policy abuse. Affiliates used credential-harvesting tools and network discovery to identify systems such as domain controllers, backup servers, and file servers as targets for the encryption phase.
 
 ### Stage 3: Data Exfiltration
 
@@ -170,7 +170,7 @@ Organizations should prioritize patching of public-facing applications and syste
 
 Restrict and monitor Remote Desktop Protocol and VPN access. LockBit affiliates used RDP and VPN abuse as documented initial access vectors. Organizations should disable RDP where not required, enforce multi-factor authentication on all remote access services, and monitor for anomalous remote access activity.
 
-Implement network segmentation to limit lateral movement. LockBit affiliates moved laterally to reach backup servers, domain controllers, and high-value file stores. Network segmentation and least-privilege access controls limit the scope of damage an affiliate can achieve following initial access.
+Implement network segmentation to limit lateral movement. LockBit affiliates moved laterally to reach backup servers, domain controllers, and file servers. Network segmentation and least-privilege access controls limit the scope of damage an affiliate can achieve following initial access.
 
 Maintain offline or immutable backups. LockBit affiliates routinely deleted volume shadow copies and disabled backup services prior to encryption. Organizations should maintain offline or air-gapped backups that cannot be reached or modified from a compromised endpoint. Backup integrity should be verified regularly.
 
