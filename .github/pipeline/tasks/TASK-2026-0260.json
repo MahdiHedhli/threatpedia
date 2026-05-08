@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0260",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-08T17:18:38.019Z",
+  "updated": "2026-05-08T18:15:12.000Z",
+  "source": "manual_submission",
+  "submitted_by": "dangermouse-bot",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Lazarus Group Operation SmoothOperator — 3CX Software Supply Chain Compromise",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2023/03/30/supply-chain-attack-against-3cxdesktopapp",
+      "https://www.sentinelone.com/blog/smoothoperator-ongoing-campaign-trojanized-3cx-software",
+      "https://www.mandiant.com/resources/blog/3cx-software-supply-chain-compromise"
+    ],
+    "candidate_data": {
+      "severity": "critical"
+    },
+    "notes": "DPRK-attributed software supply chain compromise in which Lazarus Group (UNC4736/Zinc) trojanized the 3CX DesktopApp VoIP client to deliver ICONIC infostealer and POOLRAT malware against enterprise targets in financial services, critical infrastructure, and technology sectors globally. March–April 2023. Attributed to North Korea by CISA, Mandiant, CrowdStrike, and SentinelOne. Distinct from existing Lazarus articles (AppleJeus cryptocurrency campaign and Ronin Bridge heist); this is a multi-stage software supply chain attack with a second-stage supply chain element embedded. Conservative attribution: North Korea/Lazarus Group confirmed by multiple vendors and US government; no hard sub-cluster label beyond UNC4736 required."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0260",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T17:18:38.019Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-08T18:15:12.000Z",
+      "action": "remediated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Renumbered from TASK-2026-0237 to TASK-2026-0260 to resolve ID conflict: PR #543 (open, clean, authored by kernel-k) occupies TASK-2026-0237 through TASK-2026-0258 for the threat-actor historical seed backlog. Assigned next clean IDs 0259 and 0260 for the two campaign seeds."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0259",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-08T17:18:37.986Z",
+  "updated": "2026-05-08T18:14:57.000Z",
+  "source": "manual_submission",
+  "submitted_by": "dangermouse-bot",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "CyberAv3ngers IRGC-Affiliated ICS and Water Sector Targeting Campaign",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-335a",
+      "https://www.fbi.gov/news/press-releases/fbi-cisa-nsa-epa-issue-advisory-on-irgc-affiliated-cyber-actors",
+      "https://www.waterisac.org/portal/warning-iranian-irgc-cyberav3ngers-water-utility-attacks"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Iranian IRGC-affiliated threat group (CyberAv3ngers / IRGC Cyber-Electronic Command) conducting targeted attacks against industrial control systems and water/wastewater utilities using default credentials on Unitronics PLCs. Active 2023-2024, with victims spanning the US, Israel, Ireland, and other nations. Multi-sector ICS targeting campaign with clear government attribution (FBI/CISA/NSA/EPA joint advisory AA23-335A). Bounded scope: distinct from broader Iranian state-sponsored incident articles and from Predatory Sparrow industrial attacks. Conservative attribution: IRGC-affiliated confirmed by US government; no internal IRGC sub-unit attribution required."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0259",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T17:18:37.986Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-08T18:14:57.000Z",
+      "action": "remediated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Renumbered from TASK-2026-0236 to TASK-2026-0259 to resolve ID conflict: origin/main e98daf7 introduced TASK-2026-0236 as an incident task (Canvas/ShinyHunters). PR #543 (open, clean) occupies IDs 0237-0258. Assigned next clean IDs 0259 and 0260 for the two campaign seeds."
+    }
+  ]
+}
