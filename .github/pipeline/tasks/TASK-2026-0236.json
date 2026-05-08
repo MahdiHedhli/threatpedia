@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-08T19:25:15.390Z",
+  "updated": "2026-05-08T19:29:11.000Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-08T19:25:15.390Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Instructure Canvas Free-For-Teacher Account Compromise and ShinyHunters Extortion, May 2026",
     "sources": [
@@ -31,8 +31,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -48,9 +48,9 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/incidents/instructure-canvas-shinyhunters-breach-2026.md",
     "branch": "pipeline/TASK-2026-0236",
-    "pr": true
+    "pr": 556
   },
   "history": [
     {
@@ -75,6 +75,14 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-08T19:29:11.000Z",
+      "action": "pr_open",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #556 opened: feat(incidents): Instructure Canvas ShinyHunters breach article (TASK-2026-0236). Commit 7749773."
     }
   ]
 }
