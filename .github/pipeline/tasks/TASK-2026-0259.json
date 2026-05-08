@@ -18,14 +18,17 @@
       "https://www.waterisac.org/portal/warning-iranian-irgc-cyberav3ngers-water-utility-attacks"
     ],
     "candidate_data": {
-      "severity": "high"
+      "severity": "high",
+      "actor_name": "CyberAv3ngers",
+      "origin": "Iran",
+      "active_since": "2023"
     },
     "notes": "Iranian IRGC-affiliated threat group (CyberAv3ngers / IRGC Cyber-Electronic Command) conducting targeted attacks against industrial control systems and water/wastewater utilities using default credentials on Unitronics PLCs. Active 2023-2024, with victims spanning the US, Israel, Ireland, and other nations. Multi-sector ICS targeting campaign with clear government attribution (FBI/CISA/NSA/EPA joint advisory AA23-335A). Bounded scope: distinct from broader Iranian state-sponsored incident articles and from Predatory Sparrow industrial attacks. Conservative attribution: IRGC-affiliated confirmed by US government; no internal IRGC sub-unit attribution required."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
