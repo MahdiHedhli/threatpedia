@@ -4,21 +4,21 @@
   "type": "campaign",
   "priority": "P1",
   "status": "pending",
-  "created": "2026-05-08T02:13:55.838Z",
-  "updated": "2026-05-08T02:13:55.838Z",
+  "created": "2026-05-08T02:13:48.897Z",
+  "updated": "2026-05-08T02:13:48.897Z",
   "source": "manual_submission",
   "submitted_by": "cowork-campaign-worker",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "LockBit Global Ransomware-as-a-Service Campaign and Operation Cronos Law Enforcement Disruption",
+    "topic": "Lazarus Group Ronin Bridge Cryptocurrency Heist Campaign 2022",
     "sources": [
-      "https://www.justice.gov/opa/pr/us-leads-international-action-against-lockbit-ransomware-group",
-      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-075a",
-      "https://www.europol.europa.eu/media-press/newsroom/news/lockbit-power-cut-europol-national-police-agencies-dismantle-prolific-ransomware-group",
-      "https://www.fbi.gov/investigate/cyber/lockbit-ransomware"
+      "https://home.treasury.gov/news/press-releases/jy0768",
+      "https://www.fbi.gov/news/press-releases/fbi-confirms-north-korean-lazarus-group-responsible-for-harmony-horizon-bridge-theft",
+      "https://ofac.treasury.gov/recent-actions/04142022",
+      "https://www.justice.gov/opa/pr/justice-department-announces-charges-and-sanctions-against-north-korean-cryptocurrency"
     ],
-    "notes": "LockBit operated as the world's most prolific ransomware-as-a-service (RaaS) operation from at least 2020 until Operation Cronos (February 2024), when a coalition of law enforcement agencies seized its infrastructure. The campaign article should cover LockBit's affiliate model, key variants (LockBit 2.0, LockBit 3.0/Black), documented sector targeting, and the international disruption operation. Draft conservatively from CISA advisory AA23-075A, DOJ press releases, Europol, and NCA. Do not speculate on total victim counts or financial impact beyond confirmed law enforcement statements. Keep attribution to the LockBit group per DOJ/NCA sources."
+    "notes": "The March 2022 Ronin Network Bridge theft of approximately 173,600 ETH and 25.5 million USDC (~$625M at time of theft) is the largest confirmed cryptocurrency theft attributed to a state-sponsored actor. Draft conservatively from US Treasury OFAC designation, FBI attribution statement, and DOJ sources. Do not speculate on internal Lazarus infrastructure beyond what is officially attributed. Use USD values at time of theft, not current prices. Keep attribution to Lazarus Group per OFAC/FBI statements."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -45,7 +45,7 @@
   },
   "history": [
     {
-      "timestamp": "2026-05-08T02:13:55.838Z",
+      "timestamp": "2026-05-08T02:13:48.897Z",
       "action": "created",
       "from": "none",
       "to": "pending",
