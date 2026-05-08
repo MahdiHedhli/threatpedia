@@ -110,7 +110,7 @@ On May 7, 2026, after Instructure did not publicly engage with the group, ShinyH
 
 ## Impact Assessment
 
-Canvas is used by approximately 41 percent of higher education institutions in the United States, as well as K–12 schools and institutions internationally. ShinyHunters' claim of 275 million affected individuals, if accurate, would represent a substantial breach by reported volume.
+Canvas is used by approximately 41 percent of higher education institutions in the United States, as well as K–12 schools and institutions internationally. ShinyHunters' claim of 275 million affected individuals, if accurate, would represent a breach of high volume for the sector.
 
 Instructure's confirmed scope covers names, email addresses, student identification numbers, and messages between users. Passwords, dates of birth, government identifiers, and financial information were not identified as compromised according to Instructure.
 
