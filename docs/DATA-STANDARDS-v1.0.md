@@ -284,7 +284,7 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
   "technique_id": "T1190",
   "technique_name": "Exploit Public-Facing Application",
   "tactic": "Initial Access",
-  "attack_version": "v19.0",
+  "attack-version": "v19.0",
   "confidence": "confirmed",
   "evidence": "CVE-2023-50224 exploited per DOJ press release"
 }
@@ -292,7 +292,7 @@ This is the field that would have caught the BlueHammer Chaotic Eclipse error: a
 
 **`confidence` enum:** `confirmed` | `probable` | `possible`. Required.
 
-**Required:** `technique_id`, `attack_version`, `confidence`, `evidence`. Speculative mappings without evidence are rejected (RULE-009, RULE-012).
+**Required:** `technique_id`, `attack-version`, `confidence`, `evidence`. Speculative mappings without evidence are rejected (RULE-009, RULE-012).
 
 **Current pipeline rule:** New article work uses ATT&CK Enterprise v19.0 by default. Legacy `attackVersion` / `attack_version` aliases may be tolerated by validators during migration, but new frontmatter should use `attack-version` where the public Astro schema supports it.
 

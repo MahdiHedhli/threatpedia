@@ -208,7 +208,7 @@ Each source is a structured object. URL strings alone are not acceptable.
   "tactic": "Initial Access",
   "confidence": "confirmed | probable | possible",
   "evidence": "Free text describing evidence for this mapping",
-  "attack_version": "v19.0",
+  "attack-version": "v19.0",
   "mapped_by": "reviewer_id",
   "mapped_date": "YYYY-MM-DD",
   "source_refs": ["SRC-0001", "SRC-0002"]

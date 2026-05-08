@@ -116,7 +116,14 @@ YAML frontmatter fields (all required unless marked optional):
       attack-version: string (use "v19" or "v19.0" for new mappings)
       confidence: confirmed | probable | possible
       evidence: string (source-supported rationale)
-      notes: string (evidence for this mapping)`,
+      notes: string (optional, context for this article)
+  framework-mappings: array of objects (optional; for ATLAS mappings)
+    - framework: "mitre-atlas"
+      version: string (optional, e.g., "5.6.0")
+      mapping-id: string (e.g., "AML.T0042")
+      mapping-name: string
+      confidence: confirmed | probable | possible
+      evidence: string (source-supported rationale)`,
     bodySpec: `
 Required H2 sections IN THIS ORDER (use exactly these headings):
 
@@ -192,7 +199,8 @@ YAML frontmatter fields (all required unless marked optional):
   relatedIncidents: array of strings (optional) — linked incident slugs; campaigns should reference confirmed constituent incidents where available
   tags: array of strings
   sources: array of source objects (minimum 3, same schema as incidents; at least 1 government source)
-  mitreMappings: array of MITRE objects (minimum 1, same schema as incidents; use ATT&CK v19 for new mappings)`,
+  mitreMappings: array of MITRE objects (minimum 1, same schema as incidents; use ATT&CK v19 for new mappings)
+  framework-mappings: array of objects (optional; same schema as incidents)`,
     bodySpec: `
 Required H2 sections IN THIS ORDER:
 
@@ -236,7 +244,8 @@ YAML frontmatter fields (all required unless marked optional):
   targetGeographies: array of strings (optional)
   tools: array of strings (optional) — known malware/tool names
   knownTools: array of strings (optional) — same as tools, for schema compatibility
-  mitreMappings: array of MITRE objects (optional; use ATT&CK v19 for new mappings)
+  mitreMappings: array of MITRE objects (optional; same schema as incidents; use ATT&CK v19 for new mappings)
+  framework-mappings: array of objects (optional; same schema as incidents)
   reviewStatus: must be "draft_ai"
   generatedBy: must be "ai_ingestion"
   generatedDate: date — today's date
