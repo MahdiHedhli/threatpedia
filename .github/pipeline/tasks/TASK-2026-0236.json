@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-08T16:11:00.000Z",
+  "updated": "2026-05-08T17:14:00.000Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -45,7 +45,8 @@
   },
   "depends_on": [],
   "preconditions": [
-    "editorial queue depth < 50"
+    "editorial queue depth < 50",
+    "public government, regulator, law-enforcement, or public-institution source confirms the incident"
   ],
   "output": {
     "file_pattern": "site/src/content/incidents/{slug}.md",
@@ -68,6 +69,14 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Applied 3 Gemini candidate_data fixes: sector->Education & Research, threat_actor key->actor_name (removed (claimed) suffix), attack_type->Data Breach."
+    },
+    {
+      "timestamp": "2026-05-08T17:14:00.000Z",
+      "action": "blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "kernel-k",
+      "note": "Blocked dispatch until a qualifying public government, regulator, law-enforcement, or public-institution source exists; current intake sources are vendor/media only and the article validator requires a government source."
     }
   ]
 }
