@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T19:51:06.266Z",
+  "updated": "2026-05-08T23:27:56.786Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -69,6 +69,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #559"
+    },
+    {
+      "timestamp": "2026-05-08T23:27:56.786Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #566 already covers this task."
     }
   ]
 }
