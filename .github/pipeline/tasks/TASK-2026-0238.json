@@ -23,7 +23,9 @@
       "actor_name": "TEMP.Veles / XENOTIME",
       "actor_type": "ICS threat actor",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2014"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-003. ICS safety-system actor tied to TRITON/TRISIS reporting. Do not overclaim sponsor identity unless directly supported."
   },
