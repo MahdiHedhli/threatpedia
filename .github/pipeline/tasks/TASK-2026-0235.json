@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-08T02:13:55.838Z",
-  "updated": "2026-05-08T02:13:55.838Z",
+  "updated": "2026-05-08T15:12:23.683Z",
   "source": "manual_submission",
   "submitted_by": "cowork-campaign-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-08T15:12:23.683Z",
   "input": {
     "topic": "LockBit Global Ransomware-as-a-Service Campaign and Operation Cronos Law Enforcement Disruption",
     "sources": [
@@ -51,6 +51,13 @@
       "to": "pending",
       "agent": "cowork-campaign-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-08T15:12:23.683Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
