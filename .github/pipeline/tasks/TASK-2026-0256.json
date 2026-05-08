@@ -22,7 +22,9 @@
       "actor_name": "Rhysida",
       "actor_type": "ransomware / extortion",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Unknown",
+      "active_since": "2023"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-040. Ransomware/extortion actor with healthcare and public-sector reporting. Use advisory wording for affiliate model and victim sectors."
   },
