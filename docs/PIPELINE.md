@@ -189,7 +189,10 @@ for the pipeline.
      status comments that merely mention the command do not create unnecessary
      workflow failures.
    - For content-collection PRs, the gate requires a successful current-head
-     `validate` check. Green checks from an older head SHA do not count.
+     `validate` check. Green checks from an older head SHA do not count. If
+     the current-head check has not registered yet or is still running, the
+     gate waits briefly before failing so AI-review-triggered runs do not
+     create avoidable red checks while validation is still in flight.
    - For public content/site/pipeline PRs, the gate requires an AI second
      review on the current head SHA, no unresolved current AI review threads,
      and no later AI review-error comment without a successful replacement

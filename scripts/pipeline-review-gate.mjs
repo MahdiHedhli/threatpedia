@@ -16,12 +16,16 @@ const DEFAULT_AI_REVIEW_LOGINS = [
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
 const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
+const DEFAULT_VALIDATE_WAIT_MS = 90000;
+const DEFAULT_VALIDATE_POLL_MS = 5000;
 
 function parseArgs(argv) {
   const parsed = {
     pr: process.env.PR_NUMBER ? Number.parseInt(process.env.PR_NUMBER, 10) : null,
     repo: process.env.GITHUB_REPOSITORY || null,
     json: false,
+    validateWaitMs: readNonNegativeIntegerEnv('REVIEW_GATE_VALIDATE_WAIT_MS', DEFAULT_VALIDATE_WAIT_MS),
+    validatePollMs: readNonNegativeIntegerEnv('REVIEW_GATE_VALIDATE_POLL_MS', DEFAULT_VALIDATE_POLL_MS),
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -29,6 +33,8 @@ function parseArgs(argv) {
     if (arg === '--pr' && argv[i + 1]) parsed.pr = Number.parseInt(argv[++i], 10);
     else if (arg === '--repo' && argv[i + 1]) parsed.repo = argv[++i];
     else if (arg === '--json') parsed.json = true;
+    else if (arg === '--validate-wait-ms' && argv[i + 1]) parsed.validateWaitMs = parseNonNegativeInteger(argv[++i], '--validate-wait-ms');
+    else if (arg === '--validate-poll-ms' && argv[i + 1]) parsed.validatePollMs = parseNonNegativeInteger(argv[++i], '--validate-poll-ms');
     else if (arg === '--help' || arg === '-h') {
       printHelp();
       process.exit(0);
@@ -50,12 +56,28 @@ function parseArgs(argv) {
   return parsed;
 }
 
+function parseNonNegativeInteger(value, label) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new Error(`${label} must be a non-negative integer.`);
+  }
+  return parsed;
+}
+
+function readNonNegativeIntegerEnv(name, fallback) {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  return parseNonNegativeInteger(raw, name);
+}
+
 function printHelp() {
   console.log(`Usage: node scripts/pipeline-review-gate.mjs --pr <number> [--repo owner/name] [--json]
 
 Environment:
   GITHUB_TOKEN or GITHUB_PAT must be present.
   AI_REVIEW_LOGINS may override the comma-separated AI reviewer login list.
+  REVIEW_GATE_VALIDATE_WAIT_MS may override how long to wait for current-head validation.
+  REVIEW_GATE_VALIDATE_POLL_MS may override the validation polling interval.
 `);
 }
 
@@ -154,6 +176,46 @@ async function listCheckRuns(owner, repo, ref, token) {
     (payload) => payload.check_runs || [],
   );
   return { check_runs: results };
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function summarizeValidateChecks(checkRunsPayload) {
+  const validateChecks = (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
+  const passingValidate = validateChecks.find((check) => check.status === 'completed' && check.conclusion === 'success');
+  const activeValidate = validateChecks.find((check) => check.status !== 'completed');
+  return { validateChecks, passingValidate, activeValidate };
+}
+
+async function waitForValidateCheck(owner, repo, ref, token, initialCheckRunsPayload, options) {
+  const maxWaitMs = options.validateWaitMs;
+  const pollMs = Math.max(options.validatePollMs, 1000);
+  let checkRunsPayload = initialCheckRunsPayload;
+  let waitedMs = 0;
+
+  while (true) {
+    const { validateChecks, passingValidate, activeValidate } = summarizeValidateChecks(checkRunsPayload);
+    if (passingValidate) return { checkRunsPayload, waitedMs, timedOut: false };
+
+    const hasCompletedValidate = validateChecks.some((check) => check.status === 'completed');
+    const shouldWait = maxWaitMs > 0 && waitedMs < maxWaitMs && (!hasCompletedValidate || activeValidate);
+    if (!shouldWait) {
+      return {
+        checkRunsPayload,
+        waitedMs,
+        timedOut: maxWaitMs > 0 && waitedMs >= maxWaitMs && (!hasCompletedValidate || Boolean(activeValidate)),
+      };
+    }
+
+    const delayMs = Math.min(pollMs, maxWaitMs - waitedMs);
+    await sleep(delayMs);
+    waitedMs += delayMs;
+    checkRunsPayload = await listCheckRuns(owner, repo, ref, token);
+  }
 }
 
 async function getReviewThreadComments(threadId, token, after = null) {
@@ -255,7 +317,7 @@ function latestDate(items, getter) {
   return new Date(latest).toISOString();
 }
 
-async function evaluate({ repo: repoSlug, pr: prNumber }) {
+async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitMs, validatePollMs }) {
   const token = getToken();
   if (!token) {
     throw new Error('GITHUB_TOKEN or GITHUB_PAT is required. Do not read local secret files for this gate.');
@@ -296,8 +358,17 @@ async function evaluate({ repo: repoSlug, pr: prNumber }) {
     getReviewThreads(owner, repo, prNumber, token),
   ]);
 
-  const validateChecks = (checkRunsPayload.check_runs || []).filter((check) => check.name === 'validate');
-  const passingValidate = validateChecks.find((check) => check.status === 'completed' && check.conclusion === 'success');
+  const validationState = requiresValidation
+    ? await waitForValidateCheck(owner, repo, pr.head.sha, token, checkRunsPayload, { validateWaitMs, validatePollMs })
+    : { checkRunsPayload, waitedMs: 0, timedOut: false };
+
+  const { validateChecks, passingValidate } = summarizeValidateChecks(validationState.checkRunsPayload);
+  if (requiresValidation && validationState.waitedMs > 0) {
+    notes.push(`Waited ${validationState.waitedMs}ms for current-head validation before evaluating review gate.`);
+  }
+  if (requiresValidation && validationState.timedOut) {
+    notes.push(`Timed out waiting ${validationState.waitedMs}ms for current-head validation.`);
+  }
   if (requiresValidation && !passingValidate) {
     failures.push('No successful Pipeline: Validate Article PR "validate" check exists on the current head SHA.');
   }
