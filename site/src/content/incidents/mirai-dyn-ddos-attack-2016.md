@@ -100,7 +100,7 @@ Dyn and upstream network providers mitigated the attack in phases. ThousandEyes 
 
 The incident disrupted access to internet services rather than compromising those services directly. ThousandEyes named affected Dyn customers and monitored services including Spotify, Amazon, HBO Now, Twitter, GitHub, Pinterest, CNN, and others, and observed more than 1,200 impacted domains in its monitored set during one hour of the outage.
 
-The operational impact affected numerous services because DNS is a shared dependency. A DDoS attack against one managed DNS provider created cascading availability problems for unrelated customer services, including media, software development, social networking, commerce, and SaaS platforms. Users experienced service outages even when the downstream service providers' application stacks were not themselves the primary DDoS target.
+The operational impact affected services across multiple sectors because DNS is a shared dependency. A DDoS attack against one managed DNS provider created cascading availability problems for unrelated customer services, including media, software development, social networking, commerce, and SaaS platforms. Users experienced service outages even when the downstream service providers' application stacks were not themselves the primary DDoS target.
 
 The longer-term impact was the security lesson around unmanaged IoT devices. CISA's guidance emphasized replacing default passwords, disabling unnecessary services such as UPnP, monitoring Telnet-related activity, and applying vendor updates. The incident also reinforced the need for DNS redundancy, DDoS mitigation planning, and dependency mapping for internet-facing services.
 
