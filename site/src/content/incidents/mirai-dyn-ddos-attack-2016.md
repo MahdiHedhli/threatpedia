@@ -60,7 +60,7 @@ mitreMappings:
 
 ## Summary
 
-On October 21, 2016, a series of distributed denial-of-service attacks targeted Dyn, a managed DNS provider whose customers included major internet services. Because Dyn provided authoritative DNS service for many domains, disruption to Dyn's infrastructure made affected customer services difficult or impossible to reach for users in parts of North America and Europe.
+On October 21, 2016, a series of distributed denial-of-service attacks targeted Dyn, a managed DNS provider whose customers included multiple internet services. Because Dyn provided authoritative DNS service for many domains, disruption to Dyn's infrastructure made affected customer services difficult or impossible to reach for users in parts of North America and Europe.
 
 The attack paired internet infrastructure dependence with an Internet-of-Things botnet. CISA had warned a week earlier that Mirai and similar IoT botnets could execute DDoS attacks after the Mirai source code was released publicly. ThousandEyes reported that Mirai-infected consumer devices were one source of the Dyn attack traffic, while noting that the exact target and complete traffic composition were not fully known from public evidence.
 
@@ -116,7 +116,7 @@ That DOJ case supports attribution for the creation and operation of the origina
 
 ### 2016-09 — Mirai Source Code Published
 
-After major Mirai-driven DDoS activity earlier in 2016, Mirai source code was posted publicly, allowing other actors to build or modify related IoT botnets.
+After high-volume Mirai-driven DDoS activity earlier in 2016, Mirai source code was posted publicly, allowing other actors to build or modify related IoT botnets.
 
 ### 2016-10-14 — CISA Issues Mirai DDoS Alert
 
