@@ -18,6 +18,7 @@ relatedSlugs:
   - "cisco-trivy-supply-chain-breach-2026"
   - "european-commission-trivy-breach-2026"
   - "mercor-litellm-supply-chain-breach-2026"
+  - "teampcp-supply-chain-campaign-2026"
 tags:
   - "supply-chain"
   - "github-actions"
