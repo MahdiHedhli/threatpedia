@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T02:13:48.897Z",
-  "updated": "2026-05-08T14:21:17.200Z",
+  "updated": "2026-05-08T14:24:01.134Z",
   "source": "manual_submission",
   "submitted_by": "cowork-campaign-worker",
-  "locked_by": "Threatpedia Campaign Worker",
-  "locked_at": "2026-05-08T14:21:17.200Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Lazarus Group Ronin Bridge Cryptocurrency Heist Campaign 2022",
     "sources": [
@@ -58,6 +58,16 @@
       "to": "locked",
       "agent": "Threatpedia Campaign Worker",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-08T14:24:01.134Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Threatpedia Campaign Worker",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #539"
     }
-  ]
+  ],
+  "pr_number": 539,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/539"
 }
