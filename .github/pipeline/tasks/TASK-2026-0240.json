@@ -22,7 +22,9 @@
       "actor_name": "Conti",
       "actor_type": "ransomware / extortion",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2019"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-005. Ransomware ecosystem actor. Treat leaks, affiliates, and successor lineages conservatively; do not collapse all post-Conti crews into Conti."
   },
