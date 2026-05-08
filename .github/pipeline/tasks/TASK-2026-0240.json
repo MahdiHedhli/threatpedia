@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0240",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-08T15:25:00.000Z",
+  "source": "historical_corpus_backlog",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Conti threat actor profile",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2021/09/22/conti-ransomware",
+      "https://www.cisa.gov/news-events/news/updated-conti-ransomware",
+      "https://www.chainalysis.com/blog/2022-crypto-crime-report-preview-ransomware/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ACTOR-005",
+      "actor_name": "Conti",
+      "actor_type": "ransomware / extortion",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2019"
+    },
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-005. Ransomware ecosystem actor. Treat leaks, affiliates, and successor lineages conservatively; do not collapse all post-Conti crews into Conti."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "task exists on origin/main before lock/open-pr execution"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/conti.md",
+    "branch": "pipeline/TASK-2026-0240",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T15:25:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical threat-actor backlog seed from HIST-ACTOR-005"
+    }
+  ]
+}
