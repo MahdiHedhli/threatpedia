@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-08T02:13:48.897Z",
-  "updated": "2026-05-08T14:24:01.134Z",
+  "updated": "2026-05-08T15:16:17.249Z",
   "source": "manual_submission",
   "submitted_by": "cowork-campaign-worker",
   "locked_by": null,
@@ -66,8 +66,17 @@
       "agent": "Threatpedia Campaign Worker",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #539"
+    },
+    {
+      "timestamp": "2026-05-08T15:16:17.249Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #539 merged (f851836)."
     }
   ],
   "pr_number": 539,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/539"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/539",
+  "merged_at": "2026-05-08T15:16:17.249Z"
 }
