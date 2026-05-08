@@ -22,7 +22,9 @@
       "actor_name": "DarkHotel",
       "actor_type": "espionage",
       "source_list": "soft-launch-historical-corpus-working-list.md",
-      "source_status": "gap"
+      "source_status": "gap",
+      "origin": "South Korea",
+      "active_since": "2007"
     },
     "notes": "Historical threat-actor backlog seed from HIST-ACTOR-019. Hotel/traveler targeting actor. Keep actor history and target-sector claims anchored to Kaspersky/MITRE reporting."
   },
