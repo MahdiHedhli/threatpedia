@@ -38,8 +38,8 @@
       "action": "completed",
       "from": "locked",
       "to": "complete",
-      "agent": "dangermouse-bot",
-      "note": "Prior article completion before reprocess \u2014 original article lacked sources (reprocess issued). Timestamp estimated; original history entry was overwritten during reprocess lock."
+      "agent": "unknown (reconstructed)",
+      "note": "Reconstructed history entry: prior article existed before this reprocess task was issued. Original completion entry was overwritten during reprocess lock; timestamp is an approximation and original completing agent is unknown. Reconstructed by dangermouse-bot run #244 for audit continuity."
     },
     {
       "timestamp": "2026-05-08T17:23:56.000Z",

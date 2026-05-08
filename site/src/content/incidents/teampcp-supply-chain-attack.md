@@ -118,7 +118,7 @@ The credential harvesting phase proceeded silently within normal pipeline execut
 
 ## Impact Assessment
 
-CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the severity of a supply chain compromise affecting a widely deployed security scanning tool. Aqua Security reported that Trivy was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
+CVE-2026-33634 was assigned a CVSS4B score of 9.4, reflecting the severity of a supply chain compromise affecting a security scanning tool that Aqua Security reported was in use by more than 20,000 organizations at the time of the compromise. The attack reached CI/CD environments across multiple industry sectors, with downstream victims including technology companies, financial institutions, and public sector organizations documented in subsequent reporting.
 
 Industry analysis identified more than 1,000 enterprise SaaS environments as having been affected by credential theft during the campaign window. The subsequent involvement of Vect ransomware in publishing stolen victim data confirmed that harvested credentials were transferred to or sold to criminal operators conducting double-extortion campaigns.
 
