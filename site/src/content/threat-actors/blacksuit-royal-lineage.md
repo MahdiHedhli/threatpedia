@@ -7,7 +7,7 @@ aliases:
 affiliation: "Suspected former Conti ransomware members"
 motivation: "Financial"
 status: "active"
-country: "Russia"
+country: "Unknown"
 firstSeen: "2022"
 lastSeen: "2024"
 targetSectors:
@@ -32,6 +32,7 @@ tools:
   - "Ursnif/Gozi"
   - "OpenSSH"
   - "MobaXterm"
+  - "esxcli"
 mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
