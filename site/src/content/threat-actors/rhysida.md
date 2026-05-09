@@ -23,7 +23,11 @@ tools:
   - "ntdsutil"
   - "secretsdump"
   - "wevtutil"
-  - "PuTTy"
+  - "PuTTY"
+  - "ipconfig"
+  - "whoami"
+  - "nltest"
+  - "net"
   - "Gootloader"
   - "ADRecon"
   - "Azure Storage Explorer"
@@ -44,6 +48,10 @@ mitreMappings:
     techniqueName: "Domain Trust Discovery"
     tactic: "Discovery"
     notes: "Actors use nltest to enumerate domain trusts and ADRecon for Active Directory reconnaissance."
+  - techniqueId: "T1069.002"
+    techniqueName: "Domain Groups"
+    tactic: "Discovery"
+    notes: "Actors use net commands to enumerate domain groups and user accounts on compromised hosts."
   - techniqueId: "T1021.001"
     techniqueName: "Remote Desktop Protocol"
     tactic: "Lateral Movement"
@@ -51,7 +59,7 @@ mitreMappings:
   - techniqueId: "T1021.004"
     techniqueName: "SSH"
     tactic: "Lateral Movement"
-    notes: "Actors use PuTTy for SSH tunneling to facilitate lateral movement within victim environments."
+    notes: "Actors use PuTTY for SSH tunneling to facilitate lateral movement within victim environments."
   - techniqueId: "T1003.003"
     techniqueName: "NTDS"
     tactic: "Credential Access"
@@ -153,7 +161,7 @@ CISA updated the Rhysida advisory in April 2025 to reflect new IOCs and TTPs emp
 
 Rhysida actors gain initial access primarily by authenticating to external-facing VPN services with compromised valid credentials. In some cases, Gootloader malware has been used for initial access. Once inside, actors conduct Active Directory reconnaissance using ADRecon and native tools including `ipconfig`, `whoami`, `nltest`, and `net` commands to enumerate domain structure and user accounts.
 
-Lateral movement relies on RDP connections, PuTTy SSH tunneling, and PsExec for remote execution (T1569.002). Credential harvesting targets the NTDS.dit database, which is extracted via ntdsutil or secretsdump-style tooling, allowing actors to compromise domain-wide accounts. AnyDesk is deployed for persistent remote access.
+Lateral movement relies on RDP connections, PuTTY SSH tunneling, and PsExec for remote execution (T1569.002). Credential harvesting targets the NTDS.dit database, which is extracted via ntdsutil or secretsdump-style tooling, allowing actors to compromise domain-wide accounts. AnyDesk is deployed for persistent remote access.
 
 Data staged for exfiltration is placed into designated `in` and `out` folders created on the C:\ drive. Exfiltration leverages AZCopy and Azure Storage Explorer to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using wevtutil to hinder forensic investigation.
 
@@ -169,9 +177,9 @@ Multiple independent government and vendor sources document this as a distinct o
 
 **Initial Access**: Compromised valid credentials used to authenticate to VPN services (T1078); Gootloader malware for phishing-based initial access in some cases (T1566).
 
-**Discovery**: Domain and network enumeration via `ipconfig` (T1016), `whoami` (T1033), `nltest` (T1482), and `net` commands; ADRecon for Active Directory reconnaissance.
+**Discovery**: Domain and network enumeration via `ipconfig` (T1016), `whoami` (T1033), `nltest` (T1482), and `net` commands (T1069.002); ADRecon for Active Directory reconnaissance.
 
-**Lateral Movement**: Remote Desktop Protocol connections (T1021.001); PuTTy SSH tunneling (T1021.004); PsExec for remote execution (T1569.002).
+**Lateral Movement**: Remote Desktop Protocol connections (T1021.001); PuTTY SSH tunneling (T1021.004); PsExec for remote execution (T1569.002).
 
 **Credential Access**: NTDS.dit database dumping via ntdsutil (T1003.003) to extract domain-wide credential hashes.
 
