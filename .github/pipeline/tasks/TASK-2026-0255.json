@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T23:27:56.786Z",
+  "updated": "2026-05-09T08:57:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -95,6 +95,30 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #564 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-09T08:30:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "0696deb: task JSON audit trail fix (from:locked); prose: removed cybercriminal/dark web/at scale/breadth/high-value/large-scale heading"
+    },
+    {
+      "timestamp": "2026-05-09T08:52:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "c630fe4: removed large-scale/broader/broadening per 2nd Gemini review; e351857: added LockerGoga+Ryuk to tools list; declined ATT&CK prose format suggestion (schema-incompatible)"
+    },
+    {
+      "timestamp": "2026-05-09T08:55:51.000Z",
+      "action": "review_gate_pass",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "review-gate",
+      "note": "Review gate SUCCESS on head e35185796eb9. Validate passing. PR merge-ready pending Kernel K approval."
     }
   ]
 }
