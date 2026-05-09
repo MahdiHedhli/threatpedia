@@ -78,7 +78,7 @@ attributionConfidence: "A3"
 attributionRationale: "CISA and FBI consolidated the Royal and BlackSuit identities in their August 2024 advisory update, reflecting confirmed code and operational continuity. Trend Micro's May 2023 analysis confirmed payload-level code overlap. Attribution to former Conti members is assessed at moderate confidence; no court filing or formal government designation names specific individuals."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
-generatedDate: "2026-05-08"
+generatedDate: "2026-05-09"
 tags:
   - "financially-motivated"
   - "cybercrime"
