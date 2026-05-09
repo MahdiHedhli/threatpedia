@@ -109,9 +109,9 @@ sources:
 
 ## Executive Summary
 
-FIN6 is a financially motivated group active since at least 2015, documented primarily for large-scale theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through underground marketplaces.
+FIN6 is a financially motivated group active since at least 2015, documented primarily for theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through underground marketplaces.
 
-Beginning around 2018, public reporting documented FIN6 activity associated with ransomware deployment against compromised enterprise environments, representing an operational shift or expansion from card theft to broader extortion. Available evidence does not establish FIN6's country of origin or identify specific operators.
+Beginning around 2018, public reporting documented FIN6 activity associated with ransomware deployment against compromised enterprise environments, representing an operational shift or expansion from card theft to extortion. Available evidence does not establish FIN6's country of origin or identify specific operators.
 
 ## Notable Campaigns
 
@@ -123,7 +123,7 @@ Stolen payment card data was subsequently advertised and sold on underground mar
 
 ### 2018–2022 — Ransomware Deployment and Expanded Operations
 
-MITRE ATT&CK reporting documents FIN6 activity associated with the deployment of ransomware, including LockerGoga and Ryuk, against compromised enterprise environments. This expansion — whether representing direct deployment or facilitation through partnerships with ransomware operators — marked a broadening of the group's monetization methods beyond payment card theft. The consistent use of prior FIN6 TTPs for initial access and lateral movement in these cases supports attribution to the same operational cluster.
+MITRE ATT&CK reporting documents FIN6 activity associated with the deployment of ransomware, including LockerGoga and Ryuk, against compromised enterprise environments. This expansion — whether representing direct deployment or facilitation through partnerships with ransomware operators — marked an expansion of the group's monetization methods beyond payment card theft. The consistent use of prior FIN6 TTPs for initial access and lateral movement in these cases supports attribution to the same operational cluster.
 
 E-commerce targeting also emerged in this period alongside continued brick-and-mortar retail operations, with the More_eggs JScript backdoor observed as an initial-stage implant in multiple campaigns attributed to FIN6.
 
