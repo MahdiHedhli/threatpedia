@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T23:27:56.786Z",
+  "updated": "2026-05-09T07:11:27.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -77,6 +77,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #564 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-09T07:11:27.000Z",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_state_sync",
+      "note": "Bookkeeping: PR #564 was already open; task state corrected from pending to pr_open."
     }
-  ]
+  ],
+  "pr_number": 564,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564"
 }
