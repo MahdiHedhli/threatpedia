@@ -1,5 +1,5 @@
 {
-  "task_id": "TASK-2026-0237",
+  "task_id": "TASK-2026-0261",
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
@@ -50,7 +50,7 @@
   ],
   "output": {
     "file_pattern": "site/src/content/zero-days/berriai-litellm-cve-2026-42208.md",
-    "branch": "pipeline/TASK-2026-0237",
+    "branch": "pipeline/TASK-2026-0261",
     "pr": true
   },
   "discovery": {
@@ -86,6 +86,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #554 opened — https://github.com/MahdiHedhli/threatpedia/pull/554"
+    },
+    {
+      "timestamp": "2026-05-08T22:33:00.000Z",
+      "action": "renumbered",
+      "from": "TASK-2026-0237",
+      "to": "TASK-2026-0261",
+      "agent": "kernel-k",
+      "note": "Renumbered after TASK-2026-0237 landed on main for a historical threat-actor seed; preserves the BerriAI LiteLLM article work without overwriting canonical task state."
     }
   ]
 }
