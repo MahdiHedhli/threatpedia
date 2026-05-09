@@ -141,9 +141,9 @@ Open-source reporting has documented behavioral and infrastructure similarities 
 
 ### 2023–Present — Healthcare and Education Targeting
 
-Rhysida has been consistently observed targeting the healthcare and public health sector, prompting a specific sector alert from the U.S. Department of Health and Human Services (HHS). The group's healthcare targeting has drawn focused government attention due to patient safety implications. CISA, FBI, and MS-ISAC investigations through December 2024 document a continuing operational pattern against healthcare organizations, with actors compromising VPN infrastructure and moving laterally before deploying the ransomware payload.
+Rhysida has been observed targeting the healthcare and public health sector, prompting a specific sector alert from the U.S. Department of Health and Human Services (HHS). The group's healthcare targeting has drawn government attention due to patient safety implications. CISA, FBI, and MS-ISAC investigations through December 2024 document a continuing operational pattern against healthcare organizations, with actors compromising VPN infrastructure and moving laterally before deploying the ransomware payload.
 
-The education sector has also been a target, with Rhysida actors compromising universities and school districts using the same VPN-and-RDP lateral movement pattern documented in healthcare incidents. Government organizations and manufacturing firms have been targeted with equal opportunism.
+The education sector has also been a target, with Rhysida actors compromising universities and school districts using the same VPN-and-RDP lateral movement pattern documented in healthcare incidents. Government organizations and manufacturing firms have also been targeted.
 
 ### 2024–2025 — Continued Operations with Updated TTPs
 
