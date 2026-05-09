@@ -108,7 +108,7 @@ attributionConfidence: A3
 attributionRationale: "Documented through FBI and CISA joint investigations with published IOCs and TTPs. No specific country attribution or individual indictments in public government reporting."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
-generatedDate: 2026-05-08
+generatedDate: 2026-05-09
 tags:
   - "ransomware"
   - "cybercriminal"
