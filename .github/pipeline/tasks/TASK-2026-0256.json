@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T08:57:00.000Z",
+  "updated": "2026-05-09T18:20:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -51,9 +51,7 @@
   "output": {
     "file_pattern": "site/src/content/threat-actors/rhysida.md",
     "branch": "pipeline/TASK-2026-0256",
-    "pr": true,
-    "pr_number": 561,
-    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/561"
+    "pr": true
   },
   "history": [
     {
@@ -98,12 +96,30 @@
       "note": "Dispatch skipped because open PR #561 already covers this task."
     },
     {
+      "timestamp": "2026-05-09T07:11:27.000Z",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_state_sync",
+      "note": "Bookkeeping: PR #561 was already open; task state corrected from pending to pr_open."
+    },
+    {
       "timestamp": "2026-05-09T08:55:00.000Z",
       "action": "remediation",
       "from": "pr_open",
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "92350dd: removed broader/prominent/cloud-heavy per Gemini review. Gemini re-review requested on 92350dd."
+    },
+    {
+      "timestamp": "2026-05-09T18:20:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "76afb89: fix Gemini threads 5-7 — §14A literal char, C:\\\\ in YAML frontmatter and MD body. Merge main to resolve conflict."
     }
-  ]
+  ],
+  "pr_number": 561,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/561"
 }
