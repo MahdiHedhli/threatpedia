@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T22:36:00.000Z",
+  "updated": "2026-05-08T23:27:56.786Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -65,6 +65,14 @@
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-041"
     },
     {
+      "timestamp": "2026-05-08T19:51:06.266Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #559"
+    },
+    {
       "timestamp": "2026-05-08T22:25:23.336Z",
       "action": "lock",
       "from": "pending",
@@ -79,6 +87,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #566 opened via GitHub API. Local Astro build skipped (FUSE-mount EPERM in sandbox \u2014 pre-existing). All content/frontmatter checks pass. GitHub CI validate is authoritative gate."
+    },
+    {
+      "timestamp": "2026-05-08T23:27:56.786Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #566 already covers this task."
     }
   ]
 }
