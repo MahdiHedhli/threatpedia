@@ -75,7 +75,7 @@ mitreMappings:
     tactic: "Impact"
     notes: "On VMware ESXi environments, actors use the esxcli command-line utility to terminate virtual machine processes before encryption, releasing file locks to enable encryption coverage."
 attributionConfidence: "A3"
-attributionRationale: "CISA and FBI consolidated the Royal and BlackSuit identities in their August 2024 advisory update, reflecting confirmed code and operational continuity. TrendMicro's May 2023 analysis confirmed payload-level code overlap. Attribution to former Conti members is assessed at moderate confidence; no court filing or formal government designation names specific individuals."
+attributionRationale: "CISA and FBI consolidated the Royal and BlackSuit identities in their August 2024 advisory update, reflecting confirmed code and operational continuity. Trend Micro's May 2023 analysis confirmed payload-level code overlap. Attribution to former Conti members is assessed at moderate confidence; no court filing or formal government designation names specific individuals."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: "2026-05-08"
@@ -127,7 +127,7 @@ Data exfiltration precedes encryption, using Cobalt Strike and Ursnif/Gozi deriv
 
 ## Attribution
 
-BlackSuit is assessed with moderate confidence to be operated by former Conti ransomware members, consistent with what CISA and independent researchers have characterized as former "Team One" operators who continued independent activity following Conti's dissolution in mid-2022. Code-level analysis by TrendMicro in May 2023 identified code-level overlap between Royal and BlackSuit ransomware payloads, including shared partial-encryption logic, command-line argument handling, and file enumeration routines. CISA's consolidated August 2024 advisory treats Royal and BlackSuit as a single continuous lineage. No public court filing or formal government designation links the group to specific individuals or organizations. Suspected Russia nexus is based on Conti's prior attribution and operational patterns; state direction or sponsorship is not supported by available public evidence.
+BlackSuit is assessed with moderate confidence to be operated by former Conti ransomware members, consistent with what CISA and independent researchers have characterized as former "Team One" operators who continued independent activity following Conti's dissolution in mid-2022. Code-level analysis by Trend Micro in May 2023 identified code-level overlap between Royal and BlackSuit ransomware payloads, including shared partial-encryption logic, command-line argument handling, and file enumeration routines. CISA's consolidated August 2024 advisory treats Royal and BlackSuit as a single continuous lineage. No public court filing or formal government designation links the group to specific individuals or organizations. Suspected Russia nexus is based on Conti's prior attribution and operational patterns; state direction or sponsorship is not supported by available public evidence.
 
 ## MITRE ATT&CK Profile
 
