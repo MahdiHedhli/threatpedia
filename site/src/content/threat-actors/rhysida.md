@@ -134,7 +134,7 @@ CISA updated the Rhysida advisory in April 2025 to reflect new IOCs and TTPs emp
 
 Rhysida actors gain initial access primarily by authenticating to external-facing VPN services with compromised valid credentials. In some cases, Gootloader malware has been used for initial access. Once inside, actors conduct Active Directory reconnaissance using ADRecon and native tools including `ipconfig`, `whoami`, `nltest`, and `net` commands to enumerate domain structure and user accounts.
 
-Lateral movement relies on RDP connections, PuTTy SSH tunneling, and PsExec for remote execution. Credential harvesting targets the NTDS.dit database via ntdsutil and extracted via ntdsutil or secretsdump-style tooling, allowing actors to compromise domain-wide accounts. AnyDesk is deployed for persistent remote access.
+Lateral movement relies on RDP connections, PuTTy SSH tunneling, and PsExec for remote execution. Credential harvesting targets the NTDS.dit database, extracted via ntdsutil or secretsdump-style tooling, allowing actors to compromise domain-wide accounts. AnyDesk is deployed for persistent remote access.
 
 Data staged for exfiltration is placed into designated `in` and `out` folders created on the C:\ drive. Exfiltration leverages AZCopy and Azure Storage Explorer to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using wevtutil to hinder forensic investigation.
 
