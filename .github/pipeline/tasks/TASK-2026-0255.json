@@ -83,7 +83,7 @@
     {
       "timestamp": "2026-05-08T21:40:00.000Z",
       "action": "pr_open",
-      "from": "pending",
+      "from": "locked",
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #564 opened \u2014 feat(threat-actors): FIN6 payment-card cybercriminal profile"

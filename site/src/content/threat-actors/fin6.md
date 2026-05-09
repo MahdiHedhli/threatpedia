@@ -109,17 +109,17 @@ sources:
 
 ## Executive Summary
 
-FIN6 is a financially motivated cybercriminal group active since at least 2015, documented primarily for large-scale theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through dark web marketplaces.
+FIN6 is a financially motivated group active since at least 2015, documented primarily for large-scale theft of payment card data from point-of-sale (POS) systems in retail and hospitality environments. The group is tracked under multiple vendor designations including ITG08 (IBM X-Force) and Skeleton Spider (CrowdStrike). FIN6 has used spear-phishing for initial access, credential harvesting tools for lateral movement, and specialized POS RAM-scraping malware — FrameworkPOS and GratefulPOS — to collect payment card data from the memory of POS processes. Harvested card data has been sold through underground marketplaces.
 
 Beginning around 2018, public reporting documented FIN6 activity associated with ransomware deployment against compromised enterprise environments, representing an operational shift or expansion from card theft to broader extortion. Available evidence does not establish FIN6's country of origin or identify specific operators.
 
 ## Notable Campaigns
 
-### 2015–2018 — Large-Scale Payment Card Harvesting
+### 2015–2018 — Payment Card Harvesting Operations
 
-FIN6's documented early operations focused on compromising retail and hospitality organizations to steal payment card data at scale. The group used spear-phishing to obtain an initial foothold, followed by credential harvesting to enable lateral movement across POS infrastructure. FrameworkPOS and GratefulPOS were deployed to scrape card data from the memory of POS processes, with collected data staged locally before exfiltration. MITRE ATT&CK documentation and the Mandiant "Pick Six" intrusion report describe this operational pattern across multiple victim environments.
+FIN6's documented early operations focused on compromising retail and hospitality organizations to steal payment card data. The group used spear-phishing to obtain an initial foothold, followed by credential harvesting to enable lateral movement across POS infrastructure. FrameworkPOS and GratefulPOS were deployed to scrape card data from the memory of POS processes, with collected data staged locally before exfiltration. MITRE ATT&CK documentation and the Mandiant "Pick Six" intrusion report describe this operational pattern across multiple victim environments.
 
-Stolen payment card data was subsequently advertised and sold on dark web markets, indicating a direct monetization pipeline rather than state-directed collection. The breadth and consistency of targeting across unrelated retail and hospitality organizations reflects an opportunistic, financially-driven operation.
+Stolen payment card data was subsequently advertised and sold on underground markets, indicating a direct monetization pipeline rather than state-directed collection. The consistency of targeting across unrelated retail and hospitality organizations reflects an opportunistic, financially-driven operation.
 
 ### 2018–2022 — Ransomware Deployment and Expanded Operations
 
@@ -129,7 +129,7 @@ E-commerce targeting also emerged in this period alongside continued brick-and-m
 
 ## Technical Capabilities
 
-FIN6 achieves initial access primarily through spear-phishing emails with malicious attachments. The More_eggs JScript backdoor has been used as an initial-stage implant to establish a foothold in target environments. Once inside, actors harvest credentials from LSASS memory and use those credentials to move laterally via RDP and SMB shares, ultimately reaching POS systems and other high-value hosts.
+FIN6 achieves initial access primarily through spear-phishing emails with malicious attachments. The More_eggs JScript backdoor has been used as an initial-stage implant to establish a foothold in target environments. Once inside, actors harvest credentials from LSASS memory and use those credentials to move laterally via RDP and SMB shares, ultimately reaching POS systems and other targeted hosts.
 
 FrameworkPOS and GratefulPOS are the group's primary POS RAM-scraping tools. Both target the memory of POS processes to extract payment card track data. Collected card records are staged locally — typically compressed into archives — before exfiltration over the command-and-control channel. Metasploit has been observed in FIN6 intrusions for post-exploitation capability.
 
@@ -139,7 +139,7 @@ Exfiltration occurs over the group's C2 infrastructure using HTTP/HTTPS communic
 
 FIN6 is documented by multiple independent security vendors including Mandiant (now part of Google), IBM X-Force, and CrowdStrike, as well as MITRE ATT&CK and the MITRE CTID adversary emulation project. Consistent TTPs, shared tooling, and overlapping targeting across independently investigated intrusions support treatment as a single distinct operational cluster.
 
-No public government indictment or country-level attribution appears in available open-source reporting. The group's monetization model — selling stolen payment card data on dark web markets and later deploying ransomware — is consistent with financially motivated cybercriminal operations without identified state nexus.
+No public government indictment or country-level attribution appears in available open-source reporting. The group's monetization model — selling stolen payment card data on underground markets and later deploying ransomware — is consistent with financially motivated cybercriminal operations without identified state nexus.
 
 ## MITRE ATT&CK Profile
 
@@ -149,7 +149,7 @@ No public government indictment or country-level attribution appears in availabl
 
 **Credential Access**: Credential harvesting from LSASS memory (T1003.001) to obtain domain credentials for lateral movement.
 
-**Lateral Movement**: Remote Desktop Protocol (T1021.001) and SMB/Windows Admin Shares (T1021.002) for traversal to POS systems and high-value hosts.
+**Lateral Movement**: Remote Desktop Protocol (T1021.001) and SMB/Windows Admin Shares (T1021.002) for traversal to POS systems and targeted hosts.
 
 **Collection**: POS RAM scraping of payment card data from process memory using FrameworkPOS and GratefulPOS (T1005); keylogging for credential and data collection (T1056.001); local staging of harvested card data prior to exfiltration (T1074.001).
 
