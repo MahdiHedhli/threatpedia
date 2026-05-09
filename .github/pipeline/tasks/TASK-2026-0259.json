@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-08T17:18:37.986Z",
-  "updated": "2026-05-08T18:14:57.000Z",
+  "updated": "2026-05-09T19:38:34.015Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": null,
@@ -27,8 +27,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -64,6 +64,14 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Renumbered from TASK-2026-0236 to TASK-2026-0259 to resolve ID conflict: origin/main e98daf7 introduced TASK-2026-0236 as an incident task (Canvas/ShinyHunters). PR #543 (open, clean) occupies IDs 0237-0258. Assigned next clean IDs 0259 and 0260 for the two campaign seeds."
+    },
+    {
+      "timestamp": "2026-05-09T19:38:34.015Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #574"
     }
   ]
 }
