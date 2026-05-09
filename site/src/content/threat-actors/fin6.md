@@ -23,6 +23,8 @@ tools:
   - "GratefulPOS"
   - "More_eggs"
   - "Metasploit"
+  - "LockerGoga"
+  - "Ryuk"
 mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
