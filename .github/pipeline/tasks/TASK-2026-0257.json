@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T23:27:56.786Z",
+  "updated": "2026-05-09T08:57:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -95,6 +95,30 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #566 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-09T08:15:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "120b371: added T1566.002; removed notable/broad sector range; code-level overlap. Declined T1562.001 (revoked in ATT&CK v19.0, T1685 retained). e03aa66: country Unknown; added esxcli tool."
+    },
+    {
+      "timestamp": "2026-05-09T08:47:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "0307c21: removed authoritative/formally; maximizing->increasing; some->certain. 897e00f: T1486 maximize->increase; T1489 increasing->enable; unusable->inaccessible; certain behavioral->behavioral; maximum->enable. 7a8fa9a: TrendMicro->Trend Micro. Declined ATT&CK prose format (schema-incompatible)."
+    },
+    {
+      "timestamp": "2026-05-09T08:55:12.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Gemini re-review requested on head 7a8fa9a."
     }
   ]
 }
