@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0237",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-08T15:25:00.000Z",
+  "source": "historical_corpus_backlog",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Dragonfly / Energetic Bear threat actor profile",
+    "sources": [
+      "https://attack.mitre.org/groups/G0035/",
+      "https://www.cisa.gov/ncas/alerts/TA17-293A",
+      "https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/dragonfly-energy-sector-cyber-attacks"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ACTOR-002",
+      "actor_name": "Dragonfly / Energetic Bear",
+      "actor_type": "state-linked ICS espionage",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "origin": "Russia",
+      "active_since": "2010"
+    },
+    "notes": "Historical threat-actor backlog seed from HIST-ACTOR-002. Canonicalize Dragonfly and Energetic Bear carefully; keep ICS and energy-sector targeting source-bound."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "task exists on origin/main before lock/open-pr execution"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/dragonfly-energetic-bear.md",
+    "branch": "pipeline/TASK-2026-0237",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-08T15:25:00.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical threat-actor backlog seed from HIST-ACTOR-002"
+    }
+  ]
+}
