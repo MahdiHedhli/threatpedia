@@ -73,7 +73,7 @@ mitreMappings:
   - techniqueId: "T1489"
     techniqueName: "Service Stop"
     tactic: "Impact"
-    notes: "On VMware ESXi environments, actors use the esxcli command-line utility to terminate virtual machine processes before encryption, releasing file locks and maximizing encryption coverage."
+    notes: "On VMware ESXi environments, actors use the esxcli command-line utility to terminate virtual machine processes before encryption, releasing file locks and increasing encryption coverage."
 attributionConfidence: "A3"
 attributionRationale: "CISA and FBI consolidated the Royal and BlackSuit identities in their August 2024 advisory update, reflecting confirmed code and operational continuity. TrendMicro's May 2023 analysis confirmed payload-level code overlap. Attribution to former Conti members is assessed at moderate confidence; no court filing or formal government designation names specific individuals."
 reviewStatus: "draft_ai"
@@ -111,7 +111,7 @@ sources:
 
 ## Executive Summary
 
-BlackSuit is a financially motivated ransomware and extortion group assessed to be composed of former members of the Conti ransomware operation. The group operated under the name Royal from approximately September 2022, and under Zeon before that, before rebranding to BlackSuit in mid-2023. CISA and the FBI updated their authoritative advisory in August 2024 to formally consolidate the Royal and BlackSuit identities under a single threat profile, reflecting confirmed code and operational continuity between the two variants. BlackSuit employs a double-extortion model — encrypting victim systems while simultaneously exfiltrating data and threatening to publish it on a dedicated leak site — and has targeted organizations across multiple critical infrastructure sectors in the United States and internationally.
+BlackSuit is a financially motivated ransomware and extortion group assessed to be composed of former members of the Conti ransomware operation. The group operated under the name Royal from approximately September 2022, and under Zeon before that, before rebranding to BlackSuit in mid-2023. CISA and the FBI updated their advisory in August 2024 to consolidate the Royal and BlackSuit identities under a single threat profile, reflecting confirmed code and operational continuity between the two variants. BlackSuit employs a double-extortion model — encrypting victim systems while simultaneously exfiltrating data and threatening to publish it on a dedicated leak site — and has targeted organizations across multiple critical infrastructure sectors in the United States and internationally.
 
 ## Notable Campaigns
 
@@ -123,7 +123,7 @@ BlackSuit actors enter victim environments primarily via phishing emails contain
 
 Network reconnaissance uses SharpShares and SoftPerfect NetWorx to enumerate shares and map internal topology. Lateral movement proceeds via SSH connections established through OpenSSH and MobaXterm. For command and control, BlackSuit actors deploy Chisel — a tunneling tool wrapping traffic over HTTP secured with SSH — alongside Cloudflared, which routes traffic through Cloudflare's infrastructure to obscure origin addresses.
 
-Data exfiltration precedes encryption, using Cobalt Strike and Ursnif/Gozi derivatives to stage and transfer victim data to actor-controlled infrastructure. The final ransomware payload uses a partial-encryption approach in which operators configure what percentage of each file is encrypted. Lower percentages reduce encryption time on large files while still rendering them unusable, and lower encryption ratios evade some behavioral detection thresholds. Encrypted files receive the `.blacksuit` extension. On VMware ESXi targets, the `esxcli` command-line utility terminates virtual machine processes before encryption, releasing file locks for maximum coverage.
+Data exfiltration precedes encryption, using Cobalt Strike and Ursnif/Gozi derivatives to stage and transfer victim data to actor-controlled infrastructure. The final ransomware payload uses a partial-encryption approach in which operators configure what percentage of each file is encrypted. Lower percentages reduce encryption time on large files while still rendering them unusable, and lower encryption ratios evade certain behavioral detection thresholds. Encrypted files receive the `.blacksuit` extension. On VMware ESXi targets, the `esxcli` command-line utility terminates virtual machine processes before encryption, releasing file locks for maximum coverage.
 
 ## Attribution
 
