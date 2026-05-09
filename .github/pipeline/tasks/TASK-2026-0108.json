@@ -56,9 +56,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Article drafted: tp-article-qilin-edr-killer.md (TP-2026-0054). Local validator PASS. Opening PR."
+    },
+    {
+      "timestamp": "2026-05-08T22:37:50Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "kernel-k",
+      "note": "Restored objective-language fixes on current head and added CISA #StopRansomware as a government mitigation source for validator parity."
     }
   ],
-  "updated": "2026-05-08T17:20:39Z",
+  "updated": "2026-05-08T22:37:50Z",
   "locked_by": null,
   "locked_at": null,
   "stage": "draft",

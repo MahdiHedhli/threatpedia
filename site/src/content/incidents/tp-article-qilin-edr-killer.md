@@ -53,6 +53,13 @@ sources:
     publicationDate: "2026-04-06"
     accessDate: "2026-05-08"
     archived: false
+  - url: "https://www.cisa.gov/stopransomware/ransomware-guide"
+    publisher: "Cybersecurity and Infrastructure Security Agency"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2023-10-19"
+    accessDate: "2026-05-08"
+    archived: false
 mitreMappings:
   - techniqueId: "T1574.001"
     techniqueName: "DLL"
@@ -61,7 +68,7 @@ mitreMappings:
   - techniqueId: "T1014"
     techniqueName: "Rootkit"
     tactic: "Defense Evasion"
-    notes: "The EDR killer component operates at kernel level, locating and overwriting process creation, thread creation, and image load notification callbacks registered by EDR products, rendering endpoint monitoring blind without directly terminating the EDR process."
+    notes: "The EDR killer component operates at kernel level, locating and overwriting process creation, thread creation, and image load notification callbacks registered by EDR products, preventing endpoint monitoring from observing process activity without directly terminating the EDR process."
   - techniqueId: "T1068"
     techniqueName: "Exploitation for Privilege Escalation"
     tactic: "Privilege Escalation"
@@ -80,7 +87,7 @@ mitreMappings:
 
 Cisco Talos Intelligence published detailed technical analysis in April 2026 documenting a multi-stage endpoint detection and response (EDR) evasion capability deployed by the Qilin ransomware group in active campaigns. Referred to as the Qilin EDR Killer, the tooling uses a Bring Your Own Vulnerable Driver (BYOVD) technique combined with DLL side-loading to disable EDR products from more than 300 security vendors at the kernel level before deploying the ransomware payload.
 
-Qilin, also tracked as Agenda, is a ransomware-as-a-service (RaaS) operation active since at least 2022. The EDR killer capability represents a significant escalation in the group's defensive evasion posture, enabling affiliates to neutralize endpoint monitoring before encryption. Warlock ransomware was also observed deploying BYOVD-based EDR disablement using the same general technique and overlapping tooling around the same period, suggesting possible shared development resources or code reuse across RaaS affiliates.
+Qilin, also tracked as Agenda, is a ransomware-as-a-service (RaaS) operation active since at least 2022. The EDR killer capability represents an escalation in the group's defensive evasion posture, enabling affiliates to neutralize endpoint monitoring before encryption. Warlock ransomware was also observed deploying BYOVD-based EDR disablement using the same general technique and overlapping tooling around the same period, suggesting possible shared development resources or code reuse across RaaS affiliates.
 
 ## Technical Analysis
 
@@ -98,7 +105,7 @@ The loader drops and installs `rwdrv.sys`, a digitally signed but exploitable dr
 
 ### Stage 3: Kernel callback erasure
 
-With kernel-level access established, the EDR killer locates the callback notification routine tables that EDR products populate via `PsSetCreateProcessNotifyRoutine`, `PsSetCreateThreadNotifyRoutine`, and `PsSetLoadImageNotifyRoutine`. These callbacks are the primary mechanism by which EDR agents observe process lifecycle events. The component overwrites the registered callback pointers with empty or no-op routines, preventing the EDR from observing process activity without terminating its own process — a deliberate choice that avoids triggering tamper protection mechanisms that monitor for direct EDR process termination attempts.
+With kernel-level access established, the EDR killer locates the callback notification routine tables that EDR products populate via `PsSetCreateProcessNotifyRoutine`, `PsSetCreateThreadNotifyRoutine`, and `PsSetLoadImageNotifyRoutine`. These callbacks are the primary mechanism by which EDR agents observe process lifecycle events. The component overwrites the registered callback pointers with empty or no-op routines, preventing the EDR from observing process activity without terminating its own process, a design choice that avoids triggering tamper protection mechanisms that monitor for direct EDR process termination attempts.
 
 ### Stage 4: ETW suppression
 
@@ -112,13 +119,13 @@ Initial access in documented Qilin intrusions typically involves credential thef
 
 The `msimg32.dll` side-loader is planted in a directory alongside a legitimate application binary. Execution of the legitimate binary triggers the DLL load, initiating the multi-stage disablement chain described above. Once EDR monitoring is silenced, the Qilin ransomware payload is decrypted and executed. Victim files are encrypted, and data exfiltrated prior to encryption is held for double-extortion: victims who decline to pay face publication of stolen data on the group's leak site.
 
-Talos analysis of at least one intrusion identified an extended pre-encryption dwell period of approximately six days, suggesting deliberate reconnaissance to identify high-value data stores and maximize encryption coverage before detonating the payload.
+Talos analysis of at least one intrusion identified an extended pre-encryption dwell period of approximately six days, suggesting reconnaissance to identify data stores and maximize encryption coverage before detonating the payload.
 
 ## Impact Assessment
 
-The EDR killer component is capable of neutralizing monitoring by more than 300 security products, representing coverage across the endpoint security vendor ecosystem. Organizations relying solely on user-space EDR tamper protection as a defense against targeted pre-encryption disablement are exposed to this technique.
+The EDR killer component is capable of neutralizing monitoring by more than 300 security products, representing coverage across the endpoint security vendor ecosystem. Organizations relying on user-space EDR tamper protection as a defense against targeted pre-encryption disablement are exposed to this technique.
 
-Qilin recorded more than 700 ransomware attacks during 2025 according to industry tracking, placing the group among the most prolific ransomware operators globally. The group's campaigns span multiple sectors including healthcare, government, financial services, manufacturing, and critical infrastructure. The deployment of this EDR killer across affiliate operations from mid-2025 onward increased the operational effectiveness and potential impact of each intrusion.
+Qilin recorded more than 700 ransomware attacks during 2025 according to industry tracking. The group's campaigns span multiple sectors including healthcare, government, financial services, manufacturing, and critical infrastructure. The deployment of this EDR killer across affiliate operations from mid-2025 onward provided a mechanism for pre-encryption endpoint-defense disablement.
 
 ## Attribution
 
@@ -135,13 +142,15 @@ Warlock ransomware affiliates independently deployed BYOVD-based EDR disablement
 | ~2025-06 | Compilation timestamp for the EDR killer component, indicating development of the capability during this period, per Talos analysis. |
 | 2025 H2 | EDR killer component deployed in Qilin affiliate campaigns; Qilin records more than 700 ransomware attacks during 2025. |
 | 2026-04-02 | Cisco Talos publishes detailed technical analysis of the Qilin EDR Killer infection chain. |
-| 2026-04-06 | Broader media coverage and detection content release from SOC Prime and Cyber Security News. |
+| 2026-04-06 | Media coverage and detection content release from SOC Prime and Cyber Security News. |
 
 ## Remediation & Mitigation
 
 Organizations can reduce exposure to this technique through several complementary controls. Enforcing Microsoft's Vulnerable Driver Blocklist via Windows Defender Application Control (WDAC) or a third-party equivalent prevents the known-vulnerable `rwdrv.sys` and related drivers from loading. Hypervisor-level integrity monitoring or kernel telemetry agents operating outside the Windows kernel callback mechanism provide a monitoring layer that the user-space EDR killer cannot reach. Monitoring for unusual DLL loads — specifically `msimg32.dll` loading from non-system directories — can identify staging activity prior to kernel compromise.
 
 At the network level, monitoring for anomalous credential use and lateral movement activity consistent with pre-encryption dwell reduces the window of opportunity before the EDR killer is staged. Maintaining offline or immutable backups provides recovery capability following a ransomware deployment that bypasses endpoint defenses. Organizations should review endpoint protection platform vendor guidance on kernel-mode tamper protection and ensure hypervisor-based behavioral monitoring is active where available.
+
+Consistent with CISA's #StopRansomware guidance, ransomware resilience should include offline, encrypted backups, tested recovery plans, application allowlisting such as WDAC or AppLocker where applicable, centralized endpoint logging, and incident response procedures for isolating affected systems.
 
 SOC Prime released detection content mapped to the Qilin EDR killer infection chain. Individual endpoint vendor advisories address the specific callback registration patterns targeted by this tooling.
 
@@ -151,3 +160,4 @@ SOC Prime released detection content mapped to the Qilin EDR killer infection ch
 - [The Hacker News: Qilin and Warlock Ransomware Use Vulnerable Drivers to Disable 300+ EDR Tools](https://thehackernews.com/2026/04/qilin-and-warlock-ransomware-use.html) — The Hacker News, 2026-04-06
 - [SOC Prime: Qilin EDR Killer — Driver Abuse to Terminate 300+ Tools](https://socprime.com/active-threats/qilin-edr-killer-infection-chain/) — SOC Prime, 2026-04-06
 - [Cyber Security News: Qilin Ransomware Uses Malicious DLL to Kill Almost Every Vendor's EDR Solutions](https://cybersecuritynews.com/qilin-ransomware-kill-edr/) — Cyber Security News, 2026-04-06
+- [Cybersecurity and Infrastructure Security Agency: #StopRansomware Guide](https://www.cisa.gov/stopransomware/ransomware-guide) — Cybersecurity and Infrastructure Security Agency, 2023-10-19
