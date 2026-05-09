@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T21:32:35.878Z",
+  "updated": "2026-05-09T08:57:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -96,6 +96,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #561 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-09T08:55:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "92350dd: removed broader/prominent/cloud-heavy per Gemini review. Gemini re-review requested on 92350dd."
     }
   ]
 }
