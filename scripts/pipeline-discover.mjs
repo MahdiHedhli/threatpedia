@@ -305,60 +305,182 @@ function buildCorpusIndexes() {
   return indexes;
 }
 
-function buildTaskIndexes() {
+function parseTaskNumber(taskId) {
+  const match = String(taskId || '').match(/^TASK-\d{4}-(\d{4})$/);
+  return match ? parseInt(match[1], 10) : null;
+}
+
+function addTaskToIndexes(indexes, task) {
+  if (!task || typeof task !== 'object') return false;
+
+  const taskId = String(task.task_id || '').trim();
+  if (taskId && indexes.taskIds.has(taskId)) return false;
+  if (taskId) {
+    indexes.taskIds.add(taskId);
+    const taskNumber = parseTaskNumber(taskId);
+    if (Number.isFinite(taskNumber)) {
+      indexes.maxTaskNumber = Math.max(indexes.maxTaskNumber, taskNumber);
+    }
+  }
+
+  const type = String(task.type || 'unknown');
+  const status = String(task.status || 'pending');
+
+  if (ACTIVE_TASK_STATUSES.has(status)) {
+    indexes.activeCount += 1;
+    indexes.byType[type] = (indexes.byType[type] || 0) + 1;
+  }
+
+  const topic = task.input?.topic;
+  if (topic) indexes.titleKeys.add(normalizeTitleKey(topic));
+
+  const outputStem = extractStemFromPath(task.output?.file_pattern);
+  if (outputStem) {
+    indexes.slugs.add(outputStem);
+    indexes.titleKeys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
+  }
+
+  const targetStem = extractStemFromPath(task.input?.target_file);
+  if (targetStem) {
+    indexes.slugs.add(targetStem);
+    indexes.titleKeys.add(normalizeTitleKey(targetStem.replace(/-/g, ' ')));
+  }
+
+  for (const source of ensureArray(task.input?.sources)) {
+    const normalized = normalizeUrl(source);
+    if (normalized) indexes.urls.add(normalized);
+  }
+
+  const candidateData = task.input?.candidate_data || {};
+  const cve = candidateData.cve;
+  if (cve) indexes.cves.add(String(cve).toUpperCase());
+  for (const cveValue of ensureArray(candidateData.cves)) {
+    indexes.cves.add(String(cveValue).toUpperCase());
+  }
+
+  const topicCves = String(task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
+  for (const match of topicCves) indexes.cves.add(match[0].toUpperCase());
+
+  return true;
+}
+
+function buildTaskIndexes(openPullRequestTasks = []) {
   const indexes = {
     cves: new Set(),
     urls: new Set(),
     titleKeys: new Set(),
     slugs: new Set(),
+    taskIds: new Set(),
+    maxTaskNumber: 0,
     activeCount: 0,
     byType: {},
   };
 
-  if (!existsSync(TASKS_DIR)) return indexes;
-
-  for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
-    const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
-    const type = String(task.type || 'unknown');
-    const status = String(task.status || 'pending');
-
-    if (ACTIVE_TASK_STATUSES.has(status)) {
-      indexes.activeCount += 1;
-      indexes.byType[type] = (indexes.byType[type] || 0) + 1;
+  if (existsSync(TASKS_DIR)) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+      addTaskToIndexes(indexes, JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8')));
     }
-
-    const topic = task.input?.topic;
-    if (topic) indexes.titleKeys.add(normalizeTitleKey(topic));
-
-    const outputStem = extractStemFromPath(task.output?.file_pattern);
-    if (outputStem) {
-      indexes.slugs.add(outputStem);
-      indexes.titleKeys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
-    }
-
-    const targetStem = extractStemFromPath(task.input?.target_file);
-    if (targetStem) {
-      indexes.slugs.add(targetStem);
-      indexes.titleKeys.add(normalizeTitleKey(targetStem.replace(/-/g, ' ')));
-    }
-
-    for (const source of ensureArray(task.input?.sources)) {
-      const normalized = normalizeUrl(source);
-      if (normalized) indexes.urls.add(normalized);
-    }
-
-    const candidateData = task.input?.candidate_data || {};
-    const cve = candidateData.cve;
-    if (cve) indexes.cves.add(String(cve).toUpperCase());
-    for (const cveValue of ensureArray(candidateData.cves)) {
-      indexes.cves.add(String(cveValue).toUpperCase());
-    }
-
-    const topicCves = String(task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
-    for (const match of topicCves) indexes.cves.add(match[0].toUpperCase());
   }
 
+  for (const task of openPullRequestTasks) addTaskToIndexes(indexes, task);
+
   return indexes;
+}
+
+function githubApiHeaders(token) {
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'threatpedia-pipeline-discovery',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
+async function fetchGitHubJson(url, token) {
+  const response = await fetch(url, { headers: githubApiHeaders(token) });
+  if (!response.ok) {
+    throw new Error(`GitHub API ${response.status} for ${url}`);
+  }
+  return response.json();
+}
+
+function encodeGitHubPath(pathValue) {
+  return String(pathValue || '')
+    .split('/')
+    .map(part => encodeURIComponent(part))
+    .join('/');
+}
+
+async function fetchOpenPullRequestTask(pr, file, repo, token) {
+  const headRepo = pr.head?.repo?.full_name || repo;
+  const headRef = pr.head?.sha || pr.head?.ref;
+  if (!headRepo || !headRef) return null;
+
+  const encodedPath = encodeGitHubPath(file.filename);
+  const url = `https://api.github.com/repos/${headRepo}/contents/${encodedPath}?ref=${encodeURIComponent(headRef)}`;
+  const data = await fetchGitHubJson(url, token);
+  if (!data || typeof data.content !== 'string') return null;
+
+  const content = Buffer.from(data.content, 'base64').toString('utf8');
+  return JSON.parse(content);
+}
+
+async function fetchOpenPullRequestTasks(opts) {
+  const repo = process.env.GITHUB_REPOSITORY || process.env.REPO || '';
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
+  const requireLiveState = opts.execute && process.env.GITHUB_ACTIONS === 'true';
+
+  if (!repo) {
+    if (requireLiveState) throw new Error('GITHUB_REPOSITORY is required to dedupe against open PR task files');
+    console.log('::notice::GITHUB_REPOSITORY not set; skipping open PR task dedupe');
+    return [];
+  }
+  if (!token && requireLiveState) {
+    throw new Error('GITHUB_TOKEN is required to dedupe against open PR task files');
+  }
+
+  const tasks = [];
+  let page = 1;
+  try {
+    while (true) {
+      const pulls = await fetchGitHubJson(
+        `https://api.github.com/repos/${repo}/pulls?state=open&per_page=100&page=${page}`,
+        token,
+      );
+      if (!Array.isArray(pulls) || pulls.length === 0) break;
+
+      for (const pr of pulls) {
+        let filePage = 1;
+        while (true) {
+          const files = await fetchGitHubJson(
+            `https://api.github.com/repos/${repo}/pulls/${pr.number}/files?per_page=100&page=${filePage}`,
+            token,
+          );
+          if (!Array.isArray(files) || files.length === 0) break;
+
+          for (const file of files) {
+            if (file.status === 'removed') continue;
+            if (!String(file.filename || '').match(/^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/)) continue;
+            const task = await fetchOpenPullRequestTask(pr, file, repo, token);
+            if (task) tasks.push(task);
+          }
+
+          if (files.length < 100) break;
+          filePage += 1;
+        }
+      }
+
+      if (pulls.length < 100) break;
+      page += 1;
+    }
+  } catch (error) {
+    if (requireLiveState) throw error;
+    console.log(`::warning::Failed to load open PR task files (${error.message}); continuing with local task dedupe only`);
+    return [];
+  }
+
+  return tasks;
 }
 
 function buildIncidentCandidateKey(sourceKey, url) {
@@ -404,7 +526,10 @@ function buildRejectionIndexes() {
   return indexes;
 }
 
-function getNextTaskId() {
+function getNextTaskId(taskIndexes = null) {
+  if (taskIndexes?.maxTaskNumber) {
+    return `TASK-2026-${String(taskIndexes.maxTaskNumber + 1).padStart(4, '0')}`;
+  }
   if (!existsSync(TASKS_DIR)) return 'TASK-2026-0071';
 
   const existing = readdirSync(TASKS_DIR)
@@ -1651,7 +1776,8 @@ async function main() {
   const opts = parseArgs();
   const config = loadPipelineConfig();
   const corpusIndexes = buildCorpusIndexes();
-  const taskIndexes = buildTaskIndexes();
+  const openPullRequestTasks = await fetchOpenPullRequestTasks(opts);
+  const taskIndexes = buildTaskIndexes(openPullRequestTasks);
   const rejectionIndexes = buildRejectionIndexes();
 
   const knownIndexes = {
@@ -1672,6 +1798,7 @@ async function main() {
 
   console.log('  [1/6] Building corpus/task indexes...');
   console.log(`         ${corpusIndexes.cves.size} CVEs in corpus, ${taskIndexes.cves.size} in pending tasks`);
+  console.log(`         ${openPullRequestTasks.length} open PR task file(s) included in dedupe`);
   console.log(`         ${knownIndexes.urls.size} known source URLs across corpus/tasks`);
   console.log(`         ${knownIndexes.titleKeys.size} known title keys across corpus/tasks`);
   console.log(`         ${knownIndexes.activeCount} active tasks in queue`);
@@ -1731,7 +1858,7 @@ async function main() {
 
   console.log('  [6/6] Creating pipeline tasks...\n');
   const existingExploitIds = collectExploitIds();
-  let nextIdNum = parseInt(getNextTaskId().match(/(\d{4})$/)[1], 10);
+  let nextIdNum = parseInt(getNextTaskId(taskIndexes).match(/(\d{4})$/)[1], 10);
 
   for (const candidate of selected) {
     const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
