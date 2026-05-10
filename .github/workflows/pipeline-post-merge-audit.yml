@@ -162,16 +162,54 @@ jobs:
               return issues.find((issue) => !issue.pull_request && issue.title === TITLE);
             }
 
+            function extractAuditIssueFiles(issueBody) {
+              const files = [];
+              let inChangedFiles = false;
+              for (const line of String(issueBody || '').split('\n')) {
+                if (line.trim() === '### Changed files') {
+                  inChangedFiles = true;
+                  continue;
+                }
+                if (!inChangedFiles) {
+                  continue;
+                }
+                if (line.startsWith('### ')) {
+                  break;
+                }
+                const match = line.match(/^- `(.+)`$/);
+                if (match) {
+                  files.push(match[1]);
+                }
+              }
+              return [...new Set(files)];
+            }
+
             await ensureLabel();
             const openIssue = await findOpenAuditIssue();
 
             if (overallPass) {
               if (openIssue) {
+                const openIssueFiles = extractAuditIssueFiles(openIssue.body);
+                if (openIssueFiles.length === 0) {
+                  console.log(`Audit passed, but existing audit issue #${openIssue.number} does not list changed files. Leaving it open for manual review.`);
+                  return;
+                }
+                const currentFiles = new Set(changedFiles);
+                const unauditedOpenIssueFiles = openIssueFiles.filter((file) => !currentFiles.has(file));
+                if (unauditedOpenIssueFiles.length > 0) {
+                  console.log([
+                    `Audit passed for ${changedFiles.length} changed file(s), but existing audit issue #${openIssue.number}`,
+                    'covers files not re-audited in this run:',
+                    ...unauditedOpenIssueFiles.map((file) => `- ${file}`),
+                    'Leaving the issue open until those files are re-audited or fixed.',
+                  ].join('\n'));
+                  return;
+                }
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: openIssue.number,
-                  body: `Audit returned to green on \`${head.slice(0, 7)}\`.\n\n- Run: ${runUrl}\n- Range: \`${base}..${head}\``,
+                  body: `Audit returned to green on \`${head.slice(0, 7)}\` after re-auditing the files from this issue.\n\n- Run: ${runUrl}\n- Range: \`${base}..${head}\``,
                 });
                 await github.rest.issues.update({
                   owner: context.repo.owner,
