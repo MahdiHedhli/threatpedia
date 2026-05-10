@@ -85,11 +85,11 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Force-pushed malicious commits to trusted version tags in the Aqua trivy-action, setup-trivy, and KICS GitHub Action repositories, plus trojanized releases of LiteLLM on PyPI, to redirect downstream CI/CD pipelines into attacker-controlled payloads."
   - techniqueId: "T1552.001"
-    techniqueName: "Unsecured Credentials: Credentials In Files"
+    techniqueName: "Credentials In Files"
     tactic: "Credential Access"
     notes: "TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), Kubernetes service accounts, and SSH keys from runner environment variables, workflow logs, and build artefacts."
   - techniqueId: "T1199"
@@ -148,12 +148,12 @@ Credentials harvested in Stages 2–4 are used to access victim cloud-production
 
 ### Initial Access
 
-- **T1195.002 — Supply Chain Compromise: Compromise Software Supply Chain.** Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
+- **T1195.002 — Compromise Software Supply Chain.** Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
 - **T1199 — Trusted Relationship.** Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
 
 ### Credential Access
 
-- **T1552.001 — Unsecured Credentials: Credentials In Files.** Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
+- **T1552.001 — Credentials In Files.** Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
 
 ### Defense Evasion
 
