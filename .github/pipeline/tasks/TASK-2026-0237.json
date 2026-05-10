@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-10T04:11:08.466Z",
+  "updated": "2026-05-10T04:17:46.940Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-10T04:11:08.466Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Dragonfly / Energetic Bear threat actor profile",
     "sources": [
@@ -76,6 +76,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-10T04:17:46.940Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #579"
     }
-  ]
+  ],
+  "pr_number": 579,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/579"
 }
