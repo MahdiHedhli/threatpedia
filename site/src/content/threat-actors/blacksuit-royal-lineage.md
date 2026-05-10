@@ -123,7 +123,7 @@ BlackSuit actors enter victim environments primarily via phishing emails contain
 
 Network reconnaissance uses SharpShares and SoftPerfect NetWorx to enumerate shares and map internal topology. Lateral movement proceeds via SSH connections established through OpenSSH and MobaXterm. For command and control, BlackSuit actors deploy Chisel — a tunneling tool wrapping traffic over HTTP secured with SSH — alongside Cloudflared, which routes traffic through Cloudflare's infrastructure to obscure origin addresses.
 
-Data exfiltration precedes encryption, using Cobalt Strike and Ursnif/Gozi derivatives to stage and transfer victim data to actor-controlled infrastructure. The final ransomware payload uses a partial-encryption approach in which operators configure what percentage of each file is encrypted. Lower percentages reduce encryption time on large files while still rendering them inaccessible, and lower encryption ratios evade behavioral detection thresholds. Encrypted files receive the `.blacksuit` extension. On VMware ESXi targets, the `esxcli` command-line utility terminates virtual machine processes before encryption, releasing file locks to enable coverage.
+Data exfiltration precedes encryption, using Cobalt Strike and Ursnif/Gozi derivatives to stage and transfer victim data to actor-controlled infrastructure. The final ransomware payload uses a partial-encryption approach in which operators configure what percentage of each file is encrypted. Lower percentages reduce encryption time on large files while still rendering them inaccessible, and lower encryption ratios evade behavioral detection thresholds. Encrypted files receive the `.blacksuit` extension. On VMware ESXi targets, the esxcli command-line utility terminates virtual machine processes before encryption, releasing file locks to enable coverage.
 
 ## Attribution
 
@@ -131,23 +131,25 @@ BlackSuit is assessed with moderate confidence to be operated by former Conti ra
 
 ## MITRE ATT&CK Profile
 
-BlackSuit's documented techniques span the full attack lifecycle from initial access through impact.
+T1566.001 - Spearphishing Attachment: BlackSuit actors commonly gain initial access via phishing emails containing malicious PDF attachments.
 
-**Initial Access**: Phishing with malicious PDF attachments is the primary documented access vector (T1566.001). Malvertising-driven delivery has also been observed (T1566.002).
+T1566.002 - Spearphishing Link: Malvertising campaigns delivering malware via spearphishing links have been observed as a secondary initial-access vector.
 
-**Defense Evasion**: Antivirus and endpoint security tooling is disabled immediately following initial access (T1685), reducing detection risk during the credential harvesting and lateral movement phases.
+T1685 - Disable or Modify Tools: After gaining initial access, BlackSuit actors disable antivirus and endpoint security tooling before deploying ransomware, reducing detection likelihood during credential harvesting and encryption phases.
 
-**Credential Access**: Mimikatz and Nirsoft password utilities are deployed to collect credentials (T1003), enabling privilege escalation and authenticated lateral movement across victim environments.
+T1003 - OS Credential Dumping: Mimikatz and Nirsoft password harvesting utilities have been found on victim systems, used to collect credentials for lateral movement and privilege escalation.
 
-**Discovery**: SharpShares and SoftPerfect NetWorx enumerate network shares and topology (T1135), informing targeting decisions for the encryption staging phase.
+T1572 - Protocol Tunneling: Chisel, a tunneling tool wrapping traffic over HTTP secured by SSH, and Cloudflared are used to establish covert command-and-control channels and maintain persistent network access.
 
-**Lateral Movement**: SSH sessions via OpenSSH and MobaXterm (T1021.004) are the primary documented mechanism for moving between systems within victim environments.
+T1135 - Network Share Discovery: SharpShares and SoftPerfect NetWorx enumerate victim network shares and topology, informing lateral movement paths and target selection for the encryption stage.
 
-**Command and Control**: Chisel provides protocol tunneling over HTTP/SSH (T1572). Cloudflared is used in parallel to proxy traffic through Cloudflare infrastructure, obscuring C2 communications.
+T1021.004 - SSH: BlackSuit actors establish SSH sessions using OpenSSH and MobaXterm to move laterally within victim environments following initial compromise and credential acquisition.
 
-**Exfiltration**: Cobalt Strike and Ursnif/Gozi derivatives aggregate and transfer victim data to actor-controlled infrastructure before ransomware deployment (T1567).
+T1567 - Exfiltration Over Web Service: Cobalt Strike and Ursnif/Gozi derivatives are used to exfiltrate victim data to actor-controlled infrastructure before ransomware deployment, supporting the double-extortion model.
 
-**Impact**: BlackSuit deploys its partial-encryption ransomware payload (T1486) and uses `esxcli` to stop virtual machine services on ESXi hypervisors before encryption (T1489).
+T1486 - Data Encrypted for Impact: BlackSuit deploys its partial-encryption ransomware payload.
+
+T1489 - Service Stop: BlackSuit uses esxcli to terminate virtual machine processes on ESXi hypervisors before encryption.
 
 ## Sources & References
 
