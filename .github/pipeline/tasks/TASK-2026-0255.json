@@ -5,11 +5,11 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T08:57:00.000Z",
+  "updated": "2026-05-09T07:11:27.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-08T21:29:22.696Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "FIN6 threat actor profile",
     "sources": [
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -51,9 +51,7 @@
   "output": {
     "file_pattern": "site/src/content/threat-actors/fin6.md",
     "branch": "pipeline/TASK-2026-0255",
-    "pr": true,
-    "pr_number": 564,
-    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564"
+    "pr": true
   },
   "history": [
     {
@@ -73,22 +71,6 @@
       "note": "Dispatched as Issue #557"
     },
     {
-      "timestamp": "2026-05-08T21:29:22.696Z",
-      "from": "pending",
-      "to": "locked",
-      "agent": "dangermouse-bot",
-      "note": "Locked for execution",
-      "action": "locked"
-    },
-    {
-      "timestamp": "2026-05-08T21:40:00.000Z",
-      "action": "pr_open",
-      "from": "locked",
-      "to": "pr_open",
-      "agent": "dangermouse-bot",
-      "note": "PR #564 opened \u2014 feat(threat-actors): FIN6 payment-card cybercriminal profile"
-    },
-    {
       "timestamp": "2026-05-08T23:27:56.786Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -97,28 +79,14 @@
       "note": "Dispatch skipped because open PR #564 already covers this task."
     },
     {
-      "timestamp": "2026-05-09T08:30:00.000Z",
-      "action": "remediation",
-      "from": "pr_open",
+      "timestamp": "2026-05-09T07:11:27.000Z",
+      "from": "pending",
       "to": "pr_open",
-      "agent": "dangermouse-bot",
-      "note": "0696deb: task JSON audit trail fix (from:locked); prose: removed cybercriminal/dark web/at scale/breadth/high-value/large-scale heading"
-    },
-    {
-      "timestamp": "2026-05-09T08:52:00.000Z",
-      "action": "remediation",
-      "from": "pr_open",
-      "to": "pr_open",
-      "agent": "dangermouse-bot",
-      "note": "c630fe4: removed large-scale/broader/broadening per 2nd Gemini review; e351857: added LockerGoga+Ryuk to tools list; declined ATT&CK prose format suggestion (schema-incompatible)"
-    },
-    {
-      "timestamp": "2026-05-09T08:55:51.000Z",
-      "action": "review_gate_pass",
-      "from": "pr_open",
-      "to": "pr_open",
-      "agent": "review-gate",
-      "note": "Review gate SUCCESS on head e35185796eb9. Validate passing. PR merge-ready pending Kernel K approval."
+      "agent": "Kernel K",
+      "action": "pr_state_sync",
+      "note": "Bookkeeping: PR #564 was already open; task state corrected from pending to pr_open."
     }
-  ]
+  ],
+  "pr_number": 564,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564"
 }
