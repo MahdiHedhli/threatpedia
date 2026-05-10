@@ -426,8 +426,13 @@ async function fetchOpenPullRequestTask(pr, file, repo, token) {
   const data = await fetchGitHubJson(url, token);
   if (!data || typeof data.content !== 'string') return null;
 
-  const content = Buffer.from(data.content, 'base64').toString('utf8');
-  return JSON.parse(content);
+  try {
+    const content = Buffer.from(data.content, 'base64').toString('utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.log(`::warning::Failed to parse task file ${file.filename} from PR #${pr.number} (${error.message}); skipping`);
+    return null;
+  }
 }
 
 async function fetchOpenPullRequestTasks(opts) {
