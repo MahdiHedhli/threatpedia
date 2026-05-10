@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T07:11:27.000Z",
+  "updated": "2026-05-10T04:29:46.114Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -85,8 +85,17 @@
       "agent": "Kernel K",
       "action": "pr_state_sync",
       "note": "Bookkeeping: PR #564 was already open; task state corrected from pending to pr_open."
+    },
+    {
+      "timestamp": "2026-05-10T04:29:46.114Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #564."
     }
   ],
   "pr_number": 564,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/564",
+  "merged_at": "2026-05-10T04:28:56Z"
 }
