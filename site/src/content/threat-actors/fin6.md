@@ -145,19 +145,29 @@ No public government indictment or country-level attribution appears in availabl
 
 ## MITRE ATT&CK Profile
 
-**Initial Access**: Spear-phishing emails with malicious attachments (T1566.001); use of valid credentials obtained through harvesting for persistent access (T1078).
+T1566.001 - Spearphishing Attachment: FIN6 has used spear-phishing emails with malicious attachments to gain initial access to target environments.
 
-**Execution**: PowerShell for post-exploitation scripting and payload execution (T1059.001).
+T1078 - Valid Accounts: FIN6 has used legitimate credentials obtained through credential harvesting to maintain persistence and move laterally.
 
-**Credential Access**: Credential harvesting from LSASS memory (T1003.001) to obtain domain credentials for lateral movement.
+T1059.001 - PowerShell: FIN6 has used PowerShell for execution and post-exploitation activity within compromised environments.
 
-**Lateral Movement**: Remote Desktop Protocol (T1021.001) and SMB/Windows Admin Shares (T1021.002) for traversal to POS systems and targeted hosts.
+T1003.001 - LSASS Memory: FIN6 has used credential harvesting tools to dump credentials from LSASS memory on compromised hosts.
 
-**Collection**: POS RAM scraping of payment card data from process memory using FrameworkPOS and GratefulPOS (T1005); keylogging for credential and data collection (T1056.001); local staging of harvested card data prior to exfiltration (T1074.001).
+T1021.001 - Remote Desktop Protocol: FIN6 has used RDP to move laterally through victim networks following initial compromise and credential harvesting.
 
-**Exfiltration**: Exfiltration of staged data over the C2 channel (T1041).
+T1021.002 - SMB/Windows Admin Shares: FIN6 has used SMB and Windows admin shares for lateral movement within victim environments.
 
-**Command and Control**: Ingress transfer of tools and payloads to compromised hosts (T1105); HTTP/HTTPS communications for C2 (T1071.001).
+T1056.001 - Keylogging: FIN6 has used keyloggers as part of its credential and payment card data collection operations.
+
+T1005 - Data from Local System: FIN6 has used FrameworkPOS and GratefulPOS to scrape payment card data from the memory of point-of-sale processes.
+
+T1074.001 - Local Data Staging: FIN6 has staged collected payment card data locally before exfiltration.
+
+T1041 - Exfiltration Over C2 Channel: FIN6 has exfiltrated collected data over the same command-and-control channel used for post-exploitation activity.
+
+T1105 - Ingress Tool Transfer: FIN6 has transferred tools and payloads including FrameworkPOS and GratefulPOS to compromised systems during operations.
+
+T1071.001 - Web Protocols: FIN6 has used HTTP/HTTPS for command-and-control communications in observed intrusions.
 
 ## Sources & References
 
