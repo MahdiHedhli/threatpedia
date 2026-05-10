@@ -29,26 +29,32 @@ mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
+    attack-version: "v19"
     notes: "Group used spearphishing attachments for initial access to target networks."
   - techniqueId: "T1078"
     techniqueName: "Valid Accounts"
-    tactic: "Defense Evasion"
-    notes: "Leveraged valid credentials to blend in with legitimate activity on target networks."
+    tactic: "Persistence"
+    attack-version: "v19"
+    notes: "Leveraged valid VPN and remote-access credentials to maintain access and blend with legitimate activity."
   - techniqueId: "T1036"
     techniqueName: "Masquerading"
-    tactic: "Defense Evasion"
+    tactic: "Stealth"
+    attack-version: "v19"
     notes: "TRITON malware components were named to blend with legitimate Triconex software files."
   - techniqueId: "T1059"
     techniqueName: "Command and Scripting Interpreter"
     tactic: "Execution"
+    attack-version: "v19"
     notes: "Used Python-based frameworks and scripting for communication with Triconex controllers."
   - techniqueId: "T1003"
     techniqueName: "OS Credential Dumping"
     tactic: "Credential Access"
+    attack-version: "v19"
     notes: "Harvested credentials to facilitate lateral movement within target environments."
   - techniqueId: "T1489"
     techniqueName: "Service Stop"
     tactic: "Impact"
+    attack-version: "v19"
     notes: "TRITON was designed to stop or disable Triconex Safety Instrumented System services, removing safety protections from the targeted industrial process."
 attributionConfidence: "A2"
 attributionRationale: "Multiple independent vendor and government assessments link this actor to the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM). Evidence includes infrastructure overlap, code artifacts, and operational patterns corroborated by CISA, Dragos, and Mandiant reporting."
@@ -122,7 +128,7 @@ Dragos subsequently tracked XENOTIME conducting reconnaissance against targets b
 
 ## MITRE ATT&CK Profile
 
-The group's technique coverage spans initial access through impact. Spearphishing attachment delivery (T1566.001) is the assessed initial access vector. Valid account abuse (T1078) and masquerading (T1036) characterize the defense evasion posture. OS credential dumping (T1003) supports lateral movement into OT environments. Command and scripting interpreter use (T1059) reflects the Python-centered toolkit. Service Stop (T1489) captures the intended final effect: disabling Triconex SIS processes to remove safety barriers from the targeted industrial process. Full technique coverage for G0088 is maintained in MITRE ATT&CK.
+The group's technique coverage spans initial access through impact. Spearphishing attachment delivery (T1566.001) is the assessed initial access vector. Valid account abuse (T1078) supported continued VPN and remote-service access, while masquerading (T1036) reflects stealth through filenames that resembled legitimate Triconex and Windows components. OS credential dumping (T1003) supports lateral movement into OT environments. Command and scripting interpreter use (T1059) reflects the Python-centered toolkit. Service Stop (T1489) captures the intended final effect: disabling Triconex SIS processes to remove safety barriers from the targeted industrial process. Full technique coverage for G0088 is maintained in MITRE ATT&CK.
 
 ## Sources & References
 
