@@ -5,11 +5,11 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T07:11:27.000Z",
+  "updated": "2026-05-09T18:20:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-08T20:34:00Z",
   "input": {
     "topic": "Rhysida threat actor profile",
     "sources": [
@@ -71,6 +71,23 @@
       "note": "Dispatched as Issue #558"
     },
     {
+      "timestamp": "2026-05-08T20:34:00Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-08T20:34:39Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #561 opened",
+      "pr": 561
+    },
+    {
       "timestamp": "2026-05-08T21:32:35.878Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -85,6 +102,22 @@
       "agent": "Kernel K",
       "action": "pr_state_sync",
       "note": "Bookkeeping: PR #561 was already open; task state corrected from pending to pr_open."
+    },
+    {
+      "timestamp": "2026-05-09T08:55:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "92350dd: removed broader/prominent/cloud-heavy per Gemini review. Gemini re-review requested on 92350dd."
+    },
+    {
+      "timestamp": "2026-05-09T18:20:00.000Z",
+      "action": "remediation",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "76afb89: fix Gemini threads 5-7 — §14A literal char, C:\\\\ in YAML frontmatter and MD body. Merge main to resolve conflict."
     }
   ],
   "pr_number": 561,
