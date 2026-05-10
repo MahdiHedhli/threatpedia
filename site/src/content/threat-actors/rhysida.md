@@ -159,13 +159,13 @@ CISA updated the Rhysida advisory in April 2025 to reflect new IOCs and TTPs emp
 
 ## Technical Capabilities
 
-Rhysida actors gain initial access primarily by authenticating to external-facing VPN services with compromised valid credentials. In some cases, Gootloader malware has been used for initial access. Once inside, actors conduct Active Directory reconnaissance using ADRecon and native tools including `ipconfig`, `whoami`, `nltest`, and `net` commands to enumerate domain structure and user accounts.
+Rhysida actors gain initial access primarily by authenticating to external-facing VPN services with compromised valid credentials. In some cases, `Gootloader` malware has been used for initial access. Once inside, actors conduct Active Directory reconnaissance using `ADRecon` and native tools including `ipconfig`, `whoami`, `nltest`, and `net` commands to enumerate domain structure and user accounts.
 
-Lateral movement relies on RDP connections, PuTTY SSH tunneling, and PsExec for remote execution (T1569.002). Credential harvesting targets the NTDS.dit database, which is extracted via ntdsutil or secretsdump-style tooling, allowing actors to compromise domain-wide accounts. AnyDesk is deployed for persistent remote access.
+Lateral movement relies on RDP connections, `PuTTY` SSH tunneling, and `PsExec` for remote execution (T1569.002). Credential harvesting targets the `NTDS.dit` database, which is extracted via `ntdsutil` or `secretsdump`-style tooling, allowing actors to compromise domain-wide accounts. `AnyDesk` is deployed for persistent remote access.
 
-Data staged for exfiltration is placed into designated `in` and `out` folders created on the C:\\ drive. Exfiltration leverages AZCopy and Azure Storage Explorer to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using wevtutil to hinder forensic investigation.
+Data staged for exfiltration is placed into designated `in` and `out` folders created on the C:\\ drive. Exfiltration leverages `AZCopy` and `Azure Storage Explorer` to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using `wevtutil` to hinder forensic investigation.
 
-The Rhysida ransomware binary is a 64-bit Windows PE compiled with MinGW/GCC. It injects into running processes before encrypting files with a 4096-bit RSA key combined with a ChaCha20 algorithm, appending a `.rhysida` extension to encrypted files. A PDF ransom note is dropped on the compromised system. Following encryption, the binary deletes itself via PowerShell from a hidden command window. Ransom payments are demanded in Bitcoin to actor-provided wallet addresses.
+The Rhysida ransomware binary is a 64-bit Windows PE compiled with `MinGW`/`GCC`. It injects into running processes before encrypting files with a 4096-bit RSA key combined with a ChaCha20 algorithm, appending a `.rhysida` extension to encrypted files. A PDF ransom note is dropped on the compromised system. Following encryption, the binary deletes itself via `PowerShell` from a hidden command window. Ransom payments are demanded in Bitcoin to actor-provided wallet addresses.
 
 ## Attribution
 
@@ -177,17 +177,17 @@ Multiple independent government and vendor sources document this as a distinct o
 
 **Initial Access**: Compromised valid credentials used to authenticate to VPN services (T1078); Gootloader malware for phishing-based initial access in some cases (T1566).
 
-**Discovery**: Domain and network enumeration via `ipconfig` (T1016), `whoami` (T1033), `nltest` (T1482), and `net` commands (T1069.002); ADRecon for Active Directory reconnaissance.
+**Discovery**: Domain and network enumeration via `ipconfig` (T1016), `whoami` (T1033), `nltest` (T1482), and `net` commands (T1069.002); `ADRecon` for Active Directory reconnaissance.
 
-**Lateral Movement**: Remote Desktop Protocol connections (T1021.001); PuTTY SSH tunneling (T1021.004); PsExec for remote execution (T1569.002).
+**Lateral Movement**: Remote Desktop Protocol connections (T1021.001); `PuTTY` SSH tunneling (T1021.004); `PsExec` for remote execution (T1569.002).
 
-**Credential Access**: NTDS.dit database dumping via ntdsutil (T1003.003) to extract domain-wide credential hashes.
+**Credential Access**: `NTDS.dit` database dumping via `ntdsutil` (T1003.003) to extract domain-wide credential hashes.
 
-**Exfiltration**: Data staged in local directories (T1074) before exfiltration via AZCopy and Azure Storage Explorer to actor-controlled cloud storage (T1567.002).
+**Exfiltration**: Data staged in local directories (T1074) before exfiltration via `AZCopy` and `Azure Storage Explorer` to actor-controlled cloud storage (T1567.002).
 
-**Command and Control**: AnyDesk remote access tool (T1219) for persistent access.
+**Command and Control**: `AnyDesk` remote access tool (T1219) for persistent access.
 
-**Defense Evasion**: Windows event log clearing via wevtutil (T1070); self-deletion of ransomware binary post-encryption (T1070.004); process injection prior to file encryption (T1055).
+**Defense Evasion**: Windows event log clearing via `wevtutil` (T1070); self-deletion of ransomware binary post-encryption (T1070.004); process injection prior to file encryption (T1055).
 
 **Impact**: RSA-4096 + ChaCha20 data encryption (T1486); double extortion with threatened publication of exfiltrated data (T1657).
 
