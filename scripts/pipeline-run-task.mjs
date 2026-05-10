@@ -307,7 +307,7 @@ function buildRules(task) {
   5. EDIT-RULE-030: Do NOT use editorial commentary words:
      ${EDITORIAL_WORDS.join(', ')}
   6. Every H2 heading must have a blank line before it
-  7. Public article prose must not mention internal article/report framing, editorial workflow, reviewStatus values, attribution confidence labels, or confidence grades
+  7. Public article prose must not mention internal article/report/content-model framing, editorial workflow, reviewStatus values, attribution confidence labels, confidence grades, frontmatter, slugs, or collection/list/page terminology
   8. exploitId format is TP-EXP-YYYY-NNNN (year-namespaced per ADR 0007)
   9. H2 headings must match the canonical set for ${task.type}: ${(SCHEMA_REQUIRED_H2_BY_TYPE[task.type] || []).join(' | ')}
   10. Sources & References body section must use markdown hyperlinks that exactly match frontmatter:
@@ -1382,7 +1382,7 @@ function validateOutput(task, explicitFile) {
     // ── 11. Public prose guardrails ───────────────────────────────────────
     const publicProseIssues = getPublicProseGuardrailIssues(body);
     if (publicProseIssues.length > 0) {
-      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring phrase(s) found:`);
+      issues.push(`Public prose guardrails: ${publicProseIssues.length} internal process/scoring/content-model phrase(s) found:`);
       for (const hit of publicProseIssues.slice(0, 5)) {
         issues.push(`  → line ${hit.line}: ${hit.label} (${hit.phrase})`);
       }
