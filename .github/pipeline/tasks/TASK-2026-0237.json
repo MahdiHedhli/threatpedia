@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T19:38:34.015Z",
+  "updated": "2026-05-10T04:11:08.466Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-10T04:11:08.466Z",
   "input": {
     "topic": "Dragonfly / Energetic Bear threat actor profile",
     "sources": [
@@ -69,6 +69,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #576"
+    },
+    {
+      "timestamp": "2026-05-10T04:11:08.466Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
