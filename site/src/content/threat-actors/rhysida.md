@@ -163,7 +163,7 @@ Rhysida actors gain initial access primarily by authenticating to external-facin
 
 Lateral movement relies on RDP connections, `PuTTY` SSH tunneling, and `PsExec` for remote execution (T1569.002). Credential harvesting targets the `NTDS.dit` database, which is extracted via `ntdsutil` or `secretsdump`-style tooling, allowing actors to compromise domain-wide accounts. `AnyDesk` is deployed for persistent remote access.
 
-Data staged for exfiltration is placed into designated `in` and `out` folders created on the C:\\ drive. Exfiltration leverages `AZCopy` and `Azure Storage Explorer` to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using `wevtutil` to hinder forensic investigation.
+Data staged for exfiltration is placed into designated `in` and `out` folders created on the `C:\\ drive`. Exfiltration leverages `AZCopy` and `Azure Storage Explorer` to transfer collected data to actor-controlled cloud storage. Prior to deploying the ransomware payload, actors clear Windows event logs using `wevtutil` to hinder forensic investigation.
 
 The Rhysida ransomware binary is a 64-bit Windows PE compiled with `MinGW`/`GCC`. It injects into running processes before encrypting files with a 4096-bit RSA key combined with a ChaCha20 algorithm, appending a `.rhysida` extension to encrypted files. A PDF ransom note is dropped on the compromised system. Following encryption, the binary deletes itself via `PowerShell` from a hidden command window. Ransom payments are demanded in Bitcoin to actor-provided wallet addresses.
 
@@ -175,7 +175,7 @@ Multiple independent government and vendor sources document this as a distinct o
 
 ## MITRE ATT&CK Profile
 
-**Initial Access**: Compromised valid credentials used to authenticate to VPN services (T1078); Gootloader malware for phishing-based initial access in some cases (T1566).
+**Initial Access**: Compromised valid credentials used to authenticate to VPN services (T1078); `Gootloader` malware for phishing-based initial access in some cases (T1566).
 
 **Discovery**: Domain and network enumeration via `ipconfig` (T1016), `whoami` (T1033), `nltest` (T1482), and `net` commands (T1069.002); `ADRecon` for Active Directory reconnaissance.
 
