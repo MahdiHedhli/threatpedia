@@ -378,7 +378,11 @@ function buildTaskIndexes(openPullRequestTasks = []) {
 
   if (existsSync(TASKS_DIR)) {
     for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
-      addTaskToIndexes(indexes, JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8')));
+      try {
+        addTaskToIndexes(indexes, JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8')));
+      } catch (error) {
+        console.log(`::warning::Failed to parse local task file ${file} (${error.message}); skipping`);
+      }
     }
   }
 
@@ -459,11 +463,14 @@ async function fetchOpenPullRequestTasks(opts) {
           );
           if (!Array.isArray(files) || files.length === 0) break;
 
-          for (const file of files) {
-            if (file.status === 'removed') continue;
-            if (!String(file.filename || '').match(/^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/)) continue;
-            const task = await fetchOpenPullRequestTask(pr, file, repo, token);
-            if (task) tasks.push(task);
+          const taskPromises = files
+            .filter(file => file.status !== 'removed')
+            .filter(file => String(file.filename || '').match(/^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/))
+            .map(file => fetchOpenPullRequestTask(pr, file, repo, token));
+
+          if (taskPromises.length > 0) {
+            const newTasks = await Promise.all(taskPromises);
+            tasks.push(...newTasks.filter(Boolean));
           }
 
           if (files.length < 100) break;
