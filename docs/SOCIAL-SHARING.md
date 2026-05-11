@@ -83,6 +83,9 @@ npm --prefix scripts run social:share-x -- \
 
 - The workflow runs after deployment so shared URLs should exist before any live
   post is attempted.
+- X counts each URL as 23 characters for post-length enforcement. The sharing
+  script uses that weighting instead of raw URL string length when drafting
+  posts.
 - The script does not invent a parallel state store. It uses the merge range to
   find newly added content files.
 - Re-running a live-post workflow can duplicate posts. The script blocks GitHub
