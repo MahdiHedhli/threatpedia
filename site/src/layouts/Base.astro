@@ -8,10 +8,13 @@ interface Props {
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
 const enablePlausibleAnalytics = import.meta.env.PROD;
-if (!Astro.site) {
-  throw new Error('Astro site config is required for Plausible analytics.');
+let plausibleDomain = '';
+if (enablePlausibleAnalytics) {
+  if (!Astro.site) {
+    throw new Error('Astro site config is required for Plausible analytics.');
+  }
+  plausibleDomain = Astro.site.hostname;
 }
-const plausibleDomain = Astro.site.hostname;
 
 // Build ticker items from all collections
 interface TickerItem {
