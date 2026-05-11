@@ -17,6 +17,7 @@ const DEFAULT_SITE_URL = 'https://threatpedia.wiki';
 const DEFAULT_SHARE_STATUSES = new Set(['draft_ai', 'draft_human', 'under_review', 'certified']);
 const DEFAULT_ENDPOINT = 'https://api.x.com/2/tweets';
 const MAX_POST_LENGTH = 280;
+const YAML_FRONTMATTER_PATTERN = /^---[ \t]*(?:\r?\n)([\s\S]*?)(?:\r?\n)---[ \t]*(?:\r?\n|$)/;
 const REPO_ROOT = findRepoRoot();
 
 function findRepoRoot() {
@@ -151,17 +152,12 @@ function parseContentPath(file) {
 
 async function readFrontmatter(file) {
   const content = await readFile(path.join(REPO_ROOT, file), 'utf8');
-  if (!content.startsWith('---\n')) {
-    throw new Error(`${file} does not start with YAML frontmatter.`);
+  const match = content.match(YAML_FRONTMATTER_PATTERN);
+  if (!match) {
+    throw new Error(`${file} is missing valid YAML frontmatter delimiters.`);
   }
 
-  const end = content.indexOf('\n---', 4);
-  if (end === -1) {
-    throw new Error(`${file} is missing a closing frontmatter delimiter.`);
-  }
-
-  const frontmatter = content.slice(4, end);
-  return yaml.load(frontmatter) || {};
+  return yaml.load(match[1]) || {};
 }
 
 function allowedStatuses() {
@@ -179,17 +175,28 @@ function makeArticleUrl(siteUrl, route, slug) {
 }
 
 function truncateText(value, limit) {
-  if (value.length <= limit) return value;
-  if (limit <= 3) return value.slice(0, limit);
-  return `${value.slice(0, limit - 3).trimEnd()}...`;
+  const text = String(value || '');
+  if (limit <= 0) return '';
+  if (text.length <= limit) return text;
+  if (limit <= 3) return text.slice(0, limit);
+  return `${text.slice(0, limit - 3).trimEnd()}...`;
 }
 
 function buildPostText(article) {
-  const suffix = `\n${article.url}\n#Threatpedia #Cybersecurity`;
   const prefix = `New Threatpedia ${article.label}: `;
-  const remaining = MAX_POST_LENGTH - prefix.length - suffix.length;
-  const title = truncateText(article.title, Math.max(20, remaining));
-  return `${prefix}${title}${suffix}`;
+  const suffixes = [
+    `\n${article.url}\n#Threatpedia #Cybersecurity`,
+    `\n${article.url}`,
+  ];
+
+  for (const suffix of suffixes) {
+    const remaining = MAX_POST_LENGTH - prefix.length - suffix.length;
+    if (remaining <= 0) continue;
+    const title = truncateText(article.title, remaining);
+    return `${prefix}${title}${suffix}`;
+  }
+
+  throw new Error(`Cannot build an X post within ${MAX_POST_LENGTH} characters for ${article.url}`);
 }
 
 async function buildDraft(file, siteUrl, statuses) {
