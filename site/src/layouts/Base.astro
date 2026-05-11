@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
+const enablePlausibleAnalytics = import.meta.env.PROD;
+const plausibleScriptSrc = 'https://plausible.io/js/pa-JU90GDszdzYfdcQawYHNo.js';
 
 // Build ticker items from all collections
 interface TickerItem {
@@ -93,6 +95,15 @@ try {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    {enablePlausibleAnalytics && (
+      <>
+        <script async src={plausibleScriptSrc}></script>
+        <script is:inline>
+          window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+          plausible.init()
+        </script>
+      </>
+    )}
     <title>{title} — Threatpedia</title>
   </head>
   <body>
@@ -146,6 +157,7 @@ try {
         <a href="/zero-days/">Zero-Days</a>
         <a href="/glossary/">Glossary</a>
         <a href="/roadmap/">Roadmap</a>
+        <a href="/privacy/">Privacy</a>
       </div>
     </div>
 
@@ -166,6 +178,9 @@ try {
       <div class="footer-domains">
         <div class="footer-domain">threatpedia.wiki</div>
         <div class="footer-domain">threatpedia.net</div>
+      </div>
+      <div class="footer-links">
+        <a href="/privacy/">Privacy</a>
       </div>
       <div class="footer-copy">&copy; 2026 — All Rights Reserved</div>
     </footer>
@@ -2383,6 +2398,28 @@ try {
     font-size: 0.65rem;
     letter-spacing: 0.1em;
     color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--amber);
   }
 
   .footer-copy {
