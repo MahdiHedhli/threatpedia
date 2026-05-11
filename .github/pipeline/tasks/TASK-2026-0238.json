@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-11T20:12:01.493Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -62,6 +62,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-003"
+    },
+    {
+      "timestamp": "2026-05-11T20:12:01.493Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #582 already covers this task."
     }
   ]
 }

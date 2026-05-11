@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-10T04:29:46.114Z",
+  "updated": "2026-05-11T20:12:01.493Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -92,8 +92,17 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #579 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-11T20:12:01.493Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #579."
     }
   ],
   "pr_number": 579,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/579"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/579",
+  "merged_at": "2026-05-11T18:52:49Z"
 }
