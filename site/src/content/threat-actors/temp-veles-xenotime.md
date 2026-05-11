@@ -40,7 +40,7 @@ mitreMappings:
     techniqueName: "Masquerading"
     tactic: "Stealth"
     attack-version: "v19"
-    notes: "TRITON malware components were named to blend with legitimate Triconex software files."
+    notes: "TRITON malware components used filenames resembling legitimate Triconex software and Windows components."
   - techniqueId: "T1059"
     techniqueName: "Command and Scripting Interpreter"
     tactic: "Execution"
