@@ -575,8 +575,10 @@ async function fetchOpenPullRequestTasks(opts) {
     console.log('::notice::GITHUB_REPOSITORY not set; skipping open PR task dedupe');
     return [];
   }
-  if (!token && requireLiveState) {
-    throw new Error('GITHUB_TOKEN is required to dedupe against open PR task files');
+  if (!token) {
+    if (requireLiveState) throw new Error('GITHUB_TOKEN is required to dedupe against open PR task files');
+    console.log('::notice::GITHUB_TOKEN not set; skipping open PR task dedupe');
+    return [];
   }
 
   const tasks = [];
