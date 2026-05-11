@@ -15,7 +15,7 @@ const DEFAULT_AI_REVIEW_LOGINS = [
 ];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
-const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
+const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml|\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$|docs\/PIPELINE\.md|site\/src\/content\.config\.ts)/;
 
 function parseArgs(argv) {
   const parsed = {

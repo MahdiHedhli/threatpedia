@@ -10,6 +10,7 @@ on:
       - "scripts/**"
       - ".github/workflows/**"
       - ".github/pipeline/config.yml"
+      - ".github/pipeline/tasks/TASK-*.json"
       - "docs/PIPELINE.md"
   pull_request_review:
     types: [submitted, dismissed]
