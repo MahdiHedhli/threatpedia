@@ -8,7 +8,10 @@ interface Props {
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
 const enablePlausibleAnalytics = import.meta.env.PROD;
-const plausibleDomain = Astro.site?.hostname ?? 'threatpedia.wiki';
+if (!Astro.site) {
+  throw new Error('Astro site config is required for Plausible analytics.');
+}
+const plausibleDomain = Astro.site.hostname;
 
 // Build ticker items from all collections
 interface TickerItem {
@@ -2400,7 +2403,7 @@ try {
 
   .footer-links a {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
