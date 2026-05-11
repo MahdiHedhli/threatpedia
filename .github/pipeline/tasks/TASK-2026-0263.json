@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0263",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-11T18:57:06Z",
+  "updated": "2026-05-11T18:57:06Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Coupang Korea cybersecurity incident",
+    "sources": [
+      "https://news.risky.biz/risky-bulletin-us-lifts-sanctions-on-three-intellexa-execs/",
+      "https://www.aboutcoupang.com/English/news/news-details/2025/update-on-coupang-korea-cybersecurity-incident/",
+      "https://www.koreaherald.com/article/10645026"
+    ],
+    "candidate_data": {
+      "severity": "medium"
+    },
+    "notes": "Risky Bulletin January 1, 2026 discovery lead. Draft a conservative incident article from the public breach update and independent reporting; avoid unsupported attribution, victim counts, or impact scope beyond the cited sources."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0263",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-11T18:57:06Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Risky Bulletin discovery smoke-test task seed"
+    }
+  ]
+}

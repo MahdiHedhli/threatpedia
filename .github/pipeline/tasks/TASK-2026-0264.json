@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0264",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-11T18:57:06Z",
+  "updated": "2026-05-11T18:57:06Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "CET Oltenia ransomware attack",
+    "sources": [
+      "https://news.risky.biz/risky-bulletin-us-lifts-sanctions-on-three-intellexa-execs/",
+      "https://www.facebook.com/CEOltenia/posts/pfbid08mkE6qQTSwGV8aJhgSeBsHfchQ773cWz6vV8zzUh7gygbqk8pzAaUhKHePqS75Ufl",
+      "https://www.bleepingcomputer.com/news/security/romanian-energy-provider-hit-by-gentlemen-ransomware-attack/"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin January 1, 2026 discovery lead. Draft a conservative incident article from operator and independent reporting; treat ransomware attribution and operational impact as source-bound claims only."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0264",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-11T18:57:06Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Risky Bulletin discovery smoke-test task seed"
+    }
+  ]
+}
