@@ -9,7 +9,7 @@ affiliation: "Russian Federation"
 motivation: "Espionage"
 status: active
 country: "Russia"
-firstSeen: "2011"
+firstSeen: "2010"
 lastSeen: "2019"
 targetSectors:
   - "Energy"
