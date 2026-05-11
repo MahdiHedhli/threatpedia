@@ -452,14 +452,14 @@ async function fetchOpenPullRequestTask(pr, file, repo, token) {
 
   const encodedPath = encodeGitHubPath(file.filename);
   const url = `https://api.github.com/repos/${headRepo}/contents/${encodedPath}?ref=${encodeURIComponent(headRef)}`;
-  const data = await fetchGitHubJson(url, token);
-  if (!data || typeof data.content !== 'string') return null;
-
   try {
+    const data = await fetchGitHubJson(url, token);
+    if (!data || typeof data.content !== 'string') return null;
+
     const content = Buffer.from(data.content, 'base64').toString('utf8');
     return JSON.parse(content);
   } catch (error) {
-    console.log(`::warning::Failed to parse task file ${file.filename} from PR #${pr.number} (${error.message}); skipping`);
+    console.log(`::warning::Failed to fetch or parse task file ${file.filename} from PR #${pr.number} (${error.message}); skipping`);
     return null;
   }
 }
