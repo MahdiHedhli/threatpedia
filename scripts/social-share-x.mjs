@@ -16,8 +16,11 @@ const COLLECTIONS = new Map([
 const DEFAULT_SITE_URL = 'https://threatpedia.wiki';
 const DEFAULT_SHARE_STATUSES = new Set(['draft_ai', 'draft_human', 'under_review', 'certified']);
 const DEFAULT_ENDPOINT = 'https://api.x.com/2/tweets';
+const DEFAULT_HASHTAGS = '#Threatpedia #Cybersecurity';
 const MAX_POST_LENGTH = 280;
-const YAML_FRONTMATTER_PATTERN = /^---[ \t]*(?:\r?\n)([\s\S]*?)(?:\r?\n)---[ \t]*(?:\r?\n|$)/;
+const X_URL_LENGTH = 23;
+const URL_PATTERN = /https?:\/\/[^\s]+/g;
+const FRONTMATTER_REGEX = /^---[ \t]*(?:\r?\n)([\s\S]*?)(?:\r?\n)---[ \t]*(?:\r?\n|$)/;
 const REPO_ROOT = findRepoRoot();
 
 function findRepoRoot() {
@@ -152,7 +155,7 @@ function parseContentPath(file) {
 
 async function readFrontmatter(file) {
   const content = await readFile(path.join(REPO_ROOT, file), 'utf8');
-  const match = content.match(YAML_FRONTMATTER_PATTERN);
+  const match = content.match(FRONTMATTER_REGEX);
   if (!match) {
     throw new Error(`${file} is missing valid YAML frontmatter delimiters.`);
   }
@@ -176,24 +179,41 @@ function makeArticleUrl(siteUrl, route, slug) {
 
 function truncateText(value, limit) {
   const text = String(value || '');
+  const chars = Array.from(text);
   if (limit <= 0) return '';
-  if (text.length <= limit) return text;
-  if (limit <= 3) return text.slice(0, limit);
-  return `${text.slice(0, limit - 3).trimEnd()}...`;
+  if (chars.length <= limit) return text;
+  if (limit <= 3) return chars.slice(0, limit).join('');
+  return `${chars.slice(0, limit - 3).join('').trimEnd()}...`;
+}
+
+function xWeightedLength(text) {
+  let length = 0;
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(URL_PATTERN)) {
+    length += Array.from(text.slice(lastIndex, match.index)).length;
+    length += X_URL_LENGTH;
+    lastIndex = match.index + match[0].length;
+  }
+
+  return length + Array.from(text.slice(lastIndex)).length;
 }
 
 function buildPostText(article) {
   const prefix = `New Threatpedia ${article.label}: `;
   const suffixes = [
-    `\n${article.url}\n#Threatpedia #Cybersecurity`,
+    `\n${article.url}\n${DEFAULT_HASHTAGS}`,
     `\n${article.url}`,
   ];
 
   for (const suffix of suffixes) {
-    const remaining = MAX_POST_LENGTH - prefix.length - suffix.length;
+    const remaining = MAX_POST_LENGTH - Array.from(prefix).length - xWeightedLength(suffix);
     if (remaining <= 0) continue;
     const title = truncateText(article.title, remaining);
-    return `${prefix}${title}${suffix}`;
+    const post = `${prefix}${title}${suffix}`;
+    if (xWeightedLength(post) <= MAX_POST_LENGTH) {
+      return post;
+    }
   }
 
   throw new Error(`Cannot build an X post within ${MAX_POST_LENGTH} characters for ${article.url}`);
