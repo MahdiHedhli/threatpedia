@@ -33,26 +33,32 @@ mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
+    attack-version: "v19"
     notes: "Dragonfly trojanized legitimate ICS software packages from three industrial control system vendors, embedding the Havex RAT into installer packages distributed via vendor update mechanisms."
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
+    attack-version: "v19"
     notes: "Dragonfly sent spearphishing emails containing malicious Microsoft Office documents and PDF attachments to employees at energy sector organizations."
   - techniqueId: "T1189"
     techniqueName: "Drive-by Compromise"
     tactic: "Initial Access"
+    attack-version: "v19"
     notes: "Dragonfly compromised energy-sector and ICS vendor websites to serve malicious content to site visitors, using watering-hole attacks as a secondary delivery mechanism alongside spearphishing."
   - techniqueId: "T1078"
     techniqueName: "Valid Accounts"
     tactic: "Persistence"
+    attack-version: "v19"
     notes: "Dragonfly actors harvested and reused legitimate credentials to maintain persistent access to victim environments, as documented in CISA alert TA17-293A."
   - techniqueId: "T1133"
     techniqueName: "External Remote Services"
     tactic: "Initial Access"
+    attack-version: "v19"
     notes: "Following credential harvesting, Dragonfly actors used VPN and other remote access services to access victim networks, enabling direct operator-controlled entry into target environments."
   - techniqueId: "T1082"
     techniqueName: "System Information Discovery"
     tactic: "Discovery"
+    attack-version: "v19"
     notes: "Dragonfly conducted reconnaissance on victim ICS environments, gathering system configuration and network topology data to map operational technology infrastructure."
 attributionConfidence: A2
 attributionRationale: "Attributed to Russian government actors by CISA and US government in joint advisory TA17-293A (October 2017). MITRE ATT&CK tracks as G0035. Targeting patterns and tooling are consistent with a state-mandated ICS espionage program."
@@ -126,7 +132,7 @@ Dragonfly's toolset includes both custom malware and widely available utilities 
 
 **Watering Holes and Supply Chain**: The group demonstrated capability and willingness to compromise third-party infrastructure, including ICS vendor update servers and energy-sector news websites, to deliver malicious payloads without direct engagement of the primary target.
 
-**Credential Reuse**: CISA TA17-293A documented extensive use of harvested credentials to access victim environments through VPN and remote desktop services, enabling persistent access that blended with legitimate administrator activity.
+**Credential Reuse**: CISA TA17-293A documented the use of harvested credentials to access victim environments through VPN and remote desktop services, enabling persistent access that blended with legitimate administrator activity.
 
 ## Attribution
 
