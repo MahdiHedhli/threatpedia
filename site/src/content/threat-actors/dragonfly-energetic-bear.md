@@ -114,7 +114,7 @@ Dragonfly's earliest documented activity targeted defense and aviation firms bef
 
 ### 2015–2017 — Dragonfly 2.0 Campaign
 
-Beginning around 2015, Dragonfly launched a second campaign wave documented by Symantec and referenced in CISA advisory TA17-293A. The Dragonfly 2.0 activity targeted Western energy companies with a focus on gaining access to operational technology systems rather than merely establishing a presence on enterprise IT networks. Actors used `Phishery`-based credential harvesting, spearphishing with energy-sector-themed lures, and reuse of harvested credentials through VPN and remote access services. Symantec documented cases in which Dragonfly actors accessed control room systems, including screenshots of human-machine interfaces (HMIs) used to manage power generation and distribution equipment.
+Beginning around 2015, Dragonfly launched a second campaign wave documented by Symantec and referenced in CISA advisory TA17-293A. The Dragonfly 2.0 activity targeted Western energy companies with a focus on gaining access to operational technology systems rather than establishing a presence on enterprise IT networks. Actors used `Phishery`-based credential harvesting, spearphishing with energy-sector-themed lures, and reuse of harvested credentials through VPN and remote access services. Symantec documented cases in which Dragonfly actors accessed control room systems, including screenshots of human-machine interfaces (HMIs) used to manage power generation and distribution equipment.
 
 ### 2017 — U.S. Critical Infrastructure Campaign (TA17-293A)
 
