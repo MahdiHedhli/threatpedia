@@ -154,7 +154,7 @@ T1195.002 - Compromise Software Supply Chain: Force-push against trusted GitHub 
 
 T1199 - Trusted Relationship: Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
 
-T1552.001 - Credentials In Files: Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
+T1552.001 - Credentials In Files: Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts.
 
 T1027 - Obfuscated Files or Information: Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
 
