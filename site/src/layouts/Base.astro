@@ -8,7 +8,7 @@ interface Props {
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
 const enablePlausibleAnalytics = import.meta.env.PROD;
-const plausibleDomain = 'threatpedia.wiki';
+const plausibleDomain = Astro.site?.hostname ?? 'threatpedia.wiki';
 
 // Build ticker items from all collections
 interface TickerItem {
