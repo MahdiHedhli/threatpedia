@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Privacy" description="Threatpedia privacy and analytics disclosure.">
+  <article class="privacy-page">
+    <div class="hero-eyebrow">Privacy</div>
+    <h1>Privacy &amp; Analytics</h1>
+    <p class="subtitle">
+      Threatpedia uses privacy-preserving analytics to understand which pages are useful,
+      improve the corpus, and spot broken navigation without tracking individual people.
+    </p>
+
+    <section class="privacy-card">
+      <h2>Analytics Provider</h2>
+      <p>
+        Threatpedia uses <a href="https://plausible.io/" target="_blank" rel="noopener noreferrer">Plausible Analytics</a>
+        on the public production site. Plausible provides aggregate site metrics such as page views,
+        referral sources, top pages, country-level location, device type, operating system, and browser.
+      </p>
+      <p>
+        Plausible is designed to work without cookies, local storage, cross-site identifiers, or behavioral
+        advertising profiles. It does not give Threatpedia a way to identify a specific visitor.
+      </p>
+    </section>
+
+    <section class="privacy-grid">
+      <div class="privacy-panel">
+        <h2>What We Use It For</h2>
+        <ul>
+          <li>Understanding which articles and corpus areas receive the most traffic.</li>
+          <li>Finding navigation gaps, search problems, and broken discovery paths.</li>
+          <li>Prioritizing editorial and pipeline work using aggregate usage trends.</li>
+        </ul>
+      </div>
+
+      <div class="privacy-panel">
+        <h2>What We Do Not Do</h2>
+        <ul>
+          <li>We do not use advertising pixels or retargeting trackers.</li>
+          <li>We do not sell analytics data.</li>
+          <li>We do not use analytics to profile individual visitors.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="privacy-card">
+      <h2>More Detail</h2>
+      <p>
+        Plausible publishes its analytics data policy at
+        <a href="https://plausible.io/data-policy" target="_blank" rel="noopener noreferrer">plausible.io/data-policy</a>.
+      </p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .privacy-page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 0 72px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 0.95;
+    color: var(--text);
+    margin: 0 0 24px;
+  }
+
+  .subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0 0 48px;
+  }
+
+  .privacy-card,
+  .privacy-panel {
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(135deg, rgba(232, 160, 32, 0.08), transparent 42%),
+      rgba(13, 18, 26, 0.82);
+    padding: 28px;
+  }
+
+  .privacy-card {
+    margin-bottom: 24px;
+  }
+
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin: 0 0 16px;
+  }
+
+  p,
+  li {
+    font-family: var(--font-sans);
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  p {
+    margin: 0 0 16px;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  li + li {
+    margin-top: 10px;
+  }
+
+  a {
+    color: var(--amber);
+    text-decoration: underline;
+    text-decoration-color: rgba(232, 160, 32, 0.4);
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    text-decoration-color: var(--amber);
+  }
+
+  @media (max-width: 720px) {
+    .privacy-page {
+      padding-top: 48px;
+    }
+
+    .privacy-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
