@@ -95,7 +95,7 @@ mitreMappings:
   - techniqueId: "T1552.001"
     techniqueName: "Credentials In Files"
     tactic: "Credential Access"
-    notes: "TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), kubeconfigs, SSH keys, PATs, and publishing tokens from runner environment variables, workflow logs, and build artifacts."
+    notes: "TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts."
   - techniqueId: "T1027"
     techniqueName: "Obfuscated Files or Information"
     tactic: "Defense Evasion"
@@ -158,7 +158,7 @@ T1552.001 - Credentials In Files: Harvesting of cloud tokens, kubeconfigs, SSH k
 
 T1027 - Obfuscated Files or Information: Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
 
-T1496 - Resource Hijacking: Inferred for a subset of downstream compromises; further downstream action-on-objectives are tracked with the constituent victim records.
+T1496 - Resource Hijacking: Inferred for a subset of downstream compromises, with follow-on action-on-objectives tracked in the constituent victim records.
 
 ## Timeline
 
