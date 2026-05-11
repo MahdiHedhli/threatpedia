@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T19:07:43.492Z",
-  "updated": "2026-05-08T19:25:00.000Z",
+  "updated": "2026-05-11T14:47:00.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": "dangermouse-bot",
@@ -23,7 +23,7 @@
       "exploitId": "TP-EXP-2026-0021",
       "type": "SQL Injection",
       "platform": "BerriAI LiteLLM",
-      "severity": "high",
+      "severity": "critical",
       "cisaKev": true,
       "disclosedDate": "2026-05-08",
       "cwes": ["CWE-89"],
@@ -60,8 +60,8 @@
     "cvss": null,
     "discovered_at": "2026-05-08T19:07:43.492Z"
   },
-  "pr_number": 554,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/554",
+  "pr_number": 568,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/568",
   "history": [
     {
       "timestamp": "2026-05-08T19:07:43.492Z",
@@ -94,6 +94,12 @@
       "to": "TASK-2026-0261",
       "agent": "kernel-k",
       "note": "Renumbered after TASK-2026-0237 landed on main for a historical threat-actor seed; preserves the BerriAI LiteLLM article work without overwriting canonical task state."
+    },
+    {
+      "timestamp": "2026-05-11T14:47:00.000Z",
+      "action": "review_remediated",
+      "agent": "kernel-k",
+      "note": "Updated task metadata for PR #568 review remediation and current PR tracking."
     }
   ]
 }
