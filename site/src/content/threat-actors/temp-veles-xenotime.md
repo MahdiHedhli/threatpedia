@@ -1,6 +1,8 @@
 ---
 name: "TEMP.Veles / XENOTIME"
 aliases:
+  - "TEMP.Veles"
+  - "XENOTIME"
   - "DYMALLOY"
   - "TRITON Activity Group"
 affiliation: "Russia-aligned"
