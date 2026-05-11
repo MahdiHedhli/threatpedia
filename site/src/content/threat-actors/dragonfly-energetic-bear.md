@@ -122,7 +122,7 @@ In October 2017, CISA published advisory TA17-293A documenting a Russian governm
 
 ## Technical Capabilities
 
-Dragonfly's toolset includes both custom malware and widely available utilities adapted for ICS-targeted intrusions.
+Dragonfly's toolset includes both custom malware and publicly available utilities adapted for ICS-targeted intrusions.
 
 **`Havex` / `Oldrea`**: The group's primary remote access trojan, `Havex` (also tracked as `Oldrea`) was used throughout the 2011–2014 campaign. `Havex` includes an OPC (OLE for Process Control) scanning component that enumerates ICS devices and collects configuration data from connected SCADA and DCS systems, transmitting the collected data to attacker-controlled infrastructure.
 
