@@ -7,13 +7,11 @@ interface Props {
 }
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
-const enablePlausibleAnalytics = import.meta.env.PROD;
-let plausibleDomain = '';
-if (enablePlausibleAnalytics) {
-  if (!Astro.site) {
-    throw new Error('Astro site config is required for Plausible analytics.');
-  }
-  plausibleDomain = Astro.site.hostname;
+const enablePlausibleAnalytics = import.meta.env.PROD && Boolean(Astro.site);
+const plausibleDomain = Astro.site?.hostname ?? '';
+
+if (import.meta.env.PROD && !Astro.site) {
+  console.warn('Plausible analytics disabled: site config is missing in astro.config.mjs');
 }
 
 // Build ticker items from all collections
