@@ -18,9 +18,13 @@ const DEFAULT_SHARE_STATUSES = new Set(['draft_ai', 'draft_human', 'under_review
 const DEFAULT_ENDPOINT = 'https://api.x.com/2/tweets';
 const DEFAULT_HASHTAGS = '#Threatpedia #Cybersecurity';
 const MAX_POST_LENGTH = 280;
+const DEFAULT_X_POST_TIMEOUT_MS = 15000;
 const X_URL_LENGTH = 23;
 const URL_PATTERN = /https?:\/\/[^\s]+/g;
 const FRONTMATTER_REGEX = /^---[ \t]*(?:\r?\n)([\s\S]*?)(?:\r?\n)---[ \t]*(?:\r?\n|$)/;
+const WINDOWS_SEPARATOR_PATTERN = /\\/g;
+const LEADING_DOT_SLASH_PATTERN = /^\.\//;
+const SURROUNDING_QUOTE_PATTERN = /^"(.*)"$/s;
 const REPO_ROOT = findRepoRoot();
 
 function findRepoRoot() {
@@ -48,6 +52,7 @@ function parseArgs(argv) {
     siteUrl: process.env.SITE_URL || DEFAULT_SITE_URL,
     summary: process.env.GITHUB_STEP_SUMMARY || '',
     json: false,
+    explicitFiles: false,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -62,8 +67,14 @@ function parseArgs(argv) {
 
     if (arg === '--base') args.base = next();
     else if (arg === '--head') args.head = next();
-    else if (arg === '--files') args.files.push(...splitFiles(next()));
-    else if (arg === '--file') args.files.push(next());
+    else if (arg === '--files') {
+      args.explicitFiles = true;
+      args.files.push(...splitFiles(next()));
+    }
+    else if (arg === '--file') {
+      args.explicitFiles = true;
+      args.files.push(next());
+    }
     else if (arg === '--mode') args.mode = next();
     else if (arg === '--site-url') args.siteUrl = next();
     else if (arg === '--summary') args.summary = next();
@@ -110,9 +121,19 @@ function splitFiles(value) {
 }
 
 function normalizeRepoPath(file) {
-  const normalized = file.replace(/\\/g, '/').replace(/^\.\//, '');
-  if (!path.isAbsolute(normalized)) return normalized;
-  return path.relative(REPO_ROOT, normalized).replace(/\\/g, '/');
+  let normalized = String(file || '')
+    .trim()
+    .replace(WINDOWS_SEPARATOR_PATTERN, '/')
+    .replace(LEADING_DOT_SLASH_PATTERN, '');
+  const quoted = normalized.match(SURROUNDING_QUOTE_PATTERN);
+  if (quoted) {
+    normalized = quoted[1];
+  }
+
+  const absolute = path.isAbsolute(normalized) ? normalized : path.resolve(REPO_ROOT, normalized);
+  const relative = path.relative(REPO_ROOT, absolute).replace(WINDOWS_SEPARATOR_PATTERN, '/');
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) return null;
+  return relative;
 }
 
 function getAddedContentFiles(base, head) {
@@ -323,6 +344,7 @@ function assertPostingAllowed(count) {
 
 async function postToX(draft) {
   const endpoint = process.env.X_POST_ENDPOINT || DEFAULT_ENDPOINT;
+  const timeoutMs = Number.parseInt(process.env.X_POST_TIMEOUT_MS || `${DEFAULT_X_POST_TIMEOUT_MS}`, 10);
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -330,6 +352,7 @@ async function postToX(draft) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ text: draft.text }),
+    signal: AbortSignal.timeout(Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : DEFAULT_X_POST_TIMEOUT_MS),
   });
 
   const responseText = await response.text();
@@ -361,7 +384,7 @@ function markdownSummary(result) {
   if (result.drafts.length) {
     lines.push('### Drafts', '');
     for (const draft of result.drafts) {
-      const status = draft.posted ? `posted: ${draft.postId}` : 'not posted';
+      const status = draft.posted ? `posted: ${draft.postId}` : (draft.error ? `FAILED: ${draft.error}` : 'not posted');
       lines.push(`- \`${draft.file}\` - ${status}`);
       lines.push('');
       lines.push('```text');
@@ -385,18 +408,26 @@ function markdownSummary(result) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const statuses = allowedStatuses();
-  const files = args.files.length ? args.files : getAddedContentFiles(args.base, args.head);
+  const files = args.explicitFiles ? args.files : getAddedContentFiles(args.base, args.head);
   const draftResults = await Promise.all(files.map((file) => buildDraft(file, args.siteUrl, statuses)));
   const skipped = draftResults.filter((result) => result.skipped);
   const drafts = draftResults.filter((result) => !result.skipped);
+  let hasPostFailures = false;
 
   if (args.mode === 'post' && drafts.length) {
     assertPostingAllowed(drafts.length);
     for (const draft of drafts) {
-      const response = await postToX(draft);
-      draft.posted = true;
-      draft.postResponse = response;
-      draft.postId = response?.data?.id || 'unknown';
+      try {
+        const response = await postToX(draft);
+        draft.posted = true;
+        draft.postResponse = response;
+        draft.postId = response?.data?.id || 'unknown';
+      } catch (error) {
+        draft.posted = false;
+        draft.error = error.message;
+        hasPostFailures = true;
+        console.error(`Failed to post ${draft.file}: ${error.message}`);
+      }
     }
   }
 
@@ -417,6 +448,10 @@ async function main() {
     console.log(JSON.stringify(result, null, 2));
   } else {
     console.log(`Prepared ${drafts.length} X share draft(s); skipped ${skipped.length}.`);
+  }
+
+  if (hasPostFailures) {
+    process.exitCode = 1;
   }
 }
 
