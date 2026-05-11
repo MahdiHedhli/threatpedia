@@ -146,22 +146,15 @@ Credentials harvested in Stages 2–4 are used to access victim cloud-production
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
+T1195.002 - Compromise Software Supply Chain: Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
 
-- **T1195.002 — Compromise Software Supply Chain.** Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
-- **T1199 — Trusted Relationship.** Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
+T1199 - Trusted Relationship: Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
 
-### Credential Access
+T1552.001 - Credentials In Files: Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
 
-- **T1552.001 — Credentials In Files.** Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
+T1027 - Obfuscated Files or Information: Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
 
-### Defense Evasion
-
-- **T1027 — Obfuscated Files or Information.** Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
-
-### Impact
-
-- **T1496 — Resource Hijacking (inferred for a subset of downstream compromises)** and further downstream action-on-objectives are tracked with the constituent victim records.
+T1496 - Resource Hijacking: Resource hijacking is inferred for a subset of downstream compromises; further downstream action-on-objectives are tracked with the constituent victim records.
 
 ## Timeline
 
