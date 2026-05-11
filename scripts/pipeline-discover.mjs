@@ -79,6 +79,7 @@ const INCIDENT_NEGATIVE_PATTERNS = [
 const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
 const INCIDENT_TASK_SUMMARY_MAX_LENGTH = 320;
+const TASK_FILE_RE = /^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/;
 const THREAT_ACTOR_PROMOTION_MIN_SOURCES = 3;
 const THREAT_ACTOR_PROMOTION_MIN_INCIDENTS = 2;
 const CAMPAIGN_PROMOTION_MIN_SOURCES = 3;
@@ -409,6 +410,34 @@ async function fetchGitHubJson(url, token) {
   return response.json();
 }
 
+async function fetchGitHubGraphql(query, variables, token) {
+  if (!token) throw new Error('GitHub token is required for GraphQL requests');
+
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      ...githubApiHeaders(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!response.ok) {
+    throw new Error(`GitHub GraphQL API ${response.status}`);
+  }
+
+  const data = await response.json();
+  if (Array.isArray(data.errors) && data.errors.length > 0) {
+    throw new Error(`GitHub GraphQL API error: ${data.errors.map(error => error.message).join('; ')}`);
+  }
+  return data.data;
+}
+
+function parseGitHubRepo(repo) {
+  const [owner, name] = String(repo || '').split('/');
+  if (!owner || !name) return null;
+  return { owner, name };
+}
+
 function encodeGitHubPath(pathValue) {
   return String(pathValue || '')
     .split('/')
@@ -435,6 +464,107 @@ async function fetchOpenPullRequestTask(pr, file, repo, token) {
   }
 }
 
+async function fetchOpenPullRequestFiles(pr, repo, token) {
+  const files = [];
+  let filePage = 1;
+  while (true) {
+    const pageFiles = await fetchGitHubJson(
+      `https://api.github.com/repos/${repo}/pulls/${pr.number}/files?per_page=100&page=${filePage}`,
+      token,
+    );
+    if (!Array.isArray(pageFiles) || pageFiles.length === 0) break;
+
+    files.push(...pageFiles);
+
+    if (pageFiles.length < 100) break;
+    filePage += 1;
+  }
+  return files;
+}
+
+function toRestPullRequestShape(pr, repo) {
+  return {
+    number: pr.number,
+    head: {
+      ref: pr.headRefName,
+      sha: pr.headRefOid,
+      repo: {
+        full_name: pr.headRepository?.nameWithOwner || repo,
+      },
+    },
+  };
+}
+
+async function fetchOpenPullRequestTaskFileRefs(repo, token) {
+  const parsedRepo = parseGitHubRepo(repo);
+  if (!parsedRepo || !token) return null;
+
+  const refs = [];
+  let cursor = null;
+  const query = `
+    query($owner: String!, $name: String!, $cursor: String) {
+      repository(owner: $owner, name: $name) {
+        pullRequests(first: 50, after: $cursor, states: OPEN, orderBy: { field: UPDATED_AT, direction: DESC }) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          nodes {
+            number
+            headRefName
+            headRefOid
+            headRepository {
+              nameWithOwner
+            }
+            files(first: 100) {
+              pageInfo {
+                hasNextPage
+              }
+              nodes {
+                path
+                changeType
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  while (true) {
+    const data = await fetchGitHubGraphql(
+      query,
+      { owner: parsedRepo.owner, name: parsedRepo.name, cursor },
+      token,
+    );
+    const connection = data?.repository?.pullRequests;
+    const pulls = connection?.nodes || [];
+    if (pulls.length === 0) break;
+
+    for (const pr of pulls) {
+      const restPr = toRestPullRequestShape(pr, repo);
+      const files = pr.files?.pageInfo?.hasNextPage
+        ? await fetchOpenPullRequestFiles(restPr, repo, token)
+        : (pr.files?.nodes || []).map(file => ({
+          filename: file.path,
+          status: file.changeType === 'DELETED' ? 'removed' : 'modified',
+        }));
+
+      for (const file of files) {
+        if (file.status === 'removed') continue;
+        if (TASK_FILE_RE.test(String(file.filename || ''))) {
+          refs.push({ pr: restPr, file });
+        }
+      }
+    }
+
+    if (!connection?.pageInfo?.hasNextPage) break;
+    cursor = connection.pageInfo.endCursor;
+  }
+
+  return refs;
+}
+
 async function fetchOpenPullRequestTasks(opts) {
   const repo = process.env.GITHUB_REPOSITORY || process.env.REPO || '';
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
@@ -452,6 +582,23 @@ async function fetchOpenPullRequestTasks(opts) {
   const tasks = [];
   let page = 1;
   try {
+    let taskRefs = null;
+    if (token) {
+      try {
+        taskRefs = await fetchOpenPullRequestTaskFileRefs(repo, token);
+      } catch (error) {
+        console.log(`::warning::Failed to load open PR file list via GraphQL (${error.message}); falling back to REST pagination`);
+      }
+    }
+
+    if (Array.isArray(taskRefs)) {
+      const newTasks = await Promise.all(
+        taskRefs.map(({ pr, file }) => fetchOpenPullRequestTask(pr, file, repo, token)),
+      );
+      tasks.push(...newTasks.filter(Boolean));
+      return tasks;
+    }
+
     while (true) {
       const pulls = await fetchGitHubJson(
         `https://api.github.com/repos/${repo}/pulls?state=open&per_page=100&page=${page}`,
@@ -460,26 +607,15 @@ async function fetchOpenPullRequestTasks(opts) {
       if (!Array.isArray(pulls) || pulls.length === 0) break;
 
       for (const pr of pulls) {
-        let filePage = 1;
-        while (true) {
-          const files = await fetchGitHubJson(
-            `https://api.github.com/repos/${repo}/pulls/${pr.number}/files?per_page=100&page=${filePage}`,
-            token,
-          );
-          if (!Array.isArray(files) || files.length === 0) break;
+        const files = await fetchOpenPullRequestFiles(pr, repo, token);
+        const taskPromises = files
+          .filter(file => file.status !== 'removed')
+          .filter(file => TASK_FILE_RE.test(String(file.filename || '')))
+          .map(file => fetchOpenPullRequestTask(pr, file, repo, token));
 
-          const taskPromises = files
-            .filter(file => file.status !== 'removed')
-            .filter(file => String(file.filename || '').match(/^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/))
-            .map(file => fetchOpenPullRequestTask(pr, file, repo, token));
-
-          if (taskPromises.length > 0) {
-            const newTasks = await Promise.all(taskPromises);
-            tasks.push(...newTasks.filter(Boolean));
-          }
-
-          if (files.length < 100) break;
-          filePage += 1;
+        if (taskPromises.length > 0) {
+          const newTasks = await Promise.all(taskPromises);
+          tasks.push(...newTasks.filter(Boolean));
         }
       }
 
