@@ -8,6 +8,8 @@
  * rebase, or failed AI review attempt.
  */
 
+import { PIPELINE_TASK_FILE_PATH_RE } from './pipeline-task-patterns.mjs';
+
 const DEFAULT_AI_REVIEW_LOGINS = [
   'gemini-code-assist',
   'gemini-code-assist[bot]',
@@ -15,7 +17,7 @@ const DEFAULT_AI_REVIEW_LOGINS = [
 ];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
-const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml$|\.github\/pipeline\/tasks\/TASK-\d{4}-\d+\.json$|docs\/PIPELINE\.md$|site\/src\/content\.config\.ts$)/;
+const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml$|docs\/PIPELINE\.md$|site\/src\/content\.config\.ts$)/;
 
 function parseArgs(argv) {
   const parsed = {
@@ -85,7 +87,10 @@ function isAiLogin(login, aiLogins) {
 }
 
 function isRelevantFile(path) {
-  return CONTENT_FILE_RE.test(path) || PUBLIC_SITE_FILE_RE.test(path) || PIPELINE_FILE_RE.test(path);
+  return CONTENT_FILE_RE.test(path)
+    || PUBLIC_SITE_FILE_RE.test(path)
+    || PIPELINE_FILE_RE.test(path)
+    || PIPELINE_TASK_FILE_PATH_RE.test(path);
 }
 
 function isContentFile(path) {
