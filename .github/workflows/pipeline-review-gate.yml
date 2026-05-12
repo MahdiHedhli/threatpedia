@@ -1,16 +1,6 @@
 name: "Pipeline: Review Gate"
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths:
-      - "site/src/**"
-      - "site/package*.json"
-      - "site/astro.config.*"
-      - "scripts/**"
-      - ".github/workflows/**"
-      - ".github/pipeline/config.yml"
-      - "docs/PIPELINE.md"
   pull_request_review:
     types: [submitted, dismissed]
   issue_comment:
@@ -38,7 +28,6 @@ concurrency:
 jobs:
   review-gate:
     if: |
-      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'pull_request_review' &&
