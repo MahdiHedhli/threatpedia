@@ -108,7 +108,7 @@ Following initial access, Hafnium deployed ASPX web shells to maintain persisten
 
 Microsoft attributed Hafnium as a China-state-sponsored actor operating from China based on infrastructure, tooling, and victimology patterns identified during incident response. The CISA Emergency Directive 21-02 and Advisory AA21-062A corroborated the Exchange exploitation and directed mandatory remediation for U.S. federal agencies, referencing Microsoft's attribution. MITRE ATT&CK incorporated the group as G0125 following public reporting.
 
-On 2021-07-19, CISA updated Advisory AA21-062A to attribute the Exchange Server exploitation activity to malicious cyber actors affiliated with China's Ministry of State Security (MSS). MITRE ATT&CK G0125 reflects this attribution. Attribution to a specific MSS unit or operational sub-element is not established in the supplied sources.
+On 2021-07-19, CISA updated Advisory AA21-062A to attribute the Exchange Server exploitation activity to malicious cyber actors affiliated with China's Ministry of State Security (MSS). MITRE ATT&CK G0125 reflects this attribution. Attribution to a specific MSS unit or operational sub-element is not established in available public reporting.
 
 ## MITRE ATT&CK Profile
 
@@ -116,7 +116,7 @@ Initial access was achieved by exploiting CVE-2021-26855 (SSRF) in Exchange, cha
 
 ## Sources & References
 
-Coverage of Hafnium in open-source reporting is concentrated in the March 2021 Exchange disclosure period. Post-2021 Hafnium-attributed activity is not documented in the supplied sources. The actor name Hafnium was coined by Microsoft; MITRE uses it as the canonical designation for G0125. Not all Exchange ProxyLogon exploitation activity is attributable to Hafnium — the vulnerability was subsequently exploited by multiple unrelated actors.
+Coverage of Hafnium in open-source reporting is concentrated in the March 2021 Exchange disclosure period. Post-2021 Hafnium-attributed activity is not documented in available public reporting. The actor name Hafnium was coined by Microsoft; MITRE uses it as the canonical designation for G0125. Not all Exchange ProxyLogon exploitation activity is attributable to Hafnium — the vulnerability was subsequently exploited by multiple unrelated actors.
 
 - [MITRE: ATT&CK Group G0125 — Hafnium](https://attack.mitre.org/groups/G0125/) — MITRE, 2021-03-09
 - [Microsoft: HAFNIUM targeting Exchange Servers](https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers/) — Microsoft, 2021-03-02
