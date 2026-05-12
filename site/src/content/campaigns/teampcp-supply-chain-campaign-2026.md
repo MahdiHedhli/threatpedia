@@ -150,13 +150,13 @@ Credentials harvested in Stages 2–4 are used to access victim cloud-production
 
 ## MITRE ATT&CK Mapping
 
-T1195.002 - Compromise Software Supply Chain: Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
+T1195.002 - Compromise Software Supply Chain: Force-pushed malicious commits to trusted version tags in the Aqua trivy-action, setup-trivy, and KICS GitHub Action repositories, plus trojanized releases of LiteLLM on PyPI, redirecting downstream CI/CD pipelines into attacker-controlled payloads.
 
-T1199 - Trusted Relationship: Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
+T1199 - Trusted Relationship: Cascaded access through trusted security tooling, including Trivy, KICS, LiteLLM, and Checkmarx, into downstream customer environments that treated those tools as privileged CI/CD dependencies.
 
-T1552.001 - Credentials In Files: Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts.
+T1552.001 - Credentials In Files: TeamPCP Cloud Stealer harvested cloud provider tokens for AWS, GCP, and Azure, plus kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts.
 
-T1027 - Obfuscated Files or Information: Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
+T1027 - Obfuscated Files or Information: Payloads used layered AES-256 + RSA-4096 encryption and staged exfiltration to blend into normal CI/CD egress traffic, with C2 infrastructure hosted behind trycloudflare.com tunnels.
 
 T1496 - Resource Hijacking: Inferred for a subset of downstream compromises, with follow-on action-on-objectives tracked in the constituent victim records.
 
