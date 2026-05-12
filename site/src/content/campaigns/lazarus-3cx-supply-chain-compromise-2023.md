@@ -65,7 +65,7 @@ mitreMappings:
 
 ## Executive Summary
 
-Operation SmoothOperator was a software supply chain attack in which Lazarus Group, a threat actor attributed to the Democratic People's Republic of Korea (DPRK), compromised the build environment of 3CX, a widely deployed enterprise VoIP communications platform. Beginning in late March 2023, trojanized versions of the 3CX DesktopApp were distributed to customers through the software's official signed update mechanism. The malicious builds targeted Windows and macOS systems and delivered a multi-stage payload chain culminating in the ICONIC Stealer infostealer and, in a subset of cases, the POOLRAT backdoor.
+Operation SmoothOperator was a software supply chain attack in which Lazarus Group, a threat actor attributed to the Democratic People's Republic of Korea (DPRK), compromised the build environment of 3CX, an enterprise VoIP communications platform. Beginning in late March 2023, trojanized versions of the 3CX DesktopApp were distributed to customers through the software's official signed update mechanism. The malicious builds targeted Windows and macOS systems and delivered a multi-stage payload chain culminating in the ICONIC Stealer infostealer and, in a subset of cases, the POOLRAT backdoor.
 
 CISA issued an alert on March 30, 2023, the day after SentinelOne published initial technical findings. Mandiant subsequently attributed the campaign to UNC4736, a cluster assessed with high confidence as a Lazarus Group sub-operation acting under DPRK direction. The US government confirmed North Korean responsibility and the attack was characterized as a double supply chain compromise: the 3CX build environment was itself seeded through a prior supply chain intrusion involving trojanized Trading Technologies X_TRADER software, which had compromised 3CX developer workstations months earlier.
 
@@ -103,15 +103,15 @@ The decoded payload executed ICONIC Stealer, which performed automated collectio
 
 ### Stage 5: Selective POOLRAT Deployment
 
-On a subset of compromised hosts assessed as high-priority targets, the attacker deployed POOLRAT, a macOS-focused backdoor providing persistent remote command execution. POOLRAT's deployment pattern indicated manual attacker selection of downstream targets from the broader pool of ICONIC Stealer victims.
+On a subset of compromised hosts assessed as high-priority targets, the attacker deployed POOLRAT, a macOS-focused backdoor providing persistent remote command execution. POOLRAT's deployment pattern indicated manual attacker selection of downstream targets from the pool of ICONIC Stealer victims.
 
 ## MITRE ATT&CK Mapping
 
 T1195.002 - Compromise Software Supply Chain: Lazarus Group compromised the 3CX build environment via a prior supply chain intrusion involving trojanized Trading Technologies X_TRADER software, enabling injection of malicious code into signed 3CX DesktopApp installers distributed to customers through the official update mechanism.
 
-T1204.002 - User Execution: Malicious File: End users installed trojanized 3CX DesktopApp updates through the application's built-in auto-update mechanism, executing malicious builds signed with legitimate 3CX certificates without awareness of the compromise.
+T1204.002 - Malicious File: End users installed trojanized 3CX DesktopApp updates through the application's built-in auto-update mechanism, executing malicious builds signed with legitimate 3CX certificates without awareness of the compromise.
 
-T1071.001 - Application Layer Protocol: Web Protocols: ICONIC Stealer and POOLRAT used HTTPS for command-and-control communication. The initial staging step retrieved encrypted payload data from GitHub-hosted icon files before establishing direct C2 channels.
+T1071.001 - Web Protocols: ICONIC Stealer and POOLRAT used HTTPS for command-and-control communication. The initial staging step retrieved encrypted payload data from GitHub-hosted icon files before establishing direct C2 channels.
 
 ## Timeline
 
@@ -151,7 +151,7 @@ Recommended actions included auditing affected endpoints for indicators of compr
 
 3CX migrated customers to a browser-based PWA client as an interim measure while clean installers were prepared. The Electron-based DesktopApp was phased out to reduce the attack surface presented by the locally installed application.
 
-Broader supply chain security recommendations arising from this incident include: verifying the integrity of third-party software dependencies used in build pipelines; implementing build environment isolation and restricting code-signing access to hardened, audited systems; and auditing developer workstations for access paths to CI/CD and build infrastructure.
+Additional supply chain security recommendations arising from this incident include: verifying the integrity of third-party software dependencies used in build pipelines; implementing build environment isolation and restricting code-signing access to hardened, audited systems; and auditing developer workstations for access paths to CI/CD and build infrastructure.
 
 ## Sources & References
 
