@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-08T17:18:38.019Z",
-  "updated": "2026-05-09T19:38:34.015Z",
+  "updated": "2026-05-12T18:10:17.485Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-12T18:10:17.485Z",
   "input": {
     "topic": "Lazarus Group Operation SmoothOperator — 3CX Software Supply Chain Compromise",
     "sources": [
@@ -72,6 +72,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #575"
+    },
+    {
+      "timestamp": "2026-05-12T18:10:17.485Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
