@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "open_pr",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-12T19:21:12.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-12T19:21:12.000Z",
   "input": {
     "topic": "Conti threat actor profile",
     "sources": [
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -61,6 +61,22 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-005"
+    },
+    {
+      "timestamp": "2026-05-12T19:21:12.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "in_progress",
+      "agent": "dangermouse-bot",
+      "note": "Picked up by threat-actor queue worker"
+    },
+    {
+      "timestamp": "2026-05-12T19:21:12.000Z",
+      "action": "open_pr",
+      "from": "in_progress",
+      "to": "open_pr",
+      "agent": "dangermouse-bot",
+      "note": "Article committed; PR opening via GitHub API"
     }
   ]
 }
