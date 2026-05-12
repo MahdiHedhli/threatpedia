@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "in_progress",
+  "status": "open_pr",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-12T18:13:55.000Z",
+  "updated": "2026-05-12T18:15:50.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": "dangermouse-bot",
@@ -69,6 +69,14 @@
       "to": "in_progress",
       "agent": "dangermouse-bot",
       "note": "Picked up by threat-actor queue worker"
+    },
+    {
+      "timestamp": "2026-05-12T18:15:50.000Z",
+      "action": "open_pr",
+      "from": "in_progress",
+      "to": "open_pr",
+      "agent": "dangermouse-bot",
+      "note": "Article committed aabf43d8e7, local validator PASS; PR opening via GitHub API"
     }
   ]
 }
