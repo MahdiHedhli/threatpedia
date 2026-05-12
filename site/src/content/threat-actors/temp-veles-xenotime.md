@@ -105,11 +105,11 @@ TEMP.Veles (Mandiant designation) and XENOTIME (Dragos designation) refer to the
 
 The actor is assessed as Russia-aligned based on corroborating evidence from multiple independent vendor and government investigations. Dragos observed the group expanding its targeting beyond the initial incident scope to cover additional geographies and sectors through at least 2019.
 
-## Attribution
+## Notable Campaigns
 
-The actor is assessed as Russia-aligned across independent government and vendor investigations. Vendor reporting — primarily from Mandiant and Dragos — identifies the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM) as an assessed responsible organization. The CISA HatMan Malware Analysis Report (MAR-17-352-01, Update B) is the primary U.S. government technical document; it corroborates the Russia-based assessment but should not be read as independently confirming the specific TsNIIKhM attribution claim.
+The most publicly documented incident attributed to this group targeted a petrochemical facility in Saudi Arabia in 2017. The attackers gained access to Triconex SIS controllers and deployed TRITON. A logic error in the malware caused the controllers to enter a fail-safe state, which triggered an unplanned process shutdown and surfaced the intrusion to defenders before physical damage occurred.
 
-Attribution evidence includes infrastructure and IP address overlap linked to TsNIIKhM, malware artifacts consistent with Russian development patterns, and operational security lapses during the intrusion that exposed supporting infrastructure. Attribution of TsNIIKhM to a specific Russian government ministry or intelligence sponsor is not definitively established in available public reporting and should not be assumed.
+Dragos subsequently tracked XENOTIME conducting reconnaissance against targets beyond the initial Saudi Arabian target set, including entities in the United States and the Middle East, with particular interest noted in the electrical sector. This expansion is documented in Dragos's XENOTIME threat profile. No additional confirmed destructive incidents attributable to this group have been disclosed in open-source reporting.
 
 ## Technical Capabilities
 
@@ -117,11 +117,11 @@ The group's primary capability is the TRITON framework, which communicates direc
 
 Supporting capabilities include use of legitimate remote access tools (PLINK) and VPN sessions to blend with normal IT traffic, Python-based scripting for controller interaction and operational tooling, credential harvesting using Impacket and custom tooling, and multi-stage pre-positioning within corporate IT networks prior to OT environment access. The tool development quality and operational tradecraft are consistent with state-linked operators.
 
-## Notable Campaigns
+## Attribution
 
-The most publicly documented incident attributed to this group targeted a petrochemical facility in Saudi Arabia in 2017. The attackers gained access to Triconex SIS controllers and deployed TRITON. A logic error in the malware caused the controllers to enter a fail-safe state, which triggered an unplanned process shutdown and surfaced the intrusion to defenders before physical damage occurred.
+The actor is assessed as Russia-aligned across independent government and vendor investigations. Vendor reporting — primarily from Mandiant and Dragos — identifies the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM) as an assessed responsible organization. The CISA HatMan Malware Analysis Report (MAR-17-352-01, Update B) is the primary U.S. government technical document; it corroborates the Russia-based assessment but should not be read as independently confirming the specific TsNIIKhM attribution claim.
 
-Dragos subsequently tracked XENOTIME conducting reconnaissance against targets beyond the initial Saudi Arabian target set, including entities in the United States and the Middle East, with particular interest noted in the electrical sector. This expansion is documented in Dragos's XENOTIME threat profile. No additional confirmed destructive incidents attributable to this group have been disclosed in open-source reporting.
+Attribution evidence includes infrastructure and IP address overlap linked to TsNIIKhM, malware artifacts consistent with Russian development patterns, and operational security lapses during the intrusion that exposed supporting infrastructure. Attribution of TsNIIKhM to a specific Russian government ministry or intelligence sponsor is not definitively established in available public reporting and should not be assumed.
 
 ## MITRE ATT&CK Profile
 
