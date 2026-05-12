@@ -4,7 +4,7 @@ aliases:
   - "HAFNIUM"
 affiliation: "China-aligned"
 motivation: "Espionage / Intelligence Collection"
-status: "active"
+status: "unknown"
 country: "China"
 firstSeen: "2021"
 lastSeen: "2021"
@@ -91,11 +91,11 @@ Hafnium is a China-aligned threat actor assessed by Microsoft as operating from 
 
 Hafnium's targeting is consistent with espionage and intelligence collection objectives, with a documented focus on U.S.-based organizations across sectors of strategic interest to Chinese state intelligence. The actor exploited these vulnerabilities to install web shells for persistent access and conduct data collection operations. Microsoft and CISA both attributed the initial Exchange exploitation wave to Hafnium in March 2021.
 
-## Attribution
+## Notable Campaigns
 
-Microsoft attributed Hafnium as a China-state-sponsored actor operating from China based on infrastructure, tooling, and victimology patterns identified during incident response. The CISA Emergency Directive 21-02 and Advisory AA21-062A corroborated the Exchange exploitation and directed mandatory remediation for U.S. federal agencies, referencing Microsoft's attribution. MITRE ATT&CK incorporated the group as G0125 following public reporting.
+The most publicly documented Hafnium activity is the March 2021 Exchange Server exploitation campaign. Microsoft's disclosure on March 2, 2021 identified Hafnium as the initial threat actor exploiting four zero-day vulnerabilities in on-premises Exchange Server. Targeted sectors included U.S. defense contractors, law firms, infectious disease researchers, non-governmental organizations, think tanks, and higher education institutions.
 
-The specific Chinese state organizational sponsor — whether military, intelligence, or civilian ministry — is not identified in the supplied sources. Attribution to a specific Chinese government principal beyond the China-state-sponsored assessment should not be inferred from available public reporting.
+CISA issued Emergency Directive 21-02 on March 3, 2021, requiring federal civilian agencies to apply Microsoft's emergency patches or disconnect Exchange servers within specific timeframes. The campaign is notable for the subsequent adoption of the same vulnerability chain by other actors — including ransomware groups — after Microsoft's public disclosure. Microsoft's attribution and the Exchange exploitation wave should be treated as distinct: Hafnium is the actor attributed to the initial exploitation; subsequent exploitation by other actors represents a separate threat surface.
 
 ## Technical Capabilities
 
@@ -103,11 +103,11 @@ Hafnium's principal documented capability is exploitation of the ProxyLogon vuln
 
 Following initial access, Hafnium deployed ASPX web shells to maintain persistent access after the initial exploitation. Post-exploitation activity included credential dumping via LSASS memory access, lateral movement within target networks, and data staging using Exchange's offline address book (OAB) virtual directory to collect and compress email and mailbox data for exfiltration. Command and control was achieved using open-source post-exploitation frameworks including Nishang (PowerShell) and PowerCat.
 
-## Notable Campaigns
+## Attribution
 
-The most publicly documented Hafnium activity is the March 2021 Exchange Server exploitation campaign. Microsoft's disclosure on March 2, 2021 identified Hafnium as the initial threat actor exploiting four zero-day vulnerabilities in on-premises Exchange Server. Targeted sectors included U.S. defense contractors, law firms, infectious disease researchers, non-governmental organizations, think tanks, and higher education institutions.
+Microsoft attributed Hafnium as a China-state-sponsored actor operating from China based on infrastructure, tooling, and victimology patterns identified during incident response. The CISA Emergency Directive 21-02 and Advisory AA21-062A corroborated the Exchange exploitation and directed mandatory remediation for U.S. federal agencies, referencing Microsoft's attribution. MITRE ATT&CK incorporated the group as G0125 following public reporting.
 
-CISA issued Emergency Directive 21-02 on March 3, 2021, requiring federal civilian agencies to apply Microsoft's emergency patches or disconnect Exchange servers within specific timeframes. The campaign is notable for the rapid adoption of the same vulnerability chain by other actors — including ransomware groups — after Microsoft's public disclosure. Microsoft's attribution and the broader Exchange exploitation wave should be treated as distinct: Hafnium is the actor attributed to the initial exploitation; subsequent widespread exploitation by other actors represents a separate threat surface.
+The specific Chinese state organizational sponsor — whether military, intelligence, or civilian ministry — is not identified in the supplied sources. Attribution to a specific Chinese government principal beyond the China-state-sponsored assessment should not be inferred from available public reporting.
 
 ## MITRE ATT&CK Profile
 
