@@ -202,7 +202,7 @@ TanStack maintainers engage npm security; all 84 affected versions deprecated; t
 
 **Immediate actions for affected environments.**
 
-Any developer or CI environment that installed affected `@tanstack/*` versions on May 11, 2026 should treat the host as potentially compromised. Vendor analysis notes the payload includes a wiper routine — do not revoke credentials before isolating the affected machine from the network.
+Any developer or CI environment that installed affected `@tanstack/*` versions on May 11, 2026 should treat the host as potentially compromised. Vendor reporting describes an npm token description that threatened destructive action on revocation; public reporting available at time of writing did not confirm a separate destructive wiper routine in the payload. Operators should isolate affected systems before credential rotation where feasible.
 
 - Delete `node_modules` and lockfiles; reinstall from a clean state pinned to pre-May 11 19:00 UTC versions, then upgrade to patched releases listed in the GitHub Security Advisory (GHSA-g7cv-rxg3-hmpx).
 - Rotate all credentials accessible to the affected process environment: AWS access keys and IAM tokens, GCP service-account credentials, Kubernetes service-account tokens, HashiCorp Vault tokens, GitHub personal access tokens, npm tokens, and SSH private keys.
