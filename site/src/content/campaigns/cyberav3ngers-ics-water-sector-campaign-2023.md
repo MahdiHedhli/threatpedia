@@ -86,7 +86,7 @@ The primary attack vector was exploitation of default credentials. Unitronics Vi
 
 The group identified vulnerable targets through internet scanning, likely leveraging publicly available enumeration services to find PLCs running the Unitronics communication protocol on publicly routable addresses. Once authenticated, operators accessed the HMI panel, replaced the display with political messaging, and in some cases modified PLC setpoints or configuration parameters.
 
-No custom malware or novel exploitation technique was attributed to this campaign. The entire access path relied on publicly accessible internet infrastructure, absent network segmentation, and unchanged factory credentials — a combination that reflects a common gap in operational technology (OT) security posture across the water sector. The most prominently reported victim was the Municipal Water Authority of Aliquippa, Pennsylvania, which confirmed on November 25, 2023 that CyberAv3ngers had accessed and defaced a booster station PLC. CISA's advisory confirmed additional victims in the United States, Israel, Ireland, and other countries. The group's stated targeting rationale was anti-Israel rather than broad critical infrastructure disruption: the operators asserted that equipment manufactured in Israel was a legitimate target, tying Unitronics PLC selection to the manufacturer's Israeli origin.
+No custom malware or novel exploitation technique was attributed to this campaign. The entire access path relied on publicly accessible internet infrastructure, absent network segmentation, and unchanged factory credentials — a combination that reflects a common gap in operational technology (OT) security posture across the water sector. The most prominently reported victim was the Municipal Water Authority of Aliquippa, Pennsylvania, which confirmed on November 25, 2023 that CyberAv3ngers had accessed and defaced a booster station PLC. CISA's advisory confirmed additional victims in the United States, Israel, Ireland, and other countries. The group's stated targeting rationale was anti-Israel rather than critical infrastructure disruption: the operators asserted that equipment manufactured in Israel was a legitimate target, tying Unitronics PLC selection to the manufacturer's Israeli origin.
 
 ## Attack Chain
 
@@ -108,17 +108,14 @@ At some compromised installations, the group modified PLC setpoints and configur
 
 ## MITRE ATT&CK Mapping
 
-### Reconnaissance
 
-T1595 — Active Scanning: The group conducted internet-wide scanning to enumerate Unitronics Vision PLCs exposed on publicly routable addresses, using the Unitronics PCOM protocol port to identify eligible targets in the water sector.
+T1595 - Active Scanning: The group conducted internet-wide scanning to enumerate Unitronics Vision PLCs exposed on publicly routable addresses, using the Unitronics PCOM protocol port to identify eligible targets in the water sector.
 
-### Initial Access
 
-T1078.001 — Default Accounts: Attackers used the Unitronics factory default password "1111" to authenticate directly to internet-exposed PLCs, bypassing the need for credential theft or exploitation of software vulnerabilities.
+T1078.001 - Default Accounts: Attackers used the Unitronics factory default password "1111" to authenticate directly to internet-exposed PLCs, bypassing the need for credential theft or exploitation of software vulnerabilities.
 
-### Impact
 
-T1491.001 — Internal Defacement: Compromised PLCs had their HMI display panels replaced with anti-Israel political messaging, disrupting operator visibility and signaling the intrusion to facility staff.
+T1491.001 - Internal Defacement: Compromised PLCs had their HMI display panels replaced with anti-Israel political messaging, disrupting operator visibility and signaling the intrusion to facility staff.
 
 ## Timeline
 
