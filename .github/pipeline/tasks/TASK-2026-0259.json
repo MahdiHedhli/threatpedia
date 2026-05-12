@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "in_progress",
+  "status": "pr_open",
   "created": "2026-05-08T17:18:37.986Z",
-  "updated": "2026-05-12T20:10:03Z",
+  "updated": "2026-05-12T21:25:31Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": "dangermouse-bot",
@@ -90,6 +90,13 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Applied Ernest Penfold R1 blockers: (1) endDate corrected from 2024-04-30 to 2023-12-01 \u2014 sources support Nov\u2013Dec 2023 only; (2) removed unsupported 2024 timeline section. Fixed remaining Gemini inline findings: removed 'straightforward', 'meaningful'\u2192'demonstrable', 'prominently'\u2192'publicly confirmed', 'perceived' removed."
+    },
+    {
+      "timestamp": "2026-05-12T21:25:31Z",
+      "from": "in_progress",
+      "to": "pr_open",
+      "note": "PR #602 open; bookkeeping update \u2014 pr_number was missing from prior state commit"
     }
-  ]
+  ],
+  "pr_number": 602
 }
