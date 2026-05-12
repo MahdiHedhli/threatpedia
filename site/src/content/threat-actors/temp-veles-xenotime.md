@@ -3,13 +3,11 @@ name: "TEMP.Veles / XENOTIME"
 aliases:
   - "TEMP.Veles"
   - "XENOTIME"
-  - "DYMALLOY"
-  - "TRITON Activity Group"
 affiliation: "Russia-aligned"
 motivation: "Sabotage / Safety-System Disruption"
 status: "active"
 country: "Russia"
-firstSeen: "2014"
+firstSeen: "2017"
 lastSeen: "2019"
 targetSectors:
   - "Energy"
@@ -18,7 +16,6 @@ targetSectors:
 targetGeographies:
   - "Middle East"
   - "United States"
-  - "Europe"
 tools:
   - "TRITON"
   - "TRISIS"
@@ -57,7 +54,7 @@ mitreMappings:
     attack-version: "v19"
     notes: "TRITON was designed to stop or disable Triconex Safety Instrumented System services, removing safety protections from the targeted industrial process."
 attributionConfidence: "A2"
-attributionRationale: "Multiple independent vendor and government assessments link this actor to the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM). Evidence includes infrastructure overlap, code artifacts, and operational patterns corroborated by CISA, Dragos, and Mandiant reporting."
+attributionRationale: "Actor is assessed as Russia-aligned based on infrastructure overlap, code artifacts, and operational security failures identified in independent government and vendor investigations. Vendor reporting identifies TsNIIKhM as an assessed responsible organization; this specific institutional attribution should be treated as an assessed claim rather than a definitively corroborated fact across all cited sources."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-10
@@ -110,7 +107,7 @@ The actor is assessed as Russia-aligned based on corroborating evidence from mul
 
 ## Attribution
 
-Multiple independent assessments — from CISA, Mandiant, and Dragos — attribute TEMP.Veles / XENOTIME to the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM). The CISA HatMan Malware Analysis Report (MAR-17-352-01, Update B) represents the primary U.S. government technical corroboration.
+The actor is assessed as Russia-aligned across independent government and vendor investigations. Vendor reporting — primarily from Mandiant and Dragos — identifies the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM) as an assessed responsible organization. The CISA HatMan Malware Analysis Report (MAR-17-352-01, Update B) is the primary U.S. government technical document; it corroborates the Russia-based assessment but should not be read as independently confirming the specific TsNIIKhM attribution claim.
 
 Attribution evidence includes infrastructure and IP address overlap linked to TsNIIKhM, malware artifacts consistent with Russian development patterns, and operational security lapses during the intrusion that exposed supporting infrastructure. Attribution of TsNIIKhM to a specific Russian government ministry or intelligence sponsor is not definitively established in available public reporting and should not be assumed.
 
@@ -124,7 +121,7 @@ Supporting capabilities include use of legitimate remote access tools (PLINK) an
 
 The most publicly documented incident attributed to this group targeted a petrochemical facility in Saudi Arabia in 2017. The attackers gained access to Triconex SIS controllers and deployed TRITON. A logic error in the malware caused the controllers to enter a fail-safe state, which triggered an unplanned process shutdown and surfaced the intrusion to defenders before physical damage occurred.
 
-Dragos subsequently tracked XENOTIME conducting reconnaissance against targets beyond the initial Saudi Arabian target set, including entities in the United States, Europe, and the Middle East, with particular interest noted in the electrical sector. This expansion is documented in Dragos's XENOTIME threat profile. No additional confirmed destructive incidents attributable to this group have been disclosed in open-source reporting within the source coverage used to produce this profile.
+Dragos subsequently tracked XENOTIME conducting reconnaissance against targets beyond the initial Saudi Arabian target set, including entities in the United States and the Middle East, with particular interest noted in the electrical sector. This expansion is documented in Dragos's XENOTIME threat profile. No additional confirmed destructive incidents attributable to this group have been disclosed in open-source reporting.
 
 ## MITRE ATT&CK Profile
 
@@ -132,7 +129,7 @@ The group's technique coverage spans initial access through impact. Spearphishin
 
 ## Sources & References
 
-Coverage of this actor is concentrated in the 2017–2019 period. Post-2019 operational activity has not been confirmed in open-source reporting. The attribution assessment to TsNIIKhM is corroborated across independent government and vendor sources. Attribution to a higher-level Russian state principal beyond TsNIIKhM remains plausible but is not definitively established in the open-source record. The three names for the malware — TRITON, TRISIS, HatMan — and the two names for the group — TEMP.Veles, XENOTIME — reflect independent discovery threads and do not indicate distinct toolsets or activity clusters.
+Coverage of this actor is concentrated in the 2017–2019 period. Post-2019 operational activity has not been confirmed in open-source reporting. The Russia-aligned assessment is supported across independent government and vendor sources; the specific TsNIIKhM institutional attribution appears primarily in vendor reporting and should be read as an assessed claim. Attribution to a higher-level Russian state principal beyond TsNIIKhM remains plausible but is not definitively established in the open-source record. The three names for the malware — TRITON, TRISIS, HatMan — and the two names for the group — TEMP.Veles, XENOTIME — reflect independent discovery threads and do not indicate distinct toolsets or activity clusters.
 
 - [MITRE: ATT&CK Group G0088 — TEMP.Veles](https://attack.mitre.org/groups/G0088/) — MITRE, 2021-01-13
 - [CISA / DHS: HatMan — Safety System Targeted Malware (Update B)](https://www.cisa.gov/sites/default/files/documents/MAR-17-352-01%20HatMan%20-%20Safety%20System%20Targeted%20Malware%20%28Update%20B%29.pdf) — CISA / DHS, 2018-12-18
