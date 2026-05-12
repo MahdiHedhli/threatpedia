@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "in_progress",
   "created": "2026-05-08T17:18:37.986Z",
-  "updated": "2026-05-12T17:47:55.000Z",
+  "updated": "2026-05-12T20:10:03Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": "dangermouse-bot",
@@ -82,6 +82,14 @@
       "to": "in_progress",
       "agent": "dangermouse-bot",
       "note": "Opened PR #602: feat(campaign): TASK-2026-0259 \u2014 CyberAv3ngers IRGC-Affiliated ICS and Water Sector Targeting Campaign"
+    },
+    {
+      "timestamp": "2026-05-12T20:10:03Z",
+      "action": "remediated",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Applied Ernest Penfold R1 blockers: (1) endDate corrected from 2024-04-30 to 2023-12-01 \u2014 sources support Nov\u2013Dec 2023 only; (2) removed unsupported 2024 timeline section. Fixed remaining Gemini inline findings: removed 'straightforward', 'meaningful'\u2192'demonstrable', 'prominently'\u2192'publicly confirmed', 'perceived' removed."
     }
   ]
 }

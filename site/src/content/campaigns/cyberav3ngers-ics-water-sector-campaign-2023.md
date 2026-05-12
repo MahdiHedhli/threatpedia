@@ -2,7 +2,7 @@
 campaignId: "TP-CAMP-2023-0001"
 title: "CyberAv3ngers IRGC-Affiliated ICS and Water Sector Targeting Campaign"
 startDate: 2023-11-01
-endDate: 2024-04-30
+endDate: 2023-12-01
 ongoing: false
 attackType: "ICS Exploitation / OT Targeting"
 severity: high
@@ -72,11 +72,11 @@ mitreMappings:
 
 ## Executive Summary
 
-CyberAv3ngers is an Iran-affiliated threat group linked to the Islamic Revolutionary Guard Corps Cyber-Electronic Command (IRGC-CEC). Beginning in November 2023, the group conducted a targeted campaign against internet-exposed programmable logic controllers (PLCs) used in water and wastewater utilities, with operations documented in the United States, Israel, Ireland, and several other countries. The campaign exploited a straightforward attack vector: Unitronics Vision series PLCs that remained accessible over the public internet using the manufacturer's default password.
+CyberAv3ngers is an Iran-affiliated threat group linked to the Islamic Revolutionary Guard Corps Cyber-Electronic Command (IRGC-CEC). Beginning in November 2023, the group conducted a targeted campaign against internet-exposed programmable logic controllers (PLCs) used in water and wastewater utilities, with operations documented in the United States, Israel, Ireland, and several other countries. The campaign exploited a direct attack vector: Unitronics Vision series PLCs that remained accessible over the public internet using the manufacturer's default password.
 
 On December 1, 2023, a joint advisory (AA23-335A) issued by CISA, the FBI, the NSA, the EPA, and the U.K. National Cyber Security Centre publicly linked the activity to CyberAv3ngers and characterized the group as an IRGC-affiliated actor. The advisory confirmed compromises at water and wastewater facilities and noted that the group targeted equipment manufactured in Israel.
 
-The threat to water services was assessed as low in terms of direct physical impact: public reporting identified no confirmed disruption to water treatment or distribution. Unauthorized access to ICS equipment carrying default credentials, combined with active parameter modification, nonetheless represented a meaningful operational risk requiring immediate response from affected utilities and the water sector.
+The threat to water services was assessed as low in terms of direct physical impact: public reporting identified no confirmed disruption to water treatment or distribution. Unauthorized access to ICS equipment carrying default credentials, combined with active parameter modification, nonetheless represented a demonstrable operational risk requiring immediate response from affected utilities and the water sector.
 
 ## Technical Analysis
 
@@ -86,7 +86,7 @@ The primary attack vector was exploitation of default credentials. Unitronics Vi
 
 The group identified vulnerable targets through internet scanning, likely leveraging publicly available enumeration services to find PLCs running the Unitronics communication protocol on publicly routable addresses. Once authenticated, operators accessed the HMI panel, replaced the display with political messaging, and in some cases modified PLC setpoints or configuration parameters.
 
-No custom malware or novel exploitation technique was attributed to this campaign. The entire access path relied on publicly accessible internet infrastructure, absent network segmentation, and unchanged factory credentials — a combination that reflects a common gap in operational technology (OT) security posture across the water sector. The most prominently reported victim was the Municipal Water Authority of Aliquippa, Pennsylvania, which confirmed on November 25, 2023 that CyberAv3ngers had accessed and defaced a booster station PLC. CISA's advisory confirmed additional victims in the United States, Israel, Ireland, and other countries. The group's stated targeting rationale was anti-Israel rather than critical infrastructure disruption: the operators asserted that equipment manufactured in Israel was a legitimate target, tying Unitronics PLC selection to the manufacturer's Israeli origin.
+No custom malware or novel exploitation technique was attributed to this campaign. The entire access path relied on publicly accessible internet infrastructure, absent network segmentation, and unchanged factory credentials — a combination that reflects a common gap in operational technology (OT) security posture across the water sector. The publicly confirmed victim was the Municipal Water Authority of Aliquippa, Pennsylvania, which confirmed on November 25, 2023 that CyberAv3ngers had accessed and defaced a booster station PLC. CISA's advisory confirmed additional victims in the United States, Israel, Ireland, and other countries. The group's stated targeting rationale was anti-Israel rather than critical infrastructure disruption: the operators asserted that equipment manufactured in Israel was a legitimate target, tying Unitronics PLC selection to the manufacturer's Israeli origin.
 
 ## Attack Chain
 
@@ -132,10 +132,6 @@ WaterISAC distributed a sector-specific advisory to water utility members, confi
 
 CISA, the FBI, the NSA, the EPA, and the U.K. NCSC jointly published Advisory AA23-335A, publicly attributing the campaign to CyberAv3ngers as an IRGC-affiliated group, confirming multi-country victims, and providing technical indicators and recommended mitigations.
 
-### 2024 — Continued Group Activity
-
-CyberAv3ngers continued claiming attacks against industrial control systems into 2024, though the Unitronics water sector campaign's most concentrated documented activity was between November and December 2023.
-
 ## Remediation & Mitigation
 
 CISA's joint advisory outlined immediate and longer-term mitigations for water sector operators running Unitronics PLCs. The immediate priority was password rotation: any Unitronics Vision series PLC running the default password "1111" had to be treated as potentially compromised and required immediate credential change.
@@ -144,7 +140,7 @@ Network isolation was the second priority. Unitronics PLCs and OT devices genera
 
 Additional mitigations recommended in the advisory included enabling multifactor authentication where the device supports it, reviewing remote access logs for unauthorized sessions, auditing PLC configuration and setpoints against known-good baselines, and applying available Unitronics firmware updates. Utilities were also advised to back up PLC configuration files to allow rapid restoration after any unauthorized modification.
 
-The campaign reinforced established OT security principles: internet-exposed industrial control systems with default credentials represent high-risk targets regardless of the perceived likelihood of adversary interest. Water sector operators were urged to complete an asset inventory of internet-connected OT devices and apply network segmentation sufficient to prevent direct internet access to any process control device.
+The campaign reinforced established OT security principles: internet-exposed industrial control systems with default credentials represent high-risk targets regardless of the likelihood of adversary interest. Water sector operators were urged to complete an asset inventory of internet-connected OT devices and apply network segmentation sufficient to prevent direct internet access to any process control device.
 
 ## Sources & References
 
