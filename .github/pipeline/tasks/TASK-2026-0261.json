@@ -2,10 +2,10 @@
   "task_id": "TASK-2026-0261",
   "stage": "draft",
   "type": "zero-day",
-  "priority": "P1",
+  "priority": "P0",
   "status": "pr_open",
   "created": "2026-05-08T19:07:43.492Z",
-  "updated": "2026-05-11T14:47:00.000Z",
+  "updated": "2026-05-11T23:57:44.000Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": "dangermouse-bot",
@@ -19,17 +19,21 @@
     ],
     "candidate_data": {
       "cve": "CVE-2026-42208",
-      "cves": ["CVE-2026-42208"],
+      "cves": [
+        "CVE-2026-42208"
+      ],
       "exploitId": "TP-EXP-2026-0021",
       "type": "SQL Injection",
       "platform": "BerriAI LiteLLM",
       "severity": "critical",
       "cisaKev": true,
       "disclosedDate": "2026-05-08",
-      "cwes": ["CWE-89"],
+      "cwes": [
+        "CWE-89"
+      ],
       "knownRansomwareUse": false
     },
-    "notes": "CISA KEV entry added 2026-05-08. Required action by 2026-05-11. Discovery score: 65/100."
+    "notes": "CISA KEV entry added 2026-05-08. Required action by 2026-05-11. CVSS 3.1: 9.8 (CRITICAL). Discovery score: 100/100 (auto-certify eligible)."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -55,9 +59,14 @@
   },
   "discovery": {
     "feed": "CISA_KEV",
-    "score": 65,
-    "auto_certify": false,
-    "cvss": null,
+    "score": 100,
+    "auto_certify": true,
+    "cvss": {
+      "score": 9.8,
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
     "discovered_at": "2026-05-08T19:07:43.492Z"
   },
   "pr_number": 568,
@@ -101,6 +110,14 @@
       "action": "review_remediated",
       "agent": "kernel-k",
       "note": "Updated task metadata for PR #568 review remediation and current PR tracking."
+    },
+    {
+      "timestamp": "2026-05-11T23:57:44.000Z",
+      "action": "main_collision_reconciled",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "kernel-k",
+      "note": "Merged current main into PR #568, retained the article PR ownership, and incorporated the duplicate main discovery enrichment for CVSS and score metadata."
     }
   ]
 }
