@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-12T23:19:10.153Z",
+  "updated": "2026-05-12T23:21:24.407Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-12T23:19:10.151Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "DarkSide threat actor profile",
     "sources": [
@@ -68,6 +68,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-12T23:21:24.406Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #611"
     }
-  ]
+  ],
+  "pr_number": 611,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/611"
 }
