@@ -125,7 +125,15 @@ Dragos subsequently tracked XENOTIME conducting reconnaissance against targets b
 
 ## MITRE ATT&CK Profile
 
-The group's technique coverage spans initial access through impact. Spearphishing attachment delivery (T1566.001) is the assessed initial access vector. Valid account abuse (T1078) supported continued VPN and remote-service access, while masquerading (T1036) reflects stealth through filenames that resembled legitimate Triconex and Windows components. OS credential dumping (T1003) supports lateral movement into OT environments. Command and scripting interpreter use (T1059) reflects the Python-centered toolkit. Service Stop (T1489) captures the intended final effect: disabling Triconex SIS processes to remove safety barriers from the targeted industrial process. Full technique coverage for G0088 is maintained in MITRE ATT&CK.
+**Initial Access**: The group used spearphishing attachments (T1566.001) to gain entry to target networks prior to OT environment access.
+
+**Execution**: Python-based scripting and custom frameworks (T1059) were used for controller interaction and operational tooling, including communication with Triconex controllers via the proprietary TriStation protocol.
+
+**Persistence and Credential Access**: Valid VPN and remote-access credentials (T1078) were leveraged to maintain access and blend with normal traffic. OS credential dumping (T1003) using Impacket and custom tooling supported lateral movement into OT environments.
+
+**Defense Evasion**: TRITON malware components used filenames resembling legitimate Triconex software and Windows system files (T1036) to blend with expected host artifacts.
+
+**Impact**: TRITON was engineered to stop or disable Triconex Safety Instrumented System services (T1489), removing safety protections from the targeted industrial process.
 
 ## Sources & References
 
