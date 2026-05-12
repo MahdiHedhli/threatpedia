@@ -182,10 +182,11 @@ discovery queues are open, validated, and stable.
      `node scripts/pipeline-review-gate.mjs --pr <number>` against live
      GitHub state for public content, site, and pipeline PRs.
    - The workflow runs automatically for configured AI reviewer PR review
-     events, including Gemini Code Assist or `dangermouse-bot` review
-     submission and dismissal. It skips worker/human review submissions because
-     those often record disposition or remediation notes before current-head AI
-     review is available. It does not run on every PR push because
+     events, including Gemini Code Assist, `dangermouse-bot`, or Ernest
+     Penfold (`ernestpenfold-bot`) review submission and dismissal. It skips
+     other worker/human review submissions because those often record
+     disposition or remediation notes before current-head AI review is
+     available. It does not run on every PR push because
      push-time runs race current-head validation and current-head AI review
      creation, producing status check failures until the current-head
      validation and AI review requirements for that PR have completed.
@@ -195,10 +196,15 @@ discovery queues are open, validated, and stable.
      workflow failures.
    - For content-collection PRs, the gate requires a successful current-head
      `validate` check. Green checks from an older head SHA do not count.
-   - For public content/site/pipeline PRs, the gate requires an AI second
-     review on the current head SHA, no unresolved current AI review threads,
-     and no later AI review-error comment without a successful replacement
-     review.
+   - For public content/site/pipeline PRs, the gate requires a non-author AI
+     second review on the current head SHA, no unresolved current AI review
+     threads, and no later AI review-error comment without a successful
+     replacement review.
+   - Gemini Code Assist is the default AI review source. If Gemini Code Assist
+     is quota-limited, rate-limited, unavailable, or posts a review-creation
+     error, Ernest Penfold may fill the Gemini review role only by submitting a
+     GitHub PR review from `ernestpenfold-bot` on the current head SHA. A
+     top-level status comment is not sufficient for the gate.
    - Worker status comments are treated as informational only. A comment that
      says `merge_ready` does not override current-head checks, review state,
      unresolved AI threads, or review errors.
@@ -267,7 +273,7 @@ same queue/validation path as discovery-generated tasks.
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
-| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist or `dangermouse-bot`, zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
+| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head non-author AI second review from Gemini Code Assist, `dangermouse-bot`, or Ernest Penfold (`ernestpenfold-bot`); zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |

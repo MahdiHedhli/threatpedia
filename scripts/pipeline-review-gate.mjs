@@ -12,6 +12,7 @@ const DEFAULT_AI_REVIEW_LOGINS = [
   'gemini-code-assist',
   'gemini-code-assist[bot]',
   'dangermouse-bot',
+  'ernestpenfold-bot',
 ];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
@@ -352,11 +353,22 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
     failures.push('No latest successful Pipeline: Validate Article PR "validate" check exists on the current head SHA.');
   }
 
-  const currentHeadAiReviews = reviews.filter((review) =>
+  const prAuthorLogin = pr.user?.login?.toLowerCase() || null;
+  const isCurrentHeadAiReview = (review) =>
     isAiLogin(review.user?.login, aiLogins)
     && review.commit_id === pr.head.sha
     && review.state !== 'DISMISSED'
-    && !isAiReviewError(review.body)
+    && !isAiReviewError(review.body);
+
+  const currentHeadSelfAiReviews = reviews.filter((review) =>
+    isCurrentHeadAiReview(review)
+    && prAuthorLogin
+    && review.user?.login?.toLowerCase() === prAuthorLogin
+  );
+
+  const currentHeadAiReviews = reviews.filter((review) =>
+    isCurrentHeadAiReview(review)
+    && (!prAuthorLogin || review.user?.login?.toLowerCase() !== prAuthorLogin)
   );
 
   const latestAiErrorAt = latestDate(
@@ -372,7 +384,9 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
   );
   const latestCurrentHeadAiReviewAt = latestDate(currentHeadAiReviews, (review) => review.submitted_at);
 
-  if (!currentHeadAiReviews.length) {
+  if (!currentHeadAiReviews.length && currentHeadSelfAiReviews.length) {
+    failures.push('Only current-head AI review was submitted by the PR author; non-author AI second review is required.');
+  } else if (!currentHeadAiReviews.length) {
     failures.push('No AI second review exists on the current head SHA.');
   }
 
@@ -434,6 +448,11 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
         completedAt: latestValidate.completed_at,
       } : null,
       aiReviewsOnHead: currentHeadAiReviews.map((review) => ({
+        author: review.user?.login || 'unknown',
+        state: review.state,
+        submittedAt: review.submitted_at,
+      })),
+      ignoredSelfAiReviewsOnHead: currentHeadSelfAiReviews.map((review) => ({
         author: review.user?.login || 'unknown',
         state: review.state,
         submittedAt: review.submitted_at,
