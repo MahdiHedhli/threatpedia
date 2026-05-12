@@ -76,11 +76,11 @@ CyberAv3ngers is an Iran-affiliated threat group linked to the Islamic Revolutio
 
 On December 1, 2023, a joint advisory (AA23-335A) issued by CISA, the FBI, the NSA, the EPA, and the U.K. National Cyber Security Centre publicly linked the activity to CyberAv3ngers and characterized the group as an IRGC-affiliated actor. The advisory confirmed compromises at water and wastewater facilities and noted that the group targeted equipment manufactured in Israel.
 
-The threat to water services was assessed as low in terms of direct physical impact: public reporting identified no confirmed disruption to water treatment or distribution. Unauthorized access to ICS equipment carrying default credentials, combined with active parameter modification, nonetheless represented a meaningful operational risk requiring immediate response from affected utilities and the broader water sector.
+The threat to water services was assessed as low in terms of direct physical impact: public reporting identified no confirmed disruption to water treatment or distribution. Unauthorized access to ICS equipment carrying default credentials, combined with active parameter modification, nonetheless represented a meaningful operational risk requiring immediate response from affected utilities and the water sector.
 
 ## Technical Analysis
 
-The technical approach CyberAv3ngers used in this campaign was low-sophistication but effective. The group targeted Unitronics Vision series PLCs — Israeli-manufactured industrial controllers deployed widely in water and wastewater facilities. These devices provide human-machine interface (HMI) control of physical processes including pump operations, chemical dosing, and flow monitoring.
+The technical approach CyberAv3ngers used in this campaign relied on internet scanning and default credentials rather than custom exploits or novel techniques. The group targeted Unitronics Vision series PLCs — Israeli-manufactured industrial controllers deployed across water and wastewater facilities. These devices provide human-machine interface (HMI) control of physical processes including pump operations, chemical dosing, and flow monitoring.
 
 The primary attack vector was exploitation of default credentials. Unitronics Vision series PLCs ship with a factory-default password of "1111." Many installations in the water sector had left this default in place on internet-facing deployments, allowing direct access to the device's HMI and configuration functions via the Unitronics proprietary protocol.
 
@@ -108,12 +108,9 @@ At some compromised installations, the group modified PLC setpoints and configur
 
 ## MITRE ATT&CK Mapping
 
-
 T1595 - Active Scanning: The group conducted internet-wide scanning to enumerate Unitronics Vision PLCs exposed on publicly routable addresses, using the Unitronics PCOM protocol port to identify eligible targets in the water sector.
 
-
 T1078.001 - Default Accounts: Attackers used the Unitronics factory default password "1111" to authenticate directly to internet-exposed PLCs, bypassing the need for credential theft or exploitation of software vulnerabilities.
-
 
 T1491.001 - Internal Defacement: Compromised PLCs had their HMI display panels replaced with anti-Israel political messaging, disrupting operator visibility and signaling the intrusion to facility staff.
 
@@ -141,13 +138,13 @@ CyberAv3ngers continued claiming attacks against industrial control systems into
 
 ## Remediation & Mitigation
 
-CISA's joint advisory outlined immediate and longer-term mitigations for water sector operators running Unitronics PLCs. The most critical immediate action was password rotation: any Unitronics Vision series PLC running the default password "1111" had to be treated as potentially compromised and required immediate credential change.
+CISA's joint advisory outlined immediate and longer-term mitigations for water sector operators running Unitronics PLCs. The immediate priority was password rotation: any Unitronics Vision series PLC running the default password "1111" had to be treated as potentially compromised and required immediate credential change.
 
-Network isolation was the second priority. Unitronics PLCs and OT devices more broadly should not be directly accessible over the public internet. Recommended controls include placing PLCs behind firewalls with deny-by-default rules, requiring VPN for any remote access, and removing direct TCP port exposure for industrial protocols.
+Network isolation was the second priority. Unitronics PLCs and OT devices generally should not be directly accessible over the public internet. Recommended controls include placing PLCs behind firewalls with deny-by-default rules, requiring VPN for any remote access, and removing direct TCP port exposure for industrial protocols.
 
 Additional mitigations recommended in the advisory included enabling multifactor authentication where the device supports it, reviewing remote access logs for unauthorized sessions, auditing PLC configuration and setpoints against known-good baselines, and applying available Unitronics firmware updates. Utilities were also advised to back up PLC configuration files to allow rapid restoration after any unauthorized modification.
 
-The campaign reinforced durable OT security principles: internet-exposed industrial control systems with default credentials represent high-risk targets regardless of the perceived likelihood of adversary interest. Water sector operators were urged to complete an asset inventory of internet-connected OT devices and apply network segmentation sufficient to prevent direct internet access to any process control device.
+The campaign reinforced established OT security principles: internet-exposed industrial control systems with default credentials represent high-risk targets regardless of the perceived likelihood of adversary interest. Water sector operators were urged to complete an asset inventory of internet-connected OT devices and apply network segmentation sufficient to prevent direct internet access to any process control device.
 
 ## Sources & References
 
