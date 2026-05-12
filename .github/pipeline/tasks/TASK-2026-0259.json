@@ -93,8 +93,10 @@
     },
     {
       "timestamp": "2026-05-12T21:25:31Z",
+      "action": "pr_open",
       "from": "in_progress",
       "to": "pr_open",
+      "agent": "dangermouse-bot",
       "note": "PR #602 open; bookkeeping update — pr_number was missing from prior state commit"
     }
   ],

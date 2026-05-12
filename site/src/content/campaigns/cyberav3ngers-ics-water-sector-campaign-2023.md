@@ -72,7 +72,7 @@ mitreMappings:
 
 ## Executive Summary
 
-CyberAv3ngers is an Iran-affiliated threat group linked to the Islamic Revolutionary Guard Corps Cyber-Electronic Command (IRGC-CEC). Beginning in November 2023, the group conducted a targeted campaign against internet-exposed programmable logic controllers (PLCs) used in water and wastewater utilities, with operations documented in the United States, Israel, Ireland, and several other countries. The campaign exploited a direct attack vector: Unitronics Vision series PLCs that remained accessible over the public internet using the manufacturer's default password.
+CyberAv3ngers is an Iran-affiliated threat group that U.S. and U.K. government agencies described as affiliated with Iran's Islamic Revolutionary Guard Corps (IRGC). Beginning in November 2023, the group conducted a targeted campaign against internet-exposed programmable logic controllers (PLCs) used in water and wastewater utilities, with operations documented in the United States, Israel, Ireland, and several other countries. The campaign exploited a direct attack vector: Unitronics Vision series PLCs that remained accessible over the public internet using the manufacturer's default password.
 
 On December 1, 2023, a joint advisory (AA23-335A) issued by CISA, the FBI, the NSA, the EPA, and the U.K. National Cyber Security Centre publicly linked the activity to CyberAv3ngers and characterized the group as an IRGC-affiliated actor. The advisory confirmed compromises at water and wastewater facilities and noted that the group targeted equipment manufactured in Israel.
 
@@ -108,11 +108,11 @@ At some compromised installations, the group modified PLC setpoints and configur
 
 ## MITRE ATT&CK Mapping
 
-T1595 - Active Scanning: The group conducted internet-wide scanning to enumerate Unitronics Vision PLCs exposed on publicly routable addresses, using the Unitronics PCOM protocol port to identify eligible targets in the water sector.
+T1595 - Active Scanning: Under the Reconnaissance tactic, CyberAv3ngers used internet-wide scanning to identify Unitronics Vision series PLCs exposed on publicly routable IP addresses, targeting devices in water and wastewater utility environments.
 
-T1078.001 - Default Accounts: Attackers used the Unitronics factory default password "1111" to authenticate directly to internet-exposed PLCs, bypassing the need for credential theft or exploitation of software vulnerabilities.
+T1078.001 - Default Accounts: Under the Initial Access tactic, attackers authenticated to Unitronics Vision series PLCs using the default factory password "1111", which many operators had not changed, providing direct access to HMI functions and PLC configuration interfaces.
 
-T1491.001 - Internal Defacement: Compromised PLCs had their HMI display panels replaced with anti-Israel political messaging, disrupting operator visibility and signaling the intrusion to facility staff.
+T1491.001 - Internal Defacement: Under the Impact tactic, operators replaced PLC HMI display panels with anti-Israel messaging, disrupting operator visibility at affected facilities and producing the primary visible impact at confirmed victim sites.
 
 ## Timeline
 
@@ -126,7 +126,7 @@ CISA issued an emergency alert warning water and wastewater utilities about acti
 
 ### 2023-11-30 — WaterISAC Industry Warning
 
-WaterISAC distributed a sector-specific advisory to water utility members, confirming the IRGC-CEC group's involvement and providing indicators and mitigations for Unitronics deployments.
+WaterISAC distributed a sector-specific advisory to water utility members, confirming the IRGC-affiliated group's involvement and providing indicators and mitigations for Unitronics deployments.
 
 ### 2023-12-01 — Joint Government Advisory AA23-335A Published
 
