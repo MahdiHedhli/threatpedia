@@ -57,7 +57,7 @@ mitreMappings:
     tactic: "Defense Evasion"
     notes: "Used obfuscation techniques in tooling and scripts to evade detection by endpoint security products during intrusion operations."
 attributionConfidence: "A2"
-attributionRationale: "CISA, FBI, and NSA jointly assessed Conti as operated by Russia-based cybercriminals. The group's operational patterns, infrastructure, and the content of the 2022 Conti leaks are consistent with a Russia-based criminal operation. The specific organizational relationship to Russian state intelligence services is not established in available public sources."
+attributionRationale: "CISA, FBI, and NSA jointly assessed Conti as operated by Russia-based cybercriminals. The group's operational patterns and infrastructure are consistent with a Russia-based criminal operation. The specific organizational relationship to Russian state intelligence services is not established in available public reporting."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-12
@@ -66,7 +66,6 @@ tags:
   - "raas"
   - "russia"
   - "double-extortion"
-  - "conti-leaks"
   - "healthcare"
   - "critical-infrastructure"
 sources:
@@ -95,11 +94,9 @@ sources:
 
 ## Executive Summary
 
-Conti was a Russia-aligned ransomware-as-a-service (RaaS) operation active from approximately 2020 through at least early 2022 in the cited public advisories. CISA, FBI, and NSA jointly documented the group in advisory AA21-265A as responsible for over 400 attacks against organizations worldwide. MITRE ATT&CK tracks associated activity under G0098.
+Conti was a Russia-aligned ransomware-as-a-service (RaaS) operation active from approximately 2020 through early 2022. CISA, FBI, and NSA jointly documented the group in advisory AA21-265A as responsible for over 400 attacks against organizations worldwide. MITRE ATT&CK tracks associated activity under G0098.
 
 The group operated a double-extortion model: encrypting victim data while simultaneously threatening to publish exfiltrated files on a dedicated leak site ("Conti News") if ransom demands were not met. Conti functioned as a ransomware-as-a-service platform, with a core team providing tooling, infrastructure, and negotiation support to a network of affiliates who conducted intrusions independently.
-
-In February and March 2022, an anonymous source leaked internal Conti communications and source code following the group's public declaration of support for Russia in the context of the war in Ukraine. Public successor-lineage claims should not be attributed to Conti absent independent evidence linking them to the same infrastructure or operators.
 
 ## Notable Campaigns
 
@@ -111,15 +108,13 @@ CISA advisory AA21-265A documented over 400 attacks globally against organizatio
 
 Conti's intrusion chain typically began with phishing-delivered malware — primarily BazarLoader and TrickBot — or exploitation of internet-facing vulnerabilities. Post-access activity consistently followed a pattern documented across the CISA advisory and corroborating incident reporting: Cobalt Strike deployment for command and control, credential harvesting via Mimikatz, lateral movement using Windows administrative tools and SMB shares, and bulk data staging and exfiltration using Rclone or similar utilities prior to ransomware deployment.
 
-The ransomware payload used a combination of ChaCha20 for file encryption and RSA-4096 for key protection. Deployment was designed for speed: Conti affiliates were provided internal playbooks (later exposed in the 2022 leaks) that detailed step-by-step procedures for disabling security software, deleting shadow copies, and deploying the encryptor across the network. The group maintained a structured support infrastructure including negotiation teams, leak site operators, and technical staff, consistent with its RaaS operating model.
-
-The 2022 Conti leaks exposed internal chat logs, source code, and operational documentation, providing a public record of the group's internal structure and tradecraft.
+The ransomware payload used a combination of ChaCha20 for file encryption and RSA-4096 for key protection. Deployment followed a structured affiliate playbook, as documented in CISA advisory AA21-265A, covering disabling security software, deleting shadow copies, and deploying the encryptor across the network. The group maintained support infrastructure including negotiation teams, leak site operators, and technical staff, consistent with its RaaS operating model.
 
 ## Attribution
 
 CISA, FBI, and NSA jointly attributed Conti activity to Russia-based cybercriminals in advisory AA21-265A and subsequent updates. The advisory did not identify specific individuals or organizational sponsors. The Russia-based assessment is supported by operational patterns, infrastructure, and the group's own February 2022 public statement expressing support for the Russian government.
 
-The relationship between Conti and Russian state intelligence services is not established in the cited sources. The group operated as a criminal enterprise; its public alignment statement and operational geography are consistent with a Russia-based criminal operation that is tolerated or not actively suppressed by Russian authorities, which is a distinct assessment from state direction or sponsorship.
+The relationship between Conti and Russian state intelligence services is not established in available public reporting. The group operated as a criminal enterprise; its public alignment statement and operational geography are consistent with a Russia-based criminal operation that is tolerated or not actively suppressed by Russian authorities, which is a distinct assessment from state direction or sponsorship.
 
 ## MITRE ATT&CK Profile
 
