@@ -87,7 +87,7 @@ sources:
 
 ## Executive Summary
 
-Hafnium is a China-aligned threat actor assessed by Microsoft as operating from China. The group is known primarily for exploiting multiple zero-day vulnerabilities in on-premises Microsoft Exchange Server in early 2021 — a vulnerability chain subsequently designated ProxyLogon (CVE-2021-26855, CVE-2021-26857, CVE-2021-26858, CVE-2021-27065). MITRE ATT&CK tracks the cluster as G0125.
+Hafnium is a China-aligned threat actor assessed by Microsoft as operating from China. The group is known for exploiting multiple zero-day vulnerabilities in on-premises Microsoft Exchange Server in early 2021 — a vulnerability chain subsequently designated ProxyLogon (CVE-2021-26855, CVE-2021-26857, CVE-2021-26858, CVE-2021-27065). MITRE ATT&CK tracks the cluster as G0125.
 
 Hafnium's targeting is consistent with espionage and intelligence collection objectives, with a documented focus on U.S.-based organizations across sectors of strategic interest to Chinese state intelligence. The actor exploited these vulnerabilities to install web shells for persistent access and conduct data collection operations. Microsoft and CISA both attributed the initial Exchange exploitation wave to Hafnium in March 2021.
 
@@ -99,7 +99,7 @@ CISA issued Emergency Directive 21-02 on March 3, 2021, requiring federal civili
 
 ## Technical Capabilities
 
-Hafnium's principal documented capability is exploitation of the ProxyLogon vulnerability chain in Microsoft Exchange Server. CVE-2021-26855 is a server-side request forgery (SSRF) vulnerability that allowed unauthenticated HTTP requests to authenticate as the Exchange server. When chained with CVE-2021-26857, CVE-2021-26858, and CVE-2021-27065 — which enable post-authentication arbitrary file write — the full chain permitted unauthenticated remote code execution on vulnerable on-premises Exchange installations.
+Hafnium's documented capability is exploitation of the ProxyLogon vulnerability chain in Microsoft Exchange Server. CVE-2021-26855 is a server-side request forgery (SSRF) vulnerability that allowed unauthenticated HTTP requests to authenticate as the Exchange server. When chained with CVE-2021-26857, CVE-2021-26858, and CVE-2021-27065 — which enable post-authentication arbitrary file write — the chain permitted unauthenticated remote code execution on vulnerable on-premises Exchange installations.
 
 Following initial access, Hafnium deployed ASPX web shells to maintain persistent access after the initial exploitation. Post-exploitation activity included credential dumping via LSASS memory access, lateral movement within target networks, and data staging using Exchange's offline address book (OAB) virtual directory to collect and compress email and mailbox data for exfiltration. Command and control was achieved using open-source post-exploitation frameworks including Nishang (PowerShell) and PowerCat.
 
@@ -107,11 +107,11 @@ Following initial access, Hafnium deployed ASPX web shells to maintain persisten
 
 Microsoft attributed Hafnium as a China-state-sponsored actor operating from China based on infrastructure, tooling, and victimology patterns identified during incident response. The CISA Emergency Directive 21-02 and Advisory AA21-062A corroborated the Exchange exploitation and directed mandatory remediation for U.S. federal agencies, referencing Microsoft's attribution. MITRE ATT&CK incorporated the group as G0125 following public reporting.
 
-The specific Chinese state organizational sponsor — whether military, intelligence, or civilian ministry — is not identified in the supplied sources. Attribution to a specific Chinese government principal beyond the China-state-sponsored assessment should not be inferred from available public reporting.
+The specific Chinese state organizational sponsor — whether military, intelligence, or civilian ministry — is not identified in the supplied sources. Attribution to a specific Chinese government organization beyond the China-state-sponsored assessment should not be inferred from available public reporting.
 
 ## MITRE ATT&CK Profile
 
-Initial access was achieved by exploiting CVE-2021-26855 (SSRF) in Exchange, chained with additional CVEs to achieve remote code execution (T1190). Web shell installation (T1505.003) provided persistent access to compromised Exchange servers. Credential dumping (T1003) supported lateral movement. Data staging and compression (T1560.001) used Exchange web services to collect mailbox content. PowerShell frameworks including Nishang and PowerCat provided execution and reverse shell capability (T1059.001). Exfiltration (T1048) moved staged data outside target organizations. Full technique coverage for G0125 is maintained in MITRE ATT&CK.
+Initial access was achieved by exploiting CVE-2021-26855 (SSRF) in Exchange, chained with additional CVEs to achieve remote code execution (T1190). Web shell installation (T1505.003) provided persistent access to compromised Exchange servers. Credential dumping (T1003) supported lateral movement. Data staging and compression (T1560.001) used Exchange web services to collect mailbox content. PowerShell frameworks including Nishang and PowerCat provided execution and reverse shell capability (T1059.001). Exfiltration (T1048) moved staged data outside target organizations. Technique coverage for G0125 is maintained in MITRE ATT&CK.
 
 ## Sources & References
 
