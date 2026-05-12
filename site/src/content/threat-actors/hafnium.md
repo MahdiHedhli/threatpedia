@@ -2,6 +2,7 @@
 name: "Hafnium"
 aliases:
   - "HAFNIUM"
+  - "G0125"
 affiliation: "China-aligned"
 motivation: "Espionage / Intelligence Collection"
 status: "unknown"
@@ -50,7 +51,7 @@ mitreMappings:
     tactic: "Execution"
     notes: "Used PowerShell-based post-exploitation frameworks including Nishang and PowerCat to facilitate command execution and reverse shells."
 attributionConfidence: "A2"
-attributionRationale: "Microsoft assessed Hafnium as a China-state-sponsored actor operating from China with high confidence, based on infrastructure, tooling, and victimology analysis. The specific organizational sponsor within the Chinese state apparatus is not identified in the supplied sources."
+attributionRationale: "Microsoft assessed Hafnium as a China-state-sponsored actor operating from China with high confidence, based on infrastructure, tooling, and victimology analysis. On 2021-07-19, CISA updated Advisory AA21-062A to attribute the Exchange Server exploitation activity to malicious cyber actors affiliated with China's Ministry of State Security (MSS), as corroborated by MITRE ATT&CK G0125."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-12
@@ -107,7 +108,7 @@ Following initial access, Hafnium deployed ASPX web shells to maintain persisten
 
 Microsoft attributed Hafnium as a China-state-sponsored actor operating from China based on infrastructure, tooling, and victimology patterns identified during incident response. The CISA Emergency Directive 21-02 and Advisory AA21-062A corroborated the Exchange exploitation and directed mandatory remediation for U.S. federal agencies, referencing Microsoft's attribution. MITRE ATT&CK incorporated the group as G0125 following public reporting.
 
-The specific Chinese state organizational sponsor — whether military, intelligence, or civilian ministry — is not identified in the supplied sources. Attribution to a specific Chinese government organization beyond the China-state-sponsored assessment should not be inferred from available public reporting.
+On 2021-07-19, CISA updated Advisory AA21-062A to attribute the Exchange Server exploitation activity to malicious cyber actors affiliated with China's Ministry of State Security (MSS). MITRE ATT&CK G0125 reflects this attribution. Attribution to a specific MSS unit or operational sub-element is not established in the supplied sources.
 
 ## MITRE ATT&CK Profile
 
