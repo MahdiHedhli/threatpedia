@@ -111,7 +111,7 @@ T1195.002 - Compromise Software Supply Chain: Lazarus Group compromised the 3CX 
 
 T1204.002 - Malicious File: End users installed trojanized 3CX DesktopApp updates through the application's built-in auto-update mechanism, executing malicious builds signed with legitimate 3CX certificates without awareness of the compromise.
 
-T1071.001 - Web Protocols: ICONIC Stealer and POOLRAT used HTTPS for command-and-control communication. The initial staging step retrieved encrypted payload data from GitHub-hosted icon files before establishing direct C2 channels.
+T1071.001 - Web Protocols: ICONIC Stealer and POOLRAT communicated with attacker-controlled infrastructure over HTTPS, using GitHub-hosted icon files as an initial staging mechanism to retrieve encrypted C2 configuration before establishing direct command-and-control channels.
 
 ## Timeline
 

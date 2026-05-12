@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T17:18:38.019Z",
-  "updated": "2026-05-12T18:16:23.000Z",
+  "updated": "2026-05-12T20:10:55Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": "dangermouse-bot",
@@ -88,6 +88,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "PR #604 opened: https://github.com/MahdiHedhli/threatpedia/pull/604"
+    },
+    {
+      "timestamp": "2026-05-12T20:10:55Z",
+      "action": "remediated",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Applied Ernest Penfold R1 blocker: aligned T1071.001 body text with frontmatter note \u2014 both now read 'communicated with attacker-controlled infrastructure over HTTPS, using GitHub-hosted icon files as an initial staging mechanism to retrieve encrypted C2 configuration before establishing direct command-and-control channels.'"
     }
   ],
   "pr_number": 604,
