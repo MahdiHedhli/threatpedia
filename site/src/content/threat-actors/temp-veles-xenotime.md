@@ -38,7 +38,7 @@ mitreMappings:
     notes: "Leveraged valid VPN and remote-access credentials to maintain access and blend with legitimate activity."
   - techniqueId: "T1036"
     techniqueName: "Masquerading"
-    tactic: "Stealth"
+    tactic: "Defense Evasion"
     attack-version: "v19"
     notes: "TRITON malware components used filenames resembling legitimate Triconex software and Windows components."
   - techniqueId: "T1059"
