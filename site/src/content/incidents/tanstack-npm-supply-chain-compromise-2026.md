@@ -85,13 +85,13 @@ mitreMappings:
     tactic: "Credential Access"
     attack-version: "v19"
     confidence: confirmed
-    evidence: "Payload router_init.js scanned over 100 file paths on compromised hosts — including ~/.npmrc, SSH private-key files, cloud-provider credential configs, and IDE credential stores — to harvest authentication material at install time."
+    evidence: "Payload router_init.js scanned over 100 file paths on compromised hosts - including ~/.npmrc, SSH private-key files, cloud-provider credential configs, and IDE credential stores - to harvest authentication material at install time."
   - techniqueId: "T1567"
     techniqueName: "Exfiltration Over Web Service"
     tactic: "Exfiltration"
     attack-version: "v19"
     confidence: confirmed
-    evidence: "Harvested credentials were exfiltrated to Session/Oxen messenger-network CDN endpoints (filev2.getsession.org, seed1–3.getsession.org) over end-to-end encrypted channels."
+    evidence: "Harvested credentials were exfiltrated to Session/Oxen messenger-network CDN endpoints (filev2.getsession.org, seed1-3.getsession.org) over end-to-end encrypted channels."
 ---
 
 ## Summary
@@ -108,7 +108,7 @@ Vendor analysis by Socket Research Team and StepSecurity links this attack patte
 
 The attack exploited three chained weaknesses in the TanStack/router GitHub Actions configuration:
 
-**`pull_request_target` misconfiguration.** The `bundle-size.yml` workflow was triggered by `pull_request_target` events and checked out code from the pull-request head without requiring maintainer approval. Because `pull_request_target` runs in the context of the base repository — with access to repository secrets and write permissions — this allowed the attacker, operating as GitHub account `voicproducoes` (ID 269549300, created March 19, 2026), to execute arbitrary code in a privileged context by simply opening a pull request from a fork.
+**`pull_request_target` misconfiguration.** The `bundle-size.yml` workflow was triggered by `pull_request_target` events and checked out code from the pull-request head without requiring maintainer approval. Because `pull_request_target` runs in the context of the base repository — with access to repository secrets and write permissions — this allowed the attacker, operating as GitHub account `voicproducoes` (ID 269549300, created March 19, 2026), to execute arbitrary code in a privileged context by opening a pull request from a fork.
 
 **GitHub Actions cache poisoning.** Code executed via the misconfigured `bundle-size.yml` workflow wrote a corrupted pnpm dependency store (approximately 1.1 GB) to the GitHub Actions cache service across the fork-to-base trust boundary. When the legitimate `release.yml` workflow subsequently ran, it restored this poisoned cache, injecting attacker-controlled binaries into the release build environment.
 
