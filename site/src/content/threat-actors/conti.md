@@ -99,7 +99,7 @@ Conti was a Russia-aligned ransomware-as-a-service (RaaS) operation active from 
 
 The group operated a double-extortion model: encrypting victim data while simultaneously threatening to publish exfiltrated files on a dedicated leak site ("Conti News") if ransom demands were not met. Conti functioned as a ransomware-as-a-service platform, with a core team providing tooling, infrastructure, and negotiation support to a network of affiliates who conducted intrusions independently.
 
-In February and March 2022, an anonymous source leaked a large volume of internal Conti communications and source code following the group's public declaration of support for Russia in the context of the war in Ukraine. Public successor-lineage claims should not be attributed to Conti absent independent evidence linking them to the same infrastructure or operators.
+In February and March 2022, an anonymous source leaked internal Conti communications and source code following the group's public declaration of support for Russia in the context of the war in Ukraine. Public successor-lineage claims should not be attributed to Conti absent independent evidence linking them to the same infrastructure or operators.
 
 ## Notable Campaigns
 
@@ -111,9 +111,9 @@ CISA advisory AA21-265A documented over 400 attacks globally against organizatio
 
 Conti's intrusion chain typically began with phishing-delivered malware — primarily BazarLoader and TrickBot — or exploitation of internet-facing vulnerabilities. Post-access activity consistently followed a pattern documented across the CISA advisory and corroborating incident reporting: Cobalt Strike deployment for command and control, credential harvesting via Mimikatz, lateral movement using Windows administrative tools and SMB shares, and bulk data staging and exfiltration using Rclone or similar utilities prior to ransomware deployment.
 
-The ransomware payload used a combination of ChaCha20 for file encryption and RSA-4096 for key protection. Deployment was designed for speed: Conti affiliates were provided internal playbooks (later exposed in the 2022 leaks) that detailed step-by-step procedures for disabling security software, deleting shadow copies, and deploying the encryptor across the network. The group maintained a professional support infrastructure including negotiation teams, leak site operators, and technical staff, consistent with its RaaS operating model.
+The ransomware payload used a combination of ChaCha20 for file encryption and RSA-4096 for key protection. Deployment was designed for speed: Conti affiliates were provided internal playbooks (later exposed in the 2022 leaks) that detailed step-by-step procedures for disabling security software, deleting shadow copies, and deploying the encryptor across the network. The group maintained a structured support infrastructure including negotiation teams, leak site operators, and technical staff, consistent with its RaaS operating model.
 
-The 2022 Conti leaks exposed internal chat logs, source code, and operational documentation, providing a detailed public record of the group's internal structure and tradecraft.
+The 2022 Conti leaks exposed internal chat logs, source code, and operational documentation, providing a public record of the group's internal structure and tradecraft.
 
 ## Attribution
 
@@ -123,11 +123,21 @@ The relationship between Conti and Russian state intelligence services is not es
 
 ## MITRE ATT&CK Profile
 
-Initial access relied primarily on phishing with malicious attachments delivering BazarLoader or TrickBot (T1566.001). Credential access used LSASS memory dumping via Mimikatz (T1003.001) to support lateral movement via SMB/Admin Shares (T1021.002). Defense evasion relied on obfuscated tooling and scripts designed to evade endpoint detection (T1027). Command and control used Cobalt Strike and legitimate remote access tools including AnyDesk (T1219). The ransomware deployment phase encrypted data (T1486) and inhibited recovery by deleting shadow copies and disabling backups (T1490).
+T1566.001 - Spearphishing Attachment: Initial access relied primarily on phishing with malicious attachments delivering BazarLoader or TrickBot.
+
+T1003.001 - LSASS Memory: Credential access used LSASS memory dumping via Mimikatz.
+
+T1021.002 - SMB/Windows Admin Shares: Operators moved laterally through compromised environments using SMB and Windows Admin Shares.
+
+T1027 - Obfuscated Files or Information: Intrusion activity relied on obfuscated tooling and scripts designed to evade endpoint detection.
+
+T1219 - Remote Access Tools: Operators used Cobalt Strike and legitimate remote access tools including AnyDesk.
+
+T1486 - Data Encrypted for Impact: The ransomware deployment phase encrypted data across compromised networks.
+
+T1490 - Inhibit System Recovery: Operators inhibited recovery by deleting shadow copies and disabling backup mechanisms.
 
 ## Sources & References
-
-Coverage of Conti in the cited public sources is concentrated in the 2021–2022 period. Post-Conti successor operations should not be attributed to Conti without independent evidence linking them to the same infrastructure or operators.
 
 - [CISA: Advisory AA21-265A — Conti Ransomware](https://www.cisa.gov/news-events/alerts/2021/09/22/conti-ransomware) — CISA, 2021-09-22
 - [CISA: Updated Conti Ransomware Advisory](https://www.cisa.gov/news-events/news/updated-conti-ransomware) — CISA, 2022-03-09
