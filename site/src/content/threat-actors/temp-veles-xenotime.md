@@ -7,7 +7,7 @@ affiliation: "Russia-aligned"
 motivation: "Sabotage / Safety-System Disruption"
 status: "unknown"
 country: "Russia"
-firstSeen: "2017"
+firstSeen: "2014"
 lastSeen: "2019"
 targetSectors:
   - "Energy"
@@ -122,6 +122,8 @@ Supporting capabilities include use of legitimate remote access tools (PLINK) an
 The actor is assessed as Russia-aligned across independent government and vendor investigations. Vendor reporting — primarily from Mandiant and Dragos — identifies the Russian Central Scientific Research Institute of Chemistry and Physics (TsNIIKhM) as an assessed responsible organization. The CISA HatMan Malware Analysis Report (MAR-17-352-01, Update B) is the primary U.S. government technical document; it corroborates the Russia-based assessment but should not be read as independently confirming the specific TsNIIKhM attribution claim.
 
 Attribution evidence includes infrastructure and IP address overlap linked to TsNIIKhM, malware artifacts consistent with Russian development patterns, and operational security lapses during the intrusion that exposed supporting infrastructure. Attribution of TsNIIKhM to a specific Russian government ministry or intelligence sponsor is not definitively established in available public reporting and should not be assumed.
+
+MITRE ATT&CK (G0088) classifies activity associated with this group beginning approximately 2014, reflecting assessed pre-positioning and reconnaissance consistent with this actor. The first confirmed deployment of TRITON was the 2017 incident at the Saudi petrochemical facility.
 
 ## MITRE ATT&CK Profile
 
