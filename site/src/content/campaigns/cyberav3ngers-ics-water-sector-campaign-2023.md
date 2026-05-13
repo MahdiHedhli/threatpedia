@@ -7,7 +7,7 @@ ongoing: false
 attackType: "ICS Exploitation / Default Credential Abuse"
 severity: high
 sector: "Water and Wastewater / Critical Infrastructure / Industrial Control Systems"
-geography: "United States, Israel, Ireland, Australia, France, Italy"
+geography: "United States, Israel, Ireland, Australia"
 threatActor: "CyberAv3ngers"
 attributionConfidence: A2
 reviewStatus: "draft_ai"
@@ -68,7 +68,7 @@ mitreMappings:
     tactic: "Impact"
     "attack-version": "v19"
     confidence: confirmed
-    evidence: "CyberAv3ngers modified PLC configuration and HMI display screens at compromised facilities. CISA advisory AA23-335A confirmed unauthorized changes to set-points and display content at impacted water utilities."
+    evidence: "CyberAv3ngers modified PLC configuration and HMI display screens at compromised facilities. CISA advisory AA23-335A confirmed unauthorized changes to HMI display content and device naming on impacted Unitronics PLCs."
 ---
 
 ## Executive Summary
@@ -99,7 +99,7 @@ The actors authenticated to exposed devices using default Unitronics administrat
 
 ### Stage 3: PLC Configuration Modification
 
-After authenticating, CyberAv3ngers modified PLC configuration and display settings. At the Aliquippa Municipal Water Authority, the actors displayed a message on the operator interface screen asserting that the system had been compromised and referencing anti-Israel messaging. The advisory confirmed that actors also changed set-points on affected devices. No confirmed disruption of water treatment operations or public health impact was documented in government sources for US facilities.
+After authenticating, CyberAv3ngers modified PLC configuration and display settings. At the Aliquippa Municipal Water Authority, the actors displayed a message on the operator interface screen asserting that the system had been compromised and referencing anti-Israel messaging. The advisory confirmed that actors changed password protections and renamed devices on compromised Unitronics PLCs. No confirmed disruption of water treatment operations or public health impact was documented in government sources for US facilities.
 
 ### Stage 4: Public Claims
 
@@ -111,7 +111,7 @@ T1078.001 - Default Accounts: CyberAv3ngers exploited default administrative cre
 
 T1133 - External Remote Services: Unitronics PLCs were directly reachable via the public internet on TCP port 20256 (PCOM protocol). Operators had not restricted remote access or required VPN, enabling direct exploitation without traversing intermediate network controls.
 
-T1485 - Data Destruction: CyberAv3ngers modified PLC display configurations and altered set-points at compromised facilities. CISA advisory AA23-335A confirmed unauthorized changes to HMI display content and operational parameters at impacted water utilities.
+T1485 - Data Destruction: CyberAv3ngers modified PLC display configurations and changed password protections at compromised facilities. CISA advisory AA23-335A confirmed unauthorized HMI display content modifications and device renaming at impacted water utilities.
 
 ## Timeline
 
@@ -125,7 +125,7 @@ The Aliquippa Municipal Water Authority reported that a booster station PLC was 
 
 ### 2023-11-28 — CISA Issues Advisory AA23-335A
 
-CISA, jointly with the FBI, NSA, EPA, and cybersecurity agencies from Israel, Australia, France, Italy, and the United Kingdom, published advisory AA23-335A attributing the campaign to IRGC-CEC and directing water utilities to change all default Unitronics credentials, disconnect PLCs from direct internet exposure, and apply available firmware updates.
+CISA, jointly with the FBI, NSA, EPA, and cybersecurity agencies from Israel, Australia, and the United Kingdom, published advisory AA23-335A attributing the campaign to IRGC-CEC and directing water utilities to change all default Unitronics credentials, disconnect PLCs from direct internet exposure, and apply available firmware updates.
 
 ### 2023-11-28 — WaterISAC Issues Sector Alert
 
