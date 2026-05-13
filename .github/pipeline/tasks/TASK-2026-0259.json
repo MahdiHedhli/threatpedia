@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-08T17:18:37.986Z",
-  "updated": "2026-05-13T06:10:00.000Z",
+  "updated": "2026-05-13T17:12:20.000Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": "dangermouse-bot",
@@ -80,6 +80,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Article draft PR opened. Branch: pipeline/TASK-2026-0259"
+    },
+    {
+      "timestamp": "2026-05-13T17:12:20.000Z",
+      "action": "remediated",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Added attack-version v19 to all three MITRE ATT&CK mappings (T1078.001, T1133, T1485) to comply with pipeline guidance for new content. No other content changes."
     }
   ]
 }
