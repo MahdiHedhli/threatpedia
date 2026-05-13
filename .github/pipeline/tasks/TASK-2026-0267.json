@@ -1,0 +1,57 @@
+{
+  "task_id": "TASK-2026-0267",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-13T10:54:27.968Z",
+  "updated": "2026-05-13T10:54:27.968Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Iran-nexus Microsoft 365 password spray campaign targeting Middle East cloud environments",
+    "sources": [
+      "https://blog.checkpoint.com/research/iran-nexus-password-spray-campaign-targeting-cloud-environments-with-a-focus-on-the-middle-east",
+      "https://www.microsoft.com/en-us/security/security-insider/threat-landscape/gray-sandstorm"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin 2026-04-01 lead. Scope as a campaign around March 2026 Microsoft 365 password-spray activity targeting government and private-sector organizations in Israel, the UAE, Saudi Arabia, Europe, and Middle East sectors connected to the regional conflict. Use Check Point for campaign timing/victimology and Microsoft only for conservative Gray Sandstorm background; do not overstate attribution beyond source wording. Older DEV-0343 Microsoft source is intentionally not included in task sources because URL dedupe says it is already known from APT35/Charming Kitten coverage. Discovery source: https://news.risky.biz/risky-bulletin-iranian-password-sprays-came-first-then-came-the-missiles/"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0267",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T10:54:27.968Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
