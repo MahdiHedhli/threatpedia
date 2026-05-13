@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-13T11:02:38.012Z",
+  "updated": "2026-05-08T15:25:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -61,14 +61,6 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-014"
-    },
-    {
-      "timestamp": "2026-05-13T11:02:38.012Z",
-      "action": "dispatched",
-      "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatched as Issue #642"
     }
   ]
 }
