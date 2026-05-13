@@ -12,10 +12,8 @@ targetSectors:
   - "Critical Infrastructure"
   - "Energy"
   - "Pipeline Operations"
-  - "Business Services"
 targetGeographies:
   - "United States"
-  - "International"
 tools:
   - "DarkSide ransomware"
   - "Cobalt Strike"
