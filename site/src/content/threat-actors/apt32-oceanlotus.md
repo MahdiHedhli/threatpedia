@@ -11,7 +11,7 @@ affiliation: "Vietnam (assessed state-sponsored)"
 motivation: "Espionage"
 status: active
 country: "Vietnam"
-firstSeen: "2012"
+firstSeen: "2014"
 lastSeen: "2024"
 targetSectors:
   - "Government"
@@ -112,7 +112,7 @@ sources:
 
 ## Executive Summary
 
-APT32, widely tracked as OceanLotus, is a Vietnam-linked cyber-espionage group assessed by multiple independent security organizations as operating in support of Vietnamese state intelligence interests. Active since at least 2012, the group conducts targeted intrusion campaigns against government agencies, media organizations, civil society groups, and foreign businesses operating in Vietnam and across Southeast Asia.
+APT32, widely tracked as OceanLotus, is a Vietnam-linked cyber-espionage group assessed by multiple independent security organizations as operating in support of Vietnamese state intelligence interests. Active since at least 2014, the group conducts targeted intrusion campaigns against government agencies, media organizations, civil society groups, and foreign businesses operating in Vietnam and across Southeast Asia.
 
 APT32 is notable for an aggressive targeting posture that includes Vietnamese domestic dissidents, foreign journalists covering Vietnamese affairs, and multinational corporations with commercial interests in the region. The US Department of State has documented Vietnamese government harassment and targeting of journalists, activists, and civil society members consistent with the observed APT32 victim profile. The group's toolset combines commodity frameworks such as Cobalt Strike with custom-developed malware including KERRDOWN, METALJACK, and PHOREAL. Strategic web compromise and spearphishing remain the group's primary initial access vectors.
 
@@ -129,10 +129,6 @@ ESET and Amnesty International documented APT32 campaigns targeting Vietnamese c
 ### 2020 — COVID-19 Intelligence Collection
 
 In early 2020, Mandiant attributed a spearphishing campaign against the Wuhan City Government and Chinese Ministry of Emergency Management to APT32, assessing the group was collecting intelligence on China's handling of the COVID-19 outbreak. This represented a departure from the group's typical dissident and civil society focus toward a rival government target.
-
-### 2019–2020 — Automotive Industry Espionage
-
-Mandiant reported APT32 intrusions targeting global automotive manufacturers, consistent with Vietnamese government interest in developing a domestic automotive industry. The campaign involved spearphishing of employees at European and Asian automotive firms.
 
 ## Technical Capabilities
 
