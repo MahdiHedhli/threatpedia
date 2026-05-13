@@ -33,6 +33,7 @@ tools:
   - "Karba"
   - "Tapaoux"
   - "BBSRAT"
+  - "Ramsay"
   - "custom keyloggers"
   - "trojanized software installers"
 mitreMappings:
@@ -97,6 +98,13 @@ sources:
     publicationDate: "2015-11-09"
     accessDate: "2026-05-13"
     archived: false
+  - url: "https://digital.nhs.uk/cyber-alerts/2020/cc-3452"
+    publisher: "NHS England Digital"
+    publisherType: government
+    reliability: R2
+    publicationDate: "2020-05-14"
+    accessDate: "2026-05-13"
+    archived: false
 ---
 
 ## Executive Summary
@@ -115,10 +123,6 @@ Kaspersky Lab's November 2014 report documented a sustained campaign spanning at
 
 Following the July 2015 breach of Italian spyware vendor Hacking Team, DarkHotel rapidly weaponized leaked zero-day exploit code for Adobe Flash (CVE-2015-5119), incorporating it into both spearphishing campaigns and watering-hole attacks within days of public disclosure. Kaspersky's follow-up 2015 report documented the group's use of this and additional Flash and Internet Explorer zero-days, demonstrating a sustained investment in client-side exploitation capability beyond the hotel-network vector.
 
-### 2019–2020 — COVID-19 Research Targeting
-
-Multiple security vendors reported DarkHotel-attributed activity targeting organizations involved in COVID-19 vaccine and pharmaceutical research, consistent with the group's historic focus on technology and IP theft from high-value corporate targets. This activity demonstrated the group's operational continuity and adaptability to high-priority collection requirements.
-
 ## Technical Capabilities
 
 DarkHotel's technical toolkit spans social engineering, network-level interception, and custom malware, with a track record of rapid zero-day incorporation.
@@ -127,7 +131,7 @@ DarkHotel's technical toolkit spans social engineering, network-level intercepti
 
 **Tapaoux** (also called the DarkHotel downloader) serves as a first-stage implant, delivered through malicious attachments or hotel-network injection. It performs host reconnaissance and retrieves second-stage payloads from attacker-controlled servers.
 
-**BBSRAT** is a modular backdoor sharing functional overlap with Karba, capable of process injection, file management, and remote shell access. Its use in DarkHotel operations has been assessed by multiple vendors.
+**BBSRAT** is a modular backdoor sharing functional overlap with Karba, capable of process injection, file management, and remote shell access. Its use in DarkHotel operations has been assessed by multiple vendors. NHS England Digital described **Ramsay** as an information-stealing trojan and espionage framework believed to have been created by or for DarkHotel.
 
 The group's network interception technique requires prior compromise of hotel IT infrastructure — typically via exploitation of hotel network management systems or router firmware — which the group maintains as persistent footholds between targeted operations. Code-signing with counterfeit certificates is consistently used to reduce endpoint detection friction.
 
@@ -154,3 +158,4 @@ Microsoft tracks the group as **DUBNIUM** and CrowdStrike as **Zigzag Hail**. Ne
 - [MITRE ATT&CK: DarkHotel (G0012)](https://attack.mitre.org/groups/G0012/) — MITRE ATT&CK, 2026-05-13
 - [Kaspersky Lab: The DarkHotel APT](https://securelist.com/the-darkhotel-apt/66779/) — Kaspersky Lab, 2014-11-10
 - [Kaspersky Lab: DarkHotel Attacks in 2015](https://securelist.com/darkhotel-attacks-in-2015/71713/) — Kaspersky Lab, 2015-11-09
+- [NHS England Digital: Ramsay Trojan](https://digital.nhs.uk/cyber-alerts/2020/cc-3452) — NHS England Digital, 2020-05-14
