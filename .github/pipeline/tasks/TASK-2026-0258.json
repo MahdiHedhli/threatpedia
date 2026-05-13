@@ -8,8 +8,8 @@
     "updated": "2026-05-13T19:19:59.000Z",
     "source": "historical_corpus_backlog",
     "submitted_by": "Kernel K",
-    "locked_by": "dangermouse-bot",
-    "locked_at": "2026-05-13T19:10:35.098Z",
+    "locked_by": null,
+    "locked_at": null,
     "input": {
         "topic": "Equation Group threat actor profile",
         "sources": [
