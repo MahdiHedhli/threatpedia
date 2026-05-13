@@ -35,31 +35,31 @@ mitreMappings:
   - techniqueId: "T1566.002"
     techniqueName: "Spearphishing Link"
     tactic: "Initial Access"
-    attack-version: "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "CISA Advisory AA20-301A documents Kimsuky conducting spearphishing operations using malicious links, including login-security-alert-themed lures targeting South Korean, Japanese, and US organizations and individuals."
   - techniqueId: "T1189"
     techniqueName: "Drive-by Compromise"
     tactic: "Initial Access"
-    attack-version: "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "CISA Advisory AA20-301A documents Kimsuky employing watering hole attacks as an initial access vector against think tanks, government agencies, and nuclear-sector targets."
   - techniqueId: "T1583.001"
     techniqueName: "Domains"
     tactic: "Resource Development"
-    attack-version: "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Mandiant's 2023 APT43 report documents the group registering operational infrastructure domains using stolen personally identifiable information to support spearphishing and credential-collection operations."
   - techniqueId: "T1586.002"
     techniqueName: "Email Accounts"
     tactic: "Resource Development"
-    attack-version: "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Mandiant's 2023 APT43 report documents APT43 creating fraudulent email personas that impersonate diplomats, defense officials, and subject-matter experts to conduct targeted spearphishing."
   - techniqueId: "T1176"
     techniqueName: "Software Extensions"
     tactic: "Persistence"
-    attack-version: "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "CISA Advisory AA20-301A explicitly documents Kimsuky deploying malicious browser extensions against targets as part of its initial access and collection tradecraft."
 attributionConfidence: A2
