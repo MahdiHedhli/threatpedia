@@ -42,12 +42,6 @@ mitreMappings:
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK G0129 documents victim execution of malicious files as a consistent component of Mustang Panda infection chains, triggering the DLL side-loading stage."
-  - techniqueId: "T1574.001"
-    techniqueName: "DLL"
-    tactic: "Stealth"
-    attackVersion: "v19"
-    confidence: confirmed
-    evidence: "MITRE ATT&CK G0129 and Cisco Talos document Mustang Panda using DLL side-loading through legitimate executables to load PlugX and TONEINS/TONESHELL components."
   - techniqueId: "T1091"
     techniqueName: "Replication Through Removable Media"
     tactic: "Lateral Movement"
@@ -145,8 +139,6 @@ No government indictment or formal official attribution has been issued for Must
 T1566.001 - Spearphishing Attachment: Spearphishing emails with malicious document attachments are the documented primary delivery vector, confirmed by Cisco Talos in the European diplomatic targeting campaign.
 
 T1204.002 - Malicious File: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
-
-T1574.001 - DLL: DLL side-loading is documented across both PlugX delivery and the TONEINS/TONESHELL malware family. MITRE ATT&CK G0129 and Cisco Talos document the technique as a mechanism for loading Mustang Panda payloads through legitimate executables.
 
 T1091 - Replication Through Removable Media: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
 
