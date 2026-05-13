@@ -141,7 +141,7 @@ sources:
     publisher: "Kaspersky"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2019-07-10"
+    publicationDate: "2019-05-13"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://www.cisa.gov/news-events/alerts/2019/05/09/north-korean-malicious-cyber-activity"
@@ -211,5 +211,5 @@ APT37 employs techniques documented across MITRE ATT&CK v19, spanning initial ac
 
 - [MITRE ATT&CK: APT37 (G0067)](https://attack.mitre.org/groups/G0067/) — MITRE ATT&CK, 2026-05-13
 - [Google Cloud: APT37 — An Overlooked North Korean Actor](https://cloud.google.com/blog/topics/threat-intelligence/apt37-overlooked-north-korean-actor/) — Google Cloud, 2018-02-20
-- [Kaspersky: ScarCruft Continues to Evolve, Introduces Bluetooth Harvester](https://securelist.com/scarcruft-continues-to-evolve-introduces-bluetooth-harvester/90729/) — Kaspersky, 2019-07-10
+- [Kaspersky: ScarCruft Continues to Evolve, Introduces Bluetooth Harvester](https://securelist.com/scarcruft-continues-to-evolve-introduces-bluetooth-harvester/90729/) — Kaspersky, 2019-05-13
 - [CISA: North Korean Malicious Cyber Activity](https://www.cisa.gov/news-events/alerts/2019/05/09/north-korean-malicious-cyber-activity) — CISA, 2019-05-09
