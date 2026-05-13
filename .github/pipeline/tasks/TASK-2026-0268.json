@@ -18,7 +18,15 @@
       "https://news.risky.biz/risky-bulletin-russia-will-revoke-licenses-for-unruly-isps"
     ],
     "candidate_data": {
-      "severity": "high"
+      "severity": "high",
+      "date": "2026-04-01",
+      "disclosure_date": "2026-04-01",
+      "attack_type": "Cyberattack",
+      "affected_organization": "Hasbro",
+      "sector": "Consumer products and entertainment",
+      "geography": "United States",
+      "threat_actor": "Unknown",
+      "known_impact": "Business-system disruption and multi-week recovery window reported by TechCrunch; scope should remain source-bound."
     },
     "notes": "Risky Bulletin discovery item. Scope as a discrete Hasbro incident based on the company SEC filing and TechCrunch reporting. Keep attribution unknown unless later primary sources name an actor; do not infer ransomware without source support. Discovery source: https://news.risky.biz/risky-bulletin-russia-will-revoke-licenses-for-unruly-isps/"
   },
@@ -30,7 +38,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 8,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "astro_build": true
