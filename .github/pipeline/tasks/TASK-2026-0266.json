@@ -1,0 +1,67 @@
+{
+  "task_id": "TASK-2026-0266",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-13T07:14:57.216Z",
+  "updated": "2026-05-13T07:14:57.216Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Dutch Ministry of Finance internal systems breach, March 2026",
+    "sources": [
+      "https://news.risky.biz/risky-bulletin-the-intellexa-ceo-is-pissed",
+      "https://www.rijksoverheid.nl/actueel/nieuws/2026/03/23/ministerie-van-financien-onderzoekt-ongeautoriseerde-toegang-tot-systemen",
+      "https://www.tweedekamer.nl/downloads/document?id=2026D14828",
+      "https://nltimes.nl/2026/03/24/hack-discovered-ministry-finance-unclear-data-accessed"
+    ],
+    "candidate_data": {
+      "date": "2026-03-19",
+      "disclosure_date": "2026-03-23",
+      "severity": "medium",
+      "sector": "Government / public administration",
+      "geography": "Netherlands",
+      "threat_actor": "Unknown",
+      "attack_type": "Unauthorized access to internal government systems",
+      "affected_organization": "Dutch Ministry of Finance",
+      "known_impact": "Internal systems access investigation; citizen-facing tax and allowance portals reported unaffected"
+    },
+    "notes": "Risky Bulletin 2026-03-25 lead. Scope as a bounded incident covering unauthorized access detected on 2026-03-19 to internal Ministry of Finance systems, access blocks on 2026-03-23, employee/internal-process impact, and no reported disruption to citizen-facing tax or allowance portals. Preserve the Dutch government notice and parliamentary letter as primary sources; do not infer actor identity, data theft, or portal impact beyond the sources."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0266",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T07:14:57.216Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

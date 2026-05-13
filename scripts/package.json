@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "social:share-x": "node social-share-x.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

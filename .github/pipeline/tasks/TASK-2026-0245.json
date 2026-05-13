@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-13T05:20:14.587Z",
+  "updated": "2026-05-13T07:36:39.473Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -76,6 +76,14 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Article generated, validated locally (PASS), and recorded against PR #626. Astro build passed with ASTRO_TELEMETRY_DISABLED=1 (sandbox ENOSPC — pre-existing disk issue, not content defect). GitHub API fallback used (gh absent)."
+    },
+    {
+      "timestamp": "2026-05-13T07:36:39.473Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #626 already covers this task."
     }
   ],
   "pr_number": 626,

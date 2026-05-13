@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-12T03:46:51.000Z",
-  "updated": "2026-05-12T03:46:51.000Z",
+  "updated": "2026-05-13T05:32:10.205Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -33,8 +33,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -62,6 +62,32 @@
       "to": "pending",
       "agent": "kernel-k-manual-intake",
       "note": "Manual link submission for TanStack npm compromise; corroborated with TanStack postmortem, GHSA, Socket, StepSecurity, and campaign-context sources."
+    },
+    {
+      "timestamp": "2026-05-12T21:04:27.062Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-12T21:14:47.107Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #606"
+    },
+    {
+      "timestamp": "2026-05-13T05:32:10.205Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #606 merged (66fca83)."
     }
-  ]
+  ],
+  "pr_number": 606,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/606",
+  "merged_at": "2026-05-13T05:32:10.205Z"
 }
