@@ -106,11 +106,18 @@ sources:
     publicationDate: "2022-03-29"
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://www.cisa.gov/eviction-strategies-tool/info-attack/T1583.001"
-    publisher: "CISA"
+  - url: "https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/"
+    publisher: "ThaiCERT"
     publisherType: government
     reliability: R1
-    publicationDate: "2026-05-13"
+    publicationDate: "2024-11-06"
+    accessDate: "2026-05-13"
+    archived: false
+  - url: "https://attack.mitre.org/campaigns/C0011/"
+    publisher: "MITRE ATT&CK"
+    publisherType: research
+    reliability: R1
+    publicationDate: "2025-04-16"
     accessDate: "2026-05-13"
     archived: false
 ---
@@ -129,7 +136,7 @@ Cisco Talos researchers Asheer Malhotra and Nick Biasini published findings in J
 
 ### Ongoing — Indian Government Officials Targeting
 
-Cisco Talos has reported a Transparent Tribe campaign deploying new bespoke Windows malware against Indian government officials, demonstrating continued investment in custom tooling beyond the group's established Crimson RAT implant. This campaign is consistent with the group's long-standing focus on Indian government and defense entities documented by MITRE ATT&CK.
+Cisco Talos has reported a Transparent Tribe campaign deploying new bespoke Windows malware against Indian government officials, demonstrating continued investment in custom tooling beyond the group's established Crimson RAT implant. This campaign is consistent with the group's long-standing focus on Indian government and defense entities documented by MITRE ATT&CK. ThaiCERT separately summarized 2024 reporting that APT36 continued targeting Indian government agencies, military units, and diplomatic missions with updated malware tooling and removable-media collection capability.
 
 ## Technical Capabilities
 
@@ -143,7 +150,7 @@ Cisco Talos reporting on a subsequent Indian government officials campaign docum
 
 ## Attribution
 
-MITRE ATT&CK classifies Transparent Tribe as group G0134 and describes it as a suspected Pakistan-based threat group. Targeting has focused on diplomatic, defense, and research organizations in India and Afghanistan, consistent with collection priorities associated with Pakistani state intelligence interests. The group has been observed operating since at least 2013.
+MITRE ATT&CK classifies Transparent Tribe as group G0134 and describes it as a suspected Pakistan-based threat group. Targeting has focused on diplomatic, defense, and research organizations in India and Afghanistan. The cited sources support a suspected Pakistan-based assessment but do not establish formal Pakistani state sponsorship. The group has been observed operating since at least 2013.
 
 The suspected Pakistan-based assessment is based on targeting alignment and technical indicators across vendor reporting rather than a formal government attribution. MITRE's use of "suspected" reflects the absence of definitive confirming evidence such as a government indictment or official advisory explicitly linking the group to the Pakistani state. No such formal government attribution is present in the sources used for this profile.
 
@@ -170,4 +177,5 @@ T1608.001 - Upload Malware: MITRE ATT&CK documents Transparent Tribe uploading m
 - [MITRE ATT&CK: Transparent Tribe (G0134)](https://attack.mitre.org/groups/G0134/) — MITRE ATT&CK, 2024-04-10
 - [Cisco Talos: Transparent Tribe Targets Education Sector Amid Continued Threat Actor Evolution](https://blog.talosintelligence.com/transparent-tribe-targets-education/) — Cisco Talos, 2022-07-13
 - [Cisco Talos: Transparent Tribe New Campaign Using New Bespoke Malware](https://blog.talosintelligence.com/transparent-tribe-new-campaign/) — Cisco Talos, 2022-03-29
-- [CISA: T1583.001 Domains](https://www.cisa.gov/eviction-strategies-tool/info-attack/T1583.001) — CISA, 2026-05-13
+- [ThaiCERT: APT36 Enhances Tools for Attacking Indian Government Agencies](https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/) — ThaiCERT, 2024-11-06
+- [MITRE ATT&CK: Transparent Tribe Campaign (C0011)](https://attack.mitre.org/campaigns/C0011/) — MITRE ATT&CK, 2025-04-16
