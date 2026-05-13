@@ -9,6 +9,7 @@ aliases:
   - "Mint Sandstorm"
   - "Yellow Garuda"
   - "ITG18"
+  - "Dev-0343"
 affiliation: "Iran (assessed)"
 motivation: "Espionage"
 status: active
@@ -65,9 +66,16 @@ mitreMappings:
     confidence: "confirmed"
     evidence: "MITRE ATT&CK documents APT35 registering domains to support phishing infrastructure and credential-harvesting operations."
     notes: "Domain acquisition for phishing and credential harvesting infrastructure is a documented APT35 resource development technique per MITRE."
+  - techniqueId: "T1110.003"
+    techniqueName: "Password Spraying"
+    tactic: "Credential Access"
+    attack-version: "v19"
+    confidence: "confirmed"
+    evidence: "Microsoft documented password-spray attacks against Office 365 environments attributed to Dev-0343, an actor Microsoft later associated with the Phosphorus/Mint Sandstorm cluster."
+    notes: "Password spraying against cloud-hosted email platforms is documented by Microsoft for the 2021 defense-sector campaign attributed to this cluster."
 atlasMappings: []
 attributionConfidence: A3
-attributionRationale: "MITRE ATT&CK (G0059) assesses APT35 as an Iranian threat group. Microsoft has tracked overlapping activity under the designations Phosphorus and Mint Sandstorm, assessing the actor as Iran-linked. Google's Threat Analysis Group has tracked related credential-phishing campaigns consistent with Iranian state interests. No formal public indictment specifically naming APT35 has been issued as of the sources reviewed for this profile. The alias cluster — Charming Kitten, Phosphorus, Mint Sandstorm, Newscaster, TA453 — reflects independent vendor tracking of overlapping activity sets and should not be read as confirmation of a single, precisely bounded organizational unit."
+attributionRationale: "MITRE ATT&CK (G0059) assesses APT35 as an Iranian threat group. Microsoft tracks overlapping activity as Phosphorus and Mint Sandstorm; Google TAG has documented related credential-phishing consistent with Iranian state interests. No formal indictment naming APT35 has been issued. Alias diversity reflects independent vendor tracking of overlapping activity sets, not confirmation of a single bounded organizational unit."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-13
@@ -115,7 +123,7 @@ sources:
 
 APT35, widely tracked as Charming Kitten, is an Iranian threat group that MITRE ATT&CK (G0059) assesses as conducting espionage operations consistent with Iranian government intelligence collection priorities. The group is known for sustained credential-phishing campaigns targeting journalists, academics, human rights advocates, government officials, and defense-sector personnel. Microsoft has tracked overlapping activity under the Phosphorus and Mint Sandstorm designations; Google's Threat Analysis Group has separately tracked related campaigns.
 
-The group's primary operational method is large-scale, tailored social-engineering and phishing operations designed to harvest credentials, gain access to email accounts, and collect intelligence on targets of interest to the Iranian state. MITRE ATT&CK places the group's known activity beginning at least as early as 2014.
+The group's primary operational method is tailored social-engineering and phishing operations designed to harvest credentials, gain access to email accounts, and collect intelligence on targets of interest to the Iranian state. MITRE ATT&CK places the group's known activity beginning at least as early as 2014.
 
 ## Notable Campaigns
 
@@ -129,7 +137,7 @@ MITRE ATT&CK documents sustained APT35 operations targeting media professionals,
 
 ## Technical Capabilities
 
-APT35 is primarily a credential-phishing and collection actor. The group's documented technical approach centers on large-scale acquisition of valid credentials through phishing infrastructure, followed by account access and email collection using those credentials.
+APT35 is primarily a credential-phishing and collection actor. The group's documented technical approach centers on acquisition of valid credentials through phishing infrastructure, followed by account access and email collection using those credentials.
 
 **HYPERSCRAPE** is a purpose-built email exfiltration tool documented by MITRE that allows the group to download email content from victim accounts, including content from Gmail, Yahoo, and Microsoft Outlook environments. The tool is designed for operational use against accounts where credentials have already been compromised.
 
@@ -141,13 +149,13 @@ The group registers attacker-controlled domains to support credential-harvesting
 
 MITRE ATT&CK categorizes APT35 as G0059 and assesses it as an Iranian threat group. Microsoft has tracked overlapping activity under Phosphorus (legacy designation) and Mint Sandstorm (current Microsoft designation), assessing the cluster as Iran-linked and consistent with Iranian government intelligence interests. Google's Threat Analysis Group has documented related credential-targeting campaigns targeting high-profile individuals.
 
-The large alias cluster associated with this actor — Charming Kitten, APT35, Phosphorus, Mint Sandstorm, Newscaster, TA453, Yellow Garuda, ITG18 — reflects independent vendor discovery and tracking of overlapping intrusion activity sets. Different vendors may scope this cluster differently; attribution claims specific to one vendor track should not be generalized across all aliases unless the relevant source explicitly connects them.
+The alias cluster associated with this actor — Charming Kitten, APT35, Phosphorus, Mint Sandstorm, Newscaster, TA453, Yellow Garuda, ITG18, Dev-0343 — reflects independent vendor discovery and tracking of overlapping intrusion activity sets. Different vendors may scope this cluster differently; attribution claims specific to one vendor track should not be generalized across all aliases unless the relevant source explicitly connects them.
 
 CISA's nation-state cyber actor overview provides broader government context for Iranian-linked cyber operations. No formal public cybersecurity indictment or advisory specifically naming APT35 by that designation appears in the source set reviewed for this profile. The Iran-linked assessment rests on convergent private-sector analysis and targeting alignment corroborated by the general government record on Iranian state cyber activity.
 
 ## MITRE ATT&CK Profile
 
-APT35 employs techniques documented across MITRE ATT&CK v19, with a strong emphasis on initial access through social engineering and credential theft.
+APT35 employs techniques documented across MITRE ATT&CK v19, with a focus on initial access through social engineering and credential theft.
 
 **Resource Development**: The group registers attacker-controlled domains (T1583.001) to host credential-harvesting infrastructure, impersonating legitimate email providers and organizational login pages.
 
