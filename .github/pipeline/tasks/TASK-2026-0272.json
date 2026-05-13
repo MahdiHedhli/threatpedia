@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-13T21:50:19.981Z",
+  "updated": "2026-05-13T21:56:02Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
   "locked_by": null,
@@ -82,6 +82,31 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #687 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T21:29:44.462Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T21:33:57.589Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #687"
+    },
+    {
+      "timestamp": "2026-05-13T21:56:02Z",
+      "action": "conflict_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Rebased onto latest main and preserved PR #687 task state plus dispatcher skip history."
     }
-  ]
+  ],
+  "pr_number": 687,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/687"
 }
