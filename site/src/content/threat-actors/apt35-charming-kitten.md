@@ -102,6 +102,13 @@ sources:
     publicationDate: "2021-10-07"
     accessDate: "2026-05-13"
     archived: false
+  - url: "https://www.cisa.gov/topics/cyber-threats-and-advisories/nation-state-cyber-actors"
+    publisher: "CISA"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-05-13"
+    accessDate: "2026-05-13"
+    archived: false
 ---
 
 ## Executive Summary
@@ -136,7 +143,7 @@ MITRE ATT&CK categorizes APT35 as G0059 and assesses it as an Iranian threat gro
 
 The large alias cluster associated with this actor — Charming Kitten, APT35, Phosphorus, Mint Sandstorm, Newscaster, TA453, Yellow Garuda, ITG18 — reflects independent vendor discovery and tracking of overlapping intrusion activity sets. Different vendors may scope this cluster differently; attribution claims specific to one vendor track should not be generalized across all aliases unless the relevant source explicitly connects them.
 
-No formal public cybersecurity indictment or Western government advisory specifically naming APT35 appears in the source set reviewed for this profile. The Iran-linked assessment rests on convergent private-sector analysis and targeting alignment rather than formal government attribution.
+CISA's nation-state cyber actor overview provides broader government context for Iranian-linked cyber operations. No formal public cybersecurity indictment or advisory specifically naming APT35 by that designation appears in the source set reviewed for this profile. The Iran-linked assessment rests on convergent private-sector analysis and targeting alignment corroborated by the general government record on Iranian state cyber activity.
 
 ## MITRE ATT&CK Profile
 
@@ -157,3 +164,4 @@ APT35 employs techniques documented across MITRE ATT&CK v19, with a strong empha
 - [MITRE ATT&CK: APT35 (G0059)](https://attack.mitre.org/groups/G0059/) — MITRE ATT&CK, 2024-04-19
 - [Microsoft: Iran-linked DEV-0343 Targeting Defense, GIS, and Maritime Sectors](https://www.microsoft.com/en-us/security/blog/2021/10/11/iran-linked-dev-0343-targeting-defense-gis-and-maritime-sectors/) — Microsoft, 2021-10-11
 - [Google: How We're Tackling Evolving Online Threats](https://blog.google/threat-analysis-group/how-were-tackling-evolving-online-threats/) — Google, 2021-10-07
+- [CISA: Nation-State Cyber Actors](https://www.cisa.gov/topics/cyber-threats-and-advisories/nation-state-cyber-actors) — CISA, 2026-05-13
