@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-13T21:56:02Z",
+  "updated": "2026-05-13T22:16:46.213Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
   "locked_by": null,
@@ -105,8 +105,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Rebased onto latest main and preserved PR #687 task state plus dispatcher skip history."
+    },
+    {
+      "timestamp": "2026-05-13T22:16:46.213Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #687 merged (59fc8b4)."
     }
   ],
   "pr_number": 687,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/687"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/687",
+  "merged_at": "2026-05-13T22:16:46.213Z"
 }
