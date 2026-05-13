@@ -18,7 +18,9 @@
       "https://news.risky.biz/risky-bulletin-cybercrime-losses-passed-20-billion-last-year"
     ],
     "candidate_data": {
-      "severity": "medium"
+      "severity": "medium",
+      "attack_type": "Social engineering / marketing platform account compromise",
+      "sector": "Financial technology"
     },
     "notes": "Risky Bulletin discovery item from 2026-04-08. Betterment's own post-mortem says a social engineering attack against an employee enabled access to a marketing platform that was used to send waves of cryptocurrency-scam emails to customers. Scope as a discrete Betterment incident; keep actor unknown unless stronger sources name one. The Jan. 14 Risky Bulletin/private backlog item was deferred pending a primary source; the Apr. 8 bulletin links the company post-mortem that resolves that source gap."
   },
