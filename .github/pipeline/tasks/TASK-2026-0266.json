@@ -19,7 +19,15 @@
       "https://nltimes.nl/2026/03/24/hack-discovered-ministry-finance-unclear-data-accessed"
     ],
     "candidate_data": {
-      "severity": "medium"
+      "date": "2026-03-19",
+      "disclosure_date": "2026-03-23",
+      "severity": "medium",
+      "sector": "Government / public administration",
+      "geography": "Netherlands",
+      "threat_actor": "Unknown",
+      "attack_type": "Unauthorized access to internal government systems",
+      "affected_organization": "Dutch Ministry of Finance",
+      "known_impact": "Internal systems access investigation; citizen-facing tax and allowance portals reported unaffected"
     },
     "notes": "Risky Bulletin 2026-03-25 lead. Scope as a bounded incident covering unauthorized access detected on 2026-03-19 to internal Ministry of Finance systems, access blocks on 2026-03-23, employee/internal-process impact, and no reported disruption to citizen-facing tax or allowance portals. Preserve the Dutch government notice and parliamentary letter as primary sources; do not infer actor identity, data theft, or portal impact beyond the sources."
   },
@@ -31,7 +39,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 8,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
