@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T18:10:16.470Z",
-  "updated": "2026-05-13T19:11:24.000Z",
+  "updated": "2026-05-13T19:41:33.617Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-13T19:41:33.613Z",
   "input": {
     "topic": "NGINX UI CVE-2026-33032 exploitation activity",
     "sources": [
@@ -65,6 +65,13 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Normalized incident seed metadata: added candidate_data date, attack_type, sector, and geography; aligned min_h2_sections with the incident article section contract; removed legacy schema_validation acceptance field."
+    },
+    {
+      "timestamp": "2026-05-13T19:41:33.617Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
