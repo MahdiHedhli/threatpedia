@@ -7,6 +7,7 @@ aliases:
   - "RedDelta"
   - "TA416"
   - "PKPLUG"
+  - "Playful Dragon"
 affiliation: "China"
 motivation: "Espionage"
 status: active
@@ -41,8 +42,8 @@ mitreMappings:
     confidence: confirmed
     evidence: "MITRE ATT&CK G0129 documents victim execution of malicious files as a consistent component of Mustang Panda infection chains, triggering the DLL side-loading stage."
   - techniqueId: "T1574.001"
-    techniqueName: "DLL"
-    tactic: "Stealth"
+    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
+    tactic: "Defense Evasion"
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK G0129, Cisco Talos, and Secureworks document Mustang Panda's use of DLL side-loading with PlugX and related tooling."
@@ -144,7 +145,7 @@ T1566.001 - Spearphishing Attachment: Spearphishing emails with malicious docume
 
 T1204.002 - Malicious File: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
 
-T1574.001 - DLL: Mustang Panda uses DLL side-loading to execute PlugX and related tooling through legitimate signed executables, as documented by MITRE ATT&CK G0129, Cisco Talos, and Secureworks.
+T1574.001 - Hijack Execution Flow: DLL Side-Loading: Mustang Panda uses DLL side-loading to execute PlugX and related tooling through legitimate signed executables, as documented by MITRE ATT&CK G0129, Cisco Talos, and Secureworks.
 
 T1091 - Replication Through Removable Media: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
 
