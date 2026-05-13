@@ -17,9 +17,7 @@ targetSectors:
   - "Electronics"
   - "Pharmaceuticals"
   - "Manufacturing"
-  - "Financial Services"
   - "Government"
-  - "Non-Governmental Organizations"
 targetGeographies:
   - "Japan"
   - "South Korea"
