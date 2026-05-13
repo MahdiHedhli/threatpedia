@@ -72,7 +72,7 @@ mitreMappings:
     confidence: "confirmed"
     notes: "The Karba backdoor establishes persistence via Windows Registry Run keys, surviving reboots across targeted hotel stays."
 attributionConfidence: A3
-attributionRationale: "Kaspersky Lab attributes DarkHotel to South Korean-speaking threat actors based on language artifacts, targeting patterns, and operational infrastructure. No government indictment has been issued; attribution is assessed, not confirmed."
+attributionRationale: "MITRE ATT&CK identifies DarkHotel as a suspected South Korean threat group. Kaspersky Lab documents DarkHotel targeting and tradecraft; the cited sources do not identify named operators or a formal government sponsor."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-13
@@ -90,7 +90,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: research
     reliability: R1
-    publicationDate: "2026-05-13"
+    publicationDate: "2024-01-08"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://securelist.com/the-darkhotel-apt/66779/"
@@ -100,11 +100,11 @@ sources:
     publicationDate: "2014-11-10"
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://securelist.com/darkhotel-attacks-in-2015/71713/"
+  - url: "https://securelist.com/darkhotels-attacks-in-2015/71713/"
     publisher: "Kaspersky Lab"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2015-11-09"
+    publicationDate: "2015-08-10"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://digital.nhs.uk/cyber-alerts/2020/cc-3452"
@@ -146,7 +146,7 @@ The group's network interception technique requires prior compromise of hotel IT
 
 ## Attribution
 
-DarkHotel attribution to South Korean-linked actors rests on assessment rather than public legal or government confirmation. Kaspersky Lab reported Korean-language artifacts, targeting patterns, and infrastructure observations as the basis for its attribution assessment. The cited public sources do not identify named operators or a formal government sponsor.
+DarkHotel attribution to South Korean-linked actors rests on assessment rather than public legal or government confirmation. MITRE ATT&CK identifies DarkHotel as a suspected South Korean threat group. Kaspersky Lab documents the group's targeting patterns, hotel-network operations, and malware tradecraft; the cited sources do not identify named operators or a formal government sponsor.
 
 Neither the South Korean government nor any foreign government has issued a formal indictment or public attribution statement in the cited sources. The A3 assessment reflects source-supported vendor attribution without government confirmation.
 
@@ -164,7 +164,7 @@ Neither the South Korean government nor any foreign government has issued a form
 
 ## Sources & References
 
-- [MITRE ATT&CK: DarkHotel (G0012)](https://attack.mitre.org/groups/G0012/) — MITRE ATT&CK, 2026-05-13
+- [MITRE ATT&CK: DarkHotel (G0012)](https://attack.mitre.org/groups/G0012/) — MITRE ATT&CK, 2024-01-08
 - [Kaspersky Lab: The DarkHotel APT](https://securelist.com/the-darkhotel-apt/66779/) — Kaspersky Lab, 2014-11-10
-- [Kaspersky Lab: DarkHotel Attacks in 2015](https://securelist.com/darkhotel-attacks-in-2015/71713/) — Kaspersky Lab, 2015-11-09
+- [Kaspersky Lab: DarkHotel Attacks in 2015](https://securelist.com/darkhotels-attacks-in-2015/71713/) — Kaspersky Lab, 2015-08-10
 - [NHS England Digital: Ramsay Trojan](https://digital.nhs.uk/cyber-alerts/2020/cc-3452) — NHS England Digital, 2020-05-14
