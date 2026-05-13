@@ -120,7 +120,7 @@ Mandiant tracked APT43 activity from at least 2018 through its 2023 reporting, d
 
 Kimsuky's initial access tradecraft relies on spearphishing and social engineering. CISA Advisory AA20-301A documents use of spearphishing links, login-security-alert-themed lures designed to harvest credentials, watering hole attacks against sites frequented by target communities, torrent sharing sites as delivery vectors, and malicious browser extensions installed on victim machines.
 
-Mandiant characterizes APT43 as operating an extensive persona-based deception infrastructure. The group creates spoofed and fraudulent identities that masquerade as diplomats, defense officials, and subject-matter experts to gain target trust before delivering malicious content or harvesting credentials. Mandiant reports APT43 uses stolen personally identifiable information to register infrastructure domains and create accounts, reducing direct attribution linkage between actors and infrastructure.
+Mandiant characterizes APT43 as operating a persona-based deception infrastructure. The group creates spoofed and fraudulent identities that masquerade as diplomats, defense officials, and subject-matter experts to gain target trust before delivering malicious content or harvesting credentials. Mandiant reports APT43 uses stolen personally identifiable information to register infrastructure domains and create accounts, reducing direct attribution linkage between actors and infrastructure.
 
 The group funds its operational infrastructure through cryptocurrency theft and laundering. Mandiant reports APT43 uses hash rental and cloud mining to launder stolen cryptocurrency, acquiring operationally clean funds that sever the blockchain trail from theft to infrastructure purchase. This criminal self-funding model is a documented differentiator relative to other DPRK intrusion clusters.
 
@@ -134,11 +134,11 @@ MITRE ATT&CK documents Kimsuky as G0094, a DPRK-based group active since at leas
 
 ## MITRE ATT&CK Profile
 
-**Resource Development**: APT43 registers operational domains using stolen PII (T1583.001 — Domains) and creates fraudulent email accounts with spoofed personas impersonating diplomats and defense officials (T1586.002 — Email Accounts). Infrastructure acquisition is partially funded through stolen and laundered cryptocurrency, providing a degree of operational self-sufficiency.
+T1583.001 - Domains: APT43 registers operational domains using stolen personally identifiable information. T1586.002 - Email Accounts: APT43 creates fraudulent email accounts with spoofed personas impersonating diplomats and defense officials. Infrastructure acquisition is partially funded through stolen and laundered cryptocurrency, providing a degree of operational self-sufficiency.
 
-**Initial Access**: Spearphishing links (T1566.002 — Spearphishing Link) are a primary documented vector, including login-security-alert-themed lures used to harvest credentials from government, think-tank, and nuclear-sector targets across South Korea, Japan, and the United States. Watering hole attacks (T1189 — Drive-by Compromise) provide a secondary initial access path against communities of interest.
+T1566.002 - Spearphishing Link: Spearphishing links are a primary documented vector, including login-security-alert-themed lures used to harvest credentials from government, think-tank, and nuclear-sector targets across South Korea, Japan, and the United States. T1189 - Drive-by Compromise: Watering hole attacks provide a secondary initial access path against communities of interest.
 
-**Persistence**: CISA documents deployment of malicious browser extensions (T1176 — Software Extensions) on victim machines, enabling persistent access and collection within browser sessions after initial compromise.
+T1176 - Software Extensions: CISA documents deployment of malicious browser extensions on victim machines, enabling persistent access and collection within browser sessions after initial compromise.
 
 ## Sources & References
 
