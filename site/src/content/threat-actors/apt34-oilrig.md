@@ -44,13 +44,6 @@ mitreMappings:
     confidence: "confirmed"
     evidence: "Mandiant describes POWRUNER and POWERSTATS as custom PowerShell-based implants central to the APT34 delivery and C2 chain."
     notes: "Custom PowerShell implants POWRUNER and POWERSTATS are documented by Mandiant as core components of APT34 intrusion activity."
-  - techniqueId: "T1110"
-    techniqueName: "Brute Force"
-    tactic: "Credential Access"
-    attack-version: "v19"
-    confidence: "confirmed"
-    evidence: "Microsoft documented Peach Sandstorm, an activity cluster associated with this actor set, conducting sustained password spray campaigns against high-value targets in 2023."
-    notes: "Microsoft's 2023 Peach Sandstorm reporting documents password spray campaigns enabling intelligence collection across defense, satellite, and related sectors."
   - techniqueId: "T1071.001"
     techniqueName: "Web Protocols"
     tactic: "Command and Control"
@@ -95,13 +88,6 @@ sources:
     reliability: R1
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://www.microsoft.com/en-us/security/blog/2023/09/14/peach-sandstorm-password-spray-campaigns-enable-intelligence-collection-at-high-value-targets/"
-    publisher: "Microsoft Security"
-    publicationDate: "2023-09-14"
-    publisherType: vendor
-    reliability: R1
-    accessDate: "2026-05-13"
-    archived: false
   - url: "https://www.cisa.gov/topics/cyber-threats-and-advisories/nation-state-cyber-actors"
     publisher: "CISA"
     publicationDate: "2026-05-13"
@@ -123,23 +109,17 @@ APT34 and OilRig were previously tracked as separate activity sets by different 
 
 Mandiant documented targeted attack activity against Middle Eastern organizations attributed to APT34. The reported delivery chain used spearphishing emails containing malicious Microsoft Office documents exploiting CVE-2017-11882, a Microsoft Office memory corruption vulnerability. The intrusion chain incorporated POWRUNER and POWERSTATS, custom PowerShell-based implants used for command-and-control and post-compromise operations.
 
-### 2023 — Peach Sandstorm Password Spray Campaigns
-
-Microsoft reported that the activity cluster it tracks as Peach Sandstorm conducted sustained password spray campaigns in 2023, targeting organizations across multiple sectors to enable intelligence collection. Microsoft described these campaigns as providing access to high-value targets in the defense, satellite, and pharmaceutical sectors. This reporting reflects Microsoft's naming conventions; the broader OilRig/APT34 overlap with Peach Sandstorm should be understood in the context of cross-vendor tracking designations.
-
 ## Technical Capabilities
 
 APT34 has used custom PowerShell-based implant tooling across documented intrusion chains. Mandiant reported the POWRUNER and POWERSTATS malware families as part of the group's delivery chain in Middle East targeting operations. These tools used PowerShell for execution and HTTP-based channels for command-and-control communications.
 
 MITRE ATT&CK documents APT34 using spearphishing attachments as a primary initial access vector, typically leveraging malicious Microsoft Office documents. The group is reported to conduct supply-chain attacks that exploit organizational trust relationships to gain footholds in target environments, per MITRE's assessment.
 
-Microsoft's 2023 Peach Sandstorm reporting documents password spray campaigns as a credential access technique used against high-value organizations, enabling intelligence collection through compromised legitimate credentials.
-
 ## Attribution
 
 MITRE ATT&CK categorizes this group as G0049 and describes it as a suspected Iranian threat group. Mandiant has assessed APT34 as a suspected Iranian threat group targeting entities in the Middle East and internationally, with victim profiles consistent with state intelligence collection priorities.
 
-Microsoft tracks related activity as Peach Sandstorm and Hazel Sandstorm. The overlap between Microsoft's designations and the OilRig/APT34 cluster is reflected in the aliases associated with this profile. Cross-vendor naming conventions can conflate overlapping but potentially distinct intrusion sets, and claims about Peach Sandstorm activity should be tied to the Microsoft source rather than assumed to cover the full OilRig/APT34 activity set.
+Microsoft tracks related OilRig activity under the designation Hazel Sandstorm (EUROPIUM). Cross-vendor naming conventions can reflect overlapping but potentially distinct intrusion sets, and claims from different vendor tracks should be tied to their respective source reporting.
 
 Multiple security vendors independently assess Iranian state affiliation based on targeting patterns, tooling, and operational focus. No formal government indictment or specific Iranian government unit designation appears in the open-source reporting reviewed for this profile.
 
@@ -151,13 +131,10 @@ APT34 employs a range of techniques documented across MITRE ATT&CK v19.
 
 **Execution**: Custom PowerShell implants (T1059.001), specifically POWRUNER and POWERSTATS, are core to documented APT34 intrusion chains per Mandiant reporting, providing payload execution and C2 interaction.
 
-**Credential Access**: Password spray campaigns (T1110) are documented in Microsoft's 2023 Peach Sandstorm reporting, targeting high-value organizations to enable initial access through compromised credentials.
-
 **Command and Control**: Web protocol-based C2 (T1071.001) over HTTP and HTTPS is documented in APT34 malware tooling per MITRE. Ingress tool transfer (T1105) is documented for staging additional payloads following initial compromise.
 
 ## Sources & References
 
 - [MITRE ATT&CK: APT34/OilRig (G0049)](https://attack.mitre.org/groups/G0049/) — MITRE ATT&CK, 2026-05-12
 - [Mandiant: Targeted Attack in Middle East by APT34](https://cloud.google.com/blog/topics/threat-intelligence/targeted-attack-in-middle-east-by-apt34/) — Mandiant, 2018-01-10
-- [Microsoft Security: Peach Sandstorm Password Spray Campaigns Enable Intelligence Collection at High-Value Targets](https://www.microsoft.com/en-us/security/blog/2023/09/14/peach-sandstorm-password-spray-campaigns-enable-intelligence-collection-at-high-value-targets/) — Microsoft Security, 2023-09-14
 - [CISA: Nation-State Cyber Actors](https://www.cisa.gov/topics/cyber-threats-and-advisories/nation-state-cyber-actors) — CISA, 2026-05-13
