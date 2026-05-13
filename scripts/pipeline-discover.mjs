@@ -25,6 +25,7 @@ import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
 import yaml from 'js-yaml';
 import { loadPipelineConfig } from './pipeline-config.mjs';
+import { PIPELINE_TASK_FILE_NAME_PATTERN, PIPELINE_TASK_FILE_PATH_RE } from './pipeline-task-patterns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -79,7 +80,7 @@ const INCIDENT_NEGATIVE_PATTERNS = [
 const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
 const INCIDENT_TASK_SUMMARY_MAX_LENGTH = 320;
-const TASK_FILE_RE = /^\.github\/pipeline\/tasks\/TASK-\d{4}-\d{4}\.json$/;
+const TASK_FILE_NAME_RE = new RegExp(`^${PIPELINE_TASK_FILE_NAME_PATTERN}$`);
 const THREAT_ACTOR_PROMOTION_MIN_SOURCES = 3;
 const THREAT_ACTOR_PROMOTION_MIN_INCIDENTS = 2;
 const CAMPAIGN_PROMOTION_MIN_SOURCES = 3;
@@ -307,7 +308,7 @@ function buildCorpusIndexes() {
 }
 
 function parseTaskNumber(taskId) {
-  const match = String(taskId || '').match(/^TASK-\d{4}-(\d{4})$/);
+  const match = String(taskId || '').match(/^TASK-\d{4}-(\d+)$/);
   return match ? parseInt(match[1], 10) : null;
 }
 
@@ -378,7 +379,7 @@ function buildTaskIndexes(openPullRequestTasks = []) {
   };
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       try {
         addTaskToIndexes(indexes, JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8')));
       } catch (error) {
@@ -552,7 +553,7 @@ async function fetchOpenPullRequestTaskFileRefs(repo, token) {
 
       for (const file of files) {
         if (file.status === 'removed') continue;
-        if (TASK_FILE_RE.test(String(file.filename || ''))) {
+        if (PIPELINE_TASK_FILE_PATH_RE.test(String(file.filename || ''))) {
           refs.push({ pr: restPr, file });
         }
       }
@@ -612,7 +613,7 @@ async function fetchOpenPullRequestTasks(opts) {
         const files = await fetchOpenPullRequestFiles(pr, repo, token);
         const taskPromises = files
           .filter(file => file.status !== 'removed')
-          .filter(file => TASK_FILE_RE.test(String(file.filename || '')))
+          .filter(file => PIPELINE_TASK_FILE_PATH_RE.test(String(file.filename || '')))
           .map(file => fetchOpenPullRequestTask(pr, file, repo, token));
 
         if (taskPromises.length > 0) {
@@ -677,18 +678,9 @@ function buildRejectionIndexes() {
 }
 
 function getNextTaskId(taskIndexes = null) {
-  if (taskIndexes?.maxTaskNumber) {
-    return `TASK-2026-${String(taskIndexes.maxTaskNumber + 1).padStart(4, '0')}`;
-  }
-  if (!existsSync(TASKS_DIR)) return 'TASK-2026-0071';
-
-  const existing = readdirSync(TASKS_DIR)
-    .filter(file => file.match(/^TASK-\d{4}-\d{4}\.json$/))
-    .map(file => parseInt(file.match(/TASK-\d{4}-(\d{4})/)[1], 10))
-    .sort((a, b) => b - a);
-
-  const next = existing.length > 0 ? existing[0] + 1 : 71;
-  return `TASK-2026-${String(next).padStart(4, '0')}`;
+  const year = new Date().getUTCFullYear();
+  const next = taskIndexes?.maxTaskNumber ? taskIndexes.maxTaskNumber + 1 : 71;
+  return `TASK-${year}-${String(next).padStart(4, '0')}`;
 }
 
 function buildThreatActorIdentityIndex() {
@@ -711,7 +703,7 @@ function buildThreatActorIdentityIndex() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       if (task.type !== 'threat-actor') continue;
       const actorName = task.input?.candidate_data?.actor_name;
@@ -787,7 +779,7 @@ function buildCampaignIdentityIndex() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       if (task.type !== 'campaign') continue;
 
@@ -1101,7 +1093,7 @@ function collectExploitIds() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       const exploitId = task.input?.candidate_data?.exploitId;
       if (exploitId) ids.push(exploitId);
@@ -2008,10 +2000,16 @@ async function main() {
 
   console.log('  [6/6] Creating pipeline tasks...\n');
   const existingExploitIds = collectExploitIds();
-  let nextIdNum = parseInt(getNextTaskId(taskIndexes).match(/(\d{4})$/)[1], 10);
+  const nextTaskId = getNextTaskId(taskIndexes);
+  const nextTaskIdMatch = nextTaskId.match(/^TASK-(\d{4})-(\d+)$/);
+  if (!nextTaskIdMatch) {
+    throw new Error(`Unable to allocate next task ID from ${nextTaskId}`);
+  }
+  const taskIdYear = nextTaskIdMatch[1];
+  let nextIdNum = parseInt(nextTaskIdMatch[2], 10);
 
   for (const candidate of selected) {
-    const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
+    const taskId = `TASK-${taskIdYear}-${String(nextIdNum).padStart(4, '0')}`;
     const task = candidate.type === 'zero-day'
       ? buildZeroDayTask(candidate, taskId, generateExploitId(candidate.kev.cveID, existingExploitIds))
       : candidate.type === 'incident'
