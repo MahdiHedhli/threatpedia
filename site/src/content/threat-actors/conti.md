@@ -11,12 +11,7 @@ lastSeen: "2022"
 targetSectors:
   - "Healthcare"
   - "Emergency Services"
-  - "Government"
-  - "Critical Infrastructure"
-  - "Financial Services"
-  - "Education"
 targetGeographies:
-  - "United States"
   - "Ireland"
   - "International"
 tools:
