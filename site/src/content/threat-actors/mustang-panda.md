@@ -47,7 +47,7 @@ mitreMappings:
     tactic: "Stealth"
     attackVersion: "v19"
     confidence: confirmed
-    evidence: "Cisco Talos and MITRE ATT&CK G0129 document DLL side-loading as a core technique used across both PlugX delivery and the TONEINS/TONESHELL malware family to reduce behavioral detection."
+    evidence: "MITRE ATT&CK G0129 and Cisco Talos document Mustang Panda using DLL side-loading through legitimate executables to load PlugX and TONEINS/TONESHELL components."
   - techniqueId: "T1091"
     techniqueName: "Replication Through Removable Media"
     tactic: "Lateral Movement"
@@ -142,15 +142,15 @@ No government indictment or formal official attribution has been issued for Must
 
 ## MITRE ATT&CK Profile
 
-**Initial Access — T1566.001 (Spearphishing Attachment)**: Spearphishing emails with malicious document attachments are the documented primary delivery vector, confirmed by Cisco Talos in the European diplomatic targeting campaign.
+T1566.001 - Spearphishing Attachment: Spearphishing emails with malicious document attachments are the documented primary delivery vector, confirmed by Cisco Talos in the European diplomatic targeting campaign.
 
-**Execution — T1204.002 (Malicious File)**: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
+T1204.002 - Malicious File: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
 
-**Stealth — T1574.001 (DLL)**: DLL side-loading is a consistent hallmark across both PlugX delivery and the TONEINS/TONESHELL malware family. MITRE ATT&CK G0129 and Cisco Talos document the technique as a mechanism for loading Mustang Panda payloads through legitimate executables.
+T1574.001 - DLL: DLL side-loading is documented across both PlugX delivery and the TONEINS/TONESHELL malware family. MITRE ATT&CK G0129 and Cisco Talos document the technique as a mechanism for loading Mustang Panda payloads through legitimate executables.
 
-**Lateral Movement — T1091 (Replication Through Removable Media)**: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
+T1091 - Replication Through Removable Media: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
 
-**Command and Control — T1071.001 (Web Protocols)**: PlugX uses HTTP and HTTPS for C2 communications, as documented in MITRE ATT&CK G0129.
+T1071.001 - Web Protocols: PlugX uses HTTP and HTTPS for C2 communications, as documented in MITRE ATT&CK G0129.
 
 ## Sources & References
 
