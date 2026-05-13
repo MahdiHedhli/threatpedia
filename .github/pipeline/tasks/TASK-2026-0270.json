@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T16:50:58.849Z",
-  "updated": "2026-05-13T17:15:00.000Z",
+  "updated": "2026-05-13T18:30:47.150Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Mahdi Hedhli",
+  "locked_at": "2026-05-13T18:30:47.149Z",
   "input": {
     "topic": "CPUID CPU-Z and HWMonitor supply-chain malware distribution",
     "sources": [
@@ -64,6 +64,13 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Normalized incident seed metadata: added candidate_data date, attack_type, sector, and geography; aligned min_h2_sections with the incident article section contract; removed legacy schema_validation acceptance field."
+    },
+    {
+      "timestamp": "2026-05-13T18:30:47.150Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Mahdi Hedhli",
+      "note": "Locked for execution"
     }
   ]
 }
