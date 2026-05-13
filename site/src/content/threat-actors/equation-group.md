@@ -42,18 +42,18 @@ mitreMappings:
     attackVersion: "v19"
     confidence: "confirmed"
     notes: "Kaspersky Lab documented Equation Group delivering DoubleFantasy and other initial-stage implants through watering-hole attacks, redirecting targeted visitors of compromised legitimate websites to attacker-controlled infrastructure."
-  - techniqueId: "T1542.003"
-    techniqueName: "Bootkit"
+  - techniqueId: "T1542.002"
+    techniqueName: "Component Firmware"
     tactic: "Persistence"
     attackVersion: "v19"
     confidence: "confirmed"
-    notes: "GrayFish is documented by Kaspersky Lab as a bootkit that loads from the Master Boot Record prior to the operating system, achieving persistence that survives disk reformats and OS reinstallation."
-  - techniqueId: "T1027"
-    techniqueName: "Obfuscated Files or Information"
+    notes: "Equation Group is documented by Kaspersky Lab as having the capability to overwrite the firmware of hard-disk drives across at least twelve major manufacturers, achieving persistence that survives disk reformats and OS reinstallation. MITRE ATT&CK v19 maps this capability to Component Firmware."
+  - techniqueId: "T1564.005"
+    techniqueName: "Hidden File System"
     tactic: "Defense Evasion"
     attackVersion: "v19"
     confidence: "confirmed"
-    notes: "Both EquationDrug and GrayFish use encrypted virtual file systems documented by Kaspersky Lab to conceal malicious modules and collected data from host-based analysis."
+    notes: "Both EquationDrug and GrayFish use encrypted virtual file systems stored in the Windows Registry, documented by Kaspersky Lab to conceal malicious modules and collected data from host-based analysis. MITRE ATT&CK v19 maps this to the Hidden File System sub-technique."
   - techniqueId: "T1052.001"
     techniqueName: "Exfiltration over USB"
     tactic: "Exfiltration"
@@ -85,7 +85,7 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: research
     reliability: R1
-    publicationDate: "2026-05-13"
+    publicationDate: "2025-04-25"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://securelist.com/equation-the-death-star-of-malware-galaxy/68750/"
@@ -145,7 +145,7 @@ Equation Group's documented technical portfolio spans multiple capability areas,
 
 **EquationDrug** is a modular malware platform capable of loading and unloading individual plugins on demand. Its architecture allows the operator to deploy only the capabilities needed for a specific operation. Kaspersky Lab documented kernel-level rootkit components within EquationDrug that conceal files, processes, and registry entries from the host operating system.
 
-**GrayFish** is the most advanced implant in the documented set. It operates as a bootkit that loads from the Master Boot Record prior to the operating system, achieving persistence that survives disk reformats and operating system reinstallation. GrayFish maintains an encrypted virtual file system on the victim host to conceal operator-managed modules and collected data.
+**GrayFish** is the most advanced implant in the documented set. Kaspersky Lab documented GrayFish as achieving deep persistence on victim systems, with the capability to reprogram the firmware of hard-disk drives from at least twelve major manufacturers — persistence that survives disk reformats and operating system reinstallation. GrayFish maintains an encrypted virtual file system stored in the Windows Registry to conceal operator-managed modules and collected data.
 
 **Fanny** is a worm that uses USB removable drives as both a propagation vector and a command-and-control channel in air-gapped environments. Kaspersky Lab documented that Fanny stores reconnaissance data and received commands in a hidden area of the USB drive's file system, enabling bidirectional communication with isolated networks.
 
@@ -161,15 +161,15 @@ In August 2016, the Shadow Brokers released files purportedly obtained from Equa
 
 **Initial Access**: Equation Group used drive-by compromise (T1189) via watering-hole attacks to deliver DoubleFantasy validators to targeted visitors of compromised websites.
 
-**Persistence**: The GrayFish bootkit (T1542.003) loads from the Master Boot Record prior to the operating system, achieving persistence that survives disk reformats and OS reinstallation.
+**Persistence**: Equation Group is documented to have the capability to overwrite the firmware of hard-disk drives from major manufacturers (T1542.002), achieving persistence that survives disk reformats and OS reinstallation. This firmware persistence capability is a defining characteristic of the group's long-term access strategy.
 
-**Defense Evasion**: Both EquationDrug and GrayFish use encrypted virtual file systems (T1027) to conceal malicious modules and data from host-based analysis. Kernel-level rootkit components (T1014) in both platforms conceal processes, files, and registry artifacts.
+**Defense Evasion**: Both EquationDrug and GrayFish use encrypted virtual file systems stored in the Windows Registry (T1564.005) to conceal malicious modules and data from host-based analysis. Kernel-level rootkit components (T1014) in both platforms conceal processes, files, and registry artifacts.
 
 **Exfiltration**: The Fanny worm exfiltrates data over USB physical media (T1052.001), using removable drives as a relay to extract collected information from air-gapped networks.
 
 ## Sources & References
 
-- [MITRE ATT&CK: Equation Group (G0020)](https://attack.mitre.org/groups/G0020/) — MITRE ATT&CK, 2026-05-13
+- [MITRE ATT&CK: Equation Group (G0020)](https://attack.mitre.org/groups/G0020/) — MITRE ATT&CK, 2025-04-25
 - [Kaspersky Lab: Equation — The Death Star of Malware Galaxy](https://securelist.com/equation-the-death-star-of-malware-galaxy/68750/) — Kaspersky Lab, 2015-02-16
 - [Ars Technica: Code Dumped Online Came from Omnipotent NSA-Tied Hacking Group](https://arstechnica.com/information-technology/2016/08/code-dumped-online-came-from-omnipotent-nsa-tied-hacking-group/) — Ars Technica, 2016-08-16
 - [NIST: SP 800-193 Platform Firmware Resiliency Guidelines](https://csrc.nist.gov/publications/detail/sp/800-193/final) — NIST, 2018-05-01
