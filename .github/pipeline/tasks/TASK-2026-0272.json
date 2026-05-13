@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-13T21:50:19.981Z",
+  "updated": "2026-05-13T21:29:44.462Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-13T21:29:44.462Z",
   "input": {
     "topic": "Linux kernel Dirty Frag local privilege escalation zero-day (CVE-2026-43284)",
     "sources": [
@@ -82,6 +82,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #687 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T21:29:44.462Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
