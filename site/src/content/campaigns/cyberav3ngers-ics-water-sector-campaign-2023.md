@@ -7,7 +7,7 @@ ongoing: false
 attackType: "ICS Exploitation / Default Credential Abuse"
 severity: high
 sector: "Water and Wastewater / Critical Infrastructure / Industrial Control Systems"
-geography: "United States, Israel, Ireland, Australia"
+geography: "United States, Israel"
 threatActor: "CyberAv3ngers"
 attributionConfidence: A2
 reviewStatus: "draft_ai"
@@ -63,12 +63,12 @@ mitreMappings:
     "attack-version": "v19"
     confidence: confirmed
     evidence: "Targeted PLCs were directly internet-accessible on TCP port 20256 (Unitronics PCOM protocol). Operators had not restricted remote management access, enabling direct exploitation without traversing intermediate network barriers."
-  - techniqueId: "T1485"
-    techniqueName: "Data Destruction"
+  - techniqueId: "T1491.001"
+    techniqueName: "Internal Defacement"
     tactic: "Impact"
     "attack-version": "v19"
     confidence: confirmed
-    evidence: "CyberAv3ngers modified PLC configuration and HMI display screens at compromised facilities. CISA advisory AA23-335A confirmed unauthorized changes to HMI display content and device naming on impacted Unitronics PLCs."
+    evidence: "CISA advisory AA23-335A maps CyberAv3ngers' upload of a splash page to the HMI screen to T1491.001 Internal Defacement."
 ---
 
 ## Executive Summary
@@ -111,7 +111,7 @@ T1078.001 - Default Accounts: CyberAv3ngers exploited default administrative cre
 
 T1133 - External Remote Services: Unitronics PLCs were directly reachable via the public internet on TCP port 20256 (PCOM protocol). Operators had not restricted remote access or required VPN, enabling direct exploitation without traversing intermediate network controls.
 
-T1485 - Data Destruction: CyberAv3ngers modified PLC display configurations and changed password protections at compromised facilities. CISA advisory AA23-335A confirmed unauthorized HMI display content modifications and device renaming at impacted water utilities.
+T1491.001 - Internal Defacement: CyberAv3ngers uploaded a splash page to HMI screens at compromised facilities to display a hacking message, matching the T1491.001 mapping in CISA advisory AA23-335A.
 
 ## Timeline
 
@@ -125,7 +125,7 @@ The Aliquippa Municipal Water Authority reported that a booster station PLC was 
 
 ### 2023-11-28 — CISA Issues Advisory AA23-335A
 
-CISA, jointly with the FBI, NSA, EPA, and cybersecurity agencies from Israel, Australia, and the United Kingdom, published advisory AA23-335A attributing the campaign to IRGC-CEC and directing water utilities to change all default Unitronics credentials, disconnect PLCs from direct internet exposure, and apply available firmware updates.
+CISA, jointly with the FBI, NSA, EPA, and cybersecurity agencies from Israel, Canada, and the United Kingdom, published advisory AA23-335A attributing the campaign to IRGC-CEC and directing water utilities to change all default Unitronics credentials, disconnect PLCs from direct internet exposure, and apply available firmware updates.
 
 ### 2023-11-28 — WaterISAC Issues Sector Alert
 
