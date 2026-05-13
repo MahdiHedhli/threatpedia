@@ -3,12 +3,12 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "blocked",
-  "pr_number": null,
+  "status": "complete",
+  "pr_number": 660,
   "pr_url": null,
-  "merged_at": null,
+  "merged_at": "2026-05-13T15:46:45.021Z",
   "created": "2026-05-13T12:10:38.423Z",
-  "updated": "2026-05-13T15:20:30.000Z",
+  "updated": "2026-05-13T15:46:45.021Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -86,6 +86,14 @@
       "to": "blocked",
       "agent": "dangermouse-bot",
       "note": "Validation blocked: Only 0 MITRE mapping(s) in frontmatter (need 1+). Public Hasbro sources confirm unauthorized network access and business-system disruption but do not identify a confirmed ATT&CK Enterprise v19 technique; no mapping was added."
+    },
+    {
+      "timestamp": "2026-05-13T15:46:45.021Z",
+      "action": "merged",
+      "from": "blocked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #660 merged (71b421d)."
     }
   ]
 }
