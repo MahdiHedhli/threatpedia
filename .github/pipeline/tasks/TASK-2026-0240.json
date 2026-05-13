@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-12T19:21:12.000Z",
+  "updated": "2026-05-13T04:27:31.843Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -77,6 +77,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Article committed; PR opening via GitHub API"
+    },
+    {
+      "timestamp": "2026-05-13T04:27:31.843Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dispatcher",
+      "note": "Reconciled merged PR #605."
     }
-  ]
+  ],
+  "pr_number": 605,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/605",
+  "merged_at": "2026-05-13T04:12:16Z"
 }
