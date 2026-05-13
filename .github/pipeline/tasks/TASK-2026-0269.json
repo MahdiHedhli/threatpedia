@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-13T14:25:50.575Z",
-  "updated": "2026-05-13T14:44:06.722Z",
+  "updated": "2026-05-13T14:51:13.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -21,7 +21,8 @@
       "severity": "medium",
       "date": "2026-01-09",
       "attack_type": "Social Engineering",
-      "sector": "Financial Services"
+      "sector": "Financial Services",
+      "geography": "United States"
     },
     "notes": "Risky Bulletin discovery item from 2026-04-08. Betterment's own post-mortem says a social engineering attack against an employee enabled access to a marketing platform that was used to send waves of cryptocurrency-scam emails to customers. Scope as a discrete Betterment incident; keep actor unknown unless stronger sources name one. The Jan. 14 Risky Bulletin/private backlog item was deferred pending a primary source; the Apr. 8 bulletin links the company post-mortem that resolves that source gap. Drafting agent must add a government or regulator source if one is available; if none can be found, mark the task blocked instead of forcing an unsupported source."
   },
@@ -63,6 +64,14 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Addressed Gemini task metadata feedback: normalized incident candidate_data, aligned min_h2_sections with incident schema, removed unused schema_validation acceptance field, and documented government-source requirement for drafting."
+    },
+    {
+      "timestamp": "2026-05-13T14:51:13.000Z",
+      "action": "updated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Addressed Gemini incident metadata feedback by adding candidate_data.geography."
     }
   ]
 }
