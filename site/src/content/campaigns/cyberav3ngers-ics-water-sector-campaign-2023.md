@@ -150,6 +150,6 @@ Enable logging on OT devices where supported and route logs to a centralized mon
 
 ## Sources & References
 
-- [CISA Advisory AA23-335A: IRGC-Affiliated Cyber Actors Exploit PLCs in Multiple Sectors, Including U.S. Water and Wastewater Systems Facilities](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-335a) — CISA, 2023-11-28
+- [CISA: Advisory AA23-335A — IRGC-Affiliated Cyber Actors Exploit PLCs in Multiple Sectors](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-335a) — CISA, 2023-11-28
 - [FBI: FBI, CISA, NSA, EPA Issue Advisory on IRGC-Affiliated Cyber Actors](https://www.fbi.gov/news/press-releases/fbi-cisa-nsa-epa-issue-advisory-on-irgc-affiliated-cyber-actors) — FBI, 2023-12-01
-- [WaterISAC: Warning on Iranian IRGC CyberAv3ngers Water Utility Attacks](https://www.waterisac.org/portal/warning-iranian-irgc-cyberav3ngers-water-utility-attacks) — WaterISAC, 2023-11-28
+- [WaterISAC: Warning — Iranian IRGC CyberAv3ngers Water Utility Attacks](https://www.waterisac.org/portal/warning-iranian-irgc-cyberav3ngers-water-utility-attacks) — WaterISAC, 2023-11-28
