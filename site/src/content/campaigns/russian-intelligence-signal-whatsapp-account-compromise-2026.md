@@ -85,7 +85,7 @@ On March 9, 2026, the Dutch General Intelligence and Security Service (AIVD) and
 
 On March 20, 2026, the Federal Bureau of Investigation (FBI) and the Cybersecurity and Infrastructure Security Agency (CISA) issued Public Service Announcement PSA260320 linking the campaign to Russian intelligence services and describing the same tactics as part of a global operation. The French national cybersecurity agency CERT-FR issued alert CERTFR-2026-ALE-003 on the same date, documenting the threat to French government personnel and other high-value targets. The FBI and CISA assessed that thousands of individual accounts had been compromised worldwide.
 
-The campaign does not exploit technical vulnerabilities in Signal or WhatsApp. Both applications use the Signal Protocol for end-to-end encryption, which the actors did not break. Compromise is achieved entirely through social engineering and abuse of legitimate account management features.
+The campaign does not exploit technical vulnerabilities in Signal or WhatsApp. Both applications use the Signal Protocol for end-to-end encryption, which the actors did not break. Compromise is achieved through social engineering and abuse of legitimate account management features.
 
 ## Technical Analysis
 
@@ -93,7 +93,7 @@ The campaign exploits two documented methods, both of which depend on user actio
 
 The first method targets the account registration mechanism. Signal and WhatsApp use one-time verification codes delivered by SMS to confirm phone number ownership during account setup and account transfers. Actors initiate the registration process using a target's phone number, causing the application to send a legitimate SMS verification code to that number. The actors then contact the target through Signal or WhatsApp, posing as official support staff using account names designed to appear authoritative, and instruct the target to share the code to resolve a claimed account security issue. If the target provides the code, the attacker can complete registration on an attacker-controlled device, migrating the account or establishing secondary access.
 
-The second method abuses the linked-devices feature present in both Signal and WhatsApp. This feature allows users to connect secondary devices — such as a desktop client — to their primary mobile account, enabling message synchronization. The linking process involves either scanning a QR code or activating a dedicated link. Actors distributed malicious QR codes and links to targets; when activated, these triggered the linked-devices registration flow, silently adding an attacker-controlled device to the victim's account. The victim's account remains accessible on their own device, and there may be no obvious indication of the additional linked device unless the user actively reviews their device list.
+The second method abuses the linked-devices feature present in both Signal and WhatsApp. This feature allows users to connect secondary devices — such as a desktop client — to their primary mobile account, enabling message synchronization. The linking process involves either scanning a QR code or activating a dedicated link. Actors distributed malicious QR codes and links to targets; when activated, these triggered the linked-devices registration flow, adding an attacker-controlled device to the victim's account without user notification. The victim's account remains accessible on their own device, and there may be no obvious indication of the additional linked device unless the user actively reviews their device list.
 
 Once access is established through either method, actors can read existing message history, receive ongoing messages in real time, access contact lists, and send messages appearing to originate from the victim's account. The AIVD advisory confirmed that Dutch government employees had accounts accessed using these methods prior to the March 9 advisory. The FBI assessed this as a global operation targeting thousands of accounts.
 
@@ -117,7 +117,7 @@ Method B — Linked device activation: The actor distributes a malicious QR code
 
 ### Stage 4: Persistent Account Access
 
-The attacker's device is registered as a legitimate linked device or account registration, providing ongoing access to messages, contact lists, and account functions. In the linked-device case, the target's account continues to operate normally on their own device, and the additional linked device may not be noticed without deliberate review.
+The attacker's device is registered as a legitimate linked device or account registration, providing ongoing access to messages, contact lists, and account functions. In the linked-device case, the target's account continues to operate on their own device, and the additional linked device may not be noticed without deliberate review.
 
 ### Stage 5: Exploitation and Lateral Movement
 
@@ -127,7 +127,7 @@ With access established, actors read existing message history and receive new me
 
 T1598 - Phishing for Information: Actors impersonated Signal and WhatsApp support accounts to contact targets and extract SMS verification codes and account PINs through social engineering. The FBI/CISA PSA PSA260320 and AIVD/MIVD advisory document this as a confirmed technique in the campaign.
 
-T1566.002 - Spearphishing Link: Actors distributed malicious links and QR codes that activated the Signal or WhatsApp linked-devices registration flow when engaged by a target, silently adding an attacker-controlled device to the victim's account. This method does not require the target to share any credential and leaves minimal visible indicators. Documented in the AIVD/MIVD and CERT-FR advisories.
+T1566.002 - Spearphishing Link: Actors distributed malicious links and QR codes that activated the Signal or WhatsApp linked-devices registration flow when engaged by a target, adding an attacker-controlled device to the victim's account without user notification. This method does not require the target to share any credential and leaves few visible indicators. Documented in the AIVD/MIVD and CERT-FR advisories.
 
 T1078 - Valid Accounts: Actors used verification codes obtained through social engineering to register attacker-controlled devices through the applications' normal account management mechanisms. The resulting access is authenticated and appears as a legitimate device registration, without triggering anomaly alerts that would typically accompany unauthorized access patterns.
 
