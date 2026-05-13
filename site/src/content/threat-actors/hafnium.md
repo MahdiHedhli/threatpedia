@@ -15,7 +15,7 @@ targetSectors:
   - "Non-Governmental Organizations"
   - "Infectious Disease Research"
   - "Policy and Think Tanks"
-  - "Defense Industrial Base"
+  - "Defense Contractors"
 targetGeographies:
   - "United States"
 tools:
