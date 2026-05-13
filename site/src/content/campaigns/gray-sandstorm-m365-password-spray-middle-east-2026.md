@@ -2,8 +2,7 @@
 campaignId: "TP-CAMP-2026-0007"
 title: "Gray Sandstorm Microsoft 365 Password-Spray Campaign Targeting Middle East Cloud Environments 2026"
 startDate: 2026-03-01
-endDate: 2026-04-15
-ongoing: false
+ongoing: true
 attackType: "Credential Access / Cloud Compromise"
 severity: high
 sector: "Government / Multi-Sector"
@@ -30,7 +29,7 @@ sources:
     publisher: "Check Point Research"
     publisherType: vendor
     reliability: R2
-    publicationDate: "2026-04-01"
+    publicationDate: "2026-03-31"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://www.microsoft.com/en-us/security/security-insider/threat-landscape/gray-sandstorm"
@@ -58,25 +57,25 @@ mitreMappings:
   - techniqueId: "T1110.003"
     techniqueName: "Password Spraying"
     tactic: "Credential Access"
-    "attack-version": "v16"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "Check Point Research documented systematic password-spraying against M365 authentication endpoints across hundreds of organizations, with sign-in log patterns showing multiple authentication failures across distinct accounts from shared rotating source IPs consistent with spray tradecraft."
   - techniqueId: "T1090.003"
     techniqueName: "Multi-hop Proxy"
     tactic: "Command and Control"
-    "attack-version": "v16"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "The actors routed spray activity through Tor exit nodes during the scanning phase, then transitioned to commercial VPN infrastructure (Windscribe AS185.191.204.X and NordVPN AS169.150.227.X) for authenticated post-compromise activity, with VPN exit nodes geolocated in Israel to potentially evade geographic conditional access restrictions."
   - techniqueId: "T1078.004"
-    techniqueName: "Valid Accounts: Cloud Accounts"
+    techniqueName: "Cloud Accounts"
     tactic: "Initial Access"
-    "attack-version": "v16"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "Following successful password spray, the actors authenticated to M365 using obtained valid credentials to access cloud-hosted email accounts and stored data within targeted organizations."
   - techniqueId: "T1114.002"
-    techniqueName: "Email Collection: Remote Email Collection"
+    techniqueName: "Remote Email Collection"
     tactic: "Collection"
-    "attack-version": "v16"
+    "attack-version": "v19"
     confidence: probable
     evidence: "Check Point Research documented that attacker-controlled accounts accessed personal email content within M365 mailboxes at targeted organizations during the exfiltration phase of the campaign."
 ---
@@ -135,9 +134,9 @@ T1114.002 - Email Collection: Remote Email Collection: Using authenticated acces
 
 Check Point Research data shows the campaign was active during March 2026, with M365 sign-in log data documenting spray volume across targeted organizations in Israel and the UAE. The campaign targeted hundreds of organizations across government, municipal, energy, satellite, aviation, and maritime sectors.
 
-### 2026-04-01 — Check Point Research and Risky Business Media Publish Findings
+### 2026-03-31 / 2026-04-01 — Check Point Research and Risky Business Media Publish Findings
 
-Check Point Research published its analysis of the Iran-nexus M365 password-spray campaign, documenting the technical indicators, attack cycle, and targeting profile. Risky Business Media reported on the campaign findings in a bulletin on the same date, noting the temporal relationship between the cyber campaign activity and regional kinetic events in the Middle East.
+Check Point Research published its analysis of the Iran-nexus M365 password-spray campaign on March 31, documenting the technical indicators, attack cycle, and targeting profile. Risky Business Media reported on the campaign findings in an April 1 bulletin, noting the temporal relationship between the cyber campaign activity and regional kinetic events in the Middle East.
 
 ## Remediation & Mitigation
 
@@ -151,7 +150,7 @@ Strong credential hygiene—enforcing minimum password complexity requirements a
 
 ## Sources & References
 
-- [Check Point Research: Iran-nexus Password Spray Campaign Targeting Cloud Environments with a Focus on the Middle East](https://blog.checkpoint.com/research/iran-nexus-password-spray-campaign-targeting-cloud-environments-with-a-focus-on-the-middle-east) — Check Point Research, 2026-04-01
+- [Check Point Research: Iran-nexus Password Spray Campaign Targeting Cloud Environments with a Focus on the Middle East](https://blog.checkpoint.com/research/iran-nexus-password-spray-campaign-targeting-cloud-environments-with-a-focus-on-the-middle-east) — Check Point Research, 2026-03-31
 - [Microsoft Security: Gray Sandstorm](https://www.microsoft.com/en-us/security/security-insider/threat-landscape/gray-sandstorm) — Microsoft Security, 2023-04-18
 - [Risky Business Media: Iranian Password Sprays Came First, Then Came the Missiles](https://news.risky.biz/risky-bulletin-iranian-password-sprays-came-first-then-came-the-missiles/) — Risky Business Media, 2026-04-01
 - [CISA: Advisory AA24-290A — Iranian Cyber Actors' Brute Force and Credential Access Activity Compromises Critical Infrastructure Organizations](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-290a) — CISA, 2024-10-16

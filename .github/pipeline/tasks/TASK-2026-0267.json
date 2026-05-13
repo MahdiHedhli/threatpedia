@@ -60,6 +60,7 @@
     },
     {
       "timestamp": "2026-05-13T16:08:15.720Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
@@ -67,6 +68,7 @@
     },
     {
       "timestamp": "2026-05-13T16:20:00.000Z",
+      "action": "pr_open",
       "from": "locked",
       "to": "pr_open",
       "agent": "dangermouse-bot",
