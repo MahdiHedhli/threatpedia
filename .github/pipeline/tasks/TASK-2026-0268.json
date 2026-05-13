@@ -3,12 +3,12 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "blocked",
   "pr_number": null,
   "pr_url": null,
   "merged_at": null,
   "created": "2026-05-13T12:10:38.423Z",
-  "updated": "2026-05-13T13:15:20Z",
+  "updated": "2026-05-13T15:20:30.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -71,6 +71,21 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "PR #648 was a task-only seed PR, not an article completion PR; restore dispatcher eligibility."
+    },
+    {
+      "timestamp": "2026-05-13T15:13:02.565Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T15:20:30.000Z",
+      "action": "blocked",
+      "from": "locked",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Validation blocked: Only 0 MITRE mapping(s) in frontmatter (need 1+). Public Hasbro sources confirm unauthorized network access and business-system disruption but do not identify a confirmed ATT&CK Enterprise v19 technique; no mapping was added."
     }
   ]
 }
