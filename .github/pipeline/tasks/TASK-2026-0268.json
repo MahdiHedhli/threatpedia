@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-13T12:10:38.423Z",
-  "updated": "2026-05-13T12:10:38.423Z",
+  "updated": "2026-05-13T12:27:57.885Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -60,6 +60,16 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T12:27:57.885Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #648 merged (fbc0eec)."
     }
-  ]
+  ],
+  "pr_number": 648,
+  "merged_at": "2026-05-13T12:27:57.885Z"
 }
