@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T10:54:27.968Z",
-  "updated": "2026-05-13T10:54:27.968Z",
+  "updated": "2026-05-13T16:08:15.720Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-13T16:08:15.719Z",
   "input": {
     "topic": "Iran-nexus Microsoft 365 password spray campaign targeting Middle East cloud environments",
     "sources": [
@@ -55,6 +55,13 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T16:08:15.720Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
