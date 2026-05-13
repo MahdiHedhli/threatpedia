@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-13T16:08:03.223Z",
+  "updated": "2026-05-13T16:10:35.261Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": "Mahdi Hedhli",
-  "locked_at": "2026-05-13T16:08:03.222Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "UNC3886 threat actor profile",
     "sources": [
@@ -68,6 +68,16 @@
       "to": "locked",
       "agent": "Mahdi Hedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T16:10:35.257Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #663"
     }
-  ]
+  ],
+  "pr_number": 663,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/663"
 }
