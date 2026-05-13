@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-12T04:01:44.000Z",
-  "updated": "2026-05-13T00:27:28.379Z",
+  "updated": "2026-05-13T00:39:55.243Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-13T00:27:28.378Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Mistral AI Python SDK PyPI Package v2.4.6 Backdoor, May 2026",
     "sources": [
@@ -66,6 +66,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T00:39:55.243Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #615"
     }
-  ]
+  ],
+  "pr_number": 615,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/615"
 }
