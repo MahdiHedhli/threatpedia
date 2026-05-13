@@ -12,7 +12,6 @@ motivation: "Espionage"
 status: active
 country: "China"
 firstSeen: "2012"
-lastSeen: "2024"
 targetSectors:
   - "Government"
   - "Diplomatic Missions"
