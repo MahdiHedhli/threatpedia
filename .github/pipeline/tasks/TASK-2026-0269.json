@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "blocked",
+  "status": "complete",
   "created": "2026-05-13T14:25:50.575Z",
-  "updated": "2026-05-13T16:02:10.000Z",
+  "updated": "2026-05-13T16:26:11.037Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -88,6 +88,16 @@
       "to": "blocked",
       "agent": "dangermouse-bot",
       "note": "Blocked before drafting: task brief requires at least one government source, but no incident-specific public government or regulator source was found in reachable checks of Maine, California, Washington, Massachusetts, and state-AG search results. Existing Betterment and media sources support the incident and ATT&CK mapping, but not the government-source gate."
+    },
+    {
+      "timestamp": "2026-05-13T16:26:11.037Z",
+      "action": "merged",
+      "from": "blocked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #662 merged (081fc21)."
     }
-  ]
+  ],
+  "pr_number": 662,
+  "merged_at": "2026-05-13T16:26:11.037Z"
 }
