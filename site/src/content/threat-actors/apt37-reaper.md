@@ -33,7 +33,12 @@ targetGeographies:
   - "Romania"
   - "Kuwait"
   - "Middle East"
-tools: []
+tools:
+  - "Bluetooth device harvester"
+  - "DOGCALL"
+  - "RUHAPPY"
+  - "SHUTTERSPEED"
+  - "wiper malware"
 mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
