@@ -61,7 +61,7 @@ mitreMappings:
     confidence: confirmed
     evidence: "APT32 backdoors communicate over HTTP and HTTPS to attacker-controlled infrastructure, blending with legitimate web traffic to evade detection."
 attributionConfidence: A3
-attributionRationale: "Multiple independent security firms including Mandiant (Google Threat Intelligence), ESET, and Kaspersky have assessed APT32 as a Vietnam-linked, state-sponsored group based on targeting consistent with Vietnamese government intelligence priorities, infrastructure overlap, and Vietnamese-language artifacts in tooling. No formal government indictment or Western government cybersecurity advisory specifically naming APT32 has been issued as of this writing."
+attributionRationale: "Multiple independent security firms including Mandiant (Google Threat Intelligence), ESET, and Cybereason have assessed APT32 as a Vietnam-linked, state-sponsored group based on targeting consistent with Vietnamese government intelligence priorities, infrastructure overlap, and Vietnamese-language artifacts in tooling. No formal government indictment or Western government cybersecurity advisory specifically naming APT32 has been issued as of this writing."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-13
@@ -124,7 +124,7 @@ Cybereason documented a sustained APT32 intrusion into a global corporation with
 
 ### 2018–2019 — Civil Society and Media Targeting
 
-ESET and Amnesty International documented APT32 campaigns targeting Vietnamese civil society organizations, journalists, and human rights activists. The group delivered macOS and Windows malware through phishing emails using Vietnamese-language lures related to political and social topics of interest to the Vietnamese diaspora.
+ESET documented OceanLotus malware delivery against Vietnamese-language targets, including macOS and Windows payloads distributed through phishing-style lures and disguised archives. Public reporting from Mandiant, ESET, MITRE ATT&CK, and the US Department of State supports a conservative description of APT32 targeting that includes media and civil society without relying on an additional Amnesty International attribution.
 
 ### 2020 — COVID-19 Intelligence Collection
 
@@ -144,7 +144,7 @@ On macOS, the group delivers backdoors disguised as documents or applications vi
 
 Attribution of APT32 to Vietnam is based on convergent indicators across multiple independent investigations. The group's targeting pattern — Vietnamese dissidents, foreign journalists covering Vietnamese affairs, companies with commercial interests in Vietnam, and neighboring governments including Cambodia and Laos — aligns with collection priorities consistent with Vietnamese state intelligence organs.
 
-Infrastructure and tooling overlap across campaigns tracked by Mandiant, ESET, Kaspersky, Cybereason, and Volexity corroborates a single threat actor rather than disparate groups. Vietnamese-language artifacts appear in malware samples, and operational scheduling patterns are consistent with Indochina Standard Time (UTC+7). The US Department of State's 2022 Country Reports on Human Rights Practices documents Vietnamese government harassment and surveillance of journalists, bloggers, and activists, consistent with the targeting profile of APT32 activity described by security researchers.
+Infrastructure and tooling overlap across campaigns tracked by Mandiant, ESET, and Cybereason corroborates a single threat actor rather than disparate groups. Vietnamese-language artifacts appear in malware samples, and operational scheduling patterns are consistent with Indochina Standard Time (UTC+7). The US Department of State's 2022 Country Reports on Human Rights Practices documents Vietnamese government harassment and surveillance of journalists, bloggers, and activists, consistent with the targeting profile of APT32 activity described by security researchers.
 
 No Western government has issued a formal public cybersecurity attribution or indictment specifically naming APT32. The assessment rests on private-sector convergence and targeting alignment rather than formal government confirmation.
 
