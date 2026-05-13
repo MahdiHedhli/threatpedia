@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-13T19:12:35.960Z",
-  "updated": "2026-05-13T20:16:15.790Z",
+  "updated": "2026-05-13T21:50:19.981Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -62,6 +62,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #681"
+    },
+    {
+      "timestamp": "2026-05-13T21:50:19.981Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #685 already covers this task."
     }
   ]
 }
