@@ -25,6 +25,7 @@ import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
 import yaml from 'js-yaml';
 import { loadPipelineConfig } from './pipeline-config.mjs';
+import { PIPELINE_TASK_FILE_NAME_PATTERN, PIPELINE_TASK_FILE_PATH_RE } from './pipeline-task-patterns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -79,6 +80,7 @@ const INCIDENT_NEGATIVE_PATTERNS = [
 const ACTIVE_TASK_STATUSES = new Set(['pending', 'locked', 'blocked', 'pr_open', 'validation', 'review']);
 const AUTO_CERTIFY_THRESHOLD = 80;
 const INCIDENT_TASK_SUMMARY_MAX_LENGTH = 320;
+const TASK_FILE_NAME_RE = new RegExp(`^${PIPELINE_TASK_FILE_NAME_PATTERN}$`);
 const THREAT_ACTOR_PROMOTION_MIN_SOURCES = 3;
 const THREAT_ACTOR_PROMOTION_MIN_INCIDENTS = 2;
 const CAMPAIGN_PROMOTION_MIN_SOURCES = 3;
@@ -305,60 +307,331 @@ function buildCorpusIndexes() {
   return indexes;
 }
 
-function buildTaskIndexes() {
+function parseTaskNumber(taskId) {
+  const match = String(taskId || '').match(/^TASK-\d{4}-(\d+)$/);
+  return match ? parseInt(match[1], 10) : null;
+}
+
+function addTaskToIndexes(indexes, task) {
+  if (!task || typeof task !== 'object') return false;
+
+  const taskId = String(task.task_id || '').trim();
+  if (taskId && indexes.taskIds.has(taskId)) return false;
+  if (taskId) {
+    indexes.taskIds.add(taskId);
+    const taskNumber = parseTaskNumber(taskId);
+    if (Number.isFinite(taskNumber)) {
+      indexes.maxTaskNumber = Math.max(indexes.maxTaskNumber, taskNumber);
+    }
+  }
+
+  const type = String(task.type || 'unknown');
+  const status = String(task.status || 'pending');
+
+  if (ACTIVE_TASK_STATUSES.has(status)) {
+    indexes.activeCount += 1;
+    indexes.byType[type] = (indexes.byType[type] || 0) + 1;
+  }
+
+  const topic = task.input?.topic;
+  if (topic) indexes.titleKeys.add(normalizeTitleKey(topic));
+
+  const outputStem = extractStemFromPath(task.output?.file_pattern);
+  if (outputStem) {
+    indexes.slugs.add(outputStem);
+    indexes.titleKeys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
+  }
+
+  const targetStem = extractStemFromPath(task.input?.target_file);
+  if (targetStem) {
+    indexes.slugs.add(targetStem);
+    indexes.titleKeys.add(normalizeTitleKey(targetStem.replace(/-/g, ' ')));
+  }
+
+  for (const source of ensureArray(task.input?.sources)) {
+    const normalized = normalizeUrl(source);
+    if (normalized) indexes.urls.add(normalized);
+  }
+
+  const candidateData = task.input?.candidate_data || {};
+  const cve = candidateData.cve;
+  if (cve) indexes.cves.add(String(cve).toUpperCase());
+  for (const cveValue of ensureArray(candidateData.cves)) {
+    indexes.cves.add(String(cveValue).toUpperCase());
+  }
+
+  const topicCves = String(task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
+  for (const match of topicCves) indexes.cves.add(match[0].toUpperCase());
+
+  return true;
+}
+
+function buildTaskIndexes(openPullRequestTasks = []) {
   const indexes = {
     cves: new Set(),
     urls: new Set(),
     titleKeys: new Set(),
     slugs: new Set(),
+    taskIds: new Set(),
+    maxTaskNumber: 0,
     activeCount: 0,
     byType: {},
   };
 
-  if (!existsSync(TASKS_DIR)) return indexes;
-
-  for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
-    const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
-    const type = String(task.type || 'unknown');
-    const status = String(task.status || 'pending');
-
-    if (ACTIVE_TASK_STATUSES.has(status)) {
-      indexes.activeCount += 1;
-      indexes.byType[type] = (indexes.byType[type] || 0) + 1;
+  if (existsSync(TASKS_DIR)) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
+      try {
+        addTaskToIndexes(indexes, JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8')));
+      } catch (error) {
+        console.log(`::warning::Failed to parse local task file ${file} (${error.message}); skipping`);
+      }
     }
-
-    const topic = task.input?.topic;
-    if (topic) indexes.titleKeys.add(normalizeTitleKey(topic));
-
-    const outputStem = extractStemFromPath(task.output?.file_pattern);
-    if (outputStem) {
-      indexes.slugs.add(outputStem);
-      indexes.titleKeys.add(normalizeTitleKey(outputStem.replace(/-/g, ' ')));
-    }
-
-    const targetStem = extractStemFromPath(task.input?.target_file);
-    if (targetStem) {
-      indexes.slugs.add(targetStem);
-      indexes.titleKeys.add(normalizeTitleKey(targetStem.replace(/-/g, ' ')));
-    }
-
-    for (const source of ensureArray(task.input?.sources)) {
-      const normalized = normalizeUrl(source);
-      if (normalized) indexes.urls.add(normalized);
-    }
-
-    const candidateData = task.input?.candidate_data || {};
-    const cve = candidateData.cve;
-    if (cve) indexes.cves.add(String(cve).toUpperCase());
-    for (const cveValue of ensureArray(candidateData.cves)) {
-      indexes.cves.add(String(cveValue).toUpperCase());
-    }
-
-    const topicCves = String(task.input?.topic || '').matchAll(/CVE-\d{4}-\d+/g);
-    for (const match of topicCves) indexes.cves.add(match[0].toUpperCase());
   }
 
+  for (const task of openPullRequestTasks) addTaskToIndexes(indexes, task);
+
   return indexes;
+}
+
+function githubApiHeaders(token) {
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'threatpedia-pipeline-discovery',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
+async function fetchGitHubJson(url, token) {
+  const response = await fetch(url, { headers: githubApiHeaders(token) });
+  if (!response.ok) {
+    throw new Error(`GitHub API ${response.status} for ${url}`);
+  }
+  return response.json();
+}
+
+async function fetchGitHubGraphql(query, variables, token) {
+  if (!token) throw new Error('GitHub token is required for GraphQL requests');
+
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      ...githubApiHeaders(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!response.ok) {
+    throw new Error(`GitHub GraphQL API ${response.status}`);
+  }
+
+  const data = await response.json();
+  if (Array.isArray(data.errors) && data.errors.length > 0) {
+    throw new Error(`GitHub GraphQL API error: ${data.errors.map(error => error.message).join('; ')}`);
+  }
+  return data.data;
+}
+
+function parseGitHubRepo(repo) {
+  const [owner, name] = String(repo || '').split('/');
+  if (!owner || !name) return null;
+  return { owner, name };
+}
+
+function encodeGitHubPath(pathValue) {
+  return String(pathValue || '')
+    .split('/')
+    .map(part => encodeURIComponent(part))
+    .join('/');
+}
+
+async function fetchOpenPullRequestTask(pr, file, repo, token) {
+  const headRepo = pr.head?.repo?.full_name || repo;
+  const headRef = pr.head?.sha || pr.head?.ref;
+  if (!headRepo || !headRef) return null;
+
+  const encodedPath = encodeGitHubPath(file.filename);
+  const url = `https://api.github.com/repos/${headRepo}/contents/${encodedPath}?ref=${encodeURIComponent(headRef)}`;
+  try {
+    const data = await fetchGitHubJson(url, token);
+    if (!data || typeof data.content !== 'string') return null;
+
+    const content = Buffer.from(data.content, 'base64').toString('utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.log(`::warning::Failed to fetch or parse task file ${file.filename} from PR #${pr.number} (${error.message}); skipping`);
+    return null;
+  }
+}
+
+async function fetchOpenPullRequestFiles(pr, repo, token) {
+  const files = [];
+  let filePage = 1;
+  while (true) {
+    const pageFiles = await fetchGitHubJson(
+      `https://api.github.com/repos/${repo}/pulls/${pr.number}/files?per_page=100&page=${filePage}`,
+      token,
+    );
+    if (!Array.isArray(pageFiles) || pageFiles.length === 0) break;
+
+    files.push(...pageFiles);
+
+    if (pageFiles.length < 100) break;
+    filePage += 1;
+  }
+  return files;
+}
+
+function toRestPullRequestShape(pr, repo) {
+  return {
+    number: pr.number,
+    head: {
+      ref: pr.headRefName,
+      sha: pr.headRefOid,
+      repo: {
+        full_name: pr.headRepository?.nameWithOwner || repo,
+      },
+    },
+  };
+}
+
+async function fetchOpenPullRequestTaskFileRefs(repo, token) {
+  const parsedRepo = parseGitHubRepo(repo);
+  if (!parsedRepo || !token) return null;
+
+  const refs = [];
+  let cursor = null;
+  const query = `
+    query($owner: String!, $name: String!, $cursor: String) {
+      repository(owner: $owner, name: $name) {
+        pullRequests(first: 50, after: $cursor, states: OPEN, orderBy: { field: UPDATED_AT, direction: DESC }) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          nodes {
+            number
+            headRefName
+            headRefOid
+            headRepository {
+              nameWithOwner
+            }
+            files(first: 100) {
+              pageInfo {
+                hasNextPage
+              }
+              nodes {
+                path
+                changeType
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  while (true) {
+    const data = await fetchGitHubGraphql(
+      query,
+      { owner: parsedRepo.owner, name: parsedRepo.name, cursor },
+      token,
+    );
+    const connection = data?.repository?.pullRequests;
+    const pulls = connection?.nodes || [];
+    if (pulls.length === 0) break;
+
+    for (const pr of pulls) {
+      const restPr = toRestPullRequestShape(pr, repo);
+      const files = pr.files?.pageInfo?.hasNextPage
+        ? await fetchOpenPullRequestFiles(restPr, repo, token)
+        : (pr.files?.nodes || []).map(file => ({
+          filename: file.path,
+          status: file.changeType === 'DELETED' ? 'removed' : 'modified',
+        }));
+
+      for (const file of files) {
+        if (file.status === 'removed') continue;
+        if (PIPELINE_TASK_FILE_PATH_RE.test(String(file.filename || ''))) {
+          refs.push({ pr: restPr, file });
+        }
+      }
+    }
+
+    if (!connection?.pageInfo?.hasNextPage) break;
+    cursor = connection.pageInfo.endCursor;
+  }
+
+  return refs;
+}
+
+async function fetchOpenPullRequestTasks(opts) {
+  const repo = process.env.GITHUB_REPOSITORY || process.env.REPO || '';
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
+  const requireLiveState = opts.execute && process.env.GITHUB_ACTIONS === 'true';
+
+  if (!repo) {
+    if (requireLiveState) throw new Error('GITHUB_REPOSITORY is required to dedupe against open PR task files');
+    console.log('::notice::GITHUB_REPOSITORY not set; skipping open PR task dedupe');
+    return [];
+  }
+  if (!token) {
+    if (requireLiveState) throw new Error('GITHUB_TOKEN is required to dedupe against open PR task files');
+    console.log('::notice::GITHUB_TOKEN not set; skipping open PR task dedupe');
+    return [];
+  }
+
+  const tasks = [];
+  let page = 1;
+  try {
+    let taskRefs = null;
+    if (token) {
+      try {
+        taskRefs = await fetchOpenPullRequestTaskFileRefs(repo, token);
+      } catch (error) {
+        console.log(`::warning::Failed to load open PR file list via GraphQL (${error.message}); falling back to REST pagination`);
+      }
+    }
+
+    if (Array.isArray(taskRefs)) {
+      const newTasks = await Promise.all(
+        taskRefs.map(({ pr, file }) => fetchOpenPullRequestTask(pr, file, repo, token)),
+      );
+      tasks.push(...newTasks.filter(Boolean));
+      return tasks;
+    }
+
+    while (true) {
+      const pulls = await fetchGitHubJson(
+        `https://api.github.com/repos/${repo}/pulls?state=open&per_page=100&page=${page}`,
+        token,
+      );
+      if (!Array.isArray(pulls) || pulls.length === 0) break;
+
+      for (const pr of pulls) {
+        const files = await fetchOpenPullRequestFiles(pr, repo, token);
+        const taskPromises = files
+          .filter(file => file.status !== 'removed')
+          .filter(file => PIPELINE_TASK_FILE_PATH_RE.test(String(file.filename || '')))
+          .map(file => fetchOpenPullRequestTask(pr, file, repo, token));
+
+        if (taskPromises.length > 0) {
+          const newTasks = await Promise.all(taskPromises);
+          tasks.push(...newTasks.filter(Boolean));
+        }
+      }
+
+      if (pulls.length < 100) break;
+      page += 1;
+    }
+  } catch (error) {
+    if (requireLiveState) throw error;
+    console.log(`::warning::Failed to load open PR task files (${error.message}); continuing with local task dedupe only`);
+    return [];
+  }
+
+  return tasks;
 }
 
 function buildIncidentCandidateKey(sourceKey, url) {
@@ -404,16 +677,10 @@ function buildRejectionIndexes() {
   return indexes;
 }
 
-function getNextTaskId() {
-  if (!existsSync(TASKS_DIR)) return 'TASK-2026-0071';
-
-  const existing = readdirSync(TASKS_DIR)
-    .filter(file => file.match(/^TASK-\d{4}-\d{4}\.json$/))
-    .map(file => parseInt(file.match(/TASK-\d{4}-(\d{4})/)[1], 10))
-    .sort((a, b) => b - a);
-
-  const next = existing.length > 0 ? existing[0] + 1 : 71;
-  return `TASK-2026-${String(next).padStart(4, '0')}`;
+function getNextTaskId(taskIndexes = null) {
+  const year = new Date().getUTCFullYear();
+  const next = taskIndexes?.maxTaskNumber ? taskIndexes.maxTaskNumber + 1 : 71;
+  return `TASK-${year}-${String(next).padStart(4, '0')}`;
 }
 
 function buildThreatActorIdentityIndex() {
@@ -436,7 +703,7 @@ function buildThreatActorIdentityIndex() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       if (task.type !== 'threat-actor') continue;
       const actorName = task.input?.candidate_data?.actor_name;
@@ -512,7 +779,7 @@ function buildCampaignIdentityIndex() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       if (task.type !== 'campaign') continue;
 
@@ -826,7 +1093,7 @@ function collectExploitIds() {
   }
 
   if (existsSync(TASKS_DIR)) {
-    for (const file of readdirSync(TASKS_DIR).filter(name => name.endsWith('.json'))) {
+    for (const file of readdirSync(TASKS_DIR).filter(name => TASK_FILE_NAME_RE.test(name))) {
       const task = JSON.parse(readFileSync(resolve(TASKS_DIR, file), 'utf8'));
       const exploitId = task.input?.candidate_data?.exploitId;
       if (exploitId) ids.push(exploitId);
@@ -1651,7 +1918,8 @@ async function main() {
   const opts = parseArgs();
   const config = loadPipelineConfig();
   const corpusIndexes = buildCorpusIndexes();
-  const taskIndexes = buildTaskIndexes();
+  const openPullRequestTasks = await fetchOpenPullRequestTasks(opts);
+  const taskIndexes = buildTaskIndexes(openPullRequestTasks);
   const rejectionIndexes = buildRejectionIndexes();
 
   const knownIndexes = {
@@ -1672,6 +1940,7 @@ async function main() {
 
   console.log('  [1/6] Building corpus/task indexes...');
   console.log(`         ${corpusIndexes.cves.size} CVEs in corpus, ${taskIndexes.cves.size} in pending tasks`);
+  console.log(`         ${openPullRequestTasks.length} open PR task file(s) included in dedupe`);
   console.log(`         ${knownIndexes.urls.size} known source URLs across corpus/tasks`);
   console.log(`         ${knownIndexes.titleKeys.size} known title keys across corpus/tasks`);
   console.log(`         ${knownIndexes.activeCount} active tasks in queue`);
@@ -1731,10 +2000,16 @@ async function main() {
 
   console.log('  [6/6] Creating pipeline tasks...\n');
   const existingExploitIds = collectExploitIds();
-  let nextIdNum = parseInt(getNextTaskId().match(/(\d{4})$/)[1], 10);
+  const nextTaskId = getNextTaskId(taskIndexes);
+  const nextTaskIdMatch = nextTaskId.match(/^TASK-(\d{4})-(\d+)$/);
+  if (!nextTaskIdMatch) {
+    throw new Error(`Unable to allocate next task ID from ${nextTaskId}`);
+  }
+  const taskIdYear = nextTaskIdMatch[1];
+  let nextIdNum = parseInt(nextTaskIdMatch[2], 10);
 
   for (const candidate of selected) {
-    const taskId = `TASK-2026-${String(nextIdNum).padStart(4, '0')}`;
+    const taskId = `TASK-${taskIdYear}-${String(nextIdNum).padStart(4, '0')}`;
     const task = candidate.type === 'zero-day'
       ? buildZeroDayTask(candidate, taskId, generateExploitId(candidate.kev.cveID, existingExploitIds))
       : candidate.type === 'incident'

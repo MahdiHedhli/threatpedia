@@ -147,6 +147,7 @@ jobs:
           DAYS: ${{ inputs.days || '14' }}
           LIMIT: ${{ inputs.limit || '5' }}
           EXECUTE: ${{ inputs.execute || 'true' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           echo "Running pipeline-discover.mjs (mode=${MODE}, days=${DAYS}, limit=${LIMIT}, execute=${EXECUTE})"
