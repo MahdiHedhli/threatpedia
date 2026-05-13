@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0265",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-13T05:51:55.294Z",
+  "updated": "2026-05-13T05:51:55.294Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Russian intelligence Signal account compromise campaign",
+    "sources": [
+      "https://www.ic3.gov/PSA/2026/PSA260320",
+      "https://www.cert.ssi.gouv.fr/alerte/CERTFR-2026-ALE-003",
+      "https://english.aivd.nl/latest/news/2026/03/09/russia-targets-signal-and-whatsapp-accounts-in-cyber-campaign"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin 2026-03-23 lead from government sources. Scope as a campaign about Russian intelligence-linked compromise of Signal and related secure-messaging accounts by social engineering users into linking attacker-controlled devices. Preserve the FBI, CERT-FR, and AIVD sources; do not overstate victim counts beyond source language."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0265",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T05:51:55.294Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
