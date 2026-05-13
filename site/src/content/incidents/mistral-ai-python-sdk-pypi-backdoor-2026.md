@@ -42,16 +42,6 @@ sources:
     reliability: R2
     publicationDate: "2026-05-12"
     url: https://github.com/mistralai/client-python/issues/523
-  - publisher: SecurityWeek
-    publisherType: media
-    reliability: R2
-    publicationDate: "2026-05-12"
-    url: https://www.securityweek.com/tanstack-mistral-ai-uipath-hit-in-fresh-supply-chain-attack/
-  - publisher: "OX Security"
-    publisherType: research
-    reliability: R2
-    publicationDate: "2026-05-12"
-    url: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
 mitreMappings:
   - techniqueId: T1195.001
     techniqueName: "Compromise Software Dependencies and Development Tools"
@@ -77,7 +67,7 @@ mitreMappings:
 
 On May 12, 2026, Mistral AI published security advisory MAI-2026-002 disclosing that version 2.4.6 of the `mistralai` Python SDK on PyPI had been compromised during a software supply-chain attack. Mistral said the affected PyPI release was uploaded at approximately 00:05 UTC on May 12, 2026, and that the PyPI project was quarantined. A GitHub security advisory for the `mistralai` Python client states that no `v2.4.6` tag, commit, or release workflow run exists in the repository and that the upload bypassed the normal PyPI Trusted Publishing release pipeline.
 
-Mistral linked the package compromise to a TanStack-related supply-chain incident and said an automated worm associated with the attack led to compromised npm and PyPI package versions. NHS England Digital and third-party security reporting described the broader activity as affecting TanStack, Mistral AI, UiPath, OpenSearch, and other packages across npm and PyPI. The public Mistral and GitHub advisories do not identify a confirmed actor for the `mistralai==2.4.6` PyPI release.
+Mistral linked the package compromise to a TanStack-related supply-chain incident and said an automated worm associated with the attack led to compromised npm and PyPI package versions. NHS England Digital separately listed `mistralai==2.4.6` among affected PyPI packages in a broader supply-chain alert. The public Mistral and GitHub advisories do not identify a confirmed actor for the `mistralai==2.4.6` PyPI release.
 
 ## Technical Analysis
 
@@ -90,7 +80,7 @@ The Mistral advisory says the malicious PyPI package ran a script at import time
 
 The GitHub advisory narrows one important execution condition: a bare `import mistralai` alone did not trigger the loader because the package is laid out as a PEP 420 namespace package, while documented SDK usage through `mistralai.client.*` would trigger the path. The advisory also states that `pip install`, `pip download`, and `pip wheel` do not invoke the dropper by themselves.
 
-NHS England Digital reports that the broader supply-chain activity involved malicious package uploads in two phases, April 29, 2026 and May 11, 2026, and that affected packages executed during installation or import to collect development secrets. OX Security also lists `mistralai@2.4.6` as an affected PyPI package and describes a Python infection path that downloads and executes `transformers.pyz`.
+NHS England Digital's broader alert says affected packages included `mistralai==2.4.6` and recommends treating systems that installed affected packages as compromised. The available public record scopes the incident to the Mistral PyPI release and does not attribute the broader campaign to a named actor.
 
 ## Attack Chain
 
@@ -99,14 +89,13 @@ NHS England Digital reports that the broader supply-chain activity involved mali
 3. **Distribution** -- The compromised package was available through PyPI until the project was quarantined.
 4. **Execution** -- On Linux hosts, SDK usage that imported through `mistralai.client.*` triggered malicious code in `__init__.py`.
 5. **Payload delivery** -- The code fetched `transformers.pyz` from `83.142.209.194` and launched it as a detached Python process.
-6. **Potential credential exposure** -- Mistral advised affected users to clean impacted systems and rotate secrets accessible from those systems.
+6. **Response** -- Mistral advised affected users to clean impacted systems and rotate secrets accessible from those systems.
 
 ## Timeline
 
-- **2026-04-29** -- NHS England Digital reports the first phase of Mini Shai-Hulud package activity.
-- **2026-05-11** -- NHS England Digital reports a second phase of package activity.
 - **2026-05-12 00:05 UTC** -- Mistral AI says the compromised `mistralai==2.4.6` package was uploaded to PyPI.
 - **2026-05-12** -- Mistral AI published MAI-2026-002, and the associated GitHub security advisory documented the malicious dropper behavior.
+- **2026-05-12** -- NHS England Digital listed `mistralai==2.4.6` among affected PyPI packages in a broader supply-chain alert.
 
 ## Impact Assessment
 
@@ -114,11 +103,11 @@ Linux environments that imported code through `mistralai.client.*` from `mistral
 
 Mistral AI states that current investigation indicated an affected developer device was involved and that there was no indication Mistral infrastructure was compromised. The advisory was described as under active investigation at time of publication.
 
-The broader npm and PyPI activity increased the operational risk for developer environments because affected packages were distributed through trusted package-management paths. For this specific PyPI event, the public advisories support treating affected Linux hosts as potentially compromised, but they do not provide a confirmed victim count or confirmed actor identity.
+For this specific PyPI event, the public advisories support treating affected Linux hosts as potentially compromised, but they do not provide a confirmed victim count or confirmed actor identity.
 
 ## Attribution
 
-The attacker is unknown. Mistral AI's advisory does not attribute the PyPI compromise to a named group or state actor. Some third-party reporting associates the broader supply-chain activity with Mini Shai-Hulud or TeamPCP, but the primary Mistral and GitHub advisories do not confirm a responsible actor for `mistralai==2.4.6`.
+The attacker is unknown. Mistral AI's advisory does not attribute the PyPI compromise to a named group or state actor. NHS England Digital used the "Mini Shai-Hulud" label for broader supply-chain activity, but the primary Mistral and GitHub advisories do not confirm a responsible actor for `mistralai==2.4.6`.
 
 ## Remediation & Mitigation
 
@@ -137,5 +126,3 @@ Mistral AI and the GitHub security advisory recommend treating affected Linux sy
 - [GitHub / Mistral AI: Malicious dropper in mistralai 2.4.6 PyPI package](https://github.com/mistralai/client-python/security/advisories/GHSA-wx9m-wx4f-4cmg) — GitHub / Mistral AI, 2026-05-12
 - [NHS England Digital: Cyber Alert CC-4781](https://digital.nhs.uk/cyber-alerts/2026/cc-4781) — NHS England Digital, 2026-05-12
 - [GitHub / Mistral AI: client-python issue #523](https://github.com/mistralai/client-python/issues/523) — GitHub / Mistral AI, 2026-05-12
-- [SecurityWeek: TanStack, Mistral AI, UiPath hit in fresh supply chain attack](https://www.securityweek.com/tanstack-mistral-ai-uipath-hit-in-fresh-supply-chain-attack/) — SecurityWeek, 2026-05-12
-- [OX Security: Shai-Hulud -- here we go again, 170 packages hit across npm and PyPI](https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/) — OX Security, 2026-05-12
