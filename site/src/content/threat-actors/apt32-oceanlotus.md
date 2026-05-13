@@ -92,7 +92,7 @@ sources:
     publicationDate: "2018-03-13"
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://www.cybereason.com/blog/operation-cobalt-kitty-apt-lifecycle"
+  - url: "https://www.cybereason.com/blog/operation-cobalt-kitty-apt"
     publisher: "Cybereason"
     publisherType: vendor
     reliability: R2
@@ -159,5 +159,5 @@ No Western government has issued a formal public cybersecurity attribution or in
 - [MITRE ATT&CK: APT32 (G0050)](https://attack.mitre.org/groups/G0050/) — MITRE ATT&CK, 2025-10-17
 - [Google Cloud (Mandiant): APT32 and the Threat to Global Enterprises](https://cloud.google.com/blog/topics/threat-intelligence/cyber-espionage-apt32/) — Google Cloud (Mandiant), 2017-05-14
 - [ESET: OceanLotus Ships New Backdoor](https://www.welivesecurity.com/2018/03/13/oceanlotus-ships-new-backdoor/) — ESET, 2018-03-13
-- [Cybereason: Operation Cobalt Kitty APT Lifecycle](https://www.cybereason.com/blog/operation-cobalt-kitty-apt-lifecycle) — Cybereason, 2017-08-03
+- [Cybereason: Operation Cobalt Kitty APT Lifecycle](https://www.cybereason.com/blog/operation-cobalt-kitty-apt) — Cybereason, 2017-08-03
 - [US Department of State: 2022 Country Reports on Human Rights Practices — Vietnam](https://www.state.gov/reports/2022-country-reports-on-human-rights-practices/vietnam/) — US Department of State, 2023-03-20
