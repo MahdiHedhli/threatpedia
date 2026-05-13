@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-13T05:51:55.294Z",
-  "updated": "2026-05-13T05:51:55.294Z",
+  "updated": "2026-05-13T07:36:39.473Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -53,6 +53,14 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T07:36:39.473Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #633 already covers this task."
     }
   ]
 }
