@@ -93,7 +93,7 @@ sources:
     publicationDate: "2024-09-09"
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/?_wpnonce=9bd850b26d&lg=en&pdf=print"
+  - url: "https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/"
     publisher: "Unit 42"
     publisherType: "vendor"
     reliability: "R2"
@@ -106,7 +106,7 @@ sources:
 
 RansomHub is a ransomware-as-a-service operation associated with double-extortion activity. [CISA: #StopRansomware: RansomHub Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-242a) identified RansomHub as a variant formerly known as Cyclops and Knight and reported that the operation had attracted affiliates from other ransomware variants.
 
-CISA, FBI, MS-ISAC, and HHS reported that since RansomHub's inception in February 2024, affiliates had encrypted and exfiltrated data from at least 210 victims across water and wastewater, information technology, government services and facilities, healthcare and public health, emergency services, food and agriculture, financial services, commercial facilities, critical manufacturing, transportation, and communications sectors. [Unit 42: Extortion and Ransomware Trends January-March 2025](https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/?_wpnonce=9bd850b26d&lg=en&pdf=print) reported that RansomHub was the most active ransomware leak-site name in Unit 42's vetted January-March 2025 public leak-site dataset.
+CISA, FBI, MS-ISAC, and HHS reported that since RansomHub's inception in February 2024, affiliates had encrypted and exfiltrated data from at least 210 victims across water and wastewater, information technology, government services and facilities, healthcare and public health, emergency services, food and agriculture, financial services, commercial facilities, critical manufacturing, transportation, and communications sectors. [Unit 42: Extortion and Ransomware Trends January-March 2025](https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/) reported that RansomHub was the most active ransomware leak-site name in Unit 42's vetted January-March 2025 public leak-site dataset.
 
 ## Notable Campaigns
 
@@ -148,4 +148,4 @@ T1490 - Inhibit System Recovery: CISA reported that RansomHub ransomware deleted
 
 - [CISA: #StopRansomware: RansomHub Ransomware](https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-242a) — CISA, 2024-08-29
 - [ThreatDown: New RansomHub attack uses TDSSKiller and LaZagne, disables EDR](https://www.threatdown.com/blog/new-ransomhub-attack-uses-tdskiller-and-lazagne-disables-edr/) — ThreatDown, 2024-09-09
-- [Unit 42: Extortion and Ransomware Trends January-March 2025](https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/?_wpnonce=9bd850b26d&lg=en&pdf=print) — Unit 42, 2025-04-23
+- [Unit 42: Extortion and Ransomware Trends January-March 2025](https://unit42.paloaltonetworks.com/2025-ransomware-extortion-trends/) — Unit 42, 2025-04-23
