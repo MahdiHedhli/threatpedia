@@ -1,0 +1,70 @@
+{
+  "task_id": "TASK-2026-0271",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-13T18:10:16.470Z",
+  "updated": "2026-05-13T19:11:24.000Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "NGINX UI CVE-2026-33032 exploitation activity",
+    "sources": [
+      "https://www.recordedfuture.com/blog/march-2026-cve-landscape",
+      "https://github.com/0xJacky/nginx-ui/security/advisories/GHSA-h6c2-x2m2-mwhf",
+      "https://pluto.security/blog/mcp-bug-nginx-security-vulnerability-cvss-9-8",
+      "https://news.risky.biz/risky-bulletin-nist-gives-up-enriching-most-cves"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "date": "2026-03-28",
+      "attack_type": "Exploitation",
+      "sector": "Technology",
+      "geography": "Global"
+    },
+    "notes": "Risky Bulletin Apr. 17, 2026 discovery lead. Treat as an exploitation event against exposed nginx-ui deployments and MCP-related attack surface. Recorded Future reported CVE-2026-33032 active exploitation in March 2026, while Pluto Security reported public exploitation confirmation and a March 15 fixed version. Do not classify as zero-day unless drafting finds stronger pre-disclosure evidence. Preserve the upstream advisory and technical write-up for scope and affected-path details."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0271",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T18:10:16.470Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T19:11:24.000Z",
+      "action": "updated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Normalized incident seed metadata: added candidate_data date, attack_type, sector, and geography; aligned min_h2_sections with the incident article section contract; removed legacy schema_validation acceptance field."
+    }
+  ]
+}
