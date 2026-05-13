@@ -142,7 +142,7 @@ DarkHotel's technical toolkit spans social engineering, network-level intercepti
 
 **BBSRAT** is a modular backdoor sharing functional overlap with Karba, capable of process injection, file management, and remote shell access. Its use in DarkHotel operations has been assessed by multiple vendors. NHS England Digital described **Ramsay** as an information-stealing trojan and espionage framework believed to have been created by or for DarkHotel.
 
-The group's network interception technique requires prior compromise of hotel IT infrastructure — typically via exploitation of hotel network management systems or router firmware — which the group maintains as persistent footholds between targeted operations. Code-signing with counterfeit certificates is consistently used to reduce endpoint detection friction.
+The group's network interception technique requires compromised hotel network environments that can deliver malicious software-update prompts to selected guests. Code-signing with counterfeit certificates is consistently used to reduce endpoint detection friction.
 
 ## Attribution
 

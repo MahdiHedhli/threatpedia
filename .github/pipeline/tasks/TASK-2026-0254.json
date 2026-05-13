@@ -8,8 +8,10 @@
   "updated": "2026-05-13T00:00:00.000Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-13T00:00:00.000Z",
+  "locked_by": null,
+  "locked_at": null,
+  "pr_number": 666,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/666",
   "input": {
     "topic": "DarkHotel threat actor profile",
     "sources": [
