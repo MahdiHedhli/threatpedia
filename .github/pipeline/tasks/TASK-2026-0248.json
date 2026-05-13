@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-13T10:12:24.696Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -61,6 +61,31 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-013"
+    },
+    {
+      "timestamp": "2026-05-13T07:16:04.167Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T07:20:02.000Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #634 opened: feat(threat-actor): TASK-2026-0248 APT35 / Charming Kitten threat actor profile"
+    },
+    {
+      "timestamp": "2026-05-13T10:12:24.696Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #634 merged (b0a84e2)."
     }
-  ]
+  ],
+  "pr_number": 634,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/634",
+  "merged_at": "2026-05-13T10:12:24.696Z"
 }

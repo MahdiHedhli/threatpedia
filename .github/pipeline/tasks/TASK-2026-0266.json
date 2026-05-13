@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-13T07:14:57.216Z",
-  "updated": "2026-05-13T07:14:57.216Z",
+  "updated": "2026-05-13T09:48:55.642Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -62,6 +62,32 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T08:43:14.068Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T08:49:48.773Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #636"
+    },
+    {
+      "timestamp": "2026-05-13T09:48:55.642Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #636 merged (9f3e537)."
     }
-  ]
+  ],
+  "pr_number": 636,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/636",
+  "merged_at": "2026-05-13T09:48:55.642Z"
 }
