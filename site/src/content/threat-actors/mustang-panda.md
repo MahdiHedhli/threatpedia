@@ -7,7 +7,7 @@ aliases:
   - "RedDelta"
   - "TA416"
   - "PKPLUG"
-affiliation: "China (assessed)"
+affiliation: "China"
 motivation: "Espionage"
 status: active
 country: "China"
