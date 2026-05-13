@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-13T18:33:19Z",
+  "updated": "2026-05-13T20:16:15.790Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
   "locked_by": null,
@@ -66,6 +66,14 @@
       "to": "pending",
       "agent": "risky-bulletin-zero-day-scan",
       "note": "Manual Risky Bulletin zero-day seed after dedupe dry-run found no duplicate source URLs."
+    },
+    {
+      "timestamp": "2026-05-13T20:16:15.790Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #680"
     }
   ]
 }

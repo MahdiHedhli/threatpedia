@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-13T18:10:16.470Z",
-  "updated": "2026-05-13T19:11:24.000Z",
+  "updated": "2026-05-13T20:16:15.790Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -65,6 +65,14 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Normalized incident seed metadata: added candidate_data date, attack_type, sector, and geography; aligned min_h2_sections with the incident article section contract; removed legacy schema_validation acceptance field."
+    },
+    {
+      "timestamp": "2026-05-13T20:16:15.790Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #679 already covers this task."
     }
   ]
 }
