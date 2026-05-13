@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-13T21:00:11.525Z",
-  "updated": "2026-05-13T23:35:12.521Z",
+  "updated": "2026-05-14T00:20:00.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -56,12 +56,37 @@
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
     },
     {
+      "timestamp": "2026-05-13T22:24:00.723Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T22:32:23.829Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #691"
+    },
+    {
       "timestamp": "2026-05-13T23:35:12.521Z",
       "action": "dispatch_skipped",
       "from": "pending",
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #691 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-14T00:20:00.000Z",
+      "action": "conflict_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "note": "Rebased against current main and preserved PR #691 task state."
     }
-  ]
+  ],
+  "pr_number": 691,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/691"
 }
