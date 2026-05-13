@@ -40,30 +40,41 @@ mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
+    attackVersion: "v19"
     confidence: "confirmed"
     notes: "DarkHotel delivers malicious attachments exploiting zero-day vulnerabilities in Adobe Reader, Flash, and Microsoft Office to compromise targeted executives."
   - techniqueId: "T1189"
     techniqueName: "Drive-by Compromise"
     tactic: "Initial Access"
+    attackVersion: "v19"
     confidence: "confirmed"
     notes: "Signature technique: DarkHotel compromises hotel Wi-Fi networks to serve fake software update packages (Adobe Flash, Windows Messenger) to targeted guests."
   - techniqueId: "T1203"
     techniqueName: "Exploitation for Client Execution"
     tactic: "Execution"
+    attackVersion: "v19"
     confidence: "confirmed"
     notes: "Exploits zero-day vulnerabilities in client-side applications including Adobe Flash (CVE-2015-5119, sourced from Hacking Team leak) and Internet Explorer."
   - techniqueId: "T1027"
     techniqueName: "Obfuscated Files or Information"
     tactic: "Defense Evasion"
+    attackVersion: "v19"
     confidence: "confirmed"
-    notes: "DarkHotel malware components are consistently obfuscated; signed with counterfeit or stolen code-signing certificates to evade detection."
+    notes: "DarkHotel malware components use obfuscation to complicate analysis and detection."
+  - techniqueId: "T1553.002"
+    techniqueName: "Code Signing"
+    tactic: "Defense Evasion"
+    attackVersion: "v19"
+    confidence: "confirmed"
+    notes: "MITRE ATT&CK maps DarkHotel abuse of stolen or counterfeit code-signing certificates to code signing trust-control subversion."
   - techniqueId: "T1547.001"
     techniqueName: "Registry Run Keys / Startup Folder"
     tactic: "Persistence"
+    attackVersion: "v19"
     confidence: "confirmed"
     notes: "The Karba backdoor establishes persistence via Windows Registry Run keys, surviving reboots across targeted hotel stays."
 attributionConfidence: A3
-attributionRationale: "Kaspersky Lab and Microsoft research attributes DarkHotel to South Korean-speaking threat actors based on language artifacts, targeting patterns, and operational infrastructure. No government indictment has been issued; attribution is assessed, not confirmed."
+attributionRationale: "Kaspersky Lab attributes DarkHotel to South Korean-speaking threat actors based on language artifacts, targeting patterns, and operational infrastructure. No government indictment has been issued; attribution is assessed, not confirmed."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-13
@@ -137,9 +148,9 @@ The group's network interception technique requires prior compromise of hotel IT
 
 ## Attribution
 
-DarkHotel attribution to South Korean-linked actors rests on corroborating evidence across multiple vendor investigations. Language artifacts in malware binaries and decoy documents show Korean-language content. Operational targeting aligns with South Korean national intelligence interests: the group prioritizes executives from countries and industries relevant to Korean economic and strategic competition. Infrastructure patterns, code reuse across campaigns, and the sustained operational tempo over more than a decade are consistent with a state-sponsored or state-tolerated actor.
+DarkHotel attribution to South Korean-linked actors rests on assessment rather than public legal or government confirmation. Kaspersky Lab reported Korean-language artifacts, targeting patterns, and infrastructure observations as the basis for its attribution assessment. The cited public sources do not identify named operators or a formal government sponsor.
 
-Microsoft tracks the group as **DUBNIUM** and CrowdStrike as **Zigzag Hail**. Neither the South Korean government nor any foreign government has issued a formal indictment or public attribution statement. The A3 assessment reflects vendor-level consensus without government confirmation — a weaker evidentiary basis than formally indicted groups such as APT41.
+Neither the South Korean government nor any foreign government has issued a formal indictment or public attribution statement in the cited sources. The A3 assessment reflects source-supported vendor attribution without government confirmation.
 
 ## MITRE ATT&CK Profile
 
@@ -149,7 +160,7 @@ Microsoft tracks the group as **DUBNIUM** and CrowdStrike as **Zigzag Hail**. Ne
 
 **Persistence**: Karba and Tapaoux establish persistence through Windows Registry Run keys and Startup folder entries (T1547.001), ensuring survival across reboots and enabling long-duration access.
 
-**Defense Evasion**: Malware components are consistently obfuscated (T1027) and signed with counterfeit or stolen code-signing certificates, reducing detection rates on both endpoint and network controls.
+**Defense Evasion**: Malware components use obfuscation (T1027). MITRE ATT&CK also maps DarkHotel use of stolen or counterfeit code-signing certificates to code signing trust-control subversion (T1553.002).
 
 **Collection**: The Karba backdoor includes screen capture and keylogging capabilities, enabling credential theft and document exfiltration from targeted executives.
 
