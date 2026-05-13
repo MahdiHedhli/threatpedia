@@ -123,11 +123,7 @@ Cybereason documented a sustained APT32 intrusion into a global corporation with
 
 ### 2018–2019 — Civil Society and Media Targeting
 
-ESET documented OceanLotus malware delivery against Vietnamese-language targets, including macOS and Windows payloads distributed through phishing-style lures and disguised archives. Public reporting from Mandiant, ESET, MITRE ATT&CK, and the US Department of State supports a conservative description of APT32 targeting that includes media and civil society without relying on an additional Amnesty International attribution.
-
-### 2020 — COVID-19 Intelligence Collection
-
-In early 2020, Mandiant attributed a spearphishing campaign against the Wuhan City Government and Chinese Ministry of Emergency Management to APT32, assessing the group was collecting intelligence on China's handling of the COVID-19 outbreak. This represented a departure from the group's typical dissident and civil society focus toward a rival government target.
+ESET documented OceanLotus malware delivery against Vietnamese-language targets, including macOS and Windows payloads distributed through phishing-style lures and disguised archives. Mandiant, ESET, MITRE ATT&CK, and the US Department of State reporting describes APT32 targeting that includes media and civil society organizations.
 
 ## Technical Capabilities
 
