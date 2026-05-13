@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-13T14:25:50.575Z",
-  "updated": "2026-05-13T14:51:13.000Z",
+  "updated": "2026-05-13T15:20:35.795Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -72,6 +72,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Addressed Gemini incident metadata feedback by adding candidate_data.geography."
+    },
+    {
+      "timestamp": "2026-05-13T15:20:35.795Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #658"
     }
   ]
 }

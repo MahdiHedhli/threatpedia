@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-13T10:54:27.968Z",
-  "updated": "2026-05-13T10:54:27.968Z",
+  "updated": "2026-05-13T15:20:35.795Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -55,6 +55,14 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T15:20:35.795Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #656"
     }
   ]
 }

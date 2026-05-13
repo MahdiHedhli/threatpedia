@@ -8,7 +8,7 @@
   "pr_url": null,
   "merged_at": null,
   "created": "2026-05-13T12:10:38.423Z",
-  "updated": "2026-05-13T13:15:20Z",
+  "updated": "2026-05-13T15:20:35.795Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -71,6 +71,14 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "PR #648 was a task-only seed PR, not an article completion PR; restore dispatcher eligibility."
+    },
+    {
+      "timestamp": "2026-05-13T15:20:35.795Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #657"
     }
   ]
 }
