@@ -13,17 +13,15 @@ targetSectors:
   - "Technology"
   - "Telecommunications"
   - "Government"
+  - "Media"
   - "Retail"
   - "Healthcare"
 targetGeographies:
-  - "United Kingdom"
-  - "Brazil"
   - "International"
 tools:
-  - "Redline"
-  - "AnyDesk"
   - "Mimikatz"
   - "AD Explorer"
+  - "ntdsutil"
 mitreMappings:
   - techniqueId: "T1078"
     techniqueName: "Valid Accounts"
@@ -107,7 +105,7 @@ Microsoft reported that DEV-0537 used stolen credentials and session tokens to a
 
 The CSRB described LAPSUS$ as a loosely organized transnational threat actor group. It stated that the Board received no evidence suggesting that LAPSUS$ was affiliated with a nation-state or political entity, and it avoided definitive attribution for all attacks associated with the activity set.
 
-Public reporting reviewed by the CSRB indicated that some perpetrators were teenagers and that law enforcement and juvenile cybercrime prevention were relevant response considerations. Those observations should not be generalized to every participant or related intrusion unless a source directly supports the claim.
+Public reporting reviewed by the CSRB indicated that some perpetrators were teenagers and that law enforcement and juvenile cybercrime prevention were relevant response considerations.
 
 ## MITRE ATT&CK Profile
 
