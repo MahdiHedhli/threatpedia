@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-13T05:51:55.294Z",
-  "updated": "2026-05-13T07:36:39.473Z",
+  "updated": "2026-05-13T08:06:09.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-13T07:08:17.450Z",
   "input": {
     "topic": "Russian intelligence Signal account compromise campaign",
     "sources": [
@@ -43,7 +43,10 @@
   "output": {
     "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0265",
-    "pr": true
+    "pr": true,
+    "pr_number": 633,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/633",
+    "slug": "russian-intelligence-signal-whatsapp-account-compromise-2026"
   },
   "history": [
     {
@@ -55,12 +58,34 @@
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
     },
     {
+      "timestamp": "2026-05-13T07:08:17.450Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T07:17:25.000Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #633 opened: feat(campaign): TASK-2026-0265 — Russian intelligence Signal and WhatsApp account compromise campaign"
+    },
+    {
       "timestamp": "2026-05-13T07:36:39.473Z",
       "action": "dispatch_skipped",
       "from": "pending",
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #633 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T08:06:09.000Z",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Remediation: resolved merge conflict, fixed status/locked_by metadata, applied Gemini review fixes (subjective intensifier removal, MITRE canonical format, task bookkeeping corrections). PR #633."
     }
-  ]
+  ],
+  "pr_number": 633
 }
