@@ -52,10 +52,10 @@ sources:
 mitreMappings:
   - techniqueId: "T1070"
     techniqueName: "Indicator Removal"
-    tactic: "Stealth"
+    tactic: "Defense Evasion"
     attack-version: "v19"
     confidence: "confirmed"
-    evidence: "The Dutch government's 22 April 2026 update stated that the party that gained access spared no effort to avoid leaving traces, which significantly complicated the forensic investigation."
+    evidence: "The Dutch government's 22 April 2026 update stated that the party that gained access spared no effort to avoid leaving traces, which complicated the forensic investigation."
 atlasMappings: []
 framework-mappings: []
 ---
@@ -66,7 +66,7 @@ On 19 March 2026, the Ministry of Finance of the Netherlands detected unauthoriz
 
 Citizen and business services delivered by implementing organizations — including Belastingdienst (Tax Authority), Douane (Customs), and Toeslagen (Benefits) — were not affected, and government funds could continue to be spent and received throughout the incident. Public web portals remained operational.
 
-On 30 March, the minister shared a formal letter on the incident with the Tweede Kamer (Dutch parliament). By 22 April, Treasury Banking systems supporting public services had been restored, resolving the largest operational disruption. Remaining systems were still being brought back online at that point. A forensic investigation conducted jointly with the National Cyber Security Centre (NCSC), the police High Tech Crime Team, and internal Privacy Officers was ongoing as of the 22 April government update.
+On 30 March, the minister shared a formal letter on the incident with the Tweede Kamer (Dutch parliament). By 22 April, Treasury Banking systems supporting public services had been restored, resolving the operational disruption. Remaining systems were still being brought back online at that point. A forensic investigation conducted jointly with the National Cyber Security Centre (NCSC), the police High Tech Crime Team, and internal Privacy Officers was ongoing as of the 22 April government update.
 
 That same update confirmed that information from the network had been obtained, but the type of information involved was not yet known.
 
@@ -98,7 +98,7 @@ The 22 April government update stated that information from the network had been
 
 ## Impact Assessment
 
-The intrusion directly affected systems for several primary processes at the ministry's policy department. Some ministry employees were unable to log in to affected systems following the 23 March shutdown. The disruption was significant enough for the minister to notify parliament and for Treasury Banking systems to require separate restoration effort, which was completed by 22 April. Remaining systems were still being restored as of that date.
+The intrusion directly affected systems for several primary processes at the ministry's policy department. Some ministry employees were unable to log in to affected systems following the 23 March shutdown. The disruption led the minister to notify parliament and required separate restoration work for Treasury Banking systems, which was completed by 22 April. Remaining systems were still being restored as of that date.
 
 Implementing organizations serving citizens and businesses — Belastingdienst, Douane, and Toeslagen — were not affected, and the ability to spend and receive government funds was maintained throughout.
 
@@ -132,15 +132,15 @@ The minister shares a formal letter with the Tweede Kamer covering the unauthori
 
 ### 2026-04-22 — Government Publishes Update
 
-Rijksoverheid publishes an update stating that Treasury Banking systems for public services are back online, that the largest disruption has been resolved, that remaining systems are still being restored, and that information from the network had been obtained but its type is not yet known. The update also confirms that forensic investigation with NCSC, the High Tech Crime Team, and Privacy Officers is ongoing, and notes the actor's deliberate efforts to avoid leaving traces.
+Rijksoverheid publishes an update stating that Treasury Banking systems for public services are back online, that the operational disruption has been resolved, that remaining systems are still being restored, and that information from the network had been obtained but its type is not yet known. The update also confirms that forensic investigation with NCSC, the High Tech Crime Team, and Privacy Officers is ongoing, and notes the actor's deliberate efforts to avoid leaving traces.
 
 ## Remediation & Mitigation
 
 The ministry responded by launching an immediate investigation on 19 March, taking affected systems offline on 23 March as a precautionary measure, and engaging external experts for guidance. Forensic investigation was conducted in collaboration with the NCSC, the police High Tech Crime Team, and internal Privacy Officers.
 
-By 22 April, Treasury Banking systems supporting public services had been restored, resolving the most disruptive aspect of the incident. The ministry indicated that remaining systems were continuing to be brought back online.
+By 22 April, Treasury Banking systems supporting public services had been restored, resolving the operational disruption. The ministry indicated that remaining systems were continuing to be brought back online.
 
-For organizations operating government policy systems, this incident reinforces the importance of robust internal monitoring capable of detecting unauthorized lateral movement, maintaining operational separation between policy systems and citizen-facing service platforms, and having pre-established forensic partnerships with national cybersecurity authorities. The confirmed anti-forensic activity also highlights the value of immutable audit logging and out-of-band log collection that is resistant to tampering by an actor with access to primary systems.
+For organizations operating government policy systems, this incident reinforces the importance of internal monitoring capable of detecting unauthorized lateral movement, maintaining operational separation between policy systems and citizen-facing service platforms, and having pre-established forensic partnerships with national cybersecurity authorities. The confirmed anti-forensic activity also highlights the value of immutable audit logging and out-of-band log collection that is resistant to tampering by an actor with access to primary systems.
 
 ## Sources & References
 
