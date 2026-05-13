@@ -18,7 +18,6 @@ targetSectors:
   - "Civil Society"
   - "Manufacturing"
   - "Technology"
-  - "Automotive"
 targetGeographies:
   - "Vietnam"
   - "Southeast Asia"
