@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
-  "created": "2026-05-11T19:30:13.616Z",
-  "updated": "2026-05-11T19:30:13.616Z",
+  "status": "complete",
+  "created": "2026-05-08T19:07:43.492Z",
+  "updated": "2026-05-12T22:53:07.888Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -67,16 +67,65 @@
       "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
       "version": "3.1"
     },
-    "discovered_at": "2026-05-11T19:30:13.616Z"
+    "discovered_at": "2026-05-08T19:07:43.492Z"
   },
+  "pr_number": 568,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/568",
+  "merged_at": "2026-05-12T22:53:07.888Z",
   "history": [
     {
-      "timestamp": "2026-05-11T19:30:13.616Z",
+      "timestamp": "2026-05-08T19:07:43.492Z",
       "action": "created",
       "from": "none",
       "to": "pending",
       "agent": "pipeline-discovery",
-      "note": "Auto-discovered from CISA KEV (score: 100)"
+      "note": "Auto-discovered from CISA KEV (score: 65)"
+    },
+    {
+      "timestamp": "2026-05-08T19:20:00.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Run #244 zero-day worker — drafting article"
+    },
+    {
+      "timestamp": "2026-05-08T19:25:00.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #554 opened — https://github.com/MahdiHedhli/threatpedia/pull/554"
+    },
+    {
+      "timestamp": "2026-05-08T22:33:00.000Z",
+      "action": "renumbered",
+      "from": "TASK-2026-0237",
+      "to": "TASK-2026-0261",
+      "agent": "kernel-k",
+      "note": "Renumbered after TASK-2026-0237 landed on main for a historical threat-actor seed; preserves the BerriAI LiteLLM article work without overwriting canonical task state."
+    },
+    {
+      "timestamp": "2026-05-11T14:47:00.000Z",
+      "action": "review_remediated",
+      "agent": "kernel-k",
+      "note": "Updated task metadata for PR #568 review remediation and current PR tracking."
+    },
+    {
+      "timestamp": "2026-05-11T23:57:44.000Z",
+      "action": "main_collision_reconciled",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "kernel-k",
+      "note": "Merged current main into PR #568, retained the article PR ownership, and incorporated the duplicate main discovery enrichment for CVSS and score metadata."
+    },
+    {
+      "timestamp": "2026-05-12T22:53:07.888Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #568 merged (c7018a3)."
     }
   ]
 }

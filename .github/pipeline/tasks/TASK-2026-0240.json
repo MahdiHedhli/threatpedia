@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-13T04:18:35.981Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -61,6 +61,32 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-005"
+    },
+    {
+      "timestamp": "2026-05-12T19:21:12.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "in_progress",
+      "agent": "dangermouse-bot",
+      "note": "Picked up by threat-actor queue worker"
+    },
+    {
+      "timestamp": "2026-05-12T19:21:12.000Z",
+      "action": "pr_opened",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Article committed; PR opening via GitHub API"
+    },
+    {
+      "timestamp": "2026-05-13T04:18:35.981Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #605 merged (29357ed)."
     }
-  ]
+  ],
+  "pr_number": 605,
+  "merged_at": "2026-05-13T04:18:35.981Z"
 }

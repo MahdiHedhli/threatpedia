@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-13T03:03:41.813Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -61,6 +61,32 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-009"
+    },
+    {
+      "timestamp": "2026-05-13T02:52:13.680Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T02:55:13.236Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #619"
+    },
+    {
+      "timestamp": "2026-05-13T03:03:41.813Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #619 merged (1887618)."
     }
-  ]
+  ],
+  "pr_number": 619,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/619",
+  "merged_at": "2026-05-13T03:03:41.813Z"
 }
