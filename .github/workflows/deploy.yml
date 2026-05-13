@@ -52,3 +52,54 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  social-share-x:
+    name: Draft X share posts
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
+
+      - name: Install scripts dependencies
+        run: npm --prefix scripts ci --no-audit --no-fund
+
+      - name: Prepare or post X share drafts
+        env:
+          SITE_URL: https://threatpedia.wiki
+          X_SHARE_MODE: ${{ vars.X_SHARE_MODE }}
+          X_POSTING_ENABLED: ${{ secrets.X_POSTING_ENABLED }}
+          X_USER_ACCESS_TOKEN: ${{ secrets.X_USER_ACCESS_TOKEN }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          X_SHARE_REVIEW_STATUSES: ${{ vars.X_SHARE_REVIEW_STATUSES }}
+          X_SHARE_MAX_POSTS: ${{ vars.X_SHARE_MAX_POSTS }}
+        run: |
+          set -euo pipefail
+
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.sha }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE="$(git rev-parse "${HEAD}^" 2>/dev/null || echo "$HEAD")"
+          fi
+
+          MODE="${X_SHARE_MODE:-dry-run}"
+          node scripts/social-share-x.mjs \
+            --base "$BASE" \
+            --head "$HEAD" \
+            --mode "$MODE" \
+            --summary "$GITHUB_STEP_SUMMARY"
