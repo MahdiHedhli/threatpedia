@@ -107,7 +107,7 @@ sources:
 
 Mustang Panda is a China-based espionage-focused threat group active since at least 2012. The group is tracked under multiple vendor designations, including BRONZE PRESIDENT (Secureworks), Earth Preta (Trend Micro), RedDelta (Recorded Future), and TA416 (Proofpoint). Mustang Panda targets government, diplomatic, non-governmental organization (NGO), and religious institution networks across Southeast Asia, Europe, and South Asia.
 
-The group is best known for sustained use of the PlugX backdoor, delivered predominantly through spearphishing campaigns and DLL side-loading infection chains. In a 2022 campaign documented by Cisco Talos, Mustang Panda deployed a newer malware family — TONEINS, TONESHELL, and PUBLOAD — against European diplomatic and government entities, demonstrating continued development of custom tooling. Secureworks documents long-running Mustang Panda (BRONZE PRESIDENT) operations targeting government and NGO entities throughout Southeast Asia.
+The group uses the PlugX backdoor, delivered through spearphishing campaigns and DLL side-loading infection chains. In a 2022 campaign documented by Cisco Talos, Mustang Panda deployed a newer malware family — TONEINS, TONESHELL, and PUBLOAD — against European diplomatic and government entities. Secureworks documents Mustang Panda (BRONZE PRESIDENT) operations targeting government and NGO entities throughout Southeast Asia.
 
 ## Notable Campaigns
 
@@ -117,11 +117,11 @@ Cisco Talos documented Mustang Panda operations targeting European government an
 
 ### Southeast Asia Government and NGO Operations
 
-The Secureworks BRONZE PRESIDENT profile documents sustained Mustang Panda operations against government, diplomatic, and NGO entities across Southeast Asia. PlugX is the primary post-compromise implant in these operations, deployed via DLL side-loading. MITRE ATT&CK G0129 additionally documents PlugX propagation via USB removable drives as a lateral movement mechanism used against regional targets.
+The Secureworks BRONZE PRESIDENT profile documents Mustang Panda operations against government, diplomatic, and NGO entities across Southeast Asia. PlugX is the primary post-compromise implant in these operations, deployed via DLL side-loading. MITRE ATT&CK G0129 additionally documents PlugX propagation via USB removable drives as a lateral movement mechanism used against regional targets.
 
 ## Technical Capabilities
 
-Mustang Panda's primary post-compromise tool is **PlugX** (also designated Korplug), a modular backdoor capable of file operations, remote shell access, keylogging, and screen capture. PlugX is delivered predominantly through DLL side-loading: a malicious DLL is placed alongside a legitimate signed executable, which loads the malicious library on launch, reducing behavioral detection signals.
+Mustang Panda's primary post-compromise tool is **PlugX** (also designated Korplug), a modular backdoor capable of file operations, remote shell access, keylogging, and screen capture. PlugX is delivered through DLL side-loading: a malicious DLL is placed alongside a legitimate signed executable, which loads the malicious library on launch, reducing behavioral detection signals.
 
 In the 2022 European targeting campaign documented by Cisco Talos, the group deployed a distinct malware family:
 
