@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-13T19:12:35.960Z",
-  "updated": "2026-05-13T21:50:19.981Z",
+  "updated": "2026-05-13T22:24:49.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -64,12 +64,37 @@
       "note": "Dispatched as Issue #681"
     },
     {
+      "timestamp": "2026-05-13T21:11:18.525Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T21:21:17.115Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #685"
+    },
+    {
       "timestamp": "2026-05-13T21:50:19.981Z",
       "action": "dispatch_skipped",
       "from": "pending",
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #685 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T22:24:49.000Z",
+      "action": "conflict_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Rebased against current main and preserved PR #685 task state."
     }
-  ]
+  ],
+  "pr_number": 685,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/685"
 }
