@@ -151,7 +151,7 @@ MITRE ATT&CK categorizes APT35 as G0059 and assesses it as an Iranian threat gro
 
 The alias cluster associated with this actor — Charming Kitten, APT35, Phosphorus, Mint Sandstorm, Newscaster, TA453, Yellow Garuda, ITG18, Dev-0343 — reflects independent vendor discovery and tracking of overlapping intrusion activity sets. Different vendors may scope this cluster differently; attribution claims specific to one vendor track should not be generalized across all aliases unless the relevant source explicitly connects them.
 
-CISA's nation-state cyber actor overview provides broader government context for Iranian-linked cyber operations. No formal public cybersecurity indictment or advisory specifically naming APT35 by that designation appears in the source set reviewed for this profile. The Iran-linked assessment rests on convergent private-sector analysis and targeting alignment corroborated by the general government record on Iranian state cyber activity.
+CISA's nation-state cyber actor overview provides broader government context for Iranian-linked cyber operations. Public vendor and government reporting supports an Iran-linked assessment but does not identify a specific government unit for APT35. The Iran-linked assessment rests on convergent private-sector analysis and targeting alignment corroborated by the general government record on Iranian state cyber activity.
 
 ## MITRE ATT&CK Profile
 
