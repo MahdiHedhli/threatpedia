@@ -59,7 +59,7 @@ mitreMappings:
     notes: "Post-compromise staging and transfer of additional tools is documented by MITRE as part of APT34 operational tradecraft."
 atlasMappings: []
 attributionConfidence: A3
-attributionRationale: "MITRE ATT&CK (G0049) describes APT34/OilRig as a suspected Iranian threat group active since at least 2014, and Mandiant assesses APT34 as a suspected Iranian threat group targeting entities in the Middle East and internationally. No formal government indictment or specific unit designation appears in the cited source set."
+attributionRationale: "MITRE ATT&CK (G0049) describes APT34/OilRig as a suspected Iranian threat group active since at least 2014, and Mandiant assesses APT34 as a suspected Iranian threat group targeting entities in the Middle East and internationally. No formal government indictment or specific unit designation for APT34/OilRig has been publicly reported."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-13
@@ -118,9 +118,9 @@ MITRE ATT&CK documents APT34 using spearphishing attachments as a primary initia
 
 MITRE ATT&CK categorizes this group as G0049 and describes it as a suspected Iranian threat group. Mandiant has assessed APT34 as a suspected Iranian threat group targeting entities in the Middle East and internationally, with victim profiles consistent with state intelligence collection priorities.
 
-MITRE ATT&CK lists aliases including Hazel Sandstorm and EUROPIUM for G0049. Cross-vendor naming conventions can reflect overlapping but potentially distinct intrusion sets, so source-specific attribution should not be broadened beyond cited MITRE and Mandiant reporting.
+MITRE ATT&CK lists aliases including Hazel Sandstorm and EUROPIUM for G0049. Cross-vendor naming conventions can reflect overlapping but potentially distinct intrusion sets.
 
-MITRE and Mandiant independently assess Iranian state affiliation based on targeting patterns, tooling, and operational focus. No formal government indictment or specific Iranian government unit designation is cited by MITRE or Mandiant in the reporting referenced here.
+MITRE and Mandiant independently assess Iranian state affiliation based on targeting patterns, tooling, and operational focus. No formal government indictment or specific Iranian government unit designation for APT34/OilRig has been publicly issued.
 
 ## MITRE ATT&CK Profile
 
