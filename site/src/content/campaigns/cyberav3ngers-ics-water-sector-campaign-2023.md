@@ -54,16 +54,19 @@ mitreMappings:
   - techniqueId: "T1078.001"
     techniqueName: "Default Accounts"
     tactic: "Initial Access"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "CISA advisory AA23-335A confirmed that CyberAv3ngers exploited default credentials on internet-exposed Unitronics Vision Series PLCs to gain unauthorized access to water utility control systems."
   - techniqueId: "T1133"
     techniqueName: "External Remote Services"
     tactic: "Initial Access"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "Targeted PLCs were directly internet-accessible on TCP port 20256 (Unitronics PCOM protocol). Operators had not restricted remote management access, enabling direct exploitation without traversing intermediate network barriers."
   - techniqueId: "T1485"
     techniqueName: "Data Destruction"
     tactic: "Impact"
+    "attack-version": "v19"
     confidence: confirmed
     evidence: "CyberAv3ngers modified PLC configuration and HMI display screens at compromised facilities. CISA advisory AA23-335A confirmed unauthorized changes to set-points and display content at impacted water utilities."
 ---
