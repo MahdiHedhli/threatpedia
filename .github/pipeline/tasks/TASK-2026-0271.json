@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-13T18:10:16.470Z",
-  "updated": "2026-05-13T19:48:36.661Z",
+  "updated": "2026-05-13T21:05:08.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -80,6 +80,22 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #679"
+    },
+    {
+      "timestamp": "2026-05-13T20:16:15.790Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #679 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T21:05:08.000Z",
+      "action": "conflict_resolved",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "note": "Merged latest main after dispatcher task-state update; PR #679 remains the covering article PR."
     }
   ],
   "pr_number": 679,
