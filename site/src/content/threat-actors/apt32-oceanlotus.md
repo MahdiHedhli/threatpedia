@@ -12,7 +12,6 @@ motivation: "Espionage"
 status: active
 country: "Vietnam"
 firstSeen: "2014"
-lastSeen: "2024"
 targetSectors:
   - "Government"
   - "Media"
