@@ -101,7 +101,7 @@ DarkSide activity included data theft and ransomware deployment. CISA and FBI re
 
 The cited sources support attribution to a financially motivated cybercriminal operation. CISA and FBI described DarkSide as ransomware-as-a-service, with developers and affiliates sharing proceeds. DOJ described funds seized from a wallet associated with DarkSide-affiliated actors and tied the funds to Colonial Pipeline's ransom payment.
 
-The cited public sources do not identify a state sponsor, and they do not name a central DarkSide operator. Lineage claims between DarkSide and later ransomware operations should be treated separately unless supported by direct evidence in the relevant source set.
+The cited public sources do not identify a state sponsor, and they do not name a central DarkSide operator.
 
 ## MITRE ATT&CK Profile
 
