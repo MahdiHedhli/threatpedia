@@ -32,6 +32,12 @@ mitreMappings:
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing attachments as a primary initial access technique. Cisco Talos documented the group delivering malicious documents to students and educational institution targets in the 2022 Indian subcontinent campaign."
+  - techniqueId: "T1566.002"
+    techniqueName: "Spearphishing Link"
+    tactic: "Initial Access"
+    attackVersion: "v19"
+    confidence: confirmed
+    evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing links as an initial access technique. MITRE campaign C0011 maps malicious link delivery to the education campaign documented by Cisco Talos."
   - techniqueId: "T1059.005"
     techniqueName: "Visual Basic"
     tactic: "Execution"
