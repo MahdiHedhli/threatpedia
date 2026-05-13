@@ -94,11 +94,11 @@ sources:
     publicationDate: "2026-05-13"
     accessDate: "2026-05-13"
     archived: false
-  - url: "https://www.cisa.gov/eviction-strategies-tool/info-attack/T1566.001"
-    publisher: "CISA"
+  - url: "https://www.cyber.gc.ca/en/news-events/mitigating-cyber-threats-with-limited-resources-guidance-civil-society"
+    publisher: "Canadian Centre for Cyber Security"
     publisherType: government
     reliability: R1
-    publicationDate: "2026-05-13"
+    publicationDate: "2024-05-14"
     accessDate: "2026-05-13"
     archived: false
 ---
@@ -156,4 +156,4 @@ T1071.001 - Web Protocols: PlugX uses HTTP and HTTPS for C2 communications, as d
 - [MITRE ATT&CK: Mustang Panda (G0129)](https://attack.mitre.org/groups/G0129/) — MITRE ATT&CK, 2026-05-12
 - [Cisco Talos: Mustang Panda Targets Europe](https://blog.talosintelligence.com/mustang-panda-targets-europe/) — Cisco Talos, 2022-09-08
 - [Secureworks: BRONZE PRESIDENT Threat Profile](https://www.secureworks.com/research/threat-profiles/bronze-president) — Secureworks, 2026-05-13
-- [CISA: T1566.001 Spearphishing Attachment](https://www.cisa.gov/eviction-strategies-tool/info-attack/T1566.001) — CISA, 2026-05-13
+- [Canadian Centre for Cyber Security: Mitigating Cyber Threats with Limited Resources](https://www.cyber.gc.ca/en/news-events/mitigating-cyber-threats-with-limited-resources-guidance-civil-society) — Canadian Centre for Cyber Security, 2024-05-14
