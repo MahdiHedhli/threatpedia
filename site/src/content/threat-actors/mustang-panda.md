@@ -23,7 +23,6 @@ targetGeographies:
   - "Southeast Asia"
   - "Europe"
   - "South Asia"
-  - "Africa"
 tools:
   - "PlugX"
   - "TONEINS"
@@ -42,6 +41,12 @@ mitreMappings:
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK G0129 documents victim execution of malicious files as a consistent component of Mustang Panda infection chains, triggering the DLL side-loading stage."
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
+    tactic: "Stealth"
+    attackVersion: "v19"
+    confidence: confirmed
+    evidence: "MITRE ATT&CK G0129, Cisco Talos, and Secureworks document Mustang Panda's use of DLL side-loading with PlugX and related tooling."
   - techniqueId: "T1091"
     techniqueName: "Replication Through Removable Media"
     tactic: "Lateral Movement"
@@ -100,7 +105,7 @@ sources:
 
 ## Executive Summary
 
-Mustang Panda is a China-based espionage-focused threat group active since at least 2012. The group is tracked under multiple vendor designations, including BRONZE PRESIDENT (Secureworks), Earth Preta (Trend Micro), RedDelta (Recorded Future), and TA416 (Proofpoint). Mustang Panda targets government, diplomatic, non-governmental organization (NGO), and religious institution networks across Southeast Asia, Europe, South Asia, and Africa.
+Mustang Panda is a China-based espionage-focused threat group active since at least 2012. The group is tracked under multiple vendor designations, including BRONZE PRESIDENT (Secureworks), Earth Preta (Trend Micro), RedDelta (Recorded Future), and TA416 (Proofpoint). Mustang Panda targets government, diplomatic, non-governmental organization (NGO), and religious institution networks across Southeast Asia, Europe, and South Asia.
 
 The group is best known for sustained use of the PlugX backdoor, delivered predominantly through spearphishing campaigns and DLL side-loading infection chains. In a 2022 campaign documented by Cisco Talos, Mustang Panda deployed a newer malware family — TONEINS, TONESHELL, and PUBLOAD — against European diplomatic and government entities, demonstrating continued development of custom tooling. Secureworks documents long-running Mustang Panda (BRONZE PRESIDENT) operations targeting government and NGO entities throughout Southeast Asia.
 
@@ -139,6 +144,8 @@ No government indictment or formal official attribution has been issued for Must
 T1566.001 - Spearphishing Attachment: Spearphishing emails with malicious document attachments are the documented primary delivery vector, confirmed by Cisco Talos in the European diplomatic targeting campaign.
 
 T1204.002 - Malicious File: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
+
+T1574.001 - DLL: Mustang Panda uses DLL side-loading to execute PlugX and related tooling through legitimate signed executables, as documented by MITRE ATT&CK G0129, Cisco Talos, and Secureworks.
 
 T1091 - Replication Through Removable Media: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
 
