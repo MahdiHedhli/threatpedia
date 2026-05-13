@@ -26,30 +26,12 @@ tools:
   - "DarkComet"
   - "njRAT"
 mitreMappings:
-  - techniqueId: "T1566.001"
-    techniqueName: "Spearphishing Attachment"
-    tactic: "Initial Access"
-    attackVersion: "v19"
-    confidence: confirmed
-    evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing attachments as a primary initial access technique. Cisco Talos documented the group delivering malicious documents to students and educational institution targets in the 2022 Indian subcontinent campaign."
-  - techniqueId: "T1566.002"
-    techniqueName: "Spearphishing Link"
-    tactic: "Initial Access"
-    attackVersion: "v19"
-    confidence: confirmed
-    evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing links as an initial access technique. MITRE campaign C0011 maps malicious link delivery to the education campaign documented by Cisco Talos."
   - techniqueId: "T1059.005"
     techniqueName: "Visual Basic"
     tactic: "Execution"
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK documents Transparent Tribe using Visual Basic as an execution technique, consistent with macro-enabled lure document delivery observed across the group's spearphishing operations."
-  - techniqueId: "T1583.001"
-    techniqueName: "Domains"
-    tactic: "Resource Development"
-    attackVersion: "v19"
-    confidence: confirmed
-    evidence: "MITRE ATT&CK documents Transparent Tribe registering domains to support attack infrastructure. Cisco Talos documented the group registering domains designed to appear relevant to student targets in the 2022 education-sector campaign, mapped to MITRE campaign C0011."
   - techniqueId: "T1189"
     techniqueName: "Drive-by Compromise"
     tactic: "Initial Access"
@@ -62,6 +44,24 @@ mitreMappings:
     attackVersion: "v19"
     confidence: confirmed
     evidence: "MITRE ATT&CK documents Transparent Tribe using malicious files as an execution technique. Cisco Talos documented malicious file delivery in the 2022 education campaign and in the group's operations targeting Indian government officials using new bespoke malware."
+  - techniqueId: "T1566.001"
+    techniqueName: "Spearphishing Attachment"
+    tactic: "Initial Access"
+    attackVersion: "v19"
+    confidence: confirmed
+    evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing attachments as a primary initial access technique. Cisco Talos documented the group delivering malicious documents to students and educational institution targets in the 2022 Indian subcontinent campaign."
+  - techniqueId: "T1566.002"
+    techniqueName: "Spearphishing Link"
+    tactic: "Initial Access"
+    attackVersion: "v19"
+    confidence: confirmed
+    evidence: "MITRE ATT&CK documents Transparent Tribe using spearphishing links as an initial access technique. MITRE campaign C0011 maps malicious link delivery to the education campaign documented by Cisco Talos."
+  - techniqueId: "T1583.001"
+    techniqueName: "Domains"
+    tactic: "Resource Development"
+    attackVersion: "v19"
+    confidence: confirmed
+    evidence: "MITRE ATT&CK documents Transparent Tribe registering domains to support attack infrastructure. Cisco Talos documented the group registering domains designed to appear relevant to student targets in the 2022 education-sector campaign, mapped to MITRE campaign C0011."
   - techniqueId: "T1608.001"
     techniqueName: "Upload Malware"
     tactic: "Resource Development"
@@ -85,6 +85,20 @@ tags:
   - "government"
   - "education"
 sources:
+  - url: "https://attack.mitre.org/campaigns/C0011/"
+    publisher: "MITRE ATT&CK"
+    publisherType: research
+    reliability: R1
+    publicationDate: "2025-04-16"
+    accessDate: "2026-05-13"
+    archived: false
+  - url: "https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/"
+    publisher: "ThaiCERT"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2024-11-06"
+    accessDate: "2026-05-13"
+    archived: false
   - url: "https://attack.mitre.org/groups/G0134/"
     publisher: "MITRE ATT&CK"
     publisherType: research
@@ -104,20 +118,6 @@ sources:
     publisherType: vendor
     reliability: R1
     publicationDate: "2022-03-29"
-    accessDate: "2026-05-13"
-    archived: false
-  - url: "https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/"
-    publisher: "ThaiCERT"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2024-11-06"
-    accessDate: "2026-05-13"
-    archived: false
-  - url: "https://attack.mitre.org/campaigns/C0011/"
-    publisher: "MITRE ATT&CK"
-    publisherType: research
-    reliability: R1
-    publicationDate: "2025-04-16"
     accessDate: "2026-05-13"
     archived: false
 ---
@@ -158,24 +158,24 @@ Alias diversity across tracking designations (APT36, Transparent Tribe, COPPER F
 
 ## MITRE ATT&CK Profile
 
-T1583.001 - Domains: Transparent Tribe registers attacker-controlled domains to support phishing infrastructure and payload staging. Cisco Talos documented domain registration with student-relevant naming conventions for the 2022 education-sector campaign, mapped to MITRE campaign C0011.
+T1059.005 - Visual Basic: MITRE ATT&CK documents Visual Basic as an execution technique for Transparent Tribe, consistent with macro-enabled document lures delivering implants including Crimson RAT.
+
+T1189 - Drive-by Compromise: MITRE ATT&CK documents Transparent Tribe using drive-by compromise as an initial access technique, supported by the group's documented infrastructure preparation activity including drive-by target staging (T1608.004).
+
+T1204.002 - Malicious File: MITRE ATT&CK documents Transparent Tribe using malicious files for execution. Cisco Talos documented malicious file delivery in the 2022 education campaign and in subsequent operations targeting Indian government officials with new bespoke malware.
 
 T1566.001 - Spearphishing Attachment: Spearphishing via malicious document attachments is the group's primary documented initial access vector. MITRE ATT&CK and Cisco Talos both document malicious document delivery as a core Transparent Tribe technique across government, defense, and education targeting.
 
 T1566.002 - Spearphishing Link: MITRE ATT&CK documents Transparent Tribe using spearphishing links as an initial access technique alongside attachment-based delivery. MITRE campaign C0011 maps malicious link delivery to the education campaign documented by Cisco Talos.
 
-T1189 - Drive-by Compromise: MITRE ATT&CK documents Transparent Tribe using drive-by compromise as an initial access technique, supported by the group's documented infrastructure preparation activity including drive-by target staging (T1608.004).
-
-T1059.005 - Visual Basic: MITRE ATT&CK documents Visual Basic as an execution technique for Transparent Tribe, consistent with macro-enabled document lures delivering implants including Crimson RAT.
-
-T1204.002 - Malicious File: MITRE ATT&CK documents Transparent Tribe using malicious files for execution. Cisco Talos documented malicious file delivery in the 2022 education campaign and in subsequent operations targeting Indian government officials with new bespoke malware.
+T1583.001 - Domains: Transparent Tribe registers attacker-controlled domains to support phishing infrastructure and payload staging. Cisco Talos documented domain registration with student-relevant naming conventions for the 2022 education-sector campaign, mapped to MITRE campaign C0011.
 
 T1608.001 - Upload Malware: MITRE ATT&CK documents Transparent Tribe uploading malware to attacker-controlled infrastructure to prepare delivery chains. MITRE campaign C0011 maps this technique to Crimson RAT staging in the education campaign reported by Cisco Talos.
 
 ## Sources & References
 
+- [MITRE ATT&CK: Transparent Tribe Campaign (C0011)](https://attack.mitre.org/campaigns/C0011/) — MITRE ATT&CK, 2025-04-16
+- [ThaiCERT: APT36 Enhances Tools for Attacking Indian Government Agencies](https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/) — ThaiCERT, 2024-11-06
 - [MITRE ATT&CK: Transparent Tribe (G0134)](https://attack.mitre.org/groups/G0134/) — MITRE ATT&CK, 2024-04-10
 - [Cisco Talos: Transparent Tribe Targets Education Sector Amid Continued Threat Actor Evolution](https://blog.talosintelligence.com/transparent-tribe-targets-education/) — Cisco Talos, 2022-07-13
 - [Cisco Talos: Transparent Tribe New Campaign Using New Bespoke Malware](https://blog.talosintelligence.com/transparent-tribe-new-campaign/) — Cisco Talos, 2022-03-29
-- [ThaiCERT: APT36 Enhances Tools for Attacking Indian Government Agencies](https://www.thaicert.or.th/en/2024/11/06/apt36-enhances-tools-for-attacking-indian-government-agencies/) — ThaiCERT, 2024-11-06
-- [MITRE ATT&CK: Transparent Tribe Campaign (C0011)](https://attack.mitre.org/campaigns/C0011/) — MITRE ATT&CK, 2025-04-16
