@@ -123,7 +123,7 @@ Cybereason documented a sustained APT32 intrusion into a global corporation with
 
 ### 2018–2019 — Civil Society and Media Targeting
 
-ESET documented OceanLotus malware delivery against Vietnamese-language targets, including macOS and Windows payloads distributed through phishing-style lures and disguised archives. Mandiant, ESET, MITRE ATT&CK, and the US Department of State reporting describes APT32 targeting that includes media and civil society organizations.
+ESET documented OceanLotus malware delivery against Vietnamese-language targets, including macOS and Windows payloads distributed through phishing-style lures and disguised archives. Mandiant, ESET, and MITRE ATT&CK reporting describes APT32 targeting that includes media and civil society organizations.
 
 ## Technical Capabilities
 
