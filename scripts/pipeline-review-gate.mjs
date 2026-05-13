@@ -12,6 +12,7 @@ const DEFAULT_AI_REVIEW_LOGINS = [
   'gemini-code-assist',
   'gemini-code-assist[bot]',
   'dangermouse-bot',
+  'ernestpenfold-bot',
 ];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
