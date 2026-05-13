@@ -9,17 +9,10 @@ affiliation: "Cybercriminal"
 motivation: "Financial / Ransomware Extortion"
 status: "unknown"
 country: "Unknown"
-firstSeen: "2019"
 lastSeen: "2021"
 targetSectors:
   - "Information Technology"
   - "Managed Service Providers"
-  - "Government"
-  - "Business Services"
-  - "Critical Infrastructure"
-targetGeographies:
-  - "United States"
-  - "International"
 tools:
   - "REvil ransomware"
   - "Sodinokibi ransomware"
@@ -114,7 +107,7 @@ DOJ described Sodinokibi/REvil deployments in which defendants allegedly accesse
 
 Public sources support attribution to a financially motivated cybercriminal ransomware ecosystem. MITRE tracks the associated group as GOLD SOUTHFIELD and lists Pinchy Spider as an associated public name. FBI described Yevgeniy Igorevich Polyanin as one of many Sodinokibi/REvil ransomware affiliates and stated that he is believed to be in Russia, possibly Barnaul.
 
-Named individuals in DOJ and FBI records should be treated as alleged affiliates or operators unless a source states otherwise. The cited public sources do not establish that the entire REvil/Sodinokibi operation was directed by a state intelligence service.
+DOJ and FBI records identify named individuals as alleged affiliates or operators in specific cases. The cited public sources do not establish that the entire REvil/Sodinokibi operation was directed by a state intelligence service.
 
 ## MITRE ATT&CK Profile
 
