@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-12T23:57:12.792Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -61,6 +61,23 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-008"
+    },
+    {
+      "timestamp": "2026-05-12T23:54:57.829Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-12T23:57:12.792Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #613"
     }
-  ]
+  ],
+  "pr_number": 613,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/613"
 }
