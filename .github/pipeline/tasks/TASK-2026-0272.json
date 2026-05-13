@@ -1,0 +1,71 @@
+{
+  "task_id": "TASK-2026-0272",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-13T18:33:19Z",
+  "updated": "2026-05-13T18:33:19Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-zero-day-scan",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Linux kernel Dirty Frag local privilege escalation zero-day (CVE-2026-43284)",
+    "sources": [
+      "https://www.openwall.com/lists/oss-security/2026/05/07/8",
+      "https://github.com/V4bel/dirtyfrag/blob/master/assets/write-up.md",
+      "https://www.microsoft.com/en-us/security/blog/2026/05/08/active-attack-dirty-frag-linux-vulnerability-expands-post-compromise-risk/",
+      "https://access.redhat.com/security/vulnerabilities/RHSB-2026-003",
+      "https://www.wiz.io/blog/dirty-frag-linux-kernel-local-privilege-escalation-via-esp-and-rxrpc",
+      "https://news.risky.biz/risky-bulletin-fcc-relaxes-foreign-router-ban-to-allow-for-security-updates/"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-43284",
+      "cves": [
+        "CVE-2026-43284"
+      ],
+      "exploitId": "TP-EXP-2026-0022",
+      "type": "Local Privilege Escalation",
+      "platform": "Linux Kernel",
+      "severity": "high",
+      "cisaKev": false,
+      "disclosedDate": "2026-05-07",
+      "knownRansomwareUse": false
+    },
+    "notes": "Risky Bulletin May 11, 2026 zero-day lead. Treat as Linux kernel LPE zero-day CVE-2026-43284 disclosed after an embargo break; Microsoft reports active attack/post-compromise risk. Distinguish from the existing Copy Fail CVE-2026-31431 article and do not merge in Copy Fail variant Electric Boogaloo unless source evidence supports a single CVE/topic."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md section 14A",
+    "INGESTION-SPEC.md section 2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/linux-kernel-dirty-frag-cve-2026-43284.md",
+    "branch": "pipeline/TASK-2026-0272",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T18:33:19Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-zero-day-scan",
+      "note": "Manual Risky Bulletin zero-day seed after dedupe dry-run found no duplicate source URLs."
+    }
+  ]
+}
