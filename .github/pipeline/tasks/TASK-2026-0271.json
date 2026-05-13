@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-13T18:10:16.470Z",
-  "updated": "2026-05-13T21:05:08.000Z",
+  "updated": "2026-05-13T22:20:49.469Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -96,8 +96,17 @@
       "to": "pr_open",
       "agent": "Kernel K",
       "note": "Merged latest main after dispatcher task-state update; PR #679 remains the covering article PR."
+    },
+    {
+      "timestamp": "2026-05-13T22:20:49.469Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #679 merged (5ad0f18)."
     }
   ],
   "pr_number": 679,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/679"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/679",
+  "merged_at": "2026-05-13T22:20:49.469Z"
 }
