@@ -1,17 +1,6 @@
 name: "Pipeline: Review Gate"
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths:
-      - "site/src/**"
-      - "site/package*.json"
-      - "site/astro.config.*"
-      - "scripts/**"
-      - ".github/workflows/**"
-      - ".github/pipeline/config.yml"
-      - ".github/pipeline/tasks/TASK-*.json"
-      - "docs/PIPELINE.md"
   pull_request_review:
     types: [submitted, dismissed]
   issue_comment:
@@ -40,7 +29,6 @@ jobs:
   review-gate:
     if: |
       github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'pull_request' ||
       (
         github.event_name == 'pull_request_review' &&
         contains(
@@ -74,9 +62,6 @@ jobs:
           case "${{ github.event_name }}" in
             workflow_dispatch)
               number="${{ inputs.pr_number }}"
-              ;;
-            pull_request)
-              number="${{ github.event.pull_request.number }}"
               ;;
             pull_request_review)
               number="${{ github.event.pull_request.number }}"

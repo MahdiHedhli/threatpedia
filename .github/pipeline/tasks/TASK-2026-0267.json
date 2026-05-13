@@ -3,13 +3,15 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-13T10:54:27.968Z",
-  "updated": "2026-05-13T10:54:27.968Z",
+  "updated": "2026-05-13T18:27:29.814Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
   "locked_at": null,
+  "pr_number": 664,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/664",
   "input": {
     "topic": "Iran-nexus Microsoft 365 password spray campaign targeting Middle East cloud environments",
     "sources": [
@@ -55,6 +57,31 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T16:08:15.720Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T16:20:00.000Z",
+      "action": "pr_open",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #664 opened: https://github.com/MahdiHedhli/threatpedia/pull/664"
+    },
+    {
+      "timestamp": "2026-05-13T18:27:29.814Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #664 merged (7a2fc5c)."
     }
-  ]
+  ],
+  "merged_at": "2026-05-13T18:27:29.814Z"
 }
