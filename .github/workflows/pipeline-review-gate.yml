@@ -10,6 +10,7 @@ on:
       - "scripts/**"
       - ".github/workflows/**"
       - ".github/pipeline/config.yml"
+      - ".github/pipeline/tasks/TASK-*.json"
       - "docs/PIPELINE.md"
   pull_request_review:
     types: [submitted, dismissed]
@@ -38,12 +39,12 @@ concurrency:
 jobs:
   review-gate:
     if: |
-      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'pull_request' ||
       (
         github.event_name == 'pull_request_review' &&
         contains(
-          fromJSON('["gemini-code-assist", "gemini-code-assist[bot]", "dangermouse-bot"]'),
+          fromJSON('["gemini-code-assist", "gemini-code-assist[bot]", "dangermouse-bot", "ernestpenfold-bot"]'),
           github.event.review.user.login
         )
       ) ||

@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-09T19:38:34.015Z",
+  "updated": "2026-05-11T18:53:08.144Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -69,6 +69,40 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #576"
+    },
+    {
+      "timestamp": "2026-05-10T04:11:08.466Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-10T04:17:46.940Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #579"
+    },
+    {
+      "timestamp": "2026-05-10T04:29:46.114Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #579 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-11T18:53:08.144Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #579 merged (1a65cdd)."
     }
-  ]
+  ],
+  "pr_number": 579,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/579",
+  "merged_at": "2026-05-11T18:53:08.144Z"
 }

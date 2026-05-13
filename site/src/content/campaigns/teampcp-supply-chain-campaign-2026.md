@@ -85,21 +85,25 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Force-pushed malicious commits to trusted version tags in the Aqua trivy-action, setup-trivy, and KICS GitHub Action repositories, plus trojanized releases of LiteLLM on PyPI, to redirect downstream CI/CD pipelines into attacker-controlled payloads."
-  - techniqueId: "T1552.001"
-    techniqueName: "Unsecured Credentials: Credentials In Files"
-    tactic: "Credential Access"
-    notes: "TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), Kubernetes service accounts, and SSH keys from runner environment variables, workflow logs, and build artefacts."
   - techniqueId: "T1199"
     techniqueName: "Trusted Relationship"
     tactic: "Initial Access"
     notes: "Cascaded access through trusted security tooling (Trivy, KICS, LiteLLM, Checkmarx) into downstream customer environments that treated the tools as privileged CI/CD dependencies."
+  - techniqueId: "T1552.001"
+    techniqueName: "Credentials In Files"
+    tactic: "Credential Access"
+    notes: "TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts."
   - techniqueId: "T1027"
     techniqueName: "Obfuscated Files or Information"
     tactic: "Defense Evasion"
     notes: "Payloads used AES-256 + RSA-4096 layered encryption and staged exfiltration to blend into normal CI/CD egress traffic; C2 infrastructure hosted behind trycloudflare.com tunnels."
+  - techniqueId: "T1496"
+    techniqueName: "Resource Hijacking"
+    tactic: "Impact"
+    notes: "Inferred for a subset of downstream compromises, with follow-on action-on-objectives tracked in the constituent victim records."
 ---
 
 ## Executive Summary
@@ -146,22 +150,15 @@ Credentials harvested in Stages 2–4 are used to access victim cloud-production
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
+T1195.002 - Compromise Software Supply Chain: Force-pushed malicious commits to trusted version tags in the Aqua trivy-action, setup-trivy, and KICS GitHub Action repositories, plus trojanized releases of LiteLLM on PyPI, to redirect downstream CI/CD pipelines into attacker-controlled payloads.
 
-- **T1195.002 — Supply Chain Compromise: Compromise Software Supply Chain.** Force-push against trusted GitHub Action version tags; trojanized PyPI releases.
-- **T1199 — Trusted Relationship.** Exploitation of the privileged CI/CD position that security tools occupy in downstream victim pipelines.
+T1199 - Trusted Relationship: Cascaded access through trusted security tooling (Trivy, KICS, LiteLLM, Checkmarx) into downstream customer environments that treated the tools as privileged CI/CD dependencies.
 
-### Credential Access
+T1552.001 - Credentials In Files: TeamPCP Cloud Stealer harvested cloud provider tokens (AWS, GCP, Azure), kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments, workflow logs, and build artifacts.
 
-- **T1552.001 — Unsecured Credentials: Credentials In Files.** Harvesting of cloud tokens, kubeconfigs, SSH keys, PATs, and publishing tokens from runner environments and workflow logs.
+T1027 - Obfuscated Files or Information: Payloads used AES-256 + RSA-4096 layered encryption and staged exfiltration to blend into normal CI/CD egress traffic; C2 infrastructure hosted behind trycloudflare.com tunnels.
 
-### Defense Evasion
-
-- **T1027 — Obfuscated Files or Information.** Layered AES-256 + RSA-4096 encryption of harvested material; Cloudflare-tunnel-fronted C2 infrastructure.
-
-### Impact
-
-- **T1496 — Resource Hijacking (inferred for a subset of downstream compromises)** and further downstream action-on-objectives are tracked with the constituent victim records.
+T1496 - Resource Hijacking: Inferred for a subset of downstream compromises, with follow-on action-on-objectives tracked in the constituent victim records.
 
 ## Timeline
 

@@ -1,0 +1,99 @@
+{
+  "task_id": "TASK-2026-0262",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "created": "2026-05-11T01:41:39.000Z",
+  "updated": "2026-05-13T01:36:12.043Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k-manual-intake",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Ollama GGUF Model Loader Memory Disclosure Vulnerability (Bleeding Llama, CVE-2026-7482)",
+    "sources": [
+      "https://www.cve.org/CVERecord?id=CVE-2026-7482",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-7482",
+      "https://github.com/advisories/GHSA-x8qc-fggm-mpqg",
+      "https://github.com/ollama/ollama/pull/14406",
+      "https://github.com/ollama/ollama/commit/88d57d0483cca907e0b23a968c83627a20b21047",
+      "https://github.com/ollama/ollama/releases/tag/v0.17.1",
+      "https://www.cyera.com/research/bleeding-llama-critical-unauthenticated-memory-leak-in-ollama"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-7482",
+      "cves": [
+        "CVE-2026-7482"
+      ],
+      "type": "Heap out-of-bounds read / remote memory disclosure",
+      "platform": "Ollama GGUF model loader and quantization path",
+      "severity": "critical",
+      "cvss": 9.1,
+      "cwe": "CWE-125",
+      "patched_version": "0.17.1",
+      "disclosedDate": "2026-05-04",
+      "known_exploitation": "No public exploitation confirmed at intake; CISA ADP SSVC lists exploitation as none."
+    },
+    "notes": "Manual intake from a social-media security alert; corroborated with CVE.org/CVE AWG API, NVD/GitHub Advisory Database, Ollama PR #14406, fix commit 88d57d0, Ollama v0.17.1 release reference, and Cyera Research. CVE.org lists CVE-2026-7482 as PUBLISHED on 2026-05-04 by Echo. The CNA description says Ollama before 0.17.1 has a heap out-of-bounds read in the GGUF model loader: /api/create can accept an attacker-supplied GGUF file with tensor offset/size values exceeding file length; during quantization the server can read past the allocated heap buffer, and memory may be exfiltrated through a model artifact pushed via /api/push. Treat CVSS carefully: CVE.org lists CVSS v3.1 9.1 CRITICAL and CVSS v4.0 8.8 HIGH; GitHub Advisory currently displays high severity. Do not overstate exploitation: CISA ADP SSVC marks exploitation as none at intake, and no CISA KEV listing was found during this intake. Do not repeat inaccurate social-card wording that default Ollama internet-binds: the CVE/GHSA description says default deployments bind to 127.0.0.1, while documented OLLAMA_HOST=0.0.0.0 deployments are used and exposed in practice. Do not include the social graphic's DDoS/botnet narrative unless supported by primary sources; this task is about memory disclosure, sensitive data exposure, patching, and safe exposure controls."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/ollama-gguf-cve-2026-7482.md",
+    "branch": "pipeline/TASK-2026-0262",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-11T01:41:39.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k-manual-intake",
+      "note": "Manual vulnerability intake for Bleeding Llama / CVE-2026-7482; social-card claims were corroborated and narrowed against CVE.org, GitHub Advisory, Ollama fix references, and Cyera Research."
+    },
+    {
+      "timestamp": "2026-05-12T21:51:34.254Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-12T22:00:44.501Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #608"
+    },
+    {
+      "timestamp": "2026-05-13T01:36:12.043Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #608 merged (6f96e9c)."
+    }
+  ],
+  "pr_number": 608,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/608",
+  "merged_at": "2026-05-13T01:36:12.043Z"
+}
