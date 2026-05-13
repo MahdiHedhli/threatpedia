@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0274",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-13T21:00:11.525Z",
+  "updated": "2026-05-13T21:00:11.525Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "China-linked covert proxy botnet networks advisory, April 2026",
+    "sources": [
+      "https://www.ncsc.gov.uk/news/international-cyber-agencies-fresh-advice-defend-against-china-linked-covert-networks",
+      "https://www.ncsc.gov.uk/sites/default/files/2026-04/International-cyber-agencies-share-fresh-advice-to-defend-against-China-linked-covert-networks.pdf",
+      "https://www.cyber.gc.ca/en/news-events/joint-guidance-defending-against-peoples-republic-china-linked-covert-networks",
+      "https://news.risky.biz/risky-bulletin-there-are-now-sim-farm-as-a-service-providers"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin Apr. 24, 2026 discovery lead. Scope as a campaign/infrastructure article for China-linked covert proxy botnet networks and IOC-extinction tradecraft, anchored on the NCSC-led joint advisory and partner government notice. Draft conservatively: treat specific actor mapping as PRC-linked infrastructure tradecraft unless the advisory supports naming a particular actor; link to existing APT31/APT40/Flax Typhoon coverage only where source-supported."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0274",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T21:00:11.525Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
