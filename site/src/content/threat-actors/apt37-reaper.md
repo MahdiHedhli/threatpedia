@@ -159,7 +159,7 @@ APT37, tracked under aliases including Reaper, ScarCruft, InkySquid, Group123, T
 
 South Korea is the group's primary target, with documented targeting extending to Japan, Vietnam, Russia, Nepal, China, India, Romania, Kuwait, and other Middle East locations. Sector focus spans chemicals, electronics, manufacturing, aerospace, automotive, and healthcare, alongside government and defense entities. APT37 employs tailored social engineering, strategic web compromises, and exploitation of application vulnerabilities — including HWP (Hangul Word Processor) and Adobe Flash vulnerabilities — as its principal intrusion methods. Google Cloud / Mandiant reported that the group has obtained and deployed zero-day exploits and wiper malware, indicating capabilities beyond standard espionage tooling.
 
-APT37 is a distinct tracked cluster from Lazarus Group (G0032) and APT38 (G0082). MITRE notes that some researchers use "Lazarus Group" as a blanket label for all North Korean state-sponsored activity, which can obscure meaningful distinctions between operationally separate groups; APT37 should not be conflated with those clusters.
+APT37 is a distinct tracked cluster from Lazarus Group (G0032) and APT38 (G0082). MITRE notes that some researchers use "Lazarus Group" as a blanket label for all North Korean state-sponsored activity, which can obscure distinctions between operationally separate groups; APT37 should not be conflated with those clusters.
 
 ## Notable Campaigns
 
@@ -173,25 +173,25 @@ Google Cloud / Mandiant documented APT37 using strategic web compromises (wateri
 
 ### Expanded Geographic and Sector Targeting
 
-Google Cloud / Mandiant reported APT37 activity beyond South Korea targeting Japan, Vietnam, and the Middle East, spanning chemicals, electronics, manufacturing, aerospace, automotive, and healthcare sectors. These campaigns included exploitation of Adobe Flash zero-day vulnerabilities alongside continued HWP exploitation. The group's demonstrated access to zero-day vulnerabilities during this period indicated a level of resourcing and operational sophistication beyond a narrowly opportunistic actor.
+Google Cloud / Mandiant reported APT37 activity beyond South Korea targeting Japan, Vietnam, and the Middle East, spanning chemicals, electronics, manufacturing, aerospace, automotive, and healthcare sectors. These campaigns included exploitation of Adobe Flash zero-day vulnerabilities alongside continued HWP exploitation. The group's demonstrated access to zero-day vulnerabilities during this period indicated a level of resourcing and operational sophistication beyond an opportunistic actor.
 
 ## Technical Capabilities
 
-APT37 employs a multi-method initial access strategy combining spearphishing attachments, strategic web compromises, and exploitation of client-side application vulnerabilities. Google Cloud / Mandiant reported that the group weaponized HWP (Hangul Word Processor) vulnerabilities in tailored documents targeting Korean-language audiences, and separately exploited Adobe Flash vulnerabilities — including zero-day vulnerabilities — during broader targeting campaigns.
+APT37 employs a multi-method initial access strategy combining spearphishing attachments, strategic web compromises, and exploitation of client-side application vulnerabilities. Google Cloud / Mandiant reported that the group weaponized HWP (Hangul Word Processor) vulnerabilities in tailored documents targeting Korean-language audiences, and separately exploited Adobe Flash vulnerabilities — including zero-day vulnerabilities — during expanded targeting campaigns.
 
 Post-compromise collection focuses on intelligence gathering from local systems and audio capture from compromised hosts. Kaspersky documented a Bluetooth device harvester attributed to the ScarCruft cluster — one of the alias designations overlapping with APT37 — capable of enumerating Bluetooth devices paired with compromised Windows hosts. This capability extends peripheral reconnaissance beyond standard host-based discovery.
 
 Google Cloud / Mandiant noted the group's possession of wiper malware in its toolkit, establishing a destructive capability alongside its primary espionage mission. Post-exploitation command-and-control uses HTTP-based web protocols and bidirectional web service communication. Tool delivery to compromised hosts relies on ingress tool transfer over established C2 channels.
 
-The alias diversity associated with this group — including ScarCruft (used heavily by Kaspersky) and InkySquid (used by Volexity) — reflects independent vendor tracking and does not necessarily indicate distinct organizational units. Operational overlaps between these designations are documented; attribution claims specific to one vendor's alias scope should not be assumed to extend uniformly across all designations.
+The alias diversity associated with this group — including ScarCruft (used by Kaspersky) and InkySquid (used by Volexity) — reflects independent vendor tracking and does not necessarily indicate distinct organizational units. Operational overlaps between these designations are documented; attribution claims specific to one vendor's alias scope should not be assumed to extend uniformly across all designations.
 
 ## Attribution
 
 MITRE ATT&CK categorizes APT37 as G0067 and documents it as a North Korean state-sponsored cyber espionage group active since at least 2012. Google Cloud / Mandiant assessed with high confidence that APT37 activity is conducted on behalf of the North Korean government, grounding that assessment in targeting patterns aligned with North Korean state intelligence interests, infrastructure analysis, and operational tradecraft.
 
-CISA and DHS/FBI use the designation HIDDEN COBRA to refer to North Korean government malicious cyber activity broadly. That designation is not a specific attribution to APT37 as a bounded cluster and should not be read as government confirmation of APT37's operational identity.
+CISA and DHS/FBI use the designation HIDDEN COBRA to refer to North Korean government malicious cyber activity generally. That designation is not a specific attribution to APT37 as a bounded cluster and should not be read as government confirmation of APT37's operational identity.
 
-APT37 is tracked as distinct from Lazarus Group (G0032) and APT38 (G0082). MITRE explicitly notes that some researchers apply the Lazarus Group label to all North Korean state-sponsored cyber activity; doing so collapses meaningfully separate groups. APT37 activity and tooling are tracked separately in MITRE ATT&CK from both Lazarus and APT38 profiles.
+APT37 is tracked as distinct from Lazarus Group (G0032) and APT38 (G0082). MITRE explicitly notes that some researchers apply the Lazarus Group label to all North Korean state-sponsored cyber activity; doing so collapses distinct groups. APT37 activity and tooling are tracked separately in MITRE ATT&CK from both Lazarus and APT38 profiles.
 
 The alias cluster — APT37, Reaper, ScarCruft, InkySquid, Group123, TEMP.Reaper, Ricochet Chollima — reflects independent vendor discovery and naming conventions applied to overlapping observed intrusion sets. No public indictment has specifically named APT37 operators, and the government attribution record supports a North Korean state nexus without identifying a specific unit or command structure.
 
