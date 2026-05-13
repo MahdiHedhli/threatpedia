@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-11T01:41:39.000Z",
-  "updated": "2026-05-11T01:41:39.000Z",
+  "updated": "2026-05-12T22:00:44.501Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -39,8 +39,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72"
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -68,6 +68,23 @@
       "to": "pending",
       "agent": "kernel-k-manual-intake",
       "note": "Manual vulnerability intake for Bleeding Llama / CVE-2026-7482; social-card claims were corroborated and narrowed against CVE.org, GitHub Advisory, Ollama fix references, and Cyera Research."
+    },
+    {
+      "timestamp": "2026-05-12T21:51:34.254Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-12T22:00:44.501Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #608"
     }
-  ]
+  ],
+  "pr_number": 608,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/608"
 }
