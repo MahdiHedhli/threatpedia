@@ -145,7 +145,7 @@ T1566.001 - Spearphishing Attachment: Spearphishing emails with malicious docume
 
 T1204.002 - Malicious File: Victims execute malicious files delivered via phishing, triggering the DLL side-loading infection chain, per MITRE ATT&CK G0129.
 
-T1574.001 - Hijack Execution Flow: DLL Side-Loading: Mustang Panda uses DLL side-loading to execute PlugX and related tooling through legitimate signed executables, as documented by MITRE ATT&CK G0129, Cisco Talos, and Secureworks.
+T1574.001 - DLL: Mustang Panda uses DLL side-loading to execute PlugX and related tooling through legitimate signed executables, as documented by MITRE ATT&CK G0129, Cisco Talos, and Secureworks.
 
 T1091 - Replication Through Removable Media: PlugX spreading via USB drives is documented in MITRE ATT&CK G0129 and the Secureworks BRONZE PRESIDENT profile, supporting propagation into environments with limited network connectivity.
 
