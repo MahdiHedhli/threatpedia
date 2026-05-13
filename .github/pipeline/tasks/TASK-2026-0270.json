@@ -1,0 +1,69 @@
+{
+  "task_id": "TASK-2026-0270",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-13T16:50:58.849Z",
+  "updated": "2026-05-13T17:15:00.000Z",
+  "source": "manual_submission",
+  "submitted_by": "manual-cli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "CPUID CPU-Z and HWMonitor supply-chain malware distribution",
+    "sources": [
+      "https://intel.breakglass.tech/post/cpuid-supply-chain-cryptbase-filezilla-c2-infrastructure",
+      "https://www.cyderes.com/howler-cell/how-cpuids-hwmonitor-supply-chain-was-hijacked-to-deploy-stx-rat",
+      "https://securelist.com/tr/cpu-z/119365"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "date": "2026-04-09",
+      "attack_type": "Supply Chain",
+      "sector": "Technology",
+      "geography": "Global"
+    },
+    "notes": "Risky Bulletin 2026-04-13 lead. Treat as software supply-chain incident: official CPUID download links for CPU-Z and HWMonitor reportedly replaced with malware for about six hours; preserve Risky Bulletin and research links as sources; verify any actor attribution conservatively."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0270",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T16:50:58.849Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "manual-cli",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T17:15:00.000Z",
+      "action": "updated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Normalized incident seed metadata: added candidate_data date, attack_type, sector, and geography; aligned min_h2_sections with the incident article section contract; removed legacy schema_validation acceptance field."
+    }
+  ]
+}
