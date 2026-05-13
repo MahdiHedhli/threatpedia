@@ -42,7 +42,7 @@ mitreMappings:
     confidence: confirmed
     evidence: "MITRE ATT&CK G0129 documents victim execution of malicious files as a consistent component of Mustang Panda infection chains, triggering the DLL side-loading stage."
   - techniqueId: "T1574.001"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
+    techniqueName: "DLL"
     tactic: "Defense Evasion"
     attackVersion: "v19"
     confidence: confirmed
