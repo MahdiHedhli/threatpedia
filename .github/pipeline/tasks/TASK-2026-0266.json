@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T07:14:57.216Z",
-  "updated": "2026-05-13T07:14:57.216Z",
+  "updated": "2026-05-13T08:43:14.068Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Danger Mouse Bot",
+  "locked_at": "2026-05-13T08:43:14.068Z",
   "input": {
     "topic": "Dutch Ministry of Finance internal systems breach, March 2026",
     "sources": [
@@ -62,6 +62,13 @@
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T08:43:14.068Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
