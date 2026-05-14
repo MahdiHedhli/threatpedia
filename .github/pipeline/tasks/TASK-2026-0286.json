@@ -21,7 +21,7 @@
       "threat_actor": "Seedworm / MuddyWater",
       "geography": "South Korea and additional global targets",
       "sector": "Electronics manufacturing and related organizations",
-      "first_seen": "2026-02",
+      "active_since": "2026-02",
       "source_caveat": "Symantec did not name the South Korean electronics victim in public reporting"
     },
     "notes": "Manual Risky Bulletin intake from the May 13, 2026 bulletin. This lead was previously branch-only as TASK-2026-0282 in closed PR #699; it is re-seeded with a fresh task ID because #699 was closed unmerged. Draft as a campaign only if the Symantec reporting supports continuity across the named South Korean electronics intrusion and the additional global targets. Existing Threatpedia corpus includes a MuddyWater/Seedworm actor profile; avoid duplicating that actor page. Add government or authoritative actor-context sources such as CISA AA22-055A only if they are used for attribution context and do not imply government confirmation of this specific 2026 campaign."
