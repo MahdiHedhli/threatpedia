@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-14T08:56:04.022Z",
-  "updated": "2026-05-14T08:56:04.022Z",
+  "updated": "2026-05-14T09:30:00.240Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -60,6 +60,16 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual Risky Bulletin link submission; pipeline-submit-link dry-run found no URL duplicates, but direct task JSON was used to avoid reusing branch-only task IDs from closed PR #699."
+    },
+    {
+      "timestamp": "2026-05-14T09:30:00.240Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #707 merged (e88c222)."
     }
-  ]
+  ],
+  "pr_number": 707,
+  "merged_at": "2026-05-14T09:30:00.240Z"
 }
