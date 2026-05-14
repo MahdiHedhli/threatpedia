@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-14T08:56:04.022Z",
-  "updated": "2026-05-14T08:56:04.022Z",
+  "updated": "2026-05-14T11:07:46.731Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -58,6 +58,23 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual Risky Bulletin link submission; pipeline-submit-link dry-run found no URL duplicates when run against the Risky/Symantec source set, but direct task JSON was used to avoid reusing branch-only task IDs from closed PR #699."
+    },
+    {
+      "timestamp": "2026-05-14T10:50:01.446Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-14T11:07:46.731Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Mahdi Hedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #714"
     }
-  ]
+  ],
+  "pr_number": 714,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/714"
 }
