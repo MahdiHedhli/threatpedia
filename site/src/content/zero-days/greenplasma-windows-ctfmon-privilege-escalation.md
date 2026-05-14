@@ -1,5 +1,6 @@
 ---
 title: GreenPlasma — Windows CTFMON Arbitrary Section Creation Privilege Escalation
+exploitId: TP-EXP-2026-0284
 cve: Pending
 type: Local Privilege Escalation
 platform: Microsoft Windows 11 and Windows Server 2022/2026, per public researcher claims
@@ -103,7 +104,7 @@ Affected platforms per the researcher are Windows 11 and Windows Server 2022 and
 
 ## Detection Guidance
 
-1. Apply available Microsoft security updates promptly. As of 2026-05-14, no official patch for GreenPlasma has been released; monitor the Microsoft Security Response Center for advisories and apply any fix as soon as one becomes available.
+1. Monitor the Microsoft Security Response Center for advisories and apply the official patch for GreenPlasma as soon as it is released. As of 2026-05-14, no fix is available.
 2. Restrict local user access to sensitive systems, particularly where SYSTEM-writable directory objects may be accessible to low-privileged accounts.
 3. Hunt for anomalous section object creation activity associated with CTFMON processes, particularly on Windows 11 and Windows Server 2022/2026 hosts.
 4. Monitor for unexpected SYSTEM-level process spawning preceded by low-privilege local process activity on affected platforms.
