@@ -65,9 +65,10 @@
     },
     {
       "timestamp": "2026-05-13T21:11:18.525Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
-      "agent": "dangermouse-bot",
+      "agent": "MahdiHedhli",
       "note": "Locked for execution"
     },
     {
