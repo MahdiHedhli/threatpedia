@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-14T08:56:04.022Z",
-  "updated": "2026-05-14T08:56:04.022Z",
+  "updated": "2026-05-14T09:56:41.237Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-14T09:56:41.236Z",
   "input": {
     "topic": "GreenPlasma Windows CTFMON privilege-escalation zero-day disclosure, May 2026",
     "sources": [
@@ -60,6 +60,13 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual Risky Bulletin link submission; pipeline-submit-link dry-run found no URL duplicates, but direct task JSON was used to avoid reusing branch-only task IDs from closed PR #699."
+    },
+    {
+      "timestamp": "2026-05-14T09:56:41.237Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
