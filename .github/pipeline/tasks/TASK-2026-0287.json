@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-14T12:00:23.665Z",
-  "updated": "2026-05-14T12:00:23.665Z",
+  "updated": "2026-05-14T13:06:17.011Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -57,6 +57,23 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T13:00:05.639Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-14T13:06:17.010Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #720"
     }
-  ]
+  ],
+  "pr_number": 720,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/720"
 }
