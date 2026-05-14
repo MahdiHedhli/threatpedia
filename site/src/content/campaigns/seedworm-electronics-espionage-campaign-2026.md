@@ -141,13 +141,13 @@ Security.com identified February 20, 2026 as the first observed date of maliciou
 
 Security.com identified February 27, 2026 as the last observed date of attacker activity, indicating an approximately one-week presence inside the target environment.
 
-### 2026-Q1 — Broader Campaign Activity Across Nine Countries
+### 2026-Q1 — Campaign Activity Across Nine Countries
 
 Security.com's reporting indicates that Seedworm intrusion activity in Q1 2026 affected at least nine organizations across nine countries on four continents, spanning industrial and electronics manufacturing, education, public-sector, financial services, and professional services sectors.
 
 ### 2026-05-13 — Security.com Publishes Findings; Risky Business Media Reports
 
-Security.com published its analysis of the Seedworm campaign targeting the South Korean electronics manufacturer and global organizations. Risky Business Media's May 13, 2026 bulletin highlighted the findings as part of its coverage of significant developments in Iranian threat actor activity.
+Security.com published its analysis of the Seedworm campaign targeting the South Korean electronics manufacturer and global organizations. Risky Business Media's May 13, 2026 bulletin highlighted the findings as part of its coverage of developments in Iranian threat actor activity.
 
 ## Remediation & Mitigation
 
