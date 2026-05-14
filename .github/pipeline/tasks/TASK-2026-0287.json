@@ -18,8 +18,13 @@
       "https://irp.fas.org/news/1999/12/991221-cyber.htm"
     ],
     "candidate_data": {
-      "severity": "high"
+      "severity": "high",
+      "attack_type": "Espionage",
+      "sector": "Government",
+      "geography": "United States",
+      "date": "1996-01-01"
     },
+    "drafting_notes": "The article drafter must find and cite at least one valid government source to satisfy campaign schema requirements. If no such source can be found, mark this task blocked rather than adding unsupported or placeholder sources.",
     "notes": "Historical corpus P0 seed from HIST-CAMP-001. Draft as a campaign article only if sources support a multi-year intrusion cluster against U.S. government, military, contractor, and research networks. Use conservative attribution: public sources describe Russian-linked infrastructure and suspected espionage, but avoid treating Russian government attribution as confirmed unless a cited source supports that exact claim. Preserve uncertainty around data volume, victim scope, and continuity with later Turla activity."
   },
   "specs": [
