@@ -1,0 +1,91 @@
+{
+  "task_id": "TASK-2026-0268",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "blocked",
+  "pr_number": null,
+  "pr_url": null,
+  "merged_at": null,
+  "created": "2026-05-13T12:10:38.423Z",
+  "updated": "2026-05-13T15:20:30.000Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Hasbro cyberattack and business-system disruption, April 2026",
+    "sources": [
+      "https://www.sec.gov/Archives/edgar/data/46080/000004608026000013/has-20260401.htm",
+      "https://techcrunch.com/2026/04/01/hasbro-hacked-may-take-several-weeks-to-recover",
+      "https://news.risky.biz/risky-bulletin-russia-will-revoke-licenses-for-unruly-isps"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "date": "2026-04-01",
+      "disclosure_date": "2026-04-01",
+      "attack_type": "Cyberattack",
+      "affected_organization": "Hasbro",
+      "sector": "Consumer products and entertainment",
+      "geography": "United States",
+      "threat_actor": "Unknown",
+      "known_impact": "Business-system disruption and multi-week recovery window reported by TechCrunch; scope should remain source-bound."
+    },
+    "notes": "Risky Bulletin discovery item. Scope as a discrete Hasbro incident based on the company SEC filing and TechCrunch reporting. Keep attribution unknown unless later primary sources name an actor; do not infer ransomware without source support. Discovery source: https://news.risky.biz/risky-bulletin-russia-will-revoke-licenses-for-unruly-isps/"
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0268",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T12:10:38.423Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T13:15:20Z",
+      "action": "task_seed_state_restore",
+      "from": "complete",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "PR #648 was a task-only seed PR, not an article completion PR; restore dispatcher eligibility."
+    },
+    {
+      "timestamp": "2026-05-13T15:13:02.565Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T15:20:30.000Z",
+      "action": "blocked",
+      "from": "locked",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Validation blocked: Only 0 MITRE mapping(s) in frontmatter (need 1+). Public Hasbro sources confirm unauthorized network access and business-system disruption but do not identify a confirmed ATT&CK Enterprise v19 technique; no mapping was added."
+    }
+  ]
+}

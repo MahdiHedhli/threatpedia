@@ -288,13 +288,14 @@ const fmt = (n: number) => n.toLocaleString('en-US');
       </div>
 
       <div class="item">
-        <div class="item-status todo">&#9675;</div>
+        <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">X/Twitter Syndication</div>
-          <div class="item-desc">Automated social syndication of newly published incidents, campaigns, and zero-days to <a href="https://x.com/threatpedia" target="_blank" rel="noopener">@threatpedia</a>. Short-form threat intel posts with severity badges and direct article links. The signal channel for the soft launch.</div>
+          <div class="item-desc">Post-deploy share drafting for newly published incidents, campaigns, threat actors, and zero-days to <a href="https://x.com/threatpedia" target="_blank" rel="noopener">@threatpedia</a>. Live posting remains explicitly gated behind repository secrets and operator configuration.</div>
           <div class="item-meta">
             <span class="item-tag">@threatpedia</span>
-            <span class="item-tag">auto-syndication</span>
+            <span class="item-tag">post-deploy</span>
+            <span class="item-tag">dry-run first</span>
             <span class="item-tag">soft launch</span>
           </div>
         </div>

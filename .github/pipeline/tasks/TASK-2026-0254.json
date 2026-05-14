@@ -3,13 +3,15 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-08T15:25:00.000Z",
+  "updated": "2026-05-13T22:19:03.718Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
   "locked_at": null,
+  "pr_number": 666,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/666",
   "input": {
     "topic": "DarkHotel threat actor profile",
     "sources": [
@@ -61,6 +63,23 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Historical threat-actor backlog seed from HIST-ACTOR-019"
+    },
+    {
+      "timestamp": "2026-05-13T00:00:00.000Z",
+      "action": "pr_open",
+      "from": "pending",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "DarkHotel article drafted and PR opened. validate=PASS (19/19 checks). 5 MITRE mappings, 6 H2 sections, 3 sources."
+    },
+    {
+      "timestamp": "2026-05-13T22:19:03.718Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #666 merged (760417c)."
     }
-  ]
+  ],
+  "merged_at": "2026-05-13T22:19:03.718Z"
 }

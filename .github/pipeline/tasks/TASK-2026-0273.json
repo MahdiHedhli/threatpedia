@@ -1,0 +1,75 @@
+{
+  "task_id": "TASK-2026-0273",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-13T19:12:35.960Z",
+  "updated": "2026-05-13T21:50:19.981Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "French ANTS identity-document portal data breach, April 2026",
+    "sources": [
+      "https://www.interieur.gouv.fr/actualites/communiques-de-presse/incident-de-securite-relatif-au-portail-antsgouvfr",
+      "https://www.clubic.com/actualite-580066-le-hacker-qui-dit-vendre-des-bases-de-donnees-geantes-de-l-ants-et-de-france-travail-est-le-roi-du-pipeau.html",
+      "https://today.rtl.lu/news/world/data-breach-at-french-ants-portal-exposes-personal-user-information-1266300012",
+      "https://news.risky.biz/risky-bulletin-former-fbi-official-calls-for-terrorism-designations-for-ransomware-groups-that-target-hospitals-and-critical-infrastructure"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin Apr. 22, 2026 discovery lead. Scope as a French ANTS identity-document portal data breach and underground-sale claim, anchored on the French Interior Ministry disclosure. Draft conservatively: do not accept the advertised 12.7 million-row claim as confirmed unless corroborated by official or strong independent source material."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0273",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T19:12:35.960Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T20:16:15.790Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #681"
+    },
+    {
+      "timestamp": "2026-05-13T21:50:19.981Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #685 already covers this task."
+    }
+  ]
+}

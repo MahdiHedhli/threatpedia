@@ -1,0 +1,100 @@
+{
+  "task_id": "TASK-2026-0265",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-05-13T05:51:55.294Z",
+  "updated": "2026-05-13T10:55:23.712Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Russian intelligence Signal account compromise campaign",
+    "sources": [
+      "https://www.ic3.gov/PSA/2026/PSA260320",
+      "https://www.cert.ssi.gouv.fr/alerte/CERTFR-2026-ALE-003",
+      "https://english.aivd.nl/latest/news/2026/03/09/russia-targets-signal-and-whatsapp-accounts-in-cyber-campaign"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin 2026-03-23 lead from government sources. Scope as a campaign about Russian intelligence-linked compromise of Signal and related secure-messaging accounts by social engineering users into linking attacker-controlled devices. Preserve the FBI, CERT-FR, and AIVD sources; do not overstate victim counts beyond source language."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0265",
+    "pr": true,
+    "pr_number": 633,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/633",
+    "slug": "russian-intelligence-signal-whatsapp-account-compromise-2026"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-13T05:51:55.294Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-13T07:08:17.450Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-13T07:17:25.000Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #633 opened: feat(campaign): TASK-2026-0265 — Russian intelligence Signal and WhatsApp account compromise campaign"
+    },
+    {
+      "timestamp": "2026-05-13T07:36:39.473Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #633 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-13T08:06:09.000Z",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Remediation: resolved merge conflict, fixed status/locked_by metadata, applied Gemini review fixes (subjective intensifier removal, MITRE canonical format, task bookkeeping corrections). PR #633."
+    },
+    {
+      "timestamp": "2026-05-13T10:55:23.712Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #633 merged (cd418a5)."
+    }
+  ],
+  "pr_number": 633,
+  "merged_at": "2026-05-13T10:55:23.712Z"
+}

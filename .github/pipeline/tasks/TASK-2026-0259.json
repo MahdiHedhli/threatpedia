@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-08T17:18:37.986Z",
-  "updated": "2026-05-09T19:38:34.015Z",
+  "updated": "2026-05-13T05:15:46.680Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": null,
@@ -46,7 +46,9 @@
   "output": {
     "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0259",
-    "pr": true
+    "pr": true,
+    "pr_number": 602,
+    "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/602"
   },
   "history": [
     {
@@ -72,6 +74,40 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #574"
+    },
+    {
+      "timestamp": "2026-05-12T17:47:55.000Z",
+      "action": "pr_open",
+      "from": "pending",
+      "to": "in_progress",
+      "agent": "dangermouse-bot",
+      "note": "Opened PR #602: feat(campaign): TASK-2026-0259 — CyberAv3ngers IRGC-Affiliated ICS and Water Sector Targeting Campaign"
+    },
+    {
+      "timestamp": "2026-05-12T20:10:03Z",
+      "action": "remediated",
+      "from": "pr_open",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "Applied Ernest Penfold R1 blockers: (1) endDate corrected from 2024-04-30 to 2023-12-01 — sources support Nov–Dec 2023 only; (2) removed unsupported 2024 timeline section. Fixed remaining Gemini inline findings: removed 'straightforward', 'meaningful'→'demonstrable', 'prominently'→'publicly confirmed', 'perceived' removed."
+    },
+    {
+      "timestamp": "2026-05-12T21:25:31Z",
+      "action": "pr_open",
+      "from": "in_progress",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #602 open; bookkeeping update — pr_number was missing from prior state commit"
+    },
+    {
+      "timestamp": "2026-05-13T05:15:46.680Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #602 merged (7f3a754)."
     }
-  ]
+  ],
+  "pr_number": 602,
+  "merged_at": "2026-05-13T05:15:46.680Z"
 }

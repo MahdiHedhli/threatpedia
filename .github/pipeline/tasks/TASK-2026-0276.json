@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0276",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T00:43:01.221Z",
+  "updated": "2026-05-14T04:26:36.752Z",
+  "source": "manual_submission",
+  "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Qinglong task scheduler authentication bypass exploited in the wild (CVE-2026-3965)",
+    "sources": [
+      "https://snyk.io/blog/qinglong-task-scheduler-rce-vulnerabilities",
+      "https://github.com/A7cc/cve/issues/6"
+    ],
+    "notes": "Manual Risky Bulletin intake from 2026-04-29. Risky reports Qinglong task management servers were exploited since early February to deploy cryptocurrency miners; Snyk reports CVE-2026-3965 was a zero-day at the time and is now patched. Draft conservatively from Snyk, upstream/CVE metadata, and any vendor advisory or exploit timeline sources found during article drafting."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0276",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T00:43:01.221Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "threatpedia-risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T04:26:36.752Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #698 already covers this task."
+    }
+  ]
+}
