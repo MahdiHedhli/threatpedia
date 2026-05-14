@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-14T12:00:23.665Z",
-  "updated": "2026-05-14T13:06:17.011Z",
+  "updated": "2026-05-14T13:19:57.887Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -72,8 +72,17 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #720"
+    },
+    {
+      "timestamp": "2026-05-14T13:19:57.887Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #720 merged (570ca1b)."
     }
   ],
   "pr_number": 720,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/720"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/720",
+  "merged_at": "2026-05-14T13:19:57.887Z"
 }
