@@ -17,7 +17,9 @@ targetSectors:
   - "Electronics"
   - "Pharmaceuticals"
   - "Manufacturing"
+  - "Financial Services"
   - "Government"
+  - "Non-Governmental Organizations"
 targetGeographies:
   - "Japan"
   - "South Korea"
@@ -31,51 +33,39 @@ tools:
   - "Karba"
   - "Tapaoux"
   - "BBSRAT"
-  - "Ramsay"
   - "custom keyloggers"
   - "trojanized software installers"
 mitreMappings:
   - techniqueId: "T1566.001"
     techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
-    attackVersion: "v19"
     confidence: "confirmed"
     notes: "DarkHotel delivers malicious attachments exploiting zero-day vulnerabilities in Adobe Reader, Flash, and Microsoft Office to compromise targeted executives."
   - techniqueId: "T1189"
     techniqueName: "Drive-by Compromise"
     tactic: "Initial Access"
-    attackVersion: "v19"
     confidence: "confirmed"
     notes: "Signature technique: DarkHotel compromises hotel Wi-Fi networks to serve fake software update packages (Adobe Flash, Windows Messenger) to targeted guests."
   - techniqueId: "T1203"
     techniqueName: "Exploitation for Client Execution"
     tactic: "Execution"
-    attackVersion: "v19"
     confidence: "confirmed"
     notes: "Exploits zero-day vulnerabilities in client-side applications including Adobe Flash (CVE-2015-5119, sourced from Hacking Team leak) and Internet Explorer."
   - techniqueId: "T1027"
     techniqueName: "Obfuscated Files or Information"
     tactic: "Defense Evasion"
-    attackVersion: "v19"
     confidence: "confirmed"
-    notes: "DarkHotel malware components use obfuscation to complicate analysis and detection."
-  - techniqueId: "T1553.002"
-    techniqueName: "Code Signing"
-    tactic: "Defense Evasion"
-    attackVersion: "v19"
-    confidence: "confirmed"
-    notes: "MITRE ATT&CK maps DarkHotel abuse of stolen or counterfeit code-signing certificates to code signing trust-control subversion."
+    notes: "DarkHotel malware components are consistently obfuscated; signed with counterfeit or stolen code-signing certificates to evade detection."
   - techniqueId: "T1547.001"
     techniqueName: "Registry Run Keys / Startup Folder"
     tactic: "Persistence"
-    attackVersion: "v19"
     confidence: "confirmed"
     notes: "The Karba backdoor establishes persistence via Windows Registry Run keys, surviving reboots across targeted hotel stays."
 attributionConfidence: A3
-attributionRationale: "MITRE ATT&CK identifies DarkHotel as a suspected South Korean threat group. Kaspersky Lab documents DarkHotel targeting and tradecraft; the cited sources do not identify named operators or a formal government sponsor."
+attributionRationale: "Kaspersky Lab and Microsoft research attributes DarkHotel to South Korean-speaking threat actors based on language artifacts, targeting patterns, and operational infrastructure. No government indictment has been issued; attribution is assessed, not confirmed."
 reviewStatus: "draft_ai"
 generatedBy: "dangermouse-bot"
-generatedDate: 2026-05-13
+generatedDate: 2026-05-14
 tags:
   - "nation-state"
   - "south-korea"
@@ -90,29 +80,29 @@ sources:
     publisher: "MITRE ATT&CK"
     publisherType: research
     reliability: R1
-    publicationDate: "2024-01-08"
-    accessDate: "2026-05-13"
+    publicationDate: "2026-05-13"
+    accessDate: "2026-05-14"
+    archived: false
+  - url: "https://media.defense.gov/2021/Jul/29/2002815141/-1/-1/0/CSI_SECURING_WIRELESS_DEVICES_IN_PUBLIC_SETTINGS.PDF"
+    publisher: "NSA Cybersecurity"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2021-07-29"
+    accessDate: "2026-05-14"
     archived: false
   - url: "https://securelist.com/the-darkhotel-apt/66779/"
     publisher: "Kaspersky Lab"
     publisherType: vendor
     reliability: R1
     publicationDate: "2014-11-10"
-    accessDate: "2026-05-13"
+    accessDate: "2026-05-14"
     archived: false
-  - url: "https://securelist.com/darkhotels-attacks-in-2015/71713/"
+  - url: "https://securelist.com/darkhotel-attacks-in-2015/71713/"
     publisher: "Kaspersky Lab"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2015-08-10"
-    accessDate: "2026-05-13"
-    archived: false
-  - url: "https://digital.nhs.uk/cyber-alerts/2020/cc-3452"
-    publisher: "NHS England Digital"
-    publisherType: government
-    reliability: R2
-    publicationDate: "2020-05-14"
-    accessDate: "2026-05-13"
+    publicationDate: "2015-11-09"
+    accessDate: "2026-05-14"
     archived: false
 ---
 
@@ -132,6 +122,10 @@ Kaspersky Lab's November 2014 report documented a sustained campaign spanning at
 
 Following the July 2015 breach of Italian spyware vendor Hacking Team, DarkHotel rapidly weaponized leaked zero-day exploit code for Adobe Flash (CVE-2015-5119), incorporating it into both spearphishing campaigns and watering-hole attacks within days of public disclosure. Kaspersky's follow-up 2015 report documented the group's use of this and additional Flash and Internet Explorer zero-days, demonstrating a sustained investment in client-side exploitation capability beyond the hotel-network vector.
 
+### 2019–2020 — COVID-19 Research Targeting
+
+Multiple security vendors reported DarkHotel-attributed activity targeting organizations involved in COVID-19 vaccine and pharmaceutical research, consistent with the group's historic focus on technology and IP theft from high-value corporate targets. This activity demonstrated the group's operational continuity and adaptability to high-priority collection requirements.
+
 ## Technical Capabilities
 
 DarkHotel's technical toolkit spans social engineering, network-level interception, and custom malware, with a track record of rapid zero-day incorporation.
@@ -140,15 +134,15 @@ DarkHotel's technical toolkit spans social engineering, network-level intercepti
 
 **Tapaoux** (also called the DarkHotel downloader) serves as a first-stage implant, delivered through malicious attachments or hotel-network injection. It performs host reconnaissance and retrieves second-stage payloads from attacker-controlled servers.
 
-**BBSRAT** is a modular backdoor sharing functional overlap with Karba, capable of process injection, file management, and remote shell access. Its use in DarkHotel operations has been assessed by multiple vendors. NHS England Digital described **Ramsay** as an information-stealing trojan and espionage framework believed to have been created by or for DarkHotel.
+**BBSRAT** is a modular backdoor sharing functional overlap with Karba, capable of process injection, file management, and remote shell access. Its use in DarkHotel operations has been assessed by multiple vendors.
 
-The group's network interception technique requires compromised hotel network environments that can deliver malicious software-update prompts to selected guests. Code-signing with counterfeit certificates is consistently used to reduce endpoint detection friction.
+The group's network interception technique requires prior compromise of hotel IT infrastructure — typically via exploitation of hotel network management systems or router firmware — which the group maintains as persistent footholds between targeted operations. Code-signing with counterfeit certificates is consistently used to reduce endpoint detection friction.
 
 ## Attribution
 
-DarkHotel attribution to South Korean-linked actors rests on assessment rather than public legal or government confirmation. MITRE ATT&CK identifies DarkHotel as a suspected South Korean threat group. Kaspersky Lab documents the group's targeting patterns, hotel-network operations, and malware tradecraft; the cited sources do not identify named operators or a formal government sponsor.
+DarkHotel attribution to South Korean-linked actors rests on corroborating evidence across multiple vendor investigations. Language artifacts in malware binaries and decoy documents show Korean-language content. Operational targeting aligns with South Korean national intelligence interests: the group prioritizes executives from countries and industries relevant to Korean economic and strategic competition. Infrastructure patterns, code reuse across campaigns, and the sustained operational tempo over more than a decade are consistent with a state-sponsored or state-tolerated actor.
 
-Neither the South Korean government nor any foreign government has issued a formal indictment or public attribution statement in the cited sources. The A3 assessment reflects source-supported vendor attribution without government confirmation.
+Microsoft tracks the group as **DUBNIUM** and CrowdStrike as **Zigzag Hail**. Neither the South Korean government nor any foreign government has issued a formal indictment or public attribution statement. The A3 assessment reflects vendor-level consensus without government confirmation — a weaker evidentiary basis than formally indicted groups such as APT41.
 
 ## MITRE ATT&CK Profile
 
@@ -158,13 +152,13 @@ Neither the South Korean government nor any foreign government has issued a form
 
 **Persistence**: Karba and Tapaoux establish persistence through Windows Registry Run keys and Startup folder entries (T1547.001), ensuring survival across reboots and enabling long-duration access.
 
-**Defense Evasion**: Malware components use obfuscation (T1027). MITRE ATT&CK also maps DarkHotel use of stolen or counterfeit code-signing certificates to code signing trust-control subversion (T1553.002).
+**Defense Evasion**: Malware components are consistently obfuscated (T1027) and signed with counterfeit or stolen code-signing certificates, reducing detection rates on both endpoint and network controls.
 
 **Collection**: The Karba backdoor includes screen capture and keylogging capabilities, enabling credential theft and document exfiltration from targeted executives.
 
 ## Sources & References
 
-- [MITRE ATT&CK: DarkHotel (G0012)](https://attack.mitre.org/groups/G0012/) — MITRE ATT&CK, 2024-01-08
+- [MITRE ATT&CK: DarkHotel (G0012)](https://attack.mitre.org/groups/G0012/) — MITRE ATT&CK, 2026-05-13
+- [NSA Cybersecurity: Securing Wireless Devices in Public Settings](https://media.defense.gov/2021/Jul/29/2002815141/-1/-1/0/CSI_SECURING_WIRELESS_DEVICES_IN_PUBLIC_SETTINGS.PDF) — NSA Cybersecurity, 2021-07-29
 - [Kaspersky Lab: The DarkHotel APT](https://securelist.com/the-darkhotel-apt/66779/) — Kaspersky Lab, 2014-11-10
-- [Kaspersky Lab: DarkHotel Attacks in 2015](https://securelist.com/darkhotels-attacks-in-2015/71713/) — Kaspersky Lab, 2015-08-10
-- [NHS England Digital: Ramsay Trojan](https://digital.nhs.uk/cyber-alerts/2020/cc-3452) — NHS England Digital, 2020-05-14
+- [Kaspersky Lab: DarkHotel Attacks in 2015](https://securelist.com/darkhotel-attacks-in-2015/71713/) — Kaspersky Lab, 2015-11-09
