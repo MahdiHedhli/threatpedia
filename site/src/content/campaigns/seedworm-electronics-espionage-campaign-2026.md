@@ -50,31 +50,31 @@ mitreMappings:
   - techniqueId: "T1059.001"
     techniqueName: "PowerShell"
     tactic: "Execution"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Security.com observed PowerShell scripts dropped by a node.exe-based implant chain on the South Korean electronics host, used for reconnaissance, screenshot capture, SAM hive theft, privilege escalation, and SOCKS5 reverse-proxy tunnelling."
   - techniqueId: "T1574.001"
     techniqueName: "DLL"
     tactic: "Execution"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Security.com observed attackers sideloading malicious DLLs using legitimately signed Fortemedia fmapp.exe and SentinelOne sentinelmemoryscanner.exe binaries on the South Korean electronics host."
   - techniqueId: "T1105"
     techniqueName: "Ingress Tool Transfer"
     tactic: "Command and Control"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Security.com observed PowerShell and curl retrieving payloads from attacker-controlled infrastructure at 179.43.177[.]220 over HTTP on port 8080, with timetrakr[.]cloud used as an additional staging domain."
   - techniqueId: "T1113"
     techniqueName: "Screen Capture"
     tactic: "Collection"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Security.com observed screenshot capture executed via PowerShell scripts deployed as part of the node.exe-based implant chain on the South Korean electronics host."
   - techniqueId: "T1003.002"
     techniqueName: "Security Account Manager"
     tactic: "Credential Access"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "Security.com observed attackers saving SAM, SECURITY, and SYSTEM registry hives on the South Korean electronics host for offline credential theft."
 ---
