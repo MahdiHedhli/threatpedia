@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-14T00:43:01.221Z",
-  "updated": "2026-05-14T04:26:36.752Z",
+  "updated": "2026-05-14T12:09:01.854Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -72,8 +72,17 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #698 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-14T12:09:01.854Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #698 merged (05d0937)."
     }
   ],
   "pr_number": 698,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/698"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/698",
+  "merged_at": "2026-05-14T12:09:01.854Z"
 }
