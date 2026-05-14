@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-14T00:43:01.221Z",
-  "updated": "2026-05-14T00:43:01.221Z",
+  "updated": "2026-05-14T02:07:49.981Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-14T02:07:49.980Z",
   "input": {
     "topic": "Qinglong task scheduler authentication bypass exploited in the wild (CVE-2026-3965)",
     "sources": [
@@ -49,6 +49,13 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T02:07:49.981Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
