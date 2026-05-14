@@ -83,7 +83,7 @@ The advisory describes these networks as externally provisioned: they are create
 
 China-nexus actors use the covert networks for a range of operational tasks: routing cyber activity to obscure origin, performing reconnaissance scans against targets, delivering malware, supporting malware command-and-control communication, exfiltrating stolen data, and conducting deniable browsing or victim research. The breadth of uses means that a single compromised device in one of these networks may have served multiple purposes across multiple operations.
 
-A significant defensive challenge highlighted in the April 2026 advisory is what it describes as "IOC extinction": network indicators of compromise for covert network nodes disappear as quickly as they are discovered, because the networks are continuously updated and rotated. This dynamic makes static indicator lists a weak primary defense and requires defenders to adopt adaptive, intelligence-driven approaches rather than relying on point-in-time blocklists. The Canadian Centre for Cyber Security's parallel guidance echoes the same warning.
+A defensive challenge highlighted in the April 2026 advisory is what it describes as "IOC extinction": network indicators of compromise for covert network nodes disappear as they are discovered, because the networks are continuously updated and rotated. This dynamic makes static indicator lists insufficient as a primary defense and requires defenders to adopt adaptive, intelligence-driven approaches rather than relying on point-in-time blocklists. The Canadian Centre for Cyber Security's parallel guidance echoes the same warning.
 
 The Raptor Train botnet is the largest publicly documented example of this infrastructure class. It infected more than 200,000 devices worldwide in 2024. The FBI publicly assessed that Integrity Technology Group controlled and managed the Raptor Train botnet and was responsible for activity attributed to Flax Typhoon. U.K. authorities sanctioned Integrity Technology Group and another China-based information security company in December 2025.
 
@@ -121,7 +121,7 @@ T1595 - Active Scanning: The NCSC April 2026 advisory states that China-nexus ac
 
 ### 2024-01 - Documented Campaign Period Begins
 
-Public reporting and the April 2026 joint advisory place the documented activity of covert proxy networks used by China-nexus actors within the 2024 period. The KV Botnet and Raptor Train botnet were both active at scale during this period, targeting critical sectors globally.
+Public reporting and the April 2026 joint advisory place the documented activity of covert proxy networks used by China-nexus actors within the 2024 period. The KV Botnet and Raptor Train botnet were both active during this period, targeting critical sectors globally.
 
 ### 2024-09 - Public Attribution of Integrity Technology Group and Raptor Train Botnet
 
