@@ -1,5 +1,5 @@
 ---
-title: "YellowKey — Windows BitLocker Bypass"
+title: "YellowKey — Windows BitLocker Bypass (Pending CVE)"
 cve: "Pending"
 type: "BitLocker / Windows Recovery Environment bypass"
 platform: "Microsoft Windows 11 and Windows Server 2022/2025, per public researcher claims"
@@ -75,7 +75,7 @@ atlasMappings: []
 
 - Exploitability: 5/10 — A public proof-of-concept exists; however, the demonstrated reproduction path requires physical access to the target device, which limits exploitability at scale.
 - Impact: 8/10 — Successful exploitation, if the public claims hold, would yield unrestricted shell access to a BitLocker-protected volume, bypassing full-volume encryption entirely.
-- Weaponization Risk: 5/10 — Physical access is a prerequisite for the confirmed reproduction path, limiting broad weaponization; remote or malware-assisted variations remain unproven at this time.
+- Weaponization Risk: 5/10 — Physical access is a prerequisite for the confirmed reproduction path, limiting weaponization; remote or malware-assisted variations remain unproven at this time.
 - Patch Urgency: 7/10 — No vendor patch or official Microsoft advisory has been issued as of 2026-05-14; organizations with high-value, physically accessible devices should prioritize compensating controls.
 - Detection Coverage: 3/10 — Activity occurring within Windows Recovery Environment is largely outside the visibility of standard endpoint detection tools, and no vendor-supplied detections have been released.
 
@@ -91,9 +91,17 @@ The characterization of this as an intentional backdoor, raised by the researche
 
 ## Exploit Chain
 
-The public reproduction path documented in the Nightmare Eclipse repository is a physical-access technique. At a high level, the researcher describes preparing a USB storage device with a specific folder structure under the System Volume Information directory, booting the target BitLocker-protected computer into Windows Recovery Environment, and observing that a shell becomes available with access to the protected volume. The researcher also describes placing files on the EFI partition as an alternative path.
+### Stage 1: Preparation of External Media
 
-No remote exploitation path has been demonstrated or independently validated. Blackfort Technology's independent summary corroborates that physical access and WinRE are central to the public technique. Any remote or malware-assisted variant remains speculative based on the current public record.
+The public reproduction path documented in the Nightmare Eclipse repository is a physical-access technique. At a high level, the researcher describes preparing a USB storage device with a specific folder structure under the System Volume Information directory.
+
+### Stage 2: Booting into Recovery Environment
+
+The target BitLocker-protected computer is booted into Windows Recovery Environment. The researcher also describes placing files on the EFI partition as an alternative path.
+
+### Stage 3: Unauthorized Volume Access
+
+The public repository states that a shell becomes available with access to the protected volume. No remote exploitation path has been demonstrated or independently validated. Blackfort Technology's independent summary corroborates that physical access and WinRE are central to the public technique.
 
 Vendor-side confirmation of the underlying mechanism, affected code path, or root cause has not been issued. Details beyond those available in the public repository and secondary reporting should be treated cautiously.
 
@@ -109,13 +117,13 @@ Vendor-side confirmation of the underlying mechanism, affected code path, or roo
 
 ## Indicators of Compromise
 
-No vendor-confirmed or widely validated indicators of compromise have been published as of 2026-05-14. The following are behavioral signals derivable from the public reproduction path and should be treated as research-level indicators pending further validation:
+No vendor-confirmed or validated indicators of compromise have been published as of 2026-05-14. The following are behavioral signals derivable from the public reproduction path and should be treated as research-level indicators pending further validation:
 
 - Presence of an `FsTx` folder under `System Volume Information` on a USB storage device connected to a target Windows system.
 - Unexpected or unauthorized Windows Recovery Environment sessions on BitLocker-protected devices, particularly those initiated from USB media.
 - EFI partition modifications consistent with the alternative reproduction path described in the public repository.
 
-Because no confirmed in-the-wild exploitation has been reported, defenders should not treat absence of these indicators as evidence that a device is uncompromised, nor treat their presence as definitive proof of exploitation.
+Because no confirmed in-the-wild exploitation has been reported, defenders should not treat absence of these indicators as evidence that a device is uncompromised, nor treat their presence as proof of exploitation.
 
 ## Disclosure Timeline
 
