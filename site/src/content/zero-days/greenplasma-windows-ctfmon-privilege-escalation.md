@@ -83,7 +83,7 @@ framework-mappings: []
 
 GreenPlasma is the public name given to a Windows CTFMON elevation-of-privilege vulnerability publicly disclosed on 2026-05-12 by the researcher known as Nightmare Eclipse. The disclosure occurred on the same day Microsoft released its May 2026 Patch Tuesday updates; the cited sources did not identify a vendor fix for GreenPlasma. A second vulnerability, YellowKey — described as a separate BitLocker bypass — was released alongside it.
 
-The public record characterizes GreenPlasma as an arbitrary section creation vulnerability in the Windows CTFMON subsystem that can allow a local unprivileged user to create arbitrary memory section objects in directory objects that are writable by SYSTEM, enabling escalation to SYSTEM-level privileges. The researcher published a partial proof-of-concept; code required to achieve a full SYSTEM shell was stated to have been deliberately stripped before release.
+The public record characterizes GreenPlasma as an arbitrary section creation vulnerability in the Windows CTFMON subsystem that can allow a local unprivileged user to create arbitrary memory section objects in directory objects that are writable by SYSTEM, enabling escalation to SYSTEM-level privileges. The researcher published a partial proof-of-concept; code required to achieve a functional SYSTEM shell was stated to have been deliberately stripped before release.
 
 As of 2026-05-14, no CVE identifier had been assigned and no NVD record existed for GreenPlasma. The cited sources did not identify a Microsoft Security Response Center advisory or patch, and no in-the-wild exploitation had been reported.
 
@@ -91,9 +91,13 @@ As of 2026-05-14, no CVE identifier had been assigned and no NVD record existed 
 
 The public information about the exploit chain comes from the researcher's own repository README and third-party reporting, not from a vendor advisory. This section reflects only what is publicly stated.
 
-CTFMON is a Windows component associated with input method management. According to the public GreenPlasma repository, the vulnerability involves creating an arbitrary memory section object in any directory object that SYSTEM can write to. The researcher's partial proof-of-concept demonstrates this object creation step. The code required to progress from that primitive to a full SYSTEM shell was explicitly removed before public release.
+### Stage 1: Arbitrary Section Object Creation
 
-Cybersecurity Help bulletin SB2026051378 characterizes the access vector as local, with code execution at SYSTEM privileges as the highest-confidence impact. This aligns with the researcher's description of an elevation-of-privilege path for local unprivileged users.
+CTFMON is a Windows component associated with input method management. According to the public GreenPlasma repository, the vulnerability involves creating an arbitrary memory section object in any directory object that SYSTEM can write to. The researcher's partial proof-of-concept demonstrates this object creation step.
+
+### Stage 2: Privilege Escalation to SYSTEM
+
+The code required to progress from that primitive to a functional SYSTEM shell was explicitly removed before public release. Cybersecurity Help bulletin SB2026051378 characterizes the access vector as local, with code execution at SYSTEM privileges as the highest-confidence impact. This aligns with the researcher's description of an elevation-of-privilege path for local unprivileged users.
 
 Affected platforms per the researcher are Windows 11 and Windows Server 2022 and 2026. The researcher listed Windows 10 status as uncertain as of initial disclosure.
 
@@ -120,7 +124,7 @@ Defenders should monitor the public GreenPlasma repository for any updates to th
 
 ### 2026-05-12 — Public disclosure by Nightmare Eclipse
 
-The researcher publicly released the GreenPlasma partial proof-of-concept repository alongside YellowKey, a separate BitLocker bypass vulnerability. The release occurred on the same day as Microsoft's May 2026 Patch Tuesday update cycle. The researcher stated that code required for a complete SYSTEM shell had been stripped before publication.
+The researcher publicly released the GreenPlasma partial proof-of-concept repository alongside YellowKey, a separate BitLocker bypass vulnerability. The release occurred on the same day as Microsoft's May 2026 Patch Tuesday update cycle. The researcher stated that code required for a functional SYSTEM shell had been stripped before publication.
 
 ### 2026-05-13 — Third-party reporting
 
