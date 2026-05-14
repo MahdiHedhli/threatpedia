@@ -47,8 +47,8 @@ mitreMappings:
     techniqueName: Data from Information Repositories
     tactic: Collection
     attackVersion: v19.0
-    confidence: confirmed
-    evidence: "The French Ministry of the Interior confirmed a possible disclosure of account data from the ants.gouv.fr portal, including login identifiers, names, email addresses, and dates of birth; the access path and system component were not publicly identified."
+    confidence: possible
+    evidence: "The French Ministry of the Interior confirmed a security incident involving the ants.gouv.fr portal and identified account data categories that may have been disclosed; the specific access path was not publicly identified."
 ---
 
 ## Summary
@@ -69,11 +69,11 @@ No vulnerability identifier, malware family, or attributed infrastructure compon
 
 ## Attack Chain
 
-### Stage 1: Possible Disclosure of Account Data
+### Stage 1: Incident Detection
 
 ANTS detected a security incident that may have involved disclosure of data from personal and professional user accounts on the ants.gouv.fr portal. The method and responsible party have not been publicly identified.
 
-### Stage 2: Potential Account-Data Disclosure
+### Stage 2: Data Exposure Scope
 
 Potentially affected account-level fields included login identifiers, name and title fields, email addresses, dates of birth, unique account identifiers, and — where present — postal addresses, places of birth, and phone numbers.
 
