@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-13T22:36:53.224Z",
-  "updated": "2026-05-13T22:36:53.224Z",
+  "updated": "2026-05-14T00:18:05.647Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
   "locked_by": null,
@@ -51,6 +51,16 @@
       "to": "pending",
       "agent": "threatpedia-soft-launch-corpus-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T00:18:05.647Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #692 merged (010f0c6)."
     }
-  ]
+  ],
+  "pr_number": 692,
+  "merged_at": "2026-05-14T00:18:05.647Z"
 }
