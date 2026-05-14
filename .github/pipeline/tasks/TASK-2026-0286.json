@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-14T08:56:04.022Z",
-  "updated": "2026-05-14T08:56:04.022Z",
+  "updated": "2026-05-14T10:50:01.446Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-14T10:50:01.445Z",
   "input": {
     "topic": "Seedworm cyber-espionage campaign against South Korean electronics maker and global targets, 2026",
     "sources": [
@@ -58,6 +58,13 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual Risky Bulletin link submission; pipeline-submit-link dry-run found no URL duplicates when run against the Risky/Symantec source set, but direct task JSON was used to avoid reusing branch-only task IDs from closed PR #699."
+    },
+    {
+      "timestamp": "2026-05-14T10:50:01.446Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
