@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0277",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-14T06:12:15.203Z",
+  "updated": "2026-05-14T06:12:15.203Z",
+  "source": "manual_submission",
+  "submitted_by": "dangermouse-bot",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Star Blizzard Callisto Group Spear-Phishing Campaign Targeting Government and Civil Society 2019-2023",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-339a",
+      "https://www.ncsc.gov.uk/news/fsb-deploying-callisto-group-to-target-western-politicians-civil-society-journalists",
+      "https://www.microsoft.com/en-us/security/blog/2023/12/07/star-blizzard-increases-sophistication-and-evasion-in-ongoing-attacks"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "FSB-linked Russian advanced persistent threat actor (Star Blizzard / Callisto Group / SEABORGIUM / ColdRiver) conducting long-running spear-phishing campaign targeting government officials, politicians, journalists, think tanks, NGOs, and defense sector personnel across NATO member states and countries of strategic interest to Russia. Active 2019-2023+. Joint advisory by CISA, FBI, NSA, NCSC UK, NCSC Canada, NCSC New Zealand, GCSB (NZ), ASD/ACSC (AU), and FCDO (UK) confirmed attribution to FSB Centre 18. Campaign uses credential harvesting via EvilGinx-style adversary-in-the-middle phishing infrastructure. Distinct from existing corpus entries (Midnight Blizzard/SVR, Salt Typhoon/China) — this is an FSB/Star Blizzard-specific campaign with strong government attribution and multi-country joint advisory."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0277",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T06:12:15.203Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

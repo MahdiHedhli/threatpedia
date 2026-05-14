@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0278",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-14T06:12:22.780Z",
+  "updated": "2026-05-14T06:12:22.780Z",
+  "source": "manual_submission",
+  "submitted_by": "dangermouse-bot",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "BianLian Ransomware Extortion Campaign Targeting Critical Infrastructure 2022-2024",
+    "sources": [
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-136a",
+      "https://www.ic3.gov/PSA/2023/PSA230525",
+      "https://www.ncsc.gov.uk/files/bianlian-ransomware-advisory.pdf"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "BianLian ransomware group conducting double-extortion campaign against critical infrastructure and private sector organizations across Australia, North America, and the UK. Joint advisory AA23-136A by CISA, FBI, and ACSC/ASD (Australia). Active 2022-2024. The group pivoted from encrypt-then-extort to primarily exfiltration-only extortion after a decryptor was released publicly. Targets include healthcare, critical manufacturing, professional services, and media sectors. Distinct from existing corpus entries (LockBit, BlackCat, etc.) — BianLian has distinctive tradecraft including Go-based backdoor and custom exfiltration tooling. Conservative scope: bounded to the 2022-2024 campaign covered in the joint advisory."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0278",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T06:12:22.780Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
