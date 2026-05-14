@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-13T22:36:53.224Z",
-  "updated": "2026-05-14T00:24:16.677Z",
+  "updated": "2026-05-14T00:28:34.370Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
-  "locked_by": "Kernel K",
-  "locked_at": "2026-05-14T00:24:16.677Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Shellshock Bash remote code execution vulnerability (CVE-2014-6271)",
     "sources": [
@@ -58,6 +58,16 @@
       "to": "locked",
       "agent": "Kernel K",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-14T00:28:34.369Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #695"
     }
-  ]
+  ],
+  "pr_number": 695,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/695"
 }
