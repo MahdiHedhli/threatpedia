@@ -1,5 +1,6 @@
 ---
 title: "YellowKey — Windows BitLocker Bypass (Pending CVE)"
+exploitId: "TP-EXP-2026-0285"
 cve: "Pending"
 type: "BitLocker / Windows Recovery Environment bypass"
 platform: "Microsoft Windows 11 and Windows Server 2022/2025, per public researcher claims"
@@ -68,7 +69,7 @@ mitreMappings:
     attack-version: "v19"
     confidence: confirmed
     evidence: "The public proof-of-concept reproduction path requires attaching a USB storage device to the target machine to deliver the FsTx folder structure that triggers the WinRE bypass."
-atlasMappings: []
+framework-mappings: []
 ---
 
 ## Severity Assessment
