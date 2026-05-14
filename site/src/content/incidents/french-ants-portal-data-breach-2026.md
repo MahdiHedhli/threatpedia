@@ -46,7 +46,7 @@ mitreMappings:
   - techniqueId: T1213
     techniqueName: Data from Information Repositories
     tactic: Collection
-    attack-version: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: "The French Ministry of the Interior confirmed a possible disclosure of account data from the ants.gouv.fr portal, including login identifiers, names, email addresses, and dates of birth; the access path and system component were not publicly identified."
 ---
@@ -81,6 +81,20 @@ Potentially affected account-level fields included login identifiers, name and t
 
 ANTS detected the incident on 15 April 2026. The ministry implemented security hardening, notified CNIL, the Paris public prosecutor, and ANSSI, and began directly informing affected users.
 
+## Impact Assessment
+
+The incident potentially exposed personal account data for an unspecified number of ants.gouv.fr users. Potentially affected data categories include: login identifier, title/civility, surname, given names, email address, date of birth, and unique account identifier. Postal address, place of birth, and phone number may also be affected where users had provided those fields.
+
+The ministry confirmed two limiting factors: supporting documents and attachments submitted during identity-document procedures were not involved, and the exposed data do not permit illegitimate access to portal accounts.
+
+The combination of name, date of birth, email address, and — where present — postal address creates meaningful risk of phishing, smishing, and social-engineering attempts. The ministry advised affected users to remain vigilant for suspicious messages purporting to come from ANTS. The total number of affected accounts was not disclosed.
+
+## Attribution
+
+No threat actor has been publicly identified or claimed responsibility for this incident. The ministry's communications make no characterisation of a responsible party.
+
+A separate underground-sale claim surfaced in approximately September 2025 asserting large databases purportedly from ANTS and France Travail were available; French technology reporting assessed that claim as unverified and likely fabricated, and France Titres denied an intrusion at the time. No confirmed connection between that prior claim and the April 2026 incident has been established.
+
 ## Timeline
 
 ### 2026-04-15 — Incident Detected
@@ -98,20 +112,6 @@ The French Ministry of the Interior publishes its communiqué confirming the inc
 ### 2026-04-22 — Security Media Coverage
 
 Risky Business Media includes the ANTS breach in its news bulletin.
-
-## Impact Assessment
-
-The incident potentially exposed personal account data for an unspecified number of ants.gouv.fr users. Potentially affected data categories include: login identifier, title/civility, surname, given names, email address, date of birth, and unique account identifier. Postal address, place of birth, and phone number may also be affected where users had provided those fields.
-
-The ministry confirmed two limiting factors: supporting documents and attachments submitted during identity-document procedures were not involved, and the exposed data do not permit illegitimate access to portal accounts.
-
-The combination of name, date of birth, email address, and — where present — postal address creates meaningful risk of phishing, smishing, and social-engineering attempts. The ministry advised affected users to remain vigilant for suspicious messages purporting to come from ANTS. The total number of affected accounts was not disclosed.
-
-## Attribution
-
-No threat actor has been publicly identified or claimed responsibility for this incident. The ministry's communications make no characterisation of a responsible party.
-
-A separate underground-sale claim surfaced in approximately September 2025 asserting large databases purportedly from ANTS and France Travail were available; French technology reporting assessed that claim as unverified and likely fabricated, and France Titres denied an intrusion at the time. No confirmed connection between that prior claim and the April 2026 incident has been established.
 
 ## Remediation & Mitigation
 
