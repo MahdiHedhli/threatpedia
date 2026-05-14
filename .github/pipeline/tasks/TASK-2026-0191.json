@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "complete",
   "created": "2026-04-21T18:58:17Z",
-  "updated": "2026-04-22T14:46:12.135Z",
+  "updated": "2026-05-14T04:08:51.020Z",
   "source": "backfill",
   "submitted_by": "kernel-k",
   "locked_by": null,
@@ -29,7 +29,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts"
   ],
   "acceptance_criteria": {
@@ -81,6 +81,14 @@
       "to": "complete",
       "agent": "dispatcher",
       "note": "Reconciled merged PR #191."
+    },
+    {
+      "timestamp": "2026-05-14T04:08:51.020Z",
+      "action": "state_synced",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "State sync: PR #191 was merged 2026-04-21. Task marked complete by state-sync pass."
     }
   ],
   "pr_number": 191,

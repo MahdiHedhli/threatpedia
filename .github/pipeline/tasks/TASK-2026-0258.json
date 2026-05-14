@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "complete",
   "created": "2026-05-08T15:25:00.000Z",
-  "updated": "2026-05-13T21:03:07.805Z",
+  "updated": "2026-05-14T04:08:51.020Z",
   "source": "historical_corpus_backlog",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -30,7 +30,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -84,9 +84,17 @@
       "to": "complete",
       "agent": "pipeline-task-state",
       "note": "PR #678 merged (3440f8e)."
+    },
+    {
+      "timestamp": "2026-05-14T04:08:51.020Z",
+      "action": "state_synced",
+      "from": "locked",
+      "to": "complete",
+      "agent": "dangermouse-bot",
+      "note": "State sync: PR #678 was merged 2026-05-13. Task marked complete by state-sync pass."
     }
   ],
   "pr_number": 678,
   "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/678",
-  "merged_at": "2026-05-13T21:03:07.805Z"
+  "merged_at": "2026-05-13T21:02:56Z"
 }
