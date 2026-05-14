@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-14T12:00:23.665Z",
-  "updated": "2026-05-14T12:00:23.665Z",
+  "updated": "2026-05-14T13:00:05.639Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-14T13:00:05.638Z",
   "input": {
     "topic": "Moonlight Maze U.S. government cyber-espionage campaign, 1996-1999",
     "sources": [
@@ -57,6 +57,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T13:00:05.639Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
