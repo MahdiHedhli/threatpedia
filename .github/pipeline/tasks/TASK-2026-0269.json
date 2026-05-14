@@ -1,30 +1,26 @@
 {
   "task_id": "TASK-2026-0269",
   "stage": "draft",
-  "type": "incident",
-  "priority": "P2",
-  "status": "blocked",
-  "created": "2026-05-13T14:25:50.575Z",
-  "updated": "2026-05-13T16:02:10.000Z",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-14T07:09:12.041Z",
+  "updated": "2026-05-14T07:09:12.041Z",
   "source": "manual_submission",
-  "submitted_by": "risky-bulletin-discovery-worker",
+  "submitted_by": "dangermouse-bot",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "Betterment marketing-platform social engineering incident, January 2026",
+    "topic": "Storm-0558 Chinese Cloud Email Intrusion Campaign 2023",
     "sources": [
-      "https://www.betterment.com/resources/security-incident-report-january-2026",
-      "https://www.theverge.com/news/860106/betterment-crypto-scam-notification",
-      "https://news.risky.biz/risky-bulletin-cybercrime-losses-passed-20-billion-last-year"
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-193a",
+      "https://msrc.microsoft.com/blog/2023/07/microsoft-mitigates-china-based-threat-actor-storm-0558-targeting-of-customer-email",
+      "https://www.cisa.gov/sites/default/files/2023-08/CSRB_Review_of_the_Summer_2023_MEO_Intrusions_508c.pdf"
     ],
     "candidate_data": {
-      "severity": "medium",
-      "date": "2026-01-09",
-      "attack_type": "Social Engineering",
-      "sector": "Financial Services",
-      "geography": "United States"
+      "severity": "high"
     },
-    "notes": "Risky Bulletin discovery item from 2026-04-08. Betterment's own post-mortem says a social engineering attack against an employee enabled access to a marketing platform that was used to send waves of cryptocurrency-scam emails to customers. Scope as a discrete Betterment incident; keep actor unknown unless stronger sources name one. The Jan. 14 Risky Bulletin/private backlog item was deferred pending a primary source; the Apr. 8 bulletin links the company post-mortem that resolves that source gap. Drafting agent must add a government or regulator source if one is available; if none can be found, mark the task blocked instead of forcing an unsupported source."
+    "notes": "Chinese threat actor Storm-0558 forged authentication tokens using a stolen Microsoft account (MSA) consumer signing key to access cloud-hosted email accounts at approximately 25 organizations including US State Department and other government agencies. Active May-June 2023, discovered July 2023. CISA issued advisory AA23-193A. CSRB reviewed the incident and issued a scathing report in March 2024 citing systemic Microsoft security failures. Distinct from Salt Typhoon telecom intrusion campaign. Government attribution: US government confirmed PRC state-affiliated actor. Bounded scope: token-forging cloud email compromise campaign, not the broader PRC cyber ecosystem."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -34,9 +30,10 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 8,
+    "min_h2_sections": 7,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
+    "schema_validation": "pass",
     "astro_build": true
   },
   "depends_on": [],
@@ -44,50 +41,18 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0269",
     "pr": true
   },
   "history": [
     {
-      "timestamp": "2026-05-13T14:25:50.575Z",
+      "timestamp": "2026-05-14T07:09:12.041Z",
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "risky-bulletin-discovery-worker",
+      "agent": "dangermouse-bot",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
-    },
-    {
-      "timestamp": "2026-05-13T14:44:06.722Z",
-      "action": "updated",
-      "from": "pending",
-      "to": "pending",
-      "agent": "risky-bulletin-discovery-worker",
-      "note": "Addressed Gemini task metadata feedback: normalized incident candidate_data, aligned min_h2_sections with incident schema, removed unused schema_validation acceptance field, and documented government-source requirement for drafting."
-    },
-    {
-      "timestamp": "2026-05-13T14:51:13.000Z",
-      "action": "updated",
-      "from": "pending",
-      "to": "pending",
-      "agent": "Kernel K",
-      "note": "Addressed Gemini incident metadata feedback by adding candidate_data.geography."
-    },
-    {
-      "timestamp": "2026-05-13T16:00:58.228Z",
-      "action": "locked",
-      "from": "pending",
-      "to": "locked",
-      "agent": "dangermouse-bot",
-      "note": "Locked for execution"
-    },
-    {
-      "timestamp": "2026-05-13T16:02:10.000Z",
-      "action": "blocked",
-      "from": "locked",
-      "to": "blocked",
-      "agent": "dangermouse-bot",
-      "note": "Blocked before drafting: task brief requires at least one government source, but no incident-specific public government or regulator source was found in reachable checks of Maine, California, Washington, Massachusetts, and state-AG search results. Existing Betterment and media sources support the incident and ATT&CK mapping, but not the government-source gate."
     }
   ]
 }
