@@ -56,13 +56,13 @@ mitreMappings:
   - techniqueId: "T1090.003"
     techniqueName: "Multi-hop Proxy"
     tactic: "Command and Control"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: confirmed
     evidence: "The NCSC April 2026 advisory explicitly maps China-nexus actors' covert network routing activity to T1090.003 Multi-hop Proxy, describing networks of compromised SOHO routers, IoT devices, and edge devices used to route malicious cyber activity and obscure the actors' true origin."
   - techniqueId: "T1595"
     techniqueName: "Active Scanning"
     tactic: "Reconnaissance"
-    "attack-version": "v19"
+    attackVersion: "v19"
     confidence: probable
     evidence: "The NCSC April 2026 advisory states that China-nexus actors use covert networks to perform reconnaissance scans against targets, consistent with T1595 Active Scanning. Attribution is to the covert infrastructure class rather than to a single named intrusion set."
 ---
