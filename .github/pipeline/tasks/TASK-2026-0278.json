@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0278",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T03:07:24.348Z",
+  "updated": "2026-05-14T03:07:24.348Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "UAT-8302 China-nexus espionage cluster targeting government entities",
+    "sources": [
+      "https://blog.talosintelligence.com/uat-8302"
+    ],
+    "candidate_data": {
+      "severity": "medium"
+    },
+    "notes": "Risky Bulletin May 8, 2026 lead. Cisco Talos describes a China-nexus cluster tracked as UAT-8302 targeting government entities in South America and Southeastern Europe with NetDraft, CloudSorcerer, and operational infrastructure. Draft should profile the cluster neutrally and avoid over-attribution beyond the cited research."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/{slug}.md",
+    "branch": "pipeline/TASK-2026-0278",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T03:07:24.348Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

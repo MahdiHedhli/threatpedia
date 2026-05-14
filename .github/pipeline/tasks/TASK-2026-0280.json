@@ -1,0 +1,58 @@
+{
+  "task_id": "TASK-2026-0280",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T03:07:38.706Z",
+  "updated": "2026-05-14T03:07:38.706Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "AI-assisted intrusion campaign targeting Mexican government and water utility, 2026",
+    "sources": [
+      "https://www.dragos.com/blog/ai-assisted-ics-attack-water-utility",
+      "https://gambit.security/blog-post/a-single-operator-two-ai-platforms-nine-government-agencies-the-full-technical-report",
+      "https://www.cybersecuritydive.com/news/anthropics-claude-compromise-mexican-water-utility/819710"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin May 11, 2026 lead. Dragos, Gambit, and Cybersecurity Dive describe one operator using AI platforms during intrusions against a Mexican water utility and government entities. Draft should verify official/victim-source corroboration, split any distinct incidents if needed, and keep AI-use claims tightly sourced."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0280",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T03:07:38.706Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

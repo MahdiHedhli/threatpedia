@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0279",
+  "stage": "draft",
+  "type": "threat-actor",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T03:07:31.103Z",
+  "updated": "2026-05-14T03:07:31.103Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "PCPJack cloud-worm actor replacing TeamPCP malware in compromised cloud environments",
+    "sources": [
+      "https://www.sentinelone.com/labs/cloud-worm-evicts-teampcp-and-steals-credentials-at-scale"
+    ],
+    "candidate_data": {
+      "severity": "medium"
+    },
+    "notes": "Risky Bulletin May 8, 2026 lead. SentinelOne reports a cloud-focused worm/actor tracked as PCPJack that evicts TeamPCP malware and steals credentials at scale in compromised cloud environments. Draft should establish whether this is best modeled as a threat actor profile or campaign before article generation."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 6,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/threat-actors/{slug}.md",
+    "branch": "pipeline/TASK-2026-0279",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T03:07:31.103Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

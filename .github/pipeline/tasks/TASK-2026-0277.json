@@ -1,0 +1,56 @@
+{
+  "task_id": "TASK-2026-0277",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T03:07:02.314Z",
+  "updated": "2026-05-14T03:07:02.314Z",
+  "source": "manual_submission",
+  "submitted_by": "risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Dragon Breath APT-Q-27 dragoncore_k.sys BYOVD zero-day, May 2026",
+    "sources": [
+      "https://ransom-isac.org/blog/dragonbreath-dragon-in-the-kernel"
+    ],
+    "candidate_data": {
+      "severity": "high"
+    },
+    "notes": "Risky Bulletin May 6, 2026 lead. Ransom-ISAC reports APT-Q-27/Dragon Breath activity using a signed vulnerable dragoncore_k.sys driver as a bring-your-own-vulnerable-driver zero-day path. Draft should verify exploit chronology, vendor/product identity, signing certificate context, and attribution before making zero-day or actor claims."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0277",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T03:07:02.314Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "risky-bulletin-discovery-worker",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
