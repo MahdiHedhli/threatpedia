@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-14T00:43:01.221Z",
-  "updated": "2026-05-14T00:43:01.221Z",
+  "updated": "2026-05-14T04:26:36.752Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -49,6 +49,14 @@
       "to": "pending",
       "agent": "threatpedia-risky-bulletin-discovery-worker",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T04:26:36.752Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #698 already covers this task."
     }
   ]
 }
