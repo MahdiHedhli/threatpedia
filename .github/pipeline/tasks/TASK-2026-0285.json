@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-2026-0285",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-14T08:56:04.022Z",
+  "updated": "2026-05-14T08:56:04.022Z",
+  "source": "manual_submission",
+  "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "YellowKey Windows BitLocker bypass zero-day disclosure, May 2026",
+    "sources": [
+      "https://news.risky.biz/risky-bulletin-rubygems-disables-sign-ups-after-attack-on-staff/",
+      "https://github.com/Nightmare-Eclipse/YellowKey",
+      "https://www.securityweek.com/researcher-drops-yellowkey-greenplasma-windows-zero-days/"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "zero_day_name": "YellowKey",
+      "platform": "Microsoft Windows 11 and Windows Server 2022/2025, per public researcher claims",
+      "attack_type": "BitLocker / Windows Recovery Environment bypass",
+      "cve": "Pending",
+      "disclosure_date": "2026-05-12",
+      "exploit_status": "Public proof-of-concept repository; physical access is required in the public reproduction path"
+    },
+    "notes": "Manual Risky Bulletin intake from the May 13, 2026 bulletin. Draft conservatively from the Risky Bulletin, the public YellowKey repository, and independent reporting. Do not invent a CVE, Microsoft advisory, patch status, exploitation in the wild, remote attack path, or vendor confirmation. If Microsoft or NVD publishes a CVE before drafting, update the zero-day metadata from primary/vendor/government sources. Clearly distinguish the public physical-access reproduction path from any unproven remote or malware-assisted exploitation scenario."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "zero-day lane active count below 5 at discovery time"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0285",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T08:56:04.022Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "threatpedia-risky-bulletin-discovery-worker",
+      "note": "Manual Risky Bulletin link submission; pipeline-submit-link dry-run found no URL duplicates, but direct task JSON was used to avoid reusing branch-only task IDs from closed PR #699."
+    }
+  ]
+}
