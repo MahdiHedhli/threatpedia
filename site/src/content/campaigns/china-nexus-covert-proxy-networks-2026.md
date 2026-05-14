@@ -25,14 +25,14 @@ tags:
   - edge-devices
 sources:
   - url: "https://www.ncsc.gov.uk/news/defending-against-china-nexus-covert-networks-of-compromised-devices"
-    publisher: "NCSC"
+    publisher: "UK NCSC"
     publisherType: government
     reliability: R1
     publicationDate: "2026-04-23"
     accessDate: "2026-05-13"
     archived: false
   - url: "https://www.ncsc.gov.uk/news/international-cyber-agencies-fresh-advice-defend-against-china-linked-covert-networks"
-    publisher: "NCSC"
+    publisher: "UK NCSC"
     publisherType: government
     reliability: R1
     publicationDate: "2026-04-23"
@@ -159,7 +159,7 @@ Integrate dynamic threat intelligence feeds into network filtering and condition
 
 ## Sources & References
 
-- [NCSC: Defending against China-nexus covert networks of compromised devices](https://www.ncsc.gov.uk/news/defending-against-china-nexus-covert-networks-of-compromised-devices) — NCSC, 2026-04-23
-- [NCSC: International cyber agencies share fresh advice to defend against China-linked covert networks](https://www.ncsc.gov.uk/news/international-cyber-agencies-fresh-advice-defend-against-china-linked-covert-networks) — NCSC, 2026-04-23
+- [UK NCSC: Defending against China-nexus covert networks of compromised devices](https://www.ncsc.gov.uk/news/defending-against-china-nexus-covert-networks-of-compromised-devices) — UK NCSC, 2026-04-23
+- [UK NCSC: International cyber agencies share fresh advice to defend against China-linked covert networks](https://www.ncsc.gov.uk/news/international-cyber-agencies-fresh-advice-defend-against-china-linked-covert-networks) — UK NCSC, 2026-04-23
 - [Canadian Centre for Cyber Security: Joint guidance on defending against the People's Republic of China-linked covert networks](https://www.cyber.gc.ca/en/news-events/joint-guidance-defending-against-peoples-republic-china-linked-covert-networks) — Canadian Centre for Cyber Security, 2026-04-23
 - [Risky Business: Risky Bulletin: There are now SIM-Farm-as-a-Service providers](https://news.risky.biz/risky-bulletin-there-are-now-sim-farm-as-a-service-providers) — Risky Business, 2026-04-24
