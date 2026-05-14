@@ -58,18 +58,18 @@ mitreMappings:
     tactic: "Command and Control"
     "attack-version": "v19"
     confidence: confirmed
-    evidence: "The NCSC April 2026 advisory explicitly maps China-nexus actors' covert network routing activity to T1090.003 Multi-hop Proxy, describing large-scale networks of compromised SOHO routers, IoT devices, and edge devices used to route malicious cyber activity and obscure the actors' true origin."
+    evidence: "The NCSC April 2026 advisory explicitly maps China-nexus actors' covert network routing activity to T1090.003 Multi-hop Proxy, describing networks of compromised SOHO routers, IoT devices, and edge devices used to route malicious cyber activity and obscure the actors' true origin."
   - techniqueId: "T1595"
     techniqueName: "Active Scanning"
     tactic: "Reconnaissance"
     "attack-version": "v19"
     confidence: probable
-    evidence: "The NCSC April 2026 advisory states that China-nexus actors use covert networks to perform reconnaissance scans against targets, consistent with T1595 Active Scanning. Attribution is to the covert infrastructure class broadly rather than to a single named intrusion set."
+    evidence: "The NCSC April 2026 advisory states that China-nexus actors use covert networks to perform reconnaissance scans against targets, consistent with T1595 Active Scanning. Attribution is to the covert infrastructure class rather than to a single named intrusion set."
 ---
 
 ## Executive Summary
 
-Since at least 2024, China-nexus threat actors have operated large-scale networks of compromised edge devices to route malicious cyber activity against critical sector targets globally. On April 23, 2026, the U.K. National Cyber Security Centre (NCSC), U.K. industry partners, and 15 international partner agencies published joint guidance describing this infrastructure class and providing defenders with tools to identify and respond to it.
+Since at least 2024, China-nexus threat actors have operated networks of compromised edge devices to route malicious cyber activity against critical sector targets globally. On April 23, 2026, the U.K. National Cyber Security Centre (NCSC), U.K. industry partners, and 15 international partner agencies published joint guidance describing this infrastructure class and providing defenders with tools to identify and respond to it.
 
 The advisory describes a shift in operational tradecraft: rather than procuring dedicated infrastructure individually, China-nexus actors have moved toward externally provisioned networks of compromised devices, built and maintained by Chinese information security companies. Multiple such networks are in use simultaneously, they are continuously updated, and a single network may be used by more than one threat actor. The advisory notes that the majority of tracked China-nexus actors are now using this type of covert infrastructure.
 
@@ -113,11 +113,7 @@ As network nodes are identified and blocked by defenders, the provisioning entit
 
 ## MITRE ATT&CK Mapping
 
-### Command and Control
-
-T1090.003 - Multi-hop Proxy: The NCSC April 2026 advisory explicitly maps China-nexus covert network routing activity to T1090.003 Multi-hop Proxy. China-nexus actors route malicious cyber activity through large-scale networks of compromised SOHO routers, IoT devices, and edge devices, chaining these nodes together to obscure the true origin of operations. The multi-hop structure makes attribution more difficult and allows a single network to serve multiple actor groups and operational tasks simultaneously.
-
-### Reconnaissance
+T1090.003 - Multi-hop Proxy: The NCSC April 2026 advisory explicitly maps China-nexus covert network routing activity to T1090.003 Multi-hop Proxy. China-nexus actors route malicious cyber activity through networks of compromised SOHO routers, IoT devices, and edge devices, chaining these nodes together to obscure the true origin of operations. The multi-hop structure makes attribution more difficult and allows a single network to serve multiple actor groups and operational tasks simultaneously.
 
 T1595 - Active Scanning: The NCSC April 2026 advisory states that China-nexus actors use covert networks to perform reconnaissance scans against targets. Routing scan traffic through compromised edge devices limits the traceability of scanning activity back to actor-controlled infrastructure.
 
@@ -139,9 +135,9 @@ In December 2025, U.K. authorities sanctioned Integrity Technology Group and ano
 
 The U.K. NCSC, U.K. industry, and 15 international partner agencies published joint guidance on April 23, 2026, providing defenders with tools to identify and defend against China-nexus covert networks of compromised devices. The advisory described the infrastructure class, named documented examples including the KV Botnet and Raptor Train, and outlined the IOC extinction challenge and recommended adaptive defenses.
 
-### 2026-04-24 - Risky Business Bulletin Covers Broader Proxy Ecosystem
+### 2026-04-24 - Risky Business Bulletin Covers Residential Proxy Ecosystem
 
-Risky Business published a bulletin on April 24, 2026, noting the broader residential proxy botnet ecosystem and observing that proxy mesh infrastructure has become more widely used by a range of actors to mask attack origin and command-and-control traffic.
+Risky Business published a bulletin on April 24, 2026, noting the residential proxy botnet ecosystem and observing that proxy mesh infrastructure is used by a range of actors to mask attack origin and command-and-control traffic.
 
 ## Remediation & Mitigation
 
