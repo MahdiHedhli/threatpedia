@@ -3,10 +3,10 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pr_open",
-  "merged_at": null,
+  "status": "complete",
+  "merged_at": "2026-05-14T11:45:03.299Z",
   "created": "2026-05-13T21:00:11.525Z",
-  "updated": "2026-05-14T00:20:00.000Z",
+  "updated": "2026-05-14T11:45:03.299Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -86,6 +86,14 @@
       "to": "pr_open",
       "agent": "Kernel K",
       "note": "Rebased against current main and preserved PR #691 task state."
+    },
+    {
+      "timestamp": "2026-05-14T11:45:03.299Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #691 merged (87ac0a2)."
     }
   ],
   "pr_number": 691,
