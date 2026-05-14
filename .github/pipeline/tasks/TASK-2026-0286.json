@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-14T08:56:04.022Z",
-  "updated": "2026-05-14T11:07:46.731Z",
+  "updated": "2026-05-14T11:43:39.914Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -73,8 +73,17 @@
       "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #714"
+    },
+    {
+      "timestamp": "2026-05-14T11:43:39.914Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #714 merged (a1c72fd)."
     }
   ],
   "pr_number": 714,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/714"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/714",
+  "merged_at": "2026-05-14T11:43:39.914Z"
 }
