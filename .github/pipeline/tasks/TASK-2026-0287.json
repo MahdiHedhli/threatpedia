@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-14T12:00:23.665Z",
-  "updated": "2026-05-14T12:00:23.665Z",
+  "updated": "2026-05-14T13:21:12.941Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-14T13:10:06.675Z",
   "input": {
     "topic": "Moonlight Maze U.S. government cyber-espionage campaign, 1996-1999",
     "sources": [
@@ -29,8 +29,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md §14A",
-    "INGESTION-SPEC.md §2"
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
   ],
   "acceptance_criteria": {
     "frontmatter_valid": true,
@@ -47,7 +47,7 @@
   "output": {
     "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0287",
-    "pr": true
+    "pr": 722
   },
   "history": [
     {
@@ -57,6 +57,22 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-14T13:10:06.675Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-14T13:21:12.941Z",
+      "action": "pr_open",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "note": "PR #722 opened. Campaign validator PASS (25 files). Astro build NOT RUN due to sandbox disk constraint (vite cache unlink blocked on read-only mount). CI pipeline-validate.yml is authoritative Astro gate."
     }
-  ]
+  ],
+  "pr": 722
 }
