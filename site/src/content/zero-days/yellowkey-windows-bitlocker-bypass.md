@@ -4,7 +4,7 @@ cve: "Pending"
 type: "BitLocker / Windows Recovery Environment bypass"
 platform: "Microsoft Windows 11 and Windows Server 2022/2025, per public researcher claims"
 severity: high
-status: unknown
+status: active
 isZeroDay: true
 cisaKev: false
 disclosedDate: 2026-05-12
