@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0287",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-14T12:00:23.665Z",
+  "updated": "2026-05-14T12:00:23.665Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Moonlight Maze U.S. government cyber-espionage campaign, 1996-1999",
+    "sources": [
+      "https://www.kaspersky.com/blog/moonlight-maze-the-lessons/6713",
+      "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/07180251/Penquins_Moonlit_Maze_PDF_eng.pdf",
+      "https://irp.fas.org/news/1999/12/991221-cyber.htm"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "attack_type": "Espionage",
+      "sector": "Government",
+      "geography": "United States",
+      "date": "1996-01-01"
+    },
+    "drafting_notes": "The article drafter must find and cite at least one valid government source to satisfy campaign schema requirements. If no such source can be found, mark this task blocked rather than adding unsupported or placeholder sources.",
+    "notes": "Historical corpus P0 seed from HIST-CAMP-001. Draft as a campaign article only if sources support a multi-year intrusion cluster against U.S. government, military, contractor, and research networks. Use conservative attribution: public sources describe Russian-linked infrastructure and suspected espionage, but avoid treating Russian government attribution as confirmed unless a cited source supports that exact claim. Preserve uncertainty around data volume, victim scope, and continuity with later Turla activity."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0287",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T12:00:23.665Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
