@@ -74,10 +74,10 @@ atlasMappings: []
 ## Severity Assessment
 
 - Exploitability: 5/10 — A public proof-of-concept exists; however, the demonstrated reproduction path requires physical access to the target device, which limits exploitability at scale.
-- Impact: 8/10 — Successful exploitation, if the public claims hold, would yield unrestricted shell access to a BitLocker-protected volume, bypassing full-volume encryption entirely.
+- Impact: 8/10 — Successful exploitation, if the public claims hold, would yield unrestricted shell access to a BitLocker-protected volume, bypassing full-volume encryption.
 - Weaponization Risk: 5/10 — Physical access is a prerequisite for the confirmed reproduction path, limiting weaponization; remote or malware-assisted variations remain unproven at this time.
 - Patch Urgency: 7/10 — No vendor patch or official Microsoft advisory has been issued as of 2026-05-14; organizations with high-value, physically accessible devices should prioritize compensating controls.
-- Detection Coverage: 3/10 — Activity occurring within Windows Recovery Environment is largely outside the visibility of standard endpoint detection tools, and no vendor-supplied detections have been released.
+- Detection Coverage: 3/10 — Activity occurring within Windows Recovery Environment is outside the visibility of standard endpoint detection tools, and no vendor-supplied detections have been released.
 
 ## Summary
 
