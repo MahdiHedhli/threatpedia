@@ -93,9 +93,9 @@ Seedworm is a persistent Iranian state-sponsored espionage group active since at
 
 Security.com's reporting on this campaign describes intrusion activity against a South Korean electronics manufacturer alongside organizations in eight additional countries spanning four continents. Targeted sectors included industrial and electronics manufacturing, education and public-sector bodies, financial services, and professional services. The victim identity for the South Korean organization was not disclosed.
 
-For the South Korean electronics intrusion, Security.com determined that the initial infection vector was unknown. First observed malicious activity on the host was February 20, 2026. Attackers relied heavily on DLL sideloading, abusing legitimately signed Fortemedia fmapp.exe and SentinelOne sentinelmemoryscanner.exe binaries to load malicious DLLs. A node.exe-based implant chain was used to deploy PowerShell scripts for reconnaissance, screenshot capture, SAM hive theft, privilege escalation, and SOCKS5 reverse-proxy tunnelling. Payloads were retrieved from 179.43.177[.]220 over HTTP on port 8080 using PowerShell and curl; timetrakr[.]cloud served as an additional staging domain. SAM, SECURITY, and SYSTEM hives were saved for credential extraction, and data was exfiltrated through sendit[.]sh. Last observed activity on the electronics host was February 27, 2026.
+For the South Korean electronics intrusion, Security.com determined that the initial infection vector was unknown. First observed malicious activity on the host was February 20, 2026. Attackers used DLL sideloading, abusing legitimately signed Fortemedia fmapp.exe and SentinelOne sentinelmemoryscanner.exe binaries to load malicious DLLs. A node.exe-based implant chain was used to deploy PowerShell scripts for reconnaissance, screenshot capture, SAM hive theft, privilege escalation, and SOCKS5 reverse-proxy tunnelling. Payloads were retrieved from 179.43.177[.]220 over HTTP on port 8080 using PowerShell and curl; timetrakr[.]cloud served as an additional staging domain. SAM, SECURITY, and SYSTEM hives were saved for credential extraction, and data was exfiltrated through sendit[.]sh. Last observed activity on the electronics host was February 27, 2026.
 
-Risky Business Media's May 13, 2026 bulletin noted the Security.com findings as a significant development in Iranian cyber operations against the electronics sector.
+Risky Business Media's May 13, 2026 bulletin noted the Security.com findings as a development in Iranian cyber operations against the electronics sector.
 
 ## Attack Chain
 
@@ -121,25 +121,15 @@ Collected data was exfiltrated through sendit[.]sh. Last observed activity on th
 
 ## MITRE ATT&CK Mapping
 
-**T1059.001 — PowerShell (Execution)**
+T1059.001 - PowerShell: Security.com observed PowerShell scripts dropped by a node.exe-based implant chain on the South Korean electronics host. Scripts were used for host reconnaissance, screenshot capture, SAM hive extraction, privilege escalation, and SOCKS5 reverse-proxy tunnelling.
 
-Security.com observed PowerShell scripts dropped by a node.exe-based implant chain on the South Korean electronics host. Scripts were used for host reconnaissance, screenshot capture, SAM hive extraction, privilege escalation, and SOCKS5 reverse-proxy tunnelling.
+T1574.001 - DLL: Security.com observed attackers sideloading malicious DLLs using legitimately signed Fortemedia fmapp.exe and SentinelOne sentinelmemoryscanner.exe binaries. Abusing trusted signed executables allowed malicious code to execute under the authority of the legitimate binary.
 
-**T1574.001 — DLL (Execution)**
+T1105 - Ingress Tool Transfer: Security.com observed PowerShell and curl retrieving payloads from 179.43.177[.]220 over HTTP on port 8080. The domain timetrakr[.]cloud served as an additional attacker-controlled staging host for payload delivery.
 
-Security.com observed attackers sideloading malicious DLLs using legitimately signed Fortemedia fmapp.exe and SentinelOne sentinelmemoryscanner.exe binaries. Abusing trusted signed executables allowed malicious code to execute under the authority of the legitimate binary.
+T1113 - Screen Capture: Security.com observed screenshot capture executed via PowerShell scripts deployed as part of the node.exe-based implant chain, supporting intelligence collection on the compromised electronics-manufacturer host.
 
-**T1105 — Ingress Tool Transfer (Command and Control)**
-
-Security.com observed PowerShell and curl retrieving payloads from 179.43.177[.]220 over HTTP on port 8080. The domain timetrakr[.]cloud served as an additional attacker-controlled staging host for payload delivery.
-
-**T1113 — Screen Capture (Collection)**
-
-Security.com observed screenshot capture executed via PowerShell scripts deployed as part of the node.exe-based implant chain, supporting intelligence collection on the compromised electronics-manufacturer host.
-
-**T1003.002 — Security Account Manager (Credential Access)**
-
-Security.com observed attackers saving SAM, SECURITY, and SYSTEM registry hives to disk on the South Korean electronics host for subsequent offline credential extraction.
+T1003.002 - Security Account Manager: Security.com observed attackers saving SAM, SECURITY, and SYSTEM registry hives to disk on the South Korean electronics host for subsequent offline credential extraction.
 
 ## Timeline
 
