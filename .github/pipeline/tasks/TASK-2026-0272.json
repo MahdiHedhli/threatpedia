@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-15T15:32:26.965Z",
+  "updated": "2026-05-15T15:44:44.865Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
-  "locked_by": "DangerMouse Bot",
-  "locked_at": "2026-05-15T15:32:26.964Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Linux kernel Dirty Frag local privilege escalation zero-day (CVE-2026-43284)",
     "sources": [
@@ -73,6 +73,16 @@
       "to": "locked",
       "agent": "DangerMouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-15T15:44:44.865Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "DangerMouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #726"
     }
-  ]
+  ],
+  "pr_number": 726,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/726"
 }
