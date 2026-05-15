@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-13T18:33:19Z",
-  "updated": "2026-05-13T18:33:19Z",
+  "updated": "2026-05-15T15:32:26.965Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-zero-day-scan",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "DangerMouse Bot",
+  "locked_at": "2026-05-15T15:32:26.964Z",
   "input": {
     "topic": "Linux kernel Dirty Frag local privilege escalation zero-day (CVE-2026-43284)",
     "sources": [
@@ -66,6 +66,13 @@
       "to": "pending",
       "agent": "risky-bulletin-zero-day-scan",
       "note": "Manual Risky Bulletin zero-day seed after dedupe dry-run found no duplicate source URLs."
+    },
+    {
+      "timestamp": "2026-05-15T15:32:26.965Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
