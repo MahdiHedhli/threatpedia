@@ -1,0 +1,82 @@
+{
+  "task_id": "TASK-2026-0283",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "blocked",
+  "created": "2026-05-14T03:49:35.000Z",
+  "updated": "2026-05-16T21:56:30.000Z",
+  "source": "manual_submission",
+  "submitted_by": "kernel-k-manual-intake",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Google GTIG Disclosure of AI-Assisted 2FA Bypass Zero-Day Disruption, May 2026",
+    "sources": [
+      "https://cloud.google.com/blog/topics/threat-intelligence/ai-vulnerability-exploitation-initial-access",
+      "https://thehackernews.com/2026/05/hackers-used-ai-to-develop-first-known.html",
+      "https://www.axios.com/2026/05/12/ai-hacking-found-google-report",
+      "https://www.itpro.com/security/google-threat-intelligence-group-first-ai-zero-day-exploit-discovery",
+      "https://www.scworld.com/news/google-reports-first-known-ai-assisted-zero-day-exploit-in-the-wild",
+      "https://www.techradar.com/pro/security/this-is-the-tip-of-the-iceberg-google-experts-say-they-have-seen-hackers-using-ai-to-discover-and-weaponize-a-zero-day-for-the-first-time"
+    ],
+    "candidate_data": {
+      "date": "2026-05-11",
+      "severity": "high",
+      "sector": "Open-source software / system administration tooling",
+      "geography": "Global",
+      "threat_actor": "Unknown cybercrime actors",
+      "attack_type": "AI-assisted zero-day exploit development / two-factor authentication bypass"
+    },
+    "notes": "Manual intake from The Hacker News, corroborated with the primary Google Threat Intelligence Group report and multiple independent media summaries. Classification guidance: this is a zero-day in the general security sense, because Google says the activity involved a previously unknown 2FA-bypass vulnerability in a popular open-source, web-based system administration tool; however, it should enter the current Threatpedia pipeline as an incident/event task, not a zero-day article, because Google did not disclose the affected product, vendor, CVE, patch identifier, or exploit ID needed by the current zero-day article schema. Google says prominent cybercrime actors planned a mass vulnerability exploitation operation, GTIG identified a Python exploit for a 2FA-bypass logic flaw, worked with the impacted vendor, and may have prevented mass use. Google assesses with high confidence that an AI model supported discovery and weaponization, but states there is no evidence Gemini was used. The vulnerability reportedly requires valid user credentials and stems from a hard-coded trust assumption / semantic logic flaw rather than memory corruption or input-sanitization behavior. Do not invent the vendor, product, CVE, patch version, exploitation timeline, victim count, or threat actor name. Do not conflate this event with other examples in the same Google report, including PROMPTSPY, CANFAIL, LONGSTREAM, TeamPCP supply-chain activity, AI relay abuse, or information operations. If the vendor/CVE/product later becomes public, create a follow-on zero-day task or reclassify through normal pipeline review. Current source caveat: no public government source confirming this exact event was found during intake; final article drafting may need to block if validator/source requirements cannot be met without unrelated background sources."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0283",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-14T03:49:35.000Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "kernel-k-manual-intake",
+      "note": "Manual intake for Google GTIG AI-assisted 2FA-bypass zero-day disclosure; queued as incident/event because product/CVE details are undisclosed."
+    },
+    {
+      "timestamp": "2026-05-16T21:50:23.947Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-16T21:56:30.000Z",
+      "action": "blocked",
+      "from": "locked",
+      "to": "blocked",
+      "agent": "kernel-k",
+      "note": "Blocked before drafting: task brief requires an incident article with at least one government source, but live checks found no incident-specific public government, regulator, law-enforcement, or public-institution source for the Google GTIG AI-assisted 2FA-bypass zero-day disruption. Google and media sources support the event, but adding unrelated government AI or secure-by-design background would not satisfy the article source relevance bar."
+    }
+  ]
+}
