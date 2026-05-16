@@ -1,0 +1,83 @@
+{
+  "task_id": "TASK-2026-0289",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-15T19:21:28.831Z",
+  "updated": "2026-05-16T21:05:41Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Microsoft Exchange Server Cross-Site Scripting Vulnerability (CVE-2026-42897)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-42897",
+      "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-42897",
+      "https://learn.microsoft.com/en-us/exchange/plan-and-deploy/post-installation-tasks/security-best-practices/exchange-emergency-mitigation-service"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-42897",
+      "cves": [
+        "CVE-2026-42897"
+      ],
+      "exploitId": "TP-EXP-2026-0287",
+      "type": "Cross-Site Scripting",
+      "platform": "Microsoft Exchange Server",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-05-15",
+      "cwes": [
+        "CWE-79"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-05-15. Required action by 2026-05-29. CVSS 3.1: 8.1 (HIGH). Discovery score: 97/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/microsoft-exchange-server-cve-2026-42897.md",
+    "branch": "pipeline/TASK-2026-0289",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 97,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.1,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-05-15T19:21:28.831Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-15T19:21:28.831Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 97)"
+    }
+  ]
+}
