@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-15T19:21:28.831Z",
-  "updated": "2026-05-16T21:08:28.074Z",
+  "updated": "2026-05-16T21:24:26.150Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-16T21:24:26.149Z",
   "input": {
     "topic": "Microsoft Exchange Server Cross-Site Scripting Vulnerability (CVE-2026-42897)",
     "sources": [
@@ -86,6 +86,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #728"
+    },
+    {
+      "timestamp": "2026-05-16T21:24:26.150Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
