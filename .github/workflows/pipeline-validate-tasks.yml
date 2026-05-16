@@ -1,0 +1,113 @@
+name: "Pipeline: Validate Task PR"
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".github/pipeline/tasks/*.json"
+      - ".github/workflows/pipeline-validate-tasks.yml"
+      - "scripts/validate-pipeline-tasks.mjs"
+      - "scripts/pipeline-schema.mjs"
+
+jobs:
+  validate-tasks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: scripts/package-lock.json
+
+      - name: Install scripts dependencies
+        run: cd scripts && npm ci --no-audit --no-fund
+
+      - name: Identify changed task files
+        id: changed
+        run: |
+          set -euo pipefail
+
+          ALL=$(git diff --name-only --diff-filter=d origin/main...HEAD -- '.github/pipeline/tasks/*.json')
+          NEW=$(git diff --name-only --diff-filter=A origin/main...HEAD -- '.github/pipeline/tasks/*.json')
+
+          printf '%s\n' "$ALL" > "$RUNNER_TEMP/pipeline_changed_tasks.txt"
+          printf '%s\n' "$NEW" > "$RUNNER_TEMP/pipeline_new_tasks.txt"
+
+          {
+            echo "files<<EOF"
+            echo "$ALL"
+            echo "EOF"
+            echo "count=$(echo "$ALL" | grep -c '.' || true)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Run task validator
+        id: validate
+        continue-on-error: true
+        run: |
+          node scripts/validate-pipeline-tasks.mjs \
+            --files-file "$RUNNER_TEMP/pipeline_changed_tasks.txt" \
+            --new-files-file "$RUNNER_TEMP/pipeline_new_tasks.txt" \
+            --json-out "$RUNNER_TEMP/pipeline_task_validation.json"
+
+      - name: Publish task validation report
+        uses: actions/github-script@v8
+        env:
+          PIPELINE_TASK_VALIDATION_JSON: ${{ runner.temp }}/pipeline_task_validation.json
+          VALIDATION_OUTCOME: ${{ steps.validate.outcome }}
+        with:
+          script: |
+            const fs = require('fs');
+
+            const reportPath = process.env.PIPELINE_TASK_VALIDATION_JSON;
+            const validationOutcome = process.env.VALIDATION_OUTCOME || 'failure';
+            let payload;
+
+            if (fs.existsSync(reportPath)) {
+              payload = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            } else {
+              payload = {
+                allPass: false,
+                results: [],
+                markdown: '## Pipeline Task Validation Report\n\n:x: Task validator did not produce a report. Check workflow logs.\n',
+              };
+            }
+
+            const body = payload.markdown.trim() + '\n';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find((comment) =>
+              comment.user.type === 'Bot' && comment.body.includes('Pipeline Task Validation Report')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+            if (!payload.allPass || validationOutcome !== 'success') {
+              core.setFailed('Task validation failed');
+            }
