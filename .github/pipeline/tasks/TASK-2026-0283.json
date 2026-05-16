@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-14T03:49:35.000Z",
-  "updated": "2026-05-14T03:49:35.000Z",
+  "updated": "2026-05-16T21:56:30.000Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -61,6 +61,22 @@
       "to": "pending",
       "agent": "kernel-k-manual-intake",
       "note": "Manual intake for Google GTIG AI-assisted 2FA-bypass zero-day disclosure; queued as incident/event because product/CVE details are undisclosed."
+    },
+    {
+      "timestamp": "2026-05-16T21:50:23.947Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-16T21:56:30.000Z",
+      "action": "blocked",
+      "from": "locked",
+      "to": "blocked",
+      "agent": "Kernel K",
+      "note": "Blocked before drafting: task brief requires an incident article with at least one government source, but live checks found no incident-specific public government, regulator, law-enforcement, or public-institution source for the Google GTIG AI-assisted 2FA-bypass zero-day disruption. Google and media sources support the event, but adding unrelated government AI or secure-by-design background would not satisfy the article source relevance bar."
     }
   ]
 }
