@@ -24,7 +24,7 @@
       "historical_id": "HIST-INC-016",
       "source_list": "soft-launch-historical-corpus-working-list.md",
       "source_status": "gap",
-      "year": "2016",
+      "date": "2016-01-01",
       "severity": "high"
     },
     "notes": "Historical corpus P0 incident for the 2016 compromise and staged release of Democratic Party and Clinton campaign material. Draft as a bounded incident covering DNC, DCCC, and Clinton campaign intrusions, credential theft, malware deployment, data collection, DCLeaks/Guccifer 2.0 staging, and public release. Keep attribution conservative and source-bound: distinguish APT29/SVR espionage access to the DNC network from the DOJ/Mueller/Senate-attributed GRU Unit 26165 and Unit 74455 hack-and-leak operation. Do not claim vote-count alteration or election-system compromise in this incident article."
