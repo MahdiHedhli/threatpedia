@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-17T12:41:36Z",
-  "updated": "2026-05-17T12:41:36Z",
+  "updated": "2026-05-17T13:27:53.364Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -62,6 +62,24 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Historical incident backlog seed from HIST-INC-016."
+    },
+    {
+      "timestamp": "2026-05-17T13:18:53.457Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-17T13:27:53.364Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #768"
     }
-  ]
+  ],
+  "pr_number": 768,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/768"
 }
