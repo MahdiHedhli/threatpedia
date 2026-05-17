@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-17T12:41:36Z",
-  "updated": "2026-05-17T12:41:36Z",
+  "updated": "2026-05-17T13:06:44.807Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -62,6 +62,16 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Historical incident backlog seed from HIST-INC-016."
+    },
+    {
+      "timestamp": "2026-05-17T13:06:44.807Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #766 merged (25216f1)."
     }
-  ]
+  ],
+  "pr_number": 766,
+  "merged_at": "2026-05-17T13:06:44.807Z"
 }
