@@ -25,11 +25,14 @@
       "source_list": "soft-launch-historical-corpus-working-list.md",
       "source_status": "gap",
       "year": "2016",
+      "actor_name": "Lazarus Group / APT38",
+      "origin": "North Korea",
+      "active_since": "Unknown",
       "related_actor_slug": "apt38",
       "related_actor_umbrella_slug": "lazarus-group",
       "severity": "critical"
     },
-    "notes": "Historical corpus P0 incident. Draft as a bounded financial-theft incident centered on Bangladesh Bank's SWIFT-connected environment, the fraudulent payment instructions, the New York Fed account context, and later U.S. government attribution to the North Korean conspiracy. Keep the article clear that the New York Fed stated its systems were not breached."
+    "notes": "Historical corpus P0 incident. Draft as a bounded financial-theft incident centered on Bangladesh Bank's SWIFT-connected environment, the fraudulent payment instructions, the New York Fed account context, and later U.S. government attribution to the North Korean conspiracy. Keep the article clear that the New York Fed stated its systems were not breached. Required incident H2 sequence: Summary; Technical Analysis; Attack Chain; Impact Assessment; Attribution; Timeline; Remediation & Mitigation; Sources & References."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
