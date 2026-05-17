@@ -74,26 +74,14 @@ mitreMappings:
     techniqueName: Spearphishing Attachment
     tactic: Initial Access
     attackVersion: v19
-    confidence: probable
+    confidence: confirmed
     evidence: The Register reported that the intrusion used targeted phishing messages with an attached Excel spreadsheet titled "2011 Recruitment plan.xls".
   - techniqueId: T1203
     techniqueName: Exploitation for Client Execution
     tactic: Execution
     attackVersion: v19
-    confidence: probable
+    confidence: confirmed
     evidence: The same reporting described the spreadsheet as carrying an Adobe Flash zero-day exploit for CVE-2011-0609.
-  - techniqueId: T1068
-    techniqueName: Exploitation for Privilege Escalation
-    tactic: Privilege Escalation
-    attackVersion: v19
-    confidence: probable
-    evidence: The Register reported that the attacker used privilege-elevation activity after the Poison Ivy foothold to reach higher-value administrator accounts.
-  - techniqueId: T1105
-    techniqueName: Ingress Tool Transfer
-    tactic: Command and Control
-    attackVersion: v19
-    confidence: probable
-    evidence: The Register reported that the Flash exploit installed backdoor malware and that the attack involved a Poison Ivy variant inside RSA's network.
   - techniqueId: T1005
     techniqueName: Data from Local System
     tactic: Collection
