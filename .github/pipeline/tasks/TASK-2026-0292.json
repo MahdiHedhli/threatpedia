@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-17T07:15:18.132Z",
-  "updated": "2026-05-17T07:15:18.132Z",
+  "updated": "2026-05-17T08:35:46.139Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -67,6 +67,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Historical incident backlog seed from HIST-INC-024."
+    },
+    {
+      "timestamp": "2026-05-17T08:35:46.139Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #750"
     }
   ]
 }
