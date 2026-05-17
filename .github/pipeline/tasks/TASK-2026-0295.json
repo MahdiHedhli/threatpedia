@@ -75,7 +75,7 @@
       "timestamp": "2026-05-17T13:27:53.364Z",
       "from": "locked",
       "to": "pr_open",
-      "agent": "dangermouse-bot",
+      "agent": "Mahdi Hedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #768"
     }
