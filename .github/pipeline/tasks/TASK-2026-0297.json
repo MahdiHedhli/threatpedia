@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-05-17T19:16:29Z",
-  "updated": "2026-05-17T20:06:46.628Z",
+  "updated": "2026-05-17T21:11:57.517Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
   "locked_by": null,
@@ -89,6 +89,14 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #779"
+    },
+    {
+      "timestamp": "2026-05-17T21:11:57.517Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #779 already covers this task."
     }
   ],
   "pr_number": 779,
