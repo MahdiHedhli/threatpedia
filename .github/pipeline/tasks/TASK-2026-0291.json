@@ -81,7 +81,7 @@
       "action": "requeued",
       "from": "complete",
       "to": "pending",
-      "agent": "Kernel K",
+      "agent": "MahdiHedhli",
       "note": "Requeued because PR #740 was a task-seed PR only; no article was created at the task output path."
     }
   ]
