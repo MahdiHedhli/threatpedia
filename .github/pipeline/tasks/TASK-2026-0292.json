@@ -73,14 +73,14 @@
       "action": "locked",
       "from": "pending",
       "to": "locked",
-      "agent": "Kernel K",
+      "agent": "MahdiHedhli",
       "note": "Locked for execution"
     },
     {
       "timestamp": "2026-05-17T08:36:36.704Z",
       "from": "locked",
       "to": "pr_open",
-      "agent": "Kernel K",
+      "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #752"
     }
