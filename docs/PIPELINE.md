@@ -157,8 +157,13 @@ discovery queues are open, validated, and stable.
      rules plus exact section/schema normalization: canonical H2 headings,
      exact source-line format, frontmatter/body source URL parity, canonical
      MITRE tactic casing, canonical publisher aliases, canonical
-     `generatedBy` values, and public-prose guardrails that block internal
+     `generatedBy` values, optional non-rendered `generation` model provenance
+     metadata, and public-prose guardrails that block internal
      editorial/process language from article body text.
+   - Article frontmatter may include an optional `generation` object for
+     internal auditability. When present, it must include non-empty `provider`
+     and `model` fields and may include `tool`, `agent`, and `promptProfile`.
+     This metadata is not rendered in the public article UI.
    - Framework mappings are validated against the public schema mirror and
      pinned framework data where available. New ATT&CK mappings should declare
      `attack-version: "v19"` or `attack-version: "v19.0"` unless the task is
@@ -279,8 +284,10 @@ same queue/validation path as discovery-generated tasks.
 **Public prose guardrails:** generated article body text must not leak internal
 workflow language such as "this article," "this report," `reviewStatus`,
 `draft_ai`, "attribution confidence," or "confidence grade." Those values can
-exist in frontmatter or operator notes where appropriate, but public article
-prose should describe the evidence basis directly rather than narrating
+exist in frontmatter or operator notes where appropriate. Optional `generation`
+model provenance metadata can also exist in frontmatter for auditability, but
+must not be narrated in public prose. Public article prose should describe the
+evidence basis directly rather than narrating
 Threatpedia's internal scoring or editorial process.
 
 **Config authority:** `pipeline-dispatcher.yml` now reads thresholds from

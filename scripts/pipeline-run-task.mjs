@@ -31,6 +31,9 @@ import yaml from 'js-yaml';
 // authoritative definitions in site/src/content.config.ts manually.
 import {
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
+  SCHEMA_GENERATION_METADATA_FIELDS,
+  SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS,
+  SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS,
   SCHEMA_GENERATED_BY_VALUES,
   SCHEMA_MAPPING_CONFIDENCE_VALUES,
   SCHEMA_MITRE_TACTICS,
@@ -131,6 +134,13 @@ const FRAMEWORK_MAPPING_SCHEMA = `  framework-mappings: array of generic framewo
       notes: string (optional)
     atlasMappings is tolerated only as a compatibility alias while old PRs are migrated`;
 
+const GENERATION_METADATA_SCHEMA = `  generation: object (optional; non-rendered model provenance)
+    provider: string (required when generation is present; e.g., "anthropic", "openai", "google", "xai", "local")
+    model: string (required when generation is present; exact model identifier used for drafting)
+    tool: string (optional; e.g., "claude-cli", "codex", "gemini-cli")
+    agent: string (optional; must be a canonical generatedBy identity)
+    promptProfile: string (optional; worker or prompt profile name)`;
+
 // ── Schemas per content type ────────────────────────────────────────────────
 const SCHEMAS = {
   incident: {
@@ -149,6 +159,7 @@ const SCHEMAS = {
   confidenceGrade: enum (optional, default C) — A through F
   generatedBy: string — your agent identity (e.g., "dangermouse-bot", "penfold-bot")
   generatedDate: date — today's date ISO 8601
+${GENERATION_METADATA_SCHEMA}
   cves: array of strings (optional)
   relatedSlugs: array of strings (optional) — slugs of related articles for cross-referencing
   tags: array of strings — lowercase, hyphenated keywords
@@ -188,6 +199,7 @@ ${FRAMEWORK_MAPPING_SCHEMA}`,
   confidenceGrade: enum (optional, default C) — A through F
   generatedBy: string — your agent identity
   generatedDate: date — today's date
+${GENERATION_METADATA_SCHEMA}
   cves: array of strings (optional)
   relatedIncidents: array of strings (optional) — incident slugs; campaigns should reference confirmed constituent incidents where available
   tags: array of strings
@@ -230,6 +242,7 @@ ${FRAMEWORK_MAPPING_SCHEMA}
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   generatedBy: string — your agent identity
   generatedDate: date — today's date
+${GENERATION_METADATA_SCHEMA}
   tags: array of strings
   sources: array of structured source objects — MINIMUM 3, at least 1 government source
 ${SOURCE_SCHEMA}`,
@@ -265,6 +278,7 @@ ${SOURCE_SCHEMA}`,
   reviewStatus: constrained by task acceptance (see ACCEPTANCE CRITERIA below)
   generatedBy: string — your agent identity
   generatedDate: date — today's date
+${GENERATION_METADATA_SCHEMA}
   relatedIncidents: array of strings (optional) — slugs of incident articles
   relatedActors: array of strings (optional) — slugs of threat actor articles
   tags: array of strings
@@ -318,9 +332,10 @@ function buildRules(task) {
   11. MITRE tactic casing must use the canonical ATT&CK vocabulary; new mappings should declare attack-version "v19" or "v19.0" unless preserving a legacy article version; optional metadata must use confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')} and non-empty evidence when present
   12. Do not bulk-assign or preserve Defense Evasion for ATT&CK v19 split cases without article-supported review; use the pinned v19 data and omit uncertain mappings rather than guessing
   13. framework-mappings are optional and currently only allowed for source-supported adversarial AI/ML behavior; MITRE ATLAS entries require framework: mitre-atlas and mapping-id AML.T####[.###]
-  14. Do not add ATLAS because a topic is broadly AI-adjacent; require article evidence that an AI/ML system was targeted, abused as tooling, bypassed as a control, or compromised in the ML supply chain
-  15. Canonical publisher aliases must be normalized in frontmatter and body
-  16. The Astro build must pass: cd site && npm run build`;
+  14. Optional generation metadata is allowed only in frontmatter, not public prose; if present it must include non-empty provider and model fields
+  15. Do not add ATLAS because a topic is broadly AI-adjacent; require article evidence that an AI/ML system was targeted, abused as tooling, bypassed as a control, or compromised in the ML supply chain
+  16. Canonical publisher aliases must be normalized in frontmatter and body
+  17. The Astro build must pass: cd site && npm run build`;
 }
 
 // ── CLI Parsing ─────────────────────────────────────────────────────────────
@@ -439,6 +454,40 @@ function findCanonicalCaseMatch(value, allowedValues) {
   if (typeof value !== 'string') return null;
   const lower = value.trim().toLowerCase();
   return allowedValues.find(entry => entry.toLowerCase() === lower) || null;
+}
+
+function getGenerationMetadataIssues(value) {
+  if (value === undefined || value === null) return [];
+  const issues = [];
+
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    return ['generation must be an object when present'];
+  }
+
+  const allowedFields = new Set(SCHEMA_GENERATION_METADATA_FIELDS);
+  for (const field of Object.keys(value)) {
+    if (!allowedFields.has(field)) {
+      issues.push(`generation.${field} is not allowed`);
+    }
+  }
+
+  for (const field of SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS) {
+    if (typeof value[field] !== 'string' || value[field].trim() === '') {
+      issues.push(`generation.${field} is required when generation is present`);
+    }
+  }
+
+  for (const field of SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS) {
+    if (value[field] !== undefined && (typeof value[field] !== 'string' || value[field].trim() === '')) {
+      issues.push(`generation.${field} must be a non-empty string when present`);
+    }
+  }
+
+  if (typeof value.agent === 'string' && !SCHEMA_GENERATED_BY_VALUES.includes(value.agent.trim())) {
+    issues.push(`generation.agent "${value.agent}" is not in the allowed generatedBy set`);
+  }
+
+  return issues;
 }
 
 function getBodyH2Headings(body) {
@@ -1218,6 +1267,11 @@ function validateOutput(task, explicitFile) {
           ? `generatedBy "${generatedBy}" should use canonical value "${canonical}"`
           : `generatedBy "${generatedBy}" is not in the allowed set (${SCHEMA_GENERATED_BY_VALUES.join(', ')})`
       );
+    }
+
+    const generationIssues = getGenerationMetadataIssues(frontmatter.generation);
+    for (const issue of generationIssues) {
+      issues.push(`generation metadata: ${issue}`);
     }
 
     // ── 5. ID format (if applicable) ──────────────────────────────────────
