@@ -1,0 +1,67 @@
+{
+  "task_id": "TASK-2026-0295",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T12:41:36Z",
+  "updated": "2026-05-17T12:41:36Z",
+  "source": "backfill",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "2016 DNC and U.S. Election Hack-and-Leak Operation",
+    "sources": [
+      "https://www.justice.gov/archives/opa/pr/grand-jury-indicts-12-russian-intelligence-officers-hacking-offenses-related-2016-election",
+      "https://www.justice.gov/archives/sco/file/1373816/dl",
+      "https://www.cisa.gov/news-events/alerts/2016/12/29/grizzly-steppe-russian-malicious-cyber-activity",
+      "https://attack.mitre.org/groups/G0007/",
+      "https://www.intelligence.senate.gov/wp-content/uploads/2024/08/sites-default-files-documents-report-volume5.pdf",
+      "https://www.crowdstrike.com/en-us/blog/bears-midst-intrusion-democratic-national-committee/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-016",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "date": "2016-01-01",
+      "severity": "high"
+    },
+    "notes": "Historical corpus P0 incident for the 2016 compromise and staged release of Democratic Party and Clinton campaign material. Draft as a bounded incident covering DNC, DCCC, and Clinton campaign intrusions, credential theft, malware deployment, data collection, DCLeaks/Guccifer 2.0 staging, and public release. Keep attribution conservative and source-bound: distinguish APT29/SVR espionage access to the DNC network from the DOJ/Mueller/Senate-attributed GRU Unit 26165 and Unit 74455 hack-and-leak operation. Do not claim vote-count alteration or election-system compromise in this incident article."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers the 2016 DNC and U.S. election hack-and-leak operation as a standalone incident",
+    "sources support a conservative distinction between confirmed GRU hack-and-leak activity and separate Russian intelligence access described in public sources"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/dnc-election-hack-and-leak-2016.md",
+    "branch": "pipeline/TASK-2026-0295",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T12:41:36Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Historical incident backlog seed from HIST-INC-016."
+    }
+  ]
+}
