@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-17T14:55:12Z",
-  "updated": "2026-05-17T15:53:34Z",
+  "updated": "2026-05-17T16:37:18.721Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-17T16:37:18.721Z",
   "input": {
     "topic": "Shadow Brokers Equation Group Tool Leak",
     "sources": [
@@ -84,6 +84,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Requeued because PR #770 was a task-seed PR only; no article was created at the task output path."
+    },
+    {
+      "timestamp": "2026-05-17T16:37:18.721Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
