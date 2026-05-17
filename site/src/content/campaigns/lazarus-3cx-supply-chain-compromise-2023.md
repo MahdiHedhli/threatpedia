@@ -15,7 +15,8 @@ confidenceGrade: B
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-12
 cves: []
-relatedIncidents: []
+relatedIncidents:
+  - "3cx-desktopapp-software-supply-chain-compromise-2023"
 tags:
   - "lazarus-group"
   - "dprk"
