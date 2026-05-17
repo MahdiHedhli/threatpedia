@@ -1,0 +1,73 @@
+{
+  "task_id": "TASK-2026-0296",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T14:55:12Z",
+  "updated": "2026-05-17T14:55:12Z",
+  "source": "backfill",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Shadow Brokers Equation Group Tool Leak",
+    "sources": [
+      "https://www.cisa.gov/news-events/alerts/2017/04/15/microsoft-addresses-shadow-brokers-exploits",
+      "https://www.microsoft.com/en-us/msrc/blog/2017/04/protecting-customers-and-evaluating-risk",
+      "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/07183248/KL_Q3_Malware_Report_ENG.pdf",
+      "https://arstechnica.com/information-technology/2016/08/code-dumped-online-came-from-omnipotent-nsa-tied-hacking-group/",
+      "https://blogs.cisco.com/security/talos/2017-04-14-shadow-brokers",
+      "https://www.microsoft.com/en-us/security/blog/2017/05/12/wannacrypt-ransomware-worm-targets-out-of-date-systems",
+      "https://www.cisa.gov/ncas/alerts/TA17-132A"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-017",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "date": "2016-08-13",
+      "severity": "high",
+      "related_actor_slug": "equation-group",
+      "related_zero_day_slug": "eternalblue-ms17-010-cve-2017-0144"
+    },
+    "notes": "Historical corpus P0 incident for the 2016-2017 Shadow Brokers public release of exploitation tools assessed by researchers as linked to Equation Group, including the April 2017 Microsoft-focused release that exposed EternalBlue and related tooling. Draft as a bounded incident centered on the leak, public tool exposure, vendor triage, patching guidance, and downstream risk context later seen in WannaCry and NotPetya. Keep attribution conservative: distinguish researcher assessment of Equation Group linkage from unconfirmed claims about the leaker identity, acquisition path, or NSA operational custody. Do not duplicate the EternalBlue zero-day, WannaCry, or NotPetya articles; cross-link them as downstream context only."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 6,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [
+    "TASK-2026-0258",
+    "TASK-2026-0060"
+  ],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers the Shadow Brokers Equation Group tool leak as a standalone incident",
+    "sources support a conservative distinction between public tool-release facts, vendor patch guidance, and assessed Equation Group linkage"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/shadow-brokers-equation-group-tool-leak-2016.md",
+    "branch": "pipeline/TASK-2026-0296",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T14:55:12Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Historical incident backlog seed from HIST-INC-017."
+    }
+  ]
+}
