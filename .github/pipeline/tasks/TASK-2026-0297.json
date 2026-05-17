@@ -67,7 +67,16 @@
       "note": "Historical zero-day backlog seed from HIST-ZD-003."
     },
     {
+      "timestamp": "2026-05-17T19:43:12.026Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #777"
+    },
+    {
       "timestamp": "2026-05-17T19:57:14.225Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
