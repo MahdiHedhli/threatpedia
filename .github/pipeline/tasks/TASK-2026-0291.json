@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "complete",
+  "status": "pending",
   "created": "2026-05-17T04:07:47.674Z",
-  "updated": "2026-05-17T04:37:49.358Z",
+  "updated": "2026-05-17T05:12:47.667Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -75,8 +75,14 @@
       "to": "complete",
       "agent": "pipeline-task-state",
       "note": "PR #740 merged (916750b)."
+    },
+    {
+      "timestamp": "2026-05-17T05:12:47.667Z",
+      "action": "requeued",
+      "from": "complete",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Requeued because PR #740 was a task-seed PR only; no article was created at the task output path."
     }
-  ],
-  "pr_number": 740,
-  "merged_at": "2026-05-17T04:37:49.358Z"
+  ]
 }
