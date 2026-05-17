@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-17T04:07:47.674Z",
-  "updated": "2026-05-17T05:12:47.667Z",
+  "updated": "2026-05-17T06:15:36.636Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-17T06:15:36.635Z",
   "input": {
     "topic": "Bangladesh Bank SWIFT Heist",
     "sources": [
@@ -83,6 +83,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Requeued because PR #740 was a task-seed PR only; no article was created at the task output path."
+    },
+    {
+      "timestamp": "2026-05-17T06:15:36.636Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
