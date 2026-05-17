@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-13T19:12:35.960Z",
-  "updated": "2026-05-13T22:24:49.000Z",
+  "updated": "2026-05-17T00:16:36.521Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -94,8 +94,17 @@
       "to": "pr_open",
       "agent": "dangermouse-bot",
       "note": "Rebased against current main and preserved PR #685 task state."
+    },
+    {
+      "timestamp": "2026-05-17T00:16:36.521Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #685 merged (ece3bab)."
     }
   ],
   "pr_number": 685,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/685"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/685",
+  "merged_at": "2026-05-17T00:16:36.521Z"
 }
