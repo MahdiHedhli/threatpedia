@@ -29,7 +29,8 @@
         "TRITON",
         "TRISIS",
         "HatMan"
-      ]
+      ],
+      "severity": "critical"
     },
     "notes": "Historical corpus P0 incident. Keep attribution conservative: describe the 2017 Middle East petrochemical SIS attack and cite the later U.S. government attribution to TsNIIKhM without extending the claim beyond sourced statements."
   },
@@ -42,7 +43,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 5,
-    "min_h2_sections": 7,
+    "min_h2_sections": 8,
     "min_mitre_mappings": 4,
     "review_status": "draft_ai",
     "schema_validation": "pass",
