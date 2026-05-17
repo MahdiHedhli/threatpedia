@@ -64,7 +64,7 @@ mitreMappings:
     evidence: "CISA describes TRITON as using a custom Python script and four Python modules, and Mandiant describes trilog.exe as a Py2EXE-compiled Python script."
   - techniqueId: T1036
     techniqueName: Masquerading
-    tactic: Defense Evasion
+    tactic: Stealth
     attackVersion: v19.0
     confidence: confirmed
     evidence: "Mandiant and MITRE describe TRITON as using the name trilog.exe to resemble legitimate Triconex software, while MITRE also describes inject.bin as masquerading as a standard compiled PowerPC program."
