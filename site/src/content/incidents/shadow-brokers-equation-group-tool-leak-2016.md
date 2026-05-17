@@ -99,6 +99,7 @@ The August 2016 initial release contained exploitation frameworks and implants. 
 The April 14, 2017 "Lost in Translation" release contained a set of Windows-focused exploits analyzed publicly within hours of release. Cisco Talos documented the following tools in that archive:
 
 - **EternalBlue** (CVE-2017-0144): exploits a flaw in the SMBv1 protocol's transaction handling, allowing unauthenticated remote code execution on vulnerable Windows systems exposed on TCP port 445.
+- **EternalRomance** (CVE-2017-0145): targets an SMBv1 transaction-processing vulnerability that can enable remote code execution on unpatched Windows systems.
 - **EternalChampion** (CVE-2017-0146): targets a race condition in SMBv1 transaction processing.
 - **EternalSynergy** (CVE-2017-0148): exploits an SMBv1 write-what-where condition.
 - **DoublePulsar**: a kernel-mode backdoor implant delivered as a second-stage payload after successful SMB exploitation; provides a persistent listening channel for follow-on activity.
