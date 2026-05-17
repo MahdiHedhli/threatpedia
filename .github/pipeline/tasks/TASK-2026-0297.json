@@ -1,0 +1,70 @@
+{
+  "task_id": "TASK-2026-0297",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T19:16:29Z",
+  "updated": "2026-05-17T19:16:29Z",
+  "source": "manual_submission",
+  "submitted_by": "threatpedia-soft-launch-corpus-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "BlueKeep Remote Desktop Services remote code execution vulnerability (CVE-2019-0708)",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2019-0708",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-168a",
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2019-0708",
+      "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2019-0708",
+      "https://www.microsoft.com/en-us/security/blog/2019/08/08/protect-against-bluekeep/",
+      "https://www.microsoft.com/en-us/security/blog/2019/11/07/the-new-cve-2019-0708-rdp-exploit-attacks-explained/",
+      "https://www.nsa.gov/Press-Room/News-Highlights/Article/Article/1865726/nsa-cybersecurity-advisory-patch-remote-desktop-services-on-legacy-versions-of/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-ZD-003",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "cve": "CVE-2019-0708",
+      "date": "2019-05-14",
+      "severity": "critical",
+      "cisa_kev": true
+    },
+    "notes": "Historical P0 zero-day/vulnerability backlog item for BlueKeep. Scope to the Microsoft Remote Desktop Services remote code execution vulnerability, patching and mitigation guidance, wormable risk, and later observed exploitation. Avoid treating it as exploited before public patching unless sources support that claim."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "INGESTION-SPEC.md \u00a72",
+    "site/src/content.config.ts"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers BlueKeep / CVE-2019-0708 as a standalone zero-day or vulnerability article"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/bluekeep-rdp-cve-2019-0708.md",
+    "branch": "pipeline/TASK-2026-0297",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T19:16:29Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "threatpedia-soft-launch-corpus-worker",
+      "note": "Historical zero-day backlog seed from HIST-ZD-003."
+    }
+  ]
+}
