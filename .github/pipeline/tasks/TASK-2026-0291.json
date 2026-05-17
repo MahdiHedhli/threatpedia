@@ -1,0 +1,69 @@
+{
+  "task_id": "TASK-2026-0291",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T04:07:47.674Z",
+  "updated": "2026-05-17T04:07:47.674Z",
+  "source": "backfill",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Bangladesh Bank SWIFT Heist",
+    "sources": [
+      "https://www.justice.gov/archives/opa/pr/north-korean-regime-backed-programmer-charged-conspiracy-conduct-multiple-cyber-attacks-and",
+      "https://www.justice.gov/usao-cdca/press-release/file/1091951/dl",
+      "https://www.newyorkfed.org/newsevents/statements/2016/0623-2016",
+      "https://www.baesystems.com/en-uk/insight/two-bytes-to-951m",
+      "https://www.swift.com/news-events/press-releases/swift-launches-customer-security-programme-reinforce-security-global-banking-system",
+      "https://attack.mitre.org/groups/G0032/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-014",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "year": "2016",
+      "related_actor_slug": "apt38",
+      "related_actor_umbrella_slug": "lazarus-group",
+      "severity": "critical"
+    },
+    "notes": "Historical corpus P0 incident. Draft as a bounded financial-theft incident centered on Bangladesh Bank's SWIFT-connected environment, the fraudulent payment instructions, the New York Fed account context, and later U.S. government attribution to the North Korean conspiracy. Keep the article clear that the New York Fed stated its systems were not breached."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers the Bangladesh Bank SWIFT Heist as a standalone incident"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/bangladesh-bank-swift-heist-2016.md",
+    "branch": "pipeline/TASK-2026-0291",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T04:07:47.674Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "Kernel K",
+      "note": "Historical incident backlog seed from HIST-INC-014."
+    }
+  ]
+}
