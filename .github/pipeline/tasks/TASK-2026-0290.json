@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-17T00:56:46.373Z",
   "updated": "2026-05-17T04:36:37.039Z",
   "source": "backfill",
@@ -87,6 +87,22 @@
       "note": "Requeued because PR #736 was a task-seed PR only; no article was created at the task output path."
     },
     {
+      "timestamp": "2026-05-17T02:39:50.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-17T02:50:23.876Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #739"
+    },
+    {
       "timestamp": "2026-05-17T04:36:37.039Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -94,5 +110,7 @@
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #739 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 739,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/739"
 }
