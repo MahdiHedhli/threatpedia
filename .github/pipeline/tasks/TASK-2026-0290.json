@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-17T00:56:46.373Z",
-  "updated": "2026-05-17T04:36:37.039Z",
+  "updated": "2026-05-17T08:47:47.464Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -87,12 +87,39 @@
       "note": "Requeued because PR #736 was a task-seed PR only; no article was created at the task output path."
     },
     {
+      "timestamp": "2026-05-17T02:39:50.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-17T02:50:23.876Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #739"
+    },
+    {
       "timestamp": "2026-05-17T04:36:37.039Z",
       "action": "dispatch_skipped",
       "from": "pending",
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #739 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-17T08:47:47.464Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #739 merged (0d2c6ed)."
     }
-  ]
+  ],
+  "pr_number": 739,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/739",
+  "merged_at": "2026-05-17T08:47:47.464Z"
 }
