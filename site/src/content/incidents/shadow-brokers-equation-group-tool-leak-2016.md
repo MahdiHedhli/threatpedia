@@ -25,6 +25,7 @@ cves:
 relatedSlugs:
   - eternalblue-ms17-010-cve-2017-0144
   - wannacry-ransomware-2017
+  - notpetya-wiper-attack-2017
 
 tags:
   - shadow-brokers
