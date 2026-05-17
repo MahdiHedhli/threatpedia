@@ -5,7 +5,7 @@ date: 2016-02-04
 attackType: Financial Theft
 severity: critical
 sector: Financial Services
-geography: Bangladesh
+geography: Bangladesh / United States / Philippines
 threatActor: Lazarus Group / APT38
 attributionConfidence: A1
 reviewStatus: draft_ai
@@ -75,24 +75,12 @@ mitreMappings:
     attackVersion: "v19.0"
     confidence: confirmed
     evidence: The DOJ complaint describes spear-phishing messages sent to Bangladesh Bank employees and forensic evidence that payload links were downloaded inside the bank.
-  - techniqueId: T1105
-    techniqueName: Ingress Tool Transfer
-    tactic: Command and Control
-    attackVersion: "v19.0"
-    confidence: probable
-    evidence: The DOJ complaint describes a backdoor in the Bangladesh Bank network that could transfer files, create archives, and execute files.
-  - techniqueId: T1565.001
-    techniqueName: Stored Data Manipulation
-    tactic: Impact
-    attackVersion: "v19.0"
-    confidence: probable
-    evidence: BAE Systems described malware built to interact with local SWIFT Alliance Access software and help cover fraudulent payment activity.
   - techniqueId: T1565.002
     techniqueName: Transmitted Data Manipulation
     tactic: Impact
     attackVersion: "v19.0"
-    confidence: probable
-    evidence: DOJ reporting described fraudulently authenticated SWIFT messages directing transfer activity through the New York Fed account.
+    confidence: confirmed
+    evidence: DOJ reporting describes fraudulently authenticated SWIFT messages that directed payment activity from Bangladesh Bank's New York Fed account.
   - techniqueId: T1657
     techniqueName: Financial Theft
     tactic: Impact
@@ -105,7 +93,7 @@ mitreMappings:
 
 The Bangladesh Bank SWIFT heist was a February 2016 intrusion and fraudulent-transfer operation against Bangladesh Bank, the central bank of Bangladesh. The operators compromised the bank's network, accessed computer terminals connected to its SWIFT processing environment, and sent authenticated-looking payment messages that directed funds from Bangladesh Bank's account at the Federal Reserve Bank of New York to accounts in Asia.
 
-The attempted theft totaled $951 million. Most requested transfers were blocked or later recovered, but $81 million was stolen. The event became a reference case for cyber-enabled financial theft because the operators combined bank-network compromise, knowledge of interbank payment operations, and tooling designed to interfere with local SWIFT records.
+The attempted theft totaled $951 million. Most requested transfers did not complete, but $81 million was stolen. The event became a reference case for cyber-enabled financial theft because the operators combined bank-network compromise, knowledge of interbank payment operations, and tooling designed to interfere with local SWIFT records.
 
 The New York Fed stated in June 2016 that the incident was not caused by a breach or compromise of its systems. SWIFT separately stated in May 2016 that its network, software, and core messaging services had not been compromised, while announcing a customer security program focused on customer-managed SWIFT environments.
 
