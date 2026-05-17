@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-17T19:16:29Z",
-  "updated": "2026-05-17T19:16:29Z",
+  "updated": "2026-05-17T19:43:12.026Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
   "locked_by": null,
@@ -34,8 +34,8 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
-    "INGESTION-SPEC.md \u00a72",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2",
     "site/src/content.config.ts"
   ],
   "acceptance_criteria": {
@@ -65,6 +65,14 @@
       "to": "pending",
       "agent": "threatpedia-soft-launch-corpus-worker",
       "note": "Historical zero-day backlog seed from HIST-ZD-003."
+    },
+    {
+      "timestamp": "2026-05-17T19:43:12.026Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #777"
     }
   ]
 }
