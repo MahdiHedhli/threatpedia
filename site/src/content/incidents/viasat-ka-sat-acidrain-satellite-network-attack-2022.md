@@ -13,8 +13,7 @@ confidenceGrade: A
 generatedBy: kernel-k
 generatedDate: 2026-05-17
 cves: []
-relatedSlugs:
-  - sandworm
+relatedSlugs: []
 tags:
   - viasat
   - ka-sat
