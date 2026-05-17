@@ -73,19 +73,19 @@ mitreMappings:
   - techniqueId: T1566.001
     techniqueName: Spearphishing Attachment
     tactic: Initial Access
-    attackVersion: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: The Register reported that the intrusion used targeted phishing messages with an attached Excel spreadsheet titled "2011 Recruitment plan.xls".
   - techniqueId: T1203
     techniqueName: Exploitation for Client Execution
     tactic: Execution
-    attackVersion: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: The same reporting described the spreadsheet as carrying an Adobe Flash zero-day exploit for CVE-2011-0609.
   - techniqueId: T1005
     techniqueName: Data from Local System
     tactic: Collection
-    attackVersion: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: RSA disclosed that the intrusion resulted in certain information being extracted from RSA systems, including information related to SecurID products.
 ---

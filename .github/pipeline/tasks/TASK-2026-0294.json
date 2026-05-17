@@ -69,7 +69,7 @@
       "action": "dispatched",
       "from": "pending",
       "to": "pending",
-      "agent": "dispatcher",
+      "agent": "MahdiHedhli",
       "note": "Dispatched as Issue #762"
     },
     {
