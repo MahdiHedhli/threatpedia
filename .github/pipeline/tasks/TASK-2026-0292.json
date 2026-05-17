@@ -1,0 +1,72 @@
+{
+  "task_id": "TASK-2026-0292",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T07:15:18.132Z",
+  "updated": "2026-05-17T07:15:18.132Z",
+  "source": "backfill",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Viasat KA-SAT / AcidRain Satellite Network Attack",
+    "sources": [
+      "https://www.viasat.com/perspectives/corporate/2022/ka-sat-network-cyber-attack-overview/",
+      "https://www.consilium.europa.eu/en/press/press-releases/2022/05/10/russian-cyber-operations-against-ukraine-declaration-by-the-high-representative-on-behalf-of-the-european-union/pdf",
+      "https://www.gov.uk/government/news/russia-behind-cyber-attack-with-europe-wide-impact-an-hour-before-ukraine-invasion",
+      "https://www.sentinelone.com/labs/acidrain-a-modem-wiper-rains-down-on-europe/",
+      "https://www.nsa.gov/Press-Room/News-Highlights/Article/Article/2910409/nsa-issues-recommendations-to-protect-vsat-communications/",
+      "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-076a",
+      "https://attack.mitre.org/software/S1125/"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-024",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "year": "2022",
+      "related_actor_slug": "sandworm",
+      "malware_names": [
+        "AcidRain"
+      ],
+      "severity": "critical"
+    },
+    "notes": "Historical corpus P0 incident. Draft as a bounded satellite communications disruption incident centered on the KA-SAT consumer broadband network outage beginning on 2022-02-24, Viasat's published attack-chain description, EU/UK attribution to Russia, SentinelOne's AcidRain analysis, and SATCOM mitigation guidance. Keep attribution conservative and separate Viasat's facts from third-party malware assessment."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers the Viasat KA-SAT / AcidRain attack as a standalone incident"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/viasat-ka-sat-acidrain-satellite-network-attack-2022.md",
+    "branch": "pipeline/TASK-2026-0292",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T07:15:18.132Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Historical incident backlog seed from HIST-INC-024."
+    }
+  ]
+}
