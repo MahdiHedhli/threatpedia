@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-17T19:16:29Z",
-  "updated": "2026-05-17T19:57:14.225Z",
+  "updated": "2026-05-17T20:06:46.628Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-17T19:57:14.224Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "BlueKeep Remote Desktop Services remote code execution vulnerability (CVE-2019-0708)",
     "sources": [
@@ -72,6 +72,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-17T20:06:46.628Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #779"
     }
-  ]
+  ],
+  "pr_number": 779,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/779"
 }
