@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-17T00:56:46.373Z",
-  "updated": "2026-05-17T01:57:16.542Z",
+  "updated": "2026-05-17T04:36:37.039Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -85,6 +85,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Requeued because PR #736 was a task-seed PR only; no article was created at the task output path."
+    },
+    {
+      "timestamp": "2026-05-17T04:36:37.039Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #739 already covers this task."
     }
   ]
 }
