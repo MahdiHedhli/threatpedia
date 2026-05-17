@@ -79,7 +79,7 @@ mitreMappings:
   - techniqueId: T1210
     techniqueName: "Exploitation of Remote Services"
     tactic: "Lateral Movement"
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: confirmed
     evidence: "Cisco Talos and Microsoft analysis of the April 2017 Shadow Brokers release confirmed that the included tools, particularly EternalBlue (MS17-010 / CVE-2017-0144), exploit SMB services for unauthenticated remote code execution, enabling lateral movement across networks of unpatched Windows systems."
 ---
@@ -109,21 +109,37 @@ Kaspersky's threat intelligence reporting documented the code-level similarities
 
 ## Attack Chain
 
-1. **Acquisition (date unknown):** Shadow Brokers claimed to have obtained an archive of exploitation tools. No public source has confirmed the mechanism, date, or origin of that acquisition.
+### Stage 1: Acquisition (date unknown)
 
-2. **Initial public release (2016-08-13):** Shadow Brokers posted a partial tool archive via online forums, accompanied by claims of Equation Group origin. The release included functional exploit code and documentation fragments assessed by researchers as consistent with Equation Group tooling.
+Shadow Brokers claimed to have obtained an archive of exploitation tools. No public source has confirmed the mechanism, date, or origin of that acquisition.
 
-3. **Researcher analysis (August–September 2016):** Security firms analyzed the released material. Ars Technica reported researcher findings of code overlaps with Equation Group artifacts. Kaspersky documented these characteristics in subsequent threat intelligence output.
+### Stage 2: Initial public release (2016-08-13)
 
-4. **Continued staged releases (late 2016–early 2017):** Shadow Brokers made additional releases over subsequent months, expanding the publicly available toolset.
+Shadow Brokers posted a partial tool archive via online forums, accompanied by claims of Equation Group origin. The release included functional exploit code and documentation fragments assessed by researchers as consistent with Equation Group tooling.
 
-5. **MS17-010 patch (2017-03-14):** Microsoft issued security update MS17-010, addressing the SMBv1 vulnerabilities that EternalBlue and related tools exploit. Systems that applied this update before the April 14 release were protected.
+### Stage 3: Researcher analysis (August–September 2016)
 
-6. **"Lost in Translation" release (2017-04-14):** Shadow Brokers published a second major archive containing EternalBlue, DoublePulsar, and related Windows exploits. The archive reached a broad audience and was analyzed publicly within hours.
+Security firms analyzed the released material. Ars Technica reported researcher findings of code overlaps with Equation Group artifacts. Kaspersky documented these characteristics in subsequent threat intelligence output.
 
-7. **Vendor and government triage (2017-04-14 to 2017-04-15):** Cisco Talos published analysis of the April release on April 14. Microsoft MSRC published guidance confirming existing patch coverage and urging organizations to apply MS17-010. CISA issued an alert on April 15 directing attention to the release and available mitigations.
+### Stage 4: Continued staged releases (late 2016–early 2017)
 
-8. **Downstream exploitation (May–June 2017):** EternalBlue was incorporated into attack tooling used in the WannaCry ransomware campaign beginning May 12, 2017, and in the NotPetya destructive event in June 2017. Microsoft and CISA both documented EternalBlue's role in WannaCry propagation.
+Shadow Brokers made additional releases over subsequent months, expanding the publicly available toolset.
+
+### Stage 5: MS17-010 patch (2017-03-14)
+
+Microsoft issued security update MS17-010, addressing the SMBv1 vulnerabilities that EternalBlue and related tools exploit. Systems that applied this update before the April 14 release were protected.
+
+### Stage 6: "Lost in Translation" release (2017-04-14)
+
+Shadow Brokers published a second major archive containing EternalBlue, DoublePulsar, and related Windows exploits. The archive reached a broad audience and was analyzed publicly within hours.
+
+### Stage 7: Vendor and government triage (2017-04-14 to 2017-04-15)
+
+Cisco Talos published analysis of the April release on April 14. Microsoft MSRC published guidance confirming existing patch coverage and urging organizations to apply MS17-010. CISA issued an alert on April 15 directing attention to the release and available mitigations.
+
+### Stage 8: Downstream exploitation (May–June 2017)
+
+EternalBlue was incorporated into attack tooling used in the WannaCry ransomware campaign beginning May 12, 2017, and in the NotPetya destructive event in June 2017. Microsoft and CISA both documented EternalBlue's role in WannaCry propagation.
 
 ## Impact Assessment
 

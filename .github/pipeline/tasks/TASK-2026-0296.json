@@ -87,16 +87,17 @@
     },
     {
       "timestamp": "2026-05-17T16:37:18.721Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
-      "agent": "dangermouse-bot",
+      "agent": "MahdiHedhli",
       "note": "Locked for execution"
     },
     {
       "timestamp": "2026-05-17T16:47:21.516Z",
       "from": "locked",
       "to": "pr_open",
-      "agent": "dangermouse-bot",
+      "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #773"
     }
