@@ -7,6 +7,9 @@ import yaml from 'js-yaml';
 
 import {
   SCHEMA_CANONICAL_PUBLISHER_ALIASES,
+  SCHEMA_GENERATION_METADATA_FIELDS,
+  SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS,
+  SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS,
   SCHEMA_GENERATED_BY_VALUES,
   SCHEMA_MITRE_TACTICS,
   SCHEMA_REQUIRED_H2_BY_TYPE,
@@ -131,6 +134,40 @@ function parseFrontmatter(content) {
       body: content.slice(match[0].length),
     };
   }
+}
+
+function getGenerationMetadataIssues(value) {
+  if (value === undefined || value === null) return [];
+  const issues = [];
+
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    return ['generation must be an object when present'];
+  }
+
+  const allowedFields = new Set(SCHEMA_GENERATION_METADATA_FIELDS);
+  for (const field of Object.keys(value)) {
+    if (!allowedFields.has(field)) {
+      issues.push(`generation.${field} is not allowed`);
+    }
+  }
+
+  for (const field of SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS) {
+    if (typeof value[field] !== 'string' || value[field].trim() === '') {
+      issues.push(`generation.${field} is required when generation is present`);
+    }
+  }
+
+  for (const field of SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS) {
+    if (value[field] !== undefined && (typeof value[field] !== 'string' || value[field].trim() === '')) {
+      issues.push(`generation.${field} must be a non-empty string when present`);
+    }
+  }
+
+  if (typeof value.agent === 'string' && !SCHEMA_GENERATED_BY_VALUES.includes(value.agent.trim())) {
+    issues.push(`generation.agent "${value.agent}" is not in the allowed generatedBy set`);
+  }
+
+  return issues;
 }
 
 function getBodyH2Headings(body) {
@@ -327,6 +364,18 @@ function validateFile(file, newFiles) {
     detail: generatedBy || 'not found',
   });
   if (!SCHEMA_GENERATED_BY_VALUES.includes(generatedBy)) pass = false;
+
+  const generationIssues = getGenerationMetadataIssues(fm.generation);
+  checks.push({
+    name: 'generation model provenance',
+    pass: generationIssues.length === 0,
+    detail: fm.generation === undefined
+      ? 'not present (optional)'
+      : generationIssues.length
+        ? generationIssues.join(' · ')
+        : `${fm.generation.provider}/${fm.generation.model}`,
+  });
+  if (generationIssues.length) pass = false;
 
   const requiredH2 = SCHEMA_REQUIRED_H2_BY_TYPE[type] || [];
   const actualH2 = getBodyH2Headings(body);
