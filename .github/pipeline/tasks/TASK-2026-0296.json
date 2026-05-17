@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-17T14:55:12Z",
-  "updated": "2026-05-17T14:55:12Z",
+  "updated": "2026-05-17T15:08:08.085Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -34,7 +34,7 @@
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
-    "EDITORIAL-WORKFLOW-SPEC.md \u00a714A",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
     "site/src/content.config.ts",
     "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
   ],
@@ -68,6 +68,16 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Historical incident backlog seed from HIST-INC-017."
+    },
+    {
+      "timestamp": "2026-05-17T15:08:08.085Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #770 merged (ed41d7c)."
     }
-  ]
+  ],
+  "pr_number": 770,
+  "merged_at": "2026-05-17T15:08:08.085Z"
 }
