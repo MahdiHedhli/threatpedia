@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-17T00:56:46.373Z",
   "updated": "2026-05-17T04:36:37.039Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-17T02:39:49.999Z",
   "input": {
     "topic": "TRITON / TRISIS Safety-System Attack, 2017",
     "sources": [
@@ -85,6 +85,14 @@
       "to": "pending",
       "agent": "Kernel K",
       "note": "Requeued because PR #736 was a task-seed PR only; no article was created at the task output path."
+    },
+    {
+      "timestamp": "2026-05-17T02:39:50.000Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     },
     {
       "timestamp": "2026-05-17T04:36:37.039Z",
