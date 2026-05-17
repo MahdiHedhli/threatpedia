@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-17T10:47:43Z",
-  "updated": "2026-05-17T11:44:25.143Z",
+  "updated": "2026-05-17T12:22:55.257Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -87,8 +87,17 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #764"
+    },
+    {
+      "timestamp": "2026-05-17T12:22:55.257Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #764 merged (d8d8b1a)."
     }
   ],
   "pr_number": 764,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/764"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/764",
+  "merged_at": "2026-05-17T12:22:55.257Z"
 }
