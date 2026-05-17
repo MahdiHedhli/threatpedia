@@ -72,31 +72,31 @@ mitreMappings:
   - techniqueId: T1566.001
     techniqueName: Spearphishing Attachment
     tactic: Initial Access
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: confirmed
     evidence: The DOJ complaint describes spear-phishing messages sent to Bangladesh Bank employees and forensic evidence that payload links were downloaded inside the bank.
   - techniqueId: T1105
     techniqueName: Ingress Tool Transfer
     tactic: Command and Control
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: probable
     evidence: The DOJ complaint describes a backdoor in the Bangladesh Bank network that could transfer files, create archives, and execute files.
   - techniqueId: T1565.001
     techniqueName: Stored Data Manipulation
     tactic: Impact
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: probable
     evidence: BAE Systems described malware built to interact with local SWIFT Alliance Access software and help cover fraudulent payment activity.
   - techniqueId: T1565.002
     techniqueName: Transmitted Data Manipulation
     tactic: Impact
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: probable
     evidence: DOJ reporting described fraudulently authenticated SWIFT messages directing transfer activity through the New York Fed account.
   - techniqueId: T1657
     techniqueName: Financial Theft
     tactic: Impact
-    attackVersion: "v19"
+    attackVersion: "v19.0"
     confidence: confirmed
     evidence: DOJ and MITRE ATT&CK both describe the Bangladesh Bank operation as an $81 million theft tied to North Korean financial operations.
 ---
