@@ -73,6 +73,7 @@
     },
     {
       "timestamp": "2026-05-17T10:33:56.978Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "MahdiHedhli",
