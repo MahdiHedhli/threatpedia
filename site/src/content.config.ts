@@ -37,6 +37,14 @@ const generatedBy = z.enum([
   'zero-day-tracker',
 ]);
 
+const generationMetadata = z.object({
+  provider: z.string().min(1),
+  model: z.string().min(1),
+  tool: z.string().min(1).optional(),
+  agent: generatedBy.optional(),
+  promptProfile: z.string().min(1).optional(),
+}).strict();
+
 const mitreTactic = z.enum([
   'Reconnaissance',
   'Resource Development',
@@ -137,6 +145,7 @@ const incidents = defineCollection({
     confidenceGrade: confidenceGrade.default('C'),
     generatedBy: generatedBy,
     generatedDate: z.coerce.date(),
+    generation: generationMetadata.optional(),
 
     // References
     cves: z.array(z.string()).default([]),
@@ -182,6 +191,7 @@ const campaigns = defineCollection({
     confidenceGrade: confidenceGrade.default('C'),
     generatedBy: generatedBy,
     generatedDate: z.coerce.date(),
+    generation: generationMetadata.optional(),
 
     // References
     cves: z.array(z.string()).default([]),
@@ -261,6 +271,7 @@ const threatActors = defineCollection({
     reviewStatus: reviewStatus.default('draft_ai'),
     generatedBy: generatedBy.default('dangermouse-bot'),
     generatedDate: z.coerce.date().default(new Date()),
+    generation: generationMetadata.optional(),
 
     tags: z.array(z.string()).default([]),
 
@@ -295,6 +306,7 @@ const zeroDays = defineCollection({
     reviewStatus: reviewStatus.default('draft_ai'),
     generatedBy: generatedBy.default('dangermouse-bot'),
     generatedDate: z.coerce.date().default(new Date()),
+    generation: generationMetadata.optional(),
 
     // Relations
     relatedIncidents: z.array(z.string()).default([]),

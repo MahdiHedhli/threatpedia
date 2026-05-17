@@ -93,6 +93,26 @@ export const SCHEMA_GENERATED_BY_VALUES = Object.freeze([
 ]);
 
 /**
+ * Optional non-rendered article model provenance block.
+ * Authoritative shape: site/src/content.config.ts — const generationMetadata.
+ */
+export const SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS = Object.freeze([
+  'provider',
+  'model',
+]);
+
+export const SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS = Object.freeze([
+  'tool',
+  'agent',
+  'promptProfile',
+]);
+
+export const SCHEMA_GENERATION_METADATA_FIELDS = Object.freeze([
+  ...SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS,
+  ...SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS,
+]);
+
+/**
  * Exact H2 headings required per content type.
  * These are the canonical section names used for generation and validation.
  */
@@ -165,6 +185,11 @@ export const SCHEMA = Object.freeze({
   atlasVersionPattern: SCHEMA_ATLAS_VERSION_PATTERN,
   mitreTechniqueIdPattern: SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
   generatedByValues: SCHEMA_GENERATED_BY_VALUES,
+  generationMetadata: Object.freeze({
+    requiredFields: SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS,
+    optionalFields: SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS,
+    fields: SCHEMA_GENERATION_METADATA_FIELDS,
+  }),
   requiredH2ByType: SCHEMA_REQUIRED_H2_BY_TYPE,
   canonicalPublisherAliases: SCHEMA_CANONICAL_PUBLISHER_ALIASES,
 });
@@ -207,6 +232,18 @@ function selfTest() {
   for (const v of SCHEMA_GENERATED_BY_VALUES) {
     if (typeof v !== 'string' || !/^[a-z0-9_-]+$/.test(v)) {
       throw new Error(`SCHEMA_GENERATED_BY_VALUES element invalid: ${JSON.stringify(v)}`);
+    }
+  }
+
+  for (const required of ['provider', 'model']) {
+    if (!SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS.includes(required)) {
+      throw new Error(`SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS missing ${required}`);
+    }
+  }
+
+  for (const field of SCHEMA_GENERATION_METADATA_FIELDS) {
+    if (typeof field !== 'string' || !/^[A-Za-z][A-Za-z0-9]*$/.test(field)) {
+      throw new Error(`SCHEMA_GENERATION_METADATA_FIELDS element invalid: ${JSON.stringify(field)}`);
     }
   }
 
