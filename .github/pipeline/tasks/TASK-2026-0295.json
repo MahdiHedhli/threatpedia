@@ -68,14 +68,14 @@
       "action": "locked",
       "from": "pending",
       "to": "locked",
-      "agent": "Mahdi Hedhli",
+      "agent": "MahdiHedhli",
       "note": "Locked for execution"
     },
     {
       "timestamp": "2026-05-17T13:27:53.364Z",
       "from": "locked",
       "to": "pr_open",
-      "agent": "Mahdi Hedhli",
+      "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #768"
     }
