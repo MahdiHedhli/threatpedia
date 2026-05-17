@@ -42,7 +42,6 @@
     "min_h2_sections": 8,
     "min_mitre_mappings": 3,
     "review_status": "draft_ai",
-    "schema_validation": "pass",
     "astro_build": true
   },
   "depends_on": [],
