@@ -59,25 +59,25 @@ mitreMappings:
   - techniqueId: T1059.006
     techniqueName: Python
     tactic: Execution
-    attack-version: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: "CISA describes TRITON as using a custom Python script and four Python modules, and Mandiant describes trilog.exe as a Py2EXE-compiled Python script."
   - techniqueId: T1036
     techniqueName: Masquerading
     tactic: Stealth
-    attack-version: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: "Mandiant and MITRE describe TRITON as using the name trilog.exe to resemble legitimate Triconex software, while MITRE also describes inject.bin as masquerading as a standard compiled PowerPC program."
   - techniqueId: T1018
     techniqueName: Remote System Discovery
     tactic: Discovery
-    attack-version: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: "MITRE describes TRITON as capable of detecting Triconex controllers on the network by sending a UDP broadcast packet over port 1502."
   - techniqueId: T1495
     techniqueName: Firmware Corruption
     tactic: Impact
-    attack-version: v19
+    attackVersion: v19.0
     confidence: confirmed
     evidence: "CISA and MITRE describe TRITON as injecting payloads into Triconex controller firmware memory and enabling code execution or memory modification in the firmware region."
 ---
