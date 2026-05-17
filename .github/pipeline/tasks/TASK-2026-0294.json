@@ -1,0 +1,68 @@
+{
+  "task_id": "TASK-2026-0294",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-17T10:47:43Z",
+  "updated": "2026-05-17T10:47:43Z",
+  "source": "backfill",
+  "submitted_by": "Kernel K",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "RSA SecurID Breach",
+    "sources": [
+      "https://www.sec.gov/Archives/edgar/data/790070/000119312511070159/dex991.htm",
+      "https://www.sec.gov/Archives/edgar/data/790070/000119312511070159/dex992.htm",
+      "https://www.sec.gov/Archives/edgar/data/790070/000119312511212329/d10q.htm",
+      "https://news.lockheedmartin.com/2011-05-28-Lockheed-Martin-Customer-Program-and-Employee-Data-Secure",
+      "https://www.theregister.com/security/2011/04/04/rsa-explains-how-attackers-breached-its-systems/1047267",
+      "https://www.secureworks.com/blog/general-secureid-integrity"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-INC-008",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "year": "2011",
+      "related_follow_on_incident": "Lockheed Martin attempted intrusion, May 2011",
+      "severity": "high"
+    },
+    "notes": "Historical corpus P0 incident for the March 2011 RSA SecurID compromise. Draft as a bounded incident centered on RSA/EMC's disclosure that information related to SecurID was extracted, the customer remediation program, the reported spear-phishing/Flash exploit path, and the subsequent Lockheed Martin attempted intrusion context. Keep attribution conservative: describe RSA's and third-party reporting on advanced/nation-state-style tradecraft without asserting a named actor unless directly supported. Distinguish confirmed RSA compromise facts from later reporting and inference about SecurID seed material."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 3,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "no open PR, issue, task, or live-main article already covers the 2011 RSA SecurID compromise as a standalone incident",
+    "sources support a conservative distinction between confirmed RSA/EMC disclosure and later reporting about downstream token risk"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/rsa-securid-breach-2011.md",
+    "branch": "pipeline/TASK-2026-0294",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-17T10:47:43Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Historical incident backlog seed from HIST-INC-008."
+    }
+  ]
+}
