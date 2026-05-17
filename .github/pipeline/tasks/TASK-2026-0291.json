@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-17T04:07:47.674Z",
-  "updated": "2026-05-17T05:12:47.667Z",
+  "updated": "2026-05-17T06:21:13.491Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -65,7 +65,7 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "Kernel K",
+      "agent": "MahdiHedhli",
       "note": "Historical incident backlog seed from HIST-INC-014."
     },
     {
@@ -83,6 +83,24 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Requeued because PR #740 was a task-seed PR only; no article was created at the task output path."
+    },
+    {
+      "timestamp": "2026-05-17T06:15:36.636Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-17T06:21:13.490Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #745"
     }
-  ]
+  ],
+  "pr_number": 745,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/745"
 }
