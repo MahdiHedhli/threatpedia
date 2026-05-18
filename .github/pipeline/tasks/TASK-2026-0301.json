@@ -57,7 +57,7 @@
     "sources support a conservative distinction between China-linked infrastructure, suspected state involvement, and any later APT1/APT10 continuity claims"
   ],
   "output": {
-    "file_pattern": "site/src/content/campaigns/titan-rain-defense-government-espionage-campaign-2003-2006.md",
+    "file_pattern": "site/src/content/campaigns/titan-rain.md",
     "branch": "pipeline/TASK-2026-0301",
     "pr": true
   },
