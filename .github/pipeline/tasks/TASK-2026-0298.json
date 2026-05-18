@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-18T00:16:39Z",
-  "updated": "2026-05-18T04:48:47.140Z",
+  "updated": "2026-05-18T13:58:21.653Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -94,8 +94,17 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #782 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-18T13:58:21.653Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #782 merged (1f917ed)."
     }
   ],
   "pr_number": 782,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/782"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/782",
+  "merged_at": "2026-05-18T13:58:21.653Z"
 }
