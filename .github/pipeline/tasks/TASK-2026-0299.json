@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-18T07:30:05.833Z",
-  "updated": "2026-05-18T07:46:00.000Z",
+  "updated": "2026-05-18T08:32:54.175Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Kernel K",
+  "locked_at": "2026-05-18T08:32:54.174Z",
   "input": {
     "topic": "UNC6671 / BlackFile data extortion operation",
     "sources": [
@@ -63,6 +63,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Normalized task history agent metadata after Gemini review."
+    },
+    {
+      "timestamp": "2026-05-18T08:32:54.175Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
     }
   ]
 }
