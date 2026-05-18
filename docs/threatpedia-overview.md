@@ -27,7 +27,7 @@ Despite decades of documented cyber incidents, no authoritative, neutral, open r
 
 - Covers the full historical record of significant incidents across sectors and geographies
 - Applies a consistent, peer-reviewed data schema to every event
-- Maps incidents to schema-backed MITRE ATT&CK Enterprise v19.0, with MITRE ATLAS added only when evidence supports adversarial AI/ML behavior; NIST CSF and Kill Chain mapping remain planned integrations
+- Maps incidents to schema-backed MITRE ATT&CK Enterprise v19.0, with MITRE ATLAS added only when evidence supports adversarial AI/ML behavior; NIST CSF and Cyber Kill Chain remain planned integrations
 - Tracks Advanced Persistent Threat groups with canonical naming across vendor taxonomies
 - Provides citation-quality sources for researchers, journalists, and policymakers
 - Surfaces trend data and enables cross-incident research at scale
@@ -116,7 +116,7 @@ Every Threatpedia record — whether an incident or an APT profile — captures 
 | MITRE ATT&CK | Schema-backed ATT&CK Enterprise v19.0 TTPs with confidence level per technique |
 | MITRE ATLAS | Optional adversarial AI/ML mappings when article evidence supports them |
 | Kill Chain Stage(s) | Planned mapping to Lockheed Martin Cyber Kill Chain stages |
-| NIST Function(s) | Planned Identify / Protect / Detect / Respond / Recover mapping |
+| NIST Function(s) | Planned Govern / Identify / Protect / Detect / Respond / Recover mapping |
 | Diamond Model | Completed adversary diamond for the event |
 | Malware / Tools Used | Links to malware registry entries |
 | CVEs Exploited | Linked CVE records with exploitation context |
@@ -154,7 +154,7 @@ Structured framework mapping is what elevates Threatpedia from an archive to an 
 ### Planned Frameworks
 
 - **Lockheed Martin Cyber Kill Chain** — Stage-level mapping for each event
-- **NIST Cybersecurity Framework** — Function-level mapping (Identify, Protect, Detect, Respond, Recover)
+- **NIST Cybersecurity Framework** — Function-level mapping (Govern, Identify, Protect, Detect, Respond, Recover)
 
 ### Phase 2 Frameworks
 
