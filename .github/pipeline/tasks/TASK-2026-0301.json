@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-18T11:37:39.541Z",
-  "updated": "2026-05-18T11:37:39.541Z",
+  "updated": "2026-05-18T12:23:41.118Z",
   "source": "backfill",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-18T12:23:41.117Z",
   "input": {
     "topic": "Titan Rain defense and government espionage campaign, 2003-2006",
     "sources": [
@@ -70,6 +70,13 @@
       "to": "pending",
       "agent": "threatpedia-soft-launch-corpus-worker",
       "note": "Historical campaign backlog seed from HIST-CAMP-002 after live dedup found no standalone Titan Rain campaign article, task, issue, or open PR."
+    },
+    {
+      "timestamp": "2026-05-18T12:23:41.118Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
