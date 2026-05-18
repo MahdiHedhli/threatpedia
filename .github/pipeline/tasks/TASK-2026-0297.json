@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-17T19:16:29Z",
-  "updated": "2026-05-17T21:11:57.517Z",
+  "updated": "2026-05-18T13:17:43.992Z",
   "source": "manual_submission",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
   "locked_by": null,
@@ -97,8 +97,17 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #779 already covers this task."
+    },
+    {
+      "timestamp": "2026-05-18T13:17:43.992Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #779 merged (b036fb1)."
     }
   ],
   "pr_number": 779,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/779"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/779",
+  "merged_at": "2026-05-18T13:17:43.992Z"
 }
