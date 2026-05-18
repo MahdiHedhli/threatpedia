@@ -88,8 +88,8 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 ### Incident Record — Optional Fields
 | Field | Description |
 |---|---|
-| MITRE ATT&CK Techniques | Schema-backed ATT&CK Enterprise v19.0 TTPs with confidence level |
-| MITRE ATLAS Techniques | Optional AI/ML adversarial techniques when evidence shows an AI system is target, tool, or bypassed control |
+| MITRE ATT&CK | Schema-backed ATT&CK Enterprise v19.0 TTPs with confidence level |
+| MITRE ATLAS | Optional AI/ML adversarial techniques when evidence shows an AI system is target, tool, or bypassed control |
 | Kill Chain Stage(s) | Planned Lockheed Martin Cyber Kill Chain mapping |
 | NIST Function(s) | Planned Govern / Identify / Protect / Detect / Respond / Recover mapping |
 | Diamond Model | Completed diamond for the event |
