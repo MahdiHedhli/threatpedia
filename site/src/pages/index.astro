@@ -1,13 +1,31 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { resolveGeoPoints, summarizeGeo, type GeoPoint } from '../lib/geo';
+import { WORLD_LAND_PATHS, WORLD_MAP_VIEWBOX } from '../lib/worldMapPaths';
 
-const incidents = await getCollection('incidents');
-const campaigns = await getCollection('campaigns');
-const actors = await getCollection('threat-actors');
-const zeroDays = await getCollection('zero-days');
+type AttackType = 'incident' | 'campaign' | 'zero-day';
 
-// Build unified "latest intel" feed from all collections, sorted by date (newest first)
+interface AttackRecord {
+  title: string;
+  href: string;
+  type: AttackType;
+  date: Date;
+  severity: string;
+  geography: string;
+  descriptor: string;
+}
+
+interface MapAttack extends AttackRecord {
+  index: number;
+  dateLabel: string;
+  typeLabel: string;
+  geoLabel: string;
+  point: GeoPoint;
+  x: number;
+  y: number;
+}
+
 interface IntelItem {
   title: string;
   date: string;
@@ -17,105 +35,314 @@ interface IntelItem {
   tags: string[];
 }
 
+const [incidents, campaigns, actors, zeroDays] = await Promise.all([
+  getCollection('incidents'),
+  getCollection('campaigns'),
+  getCollection('threat-actors'),
+  getCollection('zero-days'),
+]);
+
+const map = WORLD_MAP_VIEWBOX;
+
+const globalAnchors: GeoPoint[] = [
+  { label: 'Global', lat: 47, lon: -130, kind: 'global' },
+  { label: 'Global', lat: 18, lon: -58, kind: 'global' },
+  { label: 'Global', lat: 52, lon: 12, kind: 'global' },
+  { label: 'Global', lat: 22, lon: 82, kind: 'global' },
+  { label: 'Global', lat: -22, lon: 135, kind: 'global' },
+  { label: 'Global', lat: -16, lon: -65, kind: 'global' },
+];
+
+const attackRecords: AttackRecord[] = [
+  ...incidents.map((entry) => ({
+    title: entry.data.title,
+    href: `/incidents/${entry.id}/`,
+    type: 'incident' as const,
+    date: entry.data.date,
+    severity: entry.data.severity,
+    geography: entry.data.geography,
+    descriptor: entry.data.attackType,
+  })),
+  ...campaigns.map((entry) => ({
+    title: entry.data.title,
+    href: `/campaigns/${entry.id}/`,
+    type: 'campaign' as const,
+    date: entry.data.endDate || entry.data.startDate,
+    severity: entry.data.severity,
+    geography: entry.data.geography,
+    descriptor: entry.data.attackType,
+  })),
+  ...zeroDays.map((entry) => ({
+    title: entry.data.title,
+    href: `/zero-days/${entry.id}/`,
+    type: 'zero-day' as const,
+    date: entry.data.disclosedDate || entry.data.patchDate || entry.data.generatedDate,
+    severity: entry.data.severity,
+    geography: 'Global',
+    descriptor: entry.data.platform,
+  })),
+].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const latestAttacks: MapAttack[] = attackRecords.slice(0, 15).map((attack, index) => {
+  const points = resolveGeoPoints(attack.geography);
+  const geoLabel = summarizeGeo(points, attack.geography);
+  const point = points[0].kind === 'global' || points[0].kind === 'unknown'
+    ? { ...globalAnchors[index % globalAnchors.length], kind: points[0].kind }
+    : points[0];
+  const projected = project(point.lat, point.lon, index);
+
+  return {
+    ...attack,
+    index,
+    dateLabel: attack.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    typeLabel: typeLabel(attack.type),
+    geoLabel,
+    point,
+    x: projected.x,
+    y: projected.y,
+  };
+});
+
+const newest = latestAttacks[0];
+const oldest = latestAttacks[latestAttacks.length - 1];
+const latitudeLines = [-60, -30, 0, 30, 60].map((lat) => ({ lat, y: project(lat, 0, 0, false).y }));
+const longitudeLines = [-120, -60, 0, 60, 120].map((lon) => ({ lon, x: project(0, lon, 0, false).x }));
+const severityCounts = latestAttacks.reduce<Record<string, number>>((counts, attack) => {
+  counts[attack.severity] = (counts[attack.severity] || 0) + 1;
+  return counts;
+}, {});
+
+const publicAttackData = latestAttacks.map((attack) => ({
+  index: attack.index,
+  title: attack.title,
+  href: attack.href,
+  typeLabel: attack.typeLabel,
+  dateLabel: attack.dateLabel,
+  severity: attack.severity,
+  geoLabel: attack.geoLabel,
+  descriptor: attack.descriptor,
+  x: attack.x,
+  y: attack.y,
+}));
+
 const latestIntel: IntelItem[] = [];
 
-incidents.forEach((i) => {
-  const iDate = i.data.date || new Date();
+incidents.forEach((entry) => {
+  const date = entry.data.date || new Date();
   latestIntel.push({
-    title: i.data.title,
-    date: iDate instanceof Date ? iDate.toISOString() : iDate,
-    href: `/incidents/${i.id}/`,
+    title: entry.data.title,
+    date: date instanceof Date ? date.toISOString() : date,
+    href: `/incidents/${entry.id}/`,
     type: 'INCIDENT',
-    severity: i.data.severity,
-    tags: [i.data.attackType, i.data.sector].filter((t) => t && t.toLowerCase() !== 'unknown'),
+    severity: entry.data.severity,
+    tags: [entry.data.attackType, entry.data.sector].filter((tag) => tag && tag.toLowerCase() !== 'unknown'),
   });
 });
 
-campaigns.forEach((c) => {
-  const cDate = c.data.startDate || new Date();
+campaigns.forEach((entry) => {
+  const date = entry.data.startDate || new Date();
   latestIntel.push({
-    title: c.data.title,
-    date: cDate instanceof Date ? cDate.toISOString() : cDate,
-    href: `/campaigns/${c.id}/`,
+    title: entry.data.title,
+    date: date instanceof Date ? date.toISOString() : date,
+    href: `/campaigns/${entry.id}/`,
     type: 'CAMPAIGN',
-    severity: c.data.severity,
-    tags: [c.data.sector].filter((t) => t && t.toLowerCase() !== 'unknown'),
+    severity: entry.data.severity,
+    tags: [entry.data.sector].filter((tag) => tag && tag.toLowerCase() !== 'unknown'),
   });
 });
 
-actors.forEach((a) => {
-  // lastSeen/firstSeen are strings like "2026" or "2026-01" — coerce to sortable date
-  const dateStr = a.data.lastSeen || a.data.firstSeen || '2000-01-01';
+actors.forEach((entry) => {
+  const date = entry.data.lastSeen || entry.data.firstSeen || '2000-01-01';
   latestIntel.push({
-    title: a.data.name,
-    date: dateStr.length === 4 ? `${dateStr}-01-01` : dateStr.length === 7 ? `${dateStr}-01` : dateStr,
-    href: `/threat-actors/${a.id}/`,
+    title: entry.data.name,
+    date: date.length === 4 ? `${date}-01-01` : date.length === 7 ? `${date}-01` : date,
+    href: `/threat-actors/${entry.id}/`,
     type: 'THREAT ACTOR',
     severity: 'high',
-    tags: [a.data.affiliation, a.data.motivation].filter((t) => t && t.toLowerCase() !== 'unknown'),
+    tags: [entry.data.affiliation, entry.data.motivation].filter((tag) => tag && tag.toLowerCase() !== 'unknown'),
   });
 });
 
-zeroDays.forEach((z) => {
-  // disclosedDate is a Date object; fall back to generatedDate
-  const zDate = z.data.disclosedDate || z.data.generatedDate || new Date();
+zeroDays.forEach((entry) => {
+  const date = entry.data.disclosedDate || entry.data.generatedDate || new Date();
   latestIntel.push({
-    title: z.data.title,
-    date: zDate instanceof Date ? zDate.toISOString() : zDate,
-    href: `/zero-days/${z.id}/`,
+    title: entry.data.title,
+    date: date instanceof Date ? date.toISOString() : date,
+    href: `/zero-days/${entry.id}/`,
     type: 'ZERO-DAY',
-    severity: z.data.severity,
-    tags: [z.data.platform, z.data.status].filter((t) => t && t.toLowerCase() !== 'unknown'),
+    severity: entry.data.severity,
+    tags: [entry.data.platform, entry.data.status].filter((tag) => tag && tag.toLowerCase() !== 'unknown'),
   });
 });
 
 latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+function project(lat: number, lon: number, index: number, jitter = true) {
+  const rawX = ((lon + 180) / 360) * map.width;
+  const rawY = ((90 - lat) / 180) * map.height;
+  const offset = jitter ? ((index % 5) - 2) * 3.5 : 0;
+
+  return {
+    x: Math.round(clamp(rawX + offset, 18, map.width - 18) * 10) / 10,
+    y: Math.round(clamp(rawY - offset, 18, map.height - 18) * 10) / 10,
+  };
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function typeLabel(type: AttackType) {
+  if (type === 'zero-day') return 'Zero-day';
+  if (type === 'campaign') return 'Campaign';
+  return 'Incident';
+}
 ---
 
 <Base title="Home">
-  <!-- ── HERO ──────────────────────────────────────────────────────────── -->
-  <section class="hero">
-    <div class="hero-eyebrow">Threat Intelligence &middot; Historical Record &middot; Peer Reviewed</div>
-    <h1 class="hero-title">The <em>Cyber Threat</em><br/>Encyclopedia</h1>
-    <div class="hero-sub">Building an open, structured record of cyber history</div>
-    <p class="hero-desc">
-      <strong>Threatpedia</strong> is a Wikipedia-style platform with the goal of documenting every significant
-      cyber event, attack campaign, and threat actor in history. Peer-reviewed by a board of
-      cyber historians, intelligence analysts, subject matter experts, and augmented by AI.
-    </p>
-    <div class="stats-bar">
-      <a href="/incidents/" class="stat" aria-label="Browse incidents">
-        <div class="stat-value">{incidents.length}</div>
-        <div class="stat-label">Events Catalogued</div>
-      </a>
-      <a href="/campaigns/" class="stat" aria-label="Browse campaigns">
-        <div class="stat-value">{campaigns.length}</div>
-        <div class="stat-label">Campaigns Tracked</div>
-      </a>
-      <a href="/threat-actors/" class="stat" aria-label="Browse threat actors">
-        <div class="stat-value">{actors.length}</div>
-        <div class="stat-label">APT Groups Tracked</div>
-      </a>
-      <a href="/zero-days/" class="stat" aria-label="Browse zero-days">
-        <div class="stat-value">{zeroDays.length}</div>
-        <div class="stat-label">Zero-Days Tracked</div>
-      </a>
+  <section class="map-hero" data-homepage-map>
+    <div class="hero-copy">
+      <div class="hero-eyebrow">Threat Intelligence &middot; Historical Record &middot; Peer Reviewed</div>
+      <h1 class="hero-title">The <em>Cyber Threat</em><br/>Encyclopedia</h1>
+      <div class="hero-sub">Building an open, structured record of cyber history</div>
+    </div>
+
+    <div class="map-feature">
+      <div class="map-card">
+        <div class="map-card-head">
+          <div>
+            <span>Last 15 attacks</span>
+            <strong>{oldest?.dateLabel} to {newest?.dateLabel}</strong>
+          </div>
+          <div class="map-metrics" aria-label="Latest attack map metrics">
+            <span>{latestAttacks.length} records</span>
+            <span>{Object.keys(severityCounts).length} severity bands</span>
+          </div>
+        </div>
+
+        <svg class="attack-map" viewBox={`0 0 ${map.width} ${map.height}`} role="img" aria-labelledby="home-map-title home-map-desc">
+          <title id="home-map-title">Latest attacks mapped on a Threatpedia world map</title>
+          <desc id="home-map-desc">The latest 15 corpus attack records are plotted by recorded geography and highlighted one at a time.</desc>
+          <defs>
+            <linearGradient id="home-map-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#111924" />
+              <stop offset="58%" stop-color="#0b1118" />
+              <stop offset="100%" stop-color="#06080c" />
+            </linearGradient>
+            <filter id="home-pin-glow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <rect class="map-ocean" x="0" y="0" width={map.width} height={map.height} rx="18" />
+          <g class="map-grid" aria-hidden="true">
+            {longitudeLines.map((line) => <line x1={line.x} y1="0" x2={line.x} y2={map.height} />)}
+            {latitudeLines.map((line) => <line x1="0" y1={line.y} x2={map.width} y2={line.y} />)}
+          </g>
+          <g class="land-masses" aria-hidden="true">
+            {WORLD_LAND_PATHS.map((path) => <path d={path} />)}
+          </g>
+          <rect class="map-border" x="0.5" y="0.5" width={map.width - 1} height={map.height - 1} rx="18" />
+          <line
+            class="active-spoke"
+            data-active-spoke
+            x1={map.width / 2}
+            y1={map.height / 2}
+            x2={newest?.x}
+            y2={newest?.y}
+          />
+          <g class="attack-pins">
+            {latestAttacks.map((attack) => (
+              <a
+                href={attack.href}
+                class={`map-pin severity-${attack.severity}${attack.index === 0 ? ' is-active' : ''}`}
+                data-attack-index={attack.index}
+                data-x={attack.x}
+                data-y={attack.y}
+                aria-label={`${attack.index + 1}. ${attack.title}, ${attack.dateLabel}, ${attack.geoLabel}`}
+              >
+                <circle class="pin-pulse" cx={attack.x} cy={attack.y} r="16" />
+                <circle class="pin-hit" cx={attack.x} cy={attack.y} r="15" />
+                <circle class="pin-dot" cx={attack.x} cy={attack.y} r="5.5" />
+                <text x={attack.x} y={attack.y - 19}>{String(attack.index + 1).padStart(2, '0')}</text>
+              </a>
+            ))}
+          </g>
+        </svg>
+
+        <div class="active-readout">
+          <div class="readout-meta">
+            <span data-active-type>{newest?.typeLabel}</span>
+            <span data-active-date>{newest?.dateLabel}</span>
+            <span data-active-geo>{newest?.geoLabel}</span>
+          </div>
+          <a href={newest?.href} data-active-title>{newest?.title}</a>
+          <p data-active-detail>{newest?.descriptor} / {newest?.severity}</p>
+        </div>
+      </div>
+
+      <aside class="attack-panel" aria-label="Latest 15 attack records">
+        <div class="panel-head">
+          <span>Latest attacks</span>
+          <strong>By corpus date</strong>
+        </div>
+        <div class="attack-list" tabindex="0" aria-label="Scrollable list of latest attacks">
+          {latestAttacks.map((attack) => (
+            <a
+              href={attack.href}
+              class={`attack-row severity-${attack.severity}${attack.index === 0 ? ' is-active' : ''}`}
+              data-attack-row
+              data-attack-index={attack.index}
+            >
+              <span class="attack-rank">{String(attack.index + 1).padStart(2, '0')}</span>
+              <span class="attack-copy">
+                <span class="attack-title">{attack.title}</span>
+                <span class="attack-meta">{attack.dateLabel} / {attack.typeLabel} / {attack.geoLabel}</span>
+              </span>
+              <span class="attack-severity">{attack.severity}</span>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+
+    <div class="hero-support">
+      <div class="phase-disclosure">
+        <div class="phase-disclosure-headline">
+          <span class="phase-disclosure-dot" aria-hidden="true"></span>
+          <strong>Phase 0 &mdash; in active development.</strong>
+        </div>
+        <div class="phase-disclosure-body">
+          Every article carries its review status. New entries are AI-drafted and peer-reviewed before certification.
+        </div>
+        <a class="phase-disclosure-link" href="/roadmap/#how-we-verify">How we verify &rarr;</a>
+      </div>
+
+      <div class="stats-bar">
+        <a href="/incidents/" class="stat" aria-label="Browse incidents">
+          <div class="stat-value">{incidents.length}</div>
+          <div class="stat-label">Events Catalogued</div>
+        </a>
+        <a href="/campaigns/" class="stat" aria-label="Browse campaigns">
+          <div class="stat-value">{campaigns.length}</div>
+          <div class="stat-label">Campaigns Tracked</div>
+        </a>
+        <a href="/threat-actors/" class="stat" aria-label="Browse threat actors">
+          <div class="stat-value">{actors.length}</div>
+          <div class="stat-label">APT Groups Tracked</div>
+        </a>
+        <a href="/zero-days/" class="stat" aria-label="Browse zero-days">
+          <div class="stat-value">{zeroDays.length}</div>
+          <div class="stat-label">Zero-Days Tracked</div>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- ── PHASE 0 DISCLOSURE ────────────────────────────────────────────── -->
-  <div class="phase-disclosure">
-    <div class="phase-disclosure-headline">
-      <span class="phase-disclosure-dot" aria-hidden="true"></span>
-      <strong>Phase 0 &mdash; in active development.</strong>
-    </div>
-    <div class="phase-disclosure-body">
-      Every article carries its review status. New entries are AI-drafted and peer-reviewed before certification.
-    </div>
-    <a class="phase-disclosure-link" href="/roadmap/#how-we-verify">How we verify &rarr;</a>
-  </div>
-
-  <!-- ── TICKER ────────────────────────────────────────────────────────── -->
   <div class="ticker">
     <div class="ticker-item">Peer-Reviewed Articles</div>
     <div class="ticker-item">MITRE ATT&CK Mapping</div>
@@ -126,87 +353,84 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     <div class="ticker-item">Open Research Access</div>
   </div>
 
-  <!-- ── PILLARS ───────────────────────────────────────────────────────── -->
   <section class="pillars">
     <div class="section-hdr">
       <span class="section-tag">What We're Building</span>
       <div class="section-line"></div>
     </div>
     <div class="pillars-grid">
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 01</div>
         <h3>Incident Encyclopedia</h3>
-        <p>Every significant cyber event documented with standardized data points — TTPs, timeline, attribution, impact, affected sectors, and source citations.</p>
+        <p>Every significant cyber event documented with standardized data points &mdash; TTPs, timeline, attribution, impact, affected sectors, and source citations.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 02</div>
         <h3>APT Registry</h3>
         <p>Current and historical Advanced Persistent Threat groups tracked with profiles, known campaigns, tooling, state affiliation, and activity timelines.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 03</div>
         <h3>Framework Mapping</h3>
-        <p>Incidents use schema-backed MITRE ATT&amp;CK Enterprise v19.0 mappings, with optional MITRE ATLAS when evidence shows adversarial AI/ML behavior. NIST CSF and Cyber Kill Chain are planned integrations.</p>
+        <p>Incidents mapped to MITRE ATT&CK, NIST, Cyber Kill Chain, and more &mdash; enabling cross-incident trend analysis and data-driven research.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 04</div>
         <h3>Peer Review &amp; Certification</h3>
-        <p>A board of cyber historians, reporters, and SMEs reviews submissions. Approved articles earn the Threatpedia seal — a mark of verified accuracy.</p>
+        <p>A board of cyber historians, reporters, and SMEs reviews submissions. Approved articles earn the Threatpedia seal &mdash; a mark of verified accuracy.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 05</div>
         <h3>Trend Analytics</h3>
-        <p>Structured data across all incidents enables trend analysis by sector, vector, actor type, geography, and time — powering original research.</p>
+        <p>Structured data across all incidents enables trend analysis by sector, vector, actor type, geography, and time &mdash; powering original research.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// 06</div>
         <h3>AI-Augmented Workflow</h3>
-        <p>AI assists with aggregating news sources, flagging potential incidents, pre-screening articles, and surfacing related events — accelerating human reviewers.</p>
+        <p>AI assists with aggregating news sources, flagging potential incidents, pre-screening articles, and surfacing related events &mdash; accelerating human reviewers.</p>
       </a>
     </div>
   </section>
 
-  <!-- ── LIVE RESOURCES ────────────────────────────────────────────────── -->
-  <section class="pillars" style="padding-top:0;">
+  <section class="pillars is-live-resources">
     <div class="section-hdr">
-      <span class="section-tag">Live Resources — Available Now</span>
+      <span class="section-tag">Live Resources &mdash; Available Now</span>
       <div class="section-line"></div>
     </div>
     <div class="pillars-grid">
-      <a href="/incidents/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/incidents/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Incident Reports</h3>
-        <p>In-depth intelligence dossiers on major cyber incidents — from supply chain attacks to nation-state operations. Full IOCs, timelines, and remediation guidance.</p>
+        <p>In-depth intelligence dossiers on major cyber incidents &mdash; from supply chain attacks to nation-state operations. Full IOCs, timelines, and remediation guidance.</p>
       </a>
-      <a href="/campaigns/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/campaigns/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Campaign Dossiers</h3>
-        <p>Ongoing multi-event operations and persistent threat campaigns — tracked with attribution, TTPs, related incidents, and timeline data.</p>
+        <p>Ongoing multi-event operations and persistent threat campaigns &mdash; tracked with attribution, TTPs, related incidents, and timeline data.</p>
       </a>
-      <a href="/threat-actors/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/threat-actors/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Threat Actor Registry</h3>
         <p>{actors.length} tracked APT groups with cross-vendor naming, nation-state attribution, known campaigns, and associated tooling. Filterable and searchable.</p>
       </a>
-      <a href="/zero-days/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/zero-days/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Zero-Day Exploits</h3>
         <p>{zeroDays.length} tracked zero-day vulnerabilities with CVEs, platform details, patch status, and links to related incidents and threat actors.</p>
       </a>
-      <a href="/glossary/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/glossary/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Glossary</h3>
-        <p>1,000+ cybersecurity terms defined and tagged by role — from SOC analysts to CISOs. Searchable, filterable, and continuously expanding.</p>
+        <p>1,000+ cybersecurity terms defined and tagged by role &mdash; from SOC analysts to CISOs. Searchable, filterable, and continuously expanding.</p>
       </a>
-      <a href="/roadmap/" class="pillar" style="text-decoration:none; cursor:pointer;">
+      <a href="/roadmap/" class="pillar">
         <div class="pillar-num">// LIVE</div>
         <h3>Roadmap</h3>
-        <p>Where Threatpedia is headed — planned features, framework integrations, data pipeline milestones, and community tools. Updated in real time.</p>
+        <p>Where Threatpedia is headed &mdash; planned features, framework integrations, data pipeline milestones, and community tools. Updated in real time.</p>
       </a>
     </div>
   </section>
 
-  <!-- ── LATEST THREAT INTEL ─────────────────────────────────────────── -->
   <section class="recent-incidents">
     <div class="section-hdr">
       <span class="section-tag">Latest Threat Intel</span>
@@ -236,50 +460,140 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
       ))}
     </div>
   </section>
+
+  <script type="application/json" id="homepage-map-data" set:html={JSON.stringify(publicAttackData)} />
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-homepage-map]');
+      const dataEl = document.getElementById('homepage-map-data');
+      if (!root || !dataEl) return;
+
+      const attacks = JSON.parse(dataEl.textContent || '[]');
+      const pins = [...root.querySelectorAll('.map-pin')];
+      const rows = [...root.querySelectorAll('[data-attack-row]')];
+      const list = root.querySelector('.attack-list');
+      const spoke = root.querySelector('[data-active-spoke]');
+      const title = root.querySelector('[data-active-title]');
+      const type = root.querySelector('[data-active-type]');
+      const date = root.querySelector('[data-active-date]');
+      const geo = root.querySelector('[data-active-geo]');
+      const detail = root.querySelector('[data-active-detail]');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let activeIndex = 0;
+      let timer = null;
+
+      function syncAttackList(index) {
+        if (!list || !list.clientHeight) return;
+        const activeRow = rows.find((node) => Number(node.dataset.attackIndex) === index);
+        if (!activeRow || !activeRow.offsetHeight) return;
+
+        const rowsPerPanel = Math.max(1, Math.floor(list.clientHeight / activeRow.offsetHeight));
+        const pageStart = Math.floor(index / rowsPerPanel) * rowsPerPanel;
+        const pageRow = rows.find((node) => Number(node.dataset.attackIndex) === pageStart);
+        if (!pageRow) return;
+
+        const maxScrollTop = Math.max(0, list.scrollHeight - list.clientHeight);
+        const targetTop = Math.min(pageRow.offsetTop, maxScrollTop);
+        if (Math.abs(list.scrollTop - targetTop) < 4) return;
+
+        list.scrollTo({
+          top: targetTop,
+          behavior: reduceMotion ? 'auto' : 'smooth',
+        });
+      }
+
+      function setActive(index) {
+        const attack = attacks[index];
+        if (!attack) return;
+        activeIndex = index;
+
+        pins.forEach((node) => node.classList.toggle('is-active', Number(node.dataset.attackIndex) === index));
+        rows.forEach((node) => node.classList.toggle('is-active', Number(node.dataset.attackIndex) === index));
+        syncAttackList(index);
+
+        if (spoke) {
+          spoke.setAttribute('x2', attack.x);
+          spoke.setAttribute('y2', attack.y);
+        }
+        if (title) {
+          title.textContent = attack.title;
+          title.setAttribute('href', attack.href);
+        }
+        if (type) type.textContent = attack.typeLabel;
+        if (date) date.textContent = attack.dateLabel;
+        if (geo) geo.textContent = attack.geoLabel;
+        if (detail) detail.textContent = `${attack.descriptor} / ${attack.severity}`;
+      }
+
+      function startCycle() {
+        if (reduceMotion || timer || attacks.length < 2) return;
+        timer = window.setInterval(() => setActive((activeIndex + 1) % attacks.length), 2600);
+      }
+
+      function stopCycle() {
+        if (!timer) return;
+        window.clearInterval(timer);
+        timer = null;
+      }
+
+      pins.concat(rows).forEach((node) => {
+        node.addEventListener('mouseenter', () => {
+          stopCycle();
+          setActive(Number(node.dataset.attackIndex));
+        });
+        node.addEventListener('focus', () => {
+          stopCycle();
+          setActive(Number(node.dataset.attackIndex));
+        });
+      });
+
+      root.addEventListener('mouseleave', startCycle);
+      startCycle();
+    })();
+  </script>
 </Base>
 
 <style>
-  /* ── Hero ────────────────────────────────────────────────────────────── */
-  .hero {
+  .map-hero {
     position: relative;
     z-index: 1;
-    min-height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 20px 0 32px;
     max-width: 1200px;
+    padding: 18px 0 36px;
+  }
+
+  .hero-copy {
+    width: 100%;
+    max-width: none;
+    margin-bottom: 30px;
   }
 
   .hero-eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.3em;
     color: var(--amber);
     text-transform: uppercase;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     display: flex;
     align-items: center;
     gap: 16px;
-    animation: fadeUp 0.7s ease both;
   }
 
   .hero-eyebrow::before {
     content: '';
-    width: 40px; height: 1px;
+    width: 40px;
+    height: 1px;
     background: var(--amber);
     flex-shrink: 0;
   }
 
   .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-weight: 900;
-    font-size: clamp(3.5rem, 8.5vw, 7.5rem);
+    font-size: clamp(3.7rem, 8.4vw, 7.25rem);
     line-height: 0.95;
     color: var(--white);
-    letter-spacing: -0.02em;
-    margin-bottom: 20px;
-    animation: fadeUp 0.7s 0.08s ease both;
+    margin-bottom: 18px;
     border-bottom: none;
     padding-bottom: 0;
   }
@@ -290,30 +604,20 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .hero-sub {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     letter-spacing: 0.18em;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 28px;
-    animation: fadeUp 0.7s 0.16s ease both;
+    margin-bottom: 0;
   }
 
-  .hero-desc {
-    max-width: 560px;
-    font-size: 1.05rem;
-    color: var(--text);
-    line-height: 1.85;
-    margin-bottom: 36px;
-    animation: fadeUp 0.7s 0.24s ease both;
-  }
-
-  /* ── Stats bar ──────────────────────────────────────────────────────── */
   .stats-bar {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     border: 1px solid var(--border);
-    max-width: 680px;
-    animation: fadeUp 0.7s 0.32s ease both;
+    max-width: none;
+    margin-top: 18px;
   }
 
   .stat {
@@ -326,24 +630,19 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     transition: background 0.2s;
   }
 
-  .stat:last-child { border-right: none; }
+  .stat:last-child {
+    border-right: 0;
+  }
 
   .stat:hover {
     background: rgba(232, 160, 32, 0.04);
     outline: 1px solid var(--amber-dim);
     outline-offset: -1px;
-    position: relative;
-    z-index: 1;
     text-decoration: none;
   }
 
-  .stat:focus-visible {
-    outline: 1px solid var(--amber);
-    outline-offset: -1px;
-  }
-
   .stat-value {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.75rem;
     color: var(--amber);
     line-height: 1;
@@ -351,26 +650,25 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .stat-label {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.6rem;
     letter-spacing: 0.15em;
     color: var(--muted);
     text-transform: uppercase;
   }
 
-  /* ── Phase 0 disclosure banner ──────────────────────────────────────── */
   .phase-disclosure {
-    position: relative; z-index: 1;
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    max-width: 1200px;
-    margin: 32px auto 0;
+    margin: 0;
     padding: 24px;
     background: rgba(232, 160, 32, 0.04);
     border: 1px solid rgba(232, 160, 32, 0.2);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--text);
@@ -385,14 +683,16 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .phase-disclosure-dot {
-    width: 8px; height: 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--amber);
     box-shadow: 0 0 8px rgba(232, 160, 32, 0.5);
     flex-shrink: 0;
   }
 
-  .phase-disclosure-headline strong {
+  .phase-disclosure-headline strong,
+  .phase-disclosure-link {
     color: var(--amber);
     font-weight: 500;
   }
@@ -403,21 +703,371 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     max-width: 720px;
   }
 
-  .phase-disclosure-link {
+  .hero-support {
+    margin-top: 24px;
+  }
+
+  .pillars {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+  }
+
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .map-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 382px);
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .map-card,
+  .attack-panel {
+    border: 1px solid var(--border);
+    background: rgba(13, 17, 23, 0.82);
+  }
+
+  .map-card {
+    display: flex;
+    flex-direction: column;
+    height: 650px;
+    padding: 20px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  }
+
+  .map-card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .map-card-head span,
+  .map-metrics,
+  .panel-head span,
+  .panel-head strong,
+  .readout-meta span,
+  .attack-severity {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .map-card-head span,
+  .panel-head span,
+  .readout-meta span {
+    color: var(--amber);
+  }
+
+  .map-card-head strong {
+    display: block;
+    margin-top: 6px;
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+
+  .map-metrics {
+    display: flex;
+    gap: 10px;
+    color: var(--muted);
+  }
+
+  .map-metrics span {
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+  }
+
+  .attack-map {
+    flex: 0 1 auto;
+    display: block;
+    width: 100%;
+    max-height: 390px;
+    height: auto;
+    margin: 20px auto 16px;
+  }
+
+  .map-ocean {
+    fill: url(#home-map-fill);
+    stroke: rgba(232, 160, 32, 0.15);
+    stroke-width: 1;
+  }
+
+  .map-border {
+    fill: none;
+    stroke: rgba(232, 160, 32, 0.38);
+    stroke-width: 1;
+    filter: drop-shadow(0 0 18px rgba(232, 160, 32, 0.14));
+  }
+
+  .map-grid line {
+    stroke: rgba(90, 106, 126, 0.22);
+    stroke-width: 0.9;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .land-masses path {
+    fill: rgba(34, 45, 59, 0.88);
+    fill-rule: evenodd;
+    stroke: rgba(232, 160, 32, 0.12);
+    stroke-width: 0.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .active-spoke {
+    stroke: rgba(232, 160, 32, 0.65);
+    stroke-width: 1.3;
+    stroke-dasharray: 3 8;
+    transition: x2 0.25s ease, y2 0.25s ease;
+  }
+
+  .map-pin {
     color: var(--amber);
     text-decoration: none;
+    outline: none;
+  }
+
+  .pin-hit {
+    fill: transparent;
+  }
+
+  .pin-pulse {
+    fill: currentColor;
+    opacity: 0.08;
+    transform-origin: center;
+  }
+
+  .pin-dot {
+    fill: currentColor;
+    stroke: var(--bg);
+    stroke-width: 2;
+    filter: url(#home-pin-glow);
+  }
+
+  .map-pin text {
+    fill: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  .map-pin:hover text,
+  .map-pin:focus-visible text,
+  .map-pin.is-active text {
+    fill: var(--white);
+  }
+
+  .map-pin.is-active .pin-pulse {
+    opacity: 0.18;
+    animation: pulsePin 1.8s ease-out infinite;
+  }
+
+  .map-pin.is-active .pin-dot {
+    r: 7.5px;
+  }
+
+  .map-pin.severity-critical { color: var(--severity-critical); }
+  .map-pin.severity-high { color: var(--severity-high); }
+  .map-pin.severity-medium { color: var(--severity-medium); }
+  .map-pin.severity-low { color: var(--severity-low); }
+
+  .active-readout {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    align-content: center;
+    gap: 10px;
+    padding: 18px 20px;
+    border: 1px solid rgba(232, 160, 32, 0.22);
+    background: rgba(8, 11, 16, 0.72);
+  }
+
+  .readout-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .active-readout a {
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .active-readout a:hover {
+    color: var(--amber);
+  }
+
+  .active-readout p {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .attack-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 650px;
+    max-height: 650px;
+    overflow: hidden;
+  }
+
+  .attack-panel::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 10px;
+    bottom: 0;
+    height: 32px;
+    background: linear-gradient(180deg, rgba(13, 17, 23, 0), rgba(13, 17, 23, 0.96));
+    pointer-events: none;
+  }
+
+  .panel-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13, 17, 23, 0.98);
+  }
+
+  .panel-head strong {
+    color: var(--muted);
     font-weight: 500;
-    transition: opacity 0.15s;
   }
 
-  .phase-disclosure-link:hover {
-    opacity: 0.75;
-    text-decoration: underline;
+  .attack-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: rgba(232, 160, 32, 0.55) rgba(255, 255, 255, 0.04);
+    scrollbar-width: thin;
   }
 
-  /* ── Ticker ─────────────────────────────────────────────────────────── */
+  .attack-list::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  .attack-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 1px solid var(--border);
+  }
+
+  .attack-list::-webkit-scrollbar-thumb {
+    background: rgba(232, 160, 32, 0.48);
+    border: 2px solid rgba(13, 17, 23, 0.98);
+    border-radius: 999px;
+  }
+
+  .attack-list:focus-visible {
+    outline: 1px solid rgba(232, 160, 32, 0.45);
+    outline-offset: -1px;
+  }
+
+  .attack-row {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 84px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+
+  .attack-row:hover,
+  .attack-row:focus-visible,
+  .attack-row.is-active {
+    background: rgba(232, 160, 32, 0.055);
+    outline: 1px solid rgba(232, 160, 32, 0.25);
+    outline-offset: -1px;
+  }
+
+  .attack-rank {
+    font-family: var(--font-mono);
+    color: var(--amber-dim);
+    font-size: 0.72rem;
+  }
+
+  .attack-copy {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .attack-title {
+    color: var(--white);
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .attack-meta {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .attack-severity {
+    padding: 3px 7px;
+    border: 1px solid currentColor;
+  }
+
+  .attack-row.severity-critical .attack-severity { color: var(--severity-critical); }
+  .attack-row.severity-high .attack-severity { color: var(--severity-high); }
+  .attack-row.severity-medium .attack-severity { color: var(--severity-medium); }
+  .attack-row.severity-low .attack-severity { color: var(--severity-low); }
+
   .ticker {
-    position: relative; z-index: 1;
+    position: relative;
+    z-index: 1;
     background: var(--surface);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -433,7 +1083,7 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     display: flex;
     align-items: center;
     gap: 9px;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.67rem;
     letter-spacing: 0.15em;
     color: var(--muted);
@@ -441,24 +1091,26 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     white-space: nowrap;
   }
 
-  .ticker-break {
-    flex-basis: 100%;
-    height: 0;
-  }
-
   .ticker-item::before {
     content: '';
-    width: 4px; height: 4px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: var(--amber-dim);
     flex-shrink: 0;
   }
 
-  /* ── Pillars ────────────────────────────────────────────────────────── */
+  .ticker-break {
+    flex-basis: 100%;
+    height: 0;
+  }
+
   .pillars {
-    position: relative; z-index: 1;
     padding: 40px 0 32px;
-    max-width: 1200px;
+  }
+
+  .pillars.is-live-resources {
+    padding-top: 0;
   }
 
   .pillars-grid {
@@ -471,14 +1123,17 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
 
   .pillar {
     background: var(--bg);
-    padding: 36px 30px;
+    padding: 34px 28px;
+    text-decoration: none;
     transition: background 0.2s;
   }
 
-  .pillar:hover { background: rgba(232, 160, 32, 0.04); outline: 1px solid var(--amber-dim); outline-offset: -1px; z-index: 1; position: relative; }
+  .pillar:hover {
+    background: rgba(232, 160, 32, 0.04);
+  }
 
   .pillar-num {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.62rem;
     letter-spacing: 0.2em;
     color: var(--amber-dim);
@@ -486,7 +1141,7 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .pillar h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.25rem;
     color: var(--white);
     margin-bottom: 10px;
@@ -501,11 +1156,11 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     line-height: 1.8;
   }
 
-  /* ── Recent incidents ───────────────────────────────────────────────── */
   .recent-incidents {
-    position: relative; z-index: 1;
-    padding: 24px 0 32px;
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
+    padding: 24px 0 32px;
   }
 
   .incidents-grid {
@@ -515,14 +1170,15 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .incident-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 28px 24px;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
   }
 
   .incident-card:hover {
@@ -537,21 +1193,27 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
     gap: 12px;
   }
 
+  .incident-card-date,
+  .incident-card-tag,
+  .badge {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+  }
+
+  .incident-card-date {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--amber-dim);
+  }
+
   .incident-card-badges {
     display: flex;
     gap: 8px;
     flex-shrink: 0;
   }
 
-  .incident-card-date {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    color: var(--amber-dim);
-  }
-
   .incident-card h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.1rem;
     color: var(--white);
     line-height: 1.3;
@@ -568,46 +1230,134 @@ latestIntel.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime
   }
 
   .incident-card-tag {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.1em;
     color: var(--muted);
-    text-transform: uppercase;
   }
 
   .badge {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 0.55rem;
     letter-spacing: 0.15em;
-    text-transform: uppercase;
     padding: 3px 8px;
     border: 1px solid var(--border);
     color: var(--muted);
   }
 
-  .badge-critical { color: #ff4444; border-color: #ff4444; }
-  .badge-high { color: #ff8c00; border-color: #ff8c00; }
-  .badge-medium { color: #e8a020; border-color: #e8a020; background: rgba(232, 160, 32, 0.1); }
-  .badge-low { color: #51cf66; border-color: #51cf66; }
+  .badge-critical { color: var(--severity-critical); border-color: var(--severity-critical); }
+  .badge-high { color: var(--severity-high); border-color: var(--severity-high); }
+  .badge-medium { color: var(--severity-medium); border-color: var(--severity-medium); background: rgba(232, 160, 32, 0.1); }
+  .badge-low { color: var(--severity-low); border-color: var(--severity-low); }
 
   .badge-type-incident { color: var(--amber); border-color: var(--amber); }
   .badge-type-campaign { color: #a78bfa; border-color: #a78bfa; }
   .badge-type-threat-actor { color: #f87171; border-color: #f87171; }
-  .badge-type-zero-day { color: #ff4444; border-color: #ff4444; background: rgba(255, 68, 68, 0.1); }
+  .badge-type-zero-day { color: var(--severity-critical); border-color: var(--severity-critical); background: rgba(255, 68, 68, 0.1); }
 
-  /* ── Responsive ─────────────────────────────────────────────────────── */
-  @media (max-width: 860px) {
-    .hero { padding: 12px 0 40px; }
-    .stats-bar { flex-wrap: wrap; }
-    .stat { border-right: none; border-bottom: 1px solid var(--border); flex-basis: 50%; }
-    .stat:nth-child(even) { border-right: none; }
-    .ticker { padding: 24px; gap: 16px; }
-    .pillars { padding: 32px 0 24px; }
-    .pillars-grid { grid-template-columns: 1fr; }
+  @keyframes pulsePin {
+    0% { transform: scale(0.7); opacity: 0.28; }
+    100% { transform: scale(1.65); opacity: 0; }
   }
 
-  @media (max-width: 768px) {
-    .incidents-grid { grid-template-columns: 1fr; }
-    .recent-incidents { padding: 20px 0 24px; }
+  @media (prefers-reduced-motion: reduce) {
+    .map-pin.is-active .pin-pulse {
+      animation: none;
+    }
+
+    .active-spoke,
+    .attack-row {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .map-hero {
+      min-height: 0;
+    }
+
+    .hero-copy {
+      padding-top: 0;
+    }
+
+    .hero-title {
+      margin-bottom: 24px;
+    }
+
+    .map-feature {
+      grid-template-columns: 1fr;
+    }
+
+    .map-card {
+      height: auto;
+    }
+
+    .attack-panel {
+      display: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .map-hero {
+      padding: 12px 0 40px;
+    }
+
+    .stats-bar {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+      flex-basis: 50%;
+    }
+
+    .ticker {
+      padding: 24px;
+      gap: 16px;
+    }
+
+    .pillars-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .map-card {
+      padding: 16px;
+    }
+
+    .map-card-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .map-metrics {
+      flex-wrap: wrap;
+    }
+
+    .attack-row {
+      grid-template-columns: 34px minmax(0, 1fr);
+    }
+
+    .attack-severity {
+      grid-column: 2;
+      width: fit-content;
+    }
+
+    .attack-meta {
+      white-space: normal;
+    }
+
+    .incidents-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .recent-incidents {
+      padding: 20px 0 24px;
+    }
+
+    .incident-card-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 </style>
