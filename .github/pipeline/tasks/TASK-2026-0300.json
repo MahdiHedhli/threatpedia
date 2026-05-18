@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-18T09:32:01.002Z",
-  "updated": "2026-05-18T10:23:01.996Z",
+  "updated": "2026-05-18T10:32:36.083Z",
   "source": "backfill",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
-  "locked_by": "Danger Mouse",
-  "locked_at": "2026-05-18T10:23:01.995Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Olympic Destroyer PyeongChang Winter Olympics cyberattack",
     "sources": [
@@ -66,6 +66,16 @@
       "to": "locked",
       "agent": "Danger Mouse",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-18T10:32:36.083Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #788"
     }
-  ]
+  ],
+  "pr_number": 788,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/788"
 }
