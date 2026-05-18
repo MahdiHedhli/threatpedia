@@ -51,7 +51,8 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 - Handling of classified or sensitive details
 
 ### Meeting 3 — Framework Mapping Standards
-- Which frameworks to map: MITRE ATT&CK, MITRE ATLAS, NIST CSF, Cyber Kill Chain, OWASP, Diamond Model, etc.
+- Current schema-backed mappings: MITRE ATT&CK Enterprise v19.0, plus optional MITRE ATLAS when evidence supports adversarial AI/ML behavior
+- Planned framework integrations: NIST CSF, Cyber Kill Chain, OWASP, Diamond Model, and other analysis models
 - ATLAS conditional mapping criteria: when does an incident require ATLAS mapping vs. ATT&CK only vs. both?
 - ATLAS mapping methodology — tactic/technique ID capture, confidence scoring, handling of novel AI attack patterns not yet catalogued in ATLAS
 - Mapping methodology and confidence scoring
@@ -87,10 +88,10 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 ### Incident Record — Optional Fields
 | Field | Description |
 |---|---|
-| MITRE ATT&CK Techniques | Mapped TTPs with confidence level |
-| MITRE ATLAS Techniques | Mapped AI/ML adversarial techniques — required when AI system is target, tool, or bypassed control |
-| Kill Chain Stage(s) | Mapped to Lockheed Martin Kill Chain |
-| NIST Function(s) | Identify / Protect / Detect / Respond / Recover |
+| MITRE ATT&CK Techniques | Schema-backed ATT&CK Enterprise v19.0 TTPs with confidence level |
+| MITRE ATLAS Techniques | Optional AI/ML adversarial techniques when evidence shows an AI system is target, tool, or bypassed control |
+| Kill Chain Stage(s) | Planned Lockheed Martin Kill Chain mapping |
+| NIST Function(s) | Planned Identify / Protect / Detect / Respond / Recover mapping |
 | Diamond Model | Completed diamond for the event |
 | Malware/Tools Used | Links to malware registry entries |
 | CVEs Exploited | Linked CVE records |
@@ -127,10 +128,8 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 ## 🗺️ Framework Mapping Plan
 
 ### Frameworks to Support (Phase 1)
-- **MITRE ATT&CK** — Techniques, Tactics, Procedures (highest priority)
+- **MITRE ATT&CK Enterprise v19.0** — Techniques, Tactics, Procedures (highest priority); schema and validator foundation is released, with corpus migration still in progress
 - **MITRE ATLAS** — Adversarial Threat Landscape for AI Systems; applied conditionally where an AI/ML system is a target, tool, or enabler of the incident (see Mapping Conditions below)
-- **Lockheed Martin Cyber Kill Chain** — Stage mapping
-- **NIST Cybersecurity Framework** — Function mapping
 
 ### ATLAS Mapping Conditions
 ATLAS applies conditionally — not to every incident. An article requires ATLAS mapping when any of the following are true:
@@ -142,6 +141,8 @@ ATLAS applies conditionally — not to every incident. An article requires ATLAS
 Where ATLAS applies, the incident record should capture: ATLAS Tactic, ATLAS Technique ID, and mapping confidence level. ATT&CK and ATLAS mappings are additive — an incident may require both.
 
 ### Frameworks to Support (Phase 2)
+- **Lockheed Martin Cyber Kill Chain** — Stage mapping
+- **NIST Cybersecurity Framework** — Function mapping
 - **Diamond Model of Intrusion Analysis** — Full diamond per event
 - **OWASP Top 10** — For application-layer events
 - **VERIS** — Vocabulary for Event Recording and Incident Sharing
