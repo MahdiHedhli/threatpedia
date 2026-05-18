@@ -61,7 +61,7 @@ mitreMappings:
     tactic: Initial Access
     notes: Code Red exploited a Microsoft IIS Indexing Service buffer overflow, and Nimda exploited IIS directory traversal vulnerabilities and earlier web-server backdoors.
   - techniqueId: T1566.001
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: "Spearphishing Attachment"
     tactic: Initial Access
     notes: CERT/CC reported that Nimda propagated by email with a MIME message carrying an executable attachment named readme.exe.
   - techniqueId: T1498

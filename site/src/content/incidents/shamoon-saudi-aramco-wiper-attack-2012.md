@@ -51,7 +51,7 @@ mitreMappings:
     tactic: Impact
     notes: CFR reports that Shamoon wiped data from approximately 35,000 Saudi Aramco computers, and MITRE documents the malware family as destructive wiper software.
   - techniqueId: T1561.002
-    techniqueName: "Disk Wipe: Disk Structure Wipe"
+    techniqueName: "Disk Structure Wipe"
     tactic: Impact
     notes: MITRE states that Shamoon has been seen overwriting disk structures such as the master boot record, contributing to systems becoming unbootable after the attack.
 ---

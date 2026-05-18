@@ -35,11 +35,11 @@ tools:
   - "BANGAT"
 mitreMappings:
   - techniqueId: "T1566.002"
-    techniqueName: "Phishing: Spearphishing Link"
+    techniqueName: "Spearphishing Link"
     tactic: "Initial Access"
     notes: "APT1 used spearphishing emails containing links to credential-harvesting sites and malware downloads."
   - techniqueId: "T1059.001"
-    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    techniqueName: "PowerShell"
     tactic: "Execution"
     notes: "Utilized command-line interfaces and scripting for post-compromise activities."
   - techniqueId: "T1003"
