@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-05-18T00:16:39Z",
-  "updated": "2026-05-18T01:16:57.148Z",
+  "updated": "2026-05-18T04:48:47.140Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -86,6 +86,14 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #782"
+    },
+    {
+      "timestamp": "2026-05-18T04:48:47.140Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #782 already covers this task."
     }
   ],
   "pr_number": 782,
