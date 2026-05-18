@@ -152,23 +152,13 @@ The implant carries a default lifetime of 30 days and self-deletes if the operat
 
 ## MITRE ATT&CK Mapping
 
-### Execution
-
 T1203 - Exploitation for Client Execution: The attack chain exploited CVE-2023-41990 and three additional iOS vulnerabilities to achieve code execution through iMessage without any user interaction. Kaspersky confirmed that no victim action was required to trigger the exploit.
-
-### Command and Control
 
 T1105 - Ingress Tool Transfer: After initial exploitation, the chain fetched a binary validator and subsequently the TriangleDB implant from attacker-controlled infrastructure. Kaspersky documented this two-stage download as a defined part of the attack sequence.
 
-### Discovery
-
 T1082 - System Information Discovery: Kaspersky documented a validator stage that queries device characteristics including the iOS version and jailbreak status before deciding whether to proceed. This check enables the operator to filter targets before committing the full implant.
 
-### Collection
-
 T1005 - Data from Local System: Kaspersky documented that TriangleDB collected files from the device filesystem, microphone recordings, photographs, geolocation data, and credential material. The implant operated through operator-directed commands delivered over C2.
-
-### Exfiltration
 
 T1041 - Exfiltration Over C2 Channel: Kaspersky reported that data collected by TriangleDB was transmitted to attacker-controlled infrastructure through the same command and control channel used to issue implant commands.
 
