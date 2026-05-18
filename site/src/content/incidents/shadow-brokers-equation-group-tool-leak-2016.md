@@ -9,7 +9,7 @@ sector: "Multi-Sector"
 geography: "Global"
 
 threatActor: "Unknown"
-attributionConfidence: "A5"
+attributionConfidence: "A3"
 
 reviewStatus: draft_ai
 confidenceGrade: B
@@ -80,7 +80,7 @@ mitreMappings:
   - techniqueId: T1210
     techniqueName: "Exploitation of Remote Services"
     tactic: "Lateral Movement"
-    attackVersion: "v19.0"
+    attack-version: "v19.0"
     confidence: confirmed
     evidence: "Cisco Talos and Microsoft analysis of the April 2017 Shadow Brokers release confirmed that the included tools, particularly EternalBlue (MS17-010 / CVE-2017-0144), exploit SMB services for unauthenticated remote code execution, enabling lateral movement across networks of unpatched Windows systems."
 ---
