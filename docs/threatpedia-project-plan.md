@@ -128,7 +128,7 @@ Threatpedia is the definitive, Wikipedia-style open encyclopedia of cyber histor
 ## 🗺️ Framework Mapping Plan
 
 ### Frameworks to Support (Phase 1)
-- **MITRE ATT&CK Enterprise v19.0** — Techniques, Tactics, Procedures (highest priority); schema and validator foundation is released, with corpus migration still in progress
+- **MITRE ATT&CK Enterprise v19.0** — Tactics, Techniques, and Procedures (highest priority); schema and validator foundation is released, with corpus migration still in progress
 - **MITRE ATLAS** — Adversarial Threat Landscape for AI Systems; applied conditionally where an AI/ML system is a target, tool, or enabler of the incident (see Mapping Conditions below)
 
 ### ATLAS Mapping Conditions

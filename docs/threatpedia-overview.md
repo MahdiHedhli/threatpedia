@@ -144,11 +144,11 @@ Every Threatpedia record — whether an incident or an APT profile — captures 
 
 ## FRAMEWORK MAPPING PLAN
 
-Structured framework mapping is what elevates Threatpedia from an archive to an analytical platform. By tagging every incident with versioned technique and tactic data, the corpus becomes queryable for trend research, sector risk analysis, and defender tooling. The ATT&CK Enterprise v19.0 schema foundation is released; corpus migration and additional framework integrations remain in progress.
+Structured framework mapping is what elevates Threatpedia from an archive to an analytical platform. By tagging every incident with versioned tactic and technique data, the corpus becomes queryable for trend research, sector risk analysis, and defender tooling. The ATT&CK Enterprise v19.0 schema foundation is released; corpus migration and additional framework integrations remain in progress.
 
 ### Phase 1 Frameworks
 
-- **MITRE ATT&CK Enterprise v19.0** — Techniques, Tactics, and Procedures (highest priority; broadest community adoption)
+- **MITRE ATT&CK Enterprise v19.0** — Tactics, Techniques, and Procedures (highest priority; broadest community adoption)
 - **MITRE ATLAS** — Optional adversarial AI/ML mappings only when article evidence supports them
 
 ### Phase 2 Frameworks
