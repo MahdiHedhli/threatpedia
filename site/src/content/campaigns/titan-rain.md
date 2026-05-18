@@ -87,7 +87,7 @@ mitreMappings:
   - techniqueId: T1566
     techniqueName: Phishing
     tactic: Initial Access
-    attack-version: v19
+    attack-version: v19.0
     confidence: probable
     evidence: "Multiple reports describe email-based intrusions and social engineering as the likely method used to gain initial access to targeted defense and government networks."
     notes: "Specific phishing sub-techniques are not identified in available open sources; probable assessment based on intrusion patterns described by CSIS and CFR analyses."
@@ -95,7 +95,7 @@ mitreMappings:
   - techniqueId: T1005
     techniqueName: Data from Local System
     tactic: Collection
-    attack-version: v19
+    attack-version: v19.0
     confidence: probable
     evidence: "Journalists and investigators documented that intruders systematically retrieved large volumes of files from targeted systems, including sensitive government and defense-related documents."
     notes: "Reported data collection volume and scope are consistent with structured local data staging, as described in CSIS and Washington Post reporting."
@@ -103,7 +103,7 @@ mitreMappings:
   - techniqueId: T1021
     techniqueName: Remote Services
     tactic: Lateral Movement
-    attack-version: v19
+    attack-version: v19.0
     confidence: possible
     evidence: "Reporting describes attackers traversing targeted networks after initial compromise, using remote access capabilities to reach additional systems and data repositories."
     notes: "Specific remote access protocols are not identified in open sources; assessment is based on described lateral movement patterns."
@@ -157,7 +157,7 @@ The overall pattern was described by CSIS and other analysts as consistent with 
 
 ## MITRE ATT&CK Mapping
 
-The following MITRE ATT&CK Enterprise v19 techniques are assessed as applicable to the Titan Rain campaign based on available open-source reporting. Confidence levels reflect the degree to which public sources directly support each technique assessment.
+The following MITRE ATT&CK Enterprise v19.0 techniques are assessed as applicable to the Titan Rain campaign based on available open-source reporting. Confidence levels reflect the degree to which public sources directly support each technique assessment.
 
 T1566 - Phishing: Multiple reports describe email-based intrusions and social engineering as the likely method used to gain initial access to targeted defense and government networks. CSIS and CFR analyses describe an intrusion pattern consistent with phishing-based entry, though specific sub-techniques are not identified in available open sources.
 
