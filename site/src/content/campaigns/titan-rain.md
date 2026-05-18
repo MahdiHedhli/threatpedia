@@ -109,8 +109,6 @@ mitreMappings:
     notes: "Specific remote access protocols are not identified in open sources; assessment is based on described lateral movement patterns."
 ---
 
-# Titan Rain
-
 ## Executive Summary
 
 Titan Rain is the name reportedly assigned by U.S. government officials to a sustained series of cyber intrusions against U.S. defense and government networks, publicly disclosed beginning in 2005. The campaign is estimated to have been active from approximately 2003 through 2006, targeting systems at U.S. federal agencies, defense contractors, and research institutions, as well as government networks in the United Kingdom. Intruders systematically extracted large volumes of sensitive data over an extended period without causing apparent destructive damage to targeted systems.
