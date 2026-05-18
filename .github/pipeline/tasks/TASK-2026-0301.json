@@ -1,0 +1,74 @@
+{
+  "task_id": "TASK-2026-0301",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-18T11:37:39.541Z",
+  "updated": "2026-05-18T11:37:39.541Z",
+  "source": "backfill",
+  "submitted_by": "threatpedia-soft-launch-corpus-worker",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Titan Rain defense and government espionage campaign, 2003-2006",
+    "sources": [
+      "https://www.cfr.org/cyber-operations/titan-rain",
+      "https://www.csis.org/analysis/computer-espionage-titan-rain-and-china",
+      "https://csis-website-prod.s3.amazonaws.com/s3fs-public/legacy_files/files/media/csis/pubs/051214_china_titan_rain.pdf",
+      "https://www.washingtonpost.com/archive/politics/2005/08/25/hackers-attack-via-chinese-web-sites/03559eb7-4e56-40bf-b406-8198bd1e1131",
+      "https://content.time.com/time/press_releases/article/0,8599,1098911,00.html",
+      "https://www.theguardian.com/uk/2007/sep/05/topstories3.politics"
+    ],
+    "candidate_data": {
+      "historical_id": "HIST-CAMP-002",
+      "source_list": "soft-launch-historical-corpus-working-list.md",
+      "source_status": "gap",
+      "years": "2003-2006",
+      "severity": "high",
+      "related_actor_slugs": [
+        "apt1",
+        "apt10"
+      ]
+    },
+    "notes": "Historical corpus P0 campaign seed from HIST-CAMP-002. Draft as a conservative espionage campaign article centered on reported intrusions into U.S. and UK government, defense, and contractor networks between roughly 2003 and 2006. Use CFR and CSIS for campaign context, Washington Post/TIME/Guardian reporting for public disclosure, and avoid unsupported attribution beyond China-linked infrastructure and publicly reported suspected Chinese state or military links. Keep Titan Rain distinct from later APT1 and Operation Cloud Hopper coverage unless sources directly support continuity."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2",
+    "site/src/content.config.ts",
+    "threatpedia-working/working/supervisor/soft-launch-historical-corpus-working-list.md"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 5,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 2,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50",
+    "campaign lane queue depth remains below configured max_pending",
+    "no open PR, issue, task, or live-main article already covers Titan Rain as a standalone campaign",
+    "sources support a conservative distinction between China-linked infrastructure, suspected state involvement, and any later APT1/APT10 continuity claims"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/titan-rain-defense-government-espionage-campaign-2003-2006.md",
+    "branch": "pipeline/TASK-2026-0301",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-18T11:37:39.541Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "threatpedia-soft-launch-corpus-worker",
+      "note": "Historical campaign backlog seed from HIST-CAMP-002 after live dedup found no standalone Titan Rain campaign article, task, issue, or open PR."
+    }
+  ]
+}
