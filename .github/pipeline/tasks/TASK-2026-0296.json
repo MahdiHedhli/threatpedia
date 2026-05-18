@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-17T14:55:12Z",
-  "updated": "2026-05-17T17:47:39Z",
+  "updated": "2026-05-18T13:42:54.391Z",
   "source": "backfill",
   "submitted_by": "Kernel K",
   "locked_by": null,
@@ -116,8 +116,17 @@
       "to": "pr_open",
       "agent": "MahdiHedhli",
       "note": "Merged dispatcher bookkeeping from PR #774 while preserving PR #773 as the covering task PR."
+    },
+    {
+      "timestamp": "2026-05-18T13:42:54.391Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #773 merged (cb62d06)."
     }
   ],
   "pr_number": 773,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/773"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/773",
+  "merged_at": "2026-05-18T13:42:54.391Z"
 }
