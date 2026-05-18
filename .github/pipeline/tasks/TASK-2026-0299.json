@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-18T07:30:05.833Z",
-  "updated": "2026-05-18T07:30:05.833Z",
+  "updated": "2026-05-18T07:39:30.172Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -18,7 +18,9 @@
       "https://rhisac.org/threat-intelligence/extortion-in-the-enterprise-defending-against-blackfile-attacks"
     ],
     "candidate_data": {
-      "severity": "medium"
+      "severity": "medium",
+      "origin": "Unknown",
+      "active_since": "Unknown"
     },
     "notes": "Risky Bulletin 2026-05-18 cites Google Cloud and RH-ISAC/Palo Alto reporting on UNC6671/BlackFile as a distinct data-extortion operation using ShinyHunters-like tactics. Draft conservatively as a threat-actor/cluster profile; distinguish Google tracking name UNC6671, BlackFile leak-site branding, and any vendor aliases only when source-supported."
   },
@@ -52,7 +54,7 @@
       "from": "none",
       "to": "pending",
       "agent": "risky-bulletin-discovery-worker",
-      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+      "note": "Automated Risky Bulletin discovery submission via scripts/pipeline-submit-link.mjs"
     }
   ]
 }
