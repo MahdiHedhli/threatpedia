@@ -17,7 +17,7 @@ const PUBLIC_PROSE_GUARDRAILS = [
   },
   {
     label: 'internal generation-metadata leakage',
-    regex: /\b(?:generation\s+metadata|model\s+provenance\s+metadata|generatedBy|promptProfile|prompt\s+profile|generation\.(?:provider|model|tool|agent|promptProfile)|model\s+used\s+to\s+generate\s+this\s+(?:article|report|assessment|write[- \u2013\u2014]?up))\b/i,
+    regex: /\b(?:generation[-\s\u2013\u2014]*metadata|model[-\s\u2013\u2014]*provenance[-\s\u2013\u2014]*metadata|generated(?:By|Date)|generation\.(?:provider|model|tool|agent|promptProfile)|prompt[-\s\u2013\u2014]*profile|model\s+used\s+to\s+generate\s+this\s+(?:article|report|assessment|write[- \u2013\u2014]?ups?))\b/i,
   },
 ];
 
