@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-18T07:30:05.833Z",
-  "updated": "2026-05-18T07:46:00.000Z",
+  "updated": "2026-05-18T08:38:36.663Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -63,6 +63,24 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Normalized task history agent metadata after Gemini review."
+    },
+    {
+      "timestamp": "2026-05-18T08:32:54.175Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Kernel K",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-18T08:38:36.662Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Kernel K",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #785"
     }
-  ]
+  ],
+  "pr_number": 785,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/785"
 }
