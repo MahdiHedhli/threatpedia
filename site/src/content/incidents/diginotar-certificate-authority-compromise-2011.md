@@ -68,7 +68,7 @@ mitreMappings:
     tactic: Credential Access
     notes: Fraudulent DigiNotar certificates were used in attempted SSL man-in-the-middle attacks against Google users, allowing an attacker on a network path to impersonate trusted services.
   - techniqueId: T1588.004
-    techniqueName: "Obtain Capabilities: Digital Certificates"
+    techniqueName: "Digital Certificates"
     tactic: Resource Development
     notes: The attacker obtained fraudulent certificates from a trusted certificate authority and used that trust relationship to support spoofing and interception activity.
 ---

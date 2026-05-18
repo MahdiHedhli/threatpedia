@@ -73,7 +73,7 @@ mitreMappings:
     techniqueName: "Valid Accounts"
     tactic: Initial Access
   - techniqueId: T1195.002
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: Initial Access
 ---
 

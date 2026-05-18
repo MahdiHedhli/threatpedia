@@ -54,11 +54,11 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Sandworm compromised the M.E.Doc software update infrastructure to distribute the NotPetya wiper to organizations that had installed the legitimate Ukrainian accounting software."
   - techniqueId: "T1003.001"
-    techniqueName: "OS Credential Dumping: LSASS Memory"
+    techniqueName: "LSASS Memory"
     tactic: "Credential Access"
     notes: "NotPetya included a modified Mimikatz component to extract credentials from LSASS memory, enabling lateral movement to hosts that had applied the MS17-010 patch and were not vulnerable to EternalBlue."
   - techniqueId: "T1210"
@@ -70,7 +70,7 @@ mitreMappings:
     tactic: "Lateral Movement"
     notes: "NotPetya used WMIC with harvested credentials to remotely execute the wiper payload on reachable hosts that were not vulnerable to EternalBlue, leveraging WMI as a lateral movement mechanism."
   - techniqueId: "T1021.002"
-    techniqueName: "Remote Services: SMB/Windows Admin Shares"
+    techniqueName: "SMB/Windows Admin Shares"
     tactic: "Lateral Movement"
     notes: "NotPetya used PsExec with harvested credentials to copy and execute its payload via Windows administrative shares (ADMIN$, C$), enabling propagation to patched hosts immune to the SMB exploit vector."
   - techniqueId: "T1485"

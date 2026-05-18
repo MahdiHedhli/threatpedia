@@ -66,7 +66,7 @@ mitreMappings:
     tactic: "Impact"
     notes: "WannaCry encrypted user files across infected systems and presented ransom demands denominated in Bitcoin, with a stated deadline for payment before ransom amounts escalated."
   - techniqueId: "T1059.003"
-    techniqueName: "Command and Scripting Interpreter: Windows Command Shell"
+    techniqueName: "Windows Command Shell"
     tactic: "Execution"
     notes: "The DoublePulsar kernel implant installed by EternalBlue executed WannaCry payloads via Windows command shell mechanisms on compromised hosts."
 ---

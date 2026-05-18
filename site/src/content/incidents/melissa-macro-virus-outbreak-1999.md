@@ -47,11 +47,11 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: T1566.001
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: "Spearphishing Attachment"
     tactic: Initial Access
     notes: Melissa spread through deceptive email messages carrying infected Microsoft Word attachments; recipients were induced to open the attachment by social-engineering text.
   - techniqueId: T1204.002
-    techniqueName: "User Execution: Malicious File"
+    techniqueName: "Malicious File"
     tactic: Execution
     notes: Infection required a user to open the malicious Word document, after which the embedded macro executed and automated further email distribution.
   - techniqueId: T1499

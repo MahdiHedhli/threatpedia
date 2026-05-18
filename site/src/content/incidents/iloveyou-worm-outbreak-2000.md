@@ -50,15 +50,15 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: T1566.001
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: "Spearphishing Attachment"
     tactic: Initial Access
     notes: The worm arrived as an email with the subject "ILOVEYOU" and a VBS attachment named "LOVE-LETTER-FOR-YOU.TXT.VBS".
   - techniqueId: T1204.002
-    techniqueName: "User Execution: Malicious File"
+    techniqueName: "Malicious File"
     tactic: Execution
     notes: Infection required the recipient to open the attached VBS file.
   - techniqueId: T1059.005
-    techniqueName: "Command and Scripting Interpreter: Visual Basic"
+    techniqueName: "Visual Basic"
     tactic: Execution
     notes: The worm payload was written in VBScript and required Windows Scripting Host to run.
 ---

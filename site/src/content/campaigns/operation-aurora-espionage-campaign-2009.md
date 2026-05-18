@@ -57,7 +57,7 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1566.002"
-    techniqueName: "Phishing: Spearphishing Link"
+    techniqueName: "Spearphishing Link"
     tactic: "Initial Access"
     notes: "Targeted delivery moved selected users toward malicious content associated with the operation."
   - techniqueId: "T1189"
