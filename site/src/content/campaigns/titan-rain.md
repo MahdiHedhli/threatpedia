@@ -135,11 +135,25 @@ While investigators described infrastructure and operational patterns consistent
 
 The attack chain reported in connection with Titan Rain intrusions followed a recognizable espionage pattern across several phases:
 
-1. **Initial Access**: Attackers are assessed as having used phishing or social engineering to establish initial footholds in targeted networks, consistent with email-based intrusion methods described in available reporting.
-2. **Persistence**: Once inside targeted networks, attackers maintained sustained access over extended periods, returning to the same systems across multiple sessions without apparent detection for significant stretches of time.
-3. **Lateral Movement**: Investigators described attackers traversing internal networks after initial compromise, using remote access mechanisms to move from initial entry points to additional systems and data repositories.
-4. **Collection**: Intruders systematically identified and staged sensitive files, including documents related to defense programs, research, and government operations. Reporting describes the retrieval of large volumes of data in a structured manner.
-5. **Exfiltration**: Collected data was transferred out of targeted networks, with traffic routed through layered infrastructure in multiple countries to obscure origin and destination.
+### Stage 1: Initial Access
+
+Attackers are assessed as having used phishing or social engineering to establish initial footholds in targeted networks, consistent with email-based intrusion methods described in available reporting.
+
+### Stage 2: Persistence
+
+Once inside targeted networks, attackers maintained sustained access over extended periods, returning to the same systems across multiple sessions without apparent detection for significant stretches of time.
+
+### Stage 3: Lateral Movement
+
+Investigators described attackers traversing internal networks after initial compromise, using remote access mechanisms to move from initial entry points to additional systems and data repositories.
+
+### Stage 4: Collection
+
+Intruders systematically identified and staged sensitive files, including documents related to defense programs, research, and government operations. Reporting describes the retrieval of large volumes of data in a structured manner.
+
+### Stage 5: Exfiltration
+
+Collected data was transferred out of targeted networks, with traffic routed through layered infrastructure in multiple countries to obscure origin and destination.
 
 The overall pattern was described by CSIS and other analysts as consistent with state-directed or state-enabled intelligence collection rather than financially motivated intrusion or destructive attack.
 
