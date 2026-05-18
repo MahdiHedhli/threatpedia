@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-18T07:30:05.833Z",
-  "updated": "2026-05-18T07:39:30.172Z",
+  "updated": "2026-05-18T07:46:00.000Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -53,8 +53,16 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "risky-bulletin-discovery-worker",
-      "note": "Automated Risky Bulletin discovery submission via scripts/pipeline-submit-link.mjs"
+      "agent": "MahdiHedhli",
+      "note": "Automated Risky Bulletin discovery submission via scripts/pipeline-submit-link.mjs, reviewed and submitted by Kernel K."
+    },
+    {
+      "timestamp": "2026-05-18T07:46:00.000Z",
+      "action": "review-fix",
+      "from": "pending",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Normalized task history agent metadata after Gemini review."
     }
   ]
 }
