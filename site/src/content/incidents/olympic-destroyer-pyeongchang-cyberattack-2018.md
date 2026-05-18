@@ -56,21 +56,25 @@ mitreMappings:
   - techniqueId: T1485
     techniqueName: "Data Destruction"
     tactic: Impact
+    attack-version: "v19.0"
     confidence: confirmed
     evidence: "Olympic Destroyer deleted files across infected hosts to render systems inoperable, as documented in MITRE ATT&CK S0365."
   - techniqueId: T1490
     techniqueName: "Inhibit System Recovery"
     tactic: Impact
+    attack-version: "v19.0"
     confidence: confirmed
     evidence: "The malware deleted Volume Shadow Copies and modified Boot Configuration Data to disable Windows recovery options, as documented in MITRE ATT&CK S0365."
   - techniqueId: T1555.003
     techniqueName: "Credentials from Web Browsers"
     tactic: Credential Access
+    attack-version: "v19.0"
     confidence: confirmed
     evidence: "Olympic Destroyer extracted credentials stored by Internet Explorer and Google Chrome to fuel lateral movement, as documented in MITRE ATT&CK S0365."
   - techniqueId: T1021.002
     techniqueName: "SMB/Windows Admin Shares"
     tactic: Lateral Movement
+    attack-version: "v19.0"
     confidence: confirmed
     evidence: "Olympic Destroyer used harvested credentials to access Windows administrative shares and propagate through the target network, as documented in MITRE ATT&CK S0365."
 ---
