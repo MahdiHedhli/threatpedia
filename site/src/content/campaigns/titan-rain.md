@@ -147,11 +147,11 @@ The overall pattern was described by CSIS and other analysts as consistent with 
 
 The following MITRE ATT&CK Enterprise v19 techniques are assessed as applicable to the Titan Rain campaign based on available open-source reporting. Confidence levels reflect the degree to which public sources directly support each technique assessment.
 
-**T1566 — Phishing (Initial Access, probable):** Multiple reports describe email-based intrusions and social engineering as the likely method used to gain initial access to targeted defense and government networks. CSIS and CFR analyses describe an intrusion pattern consistent with phishing-based entry, though specific sub-techniques are not identified in available open sources.
+T1566 - Phishing: Multiple reports describe email-based intrusions and social engineering as the likely method used to gain initial access to targeted defense and government networks. CSIS and CFR analyses describe an intrusion pattern consistent with phishing-based entry, though specific sub-techniques are not identified in available open sources.
 
-**T1005 — Data from Local System (Collection, probable):** Journalists and investigators documented that intruders systematically retrieved large volumes of files from targeted systems, including sensitive government and defense-related documents. The reported data collection volume and scope are consistent with structured local data staging, as described in CSIS analysis and Washington Post reporting.
+T1005 - Data from Local System: Journalists and investigators documented that intruders systematically retrieved large volumes of files from targeted systems, including sensitive government and defense-related documents. The reported data collection volume and scope are consistent with structured local data staging, as described in CSIS analysis and Washington Post reporting.
 
-**T1021 — Remote Services (Lateral Movement, possible):** Reporting describes attackers traversing targeted networks after initial compromise, using remote access capabilities to reach additional systems and data repositories. Specific remote access protocols are not identified in open sources; the possible confidence level reflects the described network traversal pattern.
+T1021 - Remote Services: Reporting describes attackers traversing targeted networks after initial compromise, using remote access capabilities to reach additional systems and data repositories. Specific remote access protocols are not identified in open sources; the possible confidence level reflects the described network traversal pattern.
 
 ## Timeline
 
