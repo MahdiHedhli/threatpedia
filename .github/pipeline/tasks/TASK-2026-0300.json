@@ -21,7 +21,7 @@
     "candidate_data": {
       "historical_id": "HIST-INC-019",
       "severity": "high",
-      "event_date": "2018-02-09",
+      "date": "2018-02-09",
       "origin": "Russian GRU Unit 74455 per U.S. DOJ indictment"
     },
     "notes": "Historical corpus P0 incident. Draft as a bounded destructive cyberattack against 2018 PyeongChang Winter Olympics IT infrastructure. Use DOJ for attribution to GRU Unit 74455, MITRE for Olympic Destroyer/Sandworm technique context, Cisco Talos for malware behavior, and Kaspersky/Securelist for false-flag and follow-on technical analysis. Keep initial 2018 private-sector attribution uncertainty distinct from the later 2020 DOJ indictment."
