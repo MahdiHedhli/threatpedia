@@ -162,16 +162,97 @@ jobs:
               return issues.find((issue) => !issue.pull_request && issue.title === TITLE);
             }
 
+            function extractAuditIssueFiles(issueBody) {
+              const files = [];
+              let inChangedFiles = false;
+              const normalizedBody = String(issueBody || '').replace(/\r\n?/g, '\n');
+              for (const line of normalizedBody.split('\n')) {
+                if (line.trim() === '### Changed files') {
+                  inChangedFiles = true;
+                  continue;
+                }
+                if (!inChangedFiles) {
+                  continue;
+                }
+                if (line.startsWith('### ')) {
+                  break;
+                }
+                const match = line.match(/^- `(.+)`$/);
+                if (match) {
+                  files.push(match[1]);
+                }
+              }
+              return [...new Set(files)];
+            }
+
+            function buildPartialAuditIssueBody(remainingFiles, reauditedFiles) {
+              return [
+                '## Post-merge content audit failure',
+                '',
+                `- Latest green run: ${runUrl}`,
+                `- Latest green range: \`${base}..${head}\``,
+                `- Status: partial recovery; ${reauditedFiles.length} file(s) from this issue re-audited green, ${remainingFiles.length} file(s) still need a green covering audit.`,
+                '',
+                '### Changed files',
+                '',
+                ...remainingFiles.map((file) => `- \`${file}\``),
+                '',
+                'The original failure details remain in this issue history. This body is narrowed after partial recovery so fixed files do not keep the audit issue open.',
+                '',
+              ].join('\n');
+            }
+
             await ensureLabel();
             const openIssue = await findOpenAuditIssue();
 
             if (overallPass) {
               if (openIssue) {
+                const openIssueFiles = extractAuditIssueFiles(openIssue.body);
+                if (openIssueFiles.length === 0) {
+                  console.log(`Audit passed, but existing audit issue #${openIssue.number} does not list changed files. Leaving it open for manual review.`);
+                  return;
+                }
+                const currentFiles = new Set(changedFiles);
+                const reauditedOpenIssueFiles = openIssueFiles.filter((file) => currentFiles.has(file));
+                const unauditedOpenIssueFiles = openIssueFiles.filter((file) => !currentFiles.has(file));
+                if (reauditedOpenIssueFiles.length === 0) {
+                  console.log([
+                    `Audit passed for ${changedFiles.length} changed file(s), but existing audit issue #${openIssue.number}`,
+                    'covers different files. Leaving it open until those files are re-audited or fixed.',
+                  ].join('\n'));
+                  return;
+                }
+                if (unauditedOpenIssueFiles.length > 0) {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: openIssue.number,
+                    body: [
+                      `Audit returned green on \`${head.slice(0, 7)}\` for ${reauditedOpenIssueFiles.length} file(s) already listed in this issue, but ${unauditedOpenIssueFiles.length} file(s) still need a green covering audit.`,
+                      '',
+                      `- Run: ${runUrl}`,
+                      `- Range: \`${base}..${head}\``,
+                    ].join('\n'),
+                  });
+                  await github.rest.issues.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: openIssue.number,
+                    body: buildPartialAuditIssueBody(unauditedOpenIssueFiles, reauditedOpenIssueFiles),
+                  });
+                  console.log([
+                    `Audit passed for ${changedFiles.length} changed file(s), but existing audit issue #${openIssue.number}`,
+                    'covers files not re-audited in this run:',
+                    ...unauditedOpenIssueFiles.map((file) => `- ${file}`),
+                    'Updated the issue body to remove re-audited files and leave the remaining scope open.',
+                  ].join('\n'));
+                  return;
+                }
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: openIssue.number,
-                  body: `Audit returned to green on \`${head.slice(0, 7)}\`.\n\n- Run: ${runUrl}\n- Range: \`${base}..${head}\``,
+                  body: `Audit returned to green on \`${head.slice(0, 7)}\` after re-auditing the files from this issue.\n\n- Run: ${runUrl}\n- Range: \`${base}..${head}\``,
                 });
                 await github.rest.issues.update({
                   owner: context.repo.owner,
