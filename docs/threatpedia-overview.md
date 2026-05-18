@@ -27,7 +27,7 @@ Despite decades of documented cyber incidents, no authoritative, neutral, open r
 
 - Covers the full historical record of significant incidents across sectors and geographies
 - Applies a consistent, peer-reviewed data schema to every event
-- Maps incidents to industry frameworks (MITRE ATT&CK, NIST, Kill Chain) for structured analysis
+- Maps incidents to schema-backed MITRE ATT&CK Enterprise v19.0, with MITRE ATLAS added only when evidence supports adversarial AI/ML behavior; NIST CSF and Cyber Kill Chain remain planned integrations
 - Tracks Advanced Persistent Threat groups with canonical naming across vendor taxonomies
 - Provides citation-quality sources for researchers, journalists, and policymakers
 - Surfaces trend data and enables cross-incident research at scale
@@ -113,9 +113,10 @@ Every Threatpedia record — whether an incident or an APT profile — captures 
 
 | FIELD | DESCRIPTION |
 |-------|-------------|
-| MITRE ATT&CK | Mapped TTPs with confidence level per technique |
-| Kill Chain Stage(s) | Mapping to Lockheed Martin Cyber Kill Chain stages |
-| NIST Function(s) | Identify / Protect / Detect / Respond / Recover |
+| MITRE ATT&CK | Schema-backed ATT&CK Enterprise v19.0 TTPs with confidence level per technique |
+| MITRE ATLAS | Optional adversarial AI/ML mappings when article evidence supports them |
+| Kill Chain Stage(s) | Planned mapping to Lockheed Martin Cyber Kill Chain stages |
+| NIST Function(s) | Planned Govern / Identify / Protect / Detect / Respond / Recover mapping |
 | Diamond Model | Completed adversary diamond for the event |
 | Malware / Tools Used | Links to malware registry entries |
 | CVEs Exploited | Linked CVE records with exploitation context |
@@ -143,16 +144,17 @@ Every Threatpedia record — whether an incident or an APT profile — captures 
 
 ## FRAMEWORK MAPPING PLAN
 
-Structured framework mapping is what elevates Threatpedia from an archive to an analytical platform. By tagging every incident with technique, tactic, and kill chain data, the corpus becomes queryable for trend research, sector risk analysis, and defender tooling.
+Structured framework mapping is what elevates Threatpedia from an archive to an analytical platform. By tagging every incident with versioned tactic and technique data, the corpus becomes queryable for trend research, sector risk analysis, and defender tooling. The ATT&CK Enterprise v19.0 schema foundation is released; corpus migration and additional framework integrations remain in progress.
 
 ### Phase 1 Frameworks
 
-- **MITRE ATT&CK** — Techniques, Tactics, and Procedures (highest priority; broadest community adoption)
-- **Lockheed Martin Cyber Kill Chain** — Stage-level mapping for each event
-- **NIST Cybersecurity Framework** — Function-level mapping (Identify, Protect, Detect, Respond, Recover)
+- **MITRE ATT&CK Enterprise v19.0** — Tactics, Techniques, and Procedures (highest priority; broadest community adoption)
+- **MITRE ATLAS** — Optional adversarial AI/ML mappings only when article evidence supports them
 
 ### Phase 2 Frameworks
 
+- **Lockheed Martin Cyber Kill Chain** — Stage-level mapping for each event
+- **NIST Cybersecurity Framework** — Function-level mapping (Govern, Identify, Protect, Detect, Respond, Recover)
 - **Diamond Model of Intrusion Analysis** — Full adversary diamond per event
 - **OWASP Top 10** — For application-layer events
 - **VERIS** — Vocabulary for Event Recording and Incident Sharing

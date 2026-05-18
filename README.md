@@ -22,7 +22,7 @@ Threatpedia exists to fix that.
 |---|---|
 | **Incident Encyclopedia** | Every significant cyber event documented with standardized fields — TTPs, timeline, attribution, impact, and source citations |
 | **APT Registry** | Current and historical threat groups tracked with profiles, aliases, known campaigns, and state affiliation |
-| **Framework Mapping** | Incidents mapped to MITRE ATT&CK, NIST CSF, Cyber Kill Chain, and more |
+| **Framework Mapping** | Schema-backed MITRE ATT&CK Enterprise v19.0 mappings, with evidence-gated MITRE ATLAS support for adversarial AI/ML cases; NIST CSF and Cyber Kill Chain remain planned integrations |
 | **Peer Review & Certification** | Board-reviewed articles earn the Threatpedia Certified stamp — a mark of verified accuracy |
 | **Trend Analytics** | Structured data enabling cross-incident research by sector, vector, actor, and time |
 | **AI-Augmented Workflow** | AI assists aggregation, pre-screening, and draft generation — humans certify everything |
