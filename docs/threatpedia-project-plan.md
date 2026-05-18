@@ -141,8 +141,8 @@ ATLAS applies conditionally — not to every incident. An article requires ATLAS
 Where ATLAS applies, the incident record should capture: ATLAS Tactic, ATLAS Technique ID, and mapping confidence level. ATT&CK and ATLAS mappings are additive — an incident may require both.
 
 ### Frameworks to Support (Phase 2)
-- **Lockheed Martin Cyber Kill Chain** — Stage mapping
-- **NIST Cybersecurity Framework** — Function mapping
+- **Lockheed Martin Cyber Kill Chain** — Stage-level mapping for each event
+- **NIST Cybersecurity Framework** — Function-level mapping (Govern, Identify, Protect, Detect, Respond, Recover)
 - **Diamond Model of Intrusion Analysis** — Full diamond per event
 - **OWASP Top 10** — For application-layer events
 - **VERIS** — Vocabulary for Event Recording and Incident Sharing

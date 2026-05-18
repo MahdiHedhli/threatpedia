@@ -151,13 +151,10 @@ Structured framework mapping is what elevates Threatpedia from an archive to an 
 - **MITRE ATT&CK Enterprise v19.0** — Techniques, Tactics, and Procedures (highest priority; broadest community adoption)
 - **MITRE ATLAS** — Optional adversarial AI/ML mappings only when article evidence supports them
 
-### Planned Frameworks
+### Phase 2 Frameworks
 
 - **Lockheed Martin Cyber Kill Chain** — Stage-level mapping for each event
 - **NIST Cybersecurity Framework** — Function-level mapping (Govern, Identify, Protect, Detect, Respond, Recover)
-
-### Phase 2 Frameworks
-
 - **Diamond Model of Intrusion Analysis** — Full adversary diamond per event
 - **OWASP Top 10** — For application-layer events
 - **VERIS** — Vocabulary for Event Recording and Incident Sharing
