@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "threat-actor",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-18T07:30:05.833Z",
-  "updated": "2026-05-18T08:38:36.663Z",
+  "updated": "2026-05-18T08:56:01.859Z",
   "source": "manual_submission",
   "submitted_by": "risky-bulletin-discovery-worker",
   "locked_by": null,
@@ -79,8 +79,17 @@
       "agent": "Kernel K",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #785"
+    },
+    {
+      "timestamp": "2026-05-18T08:56:01.859Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #785 merged (adf4648)."
     }
   ],
   "pr_number": 785,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/785"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/785",
+  "merged_at": "2026-05-18T08:56:01.859Z"
 }
