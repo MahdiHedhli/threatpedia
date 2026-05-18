@@ -29,11 +29,11 @@ mitreMappings:
     tactic: "Privilege Escalation"
     notes: "Leveraged permissions within a compromised React container to access the underlying host and AWS environment."
   - techniqueId: "T1530"
-    techniqueName: "Data from Cloud Storage Object"
+    techniqueName: "Data from Cloud Storage"
     tactic: "Collection"
     notes: "Systematic extraction of records from VPC databases and Redshift tables."
   - techniqueId: "T1567.003"
-    techniqueName: "Exfiltration Over Web Service: Exfiltration to Public Sites"
+    techniqueName: "Exfiltration to Text Storage Sites"
     tactic: "Exfiltration"
     notes: "Leaked stolen data and manifestos via public links after failed extortion attempts."
 attributionConfidence: A3

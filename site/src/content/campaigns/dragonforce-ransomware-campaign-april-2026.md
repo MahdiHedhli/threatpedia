@@ -64,7 +64,7 @@ mitreMappings:
     tactic: "Impact"
     notes: "DragonForce affiliates deployed ransomware payloads as the final coercive step of the extortion workflow."
   - techniqueId: "T1567.002"
-    techniqueName: "Exfiltration Over Web Service: Exfiltration to Cloud Storage"
+    techniqueName: "Exfiltration to Cloud Storage"
     tactic: "Exfiltration"
     notes: "Public reporting on the April 2026 cluster described repeated pre-encryption data theft and leak-site pressure."
   - techniqueId: "T1078"

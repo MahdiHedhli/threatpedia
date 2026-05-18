@@ -26,7 +26,7 @@ tools:
   - "Credential stuffing tools"
 mitreMappings:
   - techniqueId: "T1078.004"
-    techniqueName: "Valid Accounts: Cloud Accounts"
+    techniqueName: "Cloud Accounts"
     tactic: "Initial Access"
     notes: "Uses stolen or leaked cloud credentials to access victim environments."
   - techniqueId: "T1213"
@@ -34,7 +34,7 @@ mitreMappings:
     tactic: "Collection"
     notes: "Accesses code repositories (GitHub, GitLab) to find credentials and sensitive data."
   - techniqueId: "T1530"
-    techniqueName: "Data from Cloud Storage Object"
+    techniqueName: "Data from Cloud Storage"
     tactic: "Collection"
     notes: "Targets misconfigured cloud storage (S3 buckets, Azure Blobs) to steal databases."
   - techniqueId: "T1567"

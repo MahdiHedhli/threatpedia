@@ -28,7 +28,7 @@ tags:
   - "lapsus"
 mitreMappings:
   - techniqueId: "T1195.001"
-    techniqueName: "Supply Chain Compromise: Compromise Software Dependencies and Development Tools"
+    techniqueName: "Compromise Software Dependencies and Development Tools"
     tactic: "Initial Access"
     notes: "Malicious code injected into LiteLLM CI/CD pipeline produced trojanized PyPI releases 1.82.7 and 1.82.8 during a ~40 minute exposure window."
   - techniqueId: "T1199"
@@ -36,7 +36,7 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "Exploited widespread trust in LiteLLM as a privileged dependency across AI/ML applications; downstream pipelines pulled the compromised version automatically."
   - techniqueId: "T1552.001"
-    techniqueName: "Unsecured Credentials: Credentials In Files"
+    techniqueName: "Credentials In Files"
     tactic: "Credential Access"
     notes: "Runtime harvesting of API keys, auth tokens, and secrets from environment variables and config files on installations of the trojanized package."
   - techniqueId: "T1567"

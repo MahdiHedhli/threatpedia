@@ -41,13 +41,13 @@ sources:
     publicationDate: "2025-02-01"
 mitreMappings:
   - techniqueId: T1566.002
-    techniqueName: "Phishing: Spearphishing Link"
+    techniqueName: "Spearphishing Link"
     tactic: Initial Access
   - techniqueId: T1528
     techniqueName: Steal Application Access Token
     tactic: Credential Access
   - techniqueId: T1550.001
-    techniqueName: "Use Alternate Authentication Material: Application Access Token"
+    techniqueName: "Application Access Token"
     tactic: Defense Evasion
 ---
 

@@ -52,7 +52,7 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "APT10 exploited trusted access relationships between MSPs and their clients to pivot from MSP environments into client networks without requiring separate initial access per target organization."
   - techniqueId: "T1566.001"
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
     notes: "APT10 used targeted spear-phishing emails with malicious attachments as a primary vector for gaining footholds in MSP environments."
   - techniqueId: "T1078"
@@ -60,7 +60,7 @@ mitreMappings:
     tactic: "Defense Evasion"
     notes: "Stolen and compromised MSP administrator credentials were used to access client environments, blending intrusion activity with legitimate administrative traffic."
   - techniqueId: "T1071.001"
-    techniqueName: "Application Layer Protocol: Web Protocols"
+    techniqueName: "Web Protocols"
     tactic: "Command and Control"
     notes: "APT10 used HTTP and HTTPS-based command-and-control communications via tools including RedLeaves and PlugX to blend into normal web traffic patterns."
 ---

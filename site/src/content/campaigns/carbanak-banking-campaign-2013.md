@@ -48,19 +48,19 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1566.001"
-    techniqueName: "Phishing: Spearphishing Attachment"
+    techniqueName: "Spearphishing Attachment"
     tactic: "Initial Access"
     notes: "The Carbanak Group sent targeted spear-phishing emails with malicious document attachments to bank employees, exploiting document viewer vulnerabilities to execute payloads on opening."
   - techniqueId: "T1547.001"
-    techniqueName: "Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder"
+    techniqueName: "Registry Run Keys / Startup Folder"
     tactic: "Persistence"
     notes: "The Carbanak backdoor used Windows registry run keys and startup folder entries to maintain persistence across reboots in compromised financial institution environments."
   - techniqueId: "T1056.001"
-    techniqueName: "Input Capture: Keylogging"
+    techniqueName: "Keylogging"
     tactic: "Credential Access"
     notes: "Carbanak operators deployed keyloggers to harvest credentials of banking staff, enabling access to internal transaction and ATM management systems."
   - techniqueId: "T1219"
-    techniqueName: "Remote Access Software"
+    techniqueName: "Remote Access Tools"
     tactic: "Command and Control"
     notes: "Operators used remote access tools and the Carbanak backdoor's built-in remote control capabilities to maintain persistent interactive access to compromised banking systems over extended periods."
 ---

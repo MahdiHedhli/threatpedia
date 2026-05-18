@@ -54,7 +54,7 @@ sources:
     accessDate: "2026-05-01"
 mitreMappings:
   - techniqueId: "T1195.001"
-    techniqueName: "Supply Chain Compromise: Compromise Software Dependencies and Development Tools"
+    techniqueName: "Compromise Software Dependencies and Development Tools"
     tactic: "Initial Access"
     notes: "The attacker inserted a backdoor into XZ Utils versions 5.6.0 and 5.6.1 by compromising the project's maintainer trust over approximately two years."
   - techniqueId: "T1554"
