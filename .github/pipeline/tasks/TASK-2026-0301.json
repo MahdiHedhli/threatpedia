@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-05-18T11:37:39.541Z",
-  "updated": "2026-05-18T11:37:39.541Z",
+  "updated": "2026-05-18T16:00:26.059Z",
   "source": "backfill",
   "submitted_by": "threatpedia-soft-launch-corpus-worker",
   "locked_by": null,
@@ -70,6 +70,14 @@
       "to": "pending",
       "agent": "threatpedia-soft-launch-corpus-worker",
       "note": "Historical campaign backlog seed from HIST-CAMP-002 after live dedup found no standalone Titan Rain campaign article, task, issue, or open PR."
+    },
+    {
+      "timestamp": "2026-05-18T16:00:26.059Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #791 already covers this task."
     }
   ]
 }
