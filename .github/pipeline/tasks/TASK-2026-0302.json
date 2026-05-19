@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0302",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T19:43:44.118Z",
+  "updated": "2026-05-19T19:43:44.118Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "West Pharmaceutical Services ransomware and data-exfiltration cyberattack, May 2026",
+    "sources": [
+      "https://www.sec.gov/Archives/edgar/data/105770/000010577026000068/0000105770-26-000068-index.html",
+      "https://dysruptionhub.com/west-pharma-cyberattack-pennsylvania",
+      "https://www.scworld.com/brief/west-pharmaceutical-services-hit-by-ransomware-attack"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Healthcare supply chain / pharmaceutical manufacturing",
+      "geography": "Global / United States",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-13. The Risky Bulletin page itself is already known in the corpus/task URL index from other leads in the same bulletin, so this submission uses primary/corroborating URLs only. SEC 8-K confirms a material cybersecurity incident involving data exfiltration and encryption of systems. Keep attribution Unknown unless later source identifies an actor. Candidate date: 2026-05-04 incident detection; SEC filing accepted 2026-05-11."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0302",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T19:43:44.118Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #801"
+    }
+  ]
+}
