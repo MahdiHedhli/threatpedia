@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0304",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T19:44:52.602Z",
+  "updated": "2026-05-19T19:44:52.602Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "RubyGems malicious package flood and temporary registration shutdown, May 2026",
+    "sources": [
+      "https://status.rubygems.org/",
+      "https://thehackernews.com/2026/05/rubygems-suspends-new-signups-after.html",
+      "https://www.mend.io/blog/inside-the-rubygems-supply-chain-attack"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Open-source software / package registry",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-13. The Risky Bulletin page itself is already known in the corpus/task URL index from other leads in the same bulletin, so this submission uses primary/corroborating URLs only. RubyGems status page states 500+ malicious packages were yanked, bot accounts were blocked/removed, and registrations were temporarily disabled while WAF/rate-limit protections were coordinated. Keep scope to registry abuse and staff/platform targeting; do not conflate with the concurrent npm/TanStack Mini Shai-Hulud incident. Candidate date: 2026-05-12 initial RubyGems status update / 2026-05-13 cleanup update."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0304",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T19:44:52.602Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #805"
+    }
+  ]
+}
