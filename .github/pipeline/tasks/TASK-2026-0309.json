@@ -1,0 +1,66 @@
+{
+  "task_id": "TASK-2026-0309",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-19T20:21:39.291Z",
+  "updated": "2026-05-19T20:21:39.291Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "openDCIM install/config poisoning remote code execution chain (CVE-2026-28515/CVE-2026-28517)",
+    "sources": [
+      "https://chocapikk.com/posts/2026/opendcim-sqli-to-rce",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-28515",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-28517",
+      "https://github.com/openDCIM/openDCIM"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "sector": "Data center infrastructure management / open-source software",
+      "geography": "Global",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-28515",
+        "CVE-2026-28517"
+      ]
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-18, which mentioned exploitation attempts against openDCIM. Public source set supports CVE/product/RCE-chain facts via Chocapikk and NVD; draft conservatively and do not overstate active exploitation unless a primary exploitation source is added. Candidate source date: 2026-02-26 disclosure, surfaced in Risky Bulletin on 2026-05-18."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0309",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:21:39.291Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #819"
+    }
+  ]
+}
