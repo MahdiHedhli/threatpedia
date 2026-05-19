@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0303",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T19:44:20.647Z",
+  "updated": "2026-05-19T19:44:20.647Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "FreeBSD dhclient local-network root remote code execution vulnerability (CVE-2026-42511)",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-42511",
+      "https://security.freebsd.org/advisories/FreeBSD-SA-26:12.dhclient.asc",
+      "https://aisle.com/blog/aisle-discovers-cve-2026-42511-a-21-year-old-freebsd-remote-command-execution-vulnerability"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Technology / operating systems",
+      "geography": "Global",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-42511"
+      ]
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-11. The Risky Bulletin page itself is already known in the corpus/task URL index from other leads in the same bulletin, so this submission uses vendor/government/research URLs only. Treat as vulnerability/zero-day style article with FreeBSD, NVD, and AISLE evidence. Do not claim active exploitation unless a source explicitly supports it. Candidate source date: 2026-05-07 AISLE publication; FreeBSD advisory released 2026-04-29; NVD published 2026-04-30."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0303",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T19:44:20.647Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #803"
+    }
+  ]
+}
