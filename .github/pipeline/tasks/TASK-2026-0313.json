@@ -1,20 +1,20 @@
 {
   "task_id": "TASK-2026-0313",
   "stage": "draft",
-  "type": "incident",
+  "type": "campaign",
   "priority": "P2",
   "status": "pending",
-  "created": "2026-05-19T20:27:16.215Z",
-  "updated": "2026-05-19T20:27:16.215Z",
+  "created": "2026-05-19T20:27:15.859Z",
+  "updated": "2026-05-19T20:27:15.859Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "JDownloader website installer compromise",
+    "topic": "SHub Reaper macOS infostealer campaign",
     "sources": [
-      "https://jdownloader.org/incident_8.5.2026.html?v=20260508277000",
-      "https://www.bleepingcomputer.com/news/security/jdownloader-site-hacked-to-replace-installers-with-python-rat-malware"
+      "https://www.sentinelone.com/blog/shub-reaper-macos-stealer-spoofs-apple-google-and-microsoft-in-a-single-attack-chain",
+      "https://www.bleepingcomputer.com/news/security/shub-macos-infostealer-variant-spoofs-apple-security-updates/amp"
     ]
   },
   "specs": [
@@ -25,7 +25,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 7,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
@@ -36,13 +36,13 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0313",
     "pr": true
   },
   "history": [
     {
-      "timestamp": "2026-05-19T20:27:16.215Z",
+      "timestamp": "2026-05-19T20:27:15.859Z",
       "action": "created",
       "from": "none",
       "to": "pending",

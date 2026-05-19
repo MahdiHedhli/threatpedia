@@ -1,20 +1,20 @@
 {
   "task_id": "TASK-2026-0311",
   "stage": "draft",
-  "type": "incident",
+  "type": "campaign",
   "priority": "P2",
   "status": "pending",
-  "created": "2026-05-19T20:27:16.036Z",
-  "updated": "2026-05-19T20:27:16.036Z",
+  "created": "2026-05-19T20:27:15.678Z",
+  "updated": "2026-05-19T20:27:15.678Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
   "locked_at": null,
   "input": {
-    "topic": "7-Eleven data breach claimed by ShinyHunters",
+    "topic": "Mini Shai-Hulud campaign hits AntV npm packages",
     "sources": [
-      "https://www.bleepingcomputer.com/news/security/7-eleven-confirms-data-breach-claimed-by-the-shinyhunters-gang/amp",
-      "https://www.techradar.com/pro/security/7-eleven-confirms-cyberattack-says-personal-information-may-have-been-hit"
+      "https://snyk.io/blog/mini-shai-hulud-antv-npm-supply-chain-attack",
+      "https://security.snyk.io/antv-supply-chain-compromise-may-2026"
     ]
   },
   "specs": [
@@ -25,7 +25,7 @@
   "acceptance_criteria": {
     "frontmatter_valid": true,
     "min_sources": 3,
-    "min_h2_sections": 5,
+    "min_h2_sections": 7,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
     "schema_validation": "pass",
@@ -36,13 +36,13 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
     "branch": "pipeline/TASK-2026-0311",
     "pr": true
   },
   "history": [
     {
-      "timestamp": "2026-05-19T20:27:16.036Z",
+      "timestamp": "2026-05-19T20:27:15.678Z",
       "action": "created",
       "from": "none",
       "to": "pending",
