@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0306",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T20:20:06.419Z",
+  "updated": "2026-05-19T20:20:06.419Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "PraisonAI legacy API authentication bypass exploitation activity (CVE-2026-44338)",
+    "sources": [
+      "https://www.sysdig.com/blog/cve-2026-44338-praisonai-authentication-bypass-in-under-4-hours-and-the-growing-trend-of-rapid-exploitation",
+      "https://github.com/PraisonAI/praisonai/security/advisories/GHSA-6rmh-7xcm-cpxj",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-44338"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "AI developer tooling / agent orchestration",
+      "geography": "Global",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-44338"
+      ]
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-15. Sysdig observed targeted probing less than four hours after GHSA/CVE publication. Keep claims to observed scanning/probing and product/version facts; do not inflate to confirmed compromise unless later sources support it. Candidate source date: 2026-05-11 GHSA/CVE publication and Sysdig observed probe timeline."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0306",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:20:06.419Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #813"
+    }
+  ]
+}
