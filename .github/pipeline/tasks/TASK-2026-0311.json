@@ -1,0 +1,54 @@
+{
+  "task_id": "TASK-2026-0311",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-19T20:27:15.678Z",
+  "updated": "2026-05-19T20:27:15.678Z",
+  "source": "manual_submission",
+  "submitted_by": "manual-cli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Mini Shai-Hulud campaign hits AntV npm packages",
+    "sources": [
+      "https://snyk.io/blog/mini-shai-hulud-antv-npm-supply-chain-attack",
+      "https://security.snyk.io/antv-supply-chain-compromise-may-2026",
+      "https://www.chainguard.dev/unchained/mini-shai-hulud-npm-attack-antv-ecosystem-compromise-may-2026"
+    ],
+    "notes": "Campaign drafting note: starting sources do not include a government source. Before drafting, find a valid government source supporting this campaign or mark the task blocked if none is available."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0311",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:27:15.678Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "manual-cli",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "task_id": "TASK-2026-0314",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-19T20:27:15.949Z",
+  "updated": "2026-05-19T20:27:15.949Z",
+  "source": "manual_submission",
+  "submitted_by": "manual-cli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "DAEMON Tools Lite supply chain compromise",
+    "sources": [
+      "https://blog.daemon-tools.cc/jpn/post/security-incident",
+      "https://www.kaspersky.co.uk/about/press-releases/kaspersky-identifies-supply-chain-attack-on-official-daemon-tools-website-distributing-backdoor-malware",
+      "https://securelist.com/tr/daemon-tools-backdoor/119654/"
+    ]
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 8,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0314",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:27:15.949Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "manual-cli",
+      "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    }
+  ]
+}
