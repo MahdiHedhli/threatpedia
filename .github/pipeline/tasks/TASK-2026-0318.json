@@ -1,0 +1,83 @@
+{
+  "task_id": "TASK-2026-0318",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-05-20T20:05:36.763Z",
+  "updated": "2026-05-20T20:05:36.763Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Adobe Acrobat and Reader Heap-Based Buffer Overflow Vulnerability (CVE-2009-3459)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2009-3459",
+      "https://www.cisa.gov/news-events/alerts/2009/10/13/adobe-reader-and-acrobat-vulnerabilities",
+      "https://web.archive.org/web/20120324170253/http://www.adobe.com/support/security/bulletins/apsb09-15.html#:~:text=CVE%2D2009%2D3459).-,NOTE%3A,-There%20are%20reports"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2009-3459",
+      "cves": [
+        "CVE-2009-3459"
+      ],
+      "exploitId": "TP-EXP-2009-0002",
+      "type": "Buffer Overflow",
+      "platform": "Adobe Acrobat and Reader",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-05-20",
+      "cwes": [
+        "CWE-119"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-05-20. Required action by 2026-06-03. CVSS 3.1: 8.8 (HIGH). Discovery score: 98/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/adobe-acrobat-and-reader-cve-2009-3459.md",
+    "branch": "pipeline/TASK-2026-0318",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 98,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.8,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-05-20T20:05:36.763Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-20T20:05:36.763Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 98)"
+    }
+  ]
+}
