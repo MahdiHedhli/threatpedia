@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0308",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T20:21:08.528Z",
+  "updated": "2026-05-19T20:21:08.528Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "FunnelKit Funnel Builder exploitation injecting WooCommerce checkout skimmers, May 2026",
+    "sources": [
+      "https://sansec.io/research/funnelkit-woocommerce-vulnerability-exploited",
+      "https://thehackernews.com/2026/05/funnel-builder-flaw-under-active.html",
+      "https://www.scworld.com/brief/wordpress-funnel-builder-vulnerability-exploited-to-steal-payment-data",
+      "https://wpscan.com/vulnerability/d553cff4-074a-44e7-aebe-e61c86ab8042"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "E-commerce / WordPress and WooCommerce",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-15. Sansec reported active exploitation of Funnel Builder/FunnelKit to inject checkout skimmers into WooCommerce sites; FunnelKit fixed in 3.15.0.3. Keep scope to observed skimming/exploitation and avoid unsupported victim counts beyond source language. Candidate source date: 2026-05-14 Sansec publication / 2026-05-15 follow-on reporting."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0308",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:21:08.528Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #817"
+    }
+  ]
+}
