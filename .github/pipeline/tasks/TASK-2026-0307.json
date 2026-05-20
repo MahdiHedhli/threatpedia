@@ -1,0 +1,65 @@
+{
+  "task_id": "TASK-2026-0307",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-19T20:20:39.083Z",
+  "updated": "2026-05-19T20:20:39.083Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Composer GitHub Actions token disclosure vulnerability (CVE-2026-45793 / GHSA-f9f8-rm49-7jv2)",
+    "sources": [
+      "https://blog.packagist.com/composer-2-9-8-and-2-2-28-fix-github-actions-token-disclosure-in-error-messages",
+      "https://github.com/composer/composer/security/advisories/GHSA-f9f8-rm49-7jv2",
+      "https://sansec.io/research/composer-github-token-leak",
+      "https://socket.dev/blog/packagist-urges-immediate-composer-update"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Open-source software / CI/CD supply chain",
+      "geography": "Global",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-45793"
+      ]
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-05-15. Packagist says affected Composer versions can leak GitHub Actions GITHUB_TOKEN or GitHub App installation tokens to logs after GitHub token-format changes. Treat as vulnerability/zero-day style entry; do not claim exploitation unless sourced. Candidate source date: 2026-05-13 Packagist/GHSA disclosure and patched releases."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0307",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-19T20:20:39.083Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #815"
+    }
+  ]
+}
