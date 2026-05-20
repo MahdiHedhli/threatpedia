@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-19T20:27:16.215Z",
-  "updated": "2026-05-20T15:15:00.000Z",
+  "updated": "2026-05-19T20:27:16.215Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -49,14 +49,6 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
-    },
-    {
-      "timestamp": "2026-05-20T15:15:00.000Z",
-      "action": "remediated",
-      "from": "pending",
-      "to": "pending",
-      "agent": "codex",
-      "note": "Added a third starting source for current-head AI review feedback."
     }
   ]
 }
