@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-19T20:27:16.036Z",
-  "updated": "2026-05-19T20:27:16.036Z",
+  "updated": "2026-05-20T15:15:00.000Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -14,7 +14,8 @@
     "topic": "7-Eleven data breach claimed by ShinyHunters",
     "sources": [
       "https://www.bleepingcomputer.com/news/security/7-eleven-confirms-data-breach-claimed-by-the-shinyhunters-gang/amp",
-      "https://www.techradar.com/pro/security/7-eleven-confirms-cyberattack-says-personal-information-may-have-been-hit"
+      "https://www.techradar.com/pro/security/7-eleven-confirms-cyberattack-says-personal-information-may-have-been-hit",
+      "https://cybernews.com/cybercrime/7-eleven-confirms-april-cyberattack-shinyhunters/"
     ]
   },
   "specs": [
@@ -48,6 +49,14 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-05-20T15:15:00.000Z",
+      "action": "remediated",
+      "from": "pending",
+      "to": "pending",
+      "agent": "codex",
+      "note": "Added a third starting source for current-head AI review feedback."
     }
   ]
 }
