@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0326",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-22T14:33:56.935Z",
+  "updated": "2026-05-22T14:33:56.935Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "GitHub internal repository theft via compromised Nx Console VS Code extension, May 2026",
+    "sources": [
+      "https://github.blog/security/investigating-unauthorized-access-to-githubs-internal-repositories",
+      "https://github.com/nrwl/nx-console/security/advisories/GHSA-c9j4-9m59-847w",
+      "https://theravenfile.com/2026/05/20/github-leak-your-code-risk",
+      "https://risky.biz/risky-bulletin-microsoft-ends-sms-mfa-for-personal-accounts"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Software development / source-code hosting",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22. Treat as a discrete incident centered on GitHub's disclosed unauthorized access to internal repositories after a GitHub employee installed a compromised Nx Console VS Code extension. Keep scope separate from the already-covered TanStack supply-chain compromise and from existing Grafana/AntV tasks. Use GitHub's security post and Nx advisory as primary sources; use Risky Bulletin and leak-analysis reporting only for corroboration and context. Do not infer actor attribution beyond Unknown unless primary sources support it."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0326",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-22T14:33:56.935Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #824"
+    }
+  ]
+}
