@@ -13,7 +13,9 @@
   "input": {
     "topic": "Trapdoor malvertising-to-ad-fraud campaign, May 2026",
     "sources": [
-      "https://www.humansecurity.com/learn/resource/satori-threat-intelligence-alert-trapdoor-funnels-malvertising-into-ad-fraud"
+      "https://www.humansecurity.com/learn/resource/satori-threat-intelligence-alert-trapdoor-funnels-malvertising-into-ad-fraud",
+      "https://www.humansecurity.com/newsroom/satori-researchers-disrupt-ad-fraud-malvertising-scheme-trapdoor/",
+      "https://thehackernews.com/2026/05/trapdoor-android-ad-fraud-scheme-hit.html"
     ],
     "candidate_data": {
       "severity": "medium",
