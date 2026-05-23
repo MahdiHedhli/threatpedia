@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0333",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-23T05:17:15.560Z",
+  "updated": "2026-05-23T05:17:15.560Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Storm-2949 cloud-wide breach from compromised identity, May 2026",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2026/05/18/storm-2949-turned-compromised-identity-into-cloud-wide-breach"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Cloud services / enterprise identity",
+      "geography": "Global",
+      "threat_actor": "Storm-2949"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20; the bulletin URL is omitted from Source URLs because shared bulletin URLs can trigger dedup across distinct leads. Treat as a bounded incident based on Microsoft's reporting about compromised identity leading to cloud-wide breach activity. Do not turn this into a broad actor profile or campaign unless the drafting worker finds additional source-supported continuity. Keep claims conservative and tied to Microsoft's public post."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0333",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T05:17:15.560Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #836"
+    }
+  ]
+}
