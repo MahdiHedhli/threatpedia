@@ -14,7 +14,8 @@
     "topic": "Fast16 malware sabotage of nuclear simulation software, May 2026",
     "sources": [
       "https://www.security.com/blog-post/fast16-nuclear-sabotage",
-      "https://www.zetter-zeroday.com/experts-confirm-the-fast16-malware-was-sabotaging-nuclear-weapons-tests-likely-in-iran"
+      "https://www.zetter-zeroday.com/experts-confirm-the-fast16-malware-was-sabotaging-nuclear-weapons-tests-likely-in-iran",
+      "https://thehackernews.com/2026/05/pre-stuxnet-fast16-malware-tampered.html"
     ],
     "candidate_data": {
       "severity": "high",
