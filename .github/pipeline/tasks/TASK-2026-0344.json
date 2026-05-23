@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0344",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T10:38:26.555Z",
+  "updated": "2026-05-23T10:38:26.555Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "ModelRAT Microsoft Teams compromise campaign, May 2026",
+    "sources": [
+      "https://www.rapid7.com/blog/post/tr-it-support-dissecting-modelorat-campaign-microsoft-teams-compromise",
+      "https://reliaquest.com/blog/threat-spotlight-help-desk-lures-drop-kongtukes-evolved-modelorat",
+      "https://blog.gridinsoft.com/kongtuke-microsoft-teams-modelorat-helpdesk-lures/"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Enterprise IT / identity and collaboration platforms",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-15. Treat as a campaign only if the drafting worker confirms source-supported repeated activity involving Microsoft Teams compromise, help-desk lures, KongTuke, and evolved ModelRAT payloads. Use Rapid7 and ReliaQuest as the source base. Keep attribution Unknown unless the sources explicitly name an operator; do not inflate victim counts or campaign scope beyond source language."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0344",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T10:38:26.555Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #858"
+    }
+  ]
+}
