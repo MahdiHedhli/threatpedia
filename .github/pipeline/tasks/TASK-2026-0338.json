@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0338",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T07:38:21.286Z",
+  "updated": "2026-05-23T07:38:21.286Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Fast16 malware sabotage of nuclear simulation software, May 2026",
+    "sources": [
+      "https://www.security.com/blog-post/fast16-nuclear-sabotage",
+      "https://www.zetter-zeroday.com/experts-confirm-the-fast16-malware-was-sabotaging-nuclear-weapons-tests-likely-in-iran",
+      "https://thehackernews.com/2026/05/pre-stuxnet-fast16-malware-tampered.html"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Government / nuclear research",
+      "geography": "Unknown",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-18. Treat as a bounded incident/event about public reporting on Fast16 malware sabotaging nuclear simulation software. Use Broadcom/Symantec and Zero-Day reporting as sources; keep attribution, target geography, and operational impact conservative. Do not imply confirmed Iran targeting, state attribution, or campaign scope unless the drafting worker can support those claims directly from sources."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0338",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T07:38:21.286Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #846"
+    }
+  ]
+}
