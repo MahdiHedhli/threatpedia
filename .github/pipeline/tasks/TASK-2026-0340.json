@@ -13,7 +13,9 @@
   "input": {
     "topic": "Interpol first-of-its-kind MENA cybercrime operation arrests 201 suspects, May 2026",
     "sources": [
-      "https://www.interpol.int/News-and-Events/News/2026/201-arrests-in-first-of-its-kind-cybercrime-operation-in-MENA-region"
+      "https://www.interpol.int/News-and-Events/News/2026/201-arrests-in-first-of-its-kind-cybercrime-operation-in-MENA-region",
+      "https://www.bleepingcomputer.com/news/security/interpol-operation-ramz-seizes-53-malware-phishing-servers/amp/",
+      "https://me-en.kaspersky.com/about/press-releases/kaspersky-supports-interpols-operation-ramz-in-mena-region-resulting-in-over-200-arrests"
     ],
     "candidate_data": {
       "severity": "medium",
