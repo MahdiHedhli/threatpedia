@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0330",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-23T03:45:44.865Z",
+  "updated": "2026-05-23T03:45:44.865Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Ghost CMS FakeCaptcha malware campaign exploiting CVE-2026-26980, May 2026",
+    "sources": [
+      "https://blog.xlab.qianxin.com/ghost-cms-mass-compromised-via-cve-2026-26980-now-fueling-clickfix-attacks",
+      "https://github.com/advisories/GHSA-w52v-v783-gw97",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-26980"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Web publishing / software supply chain",
+      "geography": "Global",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-26980"
+      ]
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22; the bulletin URL is intentionally omitted from Source URLs because it is already indexed from earlier intake. Treat as a campaign only if the drafting worker confirms source-supported repeated/mass Ghost CMS compromise and FakeCaptcha/ClickFix activity. Use QiAnXin XLab as the main campaign source and the GitHub advisory for CVE/product grounding. Keep attribution Unknown unless sources explicitly support otherwise. Do not inflate beyond Ghost CMS CVE-2026-26980 exploitation and the documented malware/social-engineering flow."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0330",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T03:45:44.865Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #830"
+    }
+  ]
+}
