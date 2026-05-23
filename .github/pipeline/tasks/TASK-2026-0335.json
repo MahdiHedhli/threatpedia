@@ -13,7 +13,9 @@
   "input": {
     "topic": "art-template npm supply-chain compromise, May 2026",
     "sources": [
-      "https://safedep.io/art-template-npm-supply-chain-compromise"
+      "https://safedep.io/art-template-npm-supply-chain-compromise",
+      "https://socket.dev/blog/coruna-respawned-compromised-art-template-npm-package",
+      "https://www.technadu.com/compromised-art-template-npm-package-delivers-coruna-like-ios-exploit/628212/"
     ],
     "candidate_data": {
       "severity": "medium",
