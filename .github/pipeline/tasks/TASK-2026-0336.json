@@ -13,7 +13,9 @@
   "input": {
     "topic": "CRXfiltrate Chrome extension data-exfiltration campaign, May 2026",
     "sources": [
-      "https://7ai.com/crxfiltrate"
+      "https://7ai.com/crxfiltrate",
+      "https://www.esecurityplanet.com/threats/malicious-browser-extensions-ai-threat-detection/",
+      "https://7ai.com/blog/meet-crxfiltrate-the-chrome-extension-data-exfiltration-framework"
     ],
     "candidate_data": {
       "severity": "medium",
