@@ -14,7 +14,8 @@
     "topic": "THORChain exploit freezes cross-chain DeFi operations, May 2026",
     "sources": [
       "https://x.com/THORChain/status/2055376254514196749",
-      "https://www.cryptotimes.io/2026/05/17/10-8-million-drained-inside-the-thorchain-exploit-that-froze-cross-chain-defi-for-13-hours"
+      "https://www.cryptotimes.io/2026/05/17/10-8-million-drained-inside-the-thorchain-exploit-that-froze-cross-chain-defi-for-13-hours",
+      "https://thorchain.org/blog/thorchain-exploit-report-1"
     ],
     "candidate_data": {
       "severity": "medium",
