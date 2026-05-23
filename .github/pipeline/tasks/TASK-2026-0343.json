@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0343",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T10:08:24.691Z",
+  "updated": "2026-05-23T10:08:24.691Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "node-ipc npm supply-chain attack, May 2026",
+    "sources": [
+      "https://securitylabs.datadoghq.com/articles/node-ipc-npm-malware-analysis",
+      "https://semgrep.dev/blog/2026/not-your-ipc-but-node-ipc-npm-hit-again-with-supply-chain-attack-but-this-time-its-not-a-worm",
+      "https://www.stepsecurity.io/blog/node-ipc-npm-supply-chain-attack",
+      "https://socket.dev/blog/node-ipc-package-compromised"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Software development / npm ecosystem",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-15. Treat as a bounded npm supply-chain incident covering the reported node-ipc package compromise. Use Datadog, Semgrep, StepSecurity, and Socket for technical corroboration. Keep scope separate from TanStack, AntV, art-template, RubyGems, and broader Shai-Hulud/Mini Shai-Hulud items already in corpus or queue. Do not infer actor attribution or worm behavior beyond source language."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0343",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T10:08:24.691Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #856"
+    }
+  ]
+}
