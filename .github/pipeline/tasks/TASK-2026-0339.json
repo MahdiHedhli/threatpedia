@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0339",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-23T08:08:22.632Z",
+  "updated": "2026-05-23T08:08:22.632Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "ChromaDB pre-auth remote code execution vulnerability, May 2026",
+    "sources": [
+      "https://www.hiddenlayer.com/research/chromatoast-served-pre-auth",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-45829",
+      "https://labs.cloudsecurityalliance.org/research/csa-research-note-chromadb-rce-ai-vector-database-20260520-c/"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "AI/ML infrastructure / developer tooling",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20. Treat as a zero-day/vulnerability lead only if the drafting worker can ground product, exploitability, affected versions, and remediation in HiddenLayer's public research or additional vendor/advisory sources. Keep attribution Unknown and do not infer active exploitation unless sources explicitly support it. If no CVE/vendor corroboration is available during drafting, block rather than inflate."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0339",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T08:08:22.632Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #848"
+    }
+  ]
+}
