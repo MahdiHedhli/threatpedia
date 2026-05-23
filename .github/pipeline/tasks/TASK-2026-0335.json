@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0335",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T06:08:42.300Z",
+  "updated": "2026-05-23T06:08:42.300Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "art-template npm supply-chain compromise, May 2026",
+    "sources": [
+      "https://safedep.io/art-template-npm-supply-chain-compromise",
+      "https://socket.dev/blog/coruna-respawned-compromised-art-template-npm-package",
+      "https://www.technadu.com/compromised-art-template-npm-package-delivers-coruna-like-ios-exploit/628212/"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Software development / npm ecosystem",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22; the bulletin URL is omitted from Source URLs because shared bulletin URLs can trigger dedup across distinct leads. Treat as a bounded incident covering the reported compromise of the art-template npm package. Keep claims tied to SafeDep's reporting and do not conflate with the separate TanStack, AntV, RubyGems, Ghost CMS, or broader Mini Shai-Hulud items already in the queue/corpus. If sources are too thin during drafting, block rather than inflate into a campaign."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0335",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T06:08:42.300Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #840"
+    }
+  ]
+}
