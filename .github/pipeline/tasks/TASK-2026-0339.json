@@ -13,7 +13,9 @@
   "input": {
     "topic": "ChromaDB pre-auth remote code execution vulnerability, May 2026",
     "sources": [
-      "https://www.hiddenlayer.com/research/chromatoast-served-pre-auth"
+      "https://www.hiddenlayer.com/research/chromatoast-served-pre-auth",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-45829",
+      "https://labs.cloudsecurityalliance.org/research/csa-research-note-chromadb-rce-ai-vector-database-20260520-c/"
     ],
     "candidate_data": {
       "severity": "high",
