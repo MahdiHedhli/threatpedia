@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0341",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T09:08:49.914Z",
+  "updated": "2026-05-23T09:08:49.914Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Indonesia cyber scam center raids and arrests, May 2026",
+    "sources": [
+      "https://www.channelnewsasia.com/asia/indonesia-batam-online-scam-raid-foreign-nationals-detained-baloi-6109136",
+      "https://www.pbs.org/newshour/world/indonesian-police-arrest-321-foreigners-in-online-gambling-crackdown",
+      "https://jakartaglobe.id/news/bali-police-uncover-alleged-international-cyber-scamming-ring"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Law enforcement / cyber-enabled fraud",
+      "geography": "Indonesia",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-18; the bulletin URL is omitted from Source URLs because it is already indexed by an unrelated completed UNC6671 task. Treat as a bounded law-enforcement incident/event covering reported cyber scam center raids and arrests in Indonesia. Keep claims tied to the cited reporting, distinguish separate raids/locations clearly, and do not infer a single named threat actor or organized campaign unless the sources support that framing."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0341",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T09:08:49.914Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #852"
+    }
+  ]
+}
