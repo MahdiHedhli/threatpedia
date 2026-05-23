@@ -13,7 +13,9 @@
   "input": {
     "topic": "Operation Dragon Whistle UNG0002 spear-phishing campaign against Chinese academia, May 2026",
     "sources": [
-      "https://www.seqrite.com/blog/operation-dragon-whistle-ung002-targets-chinese-academia-via-weaponized-institutional-lure"
+      "https://www.seqrite.com/blog/operation-dragon-whistle-ung002-targets-chinese-academia-via-weaponized-institutional-lure",
+      "https://news.risky.biz/risky-bulletin-microsoft-ends-sms-mfa-for-personal-accounts/",
+      "https://in.linkedin.com/company/seqrite"
     ],
     "candidate_data": {
       "severity": "medium",
@@ -21,7 +23,7 @@
       "geography": "China",
       "threat_actor": "UNG0002"
     },
-    "notes": "Manual intake from Risky Bulletin dated 2026-05-22. Treat as a bounded campaign only if the drafting worker confirms source-supported spear-phishing activity targeting students and faculty at Changzhou University with a mandatory fitness-assessment lure. Use Seqrite as the source base; keep attribution as vendor-assessed UNG0002 and avoid expanding scope beyond the institution/education-sector targeting described in the source. If the single-source basis is judged too thin during drafting, block rather than inflate."
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22. Treat as a bounded campaign only if the drafting worker confirms source-supported spear-phishing activity targeting students and faculty at Changzhou University with a mandatory fitness-assessment lure. Use Seqrite as the primary source base; Risky Bulletin and Seqrite's public social footprint are discovery/corroborating context, not independent technical confirmation. Keep attribution as vendor-assessed UNG0002 and avoid expanding scope beyond the institution/education-sector targeting described in the source. If the available source basis is judged too thin during drafting, block rather than inflate."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
