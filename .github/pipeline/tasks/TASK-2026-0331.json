@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0331",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-23T04:16:13.481Z",
+  "updated": "2026-05-23T04:16:13.481Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Megalodon mass GitHub repository backdooring campaign, May 2026",
+    "sources": [
+      "https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows",
+      "https://www.ox.security/blog/megalodon-cicd-malware-github/",
+      "https://cybernews.com/security/megalodon-github-5000-repos-backdooring-supply-chain-attack/"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Software development / source-code hosting",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22; the bulletin URL is intentionally omitted from Source URLs because it is already indexed from earlier intake. Treat as a campaign only if the drafting worker confirms source-supported repeated or multi-repository activity from SafeDep's reporting. Keep claims bounded to the reported GitHub repository backdooring and CI workflow abuse. Do not infer actor attribution beyond Unknown unless sources explicitly support it. If the single primary source is too thin for a campaign article during drafting, block rather than inflate."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0331",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T04:16:13.481Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #832"
+    }
+  ]
+}
