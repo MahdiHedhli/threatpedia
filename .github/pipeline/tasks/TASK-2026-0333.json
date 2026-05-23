@@ -13,7 +13,9 @@
   "input": {
     "topic": "Storm-2949 cloud-wide breach from compromised identity, May 2026",
     "sources": [
-      "https://www.microsoft.com/en-us/security/blog/2026/05/18/storm-2949-turned-compromised-identity-into-cloud-wide-breach"
+      "https://www.microsoft.com/en-us/security/blog/2026/05/18/storm-2949-turned-compromised-identity-into-cloud-wide-breach",
+      "https://www.techradar.com/pro/security/microsoft-warns-hackers-are-exploiting-password-resets-to-gain-access-to-user-accounts-heres-how-to-stay-safe",
+      "https://blog.admindroid.com/storm-2949-attack-in-microsoft-365/"
     ],
     "candidate_data": {
       "severity": "high",
