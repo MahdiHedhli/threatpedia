@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-2026-0337",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T07:08:43.420Z",
+  "updated": "2026-05-23T07:08:43.420Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "THORChain exploit freezes cross-chain DeFi operations, May 2026",
+    "sources": [
+      "https://x.com/THORChain/status/2055376254514196749",
+      "https://www.cryptotimes.io/2026/05/17/10-8-million-drained-inside-the-thorchain-exploit-that-froze-cross-chain-defi-for-13-hours"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Cryptocurrency / decentralized finance",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-18; the bulletin URL is omitted from Source URLs because shared bulletin URLs can trigger dedup across distinct leads. Treat as a bounded incident covering the reported THORChain exploit and operational freeze. Use THORChain's own status post as primary project evidence and CryptoTimes as secondary reporting. Keep claims conservative around losses, outage duration, and exploit mechanics; do not infer attribution or broader campaign links unless source-supported."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0337",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T07:08:43.420Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #844"
+    }
+  ]
+}
