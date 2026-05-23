@@ -14,7 +14,8 @@
     "topic": "ModelRAT Microsoft Teams compromise campaign, May 2026",
     "sources": [
       "https://www.rapid7.com/blog/post/tr-it-support-dissecting-modelorat-campaign-microsoft-teams-compromise",
-      "https://reliaquest.com/blog/threat-spotlight-help-desk-lures-drop-kongtukes-evolved-modelorat"
+      "https://reliaquest.com/blog/threat-spotlight-help-desk-lures-drop-kongtukes-evolved-modelorat",
+      "https://blog.gridinsoft.com/kongtuke-microsoft-teams-modelorat-helpdesk-lures/"
     ],
     "candidate_data": {
       "severity": "medium",
