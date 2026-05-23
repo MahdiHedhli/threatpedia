@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0342",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T09:39:17.840Z",
+  "updated": "2026-05-23T09:39:17.840Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "CISA contractor AWS GovCloud key exposure, May 2026",
+    "sources": [
+      "https://krebsonsecurity.com/2026/05/cisa-admin-leaked-aws-govcloud-keys-on-github",
+      "https://techcrunch.com/2026/05/19/us-cyber-agency-cisa-exposed-reams-of-passwords-and-cloud-keys-to-the-open-web",
+      "https://www.axios.com/2026/05/19/congress-cisa-briefing-credentials-leak"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Government / cloud security",
+      "geography": "United States",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20. Treat as a bounded credential-exposure incident involving public reporting that a CISA contractor exposed AWS GovCloud keys and internal credentials in a public GitHub repository. KrebsOnSecurity is the originating report; TechCrunch and Axios provide corroborating coverage and note CISA's reported public statement/briefing request context. Keep claims conservative: do not assert confirmed misuse, compromise impact, or contractor fault beyond source language. If drafting cannot obtain enough official or near-primary corroboration for the core facts, block rather than inflate."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0342",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T09:39:17.840Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #854"
+    }
+  ]
+}
