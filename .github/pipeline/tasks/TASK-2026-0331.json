@@ -13,7 +13,9 @@
   "input": {
     "topic": "Megalodon mass GitHub repository backdooring campaign, May 2026",
     "sources": [
-      "https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows"
+      "https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows",
+      "https://www.ox.security/blog/megalodon-cicd-malware-github/",
+      "https://cybernews.com/security/megalodon-github-5000-repos-backdooring-supply-chain-attack/"
     ],
     "candidate_data": {
       "severity": "high",
