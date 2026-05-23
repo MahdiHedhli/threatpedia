@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0340",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T08:38:26.411Z",
+  "updated": "2026-05-23T08:38:26.411Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Interpol first-of-its-kind MENA cybercrime operation arrests 201 suspects, May 2026",
+    "sources": [
+      "https://www.interpol.int/News-and-Events/News/2026/201-arrests-in-first-of-its-kind-cybercrime-operation-in-MENA-region"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Law enforcement / cybercrime",
+      "geography": "Middle East and North Africa",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20. Treat as a discrete law-enforcement takedown/disruption incident based on Interpol's public report. Keep claims bounded to the operation, arrest counts, participating geography, and cybercrime types stated by Interpol. Do not infer individual actor attribution, victim counts, or broader campaign relationships unless the primary source supports them."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0340",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T08:38:26.411Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #850"
+    }
+  ]
+}
