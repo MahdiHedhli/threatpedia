@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0334",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-05-23T05:37:17.242Z",
+  "updated": "2026-05-23T05:37:17.242Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Trapdoor malvertising-to-ad-fraud campaign, May 2026",
+    "sources": [
+      "https://www.humansecurity.com/learn/resource/satori-threat-intelligence-alert-trapdoor-funnels-malvertising-into-ad-fraud",
+      "https://www.humansecurity.com/newsroom/satori-researchers-disrupt-ad-fraud-malvertising-scheme-trapdoor/",
+      "https://thehackernews.com/2026/05/trapdoor-android-ad-fraud-scheme-hit.html"
+    ],
+    "candidate_data": {
+      "severity": "medium",
+      "sector": "Digital advertising / web users",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20; the bulletin URL is omitted from Source URLs because shared bulletin URLs can trigger dedup across distinct leads. Treat as a campaign only if the drafting worker confirms source-supported repeated malvertising-to-ad-fraud activity from Human Security/Satori reporting. Keep claims bounded to the documented Trapdoor funnel, malvertising behavior, and ad-fraud outcomes. Do not infer operator identity or unrelated campaign clustering unless supported by the source."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0334",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T05:37:17.242Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #838"
+    }
+  ]
+}
