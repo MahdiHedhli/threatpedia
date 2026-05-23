@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0332",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-23T04:46:55.836Z",
+  "updated": "2026-05-23T04:46:55.836Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Microsoft disrupts Fox Tempest malware-signing-as-a-service infrastructure, May 2026",
+    "sources": [
+      "https://blogs.microsoft.com/on-the-issues/2026/05/19/disrupting-fox-tempest-a-cybercrime-service"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Cybercrime infrastructure / software signing abuse",
+      "geography": "Global",
+      "threat_actor": "Fox Tempest"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-20; the Risky Bulletin URL is omitted from Source URLs because shared bulletin URLs can trigger dedup across distinct leads. Treat as a discrete disruption/takedown incident focused on Microsoft's reported action against Fox Tempest malware-signing-as-a-service infrastructure. Keep claims bounded to Microsoft's public legal/operational account and do not expand into unrelated ransomware incidents unless the source explicitly ties them to this service."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0332",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-23T04:46:55.836Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #834"
+    }
+  ]
+}
