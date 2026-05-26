@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-19T19:44:20.647Z",
-  "updated": "2026-05-26T19:21:13.722Z",
+  "updated": "2026-05-26T19:23:58.174Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-05-26T19:21:13.721Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "FreeBSD dhclient local-network root remote code execution vulnerability (CVE-2026-42511)",
     "sources": [
@@ -74,6 +74,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-26T19:23:58.173Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #870"
     }
-  ]
+  ],
+  "pr_number": 870,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/870"
 }
