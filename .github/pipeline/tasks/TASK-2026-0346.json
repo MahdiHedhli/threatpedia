@@ -27,7 +27,7 @@
       "platform": "LiteSpeed cPanel Plugin",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-05-26",
+      "disclosedDate": "2026-05-21",
       "cwes": [
         "CWE-266"
       ],
@@ -45,7 +45,6 @@
     "min_h2_sections": 5,
     "min_mitre_mappings": 1,
     "review_status": "draft_ai",
-    "schema_validation": "pass",
     "astro_build": true
   },
   "depends_on": [],
