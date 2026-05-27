@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-05-27T07:43:45.942Z",
+  "updated": "2026-05-27T07:48:45.942Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -18,6 +18,7 @@
     ],
     "candidate_data": {
       "severity": "high",
+      "attack_type": "Malware / Cyberespionage",
       "sector": "Telecommunications / managed hosting / internet infrastructure",
       "geography": "Middle East / Southeast Asia / global telecom sector",
       "threat_actor": "Red Lamassu"
@@ -63,6 +64,14 @@
       "to": "pending",
       "agent": "threatpedia-pr-steward",
       "note": "Added current-head Gemini guardrail requiring the drafting agent to find a schema-valid government source for the campaign task or block the task if none can be found; no placeholder sources were added."
+    },
+    {
+      "timestamp": "2026-05-27T07:48:45.942Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "threatpedia-pr-steward",
+      "note": "Added candidate attack_type metadata requested by current-head Gemini review to guide campaign schema drafting."
     }
   ]
 }
