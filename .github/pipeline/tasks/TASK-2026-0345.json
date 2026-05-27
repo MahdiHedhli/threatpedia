@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-23T11:10:11.480Z",
-  "updated": "2026-05-27T01:18:48Z",
+  "updated": "2026-05-27T01:21:14Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -18,6 +18,7 @@
       "https://pe.cczu.edu.cn/2026/0428/c309a414600/page.htm"
     ],
     "candidate_data": {
+      "attack_type": "Spear-phishing",
       "severity": "medium",
       "sector": "Education / higher education",
       "geography": "China",
@@ -73,6 +74,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Clarified that the official Changzhou University source is accepted as the required official/government source only for lure-context evidence under the current schema, and confirmed UNG0002 spelling from the Seqrite page title/body despite the URL slug."
+    },
+    {
+      "timestamp": "2026-05-27T01:21:14Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Added candidate_data.attack_type so the campaign drafting worker has schema-aligned attack classification metadata."
     }
   ]
 }
