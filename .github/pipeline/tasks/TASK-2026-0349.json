@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0349",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-27T17:10:23.449Z",
+  "updated": "2026-05-27T17:10:23.449Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Dutch FIOD arrests two suspects and seizes more than 800 servers tied to sanctioned Stark Industries hosting infrastructure, May 2026",
+    "sources": [
+      "https://www.fiod.nl/fiod-houdt-twee-verdachten-aan-wegens-overtreding-sanctiewetgeving",
+      "https://www.securityweek.com/admins-of-bulletproof-hosting-service-used-by-russian-hackers-arrested-in-netherlands",
+      "https://webhosting.today/2026/05/25/dutch-authorities-dismantle-stark-industries-the-rebrand-didnt-save-it"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Cybercrime infrastructure / bulletproof hosting / internet infrastructure",
+      "geography": "Netherlands / European Union / Russia-linked infrastructure",
+      "threat_actor": "Stark Industries / WorkTitans / THE.Hosting infrastructure operators"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Treat as an incident-style law-enforcement disruption of cyberattack and disinformation infrastructure, not as a broad threat-actor profile. Use FIOD as the primary government source. Keep scope bounded to the May 18/22, 2026 Dutch FIOD operation: two arrests, searches in Enschede and Almere, data centers in Dronten and Schiphol-Rijk, more than 800 servers seized, alleged sanctions evasion, and infrastructure connected to a sanctioned web hosting provider reportedly associated with Stark Industries / WorkTitans / THE.Hosting / Mirhosting. Avoid unsupported claims about specific campaigns unless corroborated by the cited sources. Prior checks found no matching task/content/issue/PR for Stark Industries, WorkTitans, THE.Hosting, Mirhosting, or the FIOD takedown in origin/main or live GitHub state."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0349",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-27T17:10:23.449Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #886"
+    }
+  ]
+}
