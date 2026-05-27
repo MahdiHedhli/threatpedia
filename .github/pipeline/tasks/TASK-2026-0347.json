@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-2026-0347",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-27T03:10:25.385Z",
+  "updated": "2026-05-27T03:10:25.385Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Laravel-Lang supply-chain attack rewrites historical Composer package tags to deliver credential-stealing malware, May 2026",
+    "sources": [
+      "https://www.aikido.dev/blog/supply-chain-attack-targets-laravel-lang-packages-with-credential-stealer",
+      "https://www.stepsecurity.io/blog/laravel-lang-supply-chain-attack",
+      "https://snyk.io/pt-BR/blog/laravel-lang-supply-chain-advisory",
+      "https://security.snyk.io/vuln/SNYK-PHP-LARAVELLANGLANG-16801059"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Software supply chain / open-source package ecosystem / PHP Composer",
+      "geography": "global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky summarized this as a supply-chain attack against Laravel developers in which Laravel-Lang package tags were rewritten and credential-stealing code was loaded through Composer autoload behavior. Use Aikido, StepSecurity, and Snyk as the source base. Keep the article scoped to the May 22-23, 2026 Laravel-Lang compromise involving historical tag rewrites/republication, affected laravel-lang packages, flipboxstudio[.]info infrastructure, and credential/CI-secret theft risk. Avoid overstating attribution; current public sources describe an unknown actor or single actor using compromised org access. Note that contemporaneous zero-day items from the same bulletin for Trend Micro Apex One CVE-2026-34926, Drupal CVE-2026-9082, and LiteSpeed cPanel Plugin CVE-2026-48172 already exist in origin/main task state and should not be duplicated."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0347",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-27T03:10:25.385Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #877"
+    }
+  ]
+}
