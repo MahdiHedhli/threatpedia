@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T03:10:25.385Z",
-  "updated": "2026-05-27T03:10:25.385Z",
+  "updated": "2026-05-27T03:43:45Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -24,7 +24,8 @@
       "geography": "global",
       "threat_actor": "Unknown"
     },
-    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky summarized this as a supply-chain attack against Laravel developers in which Laravel-Lang package tags were rewritten and credential-stealing code was loaded through Composer autoload behavior. Use Aikido, StepSecurity, and Snyk as the source base. Keep the article scoped to the May 22-23, 2026 Laravel-Lang compromise involving historical tag rewrites/republication, affected laravel-lang packages, flipboxstudio[.]info infrastructure, and credential/CI-secret theft risk. Avoid overstating attribution; current public sources describe an unknown actor or single actor using compromised org access. Note that contemporaneous zero-day items from the same bulletin for Trend Micro Apex One CVE-2026-34926, Drupal CVE-2026-9082, and LiteSpeed cPanel Plugin CVE-2026-48172 already exist in origin/main task state and should not be duplicated."
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky summarized this as a supply-chain attack against Laravel developers in which Laravel-Lang package tags were rewritten and credential-stealing code was loaded through Composer autoload behavior. Use Aikido, StepSecurity, and Snyk as the source base. Keep the article scoped to the May 22-23, 2026 Laravel-Lang compromise involving historical tag rewrites/republication, affected laravel-lang packages, flipboxstudio[.]info infrastructure, and credential/CI-secret theft risk. Avoid overstating attribution; current public sources describe an unknown actor or single actor using compromised org access. Note that contemporaneous zero-day items from the same bulletin for Trend Micro Apex One CVE-2026-34926, Drupal CVE-2026-9082, and LiteSpeed cPanel Plugin CVE-2026-48172 already exist in origin/main task state and should not be duplicated.",
+    "drafting_notes": "Campaign articles require a schema-valid government or official authoritative source. Do not add placeholder or unsupported sources. Before drafting, find a defensible government, national CERT, official project/vendor advisory, or equivalent authoritative source that can satisfy the required official-source role without overstating what it corroborates. If no such source can be found, mark the task blocked rather than drafting or weakening source requirements."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -57,6 +58,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #877"
+    },
+    {
+      "timestamp": "2026-05-27T03:43:45Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "threatpedia-pr-steward",
+      "note": "Added drafting guardrail requiring a schema-valid official source for the campaign task or blocking the task if one cannot be found; no placeholder sources were added."
     }
   ]
 }
