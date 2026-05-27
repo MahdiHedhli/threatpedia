@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T19:46:22.345Z",
-  "updated": "2026-05-26T22:00:24.941Z",
+  "updated": "2026-05-27T04:37:31.888Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-27T04:37:31.887Z",
   "input": {
     "topic": "NGINX Rift heap buffer overflow vulnerability (CVE-2026-42945)",
     "sources": [
@@ -68,6 +68,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #875"
+    },
+    {
+      "timestamp": "2026-05-27T04:37:31.887Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
