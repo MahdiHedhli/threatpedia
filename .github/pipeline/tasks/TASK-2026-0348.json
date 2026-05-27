@@ -1,0 +1,77 @@
+{
+  "task_id": "TASK-2026-0348",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-27T07:07:12.886Z",
+  "updated": "2026-05-27T07:48:45.942Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Red Lamassu Showboat malware campaign targets international telecommunications providers, May 2026",
+    "sources": [
+      "https://www.lumen.com/blog/en-us/introducing-showboat-a-new-malware-family-taunts-defenses-and-targets-international-telecom-firms",
+      "https://www.pwc.com/gx/en/issues/cybersecurity/cyber-threat-intelligence/red-lamassu-open-season.html"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "attack_type": "Malware / Cyberespionage",
+      "sector": "Telecommunications / managed hosting / internet infrastructure",
+      "geography": "Middle East / Southeast Asia / global telecom sector",
+      "threat_actor": "Red Lamassu"
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky covered Lumen Black Lotus Labs reporting on Showboat, a Linux malware family targeting international telecom firms, and PwC reporting on Red Lamassu activity. Use Lumen and PwC as the source base, but note that the campaign schema requires at least 3 sources including at least one government source. The agent must research and identify a relevant government source such as CISA, NCSC, or another national cyber security center advisory to satisfy this requirement, or mark the task as blocked if a valid source cannot be found. Keep scope bounded to the Red Lamassu / Showboat campaign described by those reports, including telecom targeting, Linux malware/tooling, victimology, and source-supported infrastructure details. Avoid overstating attribution beyond Red Lamassu and avoid treating related Calypso references as separate actor coverage unless the sources make the relationship explicit. Prior checks found no matching task/content/issue/PR for Red Lamassu, Showboat, or Calypso in origin/main or live GitHub state."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0348",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-27T07:07:12.886Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #882"
+    },
+    {
+      "timestamp": "2026-05-27T07:43:45.942Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "threatpedia-pr-steward",
+      "note": "Added current-head Gemini guardrail requiring the drafting agent to find a schema-valid government source for the campaign task or block the task if none can be found; no placeholder sources were added."
+    },
+    {
+      "timestamp": "2026-05-27T07:48:45.942Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "threatpedia-pr-steward",
+      "note": "Added candidate attack_type metadata requested by current-head Gemini review to guide campaign schema drafting."
+    }
+  ]
+}
