@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0350",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-05-27T19:16:42.768Z",
+  "updated": "2026-05-27T19:16:42.768Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "KnowledgeDeliver LMS ViewState deserialization zero-day exploitation (CVE-2026-5426), 2025-2026",
+    "sources": [
+      "https://cloud.google.com/blog/topics/threat-intelligence/knowledgedeliver-viewstate-deserialization-vulnerability",
+      "https://www.cve.org/CVERecord?id=CVE-2026-5426",
+      "https://risky.biz/risky-bulletin-badhost-vulnerability-bypasses-authentication-on-ai-infrastructure"
+    ],
+    "candidate_data": {
+      "severity": "critical",
+      "sector": "Education / Learning Management Systems",
+      "geography": "Japan; global internet-facing KnowledgeDeliver deployments",
+      "threat_actor": "Unknown",
+      "cves": [
+        "CVE-2026-5426"
+      ]
+    },
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-27. Google/Mandiant reports late-2025 incident response where an unknown actor exploited KnowledgeDeliver's shared ASP.NET machineKey / ViewState deserialization flaw as a zero-day, injected malicious JavaScript into LMS portals, and attempted to infect visitors. Scope as zero-day exploitation of KnowledgeDeliver LMS CVE-2026-5426, not generic ASP.NET ViewState coverage. Use Google/Mandiant as the primary technical source; Risky Bulletin is discovery/context only. Drafting worker should confirm vendor patch/disclosure details and avoid claiming broader exploitation beyond source-supported KnowledgeDeliver installations."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/{slug}.md",
+    "branch": "pipeline/TASK-2026-0350",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-05-27T19:16:42.768Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #889"
+    }
+  ]
+}
