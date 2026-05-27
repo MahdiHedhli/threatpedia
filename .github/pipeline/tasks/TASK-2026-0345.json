@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-23T11:10:11.480Z",
-  "updated": "2026-05-27T01:14:15Z",
+  "updated": "2026-05-27T01:18:48Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -23,8 +23,8 @@
       "geography": "China",
       "threat_actor": "UNG0002"
     },
-    "notes": "Manual intake from Risky Bulletin dated 2026-05-22. Treat as a bounded campaign only if the drafting worker confirms source-supported spear-phishing activity targeting students and faculty at Changzhou University with a mandatory fitness-assessment lure. Use Seqrite as the primary technical source base; Risky Bulletin is discovery/context, not independent technical confirmation. Kernel K source-sufficiency decision: the official Changzhou University physical-fitness testing notice corroborates the real institutional testing program and lure context only; it does not independently confirm compromise or malware activity. Keep compromise, malware, infrastructure, and UNG0002 attribution claims tied to Seqrite or other threat-intelligence sources, and avoid expanding scope beyond the institution/education-sector targeting described in the sources.",
-    "drafting_notes": "Use the official Changzhou University notice only as authoritative corroboration for the real-world testing program and social-engineering lure context. Do not cite it as confirmation of intrusion activity. If the drafting worker cannot satisfy the current campaign schema and publisherType requirements using this official public-institution source without misrepresenting the source, mark the task blocked rather than adding placeholders or broadening the article."
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-22. Treat as a bounded campaign only if the drafting worker confirms source-supported spear-phishing activity targeting students and faculty at Changzhou University with a mandatory fitness-assessment lure. Use Seqrite as the primary technical source base; Risky Bulletin is discovery/context, not independent technical confirmation. Kernel K source-sufficiency decision: the official Changzhou University physical-fitness testing notice is accepted as the required official/government source for this task because it is an official public-university source and the current source schema has no university or victim-organization publisherType. It corroborates the real institutional testing program and lure context only; it does not independently confirm compromise or malware activity. Keep compromise, malware, infrastructure, and UNG0002 attribution claims tied to Seqrite or other threat-intelligence sources, and avoid expanding scope beyond the institution/education-sector targeting described in the sources. Actor naming decision: use UNG0002, matching Seqrite's page title/body; treat the source URL slug's ung002 spelling as a slug inconsistency, not the canonical actor designation.",
+    "drafting_notes": "Use the official Changzhou University notice as the schema-required official/government source only for the real-world testing program and social-engineering lure context. Do not cite it as confirmation of intrusion activity. If the drafting worker cannot classify this official public-university source as the required government/official source without misrepresenting the source, mark the task blocked rather than adding placeholders or broadening the article. Preserve the UNG0002 spelling from Seqrite's title/body; do not normalize it to UNG002 based only on the URL slug."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -65,6 +65,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Added official Changzhou University source for authoritative lure-context corroboration. Decision: source supports institutional testing context only; threat-activity claims remain vendor-supported and must block if no schema-compliant official source treatment is defensible."
+    },
+    {
+      "timestamp": "2026-05-27T01:18:48Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Clarified that the official Changzhou University source is accepted as the required official/government source only for lure-context evidence under the current schema, and confirmed UNG0002 spelling from the Seqrite page title/body despite the URL slug."
     }
   ]
 }
