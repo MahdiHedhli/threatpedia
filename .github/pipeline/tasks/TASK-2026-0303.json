@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-19T19:44:20.647Z",
-  "updated": "2026-05-19T19:44:20.647Z",
+  "updated": "2026-05-26T20:14:25.232Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -59,6 +59,40 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #803"
+    },
+    {
+      "timestamp": "2026-05-19T20:10:17.797Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #810"
+    },
+    {
+      "timestamp": "2026-05-26T19:21:13.722Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-26T19:23:58.173Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #870"
+    },
+    {
+      "timestamp": "2026-05-26T20:14:25.232Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #870 merged (4b10873)."
     }
-  ]
+  ],
+  "pr_number": 870,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/870",
+  "merged_at": "2026-05-26T20:14:25.232Z"
 }
