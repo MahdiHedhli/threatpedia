@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-05-27T07:07:12.886Z",
+  "updated": "2026-05-27T07:43:45.942Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -22,7 +22,7 @@
       "geography": "Middle East / Southeast Asia / global telecom sector",
       "threat_actor": "Red Lamassu"
     },
-    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky covered Lumen Black Lotus Labs reporting on Showboat, a Linux malware family targeting international telecom firms, and PwC reporting on Red Lamassu activity. Use Lumen and PwC as the source base. Keep scope bounded to the Red Lamassu / Showboat campaign described by those reports, including telecom targeting, Linux malware/tooling, victimology, and source-supported infrastructure details. Avoid overstating attribution beyond Red Lamassu and avoid treating related Calypso references as separate actor coverage unless the sources make the relationship explicit. Prior checks found no matching task/content/issue/PR for Red Lamassu, Showboat, or Calypso in origin/main or live GitHub state."
+    "notes": "Manual intake from Risky Bulletin dated 2026-05-25. Risky covered Lumen Black Lotus Labs reporting on Showboat, a Linux malware family targeting international telecom firms, and PwC reporting on Red Lamassu activity. Use Lumen and PwC as the source base, but note that the campaign schema requires at least 3 sources including at least one government source. The agent must research and identify a relevant government source such as CISA, NCSC, or another national cyber security center advisory to satisfy this requirement, or mark the task as blocked if a valid source cannot be found. Keep scope bounded to the Red Lamassu / Showboat campaign described by those reports, including telecom targeting, Linux malware/tooling, victimology, and source-supported infrastructure details. Avoid overstating attribution beyond Red Lamassu and avoid treating related Calypso references as separate actor coverage unless the sources make the relationship explicit. Prior checks found no matching task/content/issue/PR for Red Lamassu, Showboat, or Calypso in origin/main or live GitHub state."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -55,6 +55,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #882"
+    },
+    {
+      "timestamp": "2026-05-27T07:43:45.942Z",
+      "action": "review_feedback_resolution",
+      "from": "pending",
+      "to": "pending",
+      "agent": "threatpedia-pr-steward",
+      "note": "Added current-head Gemini guardrail requiring the drafting agent to find a schema-valid government source for the campaign task or block the task if none can be found; no placeholder sources were added."
     }
   ]
 }
