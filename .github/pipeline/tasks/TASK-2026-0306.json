@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T20:20:06.419Z",
-  "updated": "2026-05-27T10:34:19.993Z",
+  "updated": "2026-05-28T02:26:40.739Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-28T02:26:40.738Z",
   "input": {
     "topic": "PraisonAI legacy API authentication bypass exploitation activity (CVE-2026-44338)",
     "sources": [
@@ -67,6 +67,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #884"
+    },
+    {
+      "timestamp": "2026-05-28T02:26:40.739Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
