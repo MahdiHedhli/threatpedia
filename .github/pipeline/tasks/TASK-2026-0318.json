@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-20T20:05:36.763Z",
-  "updated": "2026-05-20T20:05:36.763Z",
+  "updated": "2026-05-28T03:30:53.960Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-05-28T03:30:53.959Z",
   "input": {
     "topic": "Adobe Acrobat and Reader Heap-Based Buffer Overflow Vulnerability (CVE-2009-3459)",
     "sources": [
@@ -78,6 +78,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 98)"
+    },
+    {
+      "timestamp": "2026-05-28T03:30:53.959Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
