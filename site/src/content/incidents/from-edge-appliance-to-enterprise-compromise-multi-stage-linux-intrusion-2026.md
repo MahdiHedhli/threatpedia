@@ -30,6 +30,20 @@ sources:
     publicationDate: "2026-05-22"
     accessDate: "2026-05-28"
     archived: false
+  - url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+    publisher: "Cybersecurity and Infrastructure Security Agency"
+    publisherType: government
+    reliability: R1
+    publicationDate: "2026-05-28"
+    accessDate: "2026-05-28"
+    archived: false
+  - url: "https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html"
+    publisher: "Atlassian"
+    publisherType: vendor
+    reliability: R1
+    publicationDate: "2023-10-04"
+    accessDate: "2026-05-28"
+    archived: false
 mitreMappings:
   - techniqueId: "T1021.004"
     techniqueName: "SSH"
@@ -59,6 +73,8 @@ The report describes both Linux-host activity and domain-focused follow-on activ
 According to Microsoft, the actor gained an initial foothold through a compromised edge path associated with F5 BIG-IP and then used SSH and shell execution across Linux systems. The actor conducted discovery, transferred tools, and moved laterally to an internal Confluence server.
 
 Microsoft described credential theft, subsequent exploitation of CVE-2025-33073, and attempted Kerberos/NTLM relay behavior against domain infrastructure.
+
+For broader defensive context, CISA KEV data and Atlassian’s CVE-2023-22515 advisory provide current vendor/government reference material relevant to edge and Confluence exposure management.
 
 ## Attack Chain
 
@@ -103,3 +119,5 @@ For identity-layer hardening, apply controls that reduce relay abuse paths, incl
 ## Sources & References
 
 - [Microsoft: From edge appliance to enterprise compromise: Multi-stage Linux intrusion via F5 and Confluence](https://www.microsoft.com/en-us/security/blog/2026/05/22/from-edge-appliance-to-enterprise-compromise-multi-stage-linux-intrusion-via-f5-and-confluence) — Microsoft, 2026-05-22
+- [Cybersecurity and Infrastructure Security Agency: Known Exploited Vulnerabilities Catalog JSON Feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json) — Cybersecurity and Infrastructure Security Agency, 2026-05-28
+- [Atlassian: CVE-2023-22515 - Broken Access Control Vulnerability in Confluence Data Center and Server](https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html) — Atlassian, 2023-10-04
