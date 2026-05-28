@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-19T20:20:06.419Z",
-  "updated": "2026-05-28T02:26:40.739Z",
+  "updated": "2026-05-28T02:31:16.567Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-28T02:26:40.738Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "PraisonAI legacy API authentication bypass exploitation activity (CVE-2026-44338)",
     "sources": [
@@ -74,6 +74,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-28T02:31:16.567Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #891"
     }
-  ]
+  ],
+  "pr_number": 891,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/891"
 }
