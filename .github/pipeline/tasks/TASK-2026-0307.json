@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T20:20:39.083Z",
-  "updated": "2026-05-19T20:20:39.083Z",
+  "updated": "2026-05-28T06:01:55.235Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-05-28T06:01:55.234Z",
   "input": {
     "topic": "Composer GitHub Actions token disclosure vulnerability (CVE-2026-45793 / GHSA-f9f8-rm49-7jv2)",
     "sources": [
@@ -60,6 +60,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #815"
+    },
+    {
+      "timestamp": "2026-05-28T06:01:55.235Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
