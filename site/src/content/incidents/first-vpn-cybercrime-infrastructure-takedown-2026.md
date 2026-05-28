@@ -82,6 +82,10 @@ On 19-20 May 2026, coordinated actions disrupted infrastructure and seized relat
 
 Authorities reported user notification and continued analysis/coordination of seized data.
 
+## Impact Assessment
+
+- **T1090 (Proxy)**: First VPN is publicly described as infrastructure intended to conceal user identity and route activity for criminal operations. That behavior aligns with proxy-like anonymization use in command-and-control and operational traffic masking contexts.
+
 ## Attribution
 
 Attribution to a specific named ransomware group is not confirmed in the cited primary sources. This record attributes the disrupted infrastructure to criminal service operators associated with First VPN and keeps the threat actor as `Unknown`.
@@ -115,10 +119,6 @@ Defenders should track operational changes in criminal use of anonymization infr
 The operation removed a reported anonymity infrastructure used by cybercriminal actors, including actors linked to ransomware operations. This is significant because such infrastructure can support concealment of operator location and traffic origin during criminal activity.
 
 The disruption may also create investigative value through seized data and service-user identification, as described by Eurojust and Europol. At publication time, public sources did not provide a complete public victim count tied directly to this specific takedown.
-
-## Impact Assessment
-
-- **T1090 (Proxy)**: First VPN is publicly described as infrastructure intended to conceal user identity and route activity for criminal operations. That behavior aligns with proxy-like anonymization use in command-and-control and operational traffic masking contexts.
 
 ## Sources & References
 
