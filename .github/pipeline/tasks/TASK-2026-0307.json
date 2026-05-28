@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-19T20:20:39.083Z",
-  "updated": "2026-05-19T20:20:39.083Z",
+  "updated": "2026-05-28T06:04:45.715Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -60,6 +60,23 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #815"
+    },
+    {
+      "timestamp": "2026-05-28T06:01:55.235Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-28T06:04:45.715Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #904"
     }
-  ]
+  ],
+  "pr_number": 904,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/904"
 }
