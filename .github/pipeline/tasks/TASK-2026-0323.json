@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-21T02:41:00.300Z",
-  "updated": "2026-05-21T02:41:00.300Z",
+  "updated": "2026-05-28T10:36:21.459Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -72,6 +72,14 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered incident candidate from Microsoft Security Blog (score: 72)"
+    },
+    {
+      "timestamp": "2026-05-28T10:36:21.459Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #915"
     }
   ]
 }
