@@ -23,14 +23,14 @@ tags:
   - "eurojust"
 sources:
   - url: "https://www.europol.europa.eu/media-press/newsroom/news/cybercriminal-vpn-used-ransomware-actors-dismantled-in-global-crackdown"
-    publisher: "Europol"
+    publisher: "European Union Agency for Law Enforcement Cooperation"
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-21"
     accessDate: "2026-05-28"
     archived: false
   - url: "https://www.eurojust.europa.eu/news/eurojust-coordinated-investigation-shuts-down-criminal-vpn-network"
-    publisher: "Eurojust"
+    publisher: "European Union Agency for Criminal Justice Cooperation"
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-21"
@@ -62,6 +62,10 @@ Authorities reported dismantling more than 33 servers, seizing core domains (`1v
 According to Europol, First VPN was positioned as an anonymity service for cybercriminal operations and appeared in major Europol-supported cybercrime investigations. Eurojust states the service was advertised on known criminal forums and promoted non-cooperation with judicial authorities.
 
 The reported disruption targeted infrastructure rather than a single ransomware family. The public operational outcome was infrastructure seizure and service interruption, with user-notification actions also described by Eurojust.
+
+Public statements describe coordinated participation from authorities in France, the Netherlands, Luxembourg, Romania, Switzerland, Ukraine, and the United Kingdom, with Europol and Eurojust support functions. Europol also reported an Operational Taskforce with investigators from multiple countries to analyze seized data and coordinate intelligence sharing.
+
+Both agencies describe the operation as part of long-running cross-border judicial and investigative cooperation, with Eurojust specifically reporting multiple coordination meetings before action days.
 
 ## Attack Chain
 
@@ -121,6 +125,6 @@ Where possible, teams should align with published law-enforcement and national c
 
 ## Sources & References
 
-- [Europol: Cybercriminal VPN used by ransomware actors dismantled in global crackdown](https://www.europol.europa.eu/media-press/newsroom/news/cybercriminal-vpn-used-ransomware-actors-dismantled-in-global-crackdown) — Europol, 2026-05-21
-- [Eurojust: Eurojust coordinated investigation shuts down criminal VPN network](https://www.eurojust.europa.eu/news/eurojust-coordinated-investigation-shuts-down-criminal-vpn-network) — Eurojust, 2026-05-21
+- [European Union Agency for Law Enforcement Cooperation: Cybercriminal VPN used by ransomware actors dismantled in global crackdown](https://www.europol.europa.eu/media-press/newsroom/news/cybercriminal-vpn-used-ransomware-actors-dismantled-in-global-crackdown) — European Union Agency for Law Enforcement Cooperation, 2026-05-21
+- [European Union Agency for Criminal Justice Cooperation: Eurojust coordinated investigation shuts down criminal VPN network](https://www.eurojust.europa.eu/news/eurojust-coordinated-investigation-shuts-down-criminal-vpn-network) — European Union Agency for Criminal Justice Cooperation, 2026-05-21
 - [Federal Bureau of Investigation: 260521.pdf](https://www.ic3.gov/CSA/2026/260521.pdf) — Federal Bureau of Investigation, 2026-05-21
