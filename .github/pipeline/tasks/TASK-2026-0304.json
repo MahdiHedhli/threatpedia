@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "cancelled",
   "created": "2026-05-19T19:44:52.602Z",
-  "updated": "2026-05-26T22:00:24.941Z",
+  "updated": "2026-05-28T03:51:02Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -72,6 +72,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #874"
+    },
+    {
+      "timestamp": "2026-05-28T03:51:02Z",
+      "action": "cancelled",
+      "from": "pending",
+      "to": "cancelled",
+      "agent": "kernel-k",
+      "note": "Kernel K review of Issue #874 found this task is not draft-ready under the current source gate. The source set contains RubyGems status, The Hacker News, and Mend reporting, but no incident-specific public government, regulator, law-enforcement, or public-institution source was found. Requeue only if a qualifying public source appears or a reviewed source-gate policy change authorizes an exception path."
     }
   ]
 }
