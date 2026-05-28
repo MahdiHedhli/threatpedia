@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "complete",
   "created": "2026-05-28T09:51:40.596Z",
-  "updated": "2026-05-28T20:36:49.061Z",
+  "updated": "2026-05-28T21:18:53.508Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-05-28T20:36:49.061Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Nx Console Embedded Malicious Code Vulnerability (CVE-2026-48027)",
     "sources": [
@@ -83,6 +83,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-28T21:18:53.508Z",
+      "action": "merged",
+      "from": "locked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #935 merged (126bd10)."
     }
-  ]
+  ],
+  "pr_number": 935,
+  "merged_at": "2026-05-28T21:18:53.508Z"
 }
