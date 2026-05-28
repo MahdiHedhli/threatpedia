@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-21T02:41:00.300Z",
-  "updated": "2026-05-28T10:36:21.459Z",
+  "updated": "2026-05-28T14:33:04.028Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -80,6 +80,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #915"
+    },
+    {
+      "timestamp": "2026-05-28T14:33:04.028Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #919 merged (5e49b13)."
     }
-  ]
+  ],
+  "pr_number": 919,
+  "merged_at": "2026-05-28T14:33:04.028Z"
 }
