@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-19T20:20:39.083Z",
-  "updated": "2026-05-28T06:01:55.235Z",
+  "updated": "2026-05-28T06:04:45.715Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-05-28T06:01:55.234Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Composer GitHub Actions token disclosure vulnerability (CVE-2026-45793 / GHSA-f9f8-rm49-7jv2)",
     "sources": [
@@ -67,6 +67,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-28T06:04:45.715Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #904"
     }
-  ]
+  ],
+  "pr_number": 904,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/904"
 }
