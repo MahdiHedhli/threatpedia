@@ -31,14 +31,14 @@ mitreMappings:
     notes: "Company disclosure states that certain systems were encrypted during the incident."
 sources:
   - url: "https://www.sec.gov/Archives/edgar/data/105770/000010577026000068/wst-20260507.htm"
-    publisher: "SEC EDGAR"
+    publisher: "U.S. Securities and Exchange Commission"
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-11"
     accessDate: "2026-05-28"
     archived: false
   - url: "https://www.stocktitan.net/sec-filings/WST/8-k-west-pharmaceutical-services-inc-reports-material-event-121ed3e9725b.html"
-    publisher: "Stock Titan (SEC filing mirror)"
+    publisher: "Stock Titan"
     publisherType: media
     reliability: R2
     publicationDate: "2026-05-11"
@@ -125,7 +125,7 @@ Subsequent reporting indicated partial restoration of critical operations while 
 
 ## Sources & References
 
-- [SEC EDGAR: West Pharmaceutical Services Form 8-K (wst-20260507)](https://www.sec.gov/Archives/edgar/data/105770/000010577026000068/wst-20260507.htm) — SEC EDGAR, 2026-05-11
-- [Stock Titan (SEC filing mirror): West Pharmaceutical reports material cyberattack | WST 8-K Filing](https://www.stocktitan.net/sec-filings/WST/8-k-west-pharmaceutical-services-inc-reports-material-event-121ed3e9725b.html) — Stock Titan (SEC filing mirror), 2026-05-11
+- [U.S. Securities and Exchange Commission: West Pharmaceutical Services Form 8-K (wst-20260507)](https://www.sec.gov/Archives/edgar/data/105770/000010577026000068/wst-20260507.htm) — U.S. Securities and Exchange Commission, 2026-05-11
+- [Stock Titan: West Pharmaceutical reports material cyberattack | WST 8-K Filing](https://www.stocktitan.net/sec-filings/WST/8-k-west-pharmaceutical-services-inc-reports-material-event-121ed3e9725b.html) — Stock Titan, 2026-05-11
 - [Cybersecurity Dive: West Pharmaceutical starts restoring operations after ransomware attack](https://www.cybersecuritydive.com/news/west-pharmaceutical-restoring-operations-ransomware-attack/820250/) — Cybersecurity Dive, 2026-05-14
 - [Dysruption Hub: West Pharma cyberattack (Pennsylvania)](https://dysruptionhub.com/west-pharma-cyberattack-pennsylvania) — Dysruption Hub, 2026-05-13
