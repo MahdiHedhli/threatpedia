@@ -80,6 +80,7 @@
     },
     {
       "timestamp": "2026-05-28T04:28:52.536Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "dangermouse-bot",
