@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-19T20:21:08.528Z",
-  "updated": "2026-05-28T06:34:08.450Z",
+  "updated": "2026-05-28T06:52:28.110Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -72,8 +72,17 @@
       "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #906"
+    },
+    {
+      "timestamp": "2026-05-28T06:52:28.110Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #906 merged (b1c7242)."
     }
   ],
   "pr_number": 906,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/906"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/906",
+  "merged_at": "2026-05-28T06:52:28.110Z"
 }
