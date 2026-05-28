@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-20T20:05:36.763Z",
-  "updated": "2026-05-28T03:30:53.960Z",
+  "updated": "2026-05-28T03:39:51.009Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-05-28T03:30:53.959Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Adobe Acrobat and Reader Heap-Based Buffer Overflow Vulnerability (CVE-2009-3459)",
     "sources": [
@@ -85,6 +85,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-28T03:39:51.009Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #894"
     }
-  ]
+  ],
+  "pr_number": 894,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/894"
 }
