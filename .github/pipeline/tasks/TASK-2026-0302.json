@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T19:43:44.118Z",
-  "updated": "2026-05-26T22:00:24.941Z",
+  "updated": "2026-05-28T07:05:30.552Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-05-28T07:05:30.551Z",
   "input": {
     "topic": "West Pharmaceutical Services ransomware and data-exfiltration cyberattack, May 2026",
     "sources": [
@@ -72,6 +72,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #873"
+    },
+    {
+      "timestamp": "2026-05-28T07:05:30.552Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
