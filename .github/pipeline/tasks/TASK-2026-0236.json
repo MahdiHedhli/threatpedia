@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "blocked",
+  "status": "pending",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-08T17:14:00.000Z",
+  "updated": "2026-05-28T02:33:02.000Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
   "locked_by": null,
@@ -14,6 +14,8 @@
     "topic": "Instructure Canvas Free-For-Teacher Account Compromise and ShinyHunters Extortion, May 2026",
     "sources": [
       "https://status.instructure.com/incidents/9wm4knj2r64z",
+      "https://fsapartners.ed.gov/knowledge-center/library/electronic-announcements/2026-05-12/technology-security-alert-ongoing-cybersecurity-incident-involving-canvas-learning-management-system",
+      "https://www.ic3.gov/PSA/2026/PSA260515",
       "https://apnews.com/article/446c240d5aeb1b1a1e3795fb92237563",
       "https://www.bleepingcomputer.com/news/security/canvas-login-portals-hacked-in-mass-shinyhunters-extortion-campaign/",
       "https://www.theverge.com/tech/926458/canvas-shinyhunters-breach",
@@ -27,7 +29,7 @@
       "actor_name": "ShinyHunters",
       "attack_type": "Data Breach"
     },
-    "notes": "Manual intake from BleepingComputer and The Verge, corroborated with Instructure status, AP, and TechCrunch. Official Instructure status confirms unauthorized access to a small number of Free-For-Teacher user accounts and states that exposed data may include names, email addresses, user roles, institution names, and Canvas IDs; it states that passwords, course content, assignments, grades, and payment information were not identified as exposed. Media reporting attributes the login-page defacement and extortion demand to ShinyHunters based on the group's claim; keep attribution phrased as claimed unless a primary source confirms it. AP reported on 2026-05-08 that Canvas service was restored and that the Instructure/Canvas listing had been removed from the extortion group's leak site. Do not state that the threatened data was actually leaked unless a later reliable source confirms publication. Treat victim counts, data-volume claims, ransom deadlines, and institution counts as threat-actor claims unless independently corroborated. Current source gap: no public government source confirming this exact event was found during intake; drafting worker must search again for government, regulator, law-enforcement, or public-institution notices before article PR, and must block rather than misclassify a non-government source if the validator requirement cannot be met."
+    "notes": "Manual intake from BleepingComputer and The Verge, corroborated with Instructure status, AP, TechCrunch, Federal Student Aid, and FBI IC3. Official Instructure status confirms unauthorized access to a small number of Free-For-Teacher user accounts and states that exposed data may include names, email addresses, user roles, institution names, and Canvas IDs; it states that passwords, course content, assignments, grades, and payment information were not identified as exposed. Federal Student Aid GENERAL-26-27 confirms the Canvas incident, unauthorized access to LMS data, ShinyHunters ransom defacements, Free-For-Teacher compromise, and ED engagement with Instructure. FBI IC3 PSA I-051526-PSA confirms ShinyHunters activity against an online LMS and disruption to educational institutions. Media reporting attributes the login-page defacement and extortion demand to ShinyHunters based on the group's claim; keep attribution phrased as claimed unless a primary source confirms it. AP reported on 2026-05-08 that Canvas service was restored and that the Instructure/Canvas listing had been removed from the extortion group's leak site. Do not state that threatened data was actually leaked unless a reliable source confirms publication. Treat victim counts, data-volume claims, ransom deadlines, payment terms, and institution counts as threat-actor claims or company statements unless independently corroborated. Source gate is resolved as of 2026-05-28 by Federal Student Aid and FBI IC3; use a fresh branch because the old closed article branch is stale."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -45,12 +47,11 @@
   },
   "depends_on": [],
   "preconditions": [
-    "editorial queue depth < 50",
-    "public government, regulator, law-enforcement, or public-institution source confirms the incident"
+    "editorial queue depth < 50"
   ],
   "output": {
     "file_pattern": "site/src/content/incidents/{slug}.md",
-    "branch": "pipeline/TASK-2026-0236",
+    "branch": "pipeline/TASK-2026-0236-rerun",
     "pr": true
   },
   "history": [
@@ -77,6 +78,14 @@
       "to": "blocked",
       "agent": "kernel-k",
       "note": "Blocked dispatch until a qualifying public government, regulator, law-enforcement, or public-institution source exists; current intake sources are vendor/media only and the article validator requires a government source."
+    },
+    {
+      "timestamp": "2026-05-28T02:33:02.000Z",
+      "action": "unblocked",
+      "from": "blocked",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Federal Student Aid GENERAL-26-27 and FBI IC3 PSA I-051526-PSA now provide qualifying government/law-enforcement sources for the Canvas LMS incident. Requeued on fresh branch pipeline/TASK-2026-0236-rerun; do not reuse stale closed PR #556 branch."
     }
   ]
 }
