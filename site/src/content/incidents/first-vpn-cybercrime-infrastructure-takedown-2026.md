@@ -38,7 +38,7 @@ sources:
     accessDate: "2026-05-28"
     archived: false
   - url: "https://www.ic3.gov/CSA/2026/260521.pdf"
-    publisher: "FBI Internet Crime Complaint Center (IC3)"
+    publisher: "Federal Bureau of Investigation"
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-21"
@@ -124,4 +124,4 @@ The disruption may also create investigative value through seized data and servi
 
 - [Europol: Cybercriminal VPN used by ransomware actors dismantled in global crackdown](https://www.europol.europa.eu/media-press/newsroom/news/cybercriminal-vpn-used-ransomware-actors-dismantled-in-global-crackdown) — Europol, 2026-05-21
 - [Eurojust: Eurojust coordinated investigation shuts down criminal VPN network](https://www.eurojust.europa.eu/news/eurojust-coordinated-investigation-shuts-down-criminal-vpn-network) — Eurojust, 2026-05-21
-- [FBI Internet Crime Complaint Center (IC3): 260521.pdf](https://www.ic3.gov/CSA/2026/260521.pdf) — FBI Internet Crime Complaint Center (IC3), 2026-05-21
+- [Federal Bureau of Investigation: 260521.pdf](https://www.ic3.gov/CSA/2026/260521.pdf) — Federal Bureau of Investigation, 2026-05-21
