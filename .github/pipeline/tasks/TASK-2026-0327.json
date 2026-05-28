@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-22T19:26:26.289Z",
-  "updated": "2026-05-28T16:36:48.092Z",
+  "updated": "2026-05-28T18:07:01.055Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-05-28T18:07:01.055Z",
   "input": {
     "topic": "From edge appliance to enterprise compromise: Multi-stage Linux intrusion via F5 and Confluence",
     "sources": [
@@ -81,6 +81,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #924"
+    },
+    {
+      "timestamp": "2026-05-28T18:07:01.055Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
