@@ -127,4 +127,4 @@ Where possible, teams should align with published law-enforcement and national c
 
 - [European Union Agency for Law Enforcement Cooperation: Cybercriminal VPN used by ransomware actors dismantled in global crackdown](https://www.europol.europa.eu/media-press/newsroom/news/cybercriminal-vpn-used-ransomware-actors-dismantled-in-global-crackdown) — European Union Agency for Law Enforcement Cooperation, 2026-05-21
 - [European Union Agency for Criminal Justice Cooperation: Eurojust coordinated investigation shuts down criminal VPN network](https://www.eurojust.europa.eu/news/eurojust-coordinated-investigation-shuts-down-criminal-vpn-network) — European Union Agency for Criminal Justice Cooperation, 2026-05-21
-- [Federal Bureau of Investigation: 260521.pdf](https://www.ic3.gov/CSA/2026/260521.pdf) — Federal Bureau of Investigation, 2026-05-21
+- [Federal Bureau of Investigation: FBI FLASH Advisory on First VPN and Cybercriminal Proxy Services](https://www.ic3.gov/CSA/2026/260521.pdf) — Federal Bureau of Investigation, 2026-05-21
