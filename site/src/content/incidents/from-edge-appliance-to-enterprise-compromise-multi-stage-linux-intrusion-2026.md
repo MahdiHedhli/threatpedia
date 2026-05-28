@@ -13,8 +13,7 @@ confidenceGrade: B
 generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-28
 cves:
-  - "CVE-2025-53521"
-  - "CVE-2023-22515"
+  - "CVE-2025-33073"
 relatedSlugs: []
 tags:
   - "linux"
@@ -29,20 +28,6 @@ sources:
     publisherType: vendor
     reliability: R1
     publicationDate: "2026-05-22"
-    accessDate: "2026-05-28"
-    archived: false
-  - url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
-    publisher: "Cybersecurity and Infrastructure Security Agency"
-    publisherType: government
-    reliability: R1
-    publicationDate: "2026-05-28"
-    accessDate: "2026-05-28"
-    archived: false
-  - url: "https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html"
-    publisher: "Atlassian"
-    publisherType: vendor
-    reliability: R1
-    publicationDate: "2023-10-04"
     accessDate: "2026-05-28"
     archived: false
 mitreMappings:
@@ -73,7 +58,7 @@ The report describes both Linux-host activity and domain-focused follow-on activ
 
 According to Microsoft, the actor gained an initial foothold through a compromised edge path associated with F5 BIG-IP and then used SSH and shell execution across Linux systems. The actor conducted discovery, transferred tools, and moved laterally to an internal Confluence server.
 
-Microsoft described credential theft and subsequent attempted Kerberos/NTLM relay behavior against domain infrastructure. CISA’s KEV feed includes CVE-2025-53521 for F5 BIG-IP APM as an actively exploited vulnerability, and Atlassian documents CVE-2023-22515 as a Confluence Data Center/Server issue with high impact and required upgrade actions.
+Microsoft described credential theft, subsequent exploitation of CVE-2025-33073, and attempted Kerberos/NTLM relay behavior against domain infrastructure.
 
 ## Attack Chain
 
@@ -101,17 +86,9 @@ Public sources do not provide a confirmed victim count for this event.
 
 ## Attribution
 
-The threat actor remains `Unknown` in this record. The cited sources provide behavioral and infrastructure details, but no government-confirmed named actor attribution was identified.
+The threat actor remains unknown for this incident. Available documentation provides behavioral and infrastructure details, but no government-confirmed named actor attribution was identified.
 
 ## Timeline
-
-### 2023-10-04 — Atlassian advisory published
-
-Atlassian published CVE-2023-22515 guidance for Confluence Data Center and Server, including fixed-version and mitigation instructions.
-
-### 2026-03-27 — CVE-2025-53521 added to KEV
-
-CISA’s KEV feed lists CVE-2025-53521 for F5 BIG-IP APM with active exploitation context.
 
 ### 2026-05-22 — Microsoft intrusion case published
 
@@ -126,5 +103,3 @@ For identity-layer hardening, apply controls that reduce relay abuse paths, incl
 ## Sources & References
 
 - [Microsoft: From edge appliance to enterprise compromise: Multi-stage Linux intrusion via F5 and Confluence](https://www.microsoft.com/en-us/security/blog/2026/05/22/from-edge-appliance-to-enterprise-compromise-multi-stage-linux-intrusion-via-f5-and-confluence) — Microsoft, 2026-05-22
-- [Cybersecurity and Infrastructure Security Agency: Known Exploited Vulnerabilities Catalog JSON Feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json) — Cybersecurity and Infrastructure Security Agency, 2026-05-28
-- [Atlassian: CVE-2023-22515 - Broken Access Control Vulnerability in Confluence Data Center and Server](https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html) — Atlassian, 2023-10-04
