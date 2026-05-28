@@ -14,6 +14,7 @@ generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-28
 cves:
   - "CVE-2025-33073"
+  - "CVE-2023-22515"
 relatedSlugs: []
 tags:
   - "linux"
