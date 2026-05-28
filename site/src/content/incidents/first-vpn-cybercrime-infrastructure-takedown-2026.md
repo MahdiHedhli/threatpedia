@@ -1,6 +1,6 @@
 ---
 eventId: "TP-2026-0060"
-title: "Operation Saffron Disrupts First VPN Cybercrime Infrastructure"
+title: "First VPN Cybercrime Infrastructure Disrupted in Multinational Takedown"
 date: 2026-05-21
 attackType: "Law Enforcement Disruption"
 severity: high
@@ -15,7 +15,6 @@ generatedDate: 2026-05-28
 cves: []
 relatedSlugs: []
 tags:
-  - "operation-saffron"
   - "vpn"
   - "ransomware"
   - "infrastructure-seizure"
