@@ -14,7 +14,6 @@ generatedBy: "dangermouse-bot"
 generatedDate: 2026-05-28
 cves:
   - "CVE-2025-33073"
-  - "CVE-2023-22515"
 relatedSlugs: []
 tags:
   - "linux"
@@ -38,11 +37,11 @@ sources:
     publicationDate: "2026-05-28"
     accessDate: "2026-05-28"
     archived: false
-  - url: "https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html"
-    publisher: "Atlassian"
-    publisherType: vendor
+  - url: "https://nvd.nist.gov/vuln/detail/CVE-2025-33073"
+    publisher: "National Vulnerability Database"
+    publisherType: government
     reliability: R1
-    publicationDate: "2023-10-04"
+    publicationDate: "2026-05-28"
     accessDate: "2026-05-28"
     archived: false
 mitreMappings:
@@ -75,7 +74,7 @@ According to Microsoft, the actor gained an initial foothold through a compromis
 
 Microsoft described credential theft, subsequent exploitation of CVE-2025-33073, and attempted Kerberos/NTLM relay behavior against domain infrastructure.
 
-For broader defensive context, CISA KEV data and Atlassian’s CVE-2023-22515 advisory provide current vendor/government reference material relevant to edge and Confluence exposure management.
+CISA KEV data and NVD reference data for CVE-2025-33073 provide supporting vulnerability context aligned to the incident-evidenced CVE.
 
 ## Attack Chain
 
@@ -121,4 +120,4 @@ For identity-layer hardening, apply controls that reduce relay abuse paths, incl
 
 - [Microsoft: From edge appliance to enterprise compromise: Multi-stage Linux intrusion via F5 and Confluence](https://www.microsoft.com/en-us/security/blog/2026/05/22/from-edge-appliance-to-enterprise-compromise-multi-stage-linux-intrusion-via-f5-and-confluence) — Microsoft, 2026-05-22
 - [Cybersecurity and Infrastructure Security Agency: Known Exploited Vulnerabilities Catalog JSON Feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json) — Cybersecurity and Infrastructure Security Agency, 2026-05-28
-- [Atlassian: CVE-2023-22515 - Broken Access Control Vulnerability in Confluence Data Center and Server](https://confluence.atlassian.com/security/cve-2023-22515-broken-access-control-vulnerability-in-confluence-data-center-and-server-1295682276.html) — Atlassian, 2023-10-04
+- [National Vulnerability Database: CVE-2025-33073 Detail](https://nvd.nist.gov/vuln/detail/CVE-2025-33073) — National Vulnerability Database, 2026-05-28
