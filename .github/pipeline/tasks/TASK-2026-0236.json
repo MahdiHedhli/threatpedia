@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-29T03:30:45.605Z",
+  "updated": "2026-05-29T03:37:13.532Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-05-29T03:37:13.529Z",
   "input": {
     "topic": "Instructure Canvas Free-For-Teacher Account Compromise and ShinyHunters Extortion, May 2026",
     "sources": [
@@ -94,6 +94,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #946"
+    },
+    {
+      "timestamp": "2026-05-29T03:37:13.532Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
