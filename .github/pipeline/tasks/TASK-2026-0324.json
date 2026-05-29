@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "complete",
   "created": "2026-05-21T19:45:59.577Z",
-  "updated": "2026-05-28T22:36:49.341Z",
+  "updated": "2026-05-29T00:26:04.755Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-05-28T22:36:49.340Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Langflow Origin Validation Error Vulnerability (CVE-2025-34291)",
     "sources": [
@@ -85,6 +85,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-05-29T00:26:04.755Z",
+      "action": "merged",
+      "from": "locked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #943 merged (0ece3ad)."
     }
-  ]
+  ],
+  "pr_number": 943,
+  "merged_at": "2026-05-29T00:26:04.755Z"
 }
