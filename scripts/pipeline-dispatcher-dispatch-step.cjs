@@ -425,7 +425,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
   const pendingTasks = allTasks
     .filter((t) => t.status === 'pending' && effectiveStage(t) === 'draft')
     .sort((a, b) => {
-      const pDiff = (priorityOrder[a.priority] || 9) - (priorityOrder[b.priority] || 9);
+      const pDiff = (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9);
       if (pDiff !== 0) return pDiff;
 
       const aCreated = effectiveCreatedAt(a);
