@@ -21,6 +21,7 @@ threat-actors/*.html                    @MahdiHedhli
 GOVERNANCE.md                           @MahdiHedhli
 CONTRIBUTING.md                         @MahdiHedhli
 .github/                                @MahdiHedhli
+.github/pipeline/tasks/*.json           @MahdiHedhli @ernestpenfold-bot
 _config.yml                             @MahdiHedhli
 
 # ── Data Files ────────────────────────────────────────────────────
