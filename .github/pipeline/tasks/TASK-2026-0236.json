@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P0",
-  "status": "locked",
+  "status": "complete",
   "created": "2026-05-08T15:29:07.000Z",
-  "updated": "2026-05-29T03:37:13.532Z",
+  "updated": "2026-06-01T16:16:03.216Z",
   "source": "manual_submission",
   "submitted_by": "kernel-k-manual-intake",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-05-29T03:37:13.529Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Instructure Canvas Free-For-Teacher Account Compromise and ShinyHunters Extortion, May 2026",
     "sources": [
@@ -102,6 +102,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-01T16:16:03.216Z",
+      "action": "merged",
+      "from": "locked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #948 merged (4adddb7)."
     }
-  ]
+  ],
+  "pr_number": 948,
+  "merged_at": "2026-06-01T16:16:03.216Z"
 }
