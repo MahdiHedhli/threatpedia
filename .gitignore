@@ -33,7 +33,7 @@ Icon
 
 # Claude Code session artifacts
 .claude/
-.local/state/gh/device-id
+.local/
 .com.apple.timemachine.donotpresent
 .AppleDB
 .AppleDesktop
