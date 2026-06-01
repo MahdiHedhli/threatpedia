@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-21T19:45:59.578Z",
-  "updated": "2026-05-21T19:45:59.578Z",
+  "updated": "2026-05-29T01:07:05.439Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-05-29T01:07:05.434Z",
   "input": {
     "topic": "Trend Micro Apex One (On-Premise) Directory Traversal Vulnerability (CVE-2026-34926)",
     "sources": [
@@ -77,6 +77,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 95)"
+    },
+    {
+      "timestamp": "2026-05-29T01:07:05.439Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
