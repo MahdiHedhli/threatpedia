@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-01T17:23:31.401Z",
-  "updated": "2026-06-01T23:34:43.542Z",
+  "updated": "2026-06-02T01:40:33.221Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-02T01:40:33.220Z",
   "input": {
     "topic": "Oracle WebLogic Server Unspecified Vulnerability (CVE-2024-21182)",
     "sources": [
@@ -83,6 +83,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #955"
+    },
+    {
+      "timestamp": "2026-06-02T01:40:33.221Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution by danger-mouse"
     }
   ]
 }
