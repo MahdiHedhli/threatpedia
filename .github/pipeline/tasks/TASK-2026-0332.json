@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-23T04:46:55.836Z",
-  "updated": "2026-06-02T10:09:52.429Z",
+  "updated": "2026-06-02T10:13:28.017Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-02T10:09:52.427Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Microsoft disrupts Fox Tempest malware-signing-as-a-service infrastructure, May 2026",
     "sources": [
@@ -71,6 +71,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-02T10:13:28.016Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #961"
     }
-  ]
+  ],
+  "pr_number": 961,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/961"
 }
