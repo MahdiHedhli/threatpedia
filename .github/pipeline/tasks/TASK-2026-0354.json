@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-29T20:11:24.205Z",
-  "updated": "2026-06-02T14:11:12.188Z",
+  "updated": "2026-06-02T14:14:11.565Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-02T14:11:12.182Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Palo Alto Networks PAN-OS Authentication Bypass Vulnerability (CVE-2026-0257)",
     "sources": [
@@ -79,6 +79,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-02T14:14:11.564Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #971"
     }
-  ]
+  ],
+  "pr_number": 971,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/971"
 }
