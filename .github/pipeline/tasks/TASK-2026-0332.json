@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T04:46:55.836Z",
-  "updated": "2026-05-28T20:40:48.287Z",
+  "updated": "2026-06-02T10:09:52.429Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-02T10:09:52.427Z",
   "input": {
     "topic": "Microsoft disrupts Fox Tempest malware-signing-as-a-service infrastructure, May 2026",
     "sources": [
@@ -64,6 +64,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #938"
+    },
+    {
+      "timestamp": "2026-06-02T10:09:52.429Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
