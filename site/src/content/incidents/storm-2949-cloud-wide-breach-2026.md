@@ -44,7 +44,7 @@ sources:
     accessDate: "2026-06-02"
     archived: false
   - url: "https://www.cisa.gov/news-events/alerts/2019/10/04/microsoft-reports-cyberattacks-targeted-email-accounts"
-    publisher: "CISA"
+    publisher: "Cybersecurity and Infrastructure Security Agency"
     publisherType: government
     reliability: R1
     publicationDate: "2019-10-04"
@@ -127,4 +127,4 @@ TechRadar and AdminDroid published summaries that echoed the password-reset abus
 - [Microsoft Security Blog: How Storm-2949 turned a compromised identity into a cloud-wide breach](https://www.microsoft.com/en-us/security/blog/2026/05/18/storm-2949-turned-compromised-identity-into-cloud-wide-breach) — Microsoft Security Blog, 2026-05-18
 - [TechRadar: Microsoft warns hackers are exploiting password resets to gain access to user accounts](https://www.techradar.com/pro/security/microsoft-warns-hackers-are-exploiting-password-resets-to-gain-access-to-user-accounts-heres-how-to-stay-safe) — TechRadar, 2026-05-20
 - [AdminDroid: Storm-2949 Attack: A Complete M365 Cloud Breach](https://blog.admindroid.com/storm-2949-attack-in-microsoft-365/) — AdminDroid, 2026-05-20
-- [CISA: Microsoft reports cyberattacks targeting email accounts](https://www.cisa.gov/news-events/alerts/2019/10/04/microsoft-reports-cyberattacks-targeted-email-accounts) — CISA, 2019-10-04
+- [Cybersecurity and Infrastructure Security Agency: Microsoft reports cyberattacks targeting email accounts](https://www.cisa.gov/news-events/alerts/2019/10/04/microsoft-reports-cyberattacks-targeted-email-accounts) — Cybersecurity and Infrastructure Security Agency, 2019-10-04
