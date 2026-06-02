@@ -41,7 +41,7 @@ sources:
     accessDate: "2026-06-02"
     archived: false
   - url: "https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories"
-    publisher: "CISA"
+    publisher: "Cybersecurity and Infrastructure Security Agency"
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-28"
@@ -97,17 +97,11 @@ The campaign-style language and scale indicate repeated reuse of the same workfl
 
 ## MITRE ATT&CK Mapping
 
-### T1059 — Command and Scripting Interpreter
+T1059 - Command and Scripting Interpreter: Workflow execution in CI systems reflects attacker-controlled scripting and command execution at build/deployment time.
 
-Workflow execution in CI systems reflects attacker-controlled scripting and command execution at build/deployment time.
+T1090 - Proxy: Where present, external command infrastructure and traffic paths support proxy-like relay behavior in operational handling of stolen credentials and command flow.
 
-### T1090 — Proxy
-
-Where present, external command infrastructure and traffic paths support proxy-like relay behavior in operational handling of stolen credentials and command flow.
-
-### T1071.001 — Web Protocols
-
-Exfiltration and remote coordination in web-based automation pipelines commonly use HTTPS or related web protocols, matching campaign reporting language around web-channel telemetry and transport.
+T1071.001 - Web Protocols: Exfiltration and remote coordination in web-based automation pipelines commonly use HTTPS or related web protocols, matching campaign reporting language around web-channel telemetry and transport.
 
 ## Timeline
 
@@ -147,4 +141,4 @@ Defenders should monitor automated workflow changes and privilege-bearing CI ide
 
 - [SafeDep: Megalodon: Mass GitHub Repo Backdooring via CI Workflows](https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows) — SafeDep, 2026-06-01
 - [CyberNews: Megalodon stalks over 5,000 GitHub repos in new assault on open source](https://cybernews.com/security/megalodon-github-5000-repos-backdooring-supply-chain-attack/) — CyberNews, 2026-05-22
-- [CISA: Supply Chain Compromises Impact Nx Console and GitHub Repositories](https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories) — CISA, 2026-05-28
+- [Cybersecurity and Infrastructure Security Agency: Supply Chain Compromises Impact Nx Console and GitHub Repositories](https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories) — Cybersecurity and Infrastructure Security Agency, 2026-05-28
