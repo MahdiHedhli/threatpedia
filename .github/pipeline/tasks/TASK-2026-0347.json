@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T03:10:25.385Z",
-  "updated": "2026-05-27T03:43:45Z",
+  "updated": "2026-06-02T16:58:30.374Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -66,6 +66,14 @@
       "to": "pending",
       "agent": "threatpedia-pr-steward",
       "note": "Added drafting guardrail requiring a schema-valid official source for the campaign task or blocking the task if one cannot be found; no placeholder sources were added."
+    },
+    {
+      "timestamp": "2026-06-02T16:58:30.374Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #975"
     }
   ]
 }
