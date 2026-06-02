@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-05-27T07:48:45.942Z",
+  "updated": "2026-06-02T16:58:30.374Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -72,6 +72,14 @@
       "to": "pending",
       "agent": "threatpedia-pr-steward",
       "note": "Added candidate attack_type metadata requested by current-head Gemini review to guide campaign schema drafting."
+    },
+    {
+      "timestamp": "2026-06-02T16:58:30.374Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #976"
     }
   ]
 }
