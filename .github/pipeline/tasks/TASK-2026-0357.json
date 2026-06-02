@@ -27,7 +27,7 @@
       "platform": "Linux Kernel",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-06-02",
+      "disclosedDate": "2022-02-04",
       "cwes": [
         "CWE-287",
         "CWE-862"

@@ -27,7 +27,7 @@
       "platform": "Android Framework",
       "severity": "high",
       "cisaKev": true,
-      "disclosedDate": "2026-06-02",
+      "disclosedDate": "2026-06-01",
       "cwes": [
         "CWE-190"
       ],
