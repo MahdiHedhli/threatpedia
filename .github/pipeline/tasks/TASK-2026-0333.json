@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T05:17:15.560Z",
-  "updated": "2026-05-23T05:17:15.560Z",
+  "updated": "2026-06-02T08:43:14.225Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-02T08:43:14.223Z",
   "input": {
     "topic": "Storm-2949 cloud-wide breach from compromised identity, May 2026",
     "sources": [
@@ -56,6 +56,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #836"
+    },
+    {
+      "timestamp": "2026-06-02T08:43:14.225Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
