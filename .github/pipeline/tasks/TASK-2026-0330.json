@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-23T03:45:44.865Z",
-  "updated": "2026-06-02T13:16:30.130Z",
+  "updated": "2026-06-02T13:20:06.524Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-02T13:16:30.128Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Ghost CMS FakeCaptcha malware campaign exploiting CVE-2026-26980, May 2026",
     "sources": [
@@ -74,6 +74,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-02T13:20:06.523Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #968"
     }
-  ]
+  ],
+  "pr_number": 968,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/968"
 }
