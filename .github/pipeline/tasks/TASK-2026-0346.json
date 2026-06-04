@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-26T20:00:56.092Z",
-  "updated": "2026-06-04T14:09:52.549Z",
+  "updated": "2026-06-04T14:17:17.213Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-06-04T14:09:52.548Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "LiteSpeed cPanel Plugin Privilege Escalation Vulnerability (CVE-2026-48172)",
     "sources": [
@@ -86,6 +86,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-04T14:17:17.212Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #991"
     }
-  ]
+  ],
+  "pr_number": 991,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/991"
 }
