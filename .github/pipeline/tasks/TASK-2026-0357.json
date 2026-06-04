@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-02T20:37:57.258Z",
-  "updated": "2026-06-02T21:27:47.896Z",
+  "updated": "2026-06-04T03:36:09.439Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -86,6 +86,23 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #980"
+    },
+    {
+      "timestamp": "2026-06-04T03:32:20.656Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-04T03:36:09.438Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #984"
     }
-  ]
+  ],
+  "pr_number": 984,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/984"
 }
