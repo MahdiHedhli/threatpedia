@@ -1,7 +1,5 @@
 name: "Pipeline: Validate Task PR"
 
-run-name: ${{ github.event_name == 'workflow_dispatch' && format('Validate task PR #{0}', inputs.pr_number) || github.event.pull_request.title }}
-
 on:
   pull_request:
     types: [opened, synchronize]

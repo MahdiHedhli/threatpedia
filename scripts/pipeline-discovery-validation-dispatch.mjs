@@ -157,7 +157,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function findDispatchedRun({ token, owner, repo, workflow, prNumber, startedAtMs }) {
+async function findDispatchedRun({ token, owner, repo, workflow, startedAtMs }) {
   const payload = await githubRequest(
     token,
     `/repos/${owner}/${repo}/actions/workflows/${encodeURIComponent(workflow)}/runs?event=workflow_dispatch&branch=main&per_page=20`,
@@ -166,15 +166,14 @@ async function findDispatchedRun({ token, owner, repo, workflow, prNumber, start
   return runs.find((run) => {
     const createdAt = Date.parse(run.created_at || '');
     if (!Number.isFinite(createdAt) || createdAt < startedAtMs) return false;
-    const title = String(run.display_title || run.name || '');
-    return title.includes(`#${prNumber}`) || title.includes(`PR #${prNumber}`);
+    return true;
   }) || null;
 }
 
-async function waitForDispatchedRun({ token, owner, repo, workflow, prNumber, startedAtMs, waitSeconds }) {
+async function waitForDispatchedRun({ token, owner, repo, workflow, startedAtMs, waitSeconds }) {
   const deadline = Date.now() + waitSeconds * 1000;
   while (Date.now() <= deadline) {
-    const run = await findDispatchedRun({ token, owner, repo, workflow, prNumber, startedAtMs });
+    const run = await findDispatchedRun({ token, owner, repo, workflow, startedAtMs });
     if (run) return run;
     await sleep(5000);
   }
@@ -358,7 +357,6 @@ async function main() {
       owner,
       repo,
       workflow: args.workflow,
-      prNumber,
       startedAtMs,
       waitSeconds: args.waitSeconds,
     });
