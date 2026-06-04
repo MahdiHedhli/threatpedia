@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-06-02T20:37:57.257Z",
-  "updated": "2026-06-02T21:27:47.896Z",
+  "updated": "2026-06-04T07:37:56.049Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -85,6 +85,23 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #979"
+    },
+    {
+      "timestamp": "2026-06-04T03:46:49.483Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-04T07:37:56.049Z",
+      "action": "merged",
+      "from": "locked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #985 merged (097bf5b)."
     }
-  ]
+  ],
+  "pr_number": 985,
+  "merged_at": "2026-06-04T07:37:56.049Z"
 }

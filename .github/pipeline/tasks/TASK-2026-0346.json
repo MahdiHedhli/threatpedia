@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pr_open",
   "created": "2026-05-26T20:00:56.092Z",
-  "updated": "2026-06-04T14:17:17.213Z",
+  "updated": "2026-06-04T17:26:49.237Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -82,6 +82,7 @@
     },
     {
       "timestamp": "2026-06-04T14:09:52.549Z",
+      "action": "locked",
       "from": "pending",
       "to": "locked",
       "agent": "MahdiHedhli",
@@ -94,6 +95,14 @@
       "agent": "MahdiHedhli",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #991"
+    },
+    {
+      "timestamp": "2026-06-04T17:26:49.237Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #991 already covers this task."
     }
   ],
   "pr_number": 991,

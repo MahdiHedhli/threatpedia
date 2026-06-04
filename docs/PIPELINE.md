@@ -100,6 +100,13 @@ discovery queues are open, validated, and stable.
      reference, and topic. **Merge** to accept the whole batch; **close without
      merging** to discard the staged batch. To make a rejection durable across
      future discovery runs, use the rejection-memory workflow and merge its PR.
+   - After the PR is created or updated, discovery explicitly dispatches
+     `pipeline-validate-tasks.yml` with the PR number and `pipeline/discovery`
+     head ref. This covers the GitHub `GITHUB_TOKEN` anti-recursion case where
+     the normal `pull_request` validation trigger can be skipped. If dispatch
+     fails or no dispatched run appears quickly, discovery runs the same task
+     validator locally as a bounded fallback, updates the deduped validation
+     comment, and writes a fallback commit status on the PR head.
    - If no new candidates this run, no branch change, no PR churn.
 
 2. **Queue backpressure check** (next dispatcher tick)
@@ -278,7 +285,7 @@ same queue/validation path as discovery-generated tasks.
 | Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
-| Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs | Workflow + script |
+| Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
