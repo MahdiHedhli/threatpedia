@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-06-04T22:05:12.425Z",
+  "updated": "2026-06-04T23:08:23.375Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -84,10 +84,12 @@
     {
       "timestamp": "2026-06-04T22:05:12.425Z",
       "action": "dispatch_skipped",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #997 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 997,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/997"
 }
