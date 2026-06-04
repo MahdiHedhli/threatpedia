@@ -46,7 +46,7 @@ sources:
     accessDate: "2026-06-04"
     archived: false
   - url: "https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4467839/nsa-and-others-release-joint-guidance-addressing-multiple-china-nexus-threat-ac/"
-    publisher: "NSA"
+    publisher: "National Security Agency"
     publisherType: government
     reliability: R1
     publicationDate: "2026-04-23"
@@ -91,7 +91,7 @@ Lumen's network analysis began with telecom[.]webredirect[.]org resolving to 139
 
 PwC's Red Lamassu research centered on an open directory active between July and October 2025. PwC assessed the directory as almost certainly tied to Red Lamassu operations based on a TLS certificate served by infrastructure it exclusively associated with the actor. The directory contained the Showboat/kworker sample and JFMBackdoor, a Windows backdoor delivered through DLL side-loading with remote shell, file-system, network proxy, screenshot, and self-removal capabilities.
 
-The NSA-led April 2026 joint guidance does not name Showboat or Red Lamassu. It provides relevant defensive context for China-nexus threat activity that uses external covert networks of compromised devices to route operations and obscure attribution. That guidance is used here only for defensive context around infrastructure risk and mitigation, not as direct confirmation of Red Lamassu tooling.
+The National Security Agency-led April 2026 joint guidance does not name Showboat or Red Lamassu. It provides relevant defensive context for China-nexus threat activity that uses external covert networks of compromised devices to route operations and obscure attribution. That guidance is used here only for defensive context around infrastructure risk and mitigation, not as direct confirmation of Red Lamassu tooling.
 
 ## Attack Chain
 
@@ -117,11 +117,7 @@ Showboat's SOCKS5 and portmap functions allowed operators to interact with syste
 
 ## MITRE ATT&CK Mapping
 
-### Execution
-
 T1059 - Command and Scripting Interpreter: PwC reported remote shell functionality in JFMBackdoor, and Lumen described Showboat as capable of spawning a remote shell. The mapping is possible because the public reports describe shell access but do not fully document the shell implementation.
-
-### Command and Control
 
 T1105 - Ingress Tool Transfer: Lumen reported Showboat operator functions for transferring files to and from infected hosts. This behavior supports file movement after a foothold has been established.
 
@@ -147,7 +143,7 @@ Lumen reported observing connections from an Outlook server belonging to an Afgh
 
 ### 2026-04-23 — Joint Guidance on China-Nexus Covert Networks
 
-NSA, NCSC, ASD ACSC, and partner agencies released guidance on China-nexus covert networks of compromised devices. The guidance provides relevant mitigation context for defenders facing China-nexus infrastructure routing and attribution challenges.
+The National Security Agency, NCSC, ASD ACSC, and partner agencies released guidance on China-nexus covert networks of compromised devices. The guidance provides relevant mitigation context for defenders facing China-nexus infrastructure routing and attribution challenges.
 
 ### 2026-05-21 — Lumen and PwC Publish Coordinated Research
 
@@ -161,7 +157,7 @@ Network defenders should review certificate fingerprints, telecom-themed domains
 
 Organizations should collect host artifacts from suspected Linux and Windows systems, including process listings, persistence mechanisms, service definitions, suspicious DLL side-loading paths, and command history where available. Where a Showboat or JFMBackdoor infection is suspected, defenders should assume that adjacent systems reachable from the compromised host may have been accessed.
 
-The NSA-led joint guidance on China-nexus covert networks recommends reducing exposure of routers, firewalls, network-attached storage, and internet-of-things devices that can be co-opted into external proxy networks. Apply firmware updates, disable unnecessary internet-facing services, rotate administrative credentials, and monitor for devices that unexpectedly relay traffic.
+The National Security Agency-led joint guidance on China-nexus covert networks recommends reducing exposure of routers, firewalls, network-attached storage, and internet-of-things devices that can be co-opted into external proxy networks. Apply firmware updates, disable unnecessary internet-facing services, rotate administrative credentials, and monitor for devices that unexpectedly relay traffic.
 
 Because the public reporting describes espionage-oriented access rather than financially motivated disruption, remediation should include credential rotation, review of privileged accounts, network segmentation checks, and logging review across authentication, remote access, DNS, and proxy infrastructure. Organizations should preserve forensic evidence before rebuilding systems.
 
@@ -169,4 +165,4 @@ Because the public reporting describes espionage-oriented access rather than fin
 
 - [Lumen Black Lotus Labs: Introducing Showboat: A new malware family taunts defenses and targets international telecom firms](https://www.lumen.com/blog/en-us/introducing-showboat-a-new-malware-family-taunts-defenses-and-targets-international-telecom-firms) — Lumen Black Lotus Labs, 2026-05-21
 - [PwC Threat Intelligence: Inside Red Lamassu's JFMBackdoor](https://www.pwc.com/gx/en/issues/cybersecurity/cyber-threat-intelligence/red-lamassu-open-season.html) — PwC Threat Intelligence, 2026-05-21
-- [NSA: NSA and Others Release Joint Guidance Addressing Multiple China-Nexus Threat Actors Using External Covert Networks to Facilitate Cyber Activity at Scale](https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4467839/nsa-and-others-release-joint-guidance-addressing-multiple-china-nexus-threat-ac/) — NSA, 2026-04-23
+- [National Security Agency: NSA and Others Release Joint Guidance Addressing Multiple China-Nexus Threat Actors Using External Covert Networks to Facilitate Cyber Activity at Scale](https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/4467839/nsa-and-others-release-joint-guidance-addressing-multiple-china-nexus-threat-ac/) — National Security Agency, 2026-04-23

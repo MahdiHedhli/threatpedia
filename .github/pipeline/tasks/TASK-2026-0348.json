@@ -54,7 +54,7 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "dangermouse-bot",
+      "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #882"
     },
     {
@@ -85,7 +85,7 @@
       "timestamp": "2026-06-04T21:53:08.366Z",
       "from": "pending",
       "to": "locked",
-      "agent": "MahdiHedhli",
+      "agent": "dangermouse-bot",
       "note": "Locked for execution"
     },
     {
