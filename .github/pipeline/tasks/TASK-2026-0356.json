@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-02T20:37:57.257Z",
-  "updated": "2026-06-02T21:27:47.896Z",
+  "updated": "2026-06-04T03:46:49.483Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-04T03:46:49.483Z",
   "input": {
     "topic": "Android Framework Integer Overflow Vulnerability (CVE-2025-48595)",
     "sources": [
@@ -85,6 +85,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #979"
+    },
+    {
+      "timestamp": "2026-06-04T03:46:49.483Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
