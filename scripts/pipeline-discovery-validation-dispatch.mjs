@@ -5,7 +5,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -150,7 +150,7 @@ async function getExistingValidationCheck({ token, owner, repo, headSha }) {
   const runs = Array.isArray(payload?.check_runs) ? payload.check_runs : [];
   return runs
     .filter(run => run.name === 'validate-tasks')
-    .sort((a, b) => Date.parse(b.started_at || b.created_at || 0) - Date.parse(a.started_at || a.created_at || 0))[0] || null;
+    .sort((a, b) => (Date.parse(b.started_at || b.created_at || '') || 0) - (Date.parse(a.started_at || a.created_at || '') || 0))[0] || null;
 }
 
 function sleep(ms) {
@@ -205,54 +205,58 @@ function runFallbackValidation() {
   run('git', ['fetch', 'origin', 'main', '--quiet']);
 
   const temp = mkdtempSync(join(tmpdir(), 'threatpedia-task-validation-'));
-  const changedPath = join(temp, 'pipeline_changed_tasks.txt');
-  const newPath = join(temp, 'pipeline_new_tasks.txt');
-  const reportPath = join(temp, 'pipeline_task_validation.json');
+  try {
+    const changedPath = join(temp, 'pipeline_changed_tasks.txt');
+    const newPath = join(temp, 'pipeline_new_tasks.txt');
+    const reportPath = join(temp, 'pipeline_task_validation.json');
 
-  const changed = gitLines(['diff', '--name-only', '--diff-filter=d', 'origin/main...HEAD', '--', '.github/pipeline/tasks/*.json']);
-  const added = gitLines(['diff', '--name-only', '--diff-filter=A', 'origin/main...HEAD', '--', '.github/pipeline/tasks/*.json']);
-  writeFileSync(changedPath, `${changed.join('\n')}\n`);
-  writeFileSync(newPath, `${added.join('\n')}\n`);
+    const changed = gitLines(['diff', '--name-only', '--diff-filter=d', 'origin/main...HEAD', '--', '.github/pipeline/tasks/*.json']);
+    const added = gitLines(['diff', '--name-only', '--diff-filter=A', 'origin/main...HEAD', '--', '.github/pipeline/tasks/*.json']);
+    writeFileSync(changedPath, `${changed.join('\n')}\n`);
+    writeFileSync(newPath, `${added.join('\n')}\n`);
 
-  const result = run(process.execPath, [
-    'scripts/validate-pipeline-tasks.mjs',
-    '--files-file',
-    changedPath,
-    '--new-files-file',
-    newPath,
-    '--json-out',
-    reportPath,
-  ], { allowFailure: true });
+    const result = run(process.execPath, [
+      'scripts/validate-pipeline-tasks.mjs',
+      '--files-file',
+      changedPath,
+      '--new-files-file',
+      newPath,
+      '--json-out',
+      reportPath,
+    ], { allowFailure: true });
 
-  let payload;
-  if (existsSync(reportPath)) {
-    payload = JSON.parse(readFileSync(reportPath, 'utf8'));
-  } else {
-    payload = {
-      allPass: false,
-      results: [],
-      markdown: [
-        '## Pipeline Task Validation Report',
-        '',
-        ':x: Task validator did not produce a report during discovery fallback validation.',
-      ].join('\n'),
+    let payload;
+    if (existsSync(reportPath)) {
+      payload = JSON.parse(readFileSync(reportPath, 'utf8'));
+    } else {
+      payload = {
+        allPass: false,
+        results: [],
+        markdown: [
+          '## Pipeline Task Validation Report',
+          '',
+          ':x: Task validator did not produce a report during discovery fallback validation.',
+        ].join('\n'),
+      };
+    }
+
+    return {
+      exitStatus: result.status,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      changed,
+      added,
+      payload,
     };
+  } finally {
+    rmSync(temp, { recursive: true, force: true });
   }
-
-  return {
-    exitStatus: result.status,
-    stdout: result.stdout,
-    stderr: result.stderr,
-    changed,
-    added,
-    payload,
-  };
 }
 
 async function upsertValidationComment({ token, owner, repo, prNumber, body }) {
   const comments = await githubRequest(token, `/repos/${owner}/${repo}/issues/${prNumber}/comments?per_page=100`);
   const existing = comments.find(comment =>
-    comment.user?.type === 'Bot' && String(comment.body || '').includes('Pipeline Task Validation Report')
+    String(comment.body || '').includes('Pipeline Task Validation Report')
   );
 
   if (existing) {
@@ -333,7 +337,7 @@ async function main() {
     summary.existing_validation_status = 'none';
   }
 
-  const startedAtMs = Date.now() - 1000;
+  const startedAtMs = Date.now() - 30000;
   if (!summary.primary_dispatch_status.startsWith('existing_validation_non_success')) {
     try {
       await dispatchValidation({
@@ -413,6 +417,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(`pipeline-discovery-validation-dispatch: ${error.message}`);
+  console.error('pipeline-discovery-validation-dispatch failed:', error);
   process.exit(1);
 });
