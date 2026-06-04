@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-27T19:16:42.768Z",
-  "updated": "2026-05-27T19:16:42.768Z",
+  "updated": "2026-06-04T19:21:40.435Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-04T19:21:40.434Z",
   "input": {
     "topic": "KnowledgeDeliver LMS ViewState deserialization zero-day exploitation (CVE-2026-5426), 2025-2026",
     "sources": [
@@ -59,6 +59,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #889"
+    },
+    {
+      "timestamp": "2026-06-04T19:21:40.435Z",
+      "action": "locked",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
