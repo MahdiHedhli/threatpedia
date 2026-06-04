@@ -89,12 +89,12 @@ function classifySource(url) {
     return { publisher: 'Other', source_type: 'other' };
   }
 
-  if (host.endsWith('cisa.gov')) return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'government' };
-  if (host === 'nvd.nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'National Vulnerability Database', source_type: 'database' };
-  if (host.includes('microsoft.com')) return { publisher: 'Microsoft', source_type: 'vendor' };
-  if (host.includes('android.com')) return { publisher: 'Android', source_type: 'vendor' };
-  if (host.includes('mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };
-  if (host.includes('litespeedtech.com')) return { publisher: 'LiteSpeed', source_type: 'vendor' };
+  if (host === 'cisa.gov' || host.endsWith('.cisa.gov')) return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'government' };
+  if (host === 'nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'National Vulnerability Database', source_type: 'database' };
+  if (host === 'microsoft.com' || host.endsWith('.microsoft.com')) return { publisher: 'Microsoft', source_type: 'vendor' };
+  if (host === 'android.com' || host.endsWith('.android.com')) return { publisher: 'Android', source_type: 'vendor' };
+  if (host === 'mirasvit.com' || host.endsWith('.mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };
+  if (host === 'litespeedtech.com' || host.endsWith('.litespeedtech.com')) return { publisher: 'LiteSpeed', source_type: 'vendor' };
   return { publisher: 'Other', source_type: 'other' };
 }
 

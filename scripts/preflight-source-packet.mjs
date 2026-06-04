@@ -15,6 +15,7 @@ const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
 const CVE_RE = /^CVE-\d{4}-\d{4,}$/;
 const CWE_RE = /^CWE-\d+$/;
 const ATTACK_RE = /^T\d{4}(?:\.\d{3})?$/;
+const CLAIM_RE = /^claim-\d+$/;
 const SOURCE_TYPES = new Set(['government', 'vendor', 'database', 'research', 'news', 'other']);
 const SOURCE_ROLES = new Set(['primary', 'supporting']);
 const SUFFICIENCY = new Set(['sufficient', 'insufficient', 'needs_human_review']);
@@ -262,6 +263,10 @@ function validatePreflight(packet) {
   } else {
     packet.cves.forEach((cve, index) => {
       const path = `$.cves[${index}]`;
+      if (!isObject(cve)) {
+        add(errors, 'CVE must be an object', path);
+        return;
+      }
       if (!CVE_RE.test(cve.id || '')) add(errors, 'CVE id is invalid', `${path}.id`);
       validateRefs(cve.source_refs, sourceIds, errors, `${path}.source_refs`);
     });
@@ -293,7 +298,11 @@ function validatePreflight(packet) {
   } else {
     packet.claims.forEach((claim, index) => {
       const path = `$.claims[${index}]`;
-      if (!/^claim-\d+$/.test(claim.claim_id || '')) add(errors, 'claim_id must match claim-N', `${path}.claim_id`);
+      if (!isObject(claim)) {
+        add(errors, 'claim must be an object', path);
+        return;
+      }
+      if (!CLAIM_RE.test(claim.claim_id || '')) add(errors, 'claim_id must match claim-N', `${path}.claim_id`);
       if (!isString(claim.claim)) add(errors, 'claim is required', `${path}.claim`);
       if (!CLAIM_TYPES.has(claim.claim_type)) add(errors, 'claim_type is invalid', `${path}.claim_type`);
       validateRefs(claim.source_refs, sourceIds, errors, `${path}.source_refs`);
@@ -338,14 +347,19 @@ function validatePreflight(packet) {
       add(errors, 'item must be an object', path);
       return;
     }
-    if (!isString(item.claim)) add(errors, 'claim is required', `${path}.claim`);
+    const hasClaim = isString(item.claim);
+    if (!hasClaim) add(errors, 'claim is required', `${path}.claim`);
     if (!isString(item.reason)) add(errors, 'reason is required', `${path}.reason`);
-    if (containsUnsupportedNote(packet, item.claim)) add(errors, 'not_supported claim appears in drafting_notes', path);
+    if (hasClaim && containsUnsupportedNote(packet, item.claim)) add(errors, 'not_supported claim appears in drafting_notes', path);
   });
 
   if (!Array.isArray(packet.mitre_candidates)) add(errors, 'mitre_candidates must be an array', '$.mitre_candidates');
   else packet.mitre_candidates.forEach((candidate, index) => {
     const path = `$.mitre_candidates[${index}]`;
+    if (!isObject(candidate)) {
+      add(errors, 'candidate must be an object', path);
+      return;
+    }
     if (candidate.technique_id !== null && !ATTACK_RE.test(candidate.technique_id || '')) add(errors, 'technique_id must be TXXXX, TXXXX.XXX, or null', `${path}.technique_id`);
     if (!isString(candidate.technique_name)) add(errors, 'technique_name is required', `${path}.technique_name`);
     if (!isString(candidate.tactic)) add(errors, 'tactic is required', `${path}.tactic`);
