@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-03T20:49:30.179Z",
-  "updated": "2026-06-03T20:49:30.179Z",
+  "updated": "2026-06-04T05:51:00.425Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-04T05:51:00.425Z",
   "input": {
     "topic": "Mirasvit Full Page Cache Warmer Deserialization of Untrusted Data Vulnerability (CVE-2026-45247)",
     "sources": [
@@ -77,6 +77,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 100)"
+    },
+    {
+      "timestamp": "2026-06-04T05:51:00.425Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
