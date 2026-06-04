@@ -120,7 +120,7 @@ function splitPlatform(platform) {
   const parts = value.split(/\s+/);
   const vendor = parts[0] || 'Unknown';
   const escapedVendor = vendor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const product = value.replace(new RegExp(`^${escapedVendor}\\s+${escapedVendor}\\s+`, 'i'), `${vendor} `);
+  const product = value.replace(new RegExp(`^${escapedVendor}\\s+(?=${escapedVendor}(?:\\s+|$))`, 'i'), '');
   return { vendor, product };
 }
 

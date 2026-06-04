@@ -275,6 +275,10 @@ function validatePreflight(packet) {
   if (!Array.isArray(packet.cwes)) add(errors, 'cwes must be an array', '$.cwes');
   else packet.cwes.forEach((cwe, index) => {
     const path = `$.cwes[${index}]`;
+    if (!isObject(cwe)) {
+      add(errors, 'CWE must be an object', path);
+      return;
+    }
     if (!CWE_RE.test(cwe.id || '')) add(errors, 'CWE id is invalid', `${path}.id`);
     if (!isString(cwe.name)) add(errors, 'CWE name is required', `${path}.name`);
     validateRefs(cwe.source_refs, sourceIds, errors, `${path}.source_refs`);
@@ -318,13 +322,17 @@ function validatePreflight(packet) {
   else {
     packet.uncertainties.forEach((uncertainty, index) => {
       const path = `$.uncertainties[${index}]`;
+      if (!isObject(uncertainty)) {
+        add(errors, 'uncertainty must be an object', path);
+        return;
+      }
       if (!isString(uncertainty.topic)) add(errors, 'topic is required', `${path}.topic`);
       if (!isString(uncertainty.reason)) add(errors, 'reason is required', `${path}.reason`);
       if (!isString(uncertainty.drafting_instruction)) add(errors, 'drafting_instruction is required', `${path}.drafting_instruction`);
     });
   }
 
-  const uncertaintyTopics = new Set((packet.uncertainties || []).map(item => lower(item?.topic)));
+  const uncertaintyTopics = new Set((Array.isArray(packet.uncertainties) ? packet.uncertainties : []).map(item => lower(item?.topic)));
   const dateKeysToValidate = {
     disclosed_at: packet.key_dates?.disclosed_at,
     published_at: packet.key_dates?.published_at,
