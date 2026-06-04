@@ -31,7 +31,7 @@ tags:
   - russia-linked
 sources:
   - url: https://www.fiod.nl/fiod-houdt-twee-verdachten-aan-wegens-overtreding-sanctiewetgeving/
-    publisher: FIOD
+    publisher: Fiscal Information and Investigation Service
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-22"
@@ -152,6 +152,6 @@ Organizations that observed traffic to infrastructure associated with Stark Indu
 
 ## Sources & References
 
-- [FIOD: FIOD houdt twee verdachten aan wegens overtreding sanctiewetgeving](https://www.fiod.nl/fiod-houdt-twee-verdachten-aan-wegens-overtreding-sanctiewetgeving/) — FIOD, 2026-05-22
+- [Fiscal Information and Investigation Service: FIOD houdt twee verdachten aan wegens overtreding sanctiewetgeving](https://www.fiod.nl/fiod-houdt-twee-verdachten-aan-wegens-overtreding-sanctiewetgeving/) — Fiscal Information and Investigation Service, 2026-05-22
 - [SecurityWeek: Admins of Bulletproof Hosting Service Used by Russian Hackers Arrested in Netherlands](https://www.securityweek.com/admins-of-bulletproof-hosting-service-used-by-russian-hackers-arrested-in-netherlands/) — SecurityWeek, 2026-05-26
 - [WebHosting.today: Dutch FIOD Dismantles Stark Industries](https://webhosting.today/2026/05/25/dutch-authorities-dismantle-stark-industries-the-rebrand-didnt-save-it/) — WebHosting.today, 2026-05-25
