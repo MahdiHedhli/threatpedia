@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-06-02T16:58:30.374Z",
+  "updated": "2026-06-04T21:53:08.366Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-04T21:53:08.366Z",
   "input": {
     "topic": "Red Lamassu Showboat malware campaign targets international telecommunications providers, May 2026",
     "sources": [
@@ -54,7 +54,7 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "MahdiHedhli",
+      "agent": "dangermouse-bot",
       "note": "Manual submission from Issue #882"
     },
     {
@@ -80,6 +80,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #976"
+    },
+    {
+      "timestamp": "2026-06-04T21:53:08.366Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
