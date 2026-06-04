@@ -1,0 +1,225 @@
+{
+  "schema_version": "source-packet/1",
+  "task_id": "TASK-2026-0358",
+  "lane": "zero-day",
+  "source_packet_id": "sp-TASK-2026-0358",
+  "created_at": "2026-06-04T00:00:00.000Z",
+  "source_packet_status": "draft",
+  "output_target": {
+    "file_pattern": "site/src/content/zero-days/mirasvit-mirasvit-full-page-cache-warmer-cve-2026-45247.md",
+    "branch": "pipeline/TASK-2026-0358",
+    "pr": true
+  },
+  "primary_sources": [
+    {
+      "id": "src-1",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "published_at": null,
+      "source_type": "government",
+      "role": "primary",
+      "notes": "Source URL supplied by the pipeline task."
+    },
+    {
+      "id": "src-2",
+      "publisher": "NVD",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-45247",
+      "published_at": null,
+      "source_type": "database",
+      "role": "primary",
+      "notes": "Source URL supplied by the pipeline task."
+    },
+    {
+      "id": "src-3",
+      "publisher": "Mirasvit",
+      "url": "https://mirasvit.com/package/changelog/?package=mirasvit/module-cache-warmer",
+      "published_at": null,
+      "source_type": "vendor",
+      "role": "primary",
+      "notes": "Source URL supplied by the pipeline task."
+    }
+  ],
+  "supporting_sources": [],
+  "source_quality": {
+    "has_government_source": true,
+    "has_vendor_source": true,
+    "has_primary_source": true,
+    "source_sufficiency": "sufficient"
+  },
+  "key_dates": {
+    "disclosed_at": "2026-06-03",
+    "published_at": null,
+    "patched_at": null,
+    "kev_added_at": "2026-06-03",
+    "exploited_before_disclosure": "unknown",
+    "date_uncertainties": [
+      "published_at and patched_at are not deterministically available from the task JSON."
+    ]
+  },
+  "affected_products": [
+    {
+      "vendor": "Mirasvit",
+      "product": "Mirasvit Full Page Cache Warmer",
+      "versions": "unknown",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ]
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-2026-45247",
+      "source_refs": [
+        "src-1",
+        "src-2"
+      ]
+    }
+  ],
+  "cwes": [
+    {
+      "id": "CWE-502",
+      "name": "Unknown",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ]
+    }
+  ],
+  "kev_status": {
+    "in_kev": true,
+    "source_refs": [
+      "src-1"
+    ]
+  },
+  "exploit_status": {
+    "known_exploited": true,
+    "source_refs": [
+      "src-1"
+    ],
+    "notes": "Known exploitation is limited to the KEV-backed statement unless the packet is updated."
+  },
+  "claims": [
+    {
+      "claim_id": "claim-1",
+      "confidence": "high",
+      "claim": "CVE-2026-45247 affects Mirasvit Full Page Cache Warmer.",
+      "claim_type": "vulnerability",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "article_section": "summary"
+    },
+    {
+      "claim_id": "claim-2",
+      "confidence": "high",
+      "claim": "Mirasvit Full Page Cache Warmer is the affected product identified by the task source data.",
+      "claim_type": "product",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-3",
+      "confidence": "high",
+      "claim": "The vulnerability type is Remote Code Execution.",
+      "claim_type": "vulnerability",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "article_section": "technical-analysis"
+    },
+    {
+      "claim_id": "claim-4",
+      "confidence": "high",
+      "claim": "The disclosed date is 2026-06-03.",
+      "claim_type": "date",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "article_section": "timeline"
+    },
+    {
+      "claim_id": "claim-5",
+      "confidence": "high",
+      "claim": "CVE-2026-45247 is listed in CISA KEV.",
+      "claim_type": "exploitation",
+      "source_refs": [
+        "src-1"
+      ],
+      "article_section": "summary"
+    },
+    {
+      "claim_id": "claim-6",
+      "confidence": "medium",
+      "claim": "NVD CVSS severity data records a CRITICAL severity score of 9.8.",
+      "claim_type": "impact",
+      "source_refs": [
+        "src-2"
+      ],
+      "article_section": "technical-analysis"
+    }
+  ],
+  "uncertainties": [
+    {
+      "topic": "affected versions",
+      "reason": "The task JSON does not include a deterministic affected-version range.",
+      "drafting_instruction": "Use \"affected versions were not specified in the packet\" or omit version range details."
+    },
+    {
+      "topic": "patch status",
+      "reason": "The task JSON does not include a deterministic patch date.",
+      "drafting_instruction": "Do not claim patched status unless the source packet is updated with vendor evidence."
+    },
+    {
+      "topic": "exploit chain",
+      "reason": "The task JSON supports known exploitation only when KEV is true; it does not describe exploit-chain steps.",
+      "drafting_instruction": "Do not add exploit-chain mechanics beyond the packet claims."
+    }
+  ],
+  "not_supported": [
+    {
+      "claim": "Threat actor attribution",
+      "reason": "The task JSON does not identify an actor."
+    },
+    {
+      "claim": "Ransomware use",
+      "reason": "The task JSON does not support ransomware use."
+    },
+    {
+      "claim": "Specific affected versions",
+      "reason": "Affected versions are unknown in deterministic task data."
+    }
+  ],
+  "mitre_candidates": [
+    {
+      "technique_id": "T1190",
+      "technique_name": "Exploit Public-Facing Application",
+      "tactic": "Initial Access",
+      "source_refs": [],
+      "confidence": "low",
+      "include_in_article": false
+    }
+  ],
+  "drafting_notes": [
+    "Use only the claims array for factual assertions.",
+    "Phrase unknown dates, versions, actors, and exploit-chain details conservatively.",
+    "Do not include any not_supported claim unless the source packet is updated first."
+  ],
+  "preflight": {
+    "status": "not_run",
+    "errors": [],
+    "warnings": []
+  }
+}

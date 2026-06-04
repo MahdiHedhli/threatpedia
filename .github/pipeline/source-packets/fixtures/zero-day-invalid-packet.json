@@ -1,0 +1,114 @@
+{
+  "schema_version": "source-packet/1",
+  "task_id": "TASK-2026-9999",
+  "lane": "zero-day",
+  "source_packet_id": "sp-TASK-2026-9999",
+  "created_at": "2026-06-04T00:00:00.000Z",
+  "source_packet_status": "draft",
+  "output_target": {
+    "file_pattern": "",
+    "branch": "pipeline/TASK-2026-9999",
+    "pr": true
+  },
+  "primary_sources": [
+    {
+      "id": "src-1",
+      "publisher": "Other",
+      "url": "https://example.invalid/source",
+      "published_at": "2026-99-99",
+      "source_type": "other",
+      "role": "primary",
+      "notes": "Intentionally weak fixture source."
+    }
+  ],
+  "supporting_sources": [
+    {
+      "id": "src-1",
+      "publisher": "Other",
+      "url": "https://example.invalid/source",
+      "published_at": null,
+      "source_type": "other",
+      "role": "supporting",
+      "notes": "Duplicate URL and id."
+    }
+  ],
+  "source_quality": {
+    "has_government_source": false,
+    "has_vendor_source": false,
+    "has_primary_source": true,
+    "source_sufficiency": "insufficient"
+  },
+  "key_dates": {
+    "disclosed_at": "not-a-date",
+    "published_at": null,
+    "patched_at": null,
+    "kev_added_at": null,
+    "exploited_before_disclosure": "unknown",
+    "date_uncertainties": []
+  },
+  "affected_products": [
+    {
+      "vendor": "",
+      "product": "Example Product",
+      "versions": "",
+      "source_refs": []
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-20XX-1",
+      "source_refs": []
+    }
+  ],
+  "cwes": [
+    {
+      "id": "CWE-502",
+      "name": "Deserialization of Untrusted Data",
+      "source_refs": []
+    }
+  ],
+  "kev_status": {
+    "in_kev": true,
+    "source_refs": []
+  },
+  "exploit_status": {
+    "known_exploited": true,
+    "source_refs": [],
+    "notes": "Known exploited is asserted without a source."
+  },
+  "claims": [
+    {
+      "claim_id": "claim-1",
+      "claim": "Unsupported vulnerability claim.",
+      "claim_type": "vulnerability",
+      "source_refs": [],
+      "confidence": "high",
+      "article_section": "summary"
+    }
+  ],
+  "uncertainties": [],
+  "not_supported": [
+    {
+      "claim": "Threat actor attribution",
+      "reason": "No actor source exists."
+    }
+  ],
+  "mitre_candidates": [
+    {
+      "technique_id": "T1190",
+      "technique_name": "Exploit Public-Facing Application",
+      "tactic": "Initial Access",
+      "source_refs": [],
+      "confidence": "low",
+      "include_in_article": true
+    }
+  ],
+  "drafting_notes": [
+    "Mention Threat actor attribution and the pipeline prompt."
+  ],
+  "preflight": {
+    "status": "not_run",
+    "errors": [],
+    "warnings": []
+  }
+}
