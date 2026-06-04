@@ -60,8 +60,8 @@
     {
       "timestamp": "2026-05-27T07:43:45.942Z",
       "action": "review_feedback_resolution",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "threatpedia-pr-steward",
       "note": "Added current-head Gemini guardrail requiring the drafting agent to find a schema-valid government source for the campaign task or block the task if none can be found; no placeholder sources were added."
     },
