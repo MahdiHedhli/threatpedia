@@ -13,7 +13,7 @@
   "primary_sources": [
     {
       "id": "src-1",
-      "publisher": "CISA",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
       "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
       "published_at": null,
       "source_type": "government",
@@ -22,7 +22,7 @@
     },
     {
       "id": "src-2",
-      "publisher": "NVD",
+      "publisher": "National Vulnerability Database",
       "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-45247",
       "published_at": null,
       "source_type": "database",

@@ -89,8 +89,8 @@ function classifySource(url) {
     return { publisher: 'Other', source_type: 'other' };
   }
 
-  if (host.endsWith('cisa.gov')) return { publisher: 'CISA', source_type: 'government' };
-  if (host === 'nvd.nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'NVD', source_type: 'database' };
+  if (host.endsWith('cisa.gov')) return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'government' };
+  if (host === 'nvd.nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'National Vulnerability Database', source_type: 'database' };
   if (host.includes('microsoft.com')) return { publisher: 'Microsoft', source_type: 'vendor' };
   if (host.includes('android.com')) return { publisher: 'Android', source_type: 'vendor' };
   if (host.includes('mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };
@@ -118,7 +118,8 @@ function splitPlatform(platform) {
   const value = typeof platform === 'string' && platform.trim() ? platform.trim() : 'Unknown product';
   const parts = value.split(/\s+/);
   const vendor = parts[0] || 'Unknown';
-  const product = value.replace(new RegExp(`^${vendor}\\s+${vendor}\\s+`, 'i'), `${vendor} `);
+  const escapedVendor = vendor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const product = value.replace(new RegExp(`^${escapedVendor}\\s+${escapedVendor}\\s+`, 'i'), `${vendor} `);
   return { vendor, product };
 }
 
@@ -217,7 +218,7 @@ function buildPacket(task, createdAt) {
     });
   }
   if (candidate.cvss?.score || task.discovery?.cvss?.score) {
-    const cvss = candidate.cvss || task.discovery.cvss;
+    const cvss = candidate.cvss || task.discovery?.cvss;
     addClaim(claims, {
       claim: `NVD CVSS severity data records a ${cvss.severity || candidate.severity || 'known'} severity score of ${cvss.score}.`,
       claim_type: 'impact',

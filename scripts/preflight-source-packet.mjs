@@ -114,7 +114,7 @@ function allSources(packet) {
 }
 
 function refSet(packet) {
-  return new Set(allSources(packet).map(source => source.id).filter(Boolean));
+  return new Set(allSources(packet).map(source => source?.id).filter(Boolean));
 }
 
 function validateRefs(refs, sourceIds, errors, path, { allowEmpty = false } = {}) {
@@ -289,7 +289,7 @@ function validatePreflight(packet) {
     });
   }
 
-  const uncertaintyTopics = new Set((packet.uncertainties || []).map(item => lower(item.topic)));
+  const uncertaintyTopics = new Set((packet.uncertainties || []).map(item => lower(item?.topic)));
   if (packet.key_dates && Object.values({
     disclosed_at: packet.key_dates.disclosed_at,
     published_at: packet.key_dates.published_at,
