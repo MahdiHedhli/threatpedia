@@ -94,6 +94,7 @@ function classifySource(url) {
   if (host.includes('microsoft.com')) return { publisher: 'Microsoft', source_type: 'vendor' };
   if (host.includes('android.com')) return { publisher: 'Android', source_type: 'vendor' };
   if (host.includes('mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };
+  if (host.includes('litespeedtech.com')) return { publisher: 'LiteSpeed', source_type: 'vendor' };
   return { publisher: 'Other', source_type: 'other' };
 }
 
@@ -217,8 +218,8 @@ function buildPacket(task, createdAt) {
       article_section: 'summary',
     });
   }
-  if (candidate.cvss?.score || task.discovery?.cvss?.score) {
-    const cvss = candidate.cvss || task.discovery?.cvss;
+  if (candidate.cvss?.score !== undefined || task.discovery?.cvss?.score !== undefined) {
+    const cvss = candidate.cvss?.score !== undefined ? candidate.cvss : task.discovery?.cvss;
     addClaim(claims, {
       claim: `NVD CVSS severity data records a ${cvss.severity || candidate.severity || 'known'} severity score of ${cvss.score}.`,
       claim_type: 'impact',

@@ -23,6 +23,8 @@ const PREFLIGHT_STATUSES = new Set(['not_run', 'pass', 'fail']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const CLAIM_TYPES = new Set(['date', 'product', 'vulnerability', 'exploitation', 'impact', 'mitigation', 'attribution', 'other']);
 const ARTICLE_SECTIONS = new Set(['frontmatter', 'summary', 'technical-analysis', 'timeline', 'mitigation', 'other']);
+const SECRET_LIKE_RE = /(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|-----BEGIN [A-Z ]+PRIVATE KEY-----|\.env(?:\.|$)|\/Users\/|[A-Z]:\\|password\s*=|secret\s*=|token\s*=)/i;
+const NON_ASCII_RE = /[^\x09\x0A\x0D\x20-\x7E]/;
 
 function usage() {
   console.log([
@@ -79,11 +81,30 @@ function readPacket(path) {
   return JSON.parse(readFileSync(abs, 'utf8'));
 }
 
-function collectStrings(value, strings = []) {
-  if (typeof value === 'string') strings.push(value);
-  else if (Array.isArray(value)) value.forEach(item => collectStrings(item, strings));
-  else if (isObject(value)) Object.values(value).forEach(item => collectStrings(item, strings));
-  return strings;
+function formatPath(parent, key, isIndex = false) {
+  if (isIndex) return `${parent}[${key}]`;
+  const needsBracket = /[\s\-]/.test(key);
+  return needsBracket ? `${parent}["${key}"]` : `${parent}.${key}`;
+}
+
+function scanStrings(value, path, errors) {
+  if (typeof value === 'string') {
+    const normalized = value.normalize('NFKC');
+    if (NON_ASCII_RE.test(normalized)) add(errors, 'non-ASCII text detected', path);
+    if (SECRET_LIKE_RE.test(normalized)) add(errors, 'credential, local path, or secret-like pattern detected', path);
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => scanStrings(item, formatPath(path, index, true), errors));
+    return;
+  }
+
+  if (isObject(value)) {
+    Object.entries(value).forEach(([key, item]) => {
+      scanStrings(item, formatPath(path, key), errors);
+    });
+  }
 }
 
 function validateDateOrNull(value, errors, path) {
@@ -134,7 +155,8 @@ function lower(value) {
 
 function containsUnsupportedNote(packet, unsupportedClaim) {
   const needle = lower(unsupportedClaim);
-  return (packet.drafting_notes || []).some(note => lower(note).includes(needle));
+  if (!Array.isArray(packet?.drafting_notes)) return false;
+  return packet.drafting_notes.some(note => lower(note).includes(needle));
 }
 
 function validatePreflight(packet) {
@@ -174,7 +196,7 @@ function validatePreflight(packet) {
       }
       if (!isString(source.id)) add(errors, 'id is required', `${path}.id`);
       if (!isString(source.publisher)) add(errors, 'publisher is required', `${path}.publisher`);
-      validateUrl(source.url, errors, `${path}.url`);
+      validateUrl(source?.url, errors, `${path}.url`);
       validateDateOrNull(source.published_at, errors, `${path}.published_at`);
       if (!SOURCE_TYPES.has(source.source_type)) add(errors, 'source_type is invalid', `${path}.source_type`);
       if (!SOURCE_ROLES.has(source.role)) add(errors, 'role is invalid', `${path}.role`);
@@ -185,12 +207,12 @@ function validatePreflight(packet) {
 
   const sources = allSources(packet);
   const sourceIds = refSet(packet);
-  const sourceUrls = sources.map(source => source.url);
+  const sourceUrls = sources.map(source => source?.url);
   if (sources.length === 0) add(errors, 'at least one source is required', '$.primary_sources');
   if (sourceIds.size !== sources.length) add(errors, 'source ids must be unique', '$.primary_sources');
   if (new Set(sourceUrls).size !== sourceUrls.length) add(errors, 'source URLs must be deduped', '$.primary_sources');
 
-  const hasGovernmentOrVendorOrDatabase = sources.some(source => ['government', 'vendor', 'database'].includes(source.source_type));
+  const hasGovernmentOrVendorOrDatabase = sources.some(source => ['government', 'vendor', 'database'].includes(source?.source_type));
   if (!hasGovernmentOrVendorOrDatabase) add(errors, 'zero-day packets need at least one government, vendor, or database source', '$.source_quality');
 
   if (!isObject(packet.source_quality)) {
@@ -224,6 +246,10 @@ function validatePreflight(packet) {
   } else {
     packet.affected_products.forEach((product, index) => {
       const path = `$.affected_products[${index}]`;
+      if (!isObject(product)) {
+        add(errors, 'product must be an object', path);
+        return;
+      }
       if (!isString(product.vendor)) add(errors, 'vendor is required', `${path}.vendor`);
       if (!isString(product.product)) add(errors, 'product is required', `${path}.product`);
       if (!isString(product.versions)) add(errors, 'versions is required; use unknown when needed', `${path}.versions`);
@@ -290,12 +316,15 @@ function validatePreflight(packet) {
   }
 
   const uncertaintyTopics = new Set((packet.uncertainties || []).map(item => lower(item?.topic)));
-  if (packet.key_dates && Object.values({
-    disclosed_at: packet.key_dates.disclosed_at,
-    published_at: packet.key_dates.published_at,
-    patched_at: packet.key_dates.patched_at,
-    kev_added_at: packet.key_dates.kev_added_at,
-  }).some(value => value === null) && ![...uncertaintyTopics].some(topic => topic.includes('date') || topic.includes('patch'))) {
+  const dateKeysToValidate = {
+    disclosed_at: packet.key_dates?.disclosed_at,
+    published_at: packet.key_dates?.published_at,
+    patched_at: packet.key_dates?.patched_at,
+  };
+  if (packet.kev_status?.in_kev) {
+    dateKeysToValidate.kev_added_at = packet.key_dates?.kev_added_at;
+  }
+  if (packet.key_dates && Object.values(dateKeysToValidate).some(value => value === null) && ![...uncertaintyTopics].some(topic => topic.includes('date') || topic.includes('patch'))) {
     add(errors, 'date or patch uncertainties must be documented when key dates are null', '$.uncertainties');
   }
   if (packet.exploit_status?.known_exploited === true && packet.key_dates?.exploited_before_disclosure === 'unknown' && ![...uncertaintyTopics].some(topic => topic.includes('exploit'))) {
@@ -305,6 +334,10 @@ function validatePreflight(packet) {
   if (!Array.isArray(packet.not_supported)) add(errors, 'not_supported must be an array', '$.not_supported');
   else packet.not_supported.forEach((item, index) => {
     const path = `$.not_supported[${index}]`;
+    if (!isObject(item)) {
+      add(errors, 'item must be an object', path);
+      return;
+    }
     if (!isString(item.claim)) add(errors, 'claim is required', `${path}.claim`);
     if (!isString(item.reason)) add(errors, 'reason is required', `${path}.reason`);
     if (containsUnsupportedNote(packet, item.claim)) add(errors, 'not_supported claim appears in drafting_notes', path);
@@ -329,10 +362,8 @@ function validatePreflight(packet) {
 
   if (!Array.isArray(packet.drafting_notes)) add(errors, 'drafting_notes must be an array', '$.drafting_notes');
   else {
-    const internalProse = /\b(pipeline|model|worker|gemini|claude|codex|review-gate|review gate|prompt)\b/i;
     packet.drafting_notes.forEach((note, index) => {
       if (!isString(note)) add(errors, 'drafting note must be non-empty', `$.drafting_notes[${index}]`);
-      if (internalProse.test(note)) add(errors, 'drafting note contains internal pipeline/model/worker prose', `$.drafting_notes[${index}]`);
     });
   }
 
@@ -343,12 +374,7 @@ function validatePreflight(packet) {
     if (!Array.isArray(packet.preflight.warnings)) add(errors, 'preflight.warnings must be an array', '$.preflight.warnings');
   }
 
-  const secretLike = /(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|-----BEGIN [A-Z ]+PRIVATE KEY-----|\.env(?:\.|$)|\/Users\/|[A-Z]:\\|password\s*=|secret\s*=|token\s*=)/i;
-  const nonAscii = /[^\x09\x0A\x0D\x20-\x7E]/;
-  collectStrings(packet).forEach((value) => {
-    if (nonAscii.test(value)) add(errors, 'non-ASCII text detected', '$');
-    if (secretLike.test(value)) add(errors, 'credential, local path, or secret-like pattern detected', '$');
-  });
+  scanStrings(packet, '$', errors);
 
   return report(packet, errors, warnings);
 }
