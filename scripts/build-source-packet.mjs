@@ -140,6 +140,10 @@ function buildPacket(task, createdAt) {
 
   const candidate = task.input?.candidate_data || {};
   const sourceUrls = uniqueStrings(task.input?.sources || []);
+  if (sourceUrls.length === 0) {
+    throw new Error(`Task ${task.task_id} has no sources. At least one source is required to build a source packet.`);
+  }
+
   const allText = [
     task.input?.topic,
     candidate.cve,
@@ -173,6 +177,10 @@ function buildPacket(task, createdAt) {
     candidate.cve,
     ...extractMatches(allText, CVE_RE),
   ]).map(id => ({ id: id.toUpperCase(), source_refs: sourceRefsForClaim(sources, ['database', 'government']) }));
+  if (cves.length === 0) {
+    throw new Error(`Task ${task.task_id} has no CVEs. At least one CVE is required to build a source packet.`);
+  }
+
   const cwes = uniqueStrings([
     ...(Array.isArray(candidate.cwes) ? candidate.cwes : []),
     ...extractMatches(allText, CWE_RE),

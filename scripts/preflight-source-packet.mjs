@@ -333,7 +333,7 @@ function validatePreflight(packet) {
   if (packet.kev_status?.in_kev) {
     dateKeysToValidate.kev_added_at = packet.key_dates?.kev_added_at;
   }
-  if (packet.key_dates && Object.values(dateKeysToValidate).some(value => value === null) && ![...uncertaintyTopics].some(topic => topic.includes('date') || topic.includes('patch'))) {
+  if (packet.key_dates && Object.values(dateKeysToValidate).some(value => value == null) && ![...uncertaintyTopics].some(topic => topic.includes('date') || topic.includes('patch'))) {
     add(errors, 'date or patch uncertainties must be documented when key dates are null', '$.uncertainties');
   }
   if (packet.exploit_status?.known_exploited === true && packet.key_dates?.exploited_before_disclosure === 'unknown' && ![...uncertaintyTopics].some(topic => topic.includes('exploit'))) {
