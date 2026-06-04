@@ -1,5 +1,7 @@
 name: "Pipeline: Validate Task PR"
 
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('Validate task PR #{0}', inputs.pr_number) || github.event.pull_request.title }}
+
 on:
   pull_request:
     types: [opened, synchronize]
@@ -8,6 +10,16 @@ on:
       - ".github/workflows/pipeline-validate-tasks.yml"
       - "scripts/validate-pipeline-tasks.mjs"
       - "scripts/pipeline-schema.mjs"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Discovery/task pull request number to validate"
+        required: true
+        type: number
+      head_ref:
+        description: "Pull request head branch or ref to validate"
+        required: true
+        type: string
 
 jobs:
   validate-tasks:
@@ -20,6 +32,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.head_ref || github.ref }}
 
       - uses: actions/setup-node@v6
         with:
@@ -32,8 +45,14 @@ jobs:
 
       - name: Identify changed task files
         id: changed
+        env:
+          VALIDATION_PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.pull_request.number }}
+          VALIDATION_HEAD_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.head_ref || github.head_ref || github.ref_name }}
         run: |
           set -euo pipefail
+
+          echo "Validation PR: ${VALIDATION_PR_NUMBER}"
+          echo "Validation head ref: ${VALIDATION_HEAD_REF}"
 
           ALL=$(git diff --name-only --diff-filter=d origin/main...HEAD -- '.github/pipeline/tasks/*.json')
           NEW=$(git diff --name-only --diff-filter=A origin/main...HEAD -- '.github/pipeline/tasks/*.json')
@@ -62,12 +81,19 @@ jobs:
         env:
           PIPELINE_TASK_VALIDATION_JSON: ${{ runner.temp }}/pipeline_task_validation.json
           VALIDATION_OUTCOME: ${{ steps.validate.outcome }}
+          VALIDATION_PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.pull_request.number }}
         with:
           script: |
             const fs = require('fs');
 
             const reportPath = process.env.PIPELINE_TASK_VALIDATION_JSON;
             const validationOutcome = process.env.VALIDATION_OUTCOME || 'failure';
+            const issueNumber = Number(process.env.VALIDATION_PR_NUMBER || context.issue.number);
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              core.setFailed('Could not resolve PR number for task validation report.');
+              return;
+            }
+
             let payload;
 
             if (fs.existsSync(reportPath)) {
@@ -85,7 +111,7 @@ jobs:
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
             });
 
             const botComment = comments.find((comment) =>
@@ -103,7 +129,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue_number: issueNumber,
                 body,
               });
             }

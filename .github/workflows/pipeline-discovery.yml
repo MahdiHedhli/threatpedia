@@ -69,9 +69,12 @@ jobs:
   discover:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
+      checks: read
       contents: write
       issues: write
       pull-requests: write
+      statuses: write
 
     steps:
       - uses: actions/checkout@v6
@@ -318,3 +321,16 @@ jobs:
               }
               console.log(`Opened PR #${pr.number}: ${pr.html_url}`);
             }
+
+      - name: Dispatch discovery task validation
+        if: ${{ inputs.execute != 'false' && steps.commit.outputs.has_changes == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          node scripts/pipeline-discovery-validation-dispatch.mjs \
+            --branch "${DISCOVERY_BRANCH}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --workflow "pipeline-validate-tasks.yml" \
+            --wait-seconds 30
