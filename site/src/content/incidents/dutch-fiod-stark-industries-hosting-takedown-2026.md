@@ -72,7 +72,7 @@ On May 22, 2026, the Dutch Fiscal Information and Investigation Service, FIOD, a
 
 The operation seized administrative records, laptops, phones, and more than 800 servers. FIOD described the investigation as focused on a web-hosting company that allegedly made economic resources available, directly or indirectly, to entities sanctioned by the European Union.
 
-Public reporting connected the case to infrastructure associated with Stark Industries, WorkTitans, THE.Hosting, and Mirhosting. Those links are treated here as secondary-source context because FIOD did not name the companies or suspects in its public statement.
+Public reporting connected the case to infrastructure associated with Stark Industries, WorkTitans, THE.Hosting, and Mirhosting. Those links are considered secondary-source context because FIOD did not name the companies or suspects in its public statement.
 
 ## Technical Analysis
 
@@ -108,13 +108,13 @@ The immediate operational impact was disruption of a large hosting footprint all
 
 For defenders, the case highlights the infrastructure layer behind cyberattacks and influence operations. Bulletproof hosting, reseller structures, and front-company arrangements can make abuse reporting and takedown coordination more difficult, even when the downstream activity appears in separate campaigns.
 
-The public sources do not provide a verified victim count or a complete technical inventory of seized systems. This record therefore treats the seizure as an infrastructure disruption rather than attributing specific intrusions to the arrested suspects.
+Available documentation does not provide a verified victim count or a complete technical inventory of seized systems. The seizure is therefore treated as an infrastructure disruption rather than attributing specific intrusions to the arrested suspects.
 
 ## Attribution
 
 The threat actor is listed as `Unknown` because FIOD did not publicly name a single threat actor or operator group responsible for the broader activity. FIOD described suspected sanctions evasion and alleged support for sanctioned entities.
 
-Secondary reporting connected the case to Stark Industries, WorkTitans, THE.Hosting, and Mirhosting. SecurityWeek also reported links to Russia-aligned activity and cited prior reporting that Stark Industries infrastructure was used by groups including NoName057(16). Those links remain contextual and are not expanded into direct campaign attribution here.
+Secondary reporting connected the case to Stark Industries, WorkTitans, THE.Hosting, and Mirhosting. SecurityWeek also reported links to Russia-aligned activity and cited prior reporting that Stark Industries infrastructure was used by groups including NoName057(16). Those links remain contextual and are not expanded into direct campaign attribution.
 
 ## Timeline
 
