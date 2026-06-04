@@ -53,24 +53,24 @@ sources:
     accessDate: "2026-06-04"
     archived: false
 mitreMappings:
-  - techniqueId: "T1105"
-    techniqueName: "Ingress Tool Transfer"
-    tactic: "Command and Control"
-    attack-version: "v19.0"
-    confidence: probable
-    evidence: "Lumen reported that Showboat includes functions for transferring files to and from infected Linux systems."
-  - techniqueId: "T1090"
-    techniqueName: "Proxy"
-    tactic: "Command and Control"
-    attack-version: "v19.0"
-    confidence: probable
-    evidence: "Lumen reported SOCKS5 and portmap functions that allow operators to connect through compromised systems."
   - techniqueId: "T1059"
     techniqueName: "Command and Scripting Interpreter"
     tactic: "Execution"
     attack-version: "v19.0"
     confidence: possible
     evidence: "PwC reported that JFMBackdoor supports remote shell access, while Lumen described Showboat as able to spawn a remote shell."
+  - techniqueId: "T1090"
+    techniqueName: "Proxy"
+    tactic: "Command and Control"
+    attack-version: "v19.0"
+    confidence: probable
+    evidence: "Lumen reported SOCKS5 and portmap functions that allow operators to connect through compromised systems."
+  - techniqueId: "T1105"
+    techniqueName: "Ingress Tool Transfer"
+    tactic: "Command and Control"
+    attack-version: "v19.0"
+    confidence: probable
+    evidence: "Lumen reported that Showboat includes functions for transferring files to and from infected Linux systems."
 atlasMappings: []
 framework-mappings: []
 ---
@@ -119,9 +119,9 @@ Showboat's SOCKS5 and portmap functions allowed operators to interact with syste
 
 T1059 - Command and Scripting Interpreter: PwC reported remote shell functionality in JFMBackdoor, and Lumen described Showboat as capable of spawning a remote shell. The mapping is possible because the public reports describe shell access but do not fully document the shell implementation.
 
-T1105 - Ingress Tool Transfer: Lumen reported Showboat operator functions for transferring files to and from infected hosts. This behavior supports file movement after a foothold has been established.
-
 T1090 - Proxy: Lumen reported SOCKS5 and portmap functions in Showboat. The reported behavior supports using compromised systems as proxy points for access to internal systems.
+
+T1105 - Ingress Tool Transfer: Lumen reported Showboat operator functions for transferring files to and from infected hosts. This behavior supports file movement after a foothold has been established.
 
 ## Timeline
 
