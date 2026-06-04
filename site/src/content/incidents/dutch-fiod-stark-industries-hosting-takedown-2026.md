@@ -112,7 +112,7 @@ Available documentation does not provide a verified victim count or a complete t
 
 ## Attribution
 
-The threat actor is listed as `Unknown` because FIOD did not publicly name a single threat actor or operator group responsible for the broader activity. FIOD described suspected sanctions evasion and alleged support for sanctioned entities.
+FIOD did not publicly name a single threat actor or operator group responsible for the broader activity. The agency described suspected sanctions evasion and alleged support for sanctioned entities.
 
 Secondary reporting connected the case to Stark Industries, WorkTitans, THE.Hosting, and Mirhosting. SecurityWeek also reported links to Russia-aligned activity and cited prior reporting that Stark Industries infrastructure was used by groups including NoName057(16). Those links remain contextual and are not expanded into direct campaign attribution.
 
