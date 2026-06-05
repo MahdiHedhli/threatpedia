@@ -69,6 +69,10 @@ function isString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+function isStringOrNull(value) {
+  return value === null || isString(value);
+}
+
 function isBool(value) {
   return typeof value === 'boolean';
 }
@@ -186,8 +190,8 @@ function validatePreflight(packet) {
   if (!isObject(packet.output_target)) {
     add(errors, 'output_target is required for validator readiness', '$.output_target');
   } else {
-    if (!isString(packet.output_target.file_pattern)) add(errors, 'file_pattern is required', '$.output_target.file_pattern');
-    if (!isString(packet.output_target.branch)) add(errors, 'branch is required', '$.output_target.branch');
+    if (!isStringOrNull(packet.output_target.file_pattern)) add(errors, 'file_pattern must be null or a non-empty string', '$.output_target.file_pattern');
+    if (!isStringOrNull(packet.output_target.branch)) add(errors, 'branch must be null or a non-empty string', '$.output_target.branch');
     if (!isBool(packet.output_target.pr)) add(errors, 'pr must be boolean', '$.output_target.pr');
   }
 
