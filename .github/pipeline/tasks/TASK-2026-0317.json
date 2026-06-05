@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-19T20:27:16.215Z",
-  "updated": "2026-06-05T20:23:44.382Z",
+  "updated": "2026-06-05T20:27:46.817Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-05T20:23:44.382Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "JDownloader website installer compromise",
     "sources": [
@@ -56,6 +56,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-05T20:27:46.816Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1033"
     }
-  ]
+  ],
+  "pr_number": 1033,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1033"
 }
