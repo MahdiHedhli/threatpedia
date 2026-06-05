@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0361",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-05T19:33:00.134Z",
+  "updated": "2026-06-05T19:33:00.134Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "PCPJack cloud server compromise campaign",
+    "sources": [
+      "https://hunt.io/blog/pcpjack-230-cloud-servers-smtp-proxy-network-sliver-chisel"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Cloud infrastructure",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Risky Bulletin current-watch lead from 2026-06-05. Concrete cloud compromise campaign affecting at least 230 servers, with SMTP proxy network, Sliver, and Chisel details. Private candidate key: risky-bulletin-2026-06-05-pcpjack-cloud-server-compromise-campaign."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0361",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-05T19:33:00.134Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1023"
+    }
+  ]
+}
