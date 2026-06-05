@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T20:27:16.036Z",
-  "updated": "2026-06-05T20:21:22.347Z",
+  "updated": "2026-06-05T21:51:13.656Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-05T21:51:13.656Z",
   "input": {
     "topic": "7-Eleven data breach claimed by ShinyHunters",
     "sources": [
@@ -57,6 +57,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1029"
+    },
+    {
+      "timestamp": "2026-06-05T21:51:13.656Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
