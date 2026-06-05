@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-19T20:27:15.949Z",
-  "updated": "2026-05-19T20:27:15.949Z",
+  "updated": "2026-06-05T18:50:28.421Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -49,6 +49,14 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-06-05T18:50:28.421Z",
+      "action": "blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Duplicate/already covered: the DAEMON Tools Lite supply-chain compromise is covered by site/src/content/zero-days/daemon-daemon-tools-lite-cve-2026-8398.md with vendor and CISA KEV-backed sources; drafting a separate incident would duplicate the existing corpus entry."
     }
   ]
 }
