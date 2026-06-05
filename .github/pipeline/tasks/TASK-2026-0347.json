@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-05-27T03:10:25.385Z",
-  "updated": "2026-06-02T16:58:30.374Z",
+  "updated": "2026-06-05T04:53:15.574Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -74,6 +74,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #975"
+    },
+    {
+      "timestamp": "2026-06-05T04:53:15.574Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #1002 already covers this task."
     }
   ]
 }
