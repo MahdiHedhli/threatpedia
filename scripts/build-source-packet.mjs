@@ -142,6 +142,10 @@ function addClaim(claims, claim) {
 }
 
 function buildPacket(task, createdAt) {
+  if (task === null || typeof task !== 'object' || Array.isArray(task)) {
+    throw new Error('Task data must be a valid object.');
+  }
+
   if (task.type !== 'zero-day') {
     throw new Error(`Only zero-day tasks are supported by this pilot; got ${JSON.stringify(task.type)}.`);
   }
