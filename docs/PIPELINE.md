@@ -158,6 +158,12 @@ discovery queues are open, validated, and stable.
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
      iterates until validation passes, then runs `--open-pr` to create
      (or reuse) the PR and record `status: pr_open` in one step.
+   - **Zero-day source packet pilot:** zero-day workers may run
+     `node scripts/build-source-packet.mjs --task .github/pipeline/tasks/TASK-XXXX.json --out <packet.json>`
+     followed by `node scripts/preflight-source-packet.mjs <packet.json>`
+     before drafting. The packet is a source-backed evidence contract; the
+     draft should use packet `claims[]` and avoid `not_supported[]` items unless
+     the packet is updated and preflight is rerun.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
