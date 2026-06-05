@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-27T03:10:25.385Z",
-  "updated": "2026-06-02T16:58:30.374Z",
+  "updated": "2026-06-05T02:22:36Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -74,6 +74,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #975"
+    },
+    {
+      "timestamp": "2026-06-05T02:22:36Z",
+      "action": "blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Drafting blocked: campaign schema requires a government source, and targeted checks of the provided source set plus Packagist/Composer, CISA, CERT-EU, CERT-FR, and related national CERT sources did not find a defensible government source for the Laravel-Lang May 2026 compromise."
     }
   ]
 }
