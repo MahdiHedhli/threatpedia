@@ -1,0 +1,77 @@
+{
+  "task_id": "TASK-2026-0364",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-05T19:45:00.962Z",
+  "updated": "2026-06-05T19:45:00.962Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Updating the taxonomy of failure modes in agentic AI systems: What a year of red teaming taught us",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2026/06/04/updating-taxonomy-failure-modes-agentic-ai-systems-year-red-teaming-taught-us"
+    ],
+    "candidate_data": {
+      "discovery_type": "incident",
+      "candidate_key": "incident:microsoft_security_blog:https://www.microsoft.com/en-us/security/blog/2026/06/04/updating-taxonomy-failure-modes-agentic-ai-systems-year-red-teaming-taught-us",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/06/04/updating-taxonomy-failure-modes-agentic-ai-systems-year-red-teaming-taught-us",
+      "source_feed": "microsoft_security_blog",
+      "source_label": "Microsoft Security Blog",
+      "published_at": "2026-06-04T19:14:42.000Z",
+      "discovered_signals": [
+        "compromise",
+        "supply chain"
+      ],
+      "boundary_signals": [
+        "targets/against"
+      ],
+      "feed_categories": [
+        "Frontier AI models"
+      ]
+    },
+    "notes": "Auto-discovered from Microsoft Security Blog on 2026-06-04. Source summary: A surge in real-world attacks against agentic AI systems is reshaping how we think about risk. Based on 12 months of red teaming, this update introduces seven new failure modes, from supply chain compromise to goal hijacking, and the practical mitigations teams need now. The post Updating the taxonomy of failure modes … Incident signals: compromise, supply chain. Boundary signals: targets/against. Treat this as incident intake first: keep the article grounded in the concrete event described by the sources, and only elevate to a campaign or actor follow-on if the evidence supports it. Discovery score: 78/100."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/updating-the-taxonomy-of-failure-modes-in-agentic-ai-systems-what-a-year-2026.md",
+    "branch": "pipeline/TASK-2026-0364",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "microsoft_security_blog",
+    "score": 78,
+    "auto_certify": false,
+    "discovered_at": "2026-06-05T19:45:00.962Z",
+    "published_at": "2026-06-04T19:14:42.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-05T19:45:00.962Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered incident candidate from Microsoft Security Blog (score: 78)"
+    }
+  ]
+}
