@@ -19,7 +19,7 @@
       "severity": "high",
       "sector": "Cloud infrastructure",
       "geography": "Global",
-      "threat_actor": "### CVEs"
+      "threat_actor": "Unknown"
     },
     "notes": "Risky Bulletin current-watch lead from 2026-06-05. Concrete cloud compromise campaign affecting at least 230 servers, with SMTP proxy network, Sliver, and Chisel details. Private candidate key: risky-bulletin-2026-06-05-pcpjack-cloud-server-compromise-campaign."
   },
