@@ -73,6 +73,7 @@ function normalizeDate(value) {
 }
 
 function uniqueStrings(values) {
+  if (!Array.isArray(values)) return [];
   return [...new Set(values.filter(value => typeof value === 'string' && value.trim()).map(value => value.trim()))];
 }
 
@@ -82,15 +83,21 @@ function extractMatches(text, regex) {
 }
 
 function classifySource(url) {
+  let parsed;
   let host = '';
   try {
-    host = new URL(url).hostname.toLowerCase();
+    parsed = new URL(url);
+    host = parsed.hostname.toLowerCase();
   } catch {
     return { publisher: 'Other', source_type: 'other' };
   }
+  const pathname = parsed.pathname.toLowerCase();
 
   if (host === 'cisa.gov' || host.endsWith('.cisa.gov')) return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'government' };
   if (host === 'nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'National Vulnerability Database', source_type: 'database' };
+  if (host === 'cve.org' || host.endsWith('.cve.org') || host === 'cve.mitre.org') return { publisher: 'CVE Program', source_type: 'database' };
+  if (host === 'github.com' && pathname.startsWith('/advisories')) return { publisher: 'GitHub Advisory Database', source_type: 'database' };
+  if (host === 'github.com' || host.endsWith('.github.com')) return { publisher: 'GitHub', source_type: 'research' };
   if (host === 'microsoft.com' || host.endsWith('.microsoft.com')) return { publisher: 'Microsoft', source_type: 'vendor' };
   if (host === 'android.com' || host.endsWith('.android.com')) return { publisher: 'Android', source_type: 'vendor' };
   if (host === 'mirasvit.com' || host.endsWith('.mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };

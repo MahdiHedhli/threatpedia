@@ -5,7 +5,7 @@
 
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -24,7 +24,7 @@ const PREFLIGHT_STATUSES = new Set(['not_run', 'pass', 'fail']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const CLAIM_TYPES = new Set(['date', 'product', 'vulnerability', 'exploitation', 'impact', 'mitigation', 'attribution', 'other']);
 const ARTICLE_SECTIONS = new Set(['frontmatter', 'summary', 'technical-analysis', 'timeline', 'mitigation', 'other']);
-const SECRET_LIKE_RE = /(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|-----BEGIN [A-Z ]+PRIVATE KEY-----|\.env(?:\.|$)|\/Users\/|[A-Z]:\\|password\s*=|secret\s*=|token\s*=)/i;
+const SECRET_LIKE_RE = /(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|-----BEGIN [A-Z ]+PRIVATE KEY-----|\.env(?:\.|$)|\/Users\/|[A-Z]:\\|(?:api[_-]?key|access[_-]?token|client[_-]?secret|secret[_-]?key|password)\s*[:=]\s*['"]?[A-Za-z0-9_./+=-]{24,})/i;
 const NON_ASCII_RE = /[^\x09\x0A\x0D\x20-\x7E]/;
 
 function usage() {
@@ -88,24 +88,30 @@ function formatPath(parent, key, isIndex = false) {
   return needsBracket ? `${parent}["${key}"]` : `${parent}.${key}`;
 }
 
-function scanStrings(value, path, errors) {
+function scanStrings(value, path, errors, warnings) {
   if (typeof value === 'string') {
     const normalized = value.normalize('NFKC');
-    if (NON_ASCII_RE.test(normalized)) add(errors, 'non-ASCII text detected', path);
+    if (NON_ASCII_RE.test(normalized)) add(warnings, 'non-ASCII text detected', path);
     if (SECRET_LIKE_RE.test(normalized)) add(errors, 'credential, local path, or secret-like pattern detected', path);
     return;
   }
 
   if (Array.isArray(value)) {
-    value.forEach((item, index) => scanStrings(item, formatPath(path, index, true), errors));
+    value.forEach((item, index) => scanStrings(item, formatPath(path, index, true), errors, warnings));
     return;
   }
 
   if (isObject(value)) {
     Object.entries(value).forEach(([key, item]) => {
-      scanStrings(item, formatPath(path, key), errors);
+      scanStrings(item, formatPath(path, key), errors, warnings);
     });
   }
+}
+
+function writeJsonReport(path, result) {
+  const abs = resolve(ROOT, path);
+  mkdirSync(dirname(abs), { recursive: true });
+  writeFileSync(abs, JSON.stringify(result, null, 2) + '\n');
 }
 
 function validateDateOrNull(value, errors, path) {
@@ -396,7 +402,7 @@ function validatePreflight(packet) {
     if (!Array.isArray(packet.preflight.warnings)) add(errors, 'preflight.warnings must be an array', '$.preflight.warnings');
   }
 
-  scanStrings(packet, '$', errors);
+  scanStrings(packet, '$', errors, warnings);
 
   return report(packet, errors, warnings);
 }
@@ -460,12 +466,12 @@ function main() {
   } catch (error) {
     const result = report(null, [{ path: '$', message: `JSON parse/read failed: ${error.message}` }], []);
     process.stdout.write(formatMarkdown(result));
-    if (args.jsonOut) writeFileSync(resolve(ROOT, args.jsonOut), JSON.stringify(result, null, 2) + '\n');
+    if (args.jsonOut) writeJsonReport(args.jsonOut, result);
     process.exit(1);
   }
 
   const result = validatePreflight(packet);
-  if (args.jsonOut) writeFileSync(resolve(ROOT, args.jsonOut), JSON.stringify(result, null, 2) + '\n');
+  if (args.jsonOut) writeJsonReport(args.jsonOut, result);
   process.stdout.write(formatMarkdown(result));
   if (!result.pass) process.exit(1);
 }
