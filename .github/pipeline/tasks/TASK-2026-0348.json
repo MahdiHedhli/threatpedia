@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-27T07:07:12.886Z",
-  "updated": "2026-06-04T23:08:23.375Z",
+  "updated": "2026-06-05T00:09:45.434Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -60,8 +60,8 @@
     {
       "timestamp": "2026-05-27T07:43:45.942Z",
       "action": "review_feedback_resolution",
-      "from": "pr_open",
-      "to": "pr_open",
+      "from": "pending",
+      "to": "pending",
       "agent": "threatpedia-pr-steward",
       "note": "Added current-head Gemini guardrail requiring the drafting agent to find a schema-valid government source for the campaign task or block the task if none can be found; no placeholder sources were added."
     },
@@ -82,14 +82,30 @@
       "note": "Dispatched as Issue #976"
     },
     {
-      "timestamp": "2026-06-04T22:05:12.425Z",
-      "action": "dispatch_skipped",
+      "timestamp": "2026-06-04T21:53:08.366Z",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatch skipped because open PR #997 already covers this task."
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-04T21:56:20.500Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #997"
+    },
+    {
+      "timestamp": "2026-06-05T00:09:45.434Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #997 merged (e3c78c1)."
     }
   ],
   "pr_number": 997,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/997"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/997",
+  "merged_at": "2026-06-05T00:09:45.434Z"
 }
