@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T20:21:39.291Z",
-  "updated": "2026-06-04T23:42:53.450Z",
+  "updated": "2026-06-05T15:53:22.077Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-05T15:53:22.076Z",
   "input": {
     "topic": "openDCIM install/config poisoning remote code execution chain (CVE-2026-28515/CVE-2026-28517)",
     "sources": [
@@ -69,6 +69,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1000"
+    },
+    {
+      "timestamp": "2026-06-05T15:53:22.077Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
