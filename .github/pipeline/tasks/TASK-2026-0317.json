@@ -51,6 +51,14 @@
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
     },
     {
+      "timestamp": "2026-06-05T20:21:22.347Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1031"
+    },
+    {
       "timestamp": "2026-06-05T20:23:44.382Z",
       "from": "pending",
       "to": "locked",
