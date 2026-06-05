@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-05T19:45:00.962Z",
-  "updated": "2026-06-05T19:45:00.962Z",
+  "updated": "2026-06-05T22:21:21.233Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-05T22:21:21.232Z",
   "input": {
     "topic": "SolarWinds Serv-U Uncontrolled Resource Consumption Vulnerability (CVE-2026-28318)",
     "sources": [
@@ -78,6 +78,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 96)"
+    },
+    {
+      "timestamp": "2026-06-05T22:21:21.233Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
