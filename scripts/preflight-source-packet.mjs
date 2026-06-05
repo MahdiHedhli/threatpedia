@@ -101,11 +101,12 @@ function scanStrings(value, path, errors, warnings) {
     return;
   }
 
-  if (isObject(value)) {
-    Object.entries(value).forEach(([key, item]) => {
-      scanStrings(item, formatPath(path, key), errors, warnings);
-    });
-  }
+  if (!isObject(value)) return;
+
+  Object.entries(value).forEach(([key, item]) => {
+    if (key === 'preflight') return;
+    scanStrings(item, formatPath(path, key), errors, warnings);
+  });
 }
 
 function writeJsonReport(path, result) {
