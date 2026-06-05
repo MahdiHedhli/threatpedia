@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-26T20:00:56.092Z",
-  "updated": "2026-06-04T17:26:49.237Z",
+  "updated": "2026-06-05T15:35:43.117Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -103,8 +103,17 @@
       "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #991 already covers this task."
+    },
+    {
+      "timestamp": "2026-06-05T15:35:43.117Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #991 merged (eddf318)."
     }
   ],
   "pr_number": 991,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/991"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/991",
+  "merged_at": "2026-06-05T15:35:43.117Z"
 }
