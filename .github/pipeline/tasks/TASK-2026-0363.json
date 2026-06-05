@@ -24,7 +24,7 @@
         "CVE-2026-28318"
       ],
       "exploitId": "TP-EXP-2026-0314",
-      "type": "Remote Code Execution",
+      "type": "Resource Exhaustion",
       "platform": "SolarWinds Serv-U",
       "severity": "high",
       "cisaKev": true,
