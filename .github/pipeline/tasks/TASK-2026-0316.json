@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-19T20:27:16.126Z",
-  "updated": "2026-05-19T20:27:16.126Z",
+  "updated": "2026-06-05T20:21:22.347Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -49,6 +49,14 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-06-05T20:21:22.347Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1030"
     }
   ]
 }
