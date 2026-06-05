@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-19T20:27:16.215Z",
-  "updated": "2026-05-19T20:27:16.215Z",
+  "updated": "2026-06-05T20:23:44.382Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-05T20:23:44.382Z",
   "input": {
     "topic": "JDownloader website installer compromise",
     "sources": [
@@ -49,6 +49,13 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-06-05T20:23:44.382Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
