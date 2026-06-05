@@ -1,0 +1,59 @@
+{
+  "task_id": "TASK-2026-0360",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-05T19:32:26.314Z",
+  "updated": "2026-06-05T19:32:26.314Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Hola Browser update infrastructure supply-chain cryptominer incident",
+    "sources": [
+      "https://www.sophos.com/en-us/blog/you-do-surprise-me-exe-an-unexpected-executable-in-hola-browser"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Software & browser extensions",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Risky Bulletin current-watch lead from 2026-06-05. Concrete software supply-chain incident involving unexpected executable delivery via Hola Browser update infrastructure. Private candidate key: risky-bulletin-2026-06-05-hola-browser-update-supply-chain-cryptominer."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0360",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-05T19:32:26.314Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1021"
+    }
+  ]
+}
