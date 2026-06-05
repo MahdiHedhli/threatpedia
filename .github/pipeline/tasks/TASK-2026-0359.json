@@ -19,7 +19,7 @@
       "severity": "high",
       "sector": "Retail & e-commerce",
       "geography": "Global",
-      "threat_actor": "### CVEs"
+      "threat_actor": "Unknown"
     },
     "notes": "Risky Bulletin current-watch lead from 2026-06-05. Strong skimming campaign candidate with source-described fake storefront network, scale, and infrastructure details. Private candidate key: risky-bulletin-2026-06-05-gorgonagora-fake-storefront-skimming-network."
   },
