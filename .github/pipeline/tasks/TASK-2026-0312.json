@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "blocked",
+  "status": "complete",
   "created": "2026-05-19T20:27:15.770Z",
-  "updated": "2026-06-05T17:20:27.915Z",
+  "updated": "2026-06-05T18:01:28.639Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -65,6 +65,16 @@
       "to": "blocked",
       "agent": "dangermouse-bot",
       "note": "Campaign schema requires a government source; targeted checks of the provided source set plus CISA and related government/CERT sources did not find a defensible government source supporting the Microsoft code-of-conduct phishing campaign."
+    },
+    {
+      "timestamp": "2026-06-05T18:01:28.639Z",
+      "action": "merged",
+      "from": "blocked",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1014 merged (a81627e)."
     }
-  ]
+  ],
+  "pr_number": 1014,
+  "merged_at": "2026-06-05T18:01:28.639Z"
 }
