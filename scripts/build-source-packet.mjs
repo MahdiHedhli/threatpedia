@@ -102,6 +102,7 @@ function classifySource(url) {
   if (host === 'android.com' || host.endsWith('.android.com')) return { publisher: 'Android', source_type: 'vendor' };
   if (host === 'mirasvit.com' || host.endsWith('.mirasvit.com')) return { publisher: 'Mirasvit', source_type: 'vendor' };
   if (host === 'litespeedtech.com' || host.endsWith('.litespeedtech.com')) return { publisher: 'LiteSpeed', source_type: 'vendor' };
+  if (host === 'cpanel.net' || host.endsWith('.cpanel.net') || host === 'cpanel.com' || host.endsWith('.cpanel.com')) return { publisher: 'cPanel', source_type: 'vendor' };
   return { publisher: 'Other', source_type: 'other' };
 }
 
