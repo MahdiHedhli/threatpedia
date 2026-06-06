@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-23T06:38:50.609Z",
-  "updated": "2026-05-23T06:38:50.609Z",
+  "updated": "2026-06-06T17:39:03.327Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -56,6 +56,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #842"
+    },
+    {
+      "timestamp": "2026-06-06T17:39:03.327Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch already open as Issue #1070"
     }
   ]
 }
