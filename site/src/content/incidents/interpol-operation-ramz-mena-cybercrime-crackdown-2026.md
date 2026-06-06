@@ -76,7 +76,7 @@ The public reporting does not name a single threat actor responsible for all dis
 
 Operation Ramz targeted a mix of cybercrime infrastructure and fraud activity across the MENA region. INTERPOL said the operation aimed to investigate and disrupt malicious infrastructure, identify and arrest suspects, and prevent future losses.
 
-The operation produced nearly 8,000 pieces of data and intelligence that were shared among participating countries. INTERPOL worked with Group-IB, Kaspersky, the Shadowserver Foundation, Team Cymru, and TrendAI to track illegal cyber activity and identify malicious servers.
+The operation produced nearly 8,000 pieces of data and intelligence that were shared among participating countries. INTERPOL worked with Group-IB, Kaspersky, the Shadowserver Foundation, Team Cymru, and Trend Micro to track illegal cyber activity and identify malicious servers.
 
 The source-described infrastructure included compromised devices, phishing-as-a-service systems, servers with malware infection, systems containing sensitive information, and devices holding banking data and phishing software. Kaspersky said it contributed threat intelligence on region-specific cyberthreats and malicious infrastructure involved in malware control or distribution, including command-and-control server data.
 
