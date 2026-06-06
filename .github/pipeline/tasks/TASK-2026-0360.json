@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-06-05T19:32:26.314Z",
-  "updated": "2026-06-05T21:53:31.917Z",
+  "updated": "2026-06-06T15:21:21.943Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -62,6 +62,15 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1038"
+    },
+    {
+      "timestamp": "2026-06-06T15:21:21.943Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: the source packet has one primary vendor source and only secondary media corroboration, with no qualifying government/accepted official source found for the incident. Do not draft until the source packet is strengthened or Kernel K grants explicit source-sufficiency guidance."
     }
-  ]
+  ],
+  "blocked_reason": "Source sufficiency inadequate for incident article drafting: the task currently has one primary source (Sophos). Secondary media coverage exists, but no task-specific government or accepted official source was found for the Hola Browser supply-chain cryptominer incident; editorial policy requires stronger corroboration for sensitive software supply-chain impact claims."
 }
