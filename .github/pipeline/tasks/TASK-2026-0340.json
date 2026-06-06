@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-23T08:38:26.411Z",
-  "updated": "2026-06-06T05:51:55.034Z",
+  "updated": "2026-06-06T05:53:29.419Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-06T05:51:55.033Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Interpol first-of-its-kind MENA cybercrime operation arrests 201 suspects, May 2026",
     "sources": [
@@ -63,6 +63,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-06T05:53:29.418Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1048"
     }
-  ]
+  ],
+  "pr_number": 1048,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1048"
 }
