@@ -70,12 +70,24 @@ mitreMappings:
     attack-version: "v19"
     confidence: confirmed
     evidence: "Seqrite reported that the LNK triggered a VBScript file named chromedo.vbs, which opened the decoy PDF and launched Bandizip.exe."
-  - techniqueId: "T1574"
-    techniqueName: "Hijack Execution Flow"
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
     tactic: "Defense Evasion"
     attack-version: "v19"
     confidence: confirmed
     evidence: "Seqrite reported that a legitimate Bandizip.exe instance loaded attacker-controlled ark.x64.dll from the local directory."
+  - techniqueId: "T1622"
+    techniqueName: "Debugger Evasion"
+    tactic: "Defense Evasion"
+    attack-version: "v19"
+    confidence: confirmed
+    evidence: "Seqrite described debugger checks before payload execution."
+  - techniqueId: "T1497"
+    techniqueName: "Virtualization/Sandbox Evasion"
+    tactic: "Defense Evasion"
+    attack-version: "v19"
+    confidence: confirmed
+    evidence: "Seqrite described analysis-environment checks before payload execution."
   - techniqueId: "T1071.001"
     techniqueName: "Web Protocols"
     tactic: "Command and Control"
@@ -138,9 +150,11 @@ Seqrite pivoted from Bandizip artifacts, machine IDs in LNK files, shared Cobalt
 
 **T1059.005 - Command and Scripting Interpreter: Visual Basic**: The LNK launched `chromedo.vbs`, which orchestrated the decoy display and malicious executable launch.
 
-**T1574.002 - DLL Side-Loading**: The campaign used legitimate `Bandizip.exe` to load attacker-controlled `ark.x64.dll` from the local directory.
+**T1574.001 - DLL**: The campaign used legitimate `Bandizip.exe` to side-load attacker-controlled `ark.x64.dll` from the local directory.
 
-**T1622 - Debugger Evasion** and **T1497 - Virtualization/Sandbox Evasion**: Seqrite described debugger and analysis-environment checks before payload execution.
+**T1622 - Debugger Evasion**: Seqrite described debugger checks before payload execution.
+
+**T1497 - Virtualization/Sandbox Evasion**: Seqrite described analysis-environment checks before payload execution.
 
 **T1071.001 - Application Layer Protocol: Web Protocols**: Seqrite reported Cobalt Strike Beacon command-and-control behavior after the in-memory loader stage.
 
