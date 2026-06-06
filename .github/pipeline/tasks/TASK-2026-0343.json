@@ -45,7 +45,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/incidents/node-ipc-npm-supply-chain-attack-2026.md",
     "branch": "pipeline/TASK-2026-0343",
     "pr": true
   },
