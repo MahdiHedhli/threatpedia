@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-23T07:08:43.420Z",
-  "updated": "2026-05-23T07:08:43.420Z",
+  "updated": "2026-06-06T13:51:18.974Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -56,6 +56,15 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #844"
+    },
+    {
+      "timestamp": "2026-06-06T13:51:18.974Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: THORChain project/status sources and CryptoTimes reporting do not satisfy the schema-required government/official source requirement. Keep exploit/loss/outage claims conservative and do not draft until source packet is strengthened or Kernel K grants a schema-compatible official-source decision."
     }
-  ]
+  ],
+  "blocked_reason": "Source sufficiency inadequate for article drafting: listed sources are THORChain project/social-media evidence and media reporting, but no task-specific government or accepted official source was found. The validator requires at least one government source; do not draft until source packet is strengthened or Kernel K grants a schema-compatible official-source decision."
 }
