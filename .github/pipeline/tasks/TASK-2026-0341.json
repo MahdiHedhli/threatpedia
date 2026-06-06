@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T09:08:49.914Z",
-  "updated": "2026-05-23T09:08:49.914Z",
+  "updated": "2026-06-06T10:51:54.864Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "DangerMouse Bot",
+  "locked_at": "2026-06-06T10:51:54.863Z",
   "input": {
     "topic": "Indonesia cyber scam center raids and arrests, May 2026",
     "sources": [
@@ -44,7 +44,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/incidents/indonesia-cyber-scam-center-raids-2026.md",
     "branch": "pipeline/TASK-2026-0341",
     "pr": true
   },
@@ -56,6 +56,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #852"
+    },
+    {
+      "timestamp": "2026-06-06T10:51:54.864Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
