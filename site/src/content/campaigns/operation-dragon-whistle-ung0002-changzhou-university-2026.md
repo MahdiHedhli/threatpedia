@@ -27,6 +27,7 @@ tags:
   - ung0002
   - spear-phishing
   - cobalt-strike
+  - bandizip
   - dll-side-loading
   - education-sector
 sources:
@@ -146,9 +147,9 @@ Seqrite pivoted from Bandizip artifacts, machine IDs in LNK files, shared Cobalt
 
 **T1566.001 - Spearphishing Attachment**: Seqrite reported a targeted spear-phishing email carrying a ZIP attachment impersonating a Changzhou University fitness-testing notice.
 
-**T1204.002 - User Execution: Malicious File**: The infection chain required interaction with a double-extension LNK file presented as the expected PDF notice.
+**T1204.002 - Malicious File**: The infection chain required interaction with a double-extension LNK file presented as the expected PDF notice.
 
-**T1059.005 - Command and Scripting Interpreter: Visual Basic**: The LNK launched `chromedo.vbs`, which orchestrated the decoy display and malicious executable launch.
+**T1059.005 - Visual Basic**: The LNK launched `chromedo.vbs`, which orchestrated the decoy display and malicious executable launch.
 
 **T1574.001 - DLL**: The campaign used legitimate `Bandizip.exe` to side-load attacker-controlled `ark.x64.dll` from the local directory.
 
@@ -156,7 +157,7 @@ Seqrite pivoted from Bandizip artifacts, machine IDs in LNK files, shared Cobalt
 
 **T1497 - Virtualization/Sandbox Evasion**: Seqrite described analysis-environment checks before payload execution.
 
-**T1071.001 - Application Layer Protocol: Web Protocols**: Seqrite reported Cobalt Strike Beacon command-and-control behavior after the in-memory loader stage.
+**T1071.001 - Web Protocols**: Seqrite reported Cobalt Strike Beacon command-and-control behavior after the in-memory loader stage.
 
 ## Timeline
 
