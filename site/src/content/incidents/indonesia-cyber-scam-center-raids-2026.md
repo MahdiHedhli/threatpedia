@@ -128,7 +128,7 @@ These cases also raise a labor-risk dimension common to regional scam-center rep
 
 No named threat actor has been confirmed. The public sources attribute the cases to suspected online investment fraud, online gambling, or cyber-scamming operations, but they do not identify a single organizer, criminal group, or campaign name covering the reported raids.
 
-The actor field remains Unknown. The cited sources support describing suspected transnational cyber-enabled fraud and online gambling operations, but not a specific actor attribution or relationship between all enforcement actions.
+The threat actor remains Unknown. The cited sources support describing suspected transnational cyber-enabled fraud and online gambling operations, but not a specific actor attribution or relationship between all enforcement actions.
 
 ## Timeline
 
