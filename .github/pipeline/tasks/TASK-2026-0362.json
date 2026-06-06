@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-05T19:33:40.974Z",
-  "updated": "2026-06-05T19:33:40.974Z",
+  "updated": "2026-06-06T05:22:17.757Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-06T05:22:17.756Z",
   "input": {
     "topic": "Scam Disruption Week industrial scam crackdown",
     "sources": [
@@ -53,8 +53,15 @@
       "action": "created",
       "from": "none",
       "to": "pending",
-      "agent": "MahdiHedhli",
+      "agent": "dangermouse-bot",
       "note": "Manual submission from Issue #1025"
+    },
+    {
+      "timestamp": "2026-06-06T05:22:17.757Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
