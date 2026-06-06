@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-23T10:38:26.555Z",
-  "updated": "2026-05-23T10:38:26.555Z",
+  "updated": "2026-06-06T17:21:37.848Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -56,6 +56,15 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #858"
+    },
+    {
+      "timestamp": "2026-06-06T17:21:37.848Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: Rapid7, ReliaQuest, and media reporting support a technical lead, but no qualifying government source was found for the campaign source contract. Do not draft until the source packet is strengthened or Kernel K grants explicit source-sufficiency guidance."
     }
-  ]
+  ],
+  "blocked_reason": "Source sufficiency inadequate for campaign article drafting: the task has three source URLs, but they are vendor/media sources and no task-specific government source was found for the ModelRAT Microsoft Teams compromise campaign. Campaign content requires at least one government source."
 }
