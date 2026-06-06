@@ -57,7 +57,7 @@ sources:
     accessDate: "2026-06-06"
     archived: false
   - url: "https://www.cyberscotland.com/wp-content/uploads/2026/05/SC3-Daily-Threat-Bulletin-15-May-2026.pdf"
-    publisher: "Cyber Scotland"
+    publisher: "CyberScotland"
     publisherType: government
     reliability: R2
     publicationDate: "2026-05-15"
@@ -160,7 +160,7 @@ Socket reported detecting the malicious versions within roughly three minutes of
 
 ### 2026-05-15 — Public-sector bulletin coverage
 
-Cyber Scotland's daily threat bulletin for May 15, 2026 included coverage of the public reporting on malicious `node-ipc` versions.
+CyberScotland's daily threat bulletin for May 15, 2026 included coverage of the public reporting on malicious `node-ipc` versions.
 
 ## Remediation & Mitigation
 
@@ -180,4 +180,4 @@ Maintainers should review npm account access, enforce phishing-resistant MFA whe
 - [Semgrep: Not Your IPC, but node-ipc: npm Hit Again with Supply Chain Attack](https://semgrep.dev/blog/2026/not-your-ipc-but-node-ipc-npm-hit-again-with-supply-chain-attack-but-this-time-its-not-a-worm) — Semgrep, 2026-05-14
 - [StepSecurity: Active Supply Chain Attack: Malicious node-ipc Versions Published to npm](https://www.stepsecurity.io/blog/node-ipc-npm-supply-chain-attack) — StepSecurity, 2026-05-14
 - [Socket: Popular node-ipc npm Package Infected with Credential Stealer](https://socket.dev/blog/node-ipc-package-compromised) — Socket, 2026-05-14
-- [Cyber Scotland: Daily Threat Bulletin 15 May 2026](https://www.cyberscotland.com/wp-content/uploads/2026/05/SC3-Daily-Threat-Bulletin-15-May-2026.pdf) — Cyber Scotland, 2026-05-15
+- [CyberScotland: Daily Threat Bulletin](https://www.cyberscotland.com/wp-content/uploads/2026/05/SC3-Daily-Threat-Bulletin-15-May-2026.pdf) — CyberScotland, 2026-05-15
