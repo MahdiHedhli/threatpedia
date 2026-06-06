@@ -66,5 +66,5 @@
       "note": "Blocked before lock/draft: Broadcom/Symantec and media coverage support technical discussion, but no task-specific government or accepted official source was found. Do not draft until the source packet is strengthened or Kernel K grants a schema-compatible source-sufficiency decision, especially because attribution, target geography, and operational impact are sensitive."
     }
   ],
-  "blocked_reason": "Source sufficiency inadequate for article drafting: listed sources are vendor/media reporting, and no task-specific government or accepted official source was found for Fast16. The validator requires at least one government source, and this task has attribution/geography/impact sensitivity that should not be filled by inference."
+  "blocked_reason": "Source sufficiency inadequate for article drafting: listed sources are vendor/media reporting, and no task-specific government or accepted official source was found for Fast16. While the schema validator only strictly enforces a government source for campaigns, editorial policy requires one for sensitive incidents to avoid unsupported attribution/geography/impact claims."
 }
