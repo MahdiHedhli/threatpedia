@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T10:08:24.691Z",
-  "updated": "2026-05-23T10:08:24.691Z",
+  "updated": "2026-06-06T09:21:42.849Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "DangerMouse Bot",
+  "locked_at": "2026-06-06T09:21:42.849Z",
   "input": {
     "topic": "node-ipc npm supply-chain attack, May 2026",
     "sources": [
@@ -57,6 +57,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #856"
+    },
+    {
+      "timestamp": "2026-06-06T09:21:42.849Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
