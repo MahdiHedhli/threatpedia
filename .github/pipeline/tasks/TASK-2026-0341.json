@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-23T09:08:49.914Z",
-  "updated": "2026-06-06T10:51:54.864Z",
+  "updated": "2026-06-06T10:54:07.674Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "DangerMouse Bot",
-  "locked_at": "2026-06-06T10:51:54.863Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Indonesia cyber scam center raids and arrests, May 2026",
     "sources": [
@@ -63,6 +63,16 @@
       "to": "locked",
       "agent": "DangerMouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-06T10:54:07.673Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "DangerMouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1056"
     }
-  ]
+  ],
+  "pr_number": 1056,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1056"
 }
