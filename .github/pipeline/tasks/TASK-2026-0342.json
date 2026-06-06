@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T09:39:17.840Z",
-  "updated": "2026-05-23T09:39:17.840Z",
+  "updated": "2026-06-06T08:21:52.523Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-06T08:21:52.523Z",
   "input": {
     "topic": "CISA contractor AWS GovCloud key exposure, May 2026",
     "sources": [
@@ -56,6 +56,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #854"
+    },
+    {
+      "timestamp": "2026-06-06T08:21:52.523Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
