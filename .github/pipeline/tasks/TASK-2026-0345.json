@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T11:10:11.480Z",
-  "updated": "2026-05-27T01:21:14Z",
+  "updated": "2026-06-06T11:51:27.450Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "DangerMouse Bot",
+  "locked_at": "2026-06-06T11:51:27.449Z",
   "input": {
     "topic": "Operation Dragon Whistle UNG0002 spear-phishing campaign against Chinese academia, May 2026",
     "sources": [
@@ -46,7 +46,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "file_pattern": "site/src/content/campaigns/operation-dragon-whistle-ung0002-changzhou-university-2026.md",
     "branch": "pipeline/TASK-2026-0345",
     "pr": true
   },
@@ -82,6 +82,13 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Added candidate_data.attack_type so the campaign drafting worker has schema-aligned attack classification metadata."
+    },
+    {
+      "timestamp": "2026-06-06T11:51:27.450Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
