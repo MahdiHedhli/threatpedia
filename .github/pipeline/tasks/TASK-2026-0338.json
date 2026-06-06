@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "blocked",
   "created": "2026-05-23T07:38:21.286Z",
-  "updated": "2026-05-23T07:38:21.286Z",
+  "updated": "2026-06-06T14:21:33.824Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -56,6 +56,15 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #846"
+    },
+    {
+      "timestamp": "2026-06-06T14:21:33.824Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: Broadcom/Symantec and media coverage support technical discussion, but no task-specific government or accepted official source was found. Do not draft until the source packet is strengthened or Kernel K grants a schema-compatible source-sufficiency decision, especially because attribution, target geography, and operational impact are sensitive."
     }
-  ]
+  ],
+  "blocked_reason": "Source sufficiency inadequate for article drafting: listed sources are vendor/media reporting, and no task-specific government or accepted official source was found for Fast16. The validator requires at least one government source, and this task has attribution/geography/impact sensitivity that should not be filled by inference."
 }
