@@ -122,7 +122,7 @@ The Jakarta operation involved 321 foreign nationals, mainly from Vietnam, accor
 
 The direct victim impact remains uncertain in the public record. Authorities described overseas victims or users as targets of fraudulent trading applications and online gambling platforms, but the cited sources do not provide a confirmed loss amount or verified victim count. The strongest confirmed impact is law-enforcement disruption: hundreds of foreign nationals detained, large volumes of computing equipment seized, and multiple alleged operational sites disrupted.
 
-These cases also raise a labor-risk dimension common to regional scam-center reporting. The public sources for this task do not establish forced labor in the Batam, Jakarta, or Bali cases, so coercion should not be inferred for the detained individuals without further evidence.
+These cases also raise a labor-risk dimension common to regional scam-center reporting. The public sources for this incident do not establish forced labor in the Batam, Jakarta, or Bali cases, so coercion should not be inferred for the detained individuals without further evidence.
 
 ## Attribution
 
