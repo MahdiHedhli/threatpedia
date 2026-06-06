@@ -35,7 +35,7 @@ sources:
     publicationDate: "2026-05-09"
     accessDate: "2026-06-06"
     archived: false
-  - url: "https://en.antaranews.com/amp/news/415123/indonesia-detains-210-foreigners-in-major-online-investment-scam-raid"
+  - url: "https://en.antaranews.com/news/415123/indonesia-detains-210-foreigners-in-major-online-investment-scam-raid"
     publisher: "ANTARA News"
     publisherType: media
     reliability: R1
@@ -169,7 +169,7 @@ Immigration and labor authorities should screen detained workers for possible co
 ## Sources & References
 
 - [Indonesian National Police: Batam Immigration Arrests 210 Foreigners in Massive Online Investment Scam Raid](https://inp.polri.go.id/artikel/batam-immigration-arrests-210-foreigners-in-massive-online-investment-scam-raid) — Indonesian National Police, 2026-05-09
-- [ANTARA News: Indonesia detains 210 foreigners in major online investment scam raid](https://en.antaranews.com/amp/news/415123/indonesia-detains-210-foreigners-in-major-online-investment-scam-raid) — ANTARA News, 2026-05-08
+- [ANTARA News: Indonesia detains 210 foreigners in major online investment scam raid](https://en.antaranews.com/news/415123/indonesia-detains-210-foreigners-in-major-online-investment-scam-raid) — ANTARA News, 2026-05-08
 - [Channel NewsAsia: Around 200 foreigners detained over suspected online scam operation, say Batam authorities](https://www.channelnewsasia.com/asia/indonesia-batam-online-scam-raid-foreign-nationals-detained-baloi-6109136) — Channel NewsAsia, 2026-05-08
 - [PBS NewsHour: Indonesian police arrest 321 foreigners in online gambling crackdown](https://www.pbs.org/newshour/world/indonesian-police-arrest-321-foreigners-in-online-gambling-crackdown) — PBS NewsHour, 2026-05-09
 - [Jakarta Globe: Bali Police Uncover Alleged International Cyber Scamming Ring](https://jakartaglobe.id/news/bali-police-uncover-alleged-international-cyber-scamming-ring) — Jakarta Globe, 2026-05-16
