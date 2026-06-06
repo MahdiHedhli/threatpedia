@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-05-23T09:08:49.914Z",
-  "updated": "2026-06-06T10:54:07.674Z",
+  "updated": "2026-06-06T12:06:43.062Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -71,8 +71,17 @@
       "agent": "DangerMouse Bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #1056"
+    },
+    {
+      "timestamp": "2026-06-06T12:06:43.062Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1056 merged (0cb1de4)."
     }
   ],
   "pr_number": 1056,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1056"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1056",
+  "merged_at": "2026-06-06T12:06:43.062Z"
 }
