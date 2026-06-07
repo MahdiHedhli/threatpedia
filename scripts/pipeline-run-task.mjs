@@ -86,10 +86,6 @@ function getSourceAuthorityIssues(taskType, sources) {
       : ['Campaign source policy: at least 1 source must have publisherType: "government".'];
   }
 
-  if (nonMediaCount === 0) {
-    return ['Source authority policy: at least 1 source must be non-media (government, vendor, research, or community).'];
-  }
-
   if (governmentCount === 0 && nonMediaCount < 2) {
     return ['Source authority policy: non-campaign articles need at least 2 non-media sources unless 1 government source is present.'];
   }
