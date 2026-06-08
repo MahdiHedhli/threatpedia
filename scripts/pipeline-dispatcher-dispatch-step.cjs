@@ -8,6 +8,7 @@ const DISPATCH_LABEL = 'pipeline/ready';
 
 module.exports = async function runDispatcherDispatchStep({ github, context }) {
   const DEFAULTS = {
+    tasksPerRun: 6,
     maxEditorial: 50,
     backpressureResume: 40,
     failureThreshold: 3,
@@ -21,7 +22,14 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       const raw = process.env.CONFIG_JSON || '';
       if (!raw) return { ...DEFAULTS, _source: 'defaults', _reason: 'no-env' };
       const cfg = JSON.parse(raw);
+      const configuredTasksPerRun = Number.parseInt(
+        cfg?.queues?.dispatcher?.tasks_per_run ?? DEFAULTS.tasksPerRun,
+        10
+      );
       return {
+        tasksPerRun: Number.isFinite(configuredTasksPerRun) && configuredTasksPerRun > 0
+          ? configuredTasksPerRun
+          : DEFAULTS.tasksPerRun,
         maxEditorial: cfg?.queues?.editorial?.max_pending ?? DEFAULTS.maxEditorial,
         backpressureResume: cfg?.queues?.editorial?.backpressure_resume ?? DEFAULTS.backpressureResume,
         failureThreshold: cfg?.circuit_breaker?.failure_threshold ?? DEFAULTS.failureThreshold,
@@ -44,6 +52,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
 
   console.log('─── Dispatcher config (active thresholds) ───────────────');
   console.log(`  source:               ${config._source}${config._reason ? ' (' + config._reason + ')' : ''}${config._path ? ' · ' + config._path : ''}`);
+  console.log(`  tasksPerRun:          ${config.tasksPerRun}  (queues.dispatcher.tasks_per_run)`);
   console.log(`  maxEditorial:         ${config.maxEditorial}  (queues.editorial.max_pending)`);
   console.log(`  backpressureResume:   ${config.backpressureResume}  (queues.editorial.backpressure_resume)`);
   console.log(`  failureThreshold:     ${config.failureThreshold}  (circuit_breaker.failure_threshold)`);
@@ -440,7 +449,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
   const requestedId = process.env.REQUESTED_TASK_ID || '';
   const tasksToRun = requestedId
     ? pendingTasks.filter((t) => t.task_id === requestedId)
-    : pendingTasks.slice(0, 3);
+    : pendingTasks.slice(0, config.tasksPerRun);
 
   if (tasksToRun.length === 0) {
     console.log('No pending tasks to dispatch.');

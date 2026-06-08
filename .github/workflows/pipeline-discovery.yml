@@ -49,9 +49,9 @@ on:
         required: false
         default: "14"
       limit:
-        description: "Max tasks to create per run (default: 5)"
+        description: "Max tasks to create per run (default: 8)"
         required: false
-        default: "5"
+        default: "8"
       execute:
         description: "Write task files (true) or dry-run (false)"
         required: false
@@ -148,7 +148,7 @@ jobs:
         env:
           MODE: ${{ inputs.mode || 'all' }}
           DAYS: ${{ inputs.days || '14' }}
-          LIMIT: ${{ inputs.limit || '5' }}
+          LIMIT: ${{ inputs.limit || '8' }}
           EXECUTE: ${{ inputs.execute || 'true' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

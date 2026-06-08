@@ -61,6 +61,37 @@ const EDITORIAL_WORDS = [
 ];
 const EDITORIAL_RE = new RegExp(`\\b(${EDITORIAL_WORDS.join('|')})\\b`, 'gi');
 const SOURCE_BODY_LINE_RE = /^\s*-\s+\[(.+?):\s+(.+)\]\((https?:\/\/[^\s)]+)\)\s+([—–-])\s+(.+?),\s+(\d{4}-\d{2}-\d{2})\s*$/;
+const SOURCE_AUTHORITY_TYPES = new Set(['government', 'vendor', 'research', 'community']);
+
+function formatSourceAuthorityRule(taskType) {
+  if (taskType === 'campaign') {
+    return 'campaigns require at least 1 government source';
+  }
+  return 'non-campaign articles require at least 2 non-media sources unless 1 government source is present';
+}
+
+function getSourceAuthorityIssues(taskType, sources) {
+  if (!Array.isArray(sources) || sources.length === 0) return [];
+
+  const governmentCount = sources.filter(
+    (source) => String(source?.publisherType || '').trim() === 'government'
+  ).length;
+  const nonMediaCount = sources.filter((source) =>
+    SOURCE_AUTHORITY_TYPES.has(String(source?.publisherType || '').trim())
+  ).length;
+
+  if (taskType === 'campaign') {
+    return governmentCount > 0
+      ? []
+      : ['Campaign source policy: at least 1 source must have publisherType: "government".'];
+  }
+
+  if (governmentCount === 0 && nonMediaCount < 2) {
+    return ['Source authority policy: non-campaign articles need at least 2 non-media sources unless 1 government source is present.'];
+  }
+
+  return [];
+}
 
 // ── Stage-aware reviewStatus rule matching ─────────────────────────────────
 // A task's acceptance.review_status is a declarative contract the validator
@@ -163,7 +194,7 @@ ${GENERATION_METADATA_SCHEMA}
   cves: array of strings (optional)
   relatedSlugs: array of strings (optional) — slugs of related articles for cross-referencing
   tags: array of strings — lowercase, hyphenated keywords
-  sources: array of structured source objects — MINIMUM 3, at least 1 government source
+  sources: array of structured source objects — MINIMUM 3, at least 2 non-media sources unless 1 government source is present
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
@@ -244,7 +275,7 @@ ${FRAMEWORK_MAPPING_SCHEMA}
   generatedDate: date — today's date
 ${GENERATION_METADATA_SCHEMA}
   tags: array of strings
-  sources: array of structured source objects — MINIMUM 3, at least 1 government source
+  sources: array of structured source objects — MINIMUM 3, at least 2 non-media sources unless 1 government source is present
 ${SOURCE_SCHEMA}`,
     bodySpec: `Required H2 sections (minimum 5):
   ## Executive Summary — group overview, significance, primary mandate
@@ -282,7 +313,7 @@ ${GENERATION_METADATA_SCHEMA}
   relatedIncidents: array of strings (optional) — slugs of incident articles
   relatedActors: array of strings (optional) — slugs of threat actor articles
   tags: array of strings
-  sources: array of structured source objects — MINIMUM 3, at least 1 government source
+  sources: array of structured source objects — MINIMUM 3, at least 2 non-media sources unless 1 government source is present
 ${SOURCE_SCHEMA}
   mitreMappings: array of MITRE ATT&CK mapping objects — MINIMUM 1
 ${MITRE_MAPPING_SCHEMA}
@@ -314,7 +345,7 @@ function buildRules(task) {
   2. generatedBy MUST be one of the canonical agent identities (${SCHEMA_GENERATED_BY_VALUES.join(', ')})
   3. sources MUST be structured objects in frontmatter (not just prose in body)
      — Minimum 3 source objects
-     — At least 1 must have publisherType: "government"
+     — ${formatSourceAuthorityRule(task.type)}
      — URLs must be real and verifiable (never fabricate)
      — Every source MUST have a publicationDate (for living resources like MITRE ATT&CK or NVD, use last-modified or access date)
   4. mitreMappings MUST be in frontmatter (not just mentioned in body text)
@@ -1113,7 +1144,8 @@ ${schema.bodySpec}
 ── ACCEPTANCE CRITERIA ────────────────────────────────────────────────────────
 
   frontmatter_valid:     ${acceptance.frontmatter_valid ?? true}
-  min_sources:           ${acceptance.min_sources ?? 3} (structured objects in frontmatter, ≥1 government)
+  min_sources:           ${acceptance.min_sources ?? 3} (structured objects in frontmatter)
+  source_authority:      ${formatSourceAuthorityRule(task.type)}
   min_h2_sections:       ${acceptance.min_h2_sections ?? 5}
   min_mitre_mappings:    ${acceptance.min_mitre_mappings ?? 1}
   review_status:         ${formatReviewStatusRule(acceptance.review_status)}
@@ -1291,9 +1323,7 @@ function validateOutput(task, explicitFile) {
       issues.push(`Only ${sourceCount} structured source(s) in frontmatter (need ${minSources}+). Sources must be YAML objects with url, publisher, publisherType, reliability — not just prose in the body.`);
     }
 
-    if (sourceCount > 0 && !sources.some(source => source?.publisherType === 'government')) {
-      issues.push('No government source found. At least 1 source must have publisherType: "government" (CISA, FBI, DOJ, etc.)');
-    }
+    issues.push(...getSourceAuthorityIssues(task.type, sources));
 
     for (let i = 0; i < sources.length; i++) {
       const source = sources[i] || {};

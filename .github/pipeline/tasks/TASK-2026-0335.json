@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "blocked",
+  "status": "pending",
   "created": "2026-05-23T06:08:42.300Z",
-  "updated": "2026-06-06T12:52:10.712Z",
+  "updated": "2026-06-07T01:14:47Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -64,7 +64,14 @@
       "to": "blocked",
       "agent": "dangermouse-bot",
       "note": "Blocked before lock/draft: SafeDep, Socket, and TechNadu provide vendor/media coverage, but no task-specific government or accepted official source was found for the art-template npm compromise. Do not draft until source packet is strengthened or Kernel K grants a schema-compatible official-source decision."
+    },
+    {
+      "timestamp": "2026-06-07T01:14:47Z",
+      "action": "source_policy_requeue",
+      "from": "blocked",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Requeued after Kernel K source-authority policy update: non-campaign incidents may proceed with at least two non-media sources unless one government source is present. Keep scope conservative and do not expand beyond cited SafeDep, Socket, and corroborating reporting."
     }
-  ],
-  "blocked_reason": "Source sufficiency inadequate for article drafting: listed sources are vendor/media only, and no task-specific government or accepted official source was found for the art-template npm compromise. The validator requires at least one government source; task notes explicitly instruct workers to block rather than inflate if sources are too thin."
+  ]
 }

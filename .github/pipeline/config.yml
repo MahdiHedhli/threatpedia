@@ -7,6 +7,8 @@ version: "1.0"
 
 # ── Queue Limits ──────────────────────────────────────────────────────────────
 queues:
+  dispatcher:
+    tasks_per_run: 6         # Maximum pending draft tasks dispatched per cycle
   editorial:
     max_pending: 50          # Maximum drafts awaiting review
     backpressure_resume: 40  # Resume discovery when queue drops below this
