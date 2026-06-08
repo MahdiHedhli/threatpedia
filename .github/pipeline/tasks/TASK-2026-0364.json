@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-08T20:05:28.724Z",
-  "updated": "2026-06-08T20:05:28.724Z",
+  "updated": "2026-06-08T20:29:12.772Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -78,6 +78,23 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 99)"
+    },
+    {
+      "timestamp": "2026-06-08T20:27:34.426Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-08T20:29:12.771Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1087"
     }
-  ]
+  ],
+  "pr_number": 1087,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1087"
 }
