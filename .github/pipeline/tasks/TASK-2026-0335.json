@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-05-23T06:08:42.300Z",
-  "updated": "2026-06-08T16:23:00.225Z",
+  "updated": "2026-06-08T16:24:57.460Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-08T16:23:00.224Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "art-template npm supply-chain compromise, May 2026",
     "sources": [
@@ -87,6 +87,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-08T16:24:57.459Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1083"
     }
-  ]
+  ],
+  "pr_number": 1083,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1083"
 }
