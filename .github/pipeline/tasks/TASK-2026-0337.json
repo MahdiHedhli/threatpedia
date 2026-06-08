@@ -5,7 +5,7 @@
   "priority": "P2",
   "status": "pending",
   "created": "2026-05-23T07:08:43.420Z",
-  "updated": "2026-06-07T01:14:47Z",
+  "updated": "2026-06-08T15:09:35.396Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -72,6 +72,14 @@
       "to": "pending",
       "agent": "kernel-k",
       "note": "Requeued after Kernel K source-authority policy update: non-campaign incidents may proceed with at least two non-media sources unless one government source is present. Treat THORChain project/status material as bounded project evidence and keep loss, freeze-duration, and exploit-mechanics claims conservative."
+    },
+    {
+      "timestamp": "2026-06-08T15:09:35.396Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1079"
     }
   ]
 }
