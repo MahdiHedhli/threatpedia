@@ -1,5 +1,5 @@
 ---
-eventId: TP-2026-0338
+eventId: TP-2026-0335
 title: art-template npm Package Browser-Bundle Compromise, May 2026
 date: 2026-05-20
 attackType: Supply Chain
