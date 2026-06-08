@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-05-23T06:08:42.300Z",
-  "updated": "2026-06-08T15:09:35.396Z",
+  "updated": "2026-06-08T16:23:00.225Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-08T16:23:00.224Z",
   "input": {
     "topic": "art-template npm supply-chain compromise, May 2026",
     "sources": [
@@ -80,6 +80,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1078"
+    },
+    {
+      "timestamp": "2026-06-08T16:23:00.225Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
