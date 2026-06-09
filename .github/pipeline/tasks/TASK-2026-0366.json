@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-06-09T19:59:27.075Z",
-  "updated": "2026-06-09T20:33:01.428Z",
+  "updated": "2026-06-09T20:41:17.905Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -94,8 +94,17 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #1094"
+    },
+    {
+      "timestamp": "2026-06-09T20:41:17.905Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1094 merged (8045cea)."
     }
   ],
   "pr_number": 1094,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1094"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1094",
+  "merged_at": "2026-06-09T20:41:17.905Z"
 }
