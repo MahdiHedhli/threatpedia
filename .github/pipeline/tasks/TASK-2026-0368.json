@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-06-09T19:59:27.076Z",
-  "updated": "2026-06-09T21:31:49.397Z",
+  "updated": "2026-06-09T21:34:02.831Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "dangermouse-bot",
-  "locked_at": "2026-06-09T21:31:49.396Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Arista Extensible Operating System Incomplete Comparison with Missing Factors Vulnerability (CVE-2026-7473)",
     "sources": [
@@ -84,6 +84,16 @@
       "to": "locked",
       "agent": "dangermouse-bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-09T21:34:02.830Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1098"
     }
-  ]
+  ],
+  "pr_number": 1098,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1098"
 }
