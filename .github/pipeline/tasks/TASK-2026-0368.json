@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-09T19:59:27.076Z",
-  "updated": "2026-06-09T19:59:27.076Z",
+  "updated": "2026-06-09T21:31:49.397Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-09T21:31:49.396Z",
   "input": {
     "topic": "Arista Extensible Operating System Incomplete Comparison with Missing Factors Vulnerability (CVE-2026-7473)",
     "sources": [
@@ -77,6 +77,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 94)"
+    },
+    {
+      "timestamp": "2026-06-09T21:31:49.397Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
