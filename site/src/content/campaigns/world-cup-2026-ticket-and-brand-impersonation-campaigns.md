@@ -70,9 +70,9 @@ mitreMappings:
     attack-version: "v13"
     confidence: probable
     evidence: "Bitdefender and Group-IB reporting reference large numbers of abuse or impersonation domains used for fake ticket stores, event pages, and related scam content during the campaign window."
-  - techniqueId: "T1567.002"
+  - techniqueId: "T1566.002"
     techniqueName: "Phishing: Spearphishing Link"
-    tactic: "Command and Control"
+    tactic: "Initial Access"
     attack-version: "v13"
     confidence: probable
     evidence: "IC3 and Group-IB reports identify user redirection patterns to lookalike football-related portals and ticket services that mimic legitimate FIFA or organizer pages."
@@ -118,11 +118,11 @@ Cross-channel posting and a high number of variants indicate scaling intent: add
 
 ## MITRE ATT&CK Mapping
 
-**T1566.002 - Spearphishing Link (Initial Access):** Public advisories and reports describe traffic steering toward fake FIFA-related portals and spoofed ticket pages with trust-oriented branding.
+**T1566 - Phishing:** Public advisories and reports describe traffic steering toward fake FIFA-related portals and spoofed ticket pages with trust-oriented branding.
 
-**T1583.001 - Acquire Infrastructure: Domains (Resource Development):** Evidence from vendor and threat-intel reporting describes broad use of third-party domains and typo variants to host impersonation pages across the campaign.
+**T1583.001 - Acquire Infrastructure: Domains:** Evidence from vendor and threat-intel reporting describes broad use of third-party domains and typo variants to host impersonation pages across the campaign.
 
-**T1567.002 - Phishing: Spearphishing Link (Command and Control):** Campaign operators use link ecosystems to connect users to malicious look-alikes and redirected collection flows; the malicious destination set appears distributed across many campaign domains.
+**T1566.002 - Phishing: Spearphishing Link:** Campaign operators use link ecosystems to connect users to malicious look-alikes and redirected collection flows; the malicious destination set appears distributed across many campaign domains.
 
 ## Timeline
 
