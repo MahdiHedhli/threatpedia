@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "pending",
   "created": "2026-06-11T12:35:40.057Z",
   "updated": "2026-06-11T14:20:31.881Z",
   "source": "manual_submission",

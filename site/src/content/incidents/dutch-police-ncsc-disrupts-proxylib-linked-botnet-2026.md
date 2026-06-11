@@ -33,7 +33,7 @@ sources:
     accessDate: "2026-06-11"
     archived: false
   - url: https://www.ncsc.nl/nieuws/gezamenlijke-actie-politie-en-ncsc-legt-groot-botnetwerk-plat
-    publisher: NCSC Netherlands
+    publisher: National Cyber Security Centre Netherlands
     publisherType: government
     reliability: R1
     publicationDate: "2026-05-28"
@@ -143,7 +143,7 @@ Organizations and users should treat devices as potentially exposed during such 
 
 ## Sources & References
 
-- [NCSC Netherlands: Gezamenlijke actie politie en NCSC legt groot botnetwerk plat](https://www.ncsc.nl/nieuws/gezamenlijke-actie-politie-en-ncsc-legt-groot-botnetwerk-plat) — NCSC Netherlands, 2026-05-28
+- [National Cyber Security Centre Netherlands: Gezamenlijke actie politie en NCSC legt groot botnetwerk plat](https://www.ncsc.nl/nieuws/gezamenlijke-actie-politie-en-ncsc-legt-groot-botnetwerk-plat) — National Cyber Security Centre Netherlands, 2026-05-28
 - [Dutch National Police: Politie en NCSC halen groot botnetwerk offline](https://www.politie.nl/nieuws/2026/mei/28/06-politie-en-ncsc-halen-groot-botnetwerk-offline.html) — Dutch National Police, 2026-05-28
 - [Risky Business: Dutch police take down giant botnet of 17 million devices](https://risky.biz/risky-bulletin-dutch-police-take-down-giant-botnet-of-17-million-devices) — Risky Business, 2026-05-28
 - [NL Times: NCSC and Dutch police disrupt global botnet controlled via Netherlands-based servers](https://nltimes.nl/2026/05/28/ncsc-dutch-police-disrupt-global-botnet-controlled-via-netherlands-based-servers) — NL Times, 2026-05-28
