@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-06-11T12:35:40.023Z",
-  "updated": "2026-06-11T12:35:40.023Z",
+  "updated": "2026-06-11T14:14:12.940Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -58,6 +58,14 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #1101; task id adjusted from TASK-2026-0369 to TASK-2026-0370 after concurrent ingest race."
+    },
+    {
+      "timestamp": "2026-06-11T14:14:12.940Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1106"
     }
   ]
 }
