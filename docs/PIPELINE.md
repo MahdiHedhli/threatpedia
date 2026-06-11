@@ -79,7 +79,7 @@ discovery queues are open, validated, and stable.
        cases collapse to: **reset the branch to `origin/main`** so discarded
        branch-only tasks do not linger on the long-lived discovery branch, and
        merged tasks aren't counted as new. Force-push the reset.
-   - Calls `node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute`
+   - Calls `node scripts/pipeline-discover.mjs --mode all --days 14 --limit 8 --execute`
    - Script loads `.github/pipeline/config.yml`, installs lane-specific
      headroom limits, then runs the currently supported discovery lanes:
      - **zero-day:** CISA KEV + NVD CVSS enrichment
@@ -131,8 +131,9 @@ discovery queues are open, validated, and stable.
    - Tasks with unmet `depends_on[]` are moved to `status: blocked`.
 
 6. **Dispatch**
-   - Up to 3 `pending` tasks per cycle, sorted P0 → P3 then oldest-first,
-     get dispatched by opening an agent-pickup GitHub Issue. The agent
+   - Up to `queues.dispatcher.tasks_per_run` `pending` tasks per cycle
+     (default 6), sorted P0 → P3 then oldest-first, get dispatched by
+     opening an agent-pickup GitHub Issue. The agent
      (Claude Code / Gemini / human) claims the task by running
      `node scripts/pipeline-run-task.mjs --task TASK-XXXX --lock`, which
      marks `status: locked` with `locked_by` set and `locked_at`
@@ -158,6 +159,12 @@ discovery queues are open, validated, and stable.
      branch, runs `pipeline-run-task.mjs --task TASK-XXXX --validate`,
      iterates until validation passes, then runs `--open-pr` to create
      (or reuse) the PR and record `status: pr_open` in one step.
+   - **Zero-day source packet pilot:** zero-day workers may run
+     `node scripts/build-source-packet.mjs --task .github/pipeline/tasks/TASK-XXXX.json --out <packet.json>`
+     followed by `node scripts/preflight-source-packet.mjs <packet.json>`
+     before drafting. The packet is a source-backed evidence contract; the
+     draft should use packet `claims[]` and avoid `not_supported[]` items unless
+     the packet is updated and preflight is rerun.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
@@ -167,6 +174,10 @@ discovery queues are open, validated, and stable.
      `generatedBy` values, optional non-rendered `generation` model provenance
      metadata, and public-prose guardrails that block internal
      editorial/process language from article body text.
+   - Source authority is type-aware: campaigns still require at least one
+     `publisherType: government` source to match the Astro campaign schema;
+     incidents, zero-days, and threat-actor articles require at least two
+     non-media sources unless one government source is present.
    - Article frontmatter may include an optional `generation` object for
      internal auditability. When present, it must include non-empty `provider`
      and `model` fields and may include `tool`, `agent`, and `promptProfile`.
@@ -340,10 +351,9 @@ Unlike the circuit breaker (which requires operator acknowledgement),
 backpressure auto-closes its Issue on the first cycle where the queue
 falls below the resume threshold.
 
-One operational value stays intentionally hardcoded: the per-run task
-dispatch ceiling (`pendingTasks.slice(0, 3)`) — deliberate cap, not a
-tuning knob. Future slice can promote it to `dispatcher.tasks_per_run`
-in `config.yml` if the dispatch volume pattern changes.
+The dispatcher task dispatch ceiling is configurable through
+`queues.dispatcher.tasks_per_run` in `.github/pipeline/config.yml`. Keep this
+below review backpressure thresholds; the default is 6 per dispatcher cycle.
 
 ---
 
@@ -574,14 +584,14 @@ task's rule is honest about whether the output is new or edited.
 
 ```bash
 # From repo root
-node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 8
 node scripts/pipeline-discover.mjs --mode incident --days 7 --limit 3
 ```
 
 **Run discovery for real** (writes tasks; commit yourself):
 
 ```bash
-node scripts/pipeline-discover.mjs --mode all --days 14 --limit 5 --execute
+node scripts/pipeline-discover.mjs --mode all --days 14 --limit 8 --execute
 git add .github/pipeline/tasks/
 git commit -m "chore(pipeline): manual discovery run"
 ```

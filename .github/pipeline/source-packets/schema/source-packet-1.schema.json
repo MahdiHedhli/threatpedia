@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threatpedia.wiki/schemas/source-packet-1.schema.json",
+  "title": "Threatpedia zero-day source packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "lane",
+    "source_packet_id",
+    "created_at",
+    "source_packet_status",
+    "output_target",
+    "primary_sources",
+    "supporting_sources",
+    "source_quality",
+    "key_dates",
+    "affected_products",
+    "cves",
+    "cwes",
+    "kev_status",
+    "exploit_status",
+    "claims",
+    "uncertainties",
+    "not_supported",
+    "mitre_candidates",
+    "drafting_notes",
+    "preflight"
+  ],
+  "properties": {
+    "schema_version": { "const": "source-packet/1" },
+    "task_id": { "type": "string", "pattern": "^TASK-[0-9]{4}-[0-9]{4}$" },
+    "lane": { "const": "zero-day" },
+    "source_packet_id": { "type": "string", "pattern": "^sp-TASK-[0-9]{4}-[0-9]{4}$" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "source_packet_status": { "type": "string", "enum": ["draft", "preflight_passed", "preflight_failed"] },
+    "output_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_pattern", "branch", "pr"],
+      "properties": {
+        "file_pattern": { "type": ["string", "null"] },
+        "branch": { "type": ["string", "null"] },
+        "pr": { "type": "boolean" }
+      }
+    },
+    "primary_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "supporting_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "source_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["has_government_source", "has_vendor_source", "has_primary_source", "source_sufficiency"],
+      "properties": {
+        "has_government_source": { "type": "boolean" },
+        "has_vendor_source": { "type": "boolean" },
+        "has_primary_source": { "type": "boolean" },
+        "source_sufficiency": { "type": "string", "enum": ["sufficient", "insufficient", "needs_human_review"] }
+      }
+    },
+    "key_dates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disclosed_at", "published_at", "patched_at", "kev_added_at", "exploited_before_disclosure", "date_uncertainties"],
+      "properties": {
+        "disclosed_at": { "$ref": "#/$defs/dateOrNull" },
+        "published_at": { "$ref": "#/$defs/dateOrNull" },
+        "patched_at": { "$ref": "#/$defs/dateOrNull" },
+        "kev_added_at": { "$ref": "#/$defs/dateOrNull" },
+        "exploited_before_disclosure": { "type": "string", "enum": ["yes", "no", "unknown"] },
+        "date_uncertainties": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "affected_products": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["vendor", "product", "versions", "source_refs"],
+        "properties": {
+          "vendor": { "type": "string", "minLength": 1 },
+          "product": { "type": "string", "minLength": 1 },
+          "versions": { "type": "string", "minLength": 1 },
+          "source_refs": { "$ref": "#/$defs/sourceRefs" }
+        }
+      }
+    },
+    "cves": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "source_refs"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^CVE-[0-9]{4}-[0-9]{4,}$" },
+          "source_refs": { "$ref": "#/$defs/sourceRefs" }
+        }
+      }
+    },
+    "cwes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "source_refs"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^CWE-[0-9]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "source_refs": { "$ref": "#/$defs/sourceRefs" }
+        }
+      }
+    },
+    "kev_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in_kev", "source_refs"],
+      "properties": {
+        "in_kev": { "type": "boolean" },
+        "source_refs": { "$ref": "#/$defs/sourceRefsAllowEmpty" }
+      }
+    },
+    "exploit_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["known_exploited", "source_refs", "notes"],
+      "properties": {
+        "known_exploited": { "type": "boolean" },
+        "source_refs": { "$ref": "#/$defs/sourceRefsAllowEmpty" },
+        "notes": { "type": "string", "minLength": 1 }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "claim", "claim_type", "source_refs", "confidence", "article_section"],
+        "properties": {
+          "claim_id": { "type": "string", "pattern": "^claim-[0-9]+$" },
+          "claim": { "type": "string", "minLength": 1 },
+          "claim_type": {
+            "type": "string",
+            "enum": ["date", "product", "vulnerability", "exploitation", "impact", "mitigation", "attribution", "other"]
+          },
+          "source_refs": { "$ref": "#/$defs/sourceRefs" },
+          "confidence": { "$ref": "#/$defs/confidence" },
+          "article_section": {
+            "type": "string",
+            "enum": ["frontmatter", "summary", "technical-analysis", "timeline", "mitigation", "other"]
+          }
+        }
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic", "reason", "drafting_instruction"],
+        "properties": {
+          "topic": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "drafting_instruction": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "not_supported": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "reason"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "mitre_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["technique_id", "technique_name", "tactic", "source_refs", "confidence", "include_in_article"],
+        "properties": {
+          "technique_id": {
+            "oneOf": [
+              { "type": "string", "pattern": "^T[0-9]{4}(?:\\.[0-9]{3})?$" },
+              { "type": "null" }
+            ]
+          },
+          "technique_name": { "type": "string", "minLength": 1 },
+          "tactic": { "type": "string", "minLength": 1 },
+          "source_refs": { "$ref": "#/$defs/sourceRefsAllowEmpty" },
+          "confidence": { "$ref": "#/$defs/confidence" },
+          "include_in_article": { "type": "boolean" }
+        }
+      }
+    },
+    "drafting_notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "errors", "warnings"],
+      "properties": {
+        "status": { "type": "string", "enum": ["not_run", "pass", "fail"] },
+        "errors": { "type": "array" },
+        "warnings": { "type": "array" }
+      }
+    }
+  },
+  "$defs": {
+    "dateOrNull": {
+      "oneOf": [
+        { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        { "type": "null" }
+      ]
+    },
+    "sourceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^src-[0-9]+$" }
+    },
+    "sourceRefsAllowEmpty": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^src-[0-9]+$" }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "publisher", "url", "published_at", "source_type", "role", "notes"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^src-[0-9]+$" },
+        "publisher": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "published_at": { "$ref": "#/$defs/dateOrNull" },
+        "source_type": {
+          "type": "string",
+          "enum": ["government", "vendor", "database", "research", "news", "other"]
+        },
+        "role": { "type": "string", "enum": ["primary", "supporting"] },
+        "notes": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "task_id": "TASK-2026-0359",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "blocked",
+  "created": "2026-06-05T19:31:36.088Z",
+  "updated": "2026-06-06T16:21:17.718Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "GorgonAgora fake storefront skimming network",
+    "sources": [
+      "https://sansec.io/research/gorgonagora-fake-storefront-skimming-network"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Retail & e-commerce",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Risky Bulletin current-watch lead from 2026-06-05. Strong skimming campaign candidate with source-described fake storefront network, scale, and infrastructure details. Private candidate key: risky-bulletin-2026-06-05-gorgonagora-fake-storefront-skimming-network."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0359",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-05T19:31:36.088Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1019"
+    },
+    {
+      "timestamp": "2026-06-05T21:53:31.917Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1037"
+    },
+    {
+      "timestamp": "2026-06-06T16:21:17.718Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: the source packet has only Sansec reporting and lacks qualifying independent/government corroboration for a campaign article. Do not draft until the source packet is strengthened or Kernel K grants explicit source-sufficiency guidance."
+    }
+  ],
+  "blocked_reason": "Source sufficiency inadequate for campaign article drafting: the task currently has one source (Sansec), below the three-source acceptance target, and no qualifying independent/government corroboration was found for the GorgonAgora fake storefront skimming network."
+}

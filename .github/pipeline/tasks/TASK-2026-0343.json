@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-23T10:08:24.691Z",
-  "updated": "2026-05-23T10:08:24.691Z",
+  "updated": "2026-06-06T10:40:59.716Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -45,7 +45,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/incidents/node-ipc-npm-supply-chain-attack-2026.md",
     "branch": "pipeline/TASK-2026-0343",
     "pr": true
   },
@@ -57,6 +57,32 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #856"
+    },
+    {
+      "timestamp": "2026-06-06T09:21:42.849Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-06T09:25:58.423Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "DangerMouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1053"
+    },
+    {
+      "timestamp": "2026-06-06T10:40:59.716Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1053 merged (ff025e0)."
     }
-  ]
+  ],
+  "pr_number": 1053,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1053",
+  "merged_at": "2026-06-06T10:40:59.716Z"
 }

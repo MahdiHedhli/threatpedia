@@ -39,6 +39,7 @@ const DEFAULT_CONFIG_PATH = resolve(__dirname, '..', '.github', 'pipeline', 'con
  */
 export const DEFAULTS = Object.freeze({
   queues: {
+    dispatcher: { tasks_per_run: 6 },
     editorial: { max_pending: 50, backpressure_resume: 40 },
     by_type: {
       'zero-day': { max_pending: 20 },

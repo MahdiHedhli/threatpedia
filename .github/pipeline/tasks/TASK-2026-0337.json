@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-23T07:08:43.420Z",
-  "updated": "2026-05-23T07:08:43.420Z",
+  "updated": "2026-06-08T15:59:07.824Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -56,6 +56,56 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #844"
+    },
+    {
+      "timestamp": "2026-06-06T13:51:18.974Z",
+      "action": "source_sufficiency_blocked",
+      "from": "pending",
+      "to": "blocked",
+      "agent": "dangermouse-bot",
+      "note": "Blocked before lock/draft: THORChain project/status sources and CryptoTimes reporting do not satisfy the schema-required government/official source requirement. Keep exploit/loss/outage claims conservative and do not draft until source packet is strengthened or Kernel K grants a schema-compatible official-source decision."
+    },
+    {
+      "timestamp": "2026-06-07T01:14:47Z",
+      "action": "source_policy_requeue",
+      "from": "blocked",
+      "to": "pending",
+      "agent": "kernel-k",
+      "note": "Requeued after Kernel K source-authority policy update: non-campaign incidents may proceed with at least two non-media sources unless one government source is present. Treat THORChain project/status material as bounded project evidence and keep loss, freeze-duration, and exploit-mechanics claims conservative."
+    },
+    {
+      "timestamp": "2026-06-08T15:09:35.396Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1079"
+    },
+    {
+      "timestamp": "2026-06-08T15:23:06.668Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-08T15:26:25.776Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1081"
+    },
+    {
+      "timestamp": "2026-06-08T15:59:07.824Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1081 merged (0587011)."
     }
-  ]
+  ],
+  "pr_number": 1081,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1081",
+  "merged_at": "2026-06-08T15:59:07.824Z"
 }

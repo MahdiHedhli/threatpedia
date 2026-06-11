@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-19T20:27:16.036Z",
-  "updated": "2026-05-19T20:27:16.036Z",
+  "updated": "2026-06-05T23:44:27.740Z",
   "source": "manual_submission",
   "submitted_by": "manual-cli",
   "locked_by": null,
@@ -49,6 +49,40 @@
       "to": "pending",
       "agent": "manual-cli",
       "note": "Manual link submission via scripts/pipeline-submit-link.mjs"
+    },
+    {
+      "timestamp": "2026-06-05T20:21:22.347Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1029"
+    },
+    {
+      "timestamp": "2026-06-05T21:51:13.656Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-05T21:55:05.368Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1040"
+    },
+    {
+      "timestamp": "2026-06-05T23:44:27.740Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1040 merged (5aa170d)."
     }
-  ]
+  ],
+  "pr_number": 1040,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1040",
+  "merged_at": "2026-06-05T23:44:27.740Z"
 }

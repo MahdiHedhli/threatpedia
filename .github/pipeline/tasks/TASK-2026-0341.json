@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-05-23T09:08:49.914Z",
-  "updated": "2026-05-23T09:08:49.914Z",
+  "updated": "2026-06-06T12:06:43.062Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -44,7 +44,7 @@
     "editorial queue depth < 50"
   ],
   "output": {
-    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "file_pattern": "site/src/content/incidents/indonesia-cyber-scam-center-raids-2026.md",
     "branch": "pipeline/TASK-2026-0341",
     "pr": true
   },
@@ -56,6 +56,32 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #852"
+    },
+    {
+      "timestamp": "2026-06-06T10:51:54.864Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-06T10:54:07.673Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "DangerMouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1056"
+    },
+    {
+      "timestamp": "2026-06-06T12:06:43.062Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1056 merged (0cb1de4)."
     }
-  ]
+  ],
+  "pr_number": 1056,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1056",
+  "merged_at": "2026-06-06T12:06:43.062Z"
 }
