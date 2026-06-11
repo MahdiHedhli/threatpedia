@@ -1,0 +1,63 @@
+{
+  "task_id": "TASK-2026-0369",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-11T12:35:40.057Z",
+  "updated": "2026-06-11T12:35:40.057Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Dutch police and NCSC disrupt Asocks-linked 17 million device botnet",
+    "sources": [
+      "https://risky.biz/risky-bulletin-dutch-police-take-down-giant-botnet-of-17-million-devices",
+      "https://www.politie.nl/nieuws/2026/mei/28/06-politie-en-ncsc-halen-groot-botnetwerk-offline.html",
+      "https://www.ncsc.nl/nieuws/gezamenlijke-actie-politie-en-ncsc-legt-groot-botnetwerk-plat",
+      "https://nltimes.nl/2026/05/28/ncsc-dutch-police-disrupt-global-botnet-controlled-via-netherlands-based-servers",
+      "https://www.humansecurity.com/learn/blog/satori-threat-intelligence-alert-proxylib-and-lumiapps-transform-mobile-devices-into-proxy-nodes"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Cybercrime infrastructure / proxy services",
+      "geography": "Netherlands / Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Promoted from private Risky Bulletin backlog candidate risky-bulletin:2026-05-29:asocks-proxylib-17m-device-botnet-takedown after public queue gates cleared. High-confidence takedown incident with Dutch Police and Dutch NCSC sources; keep claims bounded to the May 2026 disruption, server seizure/offline action, botnet scale as stated by sources, and careful Asocks/PROXYLIB linkage."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0369",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-11T12:35:40.057Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1100"
+    }
+  ]
+}
