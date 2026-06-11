@@ -81,6 +81,14 @@
       "agent": "dangermouse-bot",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #1108"
+    },
+    {
+      "timestamp": "2026-06-11T15:14:40.000Z",
+      "from": "pr_open",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "action": "validation_preflight_adjusted",
+      "note": "Updated canonical publisher naming and set task status to pending for new-task validation compatibility."
     }
   ],
   "pr_number": 1108,
