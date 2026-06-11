@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-06-11T20:12:13.654Z",
-  "updated": "2026-06-11T20:52:12.871Z",
+  "updated": "2026-06-11T23:57:55.040Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -85,6 +85,14 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1115"
+    },
+    {
+      "timestamp": "2026-06-11T23:57:55.040Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #1117 already covers this task."
     }
   ]
 }
