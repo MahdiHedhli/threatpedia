@@ -58,8 +58,8 @@ sources:
     accessDate: "2026-06-11"
     archived: false
 mitreMappings:
-  - techniqueId: "T1566"
-    techniqueName: "Phishing"
+  - techniqueId: "T1566.002"
+    techniqueName: "Phishing: Spearphishing Link"
     tactic: "Initial Access"
     attack-version: "v13"
     confidence: probable
@@ -118,11 +118,11 @@ Cross-channel posting and a high number of variants indicate scaling intent: add
 
 ## MITRE ATT&CK Mapping
 
-**T1566 — Phishing (Initial Access):** Public advisories and reports describe traffic steering toward fake FIFA-related portals and spoofed ticket pages with trust-oriented branding.
+**T1566.002 - Spearphishing Link (Initial Access):** Public advisories and reports describe traffic steering toward fake FIFA-related portals and spoofed ticket pages with trust-oriented branding.
 
-**T1583.001 — Acquire Infrastructure: Domains (Resource Development):** Evidence from vendor and threat-intel reporting describes broad use of third-party domains and typo variants to host impersonation pages across the campaign.
+**T1583.001 - Acquire Infrastructure: Domains (Resource Development):** Evidence from vendor and threat-intel reporting describes broad use of third-party domains and typo variants to host impersonation pages across the campaign.
 
-**T1567.002 — Phishing: Spearphishing Link (Command and Control):** Campaign operators use link ecosystems to connect users to malicious look-alikes and redirected collection flows; the malicious destination set appears distributed across many campaign domains.
+**T1567.002 - Phishing: Spearphishing Link (Command and Control):** Campaign operators use link ecosystems to connect users to malicious look-alikes and redirected collection flows; the malicious destination set appears distributed across many campaign domains.
 
 ## Timeline
 
