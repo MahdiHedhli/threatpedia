@@ -64,13 +64,13 @@ mitreMappings:
   - techniqueId: T1090
     techniqueName: Proxy
     tactic: Command and Control
-    attackVersion: "v19.0"
+    attack-version: "v19.0"
     confidence: probable
     evidence: Dutch agencies described a network of infected devices used by controlled infrastructure to route and relay cyberattack traffic through proxy-like behavior.
   - techniqueId: T1496
     techniqueName: Resource Hijacking
     tactic: Impact
-    attackVersion: "v19.0"
+    attack-version: "v19.0"
     confidence: probable
     evidence: Sources describe millions of infected endpoints participating in coordinated attack activity, indicating heavy unauthorized consumption and abuse of device resources.
 ---
