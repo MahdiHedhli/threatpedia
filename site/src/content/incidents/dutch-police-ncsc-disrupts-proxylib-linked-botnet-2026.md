@@ -53,6 +53,13 @@ sources:
     publicationDate: "2026-05-28"
     accessDate: "2026-06-11"
     archived: false
+  - url: https://www.humansecurity.com/learn/blog/satori-threat-intelligence-alert-proxylib-and-lumiapps-transform-mobile-devices-into-proxy-nodes
+    publisher: Human Security
+    publisherType: thinktank
+    reliability: R3
+    publicationDate: "2026-05-28"
+    accessDate: "2026-06-11"
+    archived: false
 mitreMappings:
   - techniqueId: T1090
     techniqueName: Proxy
@@ -147,3 +154,4 @@ Organizations and users should treat devices as potentially exposed during such 
 - [Dutch National Police: Politie en NCSC halen groot botnetwerk offline](https://www.politie.nl/nieuws/2026/mei/28/06-politie-en-ncsc-halen-groot-botnetwerk-offline.html) — Dutch National Police, 2026-05-28
 - [Risky Business: Dutch police take down giant botnet of 17 million devices](https://risky.biz/risky-bulletin-dutch-police-take-down-giant-botnet-of-17-million-devices) — Risky Business, 2026-05-28
 - [NL Times: NCSC and Dutch police disrupt global botnet controlled via Netherlands-based servers](https://nltimes.nl/2026/05/28/ncsc-dutch-police-disrupt-global-botnet-controlled-via-netherlands-based-servers) — NL Times, 2026-05-28
+- [Human Security: Satori Threat Intelligence Alert: PROXYLIB and LumiApps Transform Mobile Devices Into Proxy Nodes](https://www.humansecurity.com/learn/blog/satori-threat-intelligence-alert-proxylib-and-lumiapps-transform-mobile-devices-into-proxy-nodes) — Human Security, 2026-05-28
