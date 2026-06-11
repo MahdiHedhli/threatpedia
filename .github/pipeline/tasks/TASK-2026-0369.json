@@ -5,7 +5,7 @@
   "priority": "P1",
   "status": "pending",
   "created": "2026-06-11T12:35:40.057Z",
-  "updated": "2026-06-11T13:16:50.537Z",
+  "updated": "2026-06-11T14:20:31.881Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -66,6 +66,31 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1104"
+    },
+    {
+      "timestamp": "2026-06-11T14:15:48.524Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-11T14:20:31.880Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1108"
+    },
+    {
+      "timestamp": "2026-06-11T15:14:40.000Z",
+      "from": "pr_open",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "action": "validation_preflight_adjusted",
+      "note": "Updated canonical publisher naming and set task status to pending for new-task validation compatibility."
     }
-  ]
+  ],
+  "pr_number": 1108,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1108"
 }
