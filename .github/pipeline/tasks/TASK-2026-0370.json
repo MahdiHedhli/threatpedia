@@ -1,5 +1,5 @@
 {
-  "task_id": "TASK-2026-0369",
+  "task_id": "TASK-2026-0370",
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
@@ -48,7 +48,7 @@
   ],
   "output": {
     "file_pattern": "site/src/content/campaigns/{slug}.md",
-    "branch": "pipeline/TASK-2026-0369",
+    "branch": "pipeline/TASK-2026-0370",
     "pr": true
   },
   "history": [
@@ -58,7 +58,7 @@
       "from": "none",
       "to": "pending",
       "agent": "MahdiHedhli",
-      "note": "Manual submission from Issue #1101"
+      "note": "Manual submission from Issue #1101; task id adjusted from TASK-2026-0369 to TASK-2026-0370 after concurrent ingest race."
     }
   ]
 }
