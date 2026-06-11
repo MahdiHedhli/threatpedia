@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-06-11T12:35:40.057Z",
-  "updated": "2026-06-11T14:20:31.881Z",
+  "updated": "2026-06-11T17:01:13.779Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -89,8 +89,17 @@
       "agent": "dangermouse-bot",
       "action": "validation_preflight_adjusted",
       "note": "Updated canonical publisher naming and set task status to pending for new-task validation compatibility."
+    },
+    {
+      "timestamp": "2026-06-11T17:01:13.779Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1108 merged (4b60825)."
     }
   ],
   "pr_number": 1108,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1108"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1108",
+  "merged_at": "2026-06-11T17:01:13.779Z"
 }
