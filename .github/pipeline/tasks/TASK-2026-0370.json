@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "complete",
   "created": "2026-06-11T12:35:40.023Z",
-  "updated": "2026-06-11T14:14:12.940Z",
+  "updated": "2026-06-11T20:47:51.396Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -66,6 +66,16 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1106"
+    },
+    {
+      "timestamp": "2026-06-11T20:47:51.396Z",
+      "action": "merged",
+      "from": "pending",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1110 merged (69d69b8)."
     }
-  ]
+  ],
+  "pr_number": 1110,
+  "merged_at": "2026-06-11T20:47:51.396Z"
 }
