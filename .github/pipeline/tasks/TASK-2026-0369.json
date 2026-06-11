@@ -1,0 +1,64 @@
+{
+  "task_id": "TASK-2026-0369",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-11T12:35:40.023Z",
+  "updated": "2026-06-11T12:35:40.023Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "World Cup 2026 ticket and brand impersonation scam campaigns",
+    "sources": [
+      "https://risky.biz/risky-bulletin-dutch-police-take-down-giant-botnet-of-17-million-devices",
+      "https://www.ic3.gov/PSA/2026/PSA260527",
+      "https://www.bitdefender.com/en-us/blog/labs/football-fever-fuels-scam-campaigns-across-email-and-social-media",
+      "https://www.cscdbs.com/blog/world-cup-2026-what-third-party-domain-registrations-reveal-about-emerging-risks",
+      "https://www.group-ib.com/blog/ghost-stadium-football-fraud",
+      "https://unit42.paloaltonetworks.com/fifa-world-cup-attack-surface"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Sports / consumer fraud / travel",
+      "geography": "Global",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Promoted from private Risky Bulletin backlog candidate risky-bulletin:2026-05-29:world-cup-2026-ticket-scam-campaigns after public queue gates cleared. Source packet includes FBI IC3 plus multiple vendor/research sources. Treat as event-themed fraud/phishing campaign coverage, not a single breach; avoid unsupported victim totals or operator attribution."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0369",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-11T12:35:40.023Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1101"
+    }
+  ]
+}
