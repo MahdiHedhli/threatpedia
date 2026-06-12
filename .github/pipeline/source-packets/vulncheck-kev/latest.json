@@ -1,0 +1,1415 @@
+{
+  "schema_version": "vulncheck-kev-recent-intake/1",
+  "generated_at": "2026-06-12T18:51:24.460Z",
+  "mode": "live",
+  "drafting_enabled": false,
+  "source": {
+    "publisher": "VulnCheck",
+    "dataset": "VulnCheck KEV",
+    "backup_endpoint": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+    "attribution_required": true,
+    "attribution_label": "VulnCheck KEV",
+    "authority_boundary": "VulnCheck KEV is a non-authoritative exploitation signal for Threatpedia; CISA remains authoritative for official CISA KEV membership."
+  },
+  "config": {
+    "lookback_days": 30,
+    "max_candidates": 10,
+    "as_of": "2026-06-12",
+    "cutoff_date": "2026-05-13",
+    "sort": "date_added desc",
+    "seen_filter_enabled": true,
+    "backlog_fill_enabled": true,
+    "sibling_limit_per_vendor_product_day": 4
+  },
+  "summary": {
+    "records_loaded": 4952,
+    "records_with_date_added": 4952,
+    "candidates_in_lookback": 62,
+    "backlog_candidates_considered": 4890,
+    "already_seen_filtered": 113,
+    "sibling_dampened": 0,
+    "candidates_emitted": 10,
+    "recent_emitted": 10,
+    "backlog_emitted": 0
+  },
+  "candidates": [
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-35273:2026-06-11",
+      "cves": [
+        "CVE-2026-35273"
+      ],
+      "cwes": [
+        "CWE-306"
+      ],
+      "vendorProject": "Oracle",
+      "product": " PeopleSoft Enterprise PeopleTools",
+      "vulnerabilityName": "Oracle PeopleSoft Enterprise PeopleTools Missing Authentication for Critical Function Vulnerability",
+      "shortDescription": "Oracle PeopleSoft Enterprise PeopleTools contains a missing authentication for critical function vulnerability which could allow an unauthenticated attacker to obtain takeover of PeopleSoft Enterprise PeopleTools.",
+      "vulncheck_date_added": "2026-06-11",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 78,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "CISA date present in VulnCheck record; verify against CISA before official labeling",
+        "4 VulnCheck reported exploitation reference(s)",
+        "known ransomware campaign use field"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": true,
+        "date_added": "2026-06-12",
+        "due_date": "2026-06-15"
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-11",
+        "known_ransomware_campaign_use": "Known",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 4,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://cloud.google.com/blog/topics/threat-intelligence/shinyhunters-targets-education-sector-oracle-exploit",
+          "https://www.linkedin.com/posts/charlescarmakal_urgent-multiple-0-day-vulnerabilities-share-7470696836803117057-mf6m/",
+          "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+          "https://www.rapid7.com/blog/post/etr-active-exploitation-of-oracle-peoplesoft-zero-day-cve-2026-35273/"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-11",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-11",
+          "cisa_kev_added_at_from_vulncheck_record": "2026-06-12",
+          "cisa_due_date_from_vulncheck_record": "2026-06-15"
+        },
+        "affected_products": [
+          {
+            "vendor": "Oracle",
+            "product": " PeopleSoft Enterprise PeopleTools",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-35273",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [
+          {
+            "id": "CWE-306",
+            "name": "Unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "Oracle",
+          "product": " PeopleSoft Enterprise PeopleTools",
+          "vulnerabilityName": "Oracle PeopleSoft Enterprise PeopleTools Missing Authentication for Critical Function Vulnerability",
+          "shortDescription": "Oracle PeopleSoft Enterprise PeopleTools contains a missing authentication for critical function vulnerability which could allow an unauthenticated attacker to obtain takeover of PeopleSoft Enterprise PeopleTools.",
+          "required_action": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA’s BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA’s “Forensics Triage Requirements” (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines.",
+          "knownRansomwareCampaignUse": "Known",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://cloud.google.com/blog/topics/threat-intelligence/shinyhunters-targets-education-sector-oracle-exploit",
+              "date_added": "2026-06-11T00:00:00Z"
+            },
+            {
+              "url": "https://www.linkedin.com/posts/charlescarmakal_urgent-multiple-0-day-vulnerabilities-share-7470696836803117057-mf6m/",
+              "date_added": "2026-06-11T00:00:00Z"
+            },
+            {
+              "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+              "date_added": "2026-06-12T00:00:00Z"
+            },
+            {
+              "url": "https://www.rapid7.com/blog/post/etr-active-exploitation-of-oracle-peoplesoft-zero-day-cve-2026-35273/",
+              "date_added": "2026-06-12T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-11T00:00:00Z",
+          "cisa_date_added": "2026-06-12T00:00:00Z",
+          "dueDate": "2026-06-15T00:00:00Z"
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-35273-2026-06-11.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-10795:2026-06-10",
+      "cves": [
+        "CVE-2026-10795"
+      ],
+      "cwes": [],
+      "vendorProject": "updraftplus",
+      "product": "updraftplus",
+      "vulnerabilityName": "updraftplus updraftplus Improper Verification of Cryptographic Signature",
+      "shortDescription": "The UpdraftPlus: WP Backup & Migration Plugin plugin for WordPress is vulnerable to Authentication Bypass in all versions up to, and including, 1.26.4 via the UpdraftPlus_Remote_Communications_V2::wp_loaded function. This is due to insufficient validation of the remote communications message format, where signature verification can be bypassed and unchecked decryption return values collapse to a predictable all-zero encryption key. This makes it possible for unauthenticated attackers to forge arbitrary RPC commands and run them as the connected administrator, such as uploading and activating a malicious plugin, which ultimately leads to remote code execution.",
+      "vulncheck_date_added": "2026-06-10",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 40,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "2 VulnCheck reported exploitation reference(s)",
+        "1 VulnCheck XDB reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-10",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 2,
+        "xdb_count": 1,
+        "xdb_exploit_types": [
+          "initial-access"
+        ],
+        "evidence_urls": [
+          "https://patchstack.com/database/wordpress/plugin/updraftplus/vulnerability/wordpress-updraftplus-wp-backup-migration-plugin-1-26-4-unauthenticated-authentication-bypass-via-updraftcentral-udrpc-vulnerability",
+          "https://www.wordfence.com/threat-intel/vulnerabilities/wordpress-plugins/updraftplus/updraftplus-wp-backup-migration-plugin-1264-unauthenticated-authentication-bypass-via-updraftcentral-udrpc",
+          "https://vulncheck.com/xdb/8e9fd2ad3560"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-10",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-10",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "updraftplus",
+            "product": "updraftplus",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-10795",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "updraftplus",
+          "product": "updraftplus",
+          "vulnerabilityName": "updraftplus updraftplus Improper Verification of Cryptographic Signature",
+          "shortDescription": "The UpdraftPlus: WP Backup & Migration Plugin plugin for WordPress is vulnerable to Authentication Bypass in all versions up to, and including, 1.26.4 via the UpdraftPlus_Remote_Communications_V2::wp_loaded function. This is due to insufficient validation of the remote communications message format, where signature verification can be bypassed and unchecked decryption return values collapse to a predictable all-zero encryption key. This makes it possible for unauthenticated attackers to forge arbitrary RPC commands and run them as the connected administrator, such as uploading and activating a malicious plugin, which ultimately leads to remote code execution.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://patchstack.com/database/wordpress/plugin/updraftplus/vulnerability/wordpress-updraftplus-wp-backup-migration-plugin-1-26-4-unauthenticated-authentication-bypass-via-updraftcentral-udrpc-vulnerability",
+              "date_added": "2026-06-10T00:00:00Z"
+            },
+            {
+              "url": "https://www.wordfence.com/threat-intel/vulnerabilities/wordpress-plugins/updraftplus/updraftplus-wp-backup-migration-plugin-1264-unauthenticated-authentication-bypass-via-updraftcentral-udrpc",
+              "date_added": "2026-06-11T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [
+            {
+              "xdb_id": "8e9fd2ad3560",
+              "xdb_url": "https://vulncheck.com/xdb/8e9fd2ad3560",
+              "date_added": "2026-06-11T10:06:29Z",
+              "exploit_type": "initial-access",
+              "clone_ssh_url": "git@github.com:izxci/CVE-2026-10795.git"
+            }
+          ],
+          "date_added": "2026-06-10T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-10795-2026-06-10.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-34908:2026-06-09",
+      "cves": [
+        "CVE-2026-34908"
+      ],
+      "cwes": [],
+      "vendorProject": "Ubiquiti Inc",
+      "product": "UniFi OS Server",
+      "vulnerabilityName": "  Improper Access Control",
+      "shortDescription": "A malicious actor with access to the network could exploit an Improper Access Control vulnerability found in UniFi OS devices to make unauthorized changes to the system.",
+      "vulncheck_date_added": "2026-06-09",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 34,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "1 VulnCheck reported exploitation reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-09",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 1,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://www.pwndefend.com/2026/06/09/cve-2026-34910-exploitation-itw-building-a-botnet-mirai/"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-09",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-09",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "Ubiquiti Inc",
+            "product": "UniFi OS Server",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-34908",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "Ubiquiti Inc",
+          "product": "UniFi OS Server",
+          "vulnerabilityName": "  Improper Access Control",
+          "shortDescription": "A malicious actor with access to the network could exploit an Improper Access Control vulnerability found in UniFi OS devices to make unauthorized changes to the system.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://www.pwndefend.com/2026/06/09/cve-2026-34910-exploitation-itw-building-a-botnet-mirai/",
+              "date_added": "2026-06-09T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-09T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-34908-2026-06-09.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-34910:2026-06-09",
+      "cves": [
+        "CVE-2026-34910"
+      ],
+      "cwes": [],
+      "vendorProject": "Ubiquiti Inc",
+      "product": "UniFi OS Server",
+      "vulnerabilityName": "  Improper Input Validation",
+      "shortDescription": "A malicious actor with access to the network could exploit an Improper Input Validation vulnerability found in UniFi OS devices to execute a Command Injection.",
+      "vulncheck_date_added": "2026-06-09",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 34,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "1 VulnCheck reported exploitation reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-09",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 1,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://www.pwndefend.com/2026/06/09/cve-2026-34910-exploitation-itw-building-a-botnet-mirai/"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-09",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-09",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "Ubiquiti Inc",
+            "product": "UniFi OS Server",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-34910",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "Ubiquiti Inc",
+          "product": "UniFi OS Server",
+          "vulnerabilityName": "  Improper Input Validation",
+          "shortDescription": "A malicious actor with access to the network could exploit an Improper Input Validation vulnerability found in UniFi OS devices to execute a Command Injection.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://www.pwndefend.com/2026/06/09/cve-2026-34910-exploitation-itw-building-a-botnet-mirai/",
+              "date_added": "2026-06-09T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-09T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-34910-2026-06-09.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-39808:2026-06-09",
+      "cves": [
+        "CVE-2026-39808"
+      ],
+      "cwes": [],
+      "vendorProject": "Fortinet",
+      "product": "fortisandbox",
+      "vulnerabilityName": "Fortinet fortisandbox Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "shortDescription": "A improper neutralization of special elements used in an os command ('os command injection') vulnerability in Fortinet FortiSandbox 4.4.0 through 4.4.8 may allow attacker to execute unauthorized code or commands via",
+      "vulncheck_date_added": "2026-06-09",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 64,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "VulnCheck canary exploitation signal",
+        "3 VulnCheck reported exploitation reference(s)",
+        "2 VulnCheck XDB reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-09",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": true,
+        "reported_exploitation_count": 3,
+        "xdb_count": 2,
+        "xdb_exploit_types": [
+          "initial-access"
+        ],
+        "evidence_urls": [
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-09",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-10",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-11",
+          "https://vulncheck.com/xdb/baecd56da872",
+          "https://vulncheck.com/xdb/50e019aa766f"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-09",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-09",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "Fortinet",
+            "product": "fortisandbox",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-39808",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "Fortinet",
+          "product": "fortisandbox",
+          "vulnerabilityName": "Fortinet fortisandbox Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+          "shortDescription": "A improper neutralization of special elements used in an os command ('os command injection') vulnerability in Fortinet FortiSandbox 4.4.0 through 4.4.8 may allow attacker to execute unauthorized code or commands via",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": true,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-09",
+              "date_added": "2026-06-09T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-10",
+              "date_added": "2026-06-10T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-39808&date=2026-06-11",
+              "date_added": "2026-06-11T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [
+            {
+              "xdb_id": "baecd56da872",
+              "xdb_url": "https://vulncheck.com/xdb/baecd56da872",
+              "date_added": "2026-04-15T14:10:25Z",
+              "exploit_type": "initial-access",
+              "clone_ssh_url": "git@github.com:samu-delucas/CVE-2026-39808.git"
+            },
+            {
+              "xdb_id": "50e019aa766f",
+              "xdb_url": "https://vulncheck.com/xdb/50e019aa766f",
+              "date_added": "2026-04-18T09:15:36Z",
+              "exploit_type": "initial-access",
+              "clone_ssh_url": "git@github.com:0xBlackash/CVE-2026-39808.git"
+            }
+          ],
+          "date_added": "2026-06-09T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-39808-2026-06-09.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-49060:2026-06-08",
+      "cves": [
+        "CVE-2026-49060"
+      ],
+      "cwes": [],
+      "vendorProject": "hippooo",
+      "product": "Hippoo Mobile App for WooCommerce",
+      "vulnerabilityName": "WordPress Hippoo Mobile App for WooCommerce Privilege Escalation",
+      "shortDescription": "Incorrect Privilege Assignment vulnerability in Hippoo Mobile App for WooCommerce allows Privilege Escalation.\n\nThis issue affects Hippoo Mobile App for WooCommerce: from n/a through 1.9.4.",
+      "vulncheck_date_added": "2026-06-08",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 34,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "1 VulnCheck reported exploitation reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-08",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 1,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://patchstack.com/database/wordpress/plugin/hippoo/vulnerability/wordpress-hippoo-mobile-app-for-woocommerce-plugin-1-9-4-privilege-escalation-vulnerability"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-08",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-08",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "hippooo",
+            "product": "Hippoo Mobile App for WooCommerce",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-49060",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "hippooo",
+          "product": "Hippoo Mobile App for WooCommerce",
+          "vulnerabilityName": "WordPress Hippoo Mobile App for WooCommerce Privilege Escalation",
+          "shortDescription": "Incorrect Privilege Assignment vulnerability in Hippoo Mobile App for WooCommerce allows Privilege Escalation.\n\nThis issue affects Hippoo Mobile App for WooCommerce: from n/a through 1.9.4.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://patchstack.com/database/wordpress/plugin/hippoo/vulnerability/wordpress-hippoo-mobile-app-for-woocommerce-plugin-1-9-4-privilege-escalation-vulnerability",
+              "date_added": "2026-06-08T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-08T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-49060-2026-06-08.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-5027:2026-06-08",
+      "cves": [
+        "CVE-2026-5027"
+      ],
+      "cwes": [],
+      "vendorProject": "langflow",
+      "product": "langflow",
+      "vulnerabilityName": "langflow langflow Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "shortDescription": "The 'POST /api/v2/files' endpoint does not sanitize the 'filename' parameter from the multipart form data, allowing an attacker to write files to arbitrary locations on the filesystem using path traversal sequences ('../').",
+      "vulncheck_date_added": "2026-06-08",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 74,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "VulnCheck canary exploitation signal",
+        "7 VulnCheck reported exploitation reference(s)",
+        "3 VulnCheck XDB reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-08",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": true,
+        "reported_exploitation_count": 7,
+        "xdb_count": 3,
+        "xdb_exploit_types": [
+          "remote-with-credentials",
+          "initial-access"
+        ],
+        "evidence_urls": [
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-08",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-09",
+          "https://www.linkedin.com/posts/ccondon_kevs-share-7470128376624783361-Ot2c/",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-10",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-11",
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-12",
+          "https://www.techgines.com/post/langflow-cve-2026-5027-path-traversal-rce",
+          "https://vulncheck.com/xdb/29b343b4afaf",
+          "https://vulncheck.com/xdb/812e19ecfa4f",
+          "https://vulncheck.com/xdb/98045a28f25c"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-08",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-08",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "langflow",
+            "product": "langflow",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-5027",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "langflow",
+          "product": "langflow",
+          "vulnerabilityName": "langflow langflow Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+          "shortDescription": "The 'POST /api/v2/files' endpoint does not sanitize the 'filename' parameter from the multipart form data, allowing an attacker to write files to arbitrary locations on the filesystem using path traversal sequences ('../').",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": true,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-08",
+              "date_added": "2026-06-08T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-09",
+              "date_added": "2026-06-09T00:00:00Z"
+            },
+            {
+              "url": "https://www.linkedin.com/posts/ccondon_kevs-share-7470128376624783361-Ot2c/",
+              "date_added": "2026-06-09T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-10",
+              "date_added": "2026-06-10T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-11",
+              "date_added": "2026-06-11T00:00:00Z"
+            },
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-5027&date=2026-06-12",
+              "date_added": "2026-06-12T00:00:00Z"
+            },
+            {
+              "url": "https://www.techgines.com/post/langflow-cve-2026-5027-path-traversal-rce",
+              "date_added": "2026-06-12T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [
+            {
+              "xdb_id": "29b343b4afaf",
+              "xdb_url": "https://vulncheck.com/xdb/29b343b4afaf",
+              "date_added": "2026-04-02T10:46:45Z",
+              "exploit_type": "remote-with-credentials",
+              "clone_ssh_url": "git@github.com:yahiahamza/CVE-2026-5027.git"
+            },
+            {
+              "xdb_id": "812e19ecfa4f",
+              "xdb_url": "https://vulncheck.com/xdb/812e19ecfa4f",
+              "date_added": "2026-04-03T10:34:51Z",
+              "exploit_type": "remote-with-credentials",
+              "clone_ssh_url": "git@github.com:EQSTLab/CVE-2026-5027.git"
+            },
+            {
+              "xdb_id": "98045a28f25c",
+              "xdb_url": "https://vulncheck.com/xdb/98045a28f25c",
+              "date_added": "2026-04-03T16:56:21Z",
+              "exploit_type": "initial-access",
+              "clone_ssh_url": "git@github.com:0xBlackash/CVE-2026-5027.git"
+            }
+          ],
+          "date_added": "2026-06-08T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-5027-2026-06-08.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-31816:2026-06-05",
+      "cves": [
+        "CVE-2026-31816"
+      ],
+      "cwes": [],
+      "vendorProject": "budibase",
+      "product": "budibase",
+      "vulnerabilityName": "budibase budibase Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')",
+      "shortDescription": "Budibase is a low code platform for creating internal tools, workflows, and admin panels. In 3.31.4 and earlier, the Budibase server's authorized() middleware that protects every server-side API endpoint can be completely bypassed by appending a webhook path pattern to the query string of any request. The isWebhookEndpoint() function uses an unanchored regex that tests against ctx.request.url, which in Koa includes the full URL with query parameters. When the regex matches, the authorized() middleware immediately calls return next(), skipping all authentication, authorization, role checks, and CSRF protection. This means a completely unauthenticated, remote attacker can access any server-side API endpoint by simply appending ?/webhooks/trigger (or any webhook pattern variant) to the URL.",
+      "vulncheck_date_added": "2026-06-05",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 54,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "VulnCheck canary exploitation signal",
+        "1 VulnCheck reported exploitation reference(s)",
+        "1 VulnCheck XDB reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-05",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": true,
+        "reported_exploitation_count": 1,
+        "xdb_count": 1,
+        "xdb_exploit_types": [
+          "initial-access"
+        ],
+        "evidence_urls": [
+          "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-31816&date=2026-06-05",
+          "https://vulncheck.com/xdb/3ee67248358b"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-05",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-05",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "budibase",
+            "product": "budibase",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-31816",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "budibase",
+          "product": "budibase",
+          "vulnerabilityName": "budibase budibase Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')",
+          "shortDescription": "Budibase is a low code platform for creating internal tools, workflows, and admin panels. In 3.31.4 and earlier, the Budibase server's authorized() middleware that protects every server-side API endpoint can be completely bypassed by appending a webhook path pattern to the query string of any request. The isWebhookEndpoint() function uses an unanchored regex that tests against ctx.request.url, which in Koa includes the full URL with query parameters. When the regex matches, the authorized() middleware immediately calls return next(), skipping all authentication, authorization, role checks, and CSRF protection. This means a completely unauthenticated, remote attacker can access any server-side API endpoint by simply appending ?/webhooks/trigger (or any webhook pattern variant) to the URL.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": true,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://api.vulncheck.com/v3/index/vulncheck-canaries?cve=CVE-2026-31816&date=2026-06-05",
+              "date_added": "2026-06-05T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [
+            {
+              "xdb_id": "3ee67248358b",
+              "xdb_url": "https://vulncheck.com/xdb/3ee67248358b",
+              "date_added": "2026-03-12T12:44:53Z",
+              "exploit_type": "initial-access",
+              "clone_ssh_url": "git@github.com:imjdl/CVE-2026-31816-rshell.git"
+            }
+          ],
+          "date_added": "2026-06-05T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-31816-2026-06-05.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2026-49777:2026-06-05",
+      "cves": [
+        "CVE-2026-49777"
+      ],
+      "cwes": [],
+      "vendorProject": "NetAlertX",
+      "product": "NetAlertX",
+      "vulnerabilityName": "  Improper Validation of Specified Quantity in Input",
+      "shortDescription": "Improper Validation of Specified Quantity in Input vulnerability in ShapedPlugin, LLC Product Slider Pro for WooCommerce allows Malicious Software Implanted.\n\nThis issue affects Product Slider Pro for WooCommerce: from n/a before 3.5.4.",
+      "vulncheck_date_added": "2026-06-05",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 34,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "1 VulnCheck reported exploitation reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-05",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 1,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://patchstack.com/database/wordpress/plugin/woo-product-slider-pro/vulnerability/wordpress-product-slider-pro-for-woocommerce-plugin-3-5-2-backdoor-vulnerability"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-05",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-05",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "NetAlertX",
+            "product": "NetAlertX",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2026-49777",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "NetAlertX",
+          "product": "NetAlertX",
+          "vulnerabilityName": "  Improper Validation of Specified Quantity in Input",
+          "shortDescription": "Improper Validation of Specified Quantity in Input vulnerability in ShapedPlugin, LLC Product Slider Pro for WooCommerce allows Malicious Software Implanted.\n\nThis issue affects Product Slider Pro for WooCommerce: from n/a before 3.5.4.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://patchstack.com/database/wordpress/plugin/woo-product-slider-pro/vulnerability/wordpress-product-slider-pro-for-woocommerce-plugin-3-5-2-backdoor-vulnerability",
+              "date_added": "2026-06-05T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-05T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-49777-2026-06-05.json"
+    },
+    {
+      "candidate_key": "vulncheck-kev:CVE-2018-25270:2026-06-04",
+      "cves": [
+        "CVE-2018-25270"
+      ],
+      "cwes": [],
+      "vendorProject": "thinkphp",
+      "product": "ThinkPHP",
+      "vulnerabilityName": "thinkphp ThinkPHP Authorization Bypass Through User-Controlled Key",
+      "shortDescription": "ThinkPHP 5.0.23 contains a remote code execution vulnerability that allows unauthenticated attackers to execute arbitrary PHP code by invoking functions through the routing parameter. Attackers can craft requests to the index.php endpoint with malicious function parameters to execute system commands with application privileges.",
+      "vulncheck_date_added": "2026-06-04",
+      "recency_bucket": "recent",
+      "already_seen": false,
+      "seen_cves": [],
+      "priority_score": 34,
+      "priority_reasons": [
+        "recent VulnCheck date_added",
+        "1 VulnCheck reported exploitation reference(s)"
+      ],
+      "official_cisa_kev": {
+        "status_source": "cisa_date_added field from VulnCheck record; verify against CISA before official labeling",
+        "listed": false,
+        "date_added": null,
+        "due_date": null
+      },
+      "vulncheck_exploitation_signal": {
+        "source": "VulnCheck KEV",
+        "non_authoritative": true,
+        "date_added": "2026-06-04",
+        "known_ransomware_campaign_use": "Unknown",
+        "reported_exploited_by_vulncheck_canaries": false,
+        "reported_exploitation_count": 1,
+        "xdb_count": 0,
+        "xdb_exploit_types": [],
+        "evidence_urls": [
+          "https://www.stormshield.com/news/current-cyberattack-trends-variations-honeypots/"
+        ]
+      },
+      "source_packet_prefill": {
+        "status": "prefill_only",
+        "drafting_allowed": false,
+        "authority_boundary": {
+          "cve_identity_authority": "CVE.org / MITRE CVE Program",
+          "official_cisa_kev_authority": "CISA",
+          "vulncheck_role": "non-authoritative exploitation signal and supporting source",
+          "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
+        },
+        "supporting_sources": [
+          {
+            "id": "src-vulncheck-kev",
+            "publisher": "VulnCheck",
+            "url": "https://api.vulncheck.com/v3/backup/vulncheck-kev",
+            "published_at": "2026-06-04",
+            "source_type": "vendor",
+            "role": "supporting",
+            "notes": "VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced."
+          }
+        ],
+        "source_quality": {
+          "has_government_source": false,
+          "has_vendor_source": true,
+          "has_primary_source": false,
+          "source_sufficiency": "needs_human_review"
+        },
+        "key_dates": {
+          "vulncheck_date_added": "2026-06-04",
+          "cisa_kev_added_at_from_vulncheck_record": null,
+          "cisa_due_date_from_vulncheck_record": null
+        },
+        "affected_products": [
+          {
+            "vendor": "thinkphp",
+            "product": "ThinkPHP",
+            "versions": "unknown",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cves": [
+          {
+            "id": "CVE-2018-25270",
+            "source_refs": [
+              "src-vulncheck-kev"
+            ]
+          }
+        ],
+        "cwes": [],
+        "preserved_vulncheck_fields": {
+          "vendorProject": "thinkphp",
+          "product": "ThinkPHP",
+          "vulnerabilityName": "thinkphp ThinkPHP Authorization Bypass Through User-Controlled Key",
+          "shortDescription": "ThinkPHP 5.0.23 contains a remote code execution vulnerability that allows unauthenticated attackers to execute arbitrary PHP code by invoking functions through the routing parameter. Attackers can craft requests to the index.php endpoint with malicious function parameters to execute system commands with application privileges.",
+          "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
+          "knownRansomwareCampaignUse": "Unknown",
+          "reported_exploited_by_vulncheck_canaries": false,
+          "vulncheck_reported_exploitation": [
+            {
+              "url": "https://www.stormshield.com/news/current-cyberattack-trends-variations-honeypots/",
+              "date_added": "2026-06-04T00:00:00Z"
+            }
+          ],
+          "vulncheck_xdb": [],
+          "date_added": "2026-06-04T00:00:00Z",
+          "cisa_date_added": null,
+          "dueDate": null
+        },
+        "not_supported": [
+          {
+            "claim": "Official CISA KEV membership based solely on VulnCheck",
+            "reason": "CISA remains the authority for official CISA KEV status."
+          },
+          {
+            "claim": "Article-ready source sufficiency",
+            "reason": "This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting."
+          }
+        ]
+      },
+      "drafting_allowed": false,
+      "production_artifact": ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2018-25270-2026-06-04.json"
+    }
+  ],
+  "input_source": "live",
+  "production": {
+    "artifact_type": "source-packet-prefill",
+    "candidate_index_path": ".github/pipeline/source-packets/vulncheck-kev/latest.json",
+    "source_packet_dir": ".github/pipeline/source-packets/vulncheck-kev",
+    "artifacts_written": [
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-35273-2026-06-11.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-10795-2026-06-10.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-34908-2026-06-09.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-34910-2026-06-09.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-39808-2026-06-09.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-49060-2026-06-08.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-5027-2026-06-08.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-31816-2026-06-05.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2026-49777-2026-06-05.json",
+      ".github/pipeline/source-packets/vulncheck-kev/prefill-cve-2018-25270-2026-06-04.json"
+    ],
+    "article_tasks_created": 0,
+    "drafting_enabled": false
+  }
+}

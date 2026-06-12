@@ -2,11 +2,12 @@
 /**
  * ROAD-014 Slice 1: bounded recent-first VulnCheck KEV intake.
  *
- * This helper is intentionally dry-run/source-packet-prefill only. It fetches
- * the VulnCheck KEV backup once per run, selects recent entries by top-level
+ * This helper is intentionally source-packet-prefill only. It fetches the
+ * VulnCheck KEV backup once per run, selects recent entries by top-level
  * date_added, filters already-seen CVEs, and emits prioritization artifacts.
- * It does not create tasks, draft articles, or treat VulnCheck as official
- * CISA KEV authority.
+ * Production mode writes source-packet prefill artifacts only; it does not
+ * create article tasks, draft articles, or treat VulnCheck as official CISA
+ * KEV authority.
  */
 
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -24,6 +25,9 @@ const DEFAULT_LOOKBACK_DAYS = 30;
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_LOCAL_THROTTLE_MS = 250;
 const DEFAULT_CACHE_TTL_MINUTES = 60;
+const DEFAULT_SOURCE_PACKET_DIR = '.github/pipeline/source-packets/vulncheck-kev';
+const DEFAULT_CANDIDATE_INDEX_PATH = '.github/pipeline/source-packets/vulncheck-kev/latest.json';
+const DEFAULT_SIBLING_LIMIT = 4;
 const CVE_RE = /\bCVE-\d{4}-\d{4,}\b/gi;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -31,13 +35,19 @@ export function usage() {
   console.log([
     'Usage:',
     '  node scripts/vulncheck-kev-intake.mjs --dry-run [options]',
+    '  node scripts/vulncheck-kev-intake.mjs --execute [options]',
     '',
     'Options:',
+    '  --execute                       Write production source-packet prefill artifacts',
     '  --input <backup.json>            Read a saved VulnCheck KEV backup JSON instead of fetching',
     '  --out <path>                     Write dry-run artifact JSON to this path',
+    '  --source-packet-dir <path>       Production prefill artifact directory',
+    '  --candidate-index <path>         Production latest candidate index path',
     '  --env-file <path>                Explicit key=value env file for VULNCHECKAPI or VULNCHECK_API_TOKEN',
     '  --lookback-days <n>              Recent window, default from config or 30',
     '  --max-candidates <n>             Maximum emitted candidates, default from config or 25',
+    '  --disable-backlog-fill           Do not fill from older unhandled candidates after recent window',
+    '  --sibling-limit <n>              Max emitted sibling CVEs per vendor/product/date, default 4',
     '  --as-of <YYYY-MM-DD>             Deterministic date for lookback cutoff, default today UTC',
     '  --cache <path>                   Optional backup cache path',
     '  --cache-ttl-minutes <n>          Cache TTL, default from config or 60',
@@ -52,11 +62,16 @@ export function usage() {
 export function parseArgs(argv) {
   const args = {
     dryRun: true,
+    execute: false,
     input: null,
     out: null,
+    sourcePacketDir: null,
+    candidateIndex: null,
     envFile: null,
     lookbackDays: null,
     maxCandidates: null,
+    backlogFill: null,
+    siblingLimit: null,
     asOf: null,
     cache: null,
     cacheTtlMinutes: null,
@@ -72,6 +87,11 @@ export function parseArgs(argv) {
     switch (token) {
       case '--dry-run':
         args.dryRun = true;
+        args.execute = false;
+        break;
+      case '--execute':
+        args.execute = true;
+        args.dryRun = false;
         break;
       case '--input':
         if (!next) throw new Error('Missing value for --input');
@@ -81,6 +101,16 @@ export function parseArgs(argv) {
       case '--out':
         if (!next) throw new Error('Missing value for --out');
         args.out = next;
+        i += 1;
+        break;
+      case '--source-packet-dir':
+        if (!next) throw new Error('Missing value for --source-packet-dir');
+        args.sourcePacketDir = next;
+        i += 1;
+        break;
+      case '--candidate-index':
+        if (!next) throw new Error('Missing value for --candidate-index');
+        args.candidateIndex = next;
         i += 1;
         break;
       case '--env-file':
@@ -96,6 +126,14 @@ export function parseArgs(argv) {
       case '--max-candidates':
         if (!next) throw new Error('Missing value for --max-candidates');
         args.maxCandidates = positiveInteger(next, '--max-candidates');
+        i += 1;
+        break;
+      case '--disable-backlog-fill':
+        args.backlogFill = false;
+        break;
+      case '--sibling-limit':
+        if (!next) throw new Error('Missing value for --sibling-limit');
+        args.siblingLimit = positiveInteger(next, '--sibling-limit');
         i += 1;
         break;
       case '--as-of':
@@ -192,11 +230,16 @@ function loadConfigDefaults(args) {
   const config = loadPipelineConfig();
   const vc = config.discovery_sources?.vulncheck_kev || {};
   return {
+    enabled: vc.enabled === true,
     endpoint: args.endpoint || vc.backup_url || DEFAULT_ENDPOINT,
     lookbackDays: args.lookbackDays || vc.lookback_days || DEFAULT_LOOKBACK_DAYS,
     maxCandidates: args.maxCandidates || vc.max_candidates || DEFAULT_MAX_CANDIDATES,
     localThrottleMs: args.localThrottleMs || vc.local_throttle_ms || DEFAULT_LOCAL_THROTTLE_MS,
     cacheTtlMinutes: args.cacheTtlMinutes || vc.cache_ttl_minutes || DEFAULT_CACHE_TTL_MINUTES,
+    backlogFill: args.backlogFill ?? (vc.backlog_fill !== false),
+    siblingLimit: args.siblingLimit || vc.sibling_limit_per_vendor_product_day || DEFAULT_SIBLING_LIMIT,
+    sourcePacketDir: args.sourcePacketDir || vc.source_packet_dir || DEFAULT_SOURCE_PACKET_DIR,
+    candidateIndex: args.candidateIndex || vc.candidate_index_path || DEFAULT_CANDIDATE_INDEX_PATH,
   };
 }
 
@@ -406,6 +449,20 @@ function candidateKey(record) {
   return `vulncheck-kev:${cves}:${normalizeDate(record.date_added) || 'unknown-date'}`;
 }
 
+function candidateFileStem(candidate) {
+  const cve = candidate.cves[0] || 'unknown-cve';
+  const date = candidate.vulncheck_date_added || 'unknown-date';
+  return `prefill-${cve.toLowerCase()}-${date}`;
+}
+
+function siblingKey(candidate) {
+  return [
+    String(candidate.vendorProject || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    String(candidate.product || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    candidate.vulncheck_date_added || 'unknown-date',
+  ].join(':');
+}
+
 function sourceRefsFor(record) {
   const urls = [];
   for (const item of Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : []) {
@@ -533,7 +590,7 @@ function makePrefill(record) {
   };
 }
 
-function toCandidate(record, seenCves) {
+function toCandidate(record, seenCves, recencyBucket = 'recent') {
   const cves = uniqueStrings(record.cve);
   const addedDate = normalizeDate(record.date_added);
   const seenMatches = cves.filter(cve => seenCves.has(cve));
@@ -548,6 +605,7 @@ function toCandidate(record, seenCves) {
     vulnerabilityName: record.vulnerabilityName || null,
     shortDescription: record.shortDescription || null,
     vulncheck_date_added: addedDate,
+    recency_bucket: recencyBucket,
     already_seen: cves.length > 0 && seenMatches.length === cves.length,
     seen_cves: seenMatches,
     priority_score: priority.score,
@@ -583,6 +641,8 @@ export function buildRecentIntake(payload, options = {}) {
   const cutoffMs = asOfMs - (lookbackDays * 24 * 60 * 60 * 1000);
   const cutoffDate = new Date(cutoffMs).toISOString().slice(0, 10);
   const seenCves = options.seenCves instanceof Set ? options.seenCves : new Set(options.seenCves || []);
+  const backlogFill = options.backlogFill !== false;
+  const siblingLimit = options.siblingLimit || DEFAULT_SIBLING_LIMIT;
 
   const records = asRecords(payload);
   const withDates = records
@@ -590,14 +650,30 @@ export function buildRecentIntake(payload, options = {}) {
     .filter(item => item.timestamp !== null)
     .sort((a, b) => b.timestamp - a.timestamp);
   const recent = withDates.filter(item => item.timestamp >= cutoffMs && item.timestamp <= asOfMs);
-  const mapped = recent.map(item => toCandidate(item.record, seenCves));
+  const backlog = withDates.filter(item => item.timestamp < cutoffMs);
+  const mappedRecent = recent.map(item => toCandidate(item.record, seenCves, 'recent'));
+  const mappedBacklog = backlogFill ? backlog.map(item => toCandidate(item.record, seenCves, 'backlog')) : [];
+  const mapped = [...mappedRecent, ...mappedBacklog];
   const filtered = options.includeSeen ? mapped : mapped.filter(candidate => !candidate.already_seen);
-  const candidates = filtered.slice(0, maxCandidates);
+  const siblingCounts = new Map();
+  const candidates = [];
+  let siblingDampened = 0;
+  for (const candidate of filtered) {
+    const key = siblingKey(candidate);
+    const count = siblingCounts.get(key) || 0;
+    if (count >= siblingLimit) {
+      siblingDampened += 1;
+      continue;
+    }
+    siblingCounts.set(key, count + 1);
+    candidates.push(candidate);
+    if (candidates.length >= maxCandidates) break;
+  }
 
   return {
     schema_version: 'vulncheck-kev-recent-intake/1',
     generated_at: new Date().toISOString(),
-    mode: 'dry-run',
+    mode: options.execute ? 'live' : 'dry-run',
     drafting_enabled: false,
     source: {
       publisher: 'VulnCheck',
@@ -614,16 +690,75 @@ export function buildRecentIntake(payload, options = {}) {
       cutoff_date: cutoffDate,
       sort: 'date_added desc',
       seen_filter_enabled: !options.includeSeen,
+      backlog_fill_enabled: backlogFill,
+      sibling_limit_per_vendor_product_day: siblingLimit,
     },
     summary: {
       records_loaded: records.length,
       records_with_date_added: withDates.length,
-      candidates_in_lookback: mapped.length,
+      candidates_in_lookback: mappedRecent.length,
+      backlog_candidates_considered: mappedBacklog.length,
       already_seen_filtered: options.includeSeen ? 0 : mapped.filter(candidate => candidate.already_seen).length,
+      sibling_dampened: siblingDampened,
       candidates_emitted: candidates.length,
+      recent_emitted: candidates.filter(candidate => candidate.recency_bucket === 'recent').length,
+      backlog_emitted: candidates.filter(candidate => candidate.recency_bucket === 'backlog').length,
     },
     candidates,
   };
+}
+
+function productionPacketFor(candidate) {
+  return {
+    schema_version: 'vulncheck-kev-prefill/1',
+    generated_at: new Date().toISOString(),
+    source: {
+      publisher: 'VulnCheck',
+      dataset: 'VulnCheck KEV',
+      attribution_required: true,
+      attribution_label: 'VulnCheck KEV',
+    },
+    candidate: {
+      candidate_key: candidate.candidate_key,
+      cves: candidate.cves,
+      recency_bucket: candidate.recency_bucket,
+      priority_score: candidate.priority_score,
+      priority_reasons: candidate.priority_reasons,
+      official_cisa_kev: candidate.official_cisa_kev,
+      vulncheck_exploitation_signal: candidate.vulncheck_exploitation_signal,
+      drafting_allowed: false,
+    },
+    source_packet_prefill: candidate.source_packet_prefill,
+  };
+}
+
+function writeProductionArtifacts(result, defaults) {
+  if (!defaults.enabled) {
+    throw new Error('VulnCheck KEV production intake is disabled in config (discovery_sources.vulncheck_kev.enabled=false)');
+  }
+  if (result.candidates.length === 0) {
+    return { index: null, packets: [] };
+  }
+  const packetDir = defaults.sourcePacketDir;
+  const written = [];
+  for (const candidate of result.candidates) {
+    const packetPath = join(packetDir, `${candidateFileStem(candidate)}.json`);
+    writeJson(packetPath, productionPacketFor(candidate));
+    candidate.production_artifact = packetPath;
+    written.push(packetPath);
+  }
+  writeJson(defaults.candidateIndex, {
+    ...result,
+    production: {
+      artifact_type: 'source-packet-prefill',
+      candidate_index_path: defaults.candidateIndex,
+      source_packet_dir: packetDir,
+      artifacts_written: written,
+      article_tasks_created: 0,
+      drafting_enabled: false,
+    },
+  });
+  return { index: defaults.candidateIndex, packets: written };
 }
 
 async function run() {
@@ -633,6 +768,7 @@ async function run() {
   const seenCves = collectSeenCves(args.seenCves);
   const result = buildRecentIntake(payload, {
     ...defaults,
+    execute: args.execute,
     asOf: args.asOf,
     endpoint: defaults.endpoint,
     seenCves,
@@ -640,6 +776,9 @@ async function run() {
   });
   result.input_source = source;
 
+  if (args.execute) {
+    result.production = writeProductionArtifacts(result, defaults);
+  }
   if (args.out) writeJson(args.out, result);
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 }

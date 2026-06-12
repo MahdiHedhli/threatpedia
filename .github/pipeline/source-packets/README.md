@@ -23,12 +23,13 @@ claims beyond `claims[]` unless the packet is updated and preflight is rerun.
 
 ## VulnCheck KEV Prefill
 
-ROAD-014 Slice 1 uses the VulnCheck KEV community backup endpoint as a
-first-class but non-authoritative source for recent zero-day prioritization.
-The helper requests one backup descriptor, follows the published backup payload
-URL, sorts by top-level `date_added` descending, defaults to
-`lookback_days: 30` and `max_candidates: 25`, and filters CVEs already present
-in public task or zero-day state.
+ROAD-014 uses the VulnCheck KEV community backup endpoint as a first-class but
+non-authoritative source for recent zero-day prioritization. The helper
+requests one backup descriptor, follows the published backup payload URL, sorts
+by top-level `date_added` descending, defaults to `lookback_days: 30` and
+`max_candidates: 10`, and filters CVEs already present in public task,
+source-packet, or zero-day state. When the recent window is exhausted, live mode
+fills from older unhandled records newest-to-oldest.
 
 The helper output is deliberately not a source packet that can be drafted from
 directly. Each candidate is marked `drafting_allowed: false` and includes a
@@ -41,6 +42,10 @@ exploitation signals and supporting evidence.
 VulnCheck attribution is required when VulnCheck KEV data is surfaced to users.
 Use the label `VulnCheck KEV` near any user-visible data derived from this
 source.
+
+Live artifacts are written under `.github/pipeline/source-packets/vulncheck-kev/`
+and staged in the normal discovery PR. They are candidate/source-packet queue
+items, not article draft tasks.
 
 ## Preflight Coverage
 

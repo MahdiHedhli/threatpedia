@@ -74,12 +74,16 @@ discovery_sources:
     enabled: true
     url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
   vulncheck_kev:
-    enabled: false              # Dry-run/source-packet prefill only in ROAD-014 Slice 1
+    enabled: true               # Live source-packet/candidate prefill only; set false for rollback
     backup_url: "https://api.vulncheck.com/v3/backup/vulncheck-kev"
     lookback_days: 30
-    max_candidates: 25
+    max_candidates: 10          # 10 per 6-hour run = 40/day candidate supply ceiling
+    backlog_fill: true          # After recent items, continue older unhandled newest-to-oldest
+    sibling_limit_per_vendor_product_day: 4
     local_throttle_ms: 250      # 240/minute; intentionally below the 1,000/minute community limit
     cache_ttl_minutes: 60
+    source_packet_dir: ".github/pipeline/source-packets/vulncheck-kev"
+    candidate_index_path: ".github/pipeline/source-packets/vulncheck-kev/latest.json"
   nvd:
     enabled: true
     base_url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
