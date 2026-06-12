@@ -1,0 +1,83 @@
+{
+  "task_id": "TASK-2026-0372",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-06-12T18:55:42.557Z",
+  "updated": "2026-06-12T18:55:42.557Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Oracle PeopleSoft Enterprise PeopleTools Missing Authentication for Critical Function Vulnerability (CVE-2026-35273)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-35273",
+      "https://www.oracle.com/security-alerts/alert-cve-2026-35273.html",
+      "https://support.oracle.com/signin/"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-35273",
+      "cves": [
+        "CVE-2026-35273"
+      ],
+      "exploitId": "TP-EXP-2026-0321",
+      "type": "Unclassified",
+      "platform": "Oracle  PeopleSoft Enterprise PeopleTools",
+      "severity": "critical",
+      "cisaKev": true,
+      "disclosedDate": "2026-06-12",
+      "cwes": [
+        "CWE-306"
+      ],
+      "knownRansomwareUse": true
+    },
+    "notes": "CISA KEV entry added 2026-06-12. Required action by 2026-06-15. Known ransomware campaign use — mention in article body. CVSS 3.1: 9.8 (CRITICAL). Discovery score: 100/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 50"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/oracle-peoplesoft-enterprise-peopletools-cve-2026-35273.md",
+    "branch": "pipeline/TASK-2026-0372",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 100,
+    "auto_certify": true,
+    "cvss": {
+      "score": 9.8,
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-06-12T18:55:42.557Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-12T18:55:42.557Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 100)"
+    }
+  ]
+}
