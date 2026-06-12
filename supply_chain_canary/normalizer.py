@@ -53,6 +53,7 @@ def parse_datetime(value: str | datetime) -> datetime:
         text = value.strip()
         if text.endswith("Z"):
             text = f"{text[:-1]}+00:00"
+        text = re.sub(r"(\.\d{6})\d+", r"\1", text)
         parsed = datetime.fromisoformat(text)
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
@@ -80,7 +81,12 @@ def build_purl(ecosystem: str, name: str, version: str) -> str:
     normalized = normalize_name(ecosystem, name)
     encoded_version = quote(version.strip(), safe="")
     if ecosystem == "npm":
-        encoded_name = quote(normalized, safe="/")
+        if normalized.startswith("@") and "/" in normalized:
+            scope, pkg_name = normalized[1:].split("/", 1)
+            encoded_scope = quote(scope, safe="")
+            encoded_pkg_name = quote(pkg_name, safe="")
+            return f"pkg:npm/{encoded_scope}/{encoded_pkg_name}@{encoded_version}"
+        encoded_name = quote(normalized, safe="")
         return f"pkg:npm/{encoded_name}@{encoded_version}"
     if ecosystem == "pypi":
         encoded_name = quote(normalized, safe="")

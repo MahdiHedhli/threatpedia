@@ -49,10 +49,11 @@ def dedupe_boundary_rows(
     persist the returned boundary keys with supply_feed_cursor.boundary.
     """
 
+    valid_rows = [row for row in rows if row.get("Path") and row.get("Version") and row.get("Timestamp")]
     seen_boundary_keys = seen_boundary_keys or set()
-    deduped = [row for row in rows if boundary_key(row) not in seen_boundary_keys]
+    deduped = [row for row in valid_rows if boundary_key(row) not in seen_boundary_keys]
     if not deduped:
-        return [], set()
+        return [], set(seen_boundary_keys)
     max_timestamp = max(row.get("Timestamp", "") for row in deduped)
     next_boundary = {boundary_key(row) for row in deduped if row.get("Timestamp") == max_timestamp}
     return deduped, next_boundary

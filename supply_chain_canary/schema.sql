@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS supply_release_event (
   raw_registry_metadata JSONB NOT NULL,
   observed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE (ecosystem, name, version, published_at, feed_cursor)
+  UNIQUE (ecosystem, name, version)
 );
 
 CREATE INDEX IF NOT EXISTS idx_supply_release_event_purl

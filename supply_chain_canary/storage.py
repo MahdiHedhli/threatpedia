@@ -40,7 +40,7 @@ INSERT INTO supply_release_event (
   %(raw_registry_metadata)s::jsonb,
   %(observed_at)s
 )
-ON CONFLICT (ecosystem, name, version, published_at, feed_cursor) DO NOTHING
+ON CONFLICT (ecosystem, name, version) DO NOTHING
 RETURNING id;
 """
 

@@ -10,7 +10,7 @@ from datetime import datetime
 from email.utils import parsedate_to_datetime
 from html import unescape
 import json
-import re
+from html.parser import HTMLParser
 from typing import Any
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -19,6 +19,51 @@ from .normalizer import ReleaseEvent, parse_datetime, release_event
 
 
 PYPI_JSON_BASE = "https://pypi.org/pypi"
+
+
+class _PyPIUpdatesParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.items: list[dict[str, str]] = []
+        self._current_item: dict[str, str] | None = None
+        self._current_tag: str | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() == "item":
+            self._current_item = {}
+            self._current_tag = None
+            return
+        if self._current_item is not None and tag.lower() in {"title", "link", "pubdate"}:
+            self._current_tag = tag.lower()
+
+    def handle_endtag(self, tag: str) -> None:
+        if self._current_item is None:
+            return
+        if tag.lower() == "item":
+            title = self._current_item.get("title", "").strip()
+            if title and " " in title:
+                project, version = title.rsplit(" ", 1)
+                pub_date = self._current_item.get("pubdate", "").strip()
+                link = self._current_item.get("link", "").strip()
+                self.items.append(
+                    {
+                        "project": project.strip(),
+                        "version": version.strip(),
+                        "published_at": parsedate_to_datetime(pub_date).isoformat() if pub_date else "",
+                        "link": link,
+                        "cursor": pub_date or link or title,
+                    }
+                )
+            self._current_item = None
+            self._current_tag = None
+            return
+        if self._current_tag == tag.lower():
+            self._current_tag = None
+
+    def handle_data(self, data: str) -> None:
+        if self._current_item is None or self._current_tag is None:
+            return
+        self._current_item[self._current_tag] = self._current_item.get(self._current_tag, "") + data
 
 
 def project_json_url(project_name: str) -> str:
@@ -32,31 +77,19 @@ def fetch_project_json(project_name: str, timeout: int = 20) -> dict[str, Any]:
 
 
 def parse_updates_rss(xml_text: str) -> list[dict[str, str]]:
-    items: list[dict[str, str]] = []
-
-    def tag_text(item_text: str, tag: str) -> str:
-        match = re.search(rf"<{tag}[^>]*>(.*?)</{tag}>", item_text, flags=re.DOTALL | re.IGNORECASE)
-        return unescape(match.group(1).strip()) if match else ""
-
-    for match in re.finditer(r"<item\b[^>]*>(.*?)</item>", xml_text, flags=re.DOTALL | re.IGNORECASE):
-        item_text = match.group(1)
-        title = tag_text(item_text, "title")
-        link = tag_text(item_text, "link")
-        pub_date = tag_text(item_text, "pubDate")
-        if not title or " " not in title:
-            continue
-        project, version = title.rsplit(" ", 1)
-        published_at = parsedate_to_datetime(pub_date).isoformat() if pub_date else ""
-        items.append(
-            {
-                "project": project.strip(),
-                "version": version.strip(),
-                "published_at": published_at,
-                "link": link,
-                "cursor": pub_date or link or title,
-            }
-        )
-    return items
+    parser = _PyPIUpdatesParser()
+    parser.feed(xml_text)
+    parser.close()
+    return [
+        {
+            "project": unescape(item["project"]),
+            "version": unescape(item["version"]),
+            "published_at": item["published_at"],
+            "link": unescape(item["link"]),
+            "cursor": unescape(item["cursor"]),
+        }
+        for item in parser.items
+    ]
 
 
 def release_event_from_project_json(
