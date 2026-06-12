@@ -34,9 +34,9 @@ bulk-support lanes are out of scope here (see ADR 0009).
 ```
 
 No API key is required on the scheduled path. Article generation happens
-**inside an agent's own subscription** (Claude Code, Gemini, or a human typing)
-when the dispatcher hands off the task. This keeps the pipeline
-agent-agnostic and lets it scale without centralizing model spend.
+**inside an approved agent/model lane or a human-operated session** when the
+dispatcher hands off the task. This keeps the pipeline agent-agnostic and lets
+it scale without centralizing model spend.
 
 `scripts/generate-article.mjs` is **legacy / manual only** — it calls the
 Claude API directly and is not used by any scheduled workflow. Retain for
@@ -214,8 +214,8 @@ discovery queues are open, validated, and stable.
      non-media sources unless one government source is present.
    - Article frontmatter may include an optional `generation` object for
      internal auditability. When present, it must include non-empty `provider`
-     and `model` fields and may include `tool`, `agent`, and `promptProfile`.
-     This metadata is not rendered in the public article UI.
+     and `model` fields and may include `tool`, `agent`, `lane`, `surface`, and
+     `promptProfile`. This metadata is not rendered in the public article UI.
    - Framework mappings are validated against the public schema mirror and
      pinned framework data where available. New ATT&CK mappings should declare
      `attack-version: "v19"` or `attack-version: "v19.0"` unless the task is
@@ -338,8 +338,10 @@ workflow language such as "this article," "this report," `reviewStatus`,
 `draft_ai`, "attribution confidence," or "confidence grade." Those values can
 exist in frontmatter or operator notes where appropriate. Optional `generation`
 model provenance metadata can also exist in frontmatter for auditability, but
-must not be narrated in public prose. Public article prose should describe the
-evidence basis directly rather than narrating
+must not be narrated in public prose. Optional `generation.lane` and
+`generation.surface` fields identify the producer lane and execution surface
+for review/audit only. Public article prose should describe the evidence basis
+directly rather than narrating
 Threatpedia's internal scoring or editorial process.
 
 **Config authority:** `pipeline-dispatcher.yml` now reads thresholds from

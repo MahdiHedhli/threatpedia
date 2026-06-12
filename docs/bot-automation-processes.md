@@ -1,5 +1,12 @@
 # Threatpedia Bot Automation Processes
 
+> **Status note (2026-06-12):** This is a legacy automation-process reference.
+> Current fresh-content pipeline behavior, review-gate semantics, and
+> provenance rules are governed by [`docs/PIPELINE.md`](PIPELINE.md). Any
+> Gemini-specific "must pass Gemini Code Assist" language below should be read
+> as legacy guidance superseded by the configured current-head AI reviewer model
+> in the pipeline docs.
+
 ## Overview
 
 Threatpedia automation is coordinated through scheduled agent tasks that execute on defined schedules across 11 active pipelines: new threat intelligence discovery, incident enrichment, gap-fill reporting, glossary term management, threat actor linking, zero-day tracking, source research, scraper development, data ingestion, and bot-assisted code review. All tasks follow a standardized workflow that includes:
@@ -63,7 +70,7 @@ Security is non-negotiable in all automation processes. The following rules prot
 - **Never commit unvalidated data** — failed validation should cause task to abort and report
 
 ### PR Review and Merging
-- **All PRs must pass Gemini Code Assist review** before owner account merges
+- **All PRs must satisfy the current configured review-gate model** before owner account merges
 - **Critical and high-priority findings** must be fixed before merge
 - **Medium and low findings** should also be reviewed before merge; if one is deferred, the deferment must be explicit and owned by the merger
 - **Reply to actionable Gemini comments** with the fix or disposition before resolving the thread

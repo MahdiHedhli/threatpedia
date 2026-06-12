@@ -170,6 +170,8 @@ const GENERATION_METADATA_SCHEMA = `  generation: object (optional; non-rendered
     model: string (required when generation is present; exact model identifier used for drafting)
     tool: string (optional; e.g., "claude-cli", "codex", "gemini-cli")
     agent: string (optional; must be a canonical generatedBy identity)
+    lane: string (optional; drafting lane or worker lane)
+    surface: string (optional; execution surface or wrapper)
     promptProfile: string (optional; worker or prompt profile name)`;
 
 // ── Schemas per content type ────────────────────────────────────────────────
@@ -363,7 +365,7 @@ function buildRules(task) {
   11. MITRE tactic casing must use the canonical ATT&CK vocabulary; new mappings should declare attack-version "v19" or "v19.0" unless preserving a legacy article version; optional metadata must use confidence ${SCHEMA_MAPPING_CONFIDENCE_VALUES.join(' | ')} and non-empty evidence when present
   12. Do not bulk-assign or preserve Defense Evasion for ATT&CK v19 split cases without article-supported review; use the pinned v19 data and omit uncertain mappings rather than guessing
   13. framework-mappings are optional and currently only allowed for source-supported adversarial AI/ML behavior; MITRE ATLAS entries require framework: mitre-atlas and mapping-id AML.T####[.###]
-  14. Optional generation metadata is allowed only in frontmatter, not public prose; if present it must include non-empty provider and model fields
+  14. Optional generation metadata is allowed only in frontmatter, not public prose; if present it must include non-empty provider and model fields and may include lane/surface for provenance
   15. Do not add ATLAS because a topic is broadly AI-adjacent; require article evidence that an AI/ML system was targeted, abused as tooling, bypassed as a control, or compromised in the ML supply chain
   16. Canonical publisher aliases must be normalized in frontmatter and body
   17. The Astro build must pass: cd site && npm run build`;
