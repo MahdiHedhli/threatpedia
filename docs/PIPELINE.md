@@ -83,6 +83,15 @@ discovery queues are open, validated, and stable.
    - Script loads `.github/pipeline/config.yml`, installs lane-specific
      headroom limits, then runs the currently supported discovery lanes:
      - **zero-day:** CISA KEV + NVD CVSS enrichment
+       - **VulnCheck KEV recent intake (ROAD-014 Slice 1):** manual/dry-run
+         helper only. `node scripts/vulncheck-kev-intake.mjs --dry-run`
+         requests the VulnCheck KEV backup descriptor, follows the published
+         backup payload URL, selects recent records by top-level `date_added`,
+         and emits source-packet-prefill /
+         prioritization artifacts. It does not create tasks or draft articles.
+         CISA remains authoritative for official CISA KEV membership; VulnCheck
+         fields are non-authoritative exploitation signals and supporting
+         evidence with required VulnCheck KEV attribution.
      - **incident:** CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
      - **threat-actor promotion:** scans the recent incident corpus within the requested lookback window, skips actors already present in the corpus or pending threat-actor tasks (including known aliases), and promotes only evidence-backed names into new threat-actor tasks
      - **campaign promotion:** scans the recent incident corpus for named campaign-shaped incidents and strong same-actor clusters, then promotes only conservative, non-duplicate campaign candidates into new campaign tasks
@@ -165,6 +174,13 @@ discovery queues are open, validated, and stable.
      before drafting. The packet is a source-backed evidence contract; the
      draft should use packet `claims[]` and avoid `not_supported[]` items unless
      the packet is updated and preflight is rerun.
+   - **VulnCheck KEV prefill:** operators may run
+     `node scripts/vulncheck-kev-intake.mjs --dry-run --out <artifact.json>`
+     to inspect recent VulnCheck KEV candidates before selecting or enriching
+     zero-day source packets. The output preserves CVEs, CWEs, vendor/product,
+     ransomware-use field, canary signal, exploitation URLs, XDB references,
+     `date_added`, `cisa_date_added`, and `dueDate`. The output is
+     `prefill_only` and marks `drafting_allowed: false`.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`

@@ -16,8 +16,31 @@ claims beyond `claims[]` unless the packet is updated and preflight is rerun.
   zero-day task JSON.
 - `scripts/preflight-source-packet.mjs` validates one packet and returns
   pass/fail, errors, warnings, and a normalized summary.
+- `scripts/vulncheck-kev-intake.mjs` emits recent-first VulnCheck KEV
+  prioritization/source-packet-prefill artifacts in dry-run mode only.
 - `fixtures/zero-day-valid-packet.json` is a passing fixture.
 - `fixtures/zero-day-invalid-packet.json` is an intentionally failing fixture.
+
+## VulnCheck KEV Prefill
+
+ROAD-014 Slice 1 uses the VulnCheck KEV community backup endpoint as a
+first-class but non-authoritative source for recent zero-day prioritization.
+The helper requests one backup descriptor, follows the published backup payload
+URL, sorts by top-level `date_added` descending, defaults to
+`lookback_days: 30` and `max_candidates: 25`, and filters CVEs already present
+in public task or zero-day state.
+
+The helper output is deliberately not a source packet that can be drafted from
+directly. Each candidate is marked `drafting_allowed: false` and includes a
+`source_packet_prefill` object with VulnCheck supporting evidence, preserved
+field lineage, and `needs_human_review` source sufficiency. CISA remains
+authoritative for official CISA KEV membership, and CVE.org / MITRE remains
+authoritative for CVE identity. VulnCheck-specific fields are treated as
+exploitation signals and supporting evidence.
+
+VulnCheck attribution is required when VulnCheck KEV data is surfaced to users.
+Use the label `VulnCheck KEV` near any user-visible data derived from this
+source.
 
 ## Preflight Coverage
 
