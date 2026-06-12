@@ -185,6 +185,16 @@ discovery queues are open, validated, and stable.
      CWEs, vendor/product, ransomware-use field, canary signal, exploitation
      URLs, XDB references, `date_added`, `cisa_date_added`, and `dueDate`. The
      output is `prefill_only` and marks `drafting_allowed: false`.
+     Production enablement is explicit in `.github/pipeline/config.yml`
+     `discovery_sources.vulncheck_kev.enabled`; set it to `false` to roll back
+     the lane. Live runs require the repository Actions secret `VULNCHECKAPI`
+     and fail closed if it is missing. The helper fetches the VulnCheck KEV
+     backup once per run, emits newest unhandled records first, fills from older
+     unhandled records newest-to-oldest only after the recent window is
+     exhausted, and applies seen-CVE and sibling dampening before writing
+     artifacts. VulnCheck prefills may influence prioritization and evidence
+     gathering, but they do not create article drafts or establish official CISA
+     KEV membership.
 
 8. **Validation gate**
    - `--validate` enforces `.github/pipeline/config.yml` `validation.*`
