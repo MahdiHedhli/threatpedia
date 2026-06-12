@@ -11,6 +11,8 @@
 import { PIPELINE_TASK_FILE_PATH_RE } from './pipeline-task-patterns.mjs';
 
 const DEFAULT_AI_REVIEW_LOGINS = [
+  'chatgpt-codex-connector',
+  'chatgpt-codex-connector[bot]',
   'gemini-code-assist',
   'gemini-code-assist[bot]',
   'dangermouse-bot',
@@ -18,6 +20,7 @@ const DEFAULT_AI_REVIEW_LOGINS = [
 ];
 const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-actors|zero-days)\/.+\.mdx?$/;
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
+const SOURCE_PACKET_FILE_RE = /^\.github\/pipeline\/source-packets\/.+\.json$/;
 const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml$|docs\/PIPELINE\.md$|site\/src\/content\.config\.ts$)/;
 
 function parseArgs(argv) {
@@ -90,6 +93,7 @@ function isAiLogin(login, aiLogins) {
 function isRelevantFile(path) {
   return CONTENT_FILE_RE.test(path)
     || PUBLIC_SITE_FILE_RE.test(path)
+    || SOURCE_PACKET_FILE_RE.test(path)
     || PIPELINE_FILE_RE.test(path)
     || PIPELINE_TASK_FILE_PATH_RE.test(path);
 }
