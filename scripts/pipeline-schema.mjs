@@ -104,6 +104,8 @@ export const SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS = Object.freeze([
 export const SCHEMA_GENERATION_METADATA_OPTIONAL_FIELDS = Object.freeze([
   'tool',
   'agent',
+  'lane',
+  'surface',
   'promptProfile',
 ]);
 

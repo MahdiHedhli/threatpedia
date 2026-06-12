@@ -42,6 +42,8 @@ const generationMetadata = z.object({
   model: z.string().min(1),
   tool: z.string().min(1).optional(),
   agent: generatedBy.optional(),
+  lane: z.string().min(1).optional(),
+  surface: z.string().min(1).optional(),
   promptProfile: z.string().min(1).optional(),
 }).strict();
 
