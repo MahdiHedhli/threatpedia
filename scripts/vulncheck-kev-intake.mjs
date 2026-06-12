@@ -220,7 +220,7 @@ function tokenFromEnvFile(path) {
     if (value.length >= 2 && value[0] === value[value.length - 1] && ['"', "'"].includes(value[0])) {
       value = value.slice(1, -1);
     }
-    return value || null;
+    if (value) return value;
   }
   return null;
 }
@@ -237,10 +237,19 @@ async function fetchJsonWithRetry({ url, headers = {}, localThrottleMs, retries 
   if (localThrottleMs > 0) await sleep(localThrottleMs);
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: { Accept: 'application/json', 'User-Agent': 'threatpedia-vulncheck-kev-intake/1.0', ...headers },
-    });
+    let response;
+    try {
+      response = await fetch(url, {
+        method: 'GET',
+        headers: { Accept: 'application/json', 'User-Agent': 'threatpedia-vulncheck-kev-intake/1.0', ...headers },
+      });
+    } catch (error) {
+      if (attempt < retries) {
+        await sleep(1000 * (2 ** attempt));
+        continue;
+      }
+      throw error;
+    }
 
     if (response.status === 429 && attempt < retries) {
       const retryAfter = Number.parseInt(response.headers.get('retry-after') || '', 10);
@@ -250,6 +259,10 @@ async function fetchJsonWithRetry({ url, headers = {}, localThrottleMs, retries 
     }
 
     if (!response.ok) {
+      if (response.status >= 500 && attempt < retries) {
+        await sleep(1000 * (2 ** attempt));
+        continue;
+      }
       let errorSummary = `${response.status} ${response.statusText}`;
       try {
         const body = await response.json();
