@@ -65,9 +65,15 @@ assert.equal(result.mode, 'dry-run');
 assert.equal(result.drafting_enabled, false);
 assert.equal(result.summary.records_loaded, 3);
 assert.equal(result.summary.candidates_in_lookback, 2);
+assert.equal(result.summary.backlog_candidates_considered, 1);
 assert.equal(result.summary.already_seen_filtered, 1);
-assert.equal(result.summary.candidates_emitted, 1);
+assert.equal(result.summary.candidates_emitted, 2);
+assert.equal(result.summary.recent_emitted, 1);
+assert.equal(result.summary.backlog_emitted, 1);
 assert.equal(result.candidates[0].cves[0], 'CVE-2026-0003');
+assert.equal(result.candidates[0].recency_bucket, 'recent');
+assert.equal(result.candidates[1].cves[0], 'CVE-2026-0001');
+assert.equal(result.candidates[1].recency_bucket, 'backlog');
 assert.equal(result.candidates[0].drafting_allowed, false);
 assert.equal(result.candidates[0].official_cisa_kev.listed, true);
 assert.equal(result.candidates[0].official_cisa_kev.date_added, '2026-06-11');
@@ -76,6 +82,29 @@ assert.equal(result.candidates[0].vulncheck_exploitation_signal.xdb_exploit_type
 assert.equal(result.candidates[0].source_packet_prefill.status, 'prefill_only');
 assert.equal(result.candidates[0].source_packet_prefill.source_quality.source_sufficiency, 'needs_human_review');
 assert.match(result.candidates[0].source_packet_prefill.authority_boundary.instruction, /verify CISA KEV membership/);
+
+const noBacklog = buildRecentIntake(fixture, {
+  lookbackDays: 30,
+  maxCandidates: 25,
+  asOf: '2026-06-11',
+  seenCves: new Set(['CVE-2026-0002']),
+  backlogFill: false,
+});
+
+assert.equal(noBacklog.summary.backlog_candidates_considered, 0);
+assert.deepEqual(noBacklog.candidates.map(candidate => candidate.cves[0]), ['CVE-2026-0003']);
+
+const liveMode = buildRecentIntake(fixture, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-11',
+  seenCves: new Set(),
+  execute: true,
+});
+
+assert.equal(liveMode.mode, 'live');
+assert.equal(liveMode.drafting_enabled, false);
+assert.equal(liveMode.candidates[0].drafting_allowed, false);
 
 const includeSeen = buildRecentIntake(fixture, {
   lookbackDays: 30,

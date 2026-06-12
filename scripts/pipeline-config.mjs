@@ -75,12 +75,16 @@ export const DEFAULTS = Object.freeze({
   discovery_sources: {
     cisa_kev: { enabled: true },
     vulncheck_kev: {
-      enabled: false,
+      enabled: true,
       backup_url: 'https://api.vulncheck.com/v3/backup/vulncheck-kev',
       lookback_days: 30,
-      max_candidates: 25,
+      max_candidates: 10,
+      backlog_fill: true,
+      sibling_limit_per_vendor_product_day: 4,
       local_throttle_ms: 250,
       cache_ttl_minutes: 60,
+      source_packet_dir: '.github/pipeline/source-packets/vulncheck-kev',
+      candidate_index_path: '.github/pipeline/source-packets/vulncheck-kev/latest.json',
     },
     nvd: { enabled: true, lookback_days: 7, min_cvss: 7.0 },
     cisa_alerts: {
