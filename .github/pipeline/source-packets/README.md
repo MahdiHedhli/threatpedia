@@ -47,13 +47,16 @@ Live artifacts are written under `.github/pipeline/source-packets/vulncheck-kev/
 and staged in the normal discovery PR. They are candidate/source-packet queue
 items, not article draft tasks.
 
-Production use is controlled by `.github/pipeline/config.yml`
-`discovery_sources.vulncheck_kev.enabled`. Set that flag to `false` for the
-rollback path. Scheduled discovery runs require the repository Actions secret
-`VULNCHECKAPI`; the helper fails closed when live mode is enabled but the token
-is unavailable. The live path is intentionally bounded to one VulnCheck KEV
-backup fetch per run, 10 emitted candidates by default, latest-first ordering,
-seen-CVE filtering, and sibling dampening by vendor/product/day.
+Production use is controlled by the `discovery_sources.vulncheck_kev.enabled`
+setting in `.github/pipeline/config.yml`. Scheduled discovery runs also require
+the repository Actions secret `VULNCHECKAPI`; the helper fails closed when live
+mode is enabled but the token is unavailable. The live path is intentionally
+bounded to one VulnCheck KEV backup fetch per run, 10 emitted candidates by
+default, latest-first ordering, seen-CVE filtering, and sibling dampening by
+vendor/product/day. Do not treat the config flag alone as a scheduled rollback:
+until the workflow/helper are changed to skip the step when disabled, rollback
+requires pausing or reverting the VulnCheck workflow/helper path, or manually
+dispatching discovery with `execute=false` or a non-zero-day lane.
 
 Operators should review the discovery PR before merge. VulnCheck prefill files
 can raise priority and provide source-packet evidence, but they do not create
