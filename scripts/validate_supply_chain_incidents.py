@@ -35,11 +35,35 @@ REQUIRED_FIELDS = [
     "impact_categories",
     "references",
     "tags",
+    "confidence",
+    "evidence_level",
+    "attack_stage",
+    "source_artifact_divergence",
+    "maintainers",
+    "repositories",
+    "build_systems",
+    "distribution_channels",
+    "compromised_accounts",
 ]
 
 REQUIRED_COMPONENT_FIELDS = ["component_type", "ecosystem", "name", "vendor"]
 REQUIRED_REFERENCE_FIELDS = ["title", "publisher", "url", "published_at"]
+REQUIRED_REPOSITORY_FIELDS = ["name", "host", "owner", "url"]
+REQUIRED_BUILD_SYSTEM_FIELDS = ["name", "provider", "category"]
+REQUIRED_DISTRIBUTION_CHANNEL_FIELDS = ["name", "channel_type", "ecosystem"]
+REQUIRED_COMPROMISED_ACCOUNT_FIELDS = ["name", "provider", "account_type", "role"]
 VALID_STATUS = {"confirmed"}
+VALID_CONFIDENCE = {"high", "medium", "low"}
+VALID_EVIDENCE_LEVELS = {"primary", "vendor", "researcher", "media", "inferred"}
+VALID_ATTACK_STAGES = {
+    "source_compromise",
+    "build_compromise",
+    "account_compromise",
+    "package_publish",
+    "dependency_resolution",
+    "distribution_compromise",
+    "ci_cd_compromise",
+}
 VALID_COMPONENT_TYPES = {"package", "project", "software", "service", "update_channel", "website"}
 VALID_VECTORS = {
     "build_system_compromise",
@@ -160,6 +184,59 @@ def validate_reference(errors: list[str], incident_id: str, index: int, referenc
         errors.append(f"{path}.published_at: expected YYYY-MM-DD date")
 
 
+def validate_maintainer(errors: list[str], incident_id: str, index: int, maintainer: Any) -> None:
+    path = f"{incident_id}.maintainers[{index}]"
+    if not isinstance(maintainer, dict):
+        errors.append(f"{path}: expected object")
+        return
+    require_string(errors, f"{path}.name", maintainer.get("name"))
+    aliases = maintainer.get("aliases")
+    if not isinstance(aliases, list):
+        errors.append(f"{path}.aliases: expected list")
+        return
+    for alias_index, alias in enumerate(aliases):
+        if not isinstance(alias, str) or not alias.strip():
+            errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
+    if "id_slug" in maintainer:
+        require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
+
+
+def validate_repository(errors: list[str], incident_id: str, index: int, repository: Any) -> None:
+    path = f"{incident_id}.repositories[{index}]"
+    if not isinstance(repository, dict):
+        errors.append(f"{path}: expected object")
+        return
+    for field in REQUIRED_REPOSITORY_FIELDS:
+        if field not in repository:
+            errors.append(f"{path}.{field}: missing required field")
+    require_string(errors, f"{path}.name", repository.get("name"))
+    require_string(errors, f"{path}.host", repository.get("host"))
+    require_string(errors, f"{path}.owner", repository.get("owner"))
+    if not is_valid_url(repository.get("url")):
+        errors.append(f"{path}.url: expected http(s) URL")
+
+
+def validate_named_fields(
+    errors: list[str],
+    incident_id: str,
+    field_name: str,
+    required_fields: list[str],
+    records: Any,
+) -> None:
+    if not isinstance(records, list):
+        errors.append(f"{incident_id}.{field_name}: expected list")
+        return
+    for index, record in enumerate(records):
+        path = f"{incident_id}.{field_name}[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        for field in required_fields:
+            if field not in record:
+                errors.append(f"{path}.{field}: missing required field")
+            require_string(errors, f"{path}.{field}", record.get(field))
+
+
 def validate_incident(incident: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(incident, dict):
@@ -182,6 +259,16 @@ def validate_incident(incident: Any) -> list[str]:
         require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
     if "status" in incident and incident.get("status") not in VALID_STATUS:
         errors.append(f"{incident_id}.status: invalid value {incident.get('status')!r}")
+    if incident.get("confidence") not in VALID_CONFIDENCE:
+        errors.append(f"{incident_id}.confidence: invalid value {incident.get('confidence')!r}")
+    if incident.get("evidence_level") not in VALID_EVIDENCE_LEVELS:
+        errors.append(f"{incident_id}.evidence_level: invalid value {incident.get('evidence_level')!r}")
+    if incident.get("attack_stage") not in VALID_ATTACK_STAGES:
+        errors.append(f"{incident_id}.attack_stage: invalid value {incident.get('attack_stage')!r}")
+    if incident.get("source_artifact_divergence") is not None and not isinstance(incident.get("source_artifact_divergence"), bool):
+        errors.append(f"{incident_id}.source_artifact_divergence: expected boolean or null")
+    if "notes" in incident:
+        require_string(errors, f"{incident_id}.notes", incident.get("notes"), min_length=8)
 
     first_observed_at = None
     if "first_observed_at" in incident:
@@ -220,6 +307,36 @@ def validate_incident(incident: Any) -> list[str]:
         else:
             for index, reference in enumerate(references):
                 validate_reference(errors, incident_id, index, reference)
+
+    maintainers = incident.get("maintainers")
+    if not isinstance(maintainers, list):
+        errors.append(f"{incident_id}.maintainers: expected list")
+    else:
+        for index, maintainer in enumerate(maintainers):
+            validate_maintainer(errors, incident_id, index, maintainer)
+
+    repositories = incident.get("repositories")
+    if not isinstance(repositories, list):
+        errors.append(f"{incident_id}.repositories: expected list")
+    else:
+        for index, repository in enumerate(repositories):
+            validate_repository(errors, incident_id, index, repository)
+
+    validate_named_fields(errors, incident_id, "build_systems", REQUIRED_BUILD_SYSTEM_FIELDS, incident.get("build_systems"))
+    validate_named_fields(
+        errors,
+        incident_id,
+        "distribution_channels",
+        REQUIRED_DISTRIBUTION_CHANNEL_FIELDS,
+        incident.get("distribution_channels"),
+    )
+    validate_named_fields(
+        errors,
+        incident_id,
+        "compromised_accounts",
+        REQUIRED_COMPROMISED_ACCOUNT_FIELDS,
+        incident.get("compromised_accounts"),
+    )
 
     return errors
 

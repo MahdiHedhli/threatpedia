@@ -25,6 +25,18 @@
   },
   {
     "aliases": [
+      "eslint-config-eslint"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-eslint-config-eslint",
+    "name": "eslint-config-eslint",
+    "package_url": "pkg:npm/eslint-config-eslint",
+    "source_incident_ids": [
+      "SC-2018-ESLINT-SCOPE"
+    ]
+  },
+  {
+    "aliases": [
       "eslint-scope"
     ],
     "ecosystem": "npm",
@@ -61,6 +73,18 @@
   },
   {
     "aliases": [
+      "flatmap-stream"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-flatmap-stream",
+    "name": "flatmap-stream",
+    "package_url": "pkg:npm/flatmap-stream",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ]
+  },
+  {
+    "aliases": [
       "@ledgerhq/connect-kit"
     ],
     "ecosystem": "npm",
@@ -91,6 +115,18 @@
     "id": "pkg-npm-node-ipc",
     "name": "node-ipc",
     "package_url": "pkg:npm/node-ipc",
+    "source_incident_ids": [
+      "SC-2022-NODE-IPC"
+    ]
+  },
+  {
+    "aliases": [
+      "peacenotwar"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-peacenotwar",
+    "name": "peacenotwar",
+    "package_url": "pkg:npm/peacenotwar",
     "source_incident_ids": [
       "SC-2022-NODE-IPC"
     ]

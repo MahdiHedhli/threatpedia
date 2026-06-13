@@ -1,8 +1,10 @@
 # Supply-Chain Graph Primitives
 
-Phase 1B converts the curated supply-chain incident corpus into first-class
-entity and relationship JSON files. This is a lightweight relationship layer,
-not a graph database.
+Phase 1B introduced first-class entity and relationship JSON files. Phase 1C
+deepens those primitives by extracting build systems, distribution channels,
+and compromised accounts from the curated incident corpus.
+
+This is a lightweight relationship layer, not a graph database.
 
 ## Inputs
 
@@ -17,6 +19,9 @@ data/supply-chain-entities/maintainers.json
 data/supply-chain-entities/packages.json
 data/supply-chain-entities/repositories.json
 data/supply-chain-entities/organizations.json
+data/supply-chain-entities/build_systems.json
+data/supply-chain-entities/distribution_channels.json
+data/supply-chain-entities/accounts.json
 ```
 
 Each entity has:
@@ -28,6 +33,8 @@ Each entity has:
 
 Package entities also carry `ecosystem` and `package_url` when available.
 Repository entities also carry `host`, `url`, and `owner`.
+Build-system, distribution-channel, and account entities carry type-specific
+fields copied from the incident corpus.
 
 ## Relationship Store
 
@@ -42,6 +49,10 @@ Allowed relationship types are intentionally narrow:
 - `AFFECTED_REPOSITORY`
 - `AFFECTED_ORGANIZATION`
 - `RELATED_INCIDENT`
+- `USED_BUILD_SYSTEM`
+- `USED_DISTRIBUTION_CHANNEL`
+- `COMPROMISED_ACCOUNT`
+- `SOURCE_ARTIFACT_DIVERGENCE`
 
 Relationships usually use an incident node as the source:
 
@@ -52,6 +63,19 @@ Relationships usually use an incident node as the source:
   "type": "AFFECTED_PACKAGE"
 }
 ```
+
+## Current Graph Density
+
+The Phase 1C depth pass over the same 25 incidents currently emits:
+
+- Maintainers: 5
+- Packages: 16
+- Repositories: 10
+- Organizations: 19
+- Build systems: 6
+- Distribution channels: 11
+- Compromised accounts: 8
+- Relationships: 95
 
 ## Build and Validate
 
@@ -81,6 +105,9 @@ This phase supports lookup questions such as:
 - incidents involving a maintainer
 - incidents involving a repository
 - incidents involving an organization
+- incidents involving a build system
+- incidents involving a distribution channel
+- incidents involving a compromised account
 
 It does not implement:
 

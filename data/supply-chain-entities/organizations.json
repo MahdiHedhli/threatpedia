@@ -131,6 +131,26 @@
   },
   {
     "aliases": [
+      "RIAEvangelist"
+    ],
+    "id": "org-riaevangelist",
+    "name": "RIAEvangelist",
+    "source_incident_ids": [
+      "SC-2022-NODE-IPC"
+    ]
+  },
+  {
+    "aliases": [
+      "right9ctrl"
+    ],
+    "id": "org-right9ctrl",
+    "name": "right9ctrl",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ]
+  },
+  {
+    "aliases": [
       "SolarWinds"
     ],
     "id": "org-solarwinds",

@@ -5,8 +5,8 @@ incidents can inform later graph-schema design, attribution modeling, and
 release-event enrichment without mixing those later decisions into the raw
 corpus.
 
-Phase 1A is intentionally narrow. The corpus is machine-readable evidence
-inventory, not a risk engine.
+Phase 1C keeps the corpus as machine-readable evidence inventory while adding
+enough structured depth for graph primitives. It is still not a risk engine.
 
 ## Corpus Location
 
@@ -47,9 +47,49 @@ The core fields are:
 - `impact_categories`: normalized impact labels
 - `references`: public documentation for the incident
 - `tags`: additional non-authoritative grouping tags
+- `confidence`: `high`, `medium`, or `low` confidence in the structured record
+- `evidence_level`: strongest evidence class used for the record: `primary`,
+  `vendor`, `researcher`, `media`, or `inferred`
+- `attack_stage`: controlled stage label for where the supply-chain abuse
+  entered or propagated
+- `source_artifact_divergence`: `true`, `false`, or `null` when unknown
+- `maintainers`: named maintainers or maintainership handles when directly
+  supported
+- `repositories`: source repositories tied to the incident
+- `build_systems`: build or CI/CD systems tied to the incident
+- `distribution_channels`: registries, update channels, CDN scripts, source
+  releases, or download paths used by the incident
+- `compromised_accounts`: package-registry, source-control, or release-path
+  accounts/tokens tied to the incident
 
 Package components may include `package_url` when a PURL is available. Non-
 package software, services, websites, and update channels should use `null`.
+
+## Attack Stages
+
+Current `attack_stage` values are:
+
+- `source_compromise`
+- `build_compromise`
+- `account_compromise`
+- `package_publish`
+- `dependency_resolution`
+- `distribution_compromise`
+- `ci_cd_compromise`
+
+These are placement labels for relationship extraction. They are not scoring
+labels and do not attribute an actor.
+
+## Evidence Quality
+
+Every incident must carry:
+
+- `confidence`: `high`, `medium`, or `low`
+- `evidence_level`: `primary`, `vendor`, `researcher`, `media`, or `inferred`
+
+Use `inferred` only when the structured field is clearly derived from the
+documented record and no stronger class applies. Do not use evidence quality as
+a severity score.
 
 ## Vector Labels
 
@@ -109,10 +149,15 @@ make external network calls.
 4. Use existing vector and impact labels when possible.
 5. Add a new label only when the existing schema cannot represent the incident.
 6. Include at least one public reference.
-7. Run validation:
+7. Fill evidence-quality and graph-depth fields. Use empty arrays for
+   unsupported maintainers, repositories, build systems, distribution channels,
+   or compromised accounts.
+8. Regenerate graph primitives and run validation:
 
 ```bash
+python3 scripts/build_supply_chain_entities.py
 python3 scripts/validate_supply_chain_incidents.py
+python3 scripts/validate_supply_chain_graph.py
 python3 -m unittest discover -s tests
 git diff --check
 ```
