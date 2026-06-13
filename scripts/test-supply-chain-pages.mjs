@@ -115,6 +115,11 @@ assert.equal(
 );
 assert.ok(codecov.seo.ogTitle, 'incident page should include Open Graph title');
 assert.ok(codecov.seo.jsonLd, 'incident page should include JSON-LD');
+assert.deepEqual(
+  codecov.seo.jsonLd.about,
+  codecov.incident.supply_chain_vectors.map((vector) => ({ '@type': 'Thing', name: vector })),
+  'incident JSON-LD should expose supply-chain vectors as Thing objects'
+);
 
 const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
 assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should include related incidents');
