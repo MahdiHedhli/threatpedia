@@ -106,3 +106,34 @@ Preview review checklist:
 
 Record the preview URL or local preview result before opening the production
 enablement PR.
+
+## Production Enablement Record
+
+Production deployment was enabled on 2026-06-13 by setting
+`ENABLE_SUPPLY_CHAIN_PAGES=true` on the GitHub Pages Astro build step in
+`.github/workflows/deploy.yml`.
+
+The public enablement PR must record operator approval, the preview-review
+result, and the latest readiness-gate result. At enablement, the required
+validation result was PASS for:
+
+- `python3 scripts/validate_supply_chain_incidents.py`
+- `python3 scripts/validate_supply_chain_graph.py`
+- `node scripts/test-supply-chain-pages.mjs`
+- `node scripts/check_supply_chain_public_readiness.mjs`
+- production-equivalent enabled Astro build
+- `git diff --check`
+
+When a production-enable PR also changes incident Markdown/MDX metadata, article
+body content, or MITRE ATT&CK mappings, run the shared content validator against
+the changed article files using the same `--files-file` / `--new-files-file`
+inputs as `.github/workflows/pipeline-validate.yml`. When the change edits
+pipeline task JSON, run:
+
+```bash
+node scripts/validate-pipeline-tasks.mjs --all
+```
+
+Rollback: set `ENABLE_SUPPLY_CHAIN_PAGES=false` or remove the build-step
+environment variable from `.github/workflows/deploy.yml`, redeploy, then confirm
+`/supply-chain/` and the Supply Chain nav link are absent.
