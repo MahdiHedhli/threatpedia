@@ -36,6 +36,21 @@ GENERIC_VENDOR_NAMES = {
     "open source maintainer",
     "open source maintainers",
 }
+GITHUB_SYSTEM_PATHS = {
+    "advisories",
+    "collections",
+    "explore",
+    "features",
+    "login",
+    "marketplace",
+    "notifications",
+    "orgs",
+    "search",
+    "settings",
+    "sponsors",
+    "topics",
+    "trending",
+}
 
 # Explicit human/entity hints are used only where the Phase 1A corpus does not
 # yet carry first-class maintainer/repository fields.
@@ -118,9 +133,11 @@ def github_repository_from_url(url: str) -> dict[str, str] | None:
     if parsed.netloc.lower() != "github.com":
         return None
     parts = [part for part in parsed.path.split("/") if part]
-    if len(parts) < 2 or parts[0] == "advisories":
+    if len(parts) < 2 or parts[0].lower() in GITHUB_SYSTEM_PATHS:
         return None
-    owner, repo = parts[0], parts[1]
+    owner, repo = parts[0], parts[1].removesuffix(".git")
+    if not repo:
+        return None
     return {
         "name": f"{owner}/{repo}",
         "host": "github.com",

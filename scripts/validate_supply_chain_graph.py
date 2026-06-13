@@ -30,6 +30,13 @@ VALID_RELATIONSHIP_TYPES = {
     "RELATED_INCIDENT",
 }
 ENTITY_ID_PATTERN = re.compile(r"^(maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
+RELATIONSHIP_TARGET_PREFIXES = {
+    "AFFECTED_PACKAGE": "pkg-",
+    "AFFECTED_MAINTAINER": "maintainer-",
+    "AFFECTED_REPOSITORY": "repo-",
+    "AFFECTED_ORGANIZATION": "org-",
+    "RELATED_INCIDENT": "incident-",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -49,11 +56,15 @@ def load_entities(entity_dir: Path) -> dict[str, list[dict[str, Any]]]:
     return {entity_type: load_json(entity_dir / filename) for entity_type, filename in ENTITY_FILES.items()}
 
 
+def collect_raw_incident_ids(corpus: list[dict[str, Any]]) -> set[str]:
+    return {incident["id"] for incident in corpus if isinstance(incident, dict) and isinstance(incident.get("id"), str)}
+
+
 def collect_incident_ids(corpus: list[dict[str, Any]]) -> set[str]:
     return {incident_node_id(incident["id"]) for incident in corpus if isinstance(incident, dict) and isinstance(incident.get("id"), str)}
 
 
-def validate_entity_file(errors: list[str], entity_type: str, entities: Any) -> set[str]:
+def validate_entity_file(errors: list[str], entity_type: str, entities: Any, incident_ids: set[str]) -> set[str]:
     ids: set[str] = set()
     alias_owners: dict[str, str] = {}
     if not isinstance(entities, list):
@@ -73,8 +84,15 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any) -> 
         ids.add(entity_id)
         if not isinstance(entity.get("name"), str) or not entity["name"].strip():
             errors.append(f"{entity_id}.name: expected non-empty string")
-        if not isinstance(entity.get("source_incident_ids"), list) or not entity["source_incident_ids"]:
+        source_incident_ids = entity.get("source_incident_ids")
+        if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")
+            source_incident_ids = []
+        for source_index, source_id in enumerate(source_incident_ids):
+            if not isinstance(source_id, str):
+                errors.append(f"{entity_id}.source_incident_ids[{source_index}]: expected string")
+            elif source_id not in incident_ids:
+                errors.append(f"{entity_id}.source_incident_ids[{source_index}]: unknown incident id {source_id!r}")
         aliases = entity.get("aliases", [])
         if not isinstance(aliases, list) or not aliases:
             errors.append(f"{entity_id}.aliases: expected non-empty list")
@@ -84,10 +102,11 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any) -> 
                 errors.append(f"{entity_id}.aliases: expected non-empty string aliases")
                 continue
             normalized = normalize_alias(alias)
-            owner = alias_owners.get(normalized)
+            alias_key = f"{entity.get('ecosystem', '')}:{normalized}" if entity_type == "packages" else normalized
+            owner = alias_owners.get(alias_key)
             if owner and owner != entity_id:
                 errors.append(f"{entity_type}: normalized alias {normalized!r} belongs to both {owner} and {entity_id}")
-            alias_owners[normalized] = entity_id
+            alias_owners[alias_key] = entity_id
     return ids
 
 
@@ -114,6 +133,14 @@ def validate_relationships(
         rel_type = rel.get("type")
         if rel_type not in VALID_RELATIONSHIP_TYPES:
             errors.append(f"{path}.type: invalid relationship type {rel_type!r}")
+        elif isinstance(source, str) and isinstance(target, str):
+            expected_prefix = RELATIONSHIP_TARGET_PREFIXES[rel_type]
+            if rel_type.startswith("AFFECTED_") and not source.startswith("incident-"):
+                errors.append(f"{path}.source: {rel_type} must start from an incident node")
+            if not target.startswith(expected_prefix):
+                errors.append(f"{path}.target: {rel_type} target must start with {expected_prefix!r}")
+            if rel_type == "RELATED_INCIDENT" and not source.startswith("incident-"):
+                errors.append(f"{path}.source: RELATED_INCIDENT must start from an incident node")
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
@@ -139,10 +166,11 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
         errors.append("corpus: expected list")
         corpus = []
 
+    raw_incident_ids = collect_raw_incident_ids(corpus)
     incident_ids = collect_incident_ids(corpus)
     all_entity_ids: set[str] = set()
     for entity_type, entities in entities_by_type.items():
-        entity_ids = validate_entity_file(errors, entity_type, entities)
+        entity_ids = validate_entity_file(errors, entity_type, entities, raw_incident_ids)
         duplicates = all_entity_ids & entity_ids
         for entity_id in sorted(duplicates):
             errors.append(f"{entity_id}: duplicate id across entity files")

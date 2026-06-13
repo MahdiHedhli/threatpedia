@@ -67,10 +67,73 @@ class SupplyChainGraphTests(unittest.TestCase):
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
         entities_by_type["packages"][0]["aliases"].append(entities_by_type["packages"][1]["aliases"][0])
+        entities_by_type["packages"][0]["ecosystem"] = entities_by_type["packages"][1]["ecosystem"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any("normalized alias" in error for error in errors))
+
+    def test_package_alias_uniqueness_is_scoped_by_ecosystem(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        first = entities_by_type["packages"][0]
+        sibling = copy.deepcopy(first)
+        sibling["id"] = "pkg-pypi-internal-dependency-names"
+        sibling["ecosystem"] = "pypi"
+        sibling["source_incident_ids"] = first["source_incident_ids"]
+        entities_by_type["packages"].append(sibling)
+        relationships = copy.deepcopy(relationships)
+        relationships.append(
+            {
+                "source": f"incident-{sibling['source_incident_ids'][0]}",
+                "target": sibling["id"],
+                "type": "AFFECTED_PACKAGE",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertFalse(any("normalized alias" in error for error in errors))
+
+    def test_entity_source_incident_ids_must_exist(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        entities_by_type["packages"][0]["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unknown incident id 'SC-DOES-NOT-EXIST'" in error for error in errors))
+
+    def test_relationship_type_must_target_expected_entity_class(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        package_id = next(entity["id"] for entity in entities_by_type["packages"])
+        for relationship in relationships:
+            if relationship["type"] == "AFFECTED_ORGANIZATION":
+                relationship["target"] = package_id
+                break
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("AFFECTED_ORGANIZATION target must start with 'org-'" in error for error in errors))
+
+    def test_github_repository_parser_skips_system_paths_and_normalizes_dot_git(self) -> None:
+        self.assertIsNone(builder.github_repository_from_url("https://github.com/orgs/example/packages"))
+        self.assertIsNone(builder.github_repository_from_url("https://github.com/advisories/GHSA-xxxx-yyyy-zzzz"))
+        self.assertEqual(
+            builder.github_repository_from_url("https://github.com/example/project.git/issues/1"),
+            {
+                "name": "example/project",
+                "host": "github.com",
+                "url": "https://github.com/example/project",
+                "owner": "example",
+            },
+        )
 
 
 if __name__ == "__main__":
