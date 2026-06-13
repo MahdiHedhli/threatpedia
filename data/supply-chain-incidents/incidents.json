@@ -88,7 +88,7 @@
     "references": [
       {
         "title": "Petya Ransomware",
-        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "publisher": "CISA",
         "url": "https://www.cisa.gov/news-events/alerts/2017/07/01/petya-ransomware",
         "published_at": "2017-07-01"
       }
@@ -283,17 +283,111 @@
       "credential_theft",
       "crypto_theft"
     ],
-    "references": [
-      {
-        "title": "I don't have time to maintain this package",
-        "publisher": "GitHub",
-        "url": "https://github.com/dominictarr/event-stream/issues/116",
-        "published_at": "2018-11-26"
-      }
-    ],
-    "tags": [
-      "npm",
-      "dependency"
+  "references": [
+    {
+      "id": "ref-github-event-stream-116",
+      "title": "I don't have time to maintain this package",
+      "publisher": "GitHub",
+      "url": "https://github.com/dominictarr/event-stream/issues/116",
+      "published_at": "2018-11-26"
+    }
+  ],
+  "executive_summary": [
+    {
+      "text": "The event-stream incident turned a maintainer-transfer path into a malicious dependency insertion path for an npm package with downstream cryptocurrency-wallet exposure.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    },
+    {
+      "text": "Threatpedia models this case as package publishing through the npm ecosystem, with event-stream and flatmap-stream preserved as separate package entities.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2018-09-09/2018-11-26",
+      "title": "Dependency path changes before disclosure",
+      "text": "The corpus records first observed activity before public disclosure, reflecting the period in which the malicious dependency path existed before community triage.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    },
+    {
+      "date": "2018-11-26",
+      "title": "Public issue documents the compromise",
+      "text": "The public GitHub issue became the primary reference for the package-maintenance transfer and malicious dependency discussion.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "attack_chain": [
+    {
+      "stage": "Maintainer transfer",
+      "text": "The incident began with a maintainer-transfer path that changed who could influence the package dependency tree.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    },
+    {
+      "stage": "Malicious dependency insertion",
+      "text": "The malicious package flatmap-stream entered the event-stream dependency path and became the payload-bearing component in the corpus model.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    },
+    {
+      "stage": "Downstream targeting",
+      "text": "The corpus records credential and cryptocurrency-theft impact categories because the dependency path was tied to downstream wallet exposure.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "affected_ecosystem": [
+    {
+      "text": "The affected ecosystem is npm, with event-stream as the trusted upstream package and flatmap-stream as the malicious dependency component.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "defensive_lessons": [
+    {
+      "text": "High-impact package transfers should be treated as supply-chain events because maintainer authority can change dependency risk without changing the package name.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    },
+    {
+      "text": "Dependency review should include newly introduced transitive packages, especially when a previously trusted package changes maintainership or dependency structure.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "detection_notes": [
+    {
+      "text": "Useful detection pivots include the event-stream and flatmap-stream package names, npm registry publication paths, and dependency tree changes around the disclosure window.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "text": "The corpus preserves the package and maintainer entities but does not expand this record into actor attribution.",
+      "reference_ids": [
+        "ref-github-event-stream-116"
+      ]
+    }
+  ],
+  "tags": [
+    "npm",
+    "dependency"
     ],
     "confidence": "high",
     "evidence_level": "primary",
@@ -338,7 +432,7 @@
     "title": "ASUS Live Update Operation ShadowHammer",
     "summary": "Attackers compromised the ASUS Live Update utility and distributed signed malicious updates to selected downstream systems.",
     "status": "confirmed",
-    "first_observed_at": "2018-06-01",
+    "first_observed_at": "2019-01-01",
     "disclosed_at": "2019-03-25",
     "affected_ecosystems": [
       "windows",
@@ -482,17 +576,111 @@
       "backdoor",
       "downstream_customer_compromise"
     ],
-    "references": [
-      {
-        "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
-        "publisher": "Cybersecurity and Infrastructure Security Agency",
-        "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
-        "published_at": "2020-12-17"
-      }
-    ],
-    "tags": [
-      "build-system",
-      "sunburst"
+  "references": [
+    {
+      "id": "ref-cisa-aa20-352a",
+      "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
+      "published_at": "2020-12-17"
+    }
+  ],
+  "executive_summary": [
+    {
+      "text": "The SolarWinds Orion incident is modeled as a vendor build-system compromise that placed the SUNBURST backdoor into signed Orion software updates.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    },
+    {
+      "text": "Threatpedia keeps this case centered on the build and signed-update channel rather than using it as a scoring or attribution primitive.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2020-03-01/2020-12-13",
+      "title": "Compromised Orion builds precede disclosure",
+      "text": "The corpus records activity beginning months before public disclosure and models the abuse through the SolarWinds Orion build and update channel.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    },
+    {
+      "date": "2020-12-17",
+      "title": "CISA advisory documents the campaign",
+      "text": "CISA published an advisory describing compromise of government agencies, critical infrastructure, and private-sector organizations.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "attack_chain": [
+    {
+      "stage": "Build-system compromise",
+      "text": "The attacker-controlled change occurred in the Orion build path, making the vendor build system the core supply-chain primitive.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    },
+    {
+      "stage": "Signed update distribution",
+      "text": "Trojanized Orion artifacts reached customers through the signed software installer and update channel recorded in the corpus.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    },
+    {
+      "stage": "Downstream customer compromise",
+      "text": "The impact model includes downstream customer compromise because the trusted vendor update path carried the backdoor to customer environments.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "affected_ecosystem": [
+    {
+      "text": "The affected ecosystem spans Windows software and vendor-update distribution, with SolarWinds Orion as the named software component.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "defensive_lessons": [
+    {
+      "text": "Signed updates are not sufficient evidence of safety when the compromise occurs before signing inside the vendor build path.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    },
+    {
+      "text": "Supply-chain monitoring should preserve build-system and update-channel entities separately so later analysis can distinguish where trust failed.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "detection_notes": [
+    {
+      "text": "Detection pivots in this corpus record include SolarWinds Orion, SUNBURST, the vendor build system, and the signed update channel.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "text": "The corpus records source-artifact divergence as unknown because this Phase 1F record does not independently model source-to-build artifact comparison.",
+      "reference_ids": [
+        "ref-cisa-aa20-352a"
+      ]
+    }
+  ],
+  "tags": [
+    "build-system",
+    "sunburst"
     ],
     "confidence": "high",
     "evidence_level": "vendor",
@@ -755,7 +943,7 @@
     "references": [
       {
         "title": "Kaseya VSA Supply-Chain Ransomware Attack",
-        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "publisher": "CISA",
         "url": "https://www.cisa.gov/news-events/alerts/2021/07/02/kaseya-vsa-supply-chain-ransomware-attack",
         "published_at": "2021-07-02"
       }
@@ -809,17 +997,103 @@
       "credential_theft",
       "cryptomining"
     ],
-    "references": [
-      {
-        "title": "Malware in ua-parser-js",
-        "publisher": "GitHub Advisory Database",
-        "url": "https://github.com/advisories/GHSA-pjwm-rvh2-c87w",
-        "published_at": "2021-10-22"
-      }
-    ],
-    "tags": [
-      "npm",
-      "account-compromise"
+  "references": [
+    {
+      "id": "ref-github-advisory-ua-parser-js",
+      "title": "Malware in ua-parser-js",
+      "publisher": "GitHub Advisory Database",
+      "url": "https://github.com/advisories/GHSA-pjwm-rvh2-c87w",
+      "published_at": "2021-10-22"
+    }
+  ],
+  "executive_summary": [
+    {
+      "text": "The ua-parser-js incident is modeled as an npm maintainer-account compromise that allowed malicious package versions to be published.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    },
+    {
+      "text": "The corpus records both credential theft and cryptomining impact categories because the malicious versions delivered those payload classes.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2021-10-22",
+      "title": "Malicious versions disclosed",
+      "text": "The incident was publicly documented on the same date recorded for first observation and disclosure in the corpus.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "attack_chain": [
+    {
+      "stage": "Maintainer account compromise",
+      "text": "The compromise path is represented as account compromise because a package-registry maintainer account enabled malicious publication.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    },
+    {
+      "stage": "Malicious npm publication",
+      "text": "The malicious versions were distributed through the npm registry under the ua-parser-js package name.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    },
+    {
+      "stage": "Payload execution risk",
+      "text": "The recorded payload categories are credential theft and cryptomining, matching the incident's package-level impact model.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "affected_ecosystem": [
+    {
+      "text": "The affected ecosystem is npm, with ua-parser-js preserved as the package entity and npm as the distribution channel.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "defensive_lessons": [
+    {
+      "text": "Registry account compromise should be treated as a direct package-publication risk, even when source repositories are not the primary compromise point.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    },
+    {
+      "text": "Consumers should be able to identify and quarantine known malicious package versions quickly when a package registry account is abused.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "detection_notes": [
+    {
+      "text": "Useful pivots include the ua-parser-js package name, npm registry publication activity, and references to credential-stealing or cryptomining payload behavior.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "text": "The corpus records the compromised npm maintainer account path but does not identify a named attacker or broader intrusion cluster.",
+      "reference_ids": [
+        "ref-github-advisory-ua-parser-js"
+      ]
+    }
+  ],
+  "tags": [
+    "npm",
+    "account-compromise"
     ],
     "confidence": "high",
     "evidence_level": "vendor",
@@ -1228,17 +1502,111 @@
       "backdoor",
       "downstream_customer_compromise"
     ],
-    "references": [
-      {
-        "title": "3CX Software Supply Chain Compromise",
-        "publisher": "Mandiant",
-        "url": "https://cloud.google.com/blog/topics/threat-intelligence/3cx-software-supply-chain-compromise",
-        "published_at": "2023-04-20"
-      }
-    ],
-    "tags": [
-      "desktop",
-      "signed-update"
+  "references": [
+    {
+      "id": "ref-mandiant-3cx",
+      "title": "3CX Software Supply Chain Compromise",
+      "publisher": "Mandiant",
+      "url": "https://cloud.google.com/blog/topics/threat-intelligence/3cx-software-supply-chain-compromise",
+      "published_at": "2023-04-20"
+    }
+  ],
+  "executive_summary": [
+    {
+      "text": "The 3CX incident is modeled as a vendor build compromise that produced trojanized desktop application installers and updates for downstream customers.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    },
+    {
+      "text": "Threatpedia keeps the affected desktop application, build pipeline, and signed update channel as separate primitives so the supply-chain path remains inspectable.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2023-03-22/2023-03-29",
+      "title": "Trojanized desktop application activity precedes disclosure",
+      "text": "The corpus records first observed activity before the public disclosure date and models the distribution through signed desktop application channels.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    },
+    {
+      "date": "2023-04-20",
+      "title": "Mandiant publishes detailed supply-chain analysis",
+      "text": "Mandiant's report is the researcher reference used for the structured build-compromise and signed-update modeling in this record.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "attack_chain": [
+    {
+      "stage": "Vendor build compromise",
+      "text": "The compromise is represented at the 3CX DesktopApp build pipeline rather than as a package-registry event.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    },
+    {
+      "stage": "Signed desktop application distribution",
+      "text": "Trojanized artifacts reached users through signed software installer and update paths recorded in the distribution-channel field.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    },
+    {
+      "stage": "Downstream customer exposure",
+      "text": "The impact categories include malware distribution, backdoor behavior, and downstream customer compromise through trusted application delivery.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "affected_ecosystem": [
+    {
+      "text": "The affected ecosystem spans Windows, macOS, and vendor-update distribution for the 3CX DesktopApp software component.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "defensive_lessons": [
+    {
+      "text": "Endpoint software delivered by a trusted vendor still needs behavioral monitoring because the compromise can occur before distribution and signing.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    },
+    {
+      "text": "Build pipeline, signed installer, and update-channel evidence should be retained separately to support later investigation without collapsing them into one field.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "detection_notes": [
+    {
+      "text": "Useful pivots include 3CX DesktopApp, the vendor build pipeline, signed installer or update activity, and the March-to-April 2023 disclosure window.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "text": "The corpus records source-artifact divergence as unknown because this record does not independently compare source state to the distributed desktop artifacts.",
+      "reference_ids": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "tags": [
+    "desktop",
+    "signed-update"
     ],
     "confidence": "high",
     "evidence_level": "researcher",
@@ -1356,17 +1724,111 @@
     "impact_categories": [
       "backdoor"
     ],
-    "references": [
-      {
-        "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
-        "publisher": "Openwall oss-security",
-        "url": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
-        "published_at": "2024-03-29"
-      }
-    ],
-    "tags": [
-      "linux",
-      "backdoor"
+  "references": [
+    {
+      "id": "ref-openwall-xz",
+      "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
+      "publisher": "Openwall oss-security",
+      "url": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
+      "published_at": "2024-03-29"
+    }
+  ],
+  "executive_summary": [
+    {
+      "text": "The XZ Utils incident is modeled as an upstream source-release compromise where the backdoor was present in release tarballs and affected downstream Linux packaging.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    },
+    {
+      "text": "Threatpedia preserves source-artifact divergence as a first-class field because this case depends on the difference between trusted source expectations and release artifacts.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2024-02-24/2024-03-29",
+      "title": "Backdoored release artifacts precede public disclosure",
+      "text": "The corpus records first observed activity before the Openwall disclosure and models the affected path as upstream source release distribution.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    },
+    {
+      "date": "2024-03-29",
+      "title": "Openwall disclosure documents the backdoor",
+      "text": "The Openwall oss-security post is the primary reference for the xz/liblzma backdoor record.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "attack_chain": [
+    {
+      "stage": "Upstream project influence",
+      "text": "The corpus records Jia Tan as a maintainer entity connected to the upstream xz project and this incident.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    },
+    {
+      "stage": "Source release artifact compromise",
+      "text": "The compromised path is modeled through upstream source release tarballs, not a live package feed or graph database.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    },
+    {
+      "stage": "Downstream Linux packaging exposure",
+      "text": "The affected ecosystems include Linux and source-release distribution because downstream packaging consumed the upstream release artifacts.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "affected_ecosystem": [
+    {
+      "text": "The affected ecosystem is Linux source-release distribution, with xz-utils and the tukaani-project/xz repository represented as structured entities.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "defensive_lessons": [
+    {
+      "text": "Release artifact verification matters because source-release compromise can hide in tarballs consumed by downstream packaging processes.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    },
+    {
+      "text": "Maintainer, repository, and distribution-channel entities should remain linked so reviewers can see how project authority and release artifacts interacted.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "detection_notes": [
+    {
+      "text": "Useful pivots include xz-utils, xz/liblzma, Jia Tan, the tukaani-project/xz repository, upstream release tarballs, and SSH-server compromise language from the disclosure.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "open_questions": [
+    {
+      "text": "The corpus records the maintainer and release-artifact path but does not turn the case into automated actor attribution.",
+      "reference_ids": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "tags": [
+    "linux",
+    "backdoor"
     ],
     "confidence": "high",
     "evidence_level": "primary",

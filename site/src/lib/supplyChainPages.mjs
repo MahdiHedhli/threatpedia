@@ -7,13 +7,17 @@ const incidentRelativePath = 'data/supply-chain-incidents/incidents.json';
 
 function findRepoRoot(startDirs) {
   const seen = new Set();
+
   for (const startDir of startDirs) {
     let currentDir = path.resolve(startDir);
+
     while (!seen.has(currentDir)) {
       seen.add(currentDir);
+
       if (existsSync(path.join(currentDir, incidentRelativePath))) {
         return currentDir;
       }
+
       const parentDir = path.dirname(currentDir);
       if (parentDir === currentDir) {
         break;
@@ -21,6 +25,7 @@ function findRepoRoot(startDirs) {
       currentDir = parentDir;
     }
   }
+
   throw new Error(`Unable to locate Supply Chain corpus from ${startDirs.join(', ')}`);
 }
 
@@ -141,6 +146,16 @@ const ENTITY_COLLECTION_LABELS = {
   distribution_channels: 'Distribution Channel',
   accounts: 'Compromised Account',
 };
+
+const editorialSectionDefinitions = [
+  { key: 'executive_summary', title: 'Executive Summary', type: 'claim' },
+  { key: 'timeline', title: 'Timeline', type: 'timeline' },
+  { key: 'attack_chain', title: 'Attack Chain', type: 'attack_chain' },
+  { key: 'affected_ecosystem', title: 'Affected Ecosystem', type: 'claim' },
+  { key: 'defensive_lessons', title: 'Defensive Lessons', type: 'claim' },
+  { key: 'detection_notes', title: 'Detection Notes', type: 'claim' },
+  { key: 'open_questions', title: 'Open Questions', type: 'claim' },
+];
 
 function entityTypeLabel(entity) {
   return ENTITY_COLLECTION_LABELS[entity.entityCollection] || entity.entityCollection;
@@ -305,6 +320,33 @@ function incidentEntities(data, incidentId, collectionKey, relationshipType) {
   return (incident?.[collectionKey] || []).map((item) => ({ label: item.name, id: item.name, href: null }));
 }
 
+function referenceMapFor(incident) {
+  return new Map((incident.references || []).filter((reference) => reference.id).map((reference) => [reference.id, reference]));
+}
+
+function referencesForItem(item, referenceById) {
+  return (item.reference_ids || []).map((referenceId) => referenceById.get(referenceId)).filter(Boolean);
+}
+
+function editorialSectionsFor(incident) {
+  const referenceById = referenceMapFor(incident);
+  return editorialSectionDefinitions
+    .map((section) => {
+      const items = incident[section.key];
+      if (!Array.isArray(items) || items.length === 0) return null;
+      return {
+        key: section.key,
+        title: section.title,
+        type: section.type,
+        items: items.map((item) => ({
+          ...item,
+          references: referencesForItem(item, referenceById),
+        })),
+      };
+    })
+    .filter(Boolean);
+}
+
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
   const featuredIncidents = SUPPLY_CHAIN_FEATURED_INCIDENT_IDS.map((id) => {
     const incident = data.incidents.find((item) => item.id === id);
@@ -375,6 +417,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     kind: 'incident',
     title: incident.title,
     incident,
+    editorialSections: editorialSectionsFor(incident),
     connectedEntities: incidentConnectedEntities(data, id),
     seo: {
       title: `Supply Chain: ${incident.title}`,
