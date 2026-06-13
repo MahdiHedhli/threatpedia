@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "check:supply-chain-public-readiness": "node check_supply_chain_public_readiness.mjs",
     "social:share-x": "node social-share-x.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
