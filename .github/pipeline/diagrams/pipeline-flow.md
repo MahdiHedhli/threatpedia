@@ -20,7 +20,7 @@ flowchart TB
   subgraph INPUT["input"]
     direction LR
     MS["manual submission<br/>(GitHub Issue form)"]
-    AD["auto discovery<br/>(CISA KEV, 6h cron)"]
+    AD["auto discovery<br/>(CISA KEV, 3h cron)"]
   end
 
   subgraph INGEST["ingest"]
@@ -31,7 +31,7 @@ flowchart TB
 
   TASKS[("tasks/TASK-YYYY-NNNN.json<br/>canonical shape:<br/>acceptance_criteria<br/>astro_build<br/>history[action: created]")]
 
-  subgraph DISPATCH["dispatch (2h cron)"]
+  subgraph DISPATCH["dispatch (1h cron)"]
     direction TB
     CFG["load config.yml<br/>(pipeline-config.mjs · js-yaml)"]
     CB{"circuit breaker<br/>open?"}

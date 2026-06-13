@@ -18,7 +18,7 @@ Companion diagrams:
   'fontFamily':'IBM Plex Mono, ui-monospace, monospace'
 }}}%%
 flowchart TB
-  CRON(["pipeline-discovery.yml<br/>(6h cron)"])
+  CRON(["pipeline-discovery.yml<br/>(3h cron)"])
 
   subgraph FETCH["fetch"]
     KEV["CISA KEV catalog<br/>(JSON)"]

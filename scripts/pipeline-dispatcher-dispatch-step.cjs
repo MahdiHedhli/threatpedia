@@ -8,9 +8,9 @@ const DISPATCH_LABEL = 'pipeline/ready';
 
 module.exports = async function runDispatcherDispatchStep({ github, context }) {
   const DEFAULTS = {
-    tasksPerRun: 6,
-    maxEditorial: 50,
-    backpressureResume: 40,
+    tasksPerRun: 12,
+    maxEditorial: 100,
+    backpressureResume: 80,
     failureThreshold: 3,
     staleLockMinutes: 30,
     cooldownMinutes: 60,

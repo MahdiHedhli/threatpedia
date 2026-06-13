@@ -8,28 +8,28 @@ version: "1.0"
 # ── Queue Limits ──────────────────────────────────────────────────────────────
 queues:
   dispatcher:
-    tasks_per_run: 6         # Maximum pending draft tasks dispatched per cycle
+    tasks_per_run: 12        # Maximum pending draft tasks dispatched per cycle
   editorial:
-    max_pending: 50          # Maximum drafts awaiting review
-    backpressure_resume: 40  # Resume discovery when queue drops below this
+    max_pending: 100         # Maximum drafts awaiting review
+    backpressure_resume: 80  # Resume discovery when queue drops below this
   by_type:
     zero-day:
-      max_pending: 20
+      max_pending: 40
     incident:
-      max_pending: 25
+      max_pending: 60
     threat-actor:
-      max_pending: 8
+      max_pending: 16
     campaign:
-      max_pending: 8
+      max_pending: 16
   discovery:
-    max_candidates: 200      # Maximum unprocessed discovery candidates
+    max_candidates: 400      # Maximum unprocessed discovery candidates
   draft_ready:
-    max_pending: 25          # Maximum triaged candidates awaiting draft generation
+    max_pending: 60          # Maximum triaged candidates awaiting draft generation; advisory until consumed by dispatcher code
 
 # ── Scheduling ────────────────────────────────────────────────────────────────
 scheduling:
-  discovery_cron: "0 */6 * * *"    # Every 6 hours
-  dispatcher_cron: "30 */2 * * *"  # Every 2 hours (offset from discovery)
+  discovery_cron: "0 */3 * * *"    # Every 3 hours; workflow schedule is the active enforcement point
+  dispatcher_cron: "30 * * * *"    # Hourly at :30; workflow schedule is the active enforcement point
   stale_lock_minutes: 30           # Locks older than this are auto-released
 
 # ── Circuit Breaker ──────────────────────────────────────────────────────────
@@ -77,7 +77,7 @@ discovery_sources:
     enabled: true               # Live source-packet/candidate prefill only; set false for rollback
     backup_url: "https://api.vulncheck.com/v3/backup/vulncheck-kev"
     lookback_days: 30
-    max_candidates: 10          # 10 per 6-hour run = 40/day candidate supply ceiling
+    max_candidates: 20          # 20 per 3-hour run = 160/day candidate prefill ceiling
     backlog_fill: true          # After recent items, continue older unhandled newest-to-oldest
     sibling_limit_per_vendor_product_day: 4
     local_throttle_ms: 250      # 240/minute; intentionally below the 1,000/minute community limit
@@ -95,18 +95,18 @@ discovery_sources:
     format: "rss"
     label: "CISA Alerts & Advisories"
     url: "https://www.cisa.gov/cybersecurity-advisories/all.xml"
-    limit_per_run: 3
+    limit_per_run: 6
   ncsc_news:
     enabled: true
     kind: "incident"
     format: "rss"
     label: "NCSC News"
     url: "https://www.ncsc.gov.uk/api/1/services/v1/news-rss-feed.xml"
-    limit_per_run: 2
+    limit_per_run: 4
   microsoft_security_blog:
     enabled: true
     kind: "incident"
     format: "rss"
     label: "Microsoft Security Blog"
     url: "https://www.microsoft.com/en-us/security/blog/feed/"
-    limit_per_run: 2
+    limit_per_run: 4
