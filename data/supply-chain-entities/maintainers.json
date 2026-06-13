@@ -42,5 +42,15 @@
     "source_incident_ids": [
       "SC-2022-NODE-IPC"
     ]
+  },
+  {
+    "aliases": [
+      "right9ctrl"
+    ],
+    "id": "maintainer-right9ctrl",
+    "name": "right9ctrl",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ]
   }
 ]

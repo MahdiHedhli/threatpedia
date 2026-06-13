@@ -1,0 +1,75 @@
+[
+  {
+    "aliases": [
+      "3CX DesktopApp build pipeline"
+    ],
+    "category": "vendor-build",
+    "id": "build-3cx-3cx-desktopapp-build-pipeline",
+    "name": "3CX DesktopApp build pipeline",
+    "provider": "3CX",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
+      "Codecov Bash Uploader distribution pipeline"
+    ],
+    "category": "ci-cd",
+    "id": "build-codecov-codecov-bash-uploader-distribution-pipeline",
+    "name": "Codecov Bash Uploader distribution pipeline",
+    "provider": "Codecov",
+    "source_incident_ids": [
+      "SC-2021-CODECOV-BASH-UPLOADER"
+    ]
+  },
+  {
+    "aliases": [
+      "GitHub Actions"
+    ],
+    "category": "ci-cd",
+    "id": "build-github-github-actions",
+    "name": "GitHub Actions",
+    "provider": "GitHub",
+    "source_incident_ids": [
+      "SC-2024-ULTRALYTICS-PYPI",
+      "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+    ]
+  },
+  {
+    "aliases": [
+      "NetBeans project build process"
+    ],
+    "category": "developer-build",
+    "id": "build-netbeans-netbeans-project-build-process",
+    "name": "NetBeans project build process",
+    "provider": "NetBeans",
+    "source_incident_ids": [
+      "SC-2020-OCTOPUS-SCANNER"
+    ]
+  },
+  {
+    "aliases": [
+      "PyTorch nightly build pipeline"
+    ],
+    "category": "project-build",
+    "id": "build-pytorch-pytorch-nightly-build-pipeline",
+    "name": "PyTorch nightly build pipeline",
+    "provider": "PyTorch",
+    "source_incident_ids": [
+      "SC-2022-PYTORCH-NIGHTLY"
+    ]
+  },
+  {
+    "aliases": [
+      "SolarWinds Orion build system"
+    ],
+    "category": "vendor-build",
+    "id": "build-solarwinds-solarwinds-orion-build-system",
+    "name": "SolarWinds Orion build system",
+    "provider": "SolarWinds",
+    "source_incident_ids": [
+      "SC-2020-SOLARWINDS-ORION"
+    ]
+  }
+]

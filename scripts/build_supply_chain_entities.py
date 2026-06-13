@@ -17,6 +17,9 @@ DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 DEFAULT_RELATIONSHIP_DIR = REPO_ROOT / "data" / "supply-chain-relationships"
 
 ENTITY_FILES = {
+    "accounts": "accounts.json",
+    "build_systems": "build_systems.json",
+    "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
     "repositories": "repositories.json",
@@ -27,7 +30,11 @@ RELATIONSHIP_TYPES = {
     "AFFECTED_MAINTAINER",
     "AFFECTED_REPOSITORY",
     "AFFECTED_ORGANIZATION",
+    "COMPROMISED_ACCOUNT",
     "RELATED_INCIDENT",
+    "SOURCE_ARTIFACT_DIVERGENCE",
+    "USED_BUILD_SYSTEM",
+    "USED_DISTRIBUTION_CHANNEL",
 }
 GENERIC_VENDOR_NAMES = {
     "malicious publisher",
@@ -35,11 +42,11 @@ GENERIC_VENDOR_NAMES = {
     "multiple organizations",
     "open source maintainer",
     "open source maintainers",
+    "riaevangelist",
+    "right9ctrl",
 }
 GITHUB_SYSTEM_PATHS = {
-    "about",
     "advisories",
-    "blog",
     "collections",
     "explore",
     "features",
@@ -47,64 +54,12 @@ GITHUB_SYSTEM_PATHS = {
     "marketplace",
     "notifications",
     "orgs",
-    "pricing",
     "search",
-    "security",
     "settings",
     "sponsors",
     "topics",
     "trending",
 }
-
-# Explicit human/entity hints are used only where the Phase 1A corpus does not
-# yet carry first-class maintainer/repository fields.
-INCIDENT_ENTITY_HINTS: dict[str, dict[str, list[dict[str, Any]]]] = {
-    "SC-2018-NPM-EVENT-STREAM": {
-        "maintainers": [
-            {"name": "Dominic Tarr", "aliases": ["dominictarr"], "id_slug": "dominictarr"},
-        ],
-        "repositories": [
-            {
-                "name": "dominictarr/event-stream",
-                "host": "github.com",
-                "url": "https://github.com/dominictarr/event-stream",
-                "owner": "dominictarr",
-            }
-        ],
-    },
-    "SC-2022-COLORS-FAKER": {
-        "maintainers": [
-            {"name": "Marak Squires", "aliases": ["Marak"]},
-        ],
-        "repositories": [
-            {
-                "name": "Marak/colors.js",
-                "host": "github.com",
-                "url": "https://github.com/Marak/colors.js",
-                "owner": "Marak",
-            }
-        ],
-    },
-    "SC-2022-NODE-IPC": {
-        "maintainers": [
-            {"name": "RIAEvangelist", "aliases": ["Brandon Nozaki Miller"]},
-        ]
-    },
-    "SC-2024-XZ-UTILS": {
-        "maintainers": [
-            {"name": "Jia Tan", "aliases": ["JiaT75"]},
-        ],
-        "repositories": [
-            {
-                "name": "tukaani-project/xz",
-                "host": "github.com",
-                "url": "https://github.com/tukaani-project/xz",
-                "owner": "tukaani-project",
-            }
-        ],
-    },
-}
-
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -128,10 +83,6 @@ def incident_node_id(incident_id: str) -> str:
     return f"incident-{incident_id}"
 
 
-def is_generic_vendor(name: str) -> bool:
-    return normalize_alias(name).replace("-", " ") in GENERIC_VENDOR_NAMES
-
-
 def github_repository_from_url(url: str) -> dict[str, str] | None:
     parsed = urlparse(url)
     if parsed.netloc.lower() != "github.com":
@@ -139,9 +90,7 @@ def github_repository_from_url(url: str) -> dict[str, str] | None:
     parts = [part for part in parsed.path.split("/") if part]
     if len(parts) < 2 or parts[0].lower() in GITHUB_SYSTEM_PATHS:
         return None
-    owner, repo = parts[0], parts[1]
-    if repo.lower().endswith(".git"):
-        repo = repo[:-4]
+    owner, repo = parts[0], parts[1].removesuffix(".git")
     if not repo:
         return None
     return {
@@ -150,6 +99,10 @@ def github_repository_from_url(url: str) -> dict[str, str] | None:
         "url": f"https://github.com/{owner}/{repo}",
         "owner": owner,
     }
+
+
+def is_generic_vendor(name: str) -> bool:
+    return normalize_alias(name).replace("-", " ") in GENERIC_VENDOR_NAMES
 
 
 def add_source(entity: dict[str, Any], incident_id: str) -> None:
@@ -217,8 +170,8 @@ def upsert_repository(repositories: dict[str, dict[str, Any]], repo: dict[str, s
 
 def upsert_maintainer(maintainers: dict[str, dict[str, Any]], hint: dict[str, Any], incident_id: str) -> str:
     name = hint["name"]
-    aliases = sorted(set(hint.get("aliases", []) + [name]))
-    entity_id = stable_id("maintainer", hint.get("id_slug", name))
+    aliases = sorted(set((hint.get("aliases") or []) + [name]))
+    entity_id = stable_id("maintainer", hint["id_slug"])
     entity = maintainers.setdefault(
         entity_id,
         {
@@ -233,6 +186,58 @@ def upsert_maintainer(maintainers: dict[str, dict[str, Any]], hint: dict[str, An
     return entity_id
 
 
+def upsert_build_system(build_systems: dict[str, dict[str, Any]], item: dict[str, str], incident_id: str) -> str:
+    entity_id = stable_id("build", item["provider"], item["name"])
+    entity = build_systems.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": item["name"],
+            "provider": item["provider"],
+            "category": item["category"],
+            "aliases": sorted({item["name"]}),
+            "source_incident_ids": [],
+        },
+    )
+    add_source(entity, incident_id)
+    return entity_id
+
+
+def upsert_distribution_channel(channels: dict[str, dict[str, Any]], item: dict[str, str], incident_id: str) -> str:
+    entity_id = stable_id("channel", item["ecosystem"], item["channel_type"], item["name"])
+    entity = channels.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": item["name"],
+            "channel_type": item["channel_type"],
+            "ecosystem": item["ecosystem"],
+            "aliases": sorted({item["name"]}),
+            "source_incident_ids": [],
+        },
+    )
+    add_source(entity, incident_id)
+    return entity_id
+
+
+def upsert_account(accounts: dict[str, dict[str, Any]], item: dict[str, str], incident_id: str) -> str:
+    entity_id = stable_id("account", item["provider"], item["name"])
+    entity = accounts.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": item["name"],
+            "provider": item["provider"],
+            "account_type": item["account_type"],
+            "role": item["role"],
+            "aliases": sorted({item["name"]}),
+            "source_incident_ids": [],
+        },
+    )
+    add_source(entity, incident_id)
+    return entity_id
+
+
 def relationship(source: str, target: str, relationship_type: str) -> dict[str, str]:
     if relationship_type not in RELATIONSHIP_TYPES:
         raise ValueError(f"invalid relationship type: {relationship_type}")
@@ -240,6 +245,9 @@ def relationship(source: str, target: str, relationship_type: str) -> dict[str, 
 
 
 def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
+    accounts: dict[str, dict[str, Any]] = {}
+    build_systems: dict[str, dict[str, Any]] = {}
+    distribution_channels: dict[str, dict[str, Any]] = {}
     maintainers: dict[str, dict[str, Any]] = {}
     packages: dict[str, dict[str, Any]] = {}
     repositories: dict[str, dict[str, Any]] = {}
@@ -261,21 +269,36 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
             if org_id:
                 add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
-        for reference in incident.get("references", []):
-            repo = github_repository_from_url(reference.get("url", ""))
-            if repo:
-                repo_id = upsert_repository(repositories, repo, incident_id)
-                add_relationship(relationship(source, repo_id, "AFFECTED_REPOSITORY"))
-
-        hints = INCIDENT_ENTITY_HINTS.get(incident_id, {})
-        for hint in hints.get("maintainers", []):
-            maintainer_id = upsert_maintainer(maintainers, hint, incident_id)
+        divergence_channel_targets: list[str] = []
+        for maintainer in incident.get("maintainers") or []:
+            maintainer_id = upsert_maintainer(maintainers, maintainer, incident_id)
             add_relationship(relationship(source, maintainer_id, "AFFECTED_MAINTAINER"))
-        for hint in hints.get("repositories", []):
-            repo_id = upsert_repository(repositories, hint, incident_id)
+
+        for repo in incident.get("repositories") or []:
+            repo_id = upsert_repository(repositories, repo, incident_id)
             add_relationship(relationship(source, repo_id, "AFFECTED_REPOSITORY"))
 
+        for item in incident.get("build_systems") or []:
+            build_system_id = upsert_build_system(build_systems, item, incident_id)
+            add_relationship(relationship(source, build_system_id, "USED_BUILD_SYSTEM"))
+
+        for item in incident.get("distribution_channels") or []:
+            channel_id = upsert_distribution_channel(distribution_channels, item, incident_id)
+            divergence_channel_targets.append(channel_id)
+            add_relationship(relationship(source, channel_id, "USED_DISTRIBUTION_CHANNEL"))
+
+        for item in incident.get("compromised_accounts") or []:
+            account_id = upsert_account(accounts, item, incident_id)
+            add_relationship(relationship(source, account_id, "COMPROMISED_ACCOUNT"))
+
+        if incident.get("source_artifact_divergence") is True:
+            for channel_id in divergence_channel_targets:
+                add_relationship(relationship(source, channel_id, "SOURCE_ARTIFACT_DIVERGENCE"))
+
     return {
+        "accounts": sorted(accounts.values(), key=lambda item: item["id"]),
+        "build_systems": sorted(build_systems.values(), key=lambda item: item["id"]),
+        "distribution_channels": sorted(distribution_channels.values(), key=lambda item: item["id"]),
         "maintainers": sorted(maintainers.values(), key=lambda item: item["id"]),
         "packages": sorted(packages.values(), key=lambda item: item["id"]),
         "repositories": sorted(repositories.values(), key=lambda item: item["id"]),
@@ -306,6 +329,9 @@ def main(argv: list[str] | None = None) -> int:
         f"packages={len(graph['packages'])} "
         f"repositories={len(graph['repositories'])} "
         f"organizations={len(graph['organizations'])} "
+        f"build_systems={len(graph['build_systems'])} "
+        f"distribution_channels={len(graph['distribution_channels'])} "
+        f"accounts={len(graph['accounts'])} "
         f"relationships={len(graph['relationships'])}"
     )
     return 0

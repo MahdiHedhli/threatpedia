@@ -1,0 +1,106 @@
+[
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "tj-actions GitHub Action release path"
+    ],
+    "id": "account-github-tj-actions-github-action-release-path",
+    "name": "tj-actions GitHub Action release path",
+    "provider": "GitHub",
+    "role": "action_release",
+    "source_incident_ids": [
+      "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "eslint-scope npm maintainer account"
+    ],
+    "id": "account-npm-eslint-scope-npm-maintainer-account",
+    "name": "eslint-scope npm maintainer account",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2018-ESLINT-SCOPE"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "@ledgerhq/connect-kit npm publish account"
+    ],
+    "id": "account-npm-ledgerhq-connect-kit-npm-publish-account",
+    "name": "@ledgerhq/connect-kit npm publish account",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2023-LEDGER-CONNECT-KIT"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "@lottiefiles/lottie-player npm publish account"
+    ],
+    "id": "account-npm-lottiefiles-lottie-player-npm-publish-account",
+    "name": "@lottiefiles/lottie-player npm publish account",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2024-LOTTIE-PLAYER"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "ua-parser-js npm maintainer account"
+    ],
+    "id": "account-npm-ua-parser-js-npm-maintainer-account",
+    "name": "ua-parser-js npm maintainer account",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2021-UA-PARSER-JS"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "PHP git server commit identity"
+    ],
+    "id": "account-php-git-php-git-server-commit-identity",
+    "name": "PHP git server commit identity",
+    "provider": "PHP Git",
+    "role": "source_commit",
+    "source_incident_ids": [
+      "SC-2021-PHP-GIT-SERVER"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "ctx PyPI project account"
+    ],
+    "id": "account-pypi-ctx-pypi-project-account",
+    "name": "ctx PyPI project account",
+    "provider": "PyPI",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2022-PYPI-CTX"
+    ]
+  },
+  {
+    "account_type": "package_registry_token",
+    "aliases": [
+      "Ultralytics PyPI publishing token"
+    ],
+    "id": "account-pypi-ultralytics-pypi-publishing-token",
+    "name": "Ultralytics PyPI publishing token",
+    "provider": "PyPI",
+    "role": "package_publish",
+    "source_incident_ids": [
+      "SC-2024-ULTRALYTICS-PYPI"
+    ]
+  }
+]
