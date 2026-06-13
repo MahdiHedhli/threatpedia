@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
 import {
+  SUPPLY_CHAIN_FEATURED_INCIDENT_IDS,
+  getSupplyChainEntityPage,
   getSupplyChainIncidentPage,
   getSupplyChainIndexModel,
   getSupplyChainRoutes,
@@ -53,6 +55,25 @@ assert.equal(index.counts.incidents, data.incidents.length, 'index should expose
 assert.equal(index.counts.relationships, data.relationships.length, 'index should expose relationship count');
 assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'index should expose build system count');
 assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
+assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
+assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should not expose the internal codename');
+assert.equal(index.explanatorySections.length, 4, 'index should include explanatory sections');
+assert.equal(index.featuredIncidents.length, 5, 'index should include five featured incidents');
+assert.deepEqual(
+  index.featuredIncidents.map((incident) => incident.id),
+  SUPPLY_CHAIN_FEATURED_INCIDENT_IDS,
+  'featured incident order should be curated and stable'
+);
+index.featuredIncidents.forEach((incident) => {
+  assert.ok(routeUrls.has(incident.href), `featured incident route should resolve: ${incident.href}`);
+});
+assert.equal(index.entitySummaries.length, 7, 'index should include seven entity summary cards');
+assert.ok(index.seo.title, 'index should include SEO title');
+assert.ok(index.seo.description, 'index should include SEO description');
+assert.equal(index.seo.canonicalPath, '/supply-chain/', 'index should include canonical path');
+assert.ok(index.seo.ogTitle, 'index should include Open Graph title');
+assert.ok(index.seo.ogDescription, 'index should include Open Graph description');
+assert.ok(index.seo.jsonLd, 'index should include JSON-LD');
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
 assert.ok(codecov.incident.summary, 'incident page should include summary');
@@ -65,6 +86,65 @@ assert.ok(codecov.sections.organizations.length > 0, 'incident page should inclu
 assert.ok(codecov.sections.buildSystems.length > 0, 'incident page should include build systems');
 assert.ok(codecov.sections.distributionChannels.length > 0, 'incident page should include distribution channels');
 assert.ok(codecov.incident.references.length > 0, 'incident page should include references');
+assert.ok(codecov.connectedEntities.length > 0, 'incident page should include relationship-aware connected entities');
+assert.equal(
+  new Set(codecov.connectedEntities.map((entity) => entity.href || entity.id)).size,
+  codecov.connectedEntities.length,
+  'incident connected entities should be deduplicated by entity'
+);
+codecov.connectedEntities.forEach((entity) => {
+  assert.ok(
+    ![
+      'accounts',
+      'build_systems',
+      'distribution_channels',
+      'maintainers',
+      'organizations',
+      'packages',
+      'repositories',
+    ].includes(entity.entityType),
+    'connected entity labels should use singular display names'
+  );
+});
+assert.ok(codecov.seo.title.includes('Supply Chain'), 'incident page should include SEO title');
+assert.ok(codecov.seo.description, 'incident page should include SEO description');
+assert.equal(
+  codecov.seo.canonicalPath,
+  '/supply-chain/incidents/SC-2021-CODECOV-BASH-UPLOADER/',
+  'incident page should include canonical path'
+);
+assert.ok(codecov.seo.ogTitle, 'incident page should include Open Graph title');
+assert.ok(codecov.seo.jsonLd, 'incident page should include JSON-LD');
+
+const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
+assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should include related incidents');
+eventStreamPackage.relatedIncidents.forEach((incident) => {
+  assert.ok(routeUrls.has(incident.href), `related incident route should resolve: ${incident.href}`);
+});
+assert.ok(eventStreamPackage.connectedEntities.length > 0, 'entity page should include connected entities');
+eventStreamPackage.connectedEntities.forEach((entity) => {
+  assert.ok(
+    ![
+      'accounts',
+      'build_systems',
+      'distribution_channels',
+      'maintainers',
+      'organizations',
+      'packages',
+      'repositories',
+    ].includes(entity.entityType),
+    'entity labels should use singular display names'
+  );
+});
+assert.ok(eventStreamPackage.seo.title.includes('Package'), 'entity page should include SEO title');
+assert.ok(eventStreamPackage.seo.description, 'entity page should include SEO description');
+assert.equal(
+  eventStreamPackage.seo.canonicalPath,
+  '/supply-chain/packages/pkg-npm-event-stream/',
+  'entity page should include canonical path'
+);
+assert.ok(eventStreamPackage.seo.ogTitle, 'entity page should include Open Graph title');
+assert.ok(eventStreamPackage.seo.jsonLd, 'entity page should include JSON-LD');
 
 const brokenData = {
   ...data,

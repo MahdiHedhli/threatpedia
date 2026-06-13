@@ -3,6 +3,8 @@ interface Item {
   href?: string | null;
   label: string;
   type?: string;
+  entityType?: string;
+  context?: string;
 }
 
 interface Props {
@@ -23,8 +25,11 @@ function titleCase(value?: string) {
     <ul class="entity-list">
       {items.map((item) => (
         <li>
-          {item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}
-          {item.type && <em>{titleCase(item.type)}</em>}
+          <span class="entity-main">
+            {item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}
+            {item.context && <small>{item.context}</small>}
+          </span>
+          {(item.entityType || item.type) && <em>{titleCase(item.entityType || item.type)}</em>}
         </li>
       ))}
     </ul>
@@ -60,11 +65,21 @@ function titleCase(value?: string) {
   }
 
   .entity-list em,
+  .entity-list small,
   .empty {
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     font-style: normal;
+  }
+
+  .entity-main {
+    min-width: 0;
+  }
+
+  .entity-list small {
+    display: block;
+    margin-top: 4px;
   }
 
   @media (max-width: 720px) {
