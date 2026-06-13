@@ -724,7 +724,8 @@
         "ecosystem": "multiple",
         "name": "internal dependency names",
         "vendor": "multiple organizations",
-        "package_url": "pkg:generic/internal-dependency-names"
+        "package_url": "pkg:generic/internal-dependency-names",
+        "purl_justification": "Dependency-confusion internal names are cross-ecosystem private identifiers with no public registry package home."
       }
     ],
     "supply_chain_vectors": [

@@ -32,7 +32,9 @@ Each entity has:
 - `source_incident_ids`: incident IDs that caused the entity to be emitted
 
 Package entities also carry `ecosystem` and a required canonical `package_url`
-PURL. See `docs/supply-chain-purl-model.md` for the canonical grammar.
+PURL. Generic package PURLs require `purl_justification` because they are
+reviewed exceptions, not registry-joinable package keys. See
+`docs/supply-chain-purl-model.md` for the canonical grammar.
 Repository entities also carry `host`, `url`, and `owner`.
 Build-system, distribution-channel, and account entities carry type-specific
 fields copied from the incident corpus.

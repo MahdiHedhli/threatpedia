@@ -15,7 +15,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from supply_chain_purl import PurlError, canonicalize_purl, purl_for_package
+from supply_chain_purl import PurlError, canonicalize_purl, parse_purl, purl_for_package
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -122,6 +122,7 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
     ecosystem = component["ecosystem"]
     name = component["name"]
     package_url = component.get("package_url")
+    purl_justification = component.get("purl_justification")
     if package_url:
         try:
             package_url = canonicalize_purl(package_url, ecosystem=ecosystem, package_name=name)
@@ -129,6 +130,10 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
             raise ValueError(f"{incident_id}: invalid package_url for {ecosystem}/{name}: {exc}") from exc
     else:
         package_url = purl_for_package(ecosystem, name)
+    if parse_purl(package_url).type == "generic" and (
+        not isinstance(purl_justification, str) or len(purl_justification.strip()) < 20
+    ):
+        raise ValueError(f"{incident_id}: generic package_url for {ecosystem}/{name} requires purl_justification")
     entity_id = stable_id("pkg", ecosystem, name)
     entity = packages.setdefault(
         entity_id,
@@ -137,12 +142,15 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
             "name": name,
             "ecosystem": ecosystem,
             "package_url": package_url,
+            **({"purl_justification": purl_justification} if parse_purl(package_url).type == "generic" else {}),
             "aliases": sorted({name}),
             "source_incident_ids": [],
         },
     )
     if package_url and not entity.get("package_url"):
         entity["package_url"] = package_url
+    if parse_purl(package_url).type == "generic":
+        entity["purl_justification"] = purl_justification
     add_source(entity, incident_id)
     return entity_id
 
