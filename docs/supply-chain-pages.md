@@ -58,6 +58,17 @@ Focused page tests:
 node scripts/test-supply-chain-pages.mjs
 ```
 
+Preview readiness check:
+
+```bash
+node scripts/check_supply_chain_preview.mjs
+```
+
+The preview check builds the section with `ENABLE_SUPPLY_CHAIN_PAGES=true`,
+verifies representative generated pages, compares route counts with the public
+readiness report, and fails if the production deploy workflow has been changed
+to enable the flag.
+
 Run graph validation before page generation:
 
 ```bash
@@ -129,7 +140,24 @@ the page path also supports a noindex robots value.
 
 ## Public Enablement Checklist
 
-Before enabling the section publicly, run the readiness gate:
+Before enabling the section publicly, complete an enabled preview review:
+
+```bash
+node scripts/check_supply_chain_preview.mjs
+```
+
+Checklist for the preview:
+
+- `/supply-chain/`
+- all five featured incident pages
+- representative entity pages
+- Supply Chain nav visibility
+- SEO metadata and JSON-LD on index and featured incidents
+- no public `Canary` copy
+- no broken internal Supply Chain links
+- no unexpected `noindex` on enabled preview pages
+
+After preview review, run the readiness gate:
 
 ```bash
 node scripts/check_supply_chain_public_readiness.mjs
