@@ -17,7 +17,7 @@ claims beyond `claims[]` unless the packet is updated and preflight is rerun.
 - `scripts/preflight-source-packet.mjs` validates one packet and returns
   pass/fail, errors, warnings, and a normalized summary.
 - `scripts/vulncheck-kev-intake.mjs` emits recent-first VulnCheck KEV
-  prioritization/source-packet-prefill artifacts in dry-run mode only.
+  prioritization/source-packet-prefill artifacts in dry-run or live mode.
 - `fixtures/zero-day-valid-packet.json` is a passing fixture.
 - `fixtures/zero-day-invalid-packet.json` is an intentionally failing fixture.
 
@@ -46,6 +46,21 @@ source.
 Live artifacts are written under `.github/pipeline/source-packets/vulncheck-kev/`
 and staged in the normal discovery PR. They are candidate/source-packet queue
 items, not article draft tasks.
+
+Production use is controlled by the `discovery_sources.vulncheck_kev.enabled`
+setting in `.github/pipeline/config.yml`. Scheduled discovery runs also require
+the repository Actions secret `VULNCHECKAPI`; the helper fails closed when live
+mode is enabled but the token is unavailable. The live path is intentionally
+bounded to one VulnCheck KEV backup fetch per run, 10 emitted candidates by
+default, latest-first ordering, seen-CVE filtering, and sibling dampening by
+vendor/product/day. Do not treat the config flag alone as a scheduled rollback:
+until the workflow/helper are changed to skip the step when disabled, rollback
+requires pausing or reverting the VulnCheck workflow/helper path, or manually
+dispatching discovery with `execute=false` or a non-zero-day lane.
+
+Operators should review the discovery PR before merge. VulnCheck prefill files
+can raise priority and provide source-packet evidence, but they do not create
+article tasks by themselves and do not satisfy drafting source sufficiency.
 
 ## Preflight Coverage
 
