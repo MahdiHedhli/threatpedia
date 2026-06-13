@@ -119,7 +119,25 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         errors = validator.validate_incident(incident)
 
-        self.assertTrue(any(".affected_components[0].package_url: expected null or package URL" in error for error in errors))
+        self.assertTrue(any(".affected_components[0].package_url: invalid canonical package URL" in error for error in errors))
+
+    def test_package_components_require_canonical_purls(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        incident["affected_components"][0]["package_url"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components[0].package_url: expected canonical package URL" in error for error in errors))
+
+    def test_package_purl_validation_does_not_crash_on_malformed_component_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        incident["affected_components"][0]["name"] = None
+        incident["affected_components"][0]["ecosystem"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components[0].name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".affected_components[0].ecosystem: expected non-empty string" in error for error in errors))
 
     def test_malformed_url_is_rejected_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])

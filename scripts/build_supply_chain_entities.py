@@ -7,8 +7,15 @@ import argparse
 import json
 from pathlib import Path
 import re
+import sys
 from typing import Any
 from urllib.parse import urlparse
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from supply_chain_purl import PurlError, canonicalize_purl, purl_for_package
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -115,6 +122,13 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
     ecosystem = component["ecosystem"]
     name = component["name"]
     package_url = component.get("package_url")
+    if package_url:
+        try:
+            package_url = canonicalize_purl(package_url, ecosystem=ecosystem, package_name=name)
+        except PurlError as exc:
+            raise ValueError(f"{incident_id}: invalid package_url for {ecosystem}/{name}: {exc}") from exc
+    else:
+        package_url = purl_for_package(ecosystem, name)
     entity_id = stable_id("pkg", ecosystem, name)
     entity = packages.setdefault(
         entity_id,
