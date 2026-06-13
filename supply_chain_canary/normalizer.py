@@ -83,7 +83,7 @@ def build_purl(ecosystem: str, name: str, version: str) -> str:
     if ecosystem == "npm":
         if normalized.startswith("@") and "/" in normalized:
             scope, pkg_name = normalized[1:].split("/", 1)
-            encoded_scope = quote(f"@{scope}", safe="")
+            encoded_scope = quote(scope, safe="")
             encoded_pkg_name = quote(pkg_name, safe="")
             return f"pkg:npm/{encoded_scope}/{encoded_pkg_name}@{encoded_version}"
         encoded_name = quote(normalized, safe="")

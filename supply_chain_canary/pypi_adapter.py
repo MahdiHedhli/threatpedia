@@ -77,7 +77,13 @@ def project_json_url(project_name: str) -> str:
 
 
 def fetch_project_json(project_name: str, timeout: int = 20) -> dict[str, Any]:
-    request = Request(project_json_url(project_name), headers={"Accept": "application/json"})
+    request = Request(
+        project_json_url(project_name),
+        headers={
+            "Accept": "application/json",
+            "User-Agent": "Threatpedia-Canary/0.1.0 (+https://threatpedia.wiki)",
+        },
+    )
     with urlopen(request, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
 

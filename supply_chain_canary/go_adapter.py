@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from .normalizer import ReleaseEvent, release_event
+from .normalizer import ReleaseEvent, parse_datetime, release_event
 
 
 INDEX_URL = "https://index.golang.org/index"
@@ -19,7 +19,13 @@ def index_url_since(since_rfc3339: str) -> str:
 
 
 def fetch_index_since(since_rfc3339: str, timeout: int = 20) -> list[dict[str, Any]]:
-    request = Request(index_url_since(since_rfc3339), headers={"Accept": "application/json"})
+    request = Request(
+        index_url_since(since_rfc3339),
+        headers={
+            "Accept": "application/json",
+            "User-Agent": "Threatpedia-Canary/0.1.0 (+https://threatpedia.wiki)",
+        },
+    )
     with urlopen(request, timeout=timeout) as response:
         return parse_index_lines(response.read().decode("utf-8"))
 
@@ -54,8 +60,13 @@ def dedupe_boundary_rows(
     deduped = [row for row in valid_rows if boundary_key(row) not in seen_boundary_keys]
     if not deduped:
         return [], set(seen_boundary_keys)
-    max_timestamp = max(row.get("Timestamp", "") for row in deduped)
-    next_boundary = {boundary_key(row) for row in deduped if row.get("Timestamp") == max_timestamp}
+    parsed_timestamps = {boundary_key(row): parse_datetime(row["Timestamp"]) for row in valid_rows}
+    max_timestamp = max(parsed_timestamps.values())
+    next_boundary = {
+        boundary_key(row)
+        for row in valid_rows
+        if parsed_timestamps[boundary_key(row)] == max_timestamp
+    }
     return deduped, next_boundary
 
 

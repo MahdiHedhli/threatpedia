@@ -19,6 +19,7 @@ OSV_REPOLL_DAYS = 30
 
 @dataclass(frozen=True)
 class EnrichmentObservation:
+    release_event_id: int | None
     purl: str
     ecosystem: str
     name: str
@@ -39,6 +40,7 @@ def build_enrichment_placeholders(
     return [
         EnrichmentObservation(
             purl=event.purl,
+            release_event_id=None,
             ecosystem=event.ecosystem,
             name=event.name,
             version=event.version,
@@ -69,6 +71,7 @@ def build_osv_repoll_placeholder(
         return None
     return EnrichmentObservation(
         purl=event.purl,
+        release_event_id=None,
         ecosystem=event.ecosystem,
         name=event.name,
         version=event.version,

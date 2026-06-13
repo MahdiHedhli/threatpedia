@@ -48,6 +48,7 @@ RETURNING id;
 
 INSERT_ENRICHMENT_OBSERVATION_SQL = """
 INSERT INTO supply_enrichment_observation (
+  release_event_id,
   purl,
   ecosystem,
   name,
@@ -58,6 +59,7 @@ INSERT INTO supply_enrichment_observation (
   raw_metadata,
   status
 ) VALUES (
+  %(release_event_id)s,
   %(purl)s,
   %(ecosystem)s,
   %(name)s,

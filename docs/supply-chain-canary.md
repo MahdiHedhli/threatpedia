@@ -17,8 +17,8 @@ package URL (PURL) as the canonical package-version key:
 - PyPI: `pkg:pypi/<normalized-name>@<version>`
 - Go: `pkg:golang/<module-path>@<version>`
 
-Scoped npm packages retain the namespace in encoded form, for example
-`pkg:npm/%40angular/animation@12.3.1`.
+Scoped npm packages use the npm scope name without the leading `@`, for
+example `pkg:npm/angular/animation@12.3.1`.
 
 The normalized event keeps:
 

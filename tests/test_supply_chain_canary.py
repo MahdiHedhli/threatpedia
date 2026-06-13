@@ -25,7 +25,7 @@ def load_json(name: str) -> dict:
 class SupplyChainCanaryTests(unittest.TestCase):
     def test_purl_builder_normalizes_supported_ecosystems(self) -> None:
         self.assertEqual(normalize_name("pypi", "Demo_Pkg"), "demo-pkg")
-        self.assertEqual(build_purl("npm", "@Scope/Demo", "1.2.3"), "pkg:npm/%40scope/demo@1.2.3")
+        self.assertEqual(build_purl("npm", "@Scope/Demo", "1.2.3"), "pkg:npm/scope/demo@1.2.3")
         self.assertEqual(build_purl("pypi", "Demo_Pkg", "1.2.3"), "pkg:pypi/demo-pkg@1.2.3")
         self.assertEqual(
             build_purl("go", "github.com/acme/lib", "v1.2.3"),
@@ -45,7 +45,7 @@ class SupplyChainCanaryTests(unittest.TestCase):
         event = events[0]
         self.assertEqual(event.ecosystem, "npm")
         self.assertEqual(event.name, "@scope/demo")
-        self.assertEqual(event.purl, "pkg:npm/%40scope/demo@1.2.3")
+        self.assertEqual(event.purl, "pkg:npm/scope/demo@1.2.3")
         self.assertEqual(event.feed_name, "npm-registry-change-trigger")
         self.assertEqual(event.feed_cursor, "seq:123")
         self.assertEqual(event.observed_facts["dependencies"], {"left-pad": "^1.3.0"})
@@ -113,6 +113,22 @@ class SupplyChainCanaryTests(unittest.TestCase):
         self.assertEqual(deduped, [])
         self.assertEqual(next_boundary, {go_adapter.boundary_key(rows[0])})
 
+    def test_go_adapter_keeps_seen_keys_when_boundary_grows(self) -> None:
+        rows = [
+            {"Path": "github.com/acme/lib", "Version": "v1.2.4", "Timestamp": "2026-06-10T12:35:56Z"},
+            {"Path": "github.com/acme/extra", "Version": "v1.2.5", "Timestamp": "2026-06-10T12:35:56Z"},
+        ]
+        deduped, next_boundary = go_adapter.dedupe_boundary_rows(
+            rows,
+            seen_boundary_keys={go_adapter.boundary_key(rows[0])},
+        )
+
+        self.assertEqual([row["Version"] for row in deduped], ["v1.2.5"])
+        self.assertEqual(
+            next_boundary,
+            {go_adapter.boundary_key(rows[0]), go_adapter.boundary_key(rows[1])},
+        )
+
     def test_parse_datetime_truncates_excess_fractional_precision(self) -> None:
         event = go_adapter.release_events_from_index_rows(
             [
@@ -134,6 +150,7 @@ class SupplyChainCanaryTests(unittest.TestCase):
 
         self.assertEqual([item.provider for item in placeholders], list(ENRICHMENT_PROVIDERS))
         self.assertTrue(all(item.status == "pending" for item in placeholders))
+        self.assertTrue(all(item.release_event_id is None for item in placeholders))
         self.assertTrue(osv_repoll_due(event, now=observed_at))
         self.assertIsNotNone(build_osv_repoll_placeholder(event, observed_at=observed_at))
         self.assertFalse(osv_repoll_due(event, now=event.published_at + timedelta(days=31)))
@@ -148,6 +165,7 @@ class SupplyChainCanaryTests(unittest.TestCase):
             "ON CONFLICT (ecosystem, name, version) DO UPDATE",
             storage.UPSERT_RELEASE_EVENT_SQL,
         )
+        self.assertIn("release_event_id", storage.INSERT_ENRICHMENT_OBSERVATION_SQL)
         self.assertIn("ON CONFLICT (ecosystem, feed_name) DO UPDATE", storage.UPSERT_FEED_CURSOR_SQL)
         cursor_params = storage.feed_cursor_params(
             ecosystem="go",
