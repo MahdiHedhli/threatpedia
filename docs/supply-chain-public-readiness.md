@@ -122,6 +122,17 @@ validation result was PASS for:
 - `node scripts/test-supply-chain-pages.mjs`
 - `node scripts/check_supply_chain_public_readiness.mjs`
 - production-equivalent enabled Astro build
+- `git diff --check`
+
+When a production-enable PR also changes incident Markdown/MDX metadata, article
+body content, or MITRE ATT&CK mappings, run the shared content validator against
+the changed article files using the same `--files-file` / `--new-files-file`
+inputs as `.github/workflows/pipeline-validate.yml`. When the change edits
+pipeline task JSON, run:
+
+```bash
+node scripts/validate-pipeline-tasks.mjs --all
+```
 
 Rollback: set `ENABLE_SUPPLY_CHAIN_PAGES=false` or remove the build-step
 environment variable from `.github/workflows/deploy.yml`, redeploy, then confirm

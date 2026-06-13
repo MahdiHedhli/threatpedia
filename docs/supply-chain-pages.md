@@ -66,8 +66,9 @@ node scripts/check_supply_chain_preview.mjs
 
 The preview check builds the section with `ENABLE_SUPPLY_CHAIN_PAGES=true`,
 verifies representative generated pages, compares route counts with the public
-readiness report, and fails if the production deploy workflow has been changed
-to enable the flag.
+readiness report, and remains usable after production enablement. For
+pre-production branches that must prove they did not change deployment
+configuration, run it with `--require-production-disabled`.
 
 Run graph validation before page generation:
 
@@ -230,6 +231,17 @@ python3 scripts/validate_supply_chain_graph.py
 node scripts/test-supply-chain-pages.mjs
 node scripts/check_supply_chain_public_readiness.mjs
 cd site && rm -rf dist && ENABLE_SUPPLY_CHAIN_PAGES=true npm run build
+git diff --check
+```
+
+When the change also edits incident Markdown/MDX metadata, body content, or
+MITRE ATT&CK mappings, also run the shared content validator against the changed
+article files using the same `--files-file` / `--new-files-file` pattern used by
+`.github/workflows/pipeline-validate.yml`. When the change edits pipeline task
+JSON, run:
+
+```bash
+node scripts/validate-pipeline-tasks.mjs --all
 ```
 
 Rollback is a deployment configuration change: set
