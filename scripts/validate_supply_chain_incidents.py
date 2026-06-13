@@ -21,6 +21,7 @@ ID_PATTERN = re.compile(r"^SC-[0-9]{4}-[A-Z0-9-]+$")
 FULL_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 PURL_PATTERN = re.compile(r"^pkg:[a-z0-9.+-]+/[^\s]+$")
 REFERENCE_ID_PATTERN = re.compile(r"^ref-[a-z0-9-]+$")
+DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 DATE_RANGE_PATTERN = re.compile(r"^([0-9]{4}-[0-9]{2}-[0-9]{2})/([0-9]{4}-[0-9]{2}-[0-9]{2})$")
 
 REQUIRED_FIELDS = [
@@ -128,7 +129,7 @@ def load_json(path: Path) -> Any:
 
 
 def parse_date(value: Any) -> date | None:
-    if not isinstance(value, str):
+    if not isinstance(value, str) or not DATE_PATTERN.match(value):
         return None
     try:
         return date.fromisoformat(value)

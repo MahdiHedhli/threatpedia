@@ -88,7 +88,7 @@
     "references": [
       {
         "title": "Petya Ransomware",
-        "publisher": "CISA",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
         "url": "https://www.cisa.gov/news-events/alerts/2017/07/01/petya-ransomware",
         "published_at": "2017-07-01"
       }
@@ -580,7 +580,7 @@
     {
       "id": "ref-cisa-aa20-352a",
       "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
-      "publisher": "CISA",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
       "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
       "published_at": "2020-12-17"
     }
@@ -943,7 +943,7 @@
     "references": [
       {
         "title": "Kaseya VSA Supply-Chain Ransomware Attack",
-        "publisher": "CISA",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
         "url": "https://www.cisa.gov/news-events/alerts/2021/07/02/kaseya-vsa-supply-chain-ransomware-attack",
         "published_at": "2021-07-02"
       }

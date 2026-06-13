@@ -161,7 +161,7 @@ function entityTypeLabel(entity) {
   return ENTITY_COLLECTION_LABELS[entity.entityCollection] || entity.entityCollection;
 }
 
-export function isSupplyChainPagesEnabled(env = typeof process !== 'undefined' ? process.env || {} : {}) {
+export function isSupplyChainPagesEnabled(env = (typeof process !== 'undefined' ? process.env : null) || {}) {
   return String(env.ENABLE_SUPPLY_CHAIN_PAGES || '').toLowerCase() === 'true';
 }
 
@@ -394,6 +394,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       maintainers: data.entities.maintainers.length,
       buildSystems: data.entities.build_systems.length,
       distributionChannels: data.entities.distribution_channels.length,
+      compromisedAccounts: data.entities.accounts.length,
       relationships: data.relationships.length,
     },
     incidents: data.incidents
