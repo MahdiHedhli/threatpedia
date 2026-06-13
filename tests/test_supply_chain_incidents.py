@@ -59,6 +59,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".disclosed_at: expected YYYY-MM-DD date" in error for error in errors))
         self.assertTrue(any(".references[0].url: expected http(s) URL" in error for error in errors))
 
+    def test_missing_required_field_reports_once(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        del incident["title"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertEqual([error for error in errors if ".title" in error], [f"{incident['id']}.title: missing required field"])
+
     def test_non_string_id_is_reported_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["id"] = None
@@ -104,6 +112,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".supply_chain_vectors[0]: invalid value" in error for error in errors))
         self.assertTrue(any(".impact_categories[0]: invalid value" in error for error in errors))
+
+    def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["supply_chain_vectors"] = [{}]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".supply_chain_vectors[0]: expected non-empty string" in error for error in errors))
 
     def test_schema_shape_errors_are_reported_without_crashing(self) -> None:
         self.assertEqual(validator.validate_schema_file({"properties": []}), ["schema.properties: expected object"])

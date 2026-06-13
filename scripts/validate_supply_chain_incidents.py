@@ -114,7 +114,7 @@ def require_enum_list(errors: list[str], path: str, value: Any, allowed: set[str
     if not isinstance(value, list):
         return
     for index, item in enumerate(value):
-        if item not in allowed:
+        if isinstance(item, str) and item not in allowed:
             errors.append(f"{path}[{index}]: invalid value {item!r}")
 
 
@@ -163,42 +163,55 @@ def validate_incident(incident: Any) -> list[str]:
         if field not in incident:
             errors.append(f"{incident_id}.{field}: missing required field")
 
-    if incident.get("schema_version") != SCHEMA_VERSION:
+    if "schema_version" in incident and incident.get("schema_version") != SCHEMA_VERSION:
         errors.append(f"{incident_id}.schema_version: expected {SCHEMA_VERSION!r}")
-    if not isinstance(raw_id, str) or not ID_PATTERN.match(raw_id):
-        errors.append(f"{incident_id}.id: expected SC-YYYY-SLUG identifier")
-    require_string(errors, f"{incident_id}.title", incident.get("title"), min_length=8)
-    require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
-    if incident.get("status") not in VALID_STATUS:
+    if "id" in incident:
+        if not isinstance(raw_id, str) or not ID_PATTERN.match(raw_id):
+            errors.append(f"{incident_id}.id: expected SC-YYYY-SLUG identifier")
+    if "title" in incident:
+        require_string(errors, f"{incident_id}.title", incident.get("title"), min_length=8)
+    if "summary" in incident:
+        require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
+    if "status" in incident and incident.get("status") not in VALID_STATUS:
         errors.append(f"{incident_id}.status: invalid value {incident.get('status')!r}")
 
-    first_observed_at = parse_date(incident.get("first_observed_at"))
-    disclosed_at = parse_date(incident.get("disclosed_at"))
-    if first_observed_at is None:
-        errors.append(f"{incident_id}.first_observed_at: expected YYYY-MM-DD date")
-    if disclosed_at is None:
-        errors.append(f"{incident_id}.disclosed_at: expected YYYY-MM-DD date")
+    first_observed_at = None
+    if "first_observed_at" in incident:
+        first_observed_at = parse_date(incident.get("first_observed_at"))
+        if first_observed_at is None:
+            errors.append(f"{incident_id}.first_observed_at: expected YYYY-MM-DD date")
+    disclosed_at = None
+    if "disclosed_at" in incident:
+        disclosed_at = parse_date(incident.get("disclosed_at"))
+        if disclosed_at is None:
+            errors.append(f"{incident_id}.disclosed_at: expected YYYY-MM-DD date")
     if first_observed_at and disclosed_at and disclosed_at < first_observed_at:
         errors.append(f"{incident_id}.disclosed_at: cannot be before first_observed_at")
 
-    require_string_list(errors, f"{incident_id}.affected_ecosystems", incident.get("affected_ecosystems"))
-    require_enum_list(errors, f"{incident_id}.supply_chain_vectors", incident.get("supply_chain_vectors"), VALID_VECTORS)
-    require_enum_list(errors, f"{incident_id}.impact_categories", incident.get("impact_categories"), VALID_IMPACTS)
-    require_string_list(errors, f"{incident_id}.tags", incident.get("tags"))
+    if "affected_ecosystems" in incident:
+        require_string_list(errors, f"{incident_id}.affected_ecosystems", incident.get("affected_ecosystems"))
+    if "supply_chain_vectors" in incident:
+        require_enum_list(errors, f"{incident_id}.supply_chain_vectors", incident.get("supply_chain_vectors"), VALID_VECTORS)
+    if "impact_categories" in incident:
+        require_enum_list(errors, f"{incident_id}.impact_categories", incident.get("impact_categories"), VALID_IMPACTS)
+    if "tags" in incident:
+        require_string_list(errors, f"{incident_id}.tags", incident.get("tags"))
 
-    components = incident.get("affected_components")
-    if not isinstance(components, list) or not components:
-        errors.append(f"{incident_id}.affected_components: expected non-empty list")
-    else:
-        for index, component in enumerate(components):
-            validate_component(errors, incident_id, index, component)
+    if "affected_components" in incident:
+        components = incident.get("affected_components")
+        if not isinstance(components, list) or not components:
+            errors.append(f"{incident_id}.affected_components: expected non-empty list")
+        else:
+            for index, component in enumerate(components):
+                validate_component(errors, incident_id, index, component)
 
-    references = incident.get("references")
-    if not isinstance(references, list) or not references:
-        errors.append(f"{incident_id}.references: expected non-empty list")
-    else:
-        for index, reference in enumerate(references):
-            validate_reference(errors, incident_id, index, reference)
+    if "references" in incident:
+        references = incident.get("references")
+        if not isinstance(references, list) or not references:
+            errors.append(f"{incident_id}.references: expected non-empty list")
+        else:
+            for index, reference in enumerate(references):
+                validate_reference(errors, incident_id, index, reference)
 
     return errors
 
