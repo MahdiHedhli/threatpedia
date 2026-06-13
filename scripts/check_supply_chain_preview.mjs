@@ -60,20 +60,27 @@ function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, 'utf-8'));
 }
 
-function assertProductionFlagUnchanged() {
+function productionDeployEnablesSupplyChain() {
   const workflow = readFileSync(deployWorkflowPath, 'utf-8');
   const productionEnablePatterns = [
     /ENABLE_SUPPLY_CHAIN_PAGES\s*:\s*['"]?true['"]?/i,
     /ENABLE_SUPPLY_CHAIN_PAGES=true/i,
     /ENABLE_SUPPLY_CHAIN_PAGES:\s*\$\{\{\s*vars\.ENABLE_SUPPLY_CHAIN_PAGES\s*\}\}/i,
   ];
-  assertPreview(
-    productionEnablePatterns.every((pattern) => !pattern.test(workflow)),
-    'production deploy workflow appears to enable ENABLE_SUPPLY_CHAIN_PAGES',
-  );
+  return productionEnablePatterns.some((pattern) => pattern.test(workflow));
 }
 
-assertProductionFlagUnchanged();
+const requireProductionDisabled = process.argv.includes('--require-production-disabled')
+  || String(process.env.SUPPLY_CHAIN_PREVIEW_REQUIRE_PRODUCTION_DISABLED || '').toLowerCase() === 'true';
+
+if (requireProductionDisabled) {
+  assertPreview(
+    !productionDeployEnablesSupplyChain(),
+    'production deploy workflow appears to enable ENABLE_SUPPLY_CHAIN_PAGES',
+  );
+} else if (productionDeployEnablesSupplyChain()) {
+  console.log('Production deploy already enables ENABLE_SUPPLY_CHAIN_PAGES; continuing preview output checks.');
+}
 
 run('node scripts/check_supply_chain_public_readiness.mjs');
 

@@ -66,8 +66,9 @@ node scripts/check_supply_chain_preview.mjs
 
 The preview check builds the section with `ENABLE_SUPPLY_CHAIN_PAGES=true`,
 verifies representative generated pages, compares route counts with the public
-readiness report, and fails if the production deploy workflow has been changed
-to enable the flag.
+readiness report, and remains usable after production enablement. For
+pre-production branches that must prove they did not change deployment
+configuration, run it with `--require-production-disabled`.
 
 Run graph validation before page generation:
 
@@ -213,6 +214,40 @@ checks are:
    - featured incident editorial sections visible and citation-backed
    - non-featured incidents still render without editorial sections
    - no scoring, recommendations, live-feed copy, or generated conclusions
+
+## Production Enablement
+
+Production deployment was enabled on 2026-06-13 by setting
+`ENABLE_SUPPLY_CHAIN_PAGES=true` on the GitHub Pages Astro build step in
+`.github/workflows/deploy.yml`.
+
+Validation result at enablement: PASS.
+
+Required checks before and after changing production deployment configuration:
+
+```bash
+python3 scripts/validate_supply_chain_incidents.py
+python3 scripts/validate_supply_chain_graph.py
+node scripts/test-supply-chain-pages.mjs
+node scripts/check_supply_chain_public_readiness.mjs
+cd site && rm -rf dist && ENABLE_SUPPLY_CHAIN_PAGES=true npm run build
+git diff --check
+```
+
+When the change also edits incident Markdown/MDX metadata, body content, or
+MITRE ATT&CK mappings, also run the shared content validator against the changed
+article files using the same `--files-file` / `--new-files-file` pattern used by
+`.github/workflows/pipeline-validate.yml`. When the change edits pipeline task
+JSON, run:
+
+```bash
+node scripts/validate-pipeline-tasks.mjs --all
+```
+
+Rollback is a deployment configuration change: set
+`ENABLE_SUPPLY_CHAIN_PAGES=false` or remove the build-step environment variable
+from `.github/workflows/deploy.yml`, redeploy, and confirm `/supply-chain/` and
+the Supply Chain nav link are absent.
 
 ## Supply Chain Editorial Checklist
 

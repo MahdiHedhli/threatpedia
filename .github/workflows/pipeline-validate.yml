@@ -63,6 +63,8 @@ jobs:
         id: build
         if: steps.changed.outputs.count != '0'
         continue-on-error: true
+        env:
+          ENABLE_SUPPLY_CHAIN_PAGES: "true"
         run: |
           cd site && npm run build
 
