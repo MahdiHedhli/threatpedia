@@ -59,6 +59,26 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".disclosed_at: expected YYYY-MM-DD date" in error for error in errors))
         self.assertTrue(any(".references[0].url: expected http(s) URL" in error for error in errors))
 
+    def test_dates_must_use_hyphenated_full_date_format(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["first_observed_at"] = "2024-W13-5"
+        incident["disclosed_at"] = "20240329"
+        incident["references"][0]["published_at"] = "20240329"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".first_observed_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".disclosed_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".references[0].published_at: expected YYYY-MM-DD date" in error for error in errors))
+
+    def test_package_url_rejects_whitespace_and_partial_matches(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["affected_components"][0]["package_url"] = "pkg:npm/example package"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components[0].package_url: expected null or package URL" in error for error in errors))
+
     def test_schema_enums_are_enforced(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["supply_chain_vectors"] = ["scoring"]

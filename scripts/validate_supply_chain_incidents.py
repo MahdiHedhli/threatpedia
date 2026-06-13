@@ -18,7 +18,8 @@ DEFAULT_CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents
 DEFAULT_SCHEMA_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "schema.json"
 SCHEMA_VERSION = "supply-chain-incident/1"
 ID_PATTERN = re.compile(r"^SC-[0-9]{4}-[A-Z0-9-]+$")
-PURL_PATTERN = re.compile(r"^pkg:[a-z0-9.+-]+/.+")
+FULL_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+PURL_PATTERN = re.compile(r"^pkg:[a-z0-9.+-]+/[^\s]+$")
 
 REQUIRED_FIELDS = [
     "schema_version",
@@ -75,7 +76,7 @@ def load_json(path: Path) -> Any:
 
 
 def parse_date(value: Any) -> date | None:
-    if not isinstance(value, str):
+    if not isinstance(value, str) or not FULL_DATE_PATTERN.fullmatch(value):
         return None
     try:
         return date.fromisoformat(value)
@@ -127,7 +128,7 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
     if component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
     package_url = component.get("package_url")
-    if package_url is not None and not (isinstance(package_url, str) and PURL_PATTERN.match(package_url)):
+    if package_url is not None and not (isinstance(package_url, str) and PURL_PATTERN.fullmatch(package_url)):
         errors.append(f"{path}.package_url: expected null or package URL")
 
 
