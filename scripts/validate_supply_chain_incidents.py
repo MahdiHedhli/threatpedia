@@ -154,6 +154,10 @@ def is_valid_url(value: Any) -> bool:
     if not isinstance(value, str) or any(char.isspace() for char in value):
         return False
     parsed = urlparse(value)
+    try:
+        parsed.port
+    except ValueError:
+        return False
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
@@ -162,8 +166,8 @@ def require_string(errors: list[str], path: str, value: Any, *, min_length: int 
         errors.append(f"{path}: expected non-empty string")
 
 
-def require_string_list(errors: list[str], path: str, value: Any) -> None:
-    if not isinstance(value, list) or not value:
+def require_string_list(errors: list[str], path: str, value: Any, *, allow_empty: bool = False) -> None:
+    if not isinstance(value, list) or (not value and not allow_empty):
         errors.append(f"{path}: expected non-empty list")
         return
     for index, item in enumerate(value):
@@ -176,7 +180,9 @@ def require_enum_list(errors: list[str], path: str, value: Any, allowed: set[str
     if not isinstance(value, list):
         return
     for index, item in enumerate(value):
-        if item not in allowed:
+        if not isinstance(item, str) or not item.strip():
+            errors.append(f"{path}[{index}]: expected non-empty string")
+        elif item not in allowed:
             errors.append(f"{path}[{index}]: invalid value {item!r}")
 
 
@@ -188,9 +194,12 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
     for field in REQUIRED_COMPONENT_FIELDS:
         if field not in component:
             errors.append(f"{path}.{field}: missing required field")
-    require_string(errors, f"{path}.ecosystem", component.get("ecosystem"))
-    require_string(errors, f"{path}.name", component.get("name"))
-    require_string(errors, f"{path}.vendor", component.get("vendor"))
+    if "ecosystem" in component:
+        require_string(errors, f"{path}.ecosystem", component.get("ecosystem"))
+    if "name" in component:
+        require_string(errors, f"{path}.name", component.get("name"))
+    if "vendor" in component:
+        require_string(errors, f"{path}.vendor", component.get("vendor"))
     if component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
     package_url = component.get("package_url")
@@ -312,7 +321,7 @@ def validate_editorial_attack_chain(
 
 
 def validate_editorial_fields(errors: list[str], incident: dict[str, Any]) -> None:
-    incident_id = incident.get("id", "<missing-id>")
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
     is_featured = incident_id in FEATURED_INCIDENT_IDS
     present_fields = [field for field in EDITORIAL_FIELDS if field in incident]
     if not is_featured and not present_fields:
@@ -394,7 +403,7 @@ def validate_incident(incident: Any) -> list[str]:
     if not isinstance(incident, dict):
         return ["incident: expected object"]
 
-    incident_id = incident.get("id", "<missing-id>")
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
     for field in REQUIRED_FIELDS:
         if field not in incident:
             errors.append(f"{incident_id}.{field}: missing required field")
@@ -403,8 +412,10 @@ def validate_incident(incident: Any) -> list[str]:
         errors.append(f"{incident_id}.schema_version: expected {SCHEMA_VERSION!r}")
     if not isinstance(incident.get("id"), str) or not ID_PATTERN.match(incident["id"]):
         errors.append(f"{incident_id}.id: expected SC-YYYY-SLUG identifier")
-    require_string(errors, f"{incident_id}.title", incident.get("title"), min_length=8)
-    require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
+    if "title" in incident:
+        require_string(errors, f"{incident_id}.title", incident.get("title"), min_length=8)
+    if "summary" in incident:
+        require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
     if incident.get("status") not in VALID_STATUS:
         errors.append(f"{incident_id}.status: invalid value {incident.get('status')!r}")
     if incident.get("confidence") not in VALID_CONFIDENCE:
@@ -435,7 +446,7 @@ def validate_incident(incident: Any) -> list[str]:
     require_string_list(errors, f"{incident_id}.affected_ecosystems", incident.get("affected_ecosystems"))
     require_enum_list(errors, f"{incident_id}.supply_chain_vectors", incident.get("supply_chain_vectors"), VALID_VECTORS)
     require_enum_list(errors, f"{incident_id}.impact_categories", incident.get("impact_categories"), VALID_IMPACTS)
-    require_string_list(errors, f"{incident_id}.tags", incident.get("tags"))
+    require_string_list(errors, f"{incident_id}.tags", incident.get("tags"), allow_empty=True)
 
     components = incident.get("affected_components")
     if not isinstance(components, list) or not components:
@@ -511,10 +522,16 @@ def validate_schema_file(schema: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(schema, dict):
         return ["schema: expected object"]
-    if schema.get("properties", {}).get("schema_version", {}).get("const") != SCHEMA_VERSION:
+    properties = schema.get("properties")
+    if not isinstance(properties, dict):
+        return ["schema.properties: expected object"]
+    schema_version = properties.get("schema_version")
+    if not isinstance(schema_version, dict):
+        return ["schema.properties.schema_version: expected object"]
+    if schema_version.get("const") != SCHEMA_VERSION:
         errors.append("schema.schema_version.const: does not match validator schema version")
     required = schema.get("required")
-    if required != REQUIRED_FIELDS:
+    if not isinstance(required, list) or set(required) != set(REQUIRED_FIELDS):
         errors.append("schema.required: does not match validator required fields")
     return errors
 
