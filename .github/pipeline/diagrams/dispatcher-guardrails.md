@@ -18,7 +18,7 @@ Companion diagrams:
   'fontFamily':'IBM Plex Mono, ui-monospace, monospace'
 }}}%%
 flowchart TB
-  CRON(["pipeline-dispatcher.yml<br/>(2h cron)"])
+  CRON(["pipeline-dispatcher.yml<br/>(1h cron)"])
 
   subgraph LOAD["config load"]
     direction TB

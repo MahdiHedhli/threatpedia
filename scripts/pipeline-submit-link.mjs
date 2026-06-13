@@ -231,7 +231,7 @@ function buildTask(args, normalizedUrls, taskId) {
     ],
     acceptance_criteria: acceptanceCriteriaFor(args.type),
     depends_on: [],
-    preconditions: ['editorial queue depth < 50'],
+    preconditions: ['editorial queue depth < 100'],
     output: {
       file_pattern: filePatternFor(args.type),
       branch: `pipeline/${taskId}`,
