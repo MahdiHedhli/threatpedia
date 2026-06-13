@@ -3,7 +3,7 @@ name: "Pipeline: Dispatcher"
 # Runs on schedule and manual trigger
 on:
   schedule:
-    - cron: "30 */2 * * *"   # Every 2 hours at :30
+    - cron: "30 * * * *"   # Hourly at :30
   workflow_dispatch:
     inputs:
       task_id:

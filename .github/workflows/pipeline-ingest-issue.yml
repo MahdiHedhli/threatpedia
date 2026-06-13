@@ -318,7 +318,7 @@ jobs:
               acceptance_criteria: acceptanceCriteriaFor(type),
               depends_on: [],
               preconditions: [
-                'editorial queue depth < 50',
+                'editorial queue depth < 100',
               ],
               output: {
                 file_pattern: `site/src/content/${type === 'threat-actor' ? 'threat-actors' : type + 's'}/{slug}.md`,

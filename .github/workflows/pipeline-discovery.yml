@@ -30,7 +30,7 @@ name: "Pipeline: Automated Discovery"
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # Every 6 hours
+    - cron: "0 */3 * * *"   # Every 3 hours
   workflow_dispatch:
     inputs:
       mode:
@@ -49,9 +49,9 @@ on:
         required: false
         default: "14"
       limit:
-        description: "Max tasks to create per run (default: 10)"
+        description: "Max tasks to create per run (default: 20)"
         required: false
-        default: "10"
+        default: "20"
       execute:
         description: "Write task files (true) or dry-run (false)"
         required: false
@@ -148,7 +148,7 @@ jobs:
         env:
           MODE: ${{ inputs.mode || 'all' }}
           DAYS: ${{ inputs.days || '14' }}
-          LIMIT: ${{ inputs.limit || '10' }}
+          LIMIT: ${{ inputs.limit || '20' }}
           EXECUTE: ${{ inputs.execute || 'true' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
