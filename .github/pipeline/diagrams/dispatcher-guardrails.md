@@ -39,9 +39,9 @@ flowchart TB
     end
 
     subgraph BP["backpressure (hysteresis)"]
-      BPQ{"drafts pending<br/>≥ max_pending (50)?"}
+      BPQ{"drafts pending<br/>≥ max_pending (100)?"}
       BPI["open pipeline/backpressure Issue"]
-      BPW["pause · wait until<br/>queue < backpressure_resume (40)"]
+      BPW["pause · wait until<br/>queue < backpressure_resume (80)"]
       BPC["auto-close Issue on resume"]
     end
 
@@ -56,7 +56,7 @@ flowchart TB
     end
   end
 
-  DISPATCH["select top pending (P0..P3)<br/>dispatch up to 3 per run"]
+  DISPATCH["select top pending (P0..P3)<br/>dispatch up to 12 per run"]
   PRIV["pipeline/ready Issue<br/>+ labels"]
 
   CRON --> INSTALL --> READ --> CFG
