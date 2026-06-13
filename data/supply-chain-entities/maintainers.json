@@ -1,0 +1,46 @@
+[
+  {
+    "aliases": [
+      "Dominic Tarr",
+      "dominictarr"
+    ],
+    "id": "maintainer-dominictarr",
+    "name": "Dominic Tarr",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ]
+  },
+  {
+    "aliases": [
+      "Jia Tan",
+      "JiaT75"
+    ],
+    "id": "maintainer-jia-tan",
+    "name": "Jia Tan",
+    "source_incident_ids": [
+      "SC-2024-XZ-UTILS"
+    ]
+  },
+  {
+    "aliases": [
+      "Marak",
+      "Marak Squires"
+    ],
+    "id": "maintainer-marak-squires",
+    "name": "Marak Squires",
+    "source_incident_ids": [
+      "SC-2022-COLORS-FAKER"
+    ]
+  },
+  {
+    "aliases": [
+      "Brandon Nozaki Miller",
+      "RIAEvangelist"
+    ],
+    "id": "maintainer-riaevangelist",
+    "name": "RIAEvangelist",
+    "source_incident_ids": [
+      "SC-2022-NODE-IPC"
+    ]
+  }
+]

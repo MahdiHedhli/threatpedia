@@ -1,0 +1,187 @@
+[
+  {
+    "source": "incident-SC-2016-LINUX-MINT-ISO",
+    "target": "org-linux-mint",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2017-CCLEANER",
+    "target": "org-piriform",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2017-NOTPETYA-MEDOC",
+    "target": "org-intellect-service",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "org-eslint",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "pkg-npm-eslint-scope",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "maintainer-dominictarr",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "pkg-npm-event-stream",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "repo-github-com-dominictarr-event-stream",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2019-ASUS-SHADOWHAMMER",
+    "target": "org-asus",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2020-SOLARWINDS-ORION",
+    "target": "org-solarwinds",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+    "target": "org-codecov",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+    "target": "pkg-multiple-internal-dependency-names",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2021-KASEYA-VSA",
+    "target": "org-kaseya",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2021-NPM-RC",
+    "target": "pkg-npm-rc",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2021-PHP-GIT-SERVER",
+    "target": "org-php-project",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "pkg-npm-ua-parser-js",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-COLORS-FAKER",
+    "target": "maintainer-marak-squires",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2022-COLORS-FAKER",
+    "target": "pkg-npm-colors",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-COLORS-FAKER",
+    "target": "pkg-npm-faker",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-COLORS-FAKER",
+    "target": "repo-github-com-marak-colors-js",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2022-NODE-IPC",
+    "target": "maintainer-riaevangelist",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2022-NODE-IPC",
+    "target": "pkg-npm-node-ipc",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-PYPI-CTX",
+    "target": "pkg-pypi-ctx",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+    "target": "org-pytorch",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+    "target": "pkg-pypi-torchtriton",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+    "target": "org-ledger",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+    "target": "pkg-npm-ledgerhq-connect-kit",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "org-3cx",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-LOTTIE-PLAYER",
+    "target": "org-lottiefiles",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-LOTTIE-PLAYER",
+    "target": "pkg-npm-lottiefiles-lottie-player",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2024-POLYFILL-IO",
+    "target": "org-polyfill-io",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "org-ultralytics",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "pkg-pypi-ultralytics",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2024-XZ-UTILS",
+    "target": "maintainer-jia-tan",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2024-XZ-UTILS",
+    "target": "org-tukaani-project",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-XZ-UTILS",
+    "target": "repo-github-com-tukaani-project-xz",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "target": "org-tj-actions",
+    "type": "AFFECTED_ORGANIZATION"
+  }
+]

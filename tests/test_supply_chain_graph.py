@@ -1,0 +1,77 @@
+from __future__ import annotations
+
+import copy
+import importlib.util
+import json
+from pathlib import Path
+import unittest
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
+ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
+RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+
+
+def load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"failed to load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+builder = load_module("build_supply_chain_entities", REPO_ROOT / "scripts" / "build_supply_chain_entities.py")
+validator = load_module("validate_supply_chain_graph", REPO_ROOT / "scripts" / "validate_supply_chain_graph.py")
+
+
+def load_json(path: Path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+class SupplyChainGraphTests(unittest.TestCase):
+    def test_generated_graph_validates(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+
+    def test_builder_extracts_expected_entities(self) -> None:
+        graph = builder.build_graph(load_json(CORPUS_PATH))
+
+        package_ids = {entity["id"] for entity in graph["packages"]}
+        maintainer_ids = {entity["id"] for entity in graph["maintainers"]}
+        organization_ids = {entity["id"] for entity in graph["organizations"]}
+
+        self.assertIn("pkg-npm-event-stream", package_ids)
+        self.assertIn("maintainer-jia-tan", maintainer_ids)
+        self.assertIn("maintainer-dominictarr", maintainer_ids)
+        self.assertIn("org-codecov", organization_ids)
+        self.assertIn("org-polyfill-io", organization_ids)
+
+    def test_invalid_relationship_target_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships[0]["target"] = "pkg-does-not-exist"
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unknown target" in error for error in errors))
+
+    def test_alias_collision_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        entities_by_type["packages"][0]["aliases"].append(entities_by_type["packages"][1]["aliases"][0])
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("normalized alias" in error for error in errors))
+
+
+if __name__ == "__main__":
+    unittest.main()
