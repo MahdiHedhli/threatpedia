@@ -265,8 +265,25 @@
           "pattern": "^pkg:[a-z0-9.+-]+/[^\\s]+$"
         },
         "purl_justification": {
-          "type": "string"
+          "type": "string",
+          "minLength": 20
         }
+      },
+      "if": {
+        "properties": {
+          "package_url": {
+            "type": "string",
+            "pattern": "^pkg:generic/"
+          }
+        },
+        "required": [
+          "package_url"
+        ]
+      },
+      "then": {
+        "required": [
+          "purl_justification"
+        ]
       }
     },
     "reference": {

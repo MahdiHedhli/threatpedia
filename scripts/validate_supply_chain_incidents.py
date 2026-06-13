@@ -545,12 +545,40 @@ def validate_schema_file(schema: Any) -> list[str]:
         return ["schema.properties: expected object"]
     schema_version = properties.get("schema_version")
     if not isinstance(schema_version, dict):
-        return ["schema.properties.schema_version: expected object"]
+        errors.append("schema.properties.schema_version: expected object")
+        return errors
     if schema_version.get("const") != SCHEMA_VERSION:
         errors.append("schema.schema_version.const: does not match validator schema version")
     required = schema.get("required")
     if not isinstance(required, list) or set(required) != set(REQUIRED_FIELDS):
         errors.append("schema.required: does not match validator required fields")
+    defs = schema.get("$defs")
+    affected_component = defs.get("affected_component") if isinstance(defs, dict) else None
+    if not isinstance(affected_component, dict):
+        errors.append("schema.$defs.affected_component: expected object")
+        return errors
+    component_properties = affected_component.get("properties")
+    if not isinstance(component_properties, dict):
+        errors.append("schema.$defs.affected_component.properties: expected object")
+        return errors
+    purl_justification = component_properties.get("purl_justification")
+    if not isinstance(purl_justification, dict) or purl_justification.get("minLength") != 20:
+        errors.append("schema.$defs.affected_component.properties.purl_justification.minLength: expected 20")
+    generic_if = affected_component.get("if")
+    generic_then = affected_component.get("then")
+    generic_pattern = None
+    generic_required = None
+    if isinstance(generic_if, dict):
+        generic_required = generic_if.get("required")
+        if_properties = generic_if.get("properties")
+        if isinstance(if_properties, dict):
+            package_url = if_properties.get("package_url")
+            if isinstance(package_url, dict):
+                generic_pattern = package_url.get("pattern")
+    if generic_pattern != "^pkg:generic/" or generic_required != ["package_url"]:
+        errors.append("schema.$defs.affected_component.if: must match generic package URLs")
+    if not isinstance(generic_then, dict) or generic_then.get("required") != ["purl_justification"]:
+        errors.append("schema.$defs.affected_component.then: must require purl_justification")
     return errors
 
 

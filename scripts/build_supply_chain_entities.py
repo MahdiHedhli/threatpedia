@@ -130,7 +130,9 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
             raise ValueError(f"{incident_id}: invalid package_url for {ecosystem}/{name}: {exc}") from exc
     else:
         package_url = purl_for_package(ecosystem, name)
-    if parse_purl(package_url).type == "generic" and (
+    parsed_purl = parse_purl(package_url)
+    is_generic_purl = parsed_purl.type == "generic"
+    if is_generic_purl and (
         not isinstance(purl_justification, str) or len(purl_justification.strip()) < 20
     ):
         raise ValueError(f"{incident_id}: generic package_url for {ecosystem}/{name} requires purl_justification")
@@ -142,14 +144,14 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
             "name": name,
             "ecosystem": ecosystem,
             "package_url": package_url,
-            **({"purl_justification": purl_justification} if parse_purl(package_url).type == "generic" else {}),
+            **({"purl_justification": purl_justification} if is_generic_purl else {}),
             "aliases": sorted({name}),
             "source_incident_ids": [],
         },
     )
     if package_url and not entity.get("package_url"):
         entity["package_url"] = package_url
-    if parse_purl(package_url).type == "generic":
+    if is_generic_purl:
         entity["purl_justification"] = purl_justification
     add_source(entity, incident_id)
     return entity_id
