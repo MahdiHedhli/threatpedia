@@ -112,6 +112,7 @@ flowchart TB
   Unblocked work still flows around a blocked task — the
   dispatcher doesn't serialize the whole queue on one dependency.
 
-- **Per-run ceiling is intentional.** Up to 3 tasks dispatched per
-  run, hardcoded. Tunable to a config knob in a later slice if the
-  pattern changes; today it's a deliberate cap, not a knob.
+- **Per-run ceiling is intentional.** The dispatcher reads
+  `queues.dispatcher.tasks_per_run`, defaults to 3 tasks per run,
+  and refuses values above 12. The knob is deliberate and bounded,
+  not an unbounded throughput bypass.
