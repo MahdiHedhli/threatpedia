@@ -17,6 +17,9 @@ DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
 
 ENTITY_FILES = {
+    "accounts": "accounts.json",
+    "build_systems": "build_systems.json",
+    "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
     "repositories": "repositories.json",
@@ -27,15 +30,32 @@ VALID_RELATIONSHIP_TYPES = {
     "AFFECTED_MAINTAINER",
     "AFFECTED_REPOSITORY",
     "AFFECTED_ORGANIZATION",
+    "COMPROMISED_ACCOUNT",
     "RELATED_INCIDENT",
+    "SOURCE_ARTIFACT_DIVERGENCE",
+    "USED_BUILD_SYSTEM",
+    "USED_DISTRIBUTION_CHANNEL",
 }
-ENTITY_ID_PATTERN = re.compile(r"^(maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
+ENTITY_ID_PATTERN = re.compile(r"^(account|build|channel|maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
 RELATIONSHIP_TARGET_PREFIXES = {
     "AFFECTED_PACKAGE": "pkg-",
     "AFFECTED_MAINTAINER": "maintainer-",
     "AFFECTED_REPOSITORY": "repo-",
     "AFFECTED_ORGANIZATION": "org-",
+    "COMPROMISED_ACCOUNT": "account-",
     "RELATED_INCIDENT": "incident-",
+    "SOURCE_ARTIFACT_DIVERGENCE": ("repo-", "channel-"),
+    "USED_BUILD_SYSTEM": "build-",
+    "USED_DISTRIBUTION_CHANNEL": "channel-",
+}
+ENTITY_TYPE_REQUIRED_FIELDS = {
+    "accounts": ["provider", "account_type", "role"],
+    "build_systems": ["provider", "category"],
+    "distribution_channels": ["channel_type", "ecosystem"],
+    "maintainers": [],
+    "organizations": [],
+    "packages": ["ecosystem"],
+    "repositories": ["host", "url", "owner"],
 }
 
 
@@ -84,6 +104,9 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
         ids.add(entity_id)
         if not isinstance(entity.get("name"), str) or not entity["name"].strip():
             errors.append(f"{entity_id}.name: expected non-empty string")
+        for field in ENTITY_TYPE_REQUIRED_FIELDS.get(entity_type, []):
+            if not isinstance(entity.get(field), str) or not entity[field].strip():
+                errors.append(f"{entity_id}.{field}: expected non-empty string")
         source_incident_ids = entity.get("source_incident_ids")
         if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")
@@ -160,6 +183,24 @@ def validate_relationships(
     return errors
 
 
+def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relationships: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(relationships, list):
+        return errors
+    relationships_by_source_type = {
+        (relationship.get("source"), relationship.get("type"))
+        for relationship in relationships
+        if isinstance(relationship, dict)
+    }
+    for incident in corpus:
+        if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
+            continue
+        source = incident_node_id(incident["id"])
+        if incident.get("source_artifact_divergence") is True and (source, "SOURCE_ARTIFACT_DIVERGENCE") not in relationships_by_source_type:
+            errors.append(f"{source}: missing SOURCE_ARTIFACT_DIVERGENCE relationship")
+    return errors
+
+
 def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(corpus, list):
@@ -183,6 +224,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             incident_ids=incident_ids,
         )
     )
+    errors.extend(validate_corpus_implied_relationships(corpus, relationships))
     return errors
 
 
