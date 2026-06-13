@@ -153,6 +153,18 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any(".name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
 
+    def test_generic_package_entities_require_justification(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        generic = next(entity for entity in entities_by_type["packages"] if entity["package_url"].startswith("pkg:generic/"))
+        del generic["purl_justification"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".purl_justification: expected non-empty generic PURL justification" in error for error in errors))
+
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

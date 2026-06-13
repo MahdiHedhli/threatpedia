@@ -14,7 +14,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from supply_chain_purl import PurlError, canonicalize_purl
+from supply_chain_purl import PurlError, canonicalize_purl, parse_purl
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -125,6 +125,9 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
             else:
                 if entity["package_url"] != canonical:
                     errors.append(f"{entity_id}.package_url: expected canonical package URL {canonical!r}")
+                if parse_purl(canonical).type == "generic":
+                    if not isinstance(entity.get("purl_justification"), str) or len(entity["purl_justification"].strip()) < 20:
+                        errors.append(f"{entity_id}.purl_justification: expected non-empty generic PURL justification")
         source_incident_ids = entity.get("source_incident_ids")
         if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")

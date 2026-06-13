@@ -16,7 +16,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from supply_chain_purl import PurlError, canonicalize_purl
+from supply_chain_purl import PurlError, canonicalize_purl, parse_purl
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -221,6 +221,8 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
         else:
             if package_url != canonical:
                 errors.append(f"{path}.package_url: expected canonical package URL {canonical!r}")
+            if parse_purl(canonical).type == "generic":
+                require_string(errors, f"{path}.purl_justification", component.get("purl_justification"), min_length=20)
 
 
 def validate_reference(errors: list[str], incident_id: str, index: int, reference: Any) -> None:

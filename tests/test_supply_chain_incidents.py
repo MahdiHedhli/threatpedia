@@ -139,6 +139,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".affected_components[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".affected_components[0].ecosystem: expected non-empty string" in error for error in errors))
 
+    def test_generic_package_purls_require_justification(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-DEPENDENCY-CONFUSION"))
+        del incident["affected_components"][0]["purl_justification"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components[0].purl_justification" in error for error in errors))
+
     def test_malformed_url_is_rejected_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["references"][0]["url"] = "https://example.com:bad-port"
