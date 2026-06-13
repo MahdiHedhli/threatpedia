@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>PyPI recent updates</title>
+    <item>
+      <title>Demo_Pkg 1.2.3</title>
+      <link>https://pypi.org/project/Demo_Pkg/1.2.3/</link>
+      <pubDate>Wed, 10 Jun 2026 12:34:56 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
