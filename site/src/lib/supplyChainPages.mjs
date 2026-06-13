@@ -28,7 +28,7 @@ const allEntityFiles = {
 
 const routeEntityBySegment = Object.fromEntries(SUPPLY_CHAIN_ENTITY_TYPES.map((item) => [item.segment, item]));
 
-export function isSupplyChainPagesEnabled(env = typeof process !== 'undefined' ? process.env : {}) {
+export function isSupplyChainPagesEnabled(env = typeof process !== 'undefined' ? process.env || {} : {}) {
   return String(env.ENABLE_SUPPLY_CHAIN_PAGES || '').toLowerCase() === 'true';
 }
 
@@ -92,6 +92,14 @@ function entityLink(data, entityId) {
   return { href, label: entity.name, id: entity.id };
 }
 
+function compareLabel(a, b) {
+  return (a.label || '').localeCompare(b.label || '');
+}
+
+function compareTitle(a, b) {
+  return (a.title || '').localeCompare(b.title || '');
+}
+
 function incidentLinksFor(data, entityId) {
   return relationshipRows(data, entityId)
     .filter((row) => row.incident)
@@ -101,7 +109,7 @@ function incidentLinksFor(data, entityId) {
       id: row.incident.id,
       type: row.type,
     }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort(compareLabel);
 }
 
 function entityConnectionsFor(data, entityId) {
@@ -115,7 +123,7 @@ function entityConnectionsFor(data, entityId) {
       entityType: row.entity.entityCollection,
     }))
     .filter((item) => item.href)
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort(compareLabel);
 }
 
 function incidentEntityLinks(data, incidentId, relationshipType) {
@@ -124,7 +132,7 @@ function incidentEntityLinks(data, incidentId, relationshipType) {
     .filter((relationship) => relationship.source === nodeId && relationship.type === relationshipType)
     .map((relationship) => entityLink(data, relationship.target))
     .filter(Boolean)
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort(compareLabel);
 }
 
 function incidentEntities(data, incidentId, collectionKey, relationshipType) {
@@ -157,7 +165,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
         attackStage: incident.attack_stage,
         evidenceLevel: incident.evidence_level,
       }))
-      .sort((a, b) => a.title.localeCompare(b.title)),
+      .sort(compareTitle),
   };
 }
 

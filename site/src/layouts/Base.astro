@@ -10,7 +10,7 @@ const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astr
 const enablePlausibleAnalytics = import.meta.env.PROD;
 const supplyChainEnv =
   typeof process !== 'undefined'
-    ? process.env.ENABLE_SUPPLY_CHAIN_PAGES
+    ? process.env?.ENABLE_SUPPLY_CHAIN_PAGES
     : import.meta.env.ENABLE_SUPPLY_CHAIN_PAGES;
 const enableSupplyChainPages = String(supplyChainEnv || '').toLowerCase() === 'true';
 const plausibleScriptSrc = 'https://plausible.io/js/pa-JU90GDszdzYfdcQawYHNo.js';
