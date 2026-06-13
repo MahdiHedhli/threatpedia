@@ -37,7 +37,9 @@ GENERIC_VENDOR_NAMES = {
     "open source maintainers",
 }
 GITHUB_SYSTEM_PATHS = {
+    "about",
     "advisories",
+    "blog",
     "collections",
     "explore",
     "features",
@@ -45,7 +47,9 @@ GITHUB_SYSTEM_PATHS = {
     "marketplace",
     "notifications",
     "orgs",
+    "pricing",
     "search",
+    "security",
     "settings",
     "sponsors",
     "topics",
@@ -135,7 +139,9 @@ def github_repository_from_url(url: str) -> dict[str, str] | None:
     parts = [part for part in parsed.path.split("/") if part]
     if len(parts) < 2 or parts[0].lower() in GITHUB_SYSTEM_PATHS:
         return None
-    owner, repo = parts[0], parts[1].removesuffix(".git")
+    owner, repo = parts[0], parts[1]
+    if repo.lower().endswith(".git"):
+        repo = repo[:-4]
     if not repo:
         return None
     return {

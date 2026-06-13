@@ -125,8 +125,10 @@ class SupplyChainGraphTests(unittest.TestCase):
     def test_github_repository_parser_skips_system_paths_and_normalizes_dot_git(self) -> None:
         self.assertIsNone(builder.github_repository_from_url("https://github.com/orgs/example/packages"))
         self.assertIsNone(builder.github_repository_from_url("https://github.com/advisories/GHSA-xxxx-yyyy-zzzz"))
+        self.assertIsNone(builder.github_repository_from_url("https://github.com/blog/example"))
+        self.assertIsNone(builder.github_repository_from_url("https://github.com/security/advisories"))
         self.assertEqual(
-            builder.github_repository_from_url("https://github.com/example/project.git/issues/1"),
+            builder.github_repository_from_url("https://github.com/example/project.GIT/issues/1"),
             {
                 "name": "example/project",
                 "host": "github.com",
