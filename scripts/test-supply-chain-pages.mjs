@@ -133,6 +133,32 @@ assert.deepEqual(
   'incident JSON-LD should expose supply-chain vectors as Thing objects'
 );
 
+const xz = getSupplyChainIncidentPage('SC-2024-XZ-UTILS', data);
+assert.equal(xz.incident.attribution_confidence, 'suspected', 'XZ page should expose attribution confidence');
+assert.ok(
+  xz.sections.actors.some((actor) => actor.id === 'actor-unc-xz-utils-operator'),
+  'XZ page should include provisional operator link'
+);
+assert.ok(
+  xz.connectedEntities.some((entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor'),
+  'incident connected entities should include actor nodes with display labels'
+);
+assert.ok(xz.sections.attributionEvidence.length > 0, 'incident page should include attribution evidence');
+assert.ok(
+  xz.sections.attributionEvidence.every((item) => item.references.length > 0),
+  'attribution evidence references should resolve'
+);
+
+const threeCx = getSupplyChainIncidentPage('SC-2023-THREE-CX-DESKTOP', data);
+assert.ok(
+  threeCx.sections.actors.some((actor) => actor.href === '/threat-actors/lazarus-group/'),
+  '3CX page should link to the existing Lazarus actor page'
+);
+assert.ok(
+  threeCx.sections.campaigns.some((campaign) => campaign.href === '/campaigns/lazarus-3cx-supply-chain-compromise-2023/'),
+  '3CX page should link to the existing campaign page'
+);
+
 const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
 assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should include related incidents');
 eventStreamPackage.relatedIncidents.forEach((incident) => {

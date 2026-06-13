@@ -1,0 +1,44 @@
+[
+  {
+    "aliases": [
+      "NotPetya Destructive Campaign: Sandworm Global Wiper Operation (2017)",
+      "TP-CAMP-2017-0002"
+    ],
+    "campaign_id": "TP-CAMP-2017-0002",
+    "href": "/campaigns/notpetya-destructive-campaign-2017/",
+    "id": "campaign-tp-camp-2017-0002",
+    "name": "NotPetya Destructive Campaign: Sandworm Global Wiper Operation (2017)",
+    "slug": "notpetya-destructive-campaign-2017",
+    "source_incident_ids": [
+      "SC-2017-NOTPETYA-MEDOC"
+    ]
+  },
+  {
+    "aliases": [
+      "SolarWinds Supply Chain Espionage Campaign",
+      "TP-CAMP-2020-0001"
+    ],
+    "campaign_id": "TP-CAMP-2020-0001",
+    "href": "/campaigns/solarwinds-supply-chain-campaign/",
+    "id": "campaign-tp-camp-2020-0001",
+    "name": "SolarWinds Supply Chain Espionage Campaign",
+    "slug": "solarwinds-supply-chain-campaign",
+    "source_incident_ids": [
+      "SC-2020-SOLARWINDS-ORION"
+    ]
+  },
+  {
+    "aliases": [
+      "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+      "TP-CAMP-2023-0002"
+    ],
+    "campaign_id": "TP-CAMP-2023-0002",
+    "href": "/campaigns/lazarus-3cx-supply-chain-compromise-2023/",
+    "id": "campaign-tp-camp-2023-0002",
+    "name": "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+    "slug": "lazarus-3cx-supply-chain-compromise-2023",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  }
+]

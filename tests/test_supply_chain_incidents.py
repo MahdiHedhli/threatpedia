@@ -224,6 +224,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         del schema["$defs"]["affected_component"]["then"]
         self.assertTrue(any("affected_component.then" in error for error in validator.validate_schema_file(schema)))
 
+    def test_schema_includes_attribution_contract(self) -> None:
+        schema = load_json(SCHEMA_PATH)
+
+        self.assertEqual(validator.validate_schema_file(schema), [])
+
+        del schema["$defs"]["attribution_confidence"]
+        self.assertTrue(any("attribution_confidence" in error for error in validator.validate_schema_file(schema)))
+
     def test_source_artifact_divergence_requires_distribution_channels(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["source_artifact_divergence"] = True
@@ -273,6 +281,36 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".timeline[0].date: expected YYYY-MM-DD date or YYYY-MM-DD/YYYY-MM-DD range" in error for error in errors))
+
+    def test_attribution_links_require_local_evidence(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2024-XZ-UTILS"))
+        incident["threat_actors"][0]["source_refs"] = ["ref-missing"]
+        incident["attribution_evidence"] = []
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any("unknown reference ID 'ref-missing'" in error for error in errors))
+        self.assertTrue(any("missing ATTRIBUTED_TO_ACTOR evidence" in error for error in errors))
+
+    def test_attribution_confidence_enum_is_enforced(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        incident["attribution_confidence"] = "apt-score"
+        incident["threat_actors"][0]["confidence"] = "certain"
+        incident["campaigns"][0]["confidence"] = "maybe"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".attribution_confidence: invalid value" in error for error in errors))
+        self.assertTrue(any(".threat_actors[0].confidence: invalid value" in error for error in errors))
+        self.assertTrue(any(".campaigns[0].confidence: invalid value" in error for error in errors))
+
+    def test_first_public_warning_date_is_validated(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2020-SOLARWINDS-ORION"))
+        incident["first_public_warning_at"] = "20201213"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".first_public_warning_at: expected YYYY-MM-DD date or null" in error for error in errors))
 
 
 if __name__ == "__main__":

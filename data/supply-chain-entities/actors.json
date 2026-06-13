@@ -1,0 +1,59 @@
+[
+  {
+    "actor_type": "public",
+    "aliases": [
+      "APT29",
+      "Cozy Bear",
+      "SVR"
+    ],
+    "attribution_confidence": "confirmed",
+    "href": "/threat-actors/apt29/",
+    "id": "actor-apt29",
+    "name": "APT29",
+    "source_incident_ids": [
+      "SC-2020-SOLARWINDS-ORION"
+    ]
+  },
+  {
+    "actor_type": "public",
+    "aliases": [
+      "Lazarus Group",
+      "UNC4736"
+    ],
+    "attribution_confidence": "likely",
+    "href": "/threat-actors/lazarus-group/",
+    "id": "actor-lazarus-group",
+    "name": "Lazarus Group",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "actor_type": "public",
+    "aliases": [
+      "GRU Unit 74455",
+      "Sandworm"
+    ],
+    "attribution_confidence": "confirmed",
+    "href": "/threat-actors/sandworm/",
+    "id": "actor-sandworm",
+    "name": "Sandworm",
+    "source_incident_ids": [
+      "SC-2017-NOTPETYA-MEDOC"
+    ]
+  },
+  {
+    "actor_type": "provisional",
+    "aliases": [
+      "Jia Tan operator cluster",
+      "UNC-XZ-UTILS"
+    ],
+    "attribution_confidence": "suspected",
+    "id": "actor-unc-xz-utils-operator",
+    "name": "UNC-XZ-UTILS",
+    "notes": "Provisional supply-chain operator node for the coherent Jia Tan maintainer identity and XZ Utils backdoor activity; no nation-state label is asserted.",
+    "source_incident_ids": [
+      "SC-2024-XZ-UTILS"
+    ]
+  }
+]

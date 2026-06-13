@@ -56,6 +56,13 @@
       "type": "string",
       "format": "date"
     },
+    "first_public_warning_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
     "affected_ecosystems": {
       "type": "array",
       "minItems": 1,
@@ -186,6 +193,27 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/compromised_account"
+      }
+    },
+    "threat_actors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/threat_actor_link"
+      }
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/campaign_link"
+      }
+    },
+    "attribution_confidence": {
+      "$ref": "#/$defs/attribution_confidence"
+    },
+    "attribution_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attribution_evidence"
       }
     },
     "executive_summary": {
@@ -490,6 +518,134 @@
         },
         "role": {
           "type": "string"
+        }
+      }
+    },
+    "attribution_confidence": {
+      "enum": [
+        "confirmed",
+        "likely",
+        "suspected",
+        "disputed",
+        "unknown"
+      ]
+    },
+    "threat_actor_link": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "actor_type",
+        "confidence",
+        "source_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^actor-[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_type": {
+          "enum": [
+            "public",
+            "provisional"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/attribution_confidence"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "href": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "entity_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_refs": {
+          "$ref": "#/$defs/reference_id_list"
+        }
+      }
+    },
+    "campaign_link": {
+      "type": "object",
+      "required": [
+        "id",
+        "campaign_id",
+        "name",
+        "slug",
+        "confidence",
+        "source_refs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^campaign-[a-z0-9][a-z0-9-]*$"
+        },
+        "campaign_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slug": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "$ref": "#/$defs/attribution_confidence"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_refs": {
+          "$ref": "#/$defs/reference_id_list"
+        }
+      }
+    },
+    "attribution_evidence": {
+      "type": "object",
+      "required": [
+        "target",
+        "relationship_type",
+        "source_refs",
+        "summary"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^(actor|campaign)-[a-z0-9][a-z0-9-]*$"
+        },
+        "relationship_type": {
+          "enum": [
+            "ATTRIBUTED_TO_ACTOR",
+            "RELATED_CAMPAIGN"
+          ]
+        },
+        "source_refs": {
+          "$ref": "#/$defs/reference_id_list"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20
         }
       }
     }

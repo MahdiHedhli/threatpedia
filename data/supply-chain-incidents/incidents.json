@@ -64,6 +64,7 @@
     "status": "confirmed",
     "first_observed_at": "2017-06-27",
     "disclosed_at": "2017-07-01",
+    "first_public_warning_at": "2017-07-01",
     "affected_ecosystems": [
       "windows",
       "vendor-update"
@@ -87,10 +88,65 @@
     ],
     "references": [
       {
+        "id": "ref-cisa-notpetya",
         "title": "Petya Ransomware",
         "publisher": "Cybersecurity and Infrastructure Security Agency",
         "url": "https://www.cisa.gov/news-events/alerts/2017/07/01/petya-ransomware",
         "published_at": "2017-07-01"
+      },
+      {
+        "id": "ref-doj-sandworm-notpetya",
+        "title": "Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware",
+        "publisher": "U.S. Department of Justice",
+        "url": "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and",
+        "published_at": "2020-10-19"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-sandworm",
+        "name": "Sandworm",
+        "actor_type": "public",
+        "confidence": "confirmed",
+        "aliases": [
+          "Sandworm",
+          "GRU Unit 74455"
+        ],
+        "href": "/threat-actors/sandworm/",
+        "source_refs": [
+          "ref-doj-sandworm-notpetya"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2017-0002",
+        "campaign_id": "TP-CAMP-2017-0002",
+        "name": "NotPetya Destructive Campaign: Sandworm Global Wiper Operation (2017)",
+        "slug": "notpetya-destructive-campaign-2017",
+        "confidence": "confirmed",
+        "source_refs": [
+          "ref-doj-sandworm-notpetya"
+        ]
+      }
+    ],
+    "attribution_confidence": "confirmed",
+    "attribution_evidence": [
+      {
+        "target": "actor-sandworm",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-doj-sandworm-notpetya"
+        ],
+        "summary": "The DOJ NotPetya charging document supports the Sandworm attribution used for this supply-chain incident edge."
+      },
+      {
+        "target": "campaign-tp-camp-2017-0002",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-doj-sandworm-notpetya"
+        ],
+        "summary": "The modeled campaign node covers the Sandworm NotPetya destructive campaign tied to the M.E.Doc update compromise."
       }
     ],
     "tags": [
@@ -555,6 +611,7 @@
     "status": "confirmed",
     "first_observed_at": "2020-03-01",
     "disclosed_at": "2020-12-13",
+    "first_public_warning_at": "2020-12-13",
     "affected_ecosystems": [
       "windows",
       "vendor-update"
@@ -578,11 +635,25 @@
     ],
   "references": [
     {
+      "id": "ref-cisa-ed-21-01",
+      "title": "Emergency Directive 21-01: Mitigate SolarWinds Orion Code Compromise",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
+      "url": "https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise",
+      "published_at": "2020-12-13"
+    },
+    {
       "id": "ref-cisa-aa20-352a",
       "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
       "publisher": "Cybersecurity and Infrastructure Security Agency",
       "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
       "published_at": "2020-12-17"
+    },
+    {
+      "id": "ref-whitehouse-solarwinds-svr",
+      "title": "Fact Sheet: Imposing Costs for Harmful Foreign Activities by the Russian Government",
+      "publisher": "The White House",
+      "url": "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/",
+      "published_at": "2021-04-15"
     }
   ],
   "executive_summary": [
@@ -676,6 +747,54 @@
       "reference_ids": [
         "ref-cisa-aa20-352a"
       ]
+    }
+  ],
+  "threat_actors": [
+    {
+      "id": "actor-apt29",
+      "name": "APT29",
+      "actor_type": "public",
+      "confidence": "confirmed",
+      "aliases": [
+        "APT29",
+        "Cozy Bear",
+        "SVR"
+      ],
+      "href": "/threat-actors/apt29/",
+      "source_refs": [
+        "ref-whitehouse-solarwinds-svr"
+      ]
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "campaign-tp-camp-2020-0001",
+      "campaign_id": "TP-CAMP-2020-0001",
+      "name": "SolarWinds Supply Chain Espionage Campaign",
+      "slug": "solarwinds-supply-chain-campaign",
+      "confidence": "confirmed",
+      "source_refs": [
+        "ref-whitehouse-solarwinds-svr"
+      ]
+    }
+  ],
+  "attribution_confidence": "confirmed",
+  "attribution_evidence": [
+    {
+      "target": "actor-apt29",
+      "relationship_type": "ATTRIBUTED_TO_ACTOR",
+      "source_refs": [
+        "ref-whitehouse-solarwinds-svr"
+      ],
+      "summary": "The White House attribution statement supports the APT29/SVR actor edge for the SolarWinds supply-chain compromise."
+    },
+    {
+      "target": "campaign-tp-camp-2020-0001",
+      "relationship_type": "RELATED_CAMPAIGN",
+      "source_refs": [
+        "ref-whitehouse-solarwinds-svr"
+      ],
+      "summary": "The SolarWinds supply-chain campaign node captures the same SVR-attributed operation represented by this incident."
     }
   ],
   "tags": [
@@ -1480,6 +1599,7 @@
     "status": "confirmed",
     "first_observed_at": "2023-03-22",
     "disclosed_at": "2023-03-29",
+    "first_public_warning_at": "2023-03-29",
     "affected_ecosystems": [
       "windows",
       "macos",
@@ -1504,6 +1624,13 @@
       "downstream_customer_compromise"
     ],
   "references": [
+    {
+      "id": "ref-sentinelone-3cx",
+      "title": "SmoothOperator: Ongoing Campaign Trojanizes 3CX Software",
+      "publisher": "SentinelOne",
+      "url": "https://www.sentinelone.com/blog/smoothoperator-ongoing-campaign-trojanized-3cx-software",
+      "published_at": "2023-03-29"
+    },
     {
       "id": "ref-mandiant-3cx",
       "title": "3CX Software Supply Chain Compromise",
@@ -1603,6 +1730,53 @@
       "reference_ids": [
         "ref-mandiant-3cx"
       ]
+    }
+  ],
+  "threat_actors": [
+    {
+      "id": "actor-lazarus-group",
+      "name": "Lazarus Group",
+      "actor_type": "public",
+      "confidence": "likely",
+      "aliases": [
+        "Lazarus Group",
+        "UNC4736"
+      ],
+      "href": "/threat-actors/lazarus-group/",
+      "source_refs": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "campaign-tp-camp-2023-0002",
+      "campaign_id": "TP-CAMP-2023-0002",
+      "name": "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+      "slug": "lazarus-3cx-supply-chain-compromise-2023",
+      "confidence": "likely",
+      "source_refs": [
+        "ref-mandiant-3cx"
+      ]
+    }
+  ],
+  "attribution_confidence": "likely",
+  "attribution_evidence": [
+    {
+      "target": "actor-lazarus-group",
+      "relationship_type": "ATTRIBUTED_TO_ACTOR",
+      "source_refs": [
+        "ref-mandiant-3cx"
+      ],
+      "summary": "Mandiant's 3CX report supports the Lazarus-associated actor edge through its UNC4736 attribution assessment."
+    },
+    {
+      "target": "campaign-tp-camp-2023-0002",
+      "relationship_type": "RELATED_CAMPAIGN",
+      "source_refs": [
+        "ref-mandiant-3cx"
+      ],
+      "summary": "The SmoothOperator campaign node covers the same 3CX software supply-chain compromise represented by this incident."
     }
   ],
   "tags": [
@@ -1705,6 +1879,7 @@
     "status": "confirmed",
     "first_observed_at": "2024-02-24",
     "disclosed_at": "2024-03-29",
+    "first_public_warning_at": "2024-03-29",
     "affected_ecosystems": [
       "linux",
       "source-release"
@@ -1825,6 +2000,36 @@
       "reference_ids": [
         "ref-openwall-xz"
       ]
+    }
+  ],
+  "threat_actors": [
+    {
+      "id": "actor-unc-xz-utils-operator",
+      "name": "UNC-XZ-UTILS",
+      "actor_type": "provisional",
+      "confidence": "suspected",
+      "aliases": [
+        "UNC-XZ-UTILS",
+        "Jia Tan operator cluster"
+      ],
+      "notes": "Provisional supply-chain operator node for the coherent Jia Tan maintainer identity and XZ Utils backdoor activity; no nation-state label is asserted.",
+      "entity_refs": [
+        "maintainer-jia-tan"
+      ],
+      "source_refs": [
+        "ref-openwall-xz"
+      ]
+    }
+  ],
+  "attribution_confidence": "suspected",
+  "attribution_evidence": [
+    {
+      "target": "actor-unc-xz-utils-operator",
+      "relationship_type": "ATTRIBUTED_TO_ACTOR",
+      "source_refs": [
+        "ref-openwall-xz"
+      ],
+      "summary": "The Openwall disclosure supports a provisional operator edge for the Jia Tan maintainer identity without assigning a named APT or state sponsor."
     }
   ],
   "tags": [
