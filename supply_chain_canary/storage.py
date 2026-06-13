@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict
 import json
 from pathlib import Path
 from typing import Any
@@ -103,16 +102,34 @@ def load_schema_sql() -> str:
 
 
 def release_event_params(event: ReleaseEvent) -> dict[str, Any]:
-    params = asdict(event)
-    params["observed_facts"] = json.dumps(params["observed_facts"], sort_keys=True)
-    params["raw_registry_metadata"] = json.dumps(params["raw_registry_metadata"], sort_keys=True)
-    return params
+    return {
+        "ecosystem": event.ecosystem,
+        "name": event.name,
+        "version": event.version,
+        "purl": event.purl,
+        "published_at": event.published_at,
+        "feed_name": event.feed_name,
+        "feed_cursor": event.feed_cursor,
+        "source_url": event.source_url,
+        "observed_facts": json.dumps(event.observed_facts, sort_keys=True),
+        "raw_registry_metadata": json.dumps(event.raw_registry_metadata, sort_keys=True),
+        "observed_at": event.observed_at,
+    }
 
 
 def enrichment_params(observation: EnrichmentObservation) -> dict[str, Any]:
-    params = asdict(observation)
-    params["raw_metadata"] = json.dumps(params["raw_metadata"], sort_keys=True)
-    return params
+    return {
+        "release_event_id": observation.release_event_id,
+        "purl": observation.purl,
+        "ecosystem": observation.ecosystem,
+        "name": observation.name,
+        "version": observation.version,
+        "provider": observation.provider,
+        "observation_kind": observation.observation_kind,
+        "observed_at": observation.observed_at,
+        "raw_metadata": json.dumps(observation.raw_metadata, sort_keys=True),
+        "status": observation.status,
+    }
 
 
 def feed_cursor_params(

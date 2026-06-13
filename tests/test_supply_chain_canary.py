@@ -146,13 +146,18 @@ class SupplyChainCanaryTests(unittest.TestCase):
             go_adapter.parse_index_lines((FIXTURE_DIR / "go_index.jsonl").read_text(encoding="utf-8"))
         )[0]
         observed_at = event.published_at + timedelta(days=7)
-        placeholders = build_enrichment_placeholders(event, observed_at=observed_at)
+        placeholders = build_enrichment_placeholders(
+            event,
+            release_event_id=42,
+            observed_at=observed_at,
+        )
 
         self.assertEqual([item.provider for item in placeholders], list(ENRICHMENT_PROVIDERS))
         self.assertTrue(all(item.status == "pending" for item in placeholders))
-        self.assertTrue(all(item.release_event_id is None for item in placeholders))
+        self.assertEqual({item.release_event_id for item in placeholders}, {42})
         self.assertTrue(osv_repoll_due(event, now=observed_at))
-        self.assertIsNotNone(build_osv_repoll_placeholder(event, observed_at=observed_at))
+        self.assertIsNotNone(build_osv_repoll_placeholder(event, release_event_id=42, observed_at=observed_at))
+        self.assertTrue(osv_repoll_due(event, now=event.published_at - timedelta(seconds=1)))
         self.assertFalse(osv_repoll_due(event, now=event.published_at + timedelta(days=31)))
 
     def test_storage_sql_declares_phase_zero_postgres_tables(self) -> None:

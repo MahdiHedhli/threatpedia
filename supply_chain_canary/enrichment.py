@@ -19,7 +19,6 @@ OSV_REPOLL_DAYS = 30
 
 @dataclass(frozen=True)
 class EnrichmentObservation:
-    release_event_id: int | None
     purl: str
     ecosystem: str
     name: str
@@ -29,18 +28,19 @@ class EnrichmentObservation:
     observed_at: datetime
     raw_metadata: dict[str, Any]
     status: str
+    release_event_id: int | None = None
 
 
 def build_enrichment_placeholders(
     event: ReleaseEvent,
     *,
+    release_event_id: int | None = None,
     observed_at: datetime | None = None,
 ) -> list[EnrichmentObservation]:
     observed = observed_at or utc_now()
     return [
         EnrichmentObservation(
             purl=event.purl,
-            release_event_id=None,
             ecosystem=event.ecosystem,
             name=event.name,
             version=event.version,
@@ -49,6 +49,7 @@ def build_enrichment_placeholders(
             observed_at=observed,
             raw_metadata={"reason": "phase-0 async enrichment placeholder"},
             status="pending",
+            release_event_id=release_event_id,
         )
         for provider in ENRICHMENT_PROVIDERS
     ]
@@ -58,12 +59,13 @@ def osv_repoll_due(event: ReleaseEvent, *, now: datetime | None = None) -> bool:
     now = now or utc_now()
     if now.tzinfo is None:
         now = now.replace(tzinfo=timezone.utc)
-    return event.published_at <= now <= event.published_at + timedelta(days=OSV_REPOLL_DAYS)
+    return now <= event.published_at + timedelta(days=OSV_REPOLL_DAYS)
 
 
 def build_osv_repoll_placeholder(
     event: ReleaseEvent,
     *,
+    release_event_id: int | None = None,
     observed_at: datetime | None = None,
 ) -> EnrichmentObservation | None:
     observed = observed_at or utc_now()
@@ -71,7 +73,6 @@ def build_osv_repoll_placeholder(
         return None
     return EnrichmentObservation(
         purl=event.purl,
-        release_event_id=None,
         ecosystem=event.ecosystem,
         name=event.name,
         version=event.version,
@@ -80,4 +81,5 @@ def build_osv_repoll_placeholder(
         observed_at=observed,
         raw_metadata={"repoll_window_days": OSV_REPOLL_DAYS, "reason": "capture delayed MAL labels"},
         status="pending",
+        release_event_id=release_event_id,
     )
