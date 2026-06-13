@@ -13,7 +13,7 @@ interface Props {
 const { title, items } = Astro.props;
 
 function titleCase(value?: string) {
-  return String(value || '').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  return String(value || '').toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 ---
 

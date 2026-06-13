@@ -49,10 +49,10 @@ const expectedRouteCount =
 assert.equal(routes.length, expectedRouteCount, 'enabled route count should match routed page types');
 
 const index = getSupplyChainIndexModel(data);
-assert.equal(index.counts.incidents, 25, 'index should expose incident count');
-assert.equal(index.counts.relationships, 95, 'index should expose relationship count');
-assert.equal(index.counts.buildSystems, 6, 'index should expose build system count');
-assert.equal(index.counts.distributionChannels, 11, 'index should expose distribution channel count');
+assert.equal(index.counts.incidents, data.incidents.length, 'index should expose incident count');
+assert.equal(index.counts.relationships, data.relationships.length, 'index should expose relationship count');
+assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'index should expose build system count');
+assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
 assert.ok(codecov.incident.summary, 'incident page should include summary');

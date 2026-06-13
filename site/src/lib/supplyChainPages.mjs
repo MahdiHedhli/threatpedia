@@ -28,7 +28,7 @@ const allEntityFiles = {
 
 const routeEntityBySegment = Object.fromEntries(SUPPLY_CHAIN_ENTITY_TYPES.map((item) => [item.segment, item]));
 
-export function isSupplyChainPagesEnabled(env = process.env) {
+export function isSupplyChainPagesEnabled(env = typeof process !== 'undefined' ? process.env : {}) {
   return String(env.ENABLE_SUPPLY_CHAIN_PAGES || '').toLowerCase() === 'true';
 }
 
@@ -89,7 +89,7 @@ function entityLink(data, entityId) {
   const entity = data.entityById.get(entityId);
   if (!entity) return null;
   const href = linkForEntity(entity);
-  return href ? { href, label: entity.name, id: entity.id } : null;
+  return { href, label: entity.name, id: entity.id };
 }
 
 function incidentLinksFor(data, entityId) {
