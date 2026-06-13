@@ -1,0 +1,41 @@
+[
+  {
+    "aliases": [
+      "dominictarr/event-stream"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-dominictarr-event-stream",
+    "name": "dominictarr/event-stream",
+    "owner": "dominictarr",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ],
+    "url": "https://github.com/dominictarr/event-stream"
+  },
+  {
+    "aliases": [
+      "Marak/colors.js"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-marak-colors-js",
+    "name": "Marak/colors.js",
+    "owner": "Marak",
+    "source_incident_ids": [
+      "SC-2022-COLORS-FAKER"
+    ],
+    "url": "https://github.com/Marak/colors.js"
+  },
+  {
+    "aliases": [
+      "tukaani-project/xz"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-tukaani-project-xz",
+    "name": "tukaani-project/xz",
+    "owner": "tukaani-project",
+    "source_incident_ids": [
+      "SC-2024-XZ-UTILS"
+    ],
+    "url": "https://github.com/tukaani-project/xz"
+  }
+]
