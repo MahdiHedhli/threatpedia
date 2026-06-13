@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { isSupplyChainPagesEnabled } from '../lib/supplyChainPages.mjs';
 
 interface Props {
   title: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
 const enablePlausibleAnalytics = import.meta.env.PROD;
+const enableSupplyChainPages = isSupplyChainPagesEnabled();
 const plausibleScriptSrc = 'https://plausible.io/js/pa-JU90GDszdzYfdcQawYHNo.js';
 
 // Build ticker items from all collections
@@ -155,6 +157,7 @@ try {
         <a href="/campaigns/">Campaigns</a>
         <a href="/threat-actors/">Threat Actors</a>
         <a href="/zero-days/">Zero-Days</a>
+        {enableSupplyChainPages && <a href="/supply-chain/">Supply Chain</a>}
         <a href="/glossary/">Glossary</a>
         <a href="/roadmap/">Roadmap</a>
         <a href="/privacy/">Privacy</a>
