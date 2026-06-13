@@ -146,7 +146,7 @@
   },
   {
     "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
-    "target": "repo-github-com-codecov-codecov-bash",
+    "target": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
     "type": "SOURCE_ARTIFACT_DIVERGENCE"
   },
   {
@@ -441,7 +441,7 @@
   },
   {
     "source": "incident-SC-2024-XZ-UTILS",
-    "target": "repo-github-com-tukaani-project-xz",
+    "target": "channel-linux-source-release-upstream-source-release-tarball",
     "type": "SOURCE_ARTIFACT_DIVERGENCE"
   },
   {

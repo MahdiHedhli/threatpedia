@@ -61,6 +61,17 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("channel-npm-package-registry-npm-registry", channel_ids)
         self.assertIn("account-npm-eslint-scope-npm-maintainer-account", account_ids)
 
+    def test_source_artifact_divergence_targets_distribution_channels(self) -> None:
+        graph = builder.build_graph(load_json(CORPUS_PATH))
+        relationships = [
+            item
+            for item in graph["relationships"]
+            if item["type"] == "SOURCE_ARTIFACT_DIVERGENCE"
+        ]
+
+        self.assertGreaterEqual(len(relationships), 1)
+        self.assertTrue(all(item["target"].startswith("channel-") for item in relationships))
+
     def test_invalid_relationship_target_fails(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

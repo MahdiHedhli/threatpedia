@@ -190,6 +190,7 @@ def validate_maintainer(errors: list[str], incident_id: str, index: int, maintai
         errors.append(f"{path}: expected object")
         return
     require_string(errors, f"{path}.name", maintainer.get("name"))
+    require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
     aliases = maintainer.get("aliases")
     if not isinstance(aliases, list):
         errors.append(f"{path}.aliases: expected list")
@@ -197,9 +198,6 @@ def validate_maintainer(errors: list[str], incident_id: str, index: int, maintai
     for alias_index, alias in enumerate(aliases):
         if not isinstance(alias, str) or not alias.strip():
             errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
-    if "id_slug" in maintainer:
-        require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
-
 
 def validate_repository(errors: list[str], incident_id: str, index: int, repository: Any) -> None:
     path = f"{incident_id}.repositories[{index}]"
@@ -209,10 +207,9 @@ def validate_repository(errors: list[str], incident_id: str, index: int, reposit
     for field in REQUIRED_REPOSITORY_FIELDS:
         if field not in repository:
             errors.append(f"{path}.{field}: missing required field")
-    require_string(errors, f"{path}.name", repository.get("name"))
-    require_string(errors, f"{path}.host", repository.get("host"))
-    require_string(errors, f"{path}.owner", repository.get("owner"))
-    if not is_valid_url(repository.get("url")):
+        elif field != "url":
+            require_string(errors, f"{path}.{field}", repository[field])
+    if "url" in repository and not is_valid_url(repository["url"]):
         errors.append(f"{path}.url: expected http(s) URL")
 
 
@@ -234,7 +231,8 @@ def validate_named_fields(
         for field in required_fields:
             if field not in record:
                 errors.append(f"{path}.{field}: missing required field")
-            require_string(errors, f"{path}.{field}", record.get(field))
+            else:
+                require_string(errors, f"{path}.{field}", record[field])
 
 
 def validate_incident(incident: Any) -> list[str]:

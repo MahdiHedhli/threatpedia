@@ -146,14 +146,16 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".attack_stage: invalid value" in error for error in errors))
 
     def test_structured_depth_fields_are_enforced(self) -> None:
-        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["maintainers"]))
         incident["distribution_channels"][0]["name"] = ""
         incident["source_artifact_divergence"] = "yes"
+        del incident["maintainers"][0]["id_slug"]
 
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
+        self.assertTrue(any(".maintainers[0].id_slug: expected non-empty string" in error for error in errors))
 
     def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])

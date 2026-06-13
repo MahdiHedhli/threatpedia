@@ -169,7 +169,7 @@ def upsert_repository(repositories: dict[str, dict[str, Any]], repo: dict[str, s
 def upsert_maintainer(maintainers: dict[str, dict[str, Any]], hint: dict[str, Any], incident_id: str) -> str:
     name = hint["name"]
     aliases = sorted(set(hint.get("aliases", []) + [name]))
-    entity_id = stable_id("maintainer", hint.get("id_slug", aliases[0] if aliases else name))
+    entity_id = stable_id("maintainer", hint["id_slug"])
     entity = maintainers.setdefault(
         entity_id,
         {
@@ -267,14 +267,13 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
             if org_id:
                 add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
-        divergence_targets: list[str] = []
+        divergence_channel_targets: list[str] = []
         for maintainer in incident.get("maintainers", []):
             maintainer_id = upsert_maintainer(maintainers, maintainer, incident_id)
             add_relationship(relationship(source, maintainer_id, "AFFECTED_MAINTAINER"))
 
         for repo in incident.get("repositories", []):
             repo_id = upsert_repository(repositories, repo, incident_id)
-            divergence_targets.append(repo_id)
             add_relationship(relationship(source, repo_id, "AFFECTED_REPOSITORY"))
 
         for item in incident.get("build_systems", []):
@@ -283,15 +282,16 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
 
         for item in incident.get("distribution_channels", []):
             channel_id = upsert_distribution_channel(distribution_channels, item, incident_id)
-            divergence_targets.append(channel_id)
+            divergence_channel_targets.append(channel_id)
             add_relationship(relationship(source, channel_id, "USED_DISTRIBUTION_CHANNEL"))
 
         for item in incident.get("compromised_accounts", []):
             account_id = upsert_account(accounts, item, incident_id)
             add_relationship(relationship(source, account_id, "COMPROMISED_ACCOUNT"))
 
-        if incident.get("source_artifact_divergence") is True and divergence_targets:
-            add_relationship(relationship(source, divergence_targets[0], "SOURCE_ARTIFACT_DIVERGENCE"))
+        if incident.get("source_artifact_divergence") is True:
+            for channel_id in divergence_channel_targets:
+                add_relationship(relationship(source, channel_id, "SOURCE_ARTIFACT_DIVERGENCE"))
 
     return {
         "accounts": sorted(accounts.values(), key=lambda item: item["id"]),

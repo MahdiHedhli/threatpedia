@@ -253,7 +253,8 @@
       "type": "object",
       "required": [
         "name",
-        "aliases"
+        "aliases",
+        "id_slug"
       ],
       "properties": {
         "name": {
