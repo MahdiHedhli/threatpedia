@@ -72,6 +72,43 @@ class _PyPIUpdatesParser(HTMLParser):
         self._current_item[self._current_tag] = self._current_item.get(self._current_tag, "") + data
 
 
+def _parse_updates_rss_with_elementtree(xml_text: str) -> list[dict[str, str]]:
+    import xml.etree.ElementTree as ET
+
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return []
+    items: list[dict[str, str]] = []
+    for item in root.findall(".//item"):
+        title_el = item.find("title")
+        link_el = item.find("link")
+        pub_date_el = item.find("pubDate")
+
+        title = title_el.text.strip() if title_el is not None and title_el.text else ""
+        if not title or " " not in title:
+            continue
+        project, version = title.rsplit(" ", 1)
+        link = link_el.text.strip() if link_el is not None and link_el.text else ""
+        pub_date = pub_date_el.text.strip() if pub_date_el is not None and pub_date_el.text else ""
+        published_at = ""
+        if pub_date:
+            try:
+                published_at = parsedate_to_datetime(pub_date).isoformat()
+            except (TypeError, ValueError):
+                published_at = ""
+        items.append(
+            {
+                "project": unescape(project.strip()),
+                "version": unescape(version.strip()),
+                "published_at": published_at,
+                "link": unescape(link),
+                "cursor": unescape(pub_date or link or title),
+            }
+        )
+    return items
+
+
 def project_json_url(project_name: str) -> str:
     return f"{PYPI_JSON_BASE}/{quote(project_name, safe='')}/json"
 
@@ -89,19 +126,22 @@ def fetch_project_json(project_name: str, timeout: int = 20) -> dict[str, Any]:
 
 
 def parse_updates_rss(xml_text: str) -> list[dict[str, str]]:
-    parser = _PyPIUpdatesParser()
-    parser.feed(xml_text)
-    parser.close()
-    return [
-        {
-            "project": unescape(item["project"]),
-            "version": unescape(item["version"]),
-            "published_at": item["published_at"],
-            "link": unescape(item["link"]),
-            "cursor": unescape(item["cursor"]),
-        }
-        for item in parser.items
-    ]
+    try:
+        return _parse_updates_rss_with_elementtree(xml_text)
+    except ImportError:
+        parser = _PyPIUpdatesParser()
+        parser.feed(xml_text)
+        parser.close()
+        return [
+            {
+                "project": unescape(item["project"]),
+                "version": unescape(item["version"]),
+                "published_at": item["published_at"],
+                "link": unescape(item["link"]),
+                "cursor": unescape(item["cursor"]),
+            }
+            for item in parser.items
+        ]
 
 
 def release_event_from_project_json(
