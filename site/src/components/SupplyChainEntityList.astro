@@ -1,0 +1,95 @@
+---
+interface Item {
+  href?: string | null;
+  label: string;
+  type?: string;
+  entityType?: string;
+  context?: string;
+}
+
+interface Props {
+  title: string;
+  items: Item[];
+}
+
+const { title, items } = Astro.props;
+
+function titleCase(value?: string) {
+  return String(value || '').toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+}
+---
+
+<section class="sc-section">
+  <h2>{title}</h2>
+  {items.length > 0 ? (
+    <ul class="entity-list">
+      {items.map((item) => (
+        <li>
+          <span class="entity-main">
+            {item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}
+            {item.context && <small>{item.context}</small>}
+          </span>
+          {(item.entityType || item.type) && <em>{titleCase(item.entityType || item.type)}</em>}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="empty">No structured records.</p>
+  )}
+</section>
+
+<style>
+  .sc-section {
+    margin: 30px 0;
+  }
+
+  .sc-section h2 {
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .entity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .entity-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+  }
+
+  .entity-list em,
+  .entity-list small,
+  .empty {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-style: normal;
+  }
+
+  .entity-main {
+    min-width: 0;
+  }
+
+  .entity-list small {
+    display: block;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .entity-list li {
+      display: block;
+    }
+
+    .entity-list em {
+      display: block;
+      margin-top: 4px;
+    }
+  }
+</style>
