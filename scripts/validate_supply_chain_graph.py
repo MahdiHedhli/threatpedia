@@ -24,7 +24,9 @@ DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / 
 
 ENTITY_FILES = {
     "accounts": "accounts.json",
+    "actors": "actors.json",
     "build_systems": "build_systems.json",
+    "campaigns": "campaigns.json",
     "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
@@ -36,27 +38,33 @@ VALID_RELATIONSHIP_TYPES = {
     "AFFECTED_MAINTAINER",
     "AFFECTED_REPOSITORY",
     "AFFECTED_ORGANIZATION",
+    "ATTRIBUTED_TO_ACTOR",
     "COMPROMISED_ACCOUNT",
     "RELATED_INCIDENT",
+    "RELATED_CAMPAIGN",
     "SOURCE_ARTIFACT_DIVERGENCE",
     "USED_BUILD_SYSTEM",
     "USED_DISTRIBUTION_CHANNEL",
 }
-ENTITY_ID_PATTERN = re.compile(r"^(account|build|channel|maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
+ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
 RELATIONSHIP_TARGET_PREFIXES = {
     "AFFECTED_PACKAGE": "pkg-",
     "AFFECTED_MAINTAINER": "maintainer-",
     "AFFECTED_REPOSITORY": "repo-",
     "AFFECTED_ORGANIZATION": "org-",
+    "ATTRIBUTED_TO_ACTOR": "actor-",
     "COMPROMISED_ACCOUNT": "account-",
     "RELATED_INCIDENT": "incident-",
+    "RELATED_CAMPAIGN": "campaign-",
     "SOURCE_ARTIFACT_DIVERGENCE": ("repo-", "channel-"),
     "USED_BUILD_SYSTEM": "build-",
     "USED_DISTRIBUTION_CHANNEL": "channel-",
 }
 ENTITY_TYPE_REQUIRED_FIELDS = {
     "accounts": ["provider", "account_type", "role"],
+    "actors": ["actor_type", "attribution_confidence"],
     "build_systems": ["provider", "category"],
+    "campaigns": ["campaign_id", "slug"],
     "distribution_channels": ["channel_type", "ecosystem"],
     "maintainers": [],
     "organizations": [],
@@ -181,10 +189,14 @@ def validate_relationships(
             expected_prefix = RELATIONSHIP_TARGET_PREFIXES[rel_type]
             if rel_type.startswith("AFFECTED_") and not source.startswith("incident-"):
                 errors.append(f"{path}.source: {rel_type} must start from an incident node")
+            if rel_type == "ATTRIBUTED_TO_ACTOR" and not (source.startswith("incident-") or source.startswith("maintainer-")):
+                errors.append(f"{path}.source: ATTRIBUTED_TO_ACTOR must start from an incident or maintainer node")
             if not target.startswith(expected_prefix):
                 errors.append(f"{path}.target: {rel_type} target must start with {expected_prefix!r}")
             if rel_type == "RELATED_INCIDENT" and not source.startswith("incident-"):
                 errors.append(f"{path}.source: RELATED_INCIDENT must start from an incident node")
+            if rel_type == "RELATED_CAMPAIGN" and not source.startswith("incident-"):
+                errors.append(f"{path}.source: RELATED_CAMPAIGN must start from an incident node")
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:

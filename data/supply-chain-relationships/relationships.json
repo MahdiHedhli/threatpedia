@@ -31,6 +31,16 @@
   },
   {
     "source": "incident-SC-2017-NOTPETYA-MEDOC",
+    "target": "actor-sandworm",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2017-NOTPETYA-MEDOC",
+    "target": "campaign-tp-camp-2017-0002",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2017-NOTPETYA-MEDOC",
     "target": "channel-vendor-update-software-update-vendor-software-update-channel",
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
@@ -118,6 +128,16 @@
     "source": "incident-SC-2020-SOLARWINDS-ORION",
     "target": "org-solarwinds",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2020-SOLARWINDS-ORION",
+    "target": "actor-apt29",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2020-SOLARWINDS-ORION",
+    "target": "campaign-tp-camp-2020-0001",
+    "type": "RELATED_CAMPAIGN"
   },
   {
     "source": "incident-SC-2020-SOLARWINDS-ORION",
@@ -346,6 +366,16 @@
   },
   {
     "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "actor-lazarus-group",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "campaign-tp-camp-2023-0002",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
     "target": "build-3cx-3cx-desktopapp-build-pipeline",
     "type": "USED_BUILD_SYSTEM"
   },
@@ -431,6 +461,11 @@
   },
   {
     "source": "incident-SC-2024-XZ-UTILS",
+    "target": "actor-unc-xz-utils-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2024-XZ-UTILS",
     "target": "channel-linux-source-release-upstream-source-release-tarball",
     "type": "SOURCE_ARTIFACT_DIVERGENCE"
   },
@@ -463,5 +498,10 @@
     "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
     "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
     "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "maintainer-jia-tan",
+    "target": "actor-unc-xz-utils-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
   }
 ]

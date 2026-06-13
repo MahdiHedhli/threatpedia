@@ -25,7 +25,9 @@ DEFAULT_RELATIONSHIP_DIR = REPO_ROOT / "data" / "supply-chain-relationships"
 
 ENTITY_FILES = {
     "accounts": "accounts.json",
+    "actors": "actors.json",
     "build_systems": "build_systems.json",
+    "campaigns": "campaigns.json",
     "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
@@ -37,8 +39,10 @@ RELATIONSHIP_TYPES = {
     "AFFECTED_MAINTAINER",
     "AFFECTED_REPOSITORY",
     "AFFECTED_ORGANIZATION",
+    "ATTRIBUTED_TO_ACTOR",
     "COMPROMISED_ACCOUNT",
     "RELATED_INCIDENT",
+    "RELATED_CAMPAIGN",
     "SOURCE_ARTIFACT_DIVERGENCE",
     "USED_BUILD_SYSTEM",
     "USED_DISTRIBUTION_CHANNEL",
@@ -262,6 +266,45 @@ def upsert_account(accounts: dict[str, dict[str, Any]], item: dict[str, str], in
     return entity_id
 
 
+def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
+    entity_id = item["id"]
+    entity = actors.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": item["name"],
+            "actor_type": item["actor_type"],
+            "attribution_confidence": item["confidence"],
+            "aliases": sorted(set(item.get("aliases") or [item["name"]])),
+            "source_incident_ids": [],
+            **({"href": item["href"]} if item.get("href") else {}),
+            **({"notes": item["notes"]} if item.get("notes") else {}),
+        },
+    )
+    entity["aliases"] = sorted(set(entity.get("aliases", []) + (item.get("aliases") or [item["name"]])))
+    add_source(entity, incident_id)
+    return entity_id
+
+
+def upsert_campaign(campaigns: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
+    entity_id = item["id"]
+    entity = campaigns.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": item["name"],
+            "campaign_id": item["campaign_id"],
+            "slug": item["slug"],
+            "aliases": sorted(set(item.get("aliases") or [item["name"], item["campaign_id"]])),
+            "source_incident_ids": [],
+            "href": f"/campaigns/{item['slug']}/",
+        },
+    )
+    entity["aliases"] = sorted(set(entity.get("aliases", []) + (item.get("aliases") or [item["name"], item["campaign_id"]])))
+    add_source(entity, incident_id)
+    return entity_id
+
+
 def relationship(source: str, target: str, relationship_type: str) -> dict[str, str]:
     if relationship_type not in RELATIONSHIP_TYPES:
         raise ValueError(f"invalid relationship type: {relationship_type}")
@@ -270,7 +313,9 @@ def relationship(source: str, target: str, relationship_type: str) -> dict[str, 
 
 def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     accounts: dict[str, dict[str, Any]] = {}
+    actors: dict[str, dict[str, Any]] = {}
     build_systems: dict[str, dict[str, Any]] = {}
+    campaigns: dict[str, dict[str, Any]] = {}
     distribution_channels: dict[str, dict[str, Any]] = {}
     maintainers: dict[str, dict[str, Any]] = {}
     packages: dict[str, dict[str, Any]] = {}
@@ -315,13 +360,25 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
             account_id = upsert_account(accounts, item, incident_id)
             add_relationship(relationship(source, account_id, "COMPROMISED_ACCOUNT"))
 
+        for item in incident.get("threat_actors") or []:
+            actor_id = upsert_actor(actors, item, incident_id)
+            add_relationship(relationship(source, actor_id, "ATTRIBUTED_TO_ACTOR"))
+            for entity_ref in item.get("entity_refs") or []:
+                add_relationship(relationship(entity_ref, actor_id, "ATTRIBUTED_TO_ACTOR"))
+
+        for item in incident.get("campaigns") or []:
+            campaign_id = upsert_campaign(campaigns, item, incident_id)
+            add_relationship(relationship(source, campaign_id, "RELATED_CAMPAIGN"))
+
         if incident.get("source_artifact_divergence") is True:
             for channel_id in divergence_channel_targets:
                 add_relationship(relationship(source, channel_id, "SOURCE_ARTIFACT_DIVERGENCE"))
 
     return {
         "accounts": sorted(accounts.values(), key=lambda item: item["id"]),
+        "actors": sorted(actors.values(), key=lambda item: item["id"]),
         "build_systems": sorted(build_systems.values(), key=lambda item: item["id"]),
+        "campaigns": sorted(campaigns.values(), key=lambda item: item["id"]),
         "distribution_channels": sorted(distribution_channels.values(), key=lambda item: item["id"]),
         "maintainers": sorted(maintainers.values(), key=lambda item: item["id"]),
         "packages": sorted(packages.values(), key=lambda item: item["id"]),
@@ -350,6 +407,8 @@ def main(argv: list[str] | None = None) -> int:
     print(
         "Built supply-chain graph primitives: "
         f"maintainers={len(graph['maintainers'])} "
+        f"actors={len(graph['actors'])} "
+        f"campaigns={len(graph['campaigns'])} "
         f"packages={len(graph['packages'])} "
         f"repositories={len(graph['repositories'])} "
         f"organizations={len(graph['organizations'])} "

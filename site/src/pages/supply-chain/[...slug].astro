@@ -145,6 +145,9 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
         <div><span>Evidence Level</span><strong>{titleCase(page.incident.evidence_level)}</strong></div>
         <div><span>Attack Stage</span><strong>{titleCase(page.incident.attack_stage)}</strong></div>
         <div><span>Source Artifact Divergence</span><strong>{titleCase(page.incident.source_artifact_divergence)}</strong></div>
+        {page.incident.attribution_confidence && (
+          <div><span>Attribution Confidence</span><strong>{titleCase(page.incident.attribution_confidence)}</strong></div>
+        )}
       </section>
 
       {page.editorialSections.length > 0 && (
@@ -206,10 +209,30 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
       <EntityList title="Repositories" items={page.sections.repositories} />
       <EntityList title="Organizations" items={page.sections.organizations} />
       <EntityList title="Maintainers" items={page.sections.maintainers} />
+      <EntityList title="Threat Actors" items={page.sections.actors} />
+      <EntityList title="Campaigns" items={page.sections.campaigns} />
       <EntityList title="Build Systems" items={page.sections.buildSystems} />
       <EntityList title="Distribution Channels" items={page.sections.distributionChannels} />
       <EntityList title="Compromised Accounts" items={page.sections.compromisedAccounts} />
       <EntityList title="Connected Entities" items={page.connectedEntities} />
+
+      {page.sections.attributionEvidence.length > 0 && (
+        <section class="sc-section">
+          <h2>Attribution Evidence</h2>
+          <div class="editorial-card-list">
+            {page.sections.attributionEvidence.map((item) => (
+              <article class="editorial-card">
+                <p>{item.summary}</p>
+                <ul class="citation-list">
+                  {item.references.map((reference) => (
+                    <li><a href={reference.url} target="_blank" rel="noopener noreferrer">{referenceLabel(reference)}</a></li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section class="sc-section">
         <h2>References</h2>

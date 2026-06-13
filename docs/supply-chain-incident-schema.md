@@ -39,6 +39,8 @@ The core fields are:
 - `status`: currently `confirmed`
 - `first_observed_at`: earliest known activity date in `YYYY-MM-DD`
 - `disclosed_at`: public disclosure date in `YYYY-MM-DD`
+- `first_public_warning_at`: optional first public warning date in `YYYY-MM-DD`
+  or `null`
 - `affected_ecosystems`: ecosystem labels such as `npm`, `pypi`, `windows`,
   `github-actions`, or `vendor-update`
 - `affected_components`: structured impacted packages, projects, services, or
@@ -61,6 +63,10 @@ The core fields are:
   releases, or download paths used by the incident
 - `compromised_accounts`: package-registry, source-control, or release-path
   accounts/tokens tied to the incident
+- `threat_actors`: optional evidence-backed actor links
+- `campaigns`: optional evidence-backed campaign links
+- `attribution_confidence`: optional incident-level attribution confidence
+- `attribution_evidence`: local evidence records for each actor/campaign edge
 
 Featured incident pages may also carry editorial fields:
 
@@ -107,6 +113,61 @@ Every incident must carry:
 Use `inferred` only when the structured field is clearly derived from the
 documented record and no stronger class applies. Do not use evidence quality as
 a severity score.
+
+## Attribution Convergence
+
+Phase 2B adds optional actor and campaign convergence fields. These fields are
+for explicit, evidence-backed links to existing Threatpedia actor/campaign
+records or to provisional operator nodes. They are not automated attribution and
+they are not scoring fields.
+
+Attribution confidence values are:
+
+- `confirmed`
+- `likely`
+- `suspected`
+- `disputed`
+- `unknown`
+
+Threat actor links use:
+
+```json
+{
+  "id": "actor-example",
+  "name": "Example Actor",
+  "actor_type": "public | provisional",
+  "confidence": "confirmed | likely | suspected | disputed | unknown",
+  "source_refs": ["ref-example"]
+}
+```
+
+Campaign links use:
+
+```json
+{
+  "id": "campaign-tp-camp-YYYY-NNNN",
+  "campaign_id": "TP-CAMP-YYYY-NNNN",
+  "name": "Example Campaign",
+  "slug": "example-campaign-slug",
+  "confidence": "confirmed | likely | suspected | disputed | unknown",
+  "source_refs": ["ref-example"]
+}
+```
+
+Every actor or campaign link must have a matching `attribution_evidence` record:
+
+```json
+{
+  "target": "actor-example",
+  "relationship_type": "ATTRIBUTED_TO_ACTOR",
+  "source_refs": ["ref-example"],
+  "summary": "bounded evidence basis for this edge"
+}
+```
+
+Provisional actor nodes are allowed when public evidence supports a coherent
+operator but does not support a named public APT. They must use stable
+placeholder identifiers and must not fabricate nation-state or APT labels.
 
 ## Vector Labels
 

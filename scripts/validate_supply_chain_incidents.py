@@ -60,6 +60,9 @@ REQUIRED_REPOSITORY_FIELDS = ["name", "host", "owner", "url"]
 REQUIRED_BUILD_SYSTEM_FIELDS = ["name", "provider", "category"]
 REQUIRED_DISTRIBUTION_CHANNEL_FIELDS = ["name", "channel_type", "ecosystem"]
 REQUIRED_COMPROMISED_ACCOUNT_FIELDS = ["name", "provider", "account_type", "role"]
+REQUIRED_THREAT_ACTOR_FIELDS = ["id", "name", "actor_type", "confidence", "source_refs"]
+REQUIRED_CAMPAIGN_FIELDS = ["id", "campaign_id", "name", "slug", "confidence", "source_refs"]
+REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS = ["target", "relationship_type", "source_refs", "summary"]
 FEATURED_INCIDENT_IDS = {
     "SC-2018-NPM-EVENT-STREAM",
     "SC-2020-SOLARWINDS-ORION",
@@ -126,6 +129,9 @@ VALID_IMPACTS = {
     "protest_payload",
     "ransomware_delivery",
 }
+VALID_ATTRIBUTION_CONFIDENCE = {"confirmed", "likely", "suspected", "disputed", "unknown"}
+VALID_ACTOR_TYPES = {"public", "provisional"}
+VALID_ATTRIBUTION_RELATIONSHIPS = {"ATTRIBUTED_TO_ACTOR", "RELATED_CAMPAIGN"}
 
 
 def load_json(path: Path) -> Any:
@@ -416,6 +422,107 @@ def validate_named_fields(
                 require_string(errors, f"{path}.{field}", record[field])
 
 
+def validate_attribution_link(
+    errors: list[str],
+    incident_id: str,
+    field_name: str,
+    required_fields: list[str],
+    record: Any,
+    index: int,
+    valid_reference_ids: set[str],
+) -> tuple[str, str] | None:
+    path = f"{incident_id}.{field_name}[{index}]"
+    if not isinstance(record, dict):
+        errors.append(f"{path}: expected object")
+        return None
+    for field in required_fields:
+        if field not in record:
+            errors.append(f"{path}.{field}: missing required field")
+    require_string(errors, f"{path}.id", record.get("id"))
+    require_string(errors, f"{path}.name", record.get("name"))
+    if record.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
+        errors.append(f"{path}.confidence: invalid value {record.get('confidence')!r}")
+    validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
+    if field_name == "threat_actors":
+        if record.get("actor_type") not in VALID_ACTOR_TYPES:
+            errors.append(f"{path}.actor_type: invalid value {record.get('actor_type')!r}")
+        if isinstance(record.get("id"), str) and not record["id"].startswith("actor-"):
+            errors.append(f"{path}.id: expected actor-* identifier")
+        entity_refs = record.get("entity_refs", [])
+        if not isinstance(entity_refs, list):
+            errors.append(f"{path}.entity_refs: expected list")
+        else:
+            for entity_index, entity_ref in enumerate(entity_refs):
+                if not isinstance(entity_ref, str) or not entity_ref.strip():
+                    errors.append(f"{path}.entity_refs[{entity_index}]: expected non-empty string")
+        return ("ATTRIBUTED_TO_ACTOR", record.get("id")) if isinstance(record.get("id"), str) else None
+    if field_name == "campaigns":
+        require_string(errors, f"{path}.campaign_id", record.get("campaign_id"))
+        require_string(errors, f"{path}.slug", record.get("slug"))
+        if isinstance(record.get("id"), str) and not record["id"].startswith("campaign-"):
+            errors.append(f"{path}.id: expected campaign-* identifier")
+        return ("RELATED_CAMPAIGN", record.get("id")) if isinstance(record.get("id"), str) else None
+    return None
+
+
+def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> None:
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
+    valid_reference_ids = reference_ids_for(incident)
+    expected_evidence: set[tuple[str, str]] = set()
+
+    if "attribution_confidence" in incident and incident.get("attribution_confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
+        errors.append(f"{incident_id}.attribution_confidence: invalid value {incident.get('attribution_confidence')!r}")
+
+    for field_name, required_fields in (
+        ("threat_actors", REQUIRED_THREAT_ACTOR_FIELDS),
+        ("campaigns", REQUIRED_CAMPAIGN_FIELDS),
+    ):
+        records = incident.get(field_name, [])
+        if not isinstance(records, list):
+            errors.append(f"{incident_id}.{field_name}: expected list")
+            continue
+        for index, record in enumerate(records):
+            expected = validate_attribution_link(
+                errors,
+                incident_id,
+                field_name,
+                required_fields,
+                record,
+                index,
+                valid_reference_ids,
+            )
+            if expected:
+                expected_evidence.add(expected)
+
+    if expected_evidence and "attribution_confidence" not in incident:
+        errors.append(f"{incident_id}.attribution_confidence: required when threat_actors or campaigns are present")
+
+    attribution_evidence = incident.get("attribution_evidence", [])
+    if not isinstance(attribution_evidence, list):
+        errors.append(f"{incident_id}.attribution_evidence: expected list")
+        attribution_evidence = []
+    seen_evidence: set[tuple[str, str]] = set()
+    for index, record in enumerate(attribution_evidence):
+        path = f"{incident_id}.attribution_evidence[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        for field in REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS:
+            if field not in record:
+                errors.append(f"{path}.{field}: missing required field")
+        require_string(errors, f"{path}.target", record.get("target"))
+        require_string(errors, f"{path}.summary", record.get("summary"), min_length=20)
+        relationship_type = record.get("relationship_type")
+        if relationship_type not in VALID_ATTRIBUTION_RELATIONSHIPS:
+            errors.append(f"{path}.relationship_type: invalid value {relationship_type!r}")
+        validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
+        if isinstance(record.get("target"), str) and isinstance(relationship_type, str):
+            seen_evidence.add((relationship_type, record["target"]))
+
+    for relationship_type, target in sorted(expected_evidence - seen_evidence):
+        errors.append(f"{incident_id}.attribution_evidence: missing {relationship_type} evidence for {target}")
+
+
 def validate_incident(incident: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(incident, dict):
@@ -460,6 +567,12 @@ def validate_incident(incident: Any) -> list[str]:
         errors.append(f"{incident_id}.disclosed_at: expected YYYY-MM-DD date")
     if first_observed_at and disclosed_at and disclosed_at < first_observed_at:
         errors.append(f"{incident_id}.disclosed_at: cannot be before first_observed_at")
+    if "first_public_warning_at" in incident and incident.get("first_public_warning_at") is not None:
+        first_public_warning_at = parse_date(incident.get("first_public_warning_at"))
+        if first_public_warning_at is None:
+            errors.append(f"{incident_id}.first_public_warning_at: expected YYYY-MM-DD date or null")
+        elif first_observed_at and first_public_warning_at < first_observed_at:
+            errors.append(f"{incident_id}.first_public_warning_at: cannot be before first_observed_at")
 
     require_string_list(errors, f"{incident_id}.affected_ecosystems", incident.get("affected_ecosystems"))
     require_enum_list(errors, f"{incident_id}.supply_chain_vectors", incident.get("supply_chain_vectors"), VALID_VECTORS)
@@ -509,6 +622,7 @@ def validate_incident(incident: Any) -> list[str]:
         REQUIRED_COMPROMISED_ACCOUNT_FIELDS,
         incident.get("compromised_accounts"),
     )
+    validate_attribution_fields(errors, incident)
     validate_editorial_fields(errors, incident)
 
     return errors
@@ -579,6 +693,12 @@ def validate_schema_file(schema: Any) -> list[str]:
         errors.append("schema.$defs.affected_component.if: must match generic package URLs")
     if not isinstance(generic_then, dict) or generic_then.get("required") != ["purl_justification"]:
         errors.append("schema.$defs.affected_component.then: must require purl_justification")
+    for def_name in ["attribution_confidence", "threat_actor_link", "campaign_link", "attribution_evidence"]:
+        if def_name not in defs:
+            errors.append(f"schema.$defs.{def_name}: missing required Phase 2B definition")
+    attribution_confidence = defs.get("attribution_confidence") if isinstance(defs, dict) else None
+    if not isinstance(attribution_confidence, dict) or set(attribution_confidence.get("enum", [])) != VALID_ATTRIBUTION_CONFIDENCE:
+        errors.append("schema.$defs.attribution_confidence.enum: does not match validator")
     return errors
 
 

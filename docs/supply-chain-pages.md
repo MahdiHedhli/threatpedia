@@ -108,8 +108,12 @@ The index page shows counts for:
 
 Incident pages show corpus fields: summary, confidence, evidence level, attack
 stage, source-artifact divergence, affected entities, structured supply-chain
-primitives, compromised accounts, connected entities, and references. Featured
-incidents may additionally render validated editorial sections when present:
+primitives, compromised accounts, connected entities, and references. When
+Phase 2B actor or campaign links are present, incident pages also show threat
+actor links, campaign links, attribution confidence, and the local evidence
+basis for those edges. These links are corpus-driven convergence edges; they do
+not represent automated attribution or a risk score. Featured incidents may
+additionally render validated editorial sections when present:
 
 - Executive Summary
 - Timeline

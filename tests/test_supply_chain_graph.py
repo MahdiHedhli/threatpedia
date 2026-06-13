@@ -48,8 +48,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         build_system_ids = {entity["id"] for entity in graph["build_systems"]}
         channel_ids = {entity["id"] for entity in graph["distribution_channels"]}
         account_ids = {entity["id"] for entity in graph["accounts"]}
+        actor_ids = {entity["id"] for entity in graph["actors"]}
+        campaign_ids = {entity["id"] for entity in graph["campaigns"]}
 
-        self.assertGreaterEqual(len(graph["relationships"]), 90)
+        self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
@@ -60,6 +62,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("build-github-github-actions", build_system_ids)
         self.assertIn("channel-npm-package-registry-npm-registry", channel_ids)
         self.assertIn("account-npm-eslint-scope-npm-maintainer-account", account_ids)
+        self.assertIn("actor-unc-xz-utils-operator", actor_ids)
+        self.assertIn("actor-lazarus-group", actor_ids)
+        self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
 
     def test_source_artifact_divergence_targets_distribution_channels(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))
@@ -201,6 +206,54 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any("invalid relationship type" in error for error in errors))
+
+    def test_dangling_actor_and_campaign_edges_fail(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2024-XZ-UTILS",
+                "target": "actor-does-not-exist",
+                "type": "ATTRIBUTED_TO_ACTOR",
+            }
+        )
+        relationships.append(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "campaign-does-not-exist",
+                "type": "RELATED_CAMPAIGN",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unknown target 'actor-does-not-exist'" in error for error in errors))
+        self.assertTrue(any("unknown target 'campaign-does-not-exist'" in error for error in errors))
+
+    def test_actor_and_campaign_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "pkg-npm-event-stream",
+                "target": "actor-lazarus-group",
+                "type": "ATTRIBUTED_TO_ACTOR",
+            }
+        )
+        relationships.append(
+            {
+                "source": "maintainer-jia-tan",
+                "target": "campaign-tp-camp-2023-0002",
+                "type": "RELATED_CAMPAIGN",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("ATTRIBUTED_TO_ACTOR must start from an incident or maintainer node" in error for error in errors))
+        self.assertTrue(any("RELATED_CAMPAIGN must start from an incident node" in error for error in errors))
 
     def test_new_entity_type_required_fields_are_validated(self) -> None:
         corpus = load_json(CORPUS_PATH)

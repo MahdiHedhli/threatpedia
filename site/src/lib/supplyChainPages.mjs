@@ -82,7 +82,9 @@ const indexDescription =
 
 const allEntityFiles = {
   accounts: 'accounts.json',
+  actors: 'actors.json',
   build_systems: 'build_systems.json',
+  campaigns: 'campaigns.json',
   distribution_channels: 'distribution_channels.json',
   maintainers: 'maintainers.json',
   organizations: 'organizations.json',
@@ -145,6 +147,8 @@ const ENTITY_COLLECTION_LABELS = {
   build_systems: 'Build System',
   distribution_channels: 'Distribution Channel',
   accounts: 'Compromised Account',
+  actors: 'Threat Actor',
+  campaigns: 'Campaign',
 };
 
 const editorialSectionDefinitions = [
@@ -216,6 +220,7 @@ function relationshipRows(data, nodeId) {
 }
 
 function linkForEntity(entity) {
+  if (entity.href) return entity.href;
   const type = SUPPLY_CHAIN_ENTITY_TYPES.find((item) => item.key === entity.entityCollection);
   return type ? `/supply-chain/${type.segment}/${entity.id}/` : null;
 }
@@ -326,6 +331,14 @@ function referenceMapFor(incident) {
 
 function referencesForItem(item, referenceById) {
   return (item.reference_ids || []).map((referenceId) => referenceById.get(referenceId)).filter(Boolean);
+}
+
+function attributionEvidenceFor(incident) {
+  const referenceById = referenceMapFor(incident);
+  return (incident.attribution_evidence || []).map((item) => ({
+    ...item,
+    references: (item.source_refs || []).map((referenceId) => referenceById.get(referenceId)).filter(Boolean),
+  }));
 }
 
 function editorialSectionsFor(incident) {
@@ -454,9 +467,12 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
       repositories: incidentEntityLinks(data, id, 'AFFECTED_REPOSITORY'),
       organizations: incidentEntityLinks(data, id, 'AFFECTED_ORGANIZATION'),
       maintainers: incidentEntityLinks(data, id, 'AFFECTED_MAINTAINER'),
+      actors: incidentEntityLinks(data, id, 'ATTRIBUTED_TO_ACTOR'),
+      campaigns: incidentEntityLinks(data, id, 'RELATED_CAMPAIGN'),
       buildSystems: incidentEntities(data, id, 'build_systems', 'USED_BUILD_SYSTEM'),
       distributionChannels: incidentEntities(data, id, 'distribution_channels', 'USED_DISTRIBUTION_CHANNEL'),
       compromisedAccounts: incidentEntities(data, id, 'compromised_accounts', 'COMPROMISED_ACCOUNT'),
+      attributionEvidence: attributionEvidenceFor(incident),
     },
   };
 }
