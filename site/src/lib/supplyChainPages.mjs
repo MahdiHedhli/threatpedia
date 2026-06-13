@@ -1,9 +1,30 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(moduleDir, '../../..');
+const incidentRelativePath = 'data/supply-chain-incidents/incidents.json';
+
+function findRepoRoot(startDirs) {
+  const seen = new Set();
+  for (const startDir of startDirs) {
+    let currentDir = path.resolve(startDir);
+    while (!seen.has(currentDir)) {
+      seen.add(currentDir);
+      if (existsSync(path.join(currentDir, incidentRelativePath))) {
+        return currentDir;
+      }
+      const parentDir = path.dirname(currentDir);
+      if (parentDir === currentDir) {
+        break;
+      }
+      currentDir = parentDir;
+    }
+  }
+  throw new Error(`Unable to locate Supply Chain corpus from ${startDirs.join(', ')}`);
+}
+
+const repoRoot = findRepoRoot([moduleDir, process.cwd()]);
 const incidentPath = path.join(repoRoot, 'data/supply-chain-incidents/incidents.json');
 const relationshipPath = path.join(repoRoot, 'data/supply-chain-relationships/relationships.json');
 const entityDir = path.join(repoRoot, 'data/supply-chain-entities');
