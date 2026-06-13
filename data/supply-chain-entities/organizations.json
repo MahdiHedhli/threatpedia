@@ -1,0 +1,172 @@
+[
+  {
+    "aliases": [
+      "3CX"
+    ],
+    "id": "org-3cx",
+    "name": "3CX",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
+      "ASUS"
+    ],
+    "id": "org-asus",
+    "name": "ASUS",
+    "source_incident_ids": [
+      "SC-2019-ASUS-SHADOWHAMMER"
+    ]
+  },
+  {
+    "aliases": [
+      "Codecov"
+    ],
+    "id": "org-codecov",
+    "name": "Codecov",
+    "source_incident_ids": [
+      "SC-2021-CODECOV-BASH-UPLOADER"
+    ]
+  },
+  {
+    "aliases": [
+      "ESLint"
+    ],
+    "id": "org-eslint",
+    "name": "ESLint",
+    "source_incident_ids": [
+      "SC-2018-ESLINT-SCOPE"
+    ]
+  },
+  {
+    "aliases": [
+      "Intellect Service"
+    ],
+    "id": "org-intellect-service",
+    "name": "Intellect Service",
+    "source_incident_ids": [
+      "SC-2017-NOTPETYA-MEDOC"
+    ]
+  },
+  {
+    "aliases": [
+      "Kaseya"
+    ],
+    "id": "org-kaseya",
+    "name": "Kaseya",
+    "source_incident_ids": [
+      "SC-2021-KASEYA-VSA"
+    ]
+  },
+  {
+    "aliases": [
+      "Ledger"
+    ],
+    "id": "org-ledger",
+    "name": "Ledger",
+    "source_incident_ids": [
+      "SC-2023-LEDGER-CONNECT-KIT"
+    ]
+  },
+  {
+    "aliases": [
+      "Linux Mint"
+    ],
+    "id": "org-linux-mint",
+    "name": "Linux Mint",
+    "source_incident_ids": [
+      "SC-2016-LINUX-MINT-ISO"
+    ]
+  },
+  {
+    "aliases": [
+      "LottieFiles"
+    ],
+    "id": "org-lottiefiles",
+    "name": "LottieFiles",
+    "source_incident_ids": [
+      "SC-2024-LOTTIE-PLAYER"
+    ]
+  },
+  {
+    "aliases": [
+      "PHP project"
+    ],
+    "id": "org-php-project",
+    "name": "PHP project",
+    "source_incident_ids": [
+      "SC-2021-PHP-GIT-SERVER"
+    ]
+  },
+  {
+    "aliases": [
+      "Piriform"
+    ],
+    "id": "org-piriform",
+    "name": "Piriform",
+    "source_incident_ids": [
+      "SC-2017-CCLEANER"
+    ]
+  },
+  {
+    "aliases": [
+      "Polyfill.io"
+    ],
+    "id": "org-polyfill-io",
+    "name": "Polyfill.io",
+    "source_incident_ids": [
+      "SC-2024-POLYFILL-IO"
+    ]
+  },
+  {
+    "aliases": [
+      "PyTorch"
+    ],
+    "id": "org-pytorch",
+    "name": "PyTorch",
+    "source_incident_ids": [
+      "SC-2022-PYTORCH-NIGHTLY"
+    ]
+  },
+  {
+    "aliases": [
+      "SolarWinds"
+    ],
+    "id": "org-solarwinds",
+    "name": "SolarWinds",
+    "source_incident_ids": [
+      "SC-2020-SOLARWINDS-ORION"
+    ]
+  },
+  {
+    "aliases": [
+      "tj-actions"
+    ],
+    "id": "org-tj-actions",
+    "name": "tj-actions",
+    "source_incident_ids": [
+      "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+    ]
+  },
+  {
+    "aliases": [
+      "Tukaani Project"
+    ],
+    "id": "org-tukaani-project",
+    "name": "Tukaani Project",
+    "source_incident_ids": [
+      "SC-2024-XZ-UTILS"
+    ]
+  },
+  {
+    "aliases": [
+      "Ultralytics"
+    ],
+    "id": "org-ultralytics",
+    "name": "Ultralytics",
+    "source_incident_ids": [
+      "SC-2024-ULTRALYTICS-PYPI"
+    ]
+  }
+]

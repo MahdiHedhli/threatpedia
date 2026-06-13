@@ -1,0 +1,158 @@
+[
+  {
+    "aliases": [
+      "internal dependency names"
+    ],
+    "ecosystem": "multiple",
+    "id": "pkg-multiple-internal-dependency-names",
+    "name": "internal dependency names",
+    "package_url": null,
+    "source_incident_ids": [
+      "SC-2021-DEPENDENCY-CONFUSION"
+    ]
+  },
+  {
+    "aliases": [
+      "colors"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-colors",
+    "name": "colors",
+    "package_url": "pkg:npm/colors",
+    "source_incident_ids": [
+      "SC-2022-COLORS-FAKER"
+    ]
+  },
+  {
+    "aliases": [
+      "eslint-scope"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-eslint-scope",
+    "name": "eslint-scope",
+    "package_url": "pkg:npm/eslint-scope",
+    "source_incident_ids": [
+      "SC-2018-ESLINT-SCOPE"
+    ]
+  },
+  {
+    "aliases": [
+      "event-stream"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-event-stream",
+    "name": "event-stream",
+    "package_url": "pkg:npm/event-stream",
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ]
+  },
+  {
+    "aliases": [
+      "faker"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-faker",
+    "name": "faker",
+    "package_url": "pkg:npm/faker",
+    "source_incident_ids": [
+      "SC-2022-COLORS-FAKER"
+    ]
+  },
+  {
+    "aliases": [
+      "@ledgerhq/connect-kit"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-ledgerhq-connect-kit",
+    "name": "@ledgerhq/connect-kit",
+    "package_url": "pkg:npm/%40ledgerhq/connect-kit",
+    "source_incident_ids": [
+      "SC-2023-LEDGER-CONNECT-KIT"
+    ]
+  },
+  {
+    "aliases": [
+      "@lottiefiles/lottie-player"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-lottiefiles-lottie-player",
+    "name": "@lottiefiles/lottie-player",
+    "package_url": "pkg:npm/%40lottiefiles/lottie-player",
+    "source_incident_ids": [
+      "SC-2024-LOTTIE-PLAYER"
+    ]
+  },
+  {
+    "aliases": [
+      "node-ipc"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-node-ipc",
+    "name": "node-ipc",
+    "package_url": "pkg:npm/node-ipc",
+    "source_incident_ids": [
+      "SC-2022-NODE-IPC"
+    ]
+  },
+  {
+    "aliases": [
+      "rc"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-rc",
+    "name": "rc",
+    "package_url": "pkg:npm/rc",
+    "source_incident_ids": [
+      "SC-2021-NPM-RC"
+    ]
+  },
+  {
+    "aliases": [
+      "ua-parser-js"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-ua-parser-js",
+    "name": "ua-parser-js",
+    "package_url": "pkg:npm/ua-parser-js",
+    "source_incident_ids": [
+      "SC-2021-UA-PARSER-JS"
+    ]
+  },
+  {
+    "aliases": [
+      "ctx"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-ctx",
+    "name": "ctx",
+    "package_url": "pkg:pypi/ctx",
+    "source_incident_ids": [
+      "SC-2022-PYPI-CTX"
+    ]
+  },
+  {
+    "aliases": [
+      "torchtriton"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-torchtriton",
+    "name": "torchtriton",
+    "package_url": "pkg:pypi/torchtriton",
+    "source_incident_ids": [
+      "SC-2022-PYTORCH-NIGHTLY"
+    ]
+  },
+  {
+    "aliases": [
+      "ultralytics"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-ultralytics",
+    "name": "ultralytics",
+    "package_url": "pkg:pypi/ultralytics",
+    "source_incident_ids": [
+      "SC-2024-ULTRALYTICS-PYPI"
+    ]
+  }
+]
