@@ -1,0 +1,56 @@
+name: "Supply Chain: Validate Corpus"
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".github/workflows/supply-chain-validate.yml"
+      - "data/supply-chain-entities/**"
+      - "data/supply-chain-incidents/**"
+      - "data/supply-chain-relationships/**"
+      - "docs/supply-chain*.md"
+      - "scripts/build_supply_chain_entities.py"
+      - "scripts/supply_chain_purl.py"
+      - "scripts/validate_supply_chain_graph.py"
+      - "scripts/validate_supply_chain_incidents.py"
+      - "scripts/test-supply-chain-pages.mjs"
+      - "site/src/lib/supplyChainPages.mjs"
+      - "tests/test_supply_chain*.py"
+  workflow_dispatch:
+
+jobs:
+  validate-supply-chain:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Python syntax
+        run: |
+          python3 -m py_compile \
+            scripts/supply_chain_purl.py \
+            scripts/build_supply_chain_entities.py \
+            scripts/validate_supply_chain_incidents.py \
+            scripts/validate_supply_chain_graph.py
+
+      - name: Validate incident corpus
+        run: python3 scripts/validate_supply_chain_incidents.py
+
+      - name: Validate graph primitives
+        run: python3 scripts/validate_supply_chain_graph.py
+
+      - name: Run supply-chain unit tests
+        run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py
+
+      - name: Run page model test
+        run: node scripts/test-supply-chain-pages.mjs

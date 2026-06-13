@@ -10,6 +10,12 @@ import re
 import sys
 from typing import Any
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from supply_chain_purl import PurlError, canonicalize_purl
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
@@ -54,7 +60,7 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "distribution_channels": ["channel_type", "ecosystem"],
     "maintainers": [],
     "organizations": [],
-    "packages": ["ecosystem"],
+    "packages": ["ecosystem", "package_url"],
     "repositories": ["host", "url", "owner"],
 }
 
@@ -107,6 +113,18 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
         for field in ENTITY_TYPE_REQUIRED_FIELDS.get(entity_type, []):
             if not isinstance(entity.get(field), str) or not entity[field].strip():
                 errors.append(f"{entity_id}.{field}: expected non-empty string")
+        if entity_type == "packages" and isinstance(entity.get("package_url"), str):
+            try:
+                canonical = canonicalize_purl(
+                    entity["package_url"],
+                    ecosystem=entity.get("ecosystem"),
+                    package_name=entity.get("name"),
+                )
+            except PurlError as exc:
+                errors.append(f"{entity_id}.package_url: invalid canonical package URL: {exc}")
+            else:
+                if entity["package_url"] != canonical:
+                    errors.append(f"{entity_id}.package_url: expected canonical package URL {canonical!r}")
         source_incident_ids = entity.get("source_incident_ids")
         if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")

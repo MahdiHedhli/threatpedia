@@ -12,6 +12,12 @@ import sys
 from typing import Any
 from urllib.parse import urlparse
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from supply_chain_purl import PurlError, canonicalize_purl
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
@@ -19,7 +25,6 @@ DEFAULT_SCHEMA_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "schema.js
 SCHEMA_VERSION = "supply-chain-incident/1"
 ID_PATTERN = re.compile(r"^SC-[0-9]{4}-[A-Z0-9-]+$")
 FULL_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-PURL_PATTERN = re.compile(r"^pkg:[a-z0-9.+-]+/[^\s]+$")
 REFERENCE_ID_PATTERN = re.compile(r"^ref-[a-z0-9-]+$")
 DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 DATE_RANGE_PATTERN = re.compile(r"^([0-9]{4}-[0-9]{2}-[0-9]{2})/([0-9]{4}-[0-9]{2}-[0-9]{2})$")
@@ -203,8 +208,19 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
     if component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
     package_url = component.get("package_url")
-    if package_url is not None and not (isinstance(package_url, str) and PURL_PATTERN.match(package_url)):
-        errors.append(f"{path}.package_url: expected null or package URL")
+    if component.get("component_type") == "package" and package_url is None:
+        errors.append(f"{path}.package_url: expected canonical package URL for package component")
+    if package_url is not None:
+        if not isinstance(package_url, str):
+            errors.append(f"{path}.package_url: expected canonical package URL")
+            return
+        try:
+            canonical = canonicalize_purl(package_url, ecosystem=component.get("ecosystem"), package_name=component.get("name"))
+        except PurlError as exc:
+            errors.append(f"{path}.package_url: invalid canonical package URL: {exc}")
+        else:
+            if package_url != canonical:
+                errors.append(f"{path}.package_url: expected canonical package URL {canonical!r}")
 
 
 def validate_reference(errors: list[str], incident_id: str, index: int, reference: Any) -> None:

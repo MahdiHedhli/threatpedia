@@ -724,7 +724,7 @@
         "ecosystem": "multiple",
         "name": "internal dependency names",
         "vendor": "multiple organizations",
-        "package_url": null
+        "package_url": "pkg:generic/internal-dependency-names"
       }
     ],
     "supply_chain_vectors": [

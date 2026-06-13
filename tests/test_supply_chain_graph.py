@@ -129,6 +129,30 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("unknown incident id 'SC-DOES-NOT-EXIST'" in error for error in errors))
 
+    def test_package_entities_require_canonical_purls(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        entities_by_type["packages"][0]["package_url"] = None
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".package_url: expected non-empty string" in error for error in errors))
+
+    def test_package_purl_validation_does_not_crash_on_malformed_entity_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
+        entities_by_type["packages"][0]["name"] = None
+        entities_by_type["packages"][0]["ecosystem"] = None
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
+
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
