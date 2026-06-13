@@ -76,8 +76,10 @@ These fields are optional for ordinary corpus records. Phase 1F requires them
 only for the five curated featured incidents rendered as editorial Supply Chain
 case studies.
 
-Package components may include `package_url` when a PURL is available. Non-
-package software, services, websites, and update channels should use `null`.
+Package components must include a canonical `package_url` PURL. Non-package
+software, services, websites, and update channels should use `null`. See
+`docs/supply-chain-purl-model.md` for the canonical PURL grammar and validation
+contract.
 
 ## Attack Stages
 

@@ -31,7 +31,8 @@ Each entity has:
 - `aliases`: normalized duplicate-detection surface
 - `source_incident_ids`: incident IDs that caused the entity to be emitted
 
-Package entities also carry `ecosystem` and `package_url` when available.
+Package entities also carry `ecosystem` and a required canonical `package_url`
+PURL. See `docs/supply-chain-purl-model.md` for the canonical grammar.
 Repository entities also carry `host`, `url`, and `owner`.
 Build-system, distribution-channel, and account entities carry type-specific
 fields copied from the incident corpus.

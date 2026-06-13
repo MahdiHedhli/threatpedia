@@ -6,7 +6,7 @@
     "ecosystem": "multiple",
     "id": "pkg-multiple-internal-dependency-names",
     "name": "internal dependency names",
-    "package_url": null,
+    "package_url": "pkg:generic/internal-dependency-names",
     "source_incident_ids": [
       "SC-2021-DEPENDENCY-CONFUSION"
     ]
