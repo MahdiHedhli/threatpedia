@@ -23,6 +23,10 @@ function titleCase(value) {
   return label(value).replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function referenceLabel(reference) {
+  return `${reference.publisher}: ${reference.title}`;
+}
+
 const title = page?.seo?.title || (page?.kind === 'index' ? 'Supply Chain' : `Supply Chain: ${page?.title}`);
 const description = page?.seo?.description || 'Threatpedia Supply Chain incident and entity pages.';
 const canonicalPath = page?.seo?.canonicalPath;
@@ -57,6 +61,7 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
         <div><span>{page.counts.maintainers}</span><p>Maintainers</p></div>
         <div><span>{page.counts.buildSystems}</span><p>Build Systems</p></div>
         <div><span>{page.counts.distributionChannels}</span><p>Distribution Channels</p></div>
+        <div><span>{page.counts.compromisedAccounts}</span><p>Compromised Accounts</p></div>
         <div><span>{page.counts.relationships}</span><p>Relationships</p></div>
       </section>
 
@@ -141,6 +146,61 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
         <div><span>Attack Stage</span><strong>{titleCase(page.incident.attack_stage)}</strong></div>
         <div><span>Source Artifact Divergence</span><strong>{titleCase(page.incident.source_artifact_divergence)}</strong></div>
       </section>
+
+      {page.editorialSections.length > 0 && (
+        <div class="editorial-sections">
+          {page.editorialSections.map((section) => (
+            <section class={`sc-section editorial-section editorial-${section.type}`}>
+              <h2>{section.title}</h2>
+              {section.type === 'timeline' ? (
+                <ol class="timeline-list">
+                  {section.items.map((item) => (
+                    <li>
+                      <time>{item.date}</time>
+                      <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.text}</p>
+                        <ul class="citation-list">
+                          {item.references.map((reference) => (
+                            <li><a href={reference.url} target="_blank" rel="noopener noreferrer">{referenceLabel(reference)}</a></li>
+                          ))}
+                        </ul>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              ) : section.type === 'attack_chain' ? (
+                <ol class="attack-chain-list">
+                  {section.items.map((item) => (
+                    <li>
+                      <h3>{item.stage}</h3>
+                      <p>{item.text}</p>
+                      <ul class="citation-list">
+                        {item.references.map((reference) => (
+                          <li><a href={reference.url} target="_blank" rel="noopener noreferrer">{referenceLabel(reference)}</a></li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <div class="editorial-card-list">
+                  {section.items.map((item) => (
+                    <article class="editorial-card">
+                      <p>{item.text}</p>
+                      <ul class="citation-list">
+                        {item.references.map((reference) => (
+                          <li><a href={reference.url} target="_blank" rel="noopener noreferrer">{referenceLabel(reference)}</a></li>
+                        ))}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))}
+        </div>
+      )}
 
       <EntityList title="Affected Packages" items={page.sections.packages} />
       <EntityList title="Repositories" items={page.sections.repositories} />
@@ -297,6 +357,79 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
     margin-bottom: 8px;
   }
 
+  .editorial-sections {
+    margin: 36px 0;
+  }
+
+  .editorial-card-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .editorial-card,
+  .timeline-list li,
+  .attack-chain-list li {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .timeline-list,
+  .attack-chain-list,
+  .citation-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .timeline-list,
+  .attack-chain-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .timeline-list li {
+    display: grid;
+    grid-template-columns: minmax(120px, 180px) 1fr;
+    gap: 16px;
+  }
+
+  .timeline-list time,
+  .citation-list {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .timeline-list h3,
+  .attack-chain-list h3 {
+    margin: 0 0 8px;
+    color: var(--white);
+    font-size: 1rem;
+  }
+
+  .editorial-card p,
+  .timeline-list p,
+  .attack-chain-list p {
+    color: var(--text);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .citation-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .citation-list a {
+    border: 1px solid var(--border);
+    display: inline-block;
+    padding: 4px 7px;
+  }
+
   .metric-grid,
   .detail-grid {
     display: grid;
@@ -401,6 +534,7 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   }
 
   @media (max-width: 720px) {
+    .timeline-list li,
     .entity-list li,
     .reference-list li {
       display: block;

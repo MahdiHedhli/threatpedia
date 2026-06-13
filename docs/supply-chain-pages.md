@@ -94,9 +94,21 @@ The index page shows counts for:
 - compromised accounts
 - relationships
 
-Incident pages show corpus fields only: summary, confidence, evidence level,
-attack stage, source-artifact divergence, affected entities, structured supply-
-chain primitives, compromised accounts, connected entities, and references.
+Incident pages show corpus fields: summary, confidence, evidence level, attack
+stage, source-artifact divergence, affected entities, structured supply-chain
+primitives, compromised accounts, connected entities, and references. Featured
+incidents may additionally render validated editorial sections when present:
+
+- Executive Summary
+- Timeline
+- Attack Chain
+- Affected Ecosystem
+- Defensive Lessons
+- Detection Notes
+- Open Questions
+
+Non-featured incidents continue to render as structured corpus pages without
+editorial sections.
 
 Entity pages show the entity name, entity type, connected incidents, and
 connected entities when relationships support those links.
@@ -158,7 +170,29 @@ Before enabling the section publicly:
    - working featured incident links
    - working related incident links
    - confidence and evidence fields visible on incident pages
+   - featured incident editorial sections visible and citation-backed
+   - non-featured incidents still render without editorial sections
    - no scoring, recommendations, live-feed copy, or generated conclusions
+
+## Supply Chain Editorial Checklist
+
+Use this checklist before adding or changing a featured incident editorial page:
+
+1. Keep the incident count unchanged unless a separate corpus-expansion task
+   explicitly approves new records.
+2. Add or reuse `references[*].id` values before citing references from
+   editorial fields.
+3. Keep every editorial item as a bounded claim object with `reference_ids`.
+4. Use valid timeline dates: `YYYY-MM-DD` or `YYYY-MM-DD/YYYY-MM-DD`.
+5. Do not add claims that are not supported by the incident's own references.
+6. Do not add scoring, severity rankings, soak windows, live-feed status, or
+   automated attribution.
+7. Run:
+
+   ```bash
+   python3 scripts/validate_supply_chain_incidents.py
+   node scripts/test-supply-chain-pages.mjs
+   ```
 
 ## Non-Goals
 
