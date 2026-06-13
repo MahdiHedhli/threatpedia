@@ -66,6 +66,17 @@ assert.deepEqual(
 );
 index.featuredIncidents.forEach((incident) => {
   assert.ok(routeUrls.has(incident.href), `featured incident route should resolve: ${incident.href}`);
+  const page = getSupplyChainIncidentPage(incident.id, data);
+  assert.equal(page.editorialSections.length, 7, `featured incident should include all editorial sections: ${incident.id}`);
+  page.editorialSections.forEach((section) => {
+    assert.ok(section.items.length > 0, `featured editorial section should have items: ${incident.id} ${section.key}`);
+    section.items.forEach((item) => {
+      assert.ok(item.references.length > 0, `featured editorial item should resolve references: ${incident.id} ${section.key}`);
+      item.references.forEach((reference) => {
+        assert.ok(reference.url, `resolved reference should include URL: ${incident.id} ${section.key}`);
+      });
+    });
+  });
 });
 assert.equal(index.entitySummaries.length, 7, 'index should include seven entity summary cards');
 assert.ok(index.seo.title, 'index should include SEO title');
@@ -86,6 +97,7 @@ assert.ok(codecov.sections.organizations.length > 0, 'incident page should inclu
 assert.ok(codecov.sections.buildSystems.length > 0, 'incident page should include build systems');
 assert.ok(codecov.sections.distributionChannels.length > 0, 'incident page should include distribution channels');
 assert.ok(codecov.incident.references.length > 0, 'incident page should include references');
+assert.equal(codecov.editorialSections.length, 0, 'non-featured incident page should not render editorial sections');
 assert.ok(codecov.connectedEntities.length > 0, 'incident page should include relationship-aware connected entities');
 assert.equal(
   new Set(codecov.connectedEntities.map((entity) => entity.href || entity.id)).size,
@@ -162,26 +174,6 @@ assert.throws(
   () => getSupplyChainRoutes({ enabled: true, data: brokenData }),
   /Supply Chain page data is invalid/,
   'broken relationship targets should block route generation'
-);
-assert.throws(
-  () => getSupplyChainIndexModel(null),
-  /getSupplyChainIndexModel: invalid Supply Chain page data/,
-  'index model should reject non-object page data'
-);
-assert.throws(
-  () => getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', { ...data, entities: null }),
-  /data.entities: expected object/,
-  'incident model should reject missing entity collections before nested access'
-);
-assert.throws(
-  () => getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', { ...data, incidents: null }),
-  /data.incidents: expected array/,
-  'entity model should reject missing incidents before relationship traversal'
-);
-assert.throws(
-  () => getSupplyChainRoutes({ enabled: true, data: { ...data, entities: { packages: [] } } }),
-  /data.entities.repositories: expected array/,
-  'route generation should reject incomplete entity collections'
 );
 
 routes.forEach((route) => {

@@ -62,6 +62,20 @@ The core fields are:
 - `compromised_accounts`: package-registry, source-control, or release-path
   accounts/tokens tied to the incident
 
+Featured incident pages may also carry editorial fields:
+
+- `executive_summary`
+- `timeline`
+- `attack_chain`
+- `affected_ecosystem`
+- `defensive_lessons`
+- `detection_notes`
+- `open_questions`
+
+These fields are optional for ordinary corpus records. Phase 1F requires them
+only for the five curated featured incidents rendered as editorial Supply Chain
+case studies.
+
 Package components may include `package_url` when a PURL is available. Non-
 package software, services, websites, and update channels should use `null`.
 
@@ -133,6 +147,7 @@ These describe observed incident effects. They are not scoring labels.
 
 Every incident must have at least one public reference with:
 
+- `id` when the reference is used by an editorial field
 - `title`
 - `publisher`
 - `url`
@@ -140,6 +155,52 @@ Every incident must have at least one public reference with:
 
 The validator checks URL shape and date format. It does not fetch references or
 make external network calls.
+
+Editorial fields use local `reference_ids` that must resolve to `references[*].id`
+inside the same incident record. This keeps editorial prose bound to the
+curated corpus evidence and avoids cross-record citation drift.
+
+## Featured Editorial Fields
+
+Editorial fields are structured arrays rather than free-form Markdown. Claim
+sections use this shape:
+
+```json
+{
+  "text": "bounded evidence-backed statement",
+  "reference_ids": ["ref-example"]
+}
+```
+
+`timeline` entries use:
+
+```json
+{
+  "date": "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD",
+  "title": "short event title",
+  "text": "bounded evidence-backed event summary",
+  "reference_ids": ["ref-example"]
+}
+```
+
+`attack_chain` entries use:
+
+```json
+{
+  "stage": "short stage label",
+  "text": "bounded evidence-backed stage description",
+  "reference_ids": ["ref-example"]
+}
+```
+
+Validator behavior:
+
+- the five featured incidents must include every editorial field
+- non-featured incidents do not need editorial fields
+- editorial fields on non-featured records are rejected in Phase 1F
+- timeline dates must be valid dates or date ranges
+- every editorial item must cite at least one local reference ID
+- cited reference IDs must exist in the same incident record
 
 ## Adding Future Incidents
 

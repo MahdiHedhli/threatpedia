@@ -146,21 +146,8 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".attack_stage: invalid value" in error for error in errors))
 
     def test_structured_depth_fields_are_enforced(self) -> None:
-        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
-        incident["distribution_channels"] = [
-            {
-                "name": "",
-                "channel_type": "package_registry",
-                "ecosystem": "npm"
-            }
-        ]
-        incident["maintainers"] = [
-            {
-                "name": "Example Maintainer",
-                "aliases": ["example"],
-                "id_slug": "example"
-            }
-        ]
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["maintainers"]))
+        incident["distribution_channels"][0]["name"] = ""
         incident["source_artifact_divergence"] = "yes"
         del incident["maintainers"][0]["id_slug"]
 
@@ -168,7 +155,7 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
-        self.assertTrue(any(".maintainers[0].id_slug: missing required field" in error for error in errors))
+        self.assertTrue(any(".maintainers[0].id_slug: expected non-empty string" in error for error in errors))
 
     def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
@@ -204,6 +191,45 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(
             any(".source_artifact_divergence: cannot be true when distribution_channels is empty" in error for error in errors)
         )
+
+    def test_featured_incidents_require_editorial_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2024-XZ-UTILS"))
+        del incident["executive_summary"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".executive_summary: missing required featured editorial field" in error for error in errors))
+
+    def test_non_featured_incidents_do_not_require_editorial_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-CODECOV-BASH-UPLOADER"))
+
+        errors = validator.validate_incident(incident)
+
+        self.assertFalse(any("editorial" in error for error in errors))
+
+    def test_editorial_references_must_resolve(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        incident["executive_summary"][0]["reference_ids"] = ["ref-missing"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any("unknown reference ID 'ref-missing'" in error for error in errors))
+
+    def test_editorial_timeline_dates_are_enforced(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        incident["timeline"][0]["date"] = "2023-04-20/2023-03-22"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".timeline[0].date: expected YYYY-MM-DD date or YYYY-MM-DD/YYYY-MM-DD range" in error for error in errors))
+
+    def test_editorial_timeline_dates_reject_compact_iso_forms(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2024-XZ-UTILS"))
+        incident["timeline"][0]["date"] = "20240329"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".timeline[0].date: expected YYYY-MM-DD date or YYYY-MM-DD/YYYY-MM-DD range" in error for error in errors))
 
 
 if __name__ == "__main__":

@@ -187,6 +187,48 @@
       "items": {
         "$ref": "#/$defs/compromised_account"
       }
+    },
+    "executive_summary": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/editorial_item"
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/timeline_item"
+      }
+    },
+    "attack_chain": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attack_chain_item"
+      }
+    },
+    "affected_ecosystem": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/editorial_item"
+      }
+    },
+    "defensive_lessons": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/editorial_item"
+      }
+    },
+    "detection_notes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/editorial_item"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/editorial_item"
+      }
     }
   },
   "$defs": {
@@ -233,6 +275,10 @@
         "published_at"
       ],
       "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ref-[a-z0-9-]+$"
+        },
         "title": {
           "type": "string"
         },
@@ -247,6 +293,77 @@
           "type": "string",
           "format": "date"
         }
+      }
+    },
+    "editorial_item": {
+      "type": "object",
+      "required": [
+        "text",
+        "reference_ids"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 20
+        },
+        "reference_ids": {
+          "$ref": "#/$defs/reference_id_list"
+        }
+      }
+    },
+    "timeline_item": {
+      "type": "object",
+      "required": [
+        "date",
+        "title",
+        "text",
+        "reference_ids"
+      ],
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}(/[0-9]{4}-[0-9]{2}-[0-9]{2})?$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 4
+        },
+        "text": {
+          "type": "string",
+          "minLength": 20
+        },
+        "reference_ids": {
+          "$ref": "#/$defs/reference_id_list"
+        }
+      }
+    },
+    "attack_chain_item": {
+      "type": "object",
+      "required": [
+        "stage",
+        "text",
+        "reference_ids"
+      ],
+      "properties": {
+        "stage": {
+          "type": "string",
+          "minLength": 4
+        },
+        "text": {
+          "type": "string",
+          "minLength": 20
+        },
+        "reference_ids": {
+          "$ref": "#/$defs/reference_id_list"
+        }
+      }
+    },
+    "reference_id_list": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^ref-[a-z0-9-]+$"
       }
     },
     "maintainer": {
