@@ -265,7 +265,10 @@ def validate_incident(incident: Any) -> list[str]:
         errors.append(f"{incident_id}.attack_stage: invalid value {incident.get('attack_stage')!r}")
     if incident.get("source_artifact_divergence") is not None and not isinstance(incident.get("source_artifact_divergence"), bool):
         errors.append(f"{incident_id}.source_artifact_divergence: expected boolean or null")
-    if incident.get("source_artifact_divergence") is True and not incident.get("distribution_channels"):
+    distribution_channels = incident.get("distribution_channels")
+    if incident.get("source_artifact_divergence") is True and (
+        not isinstance(distribution_channels, list) or not distribution_channels
+    ):
         errors.append(f"{incident_id}.source_artifact_divergence: cannot be true when distribution_channels is empty")
     if "notes" in incident:
         require_string(errors, f"{incident_id}.notes", incident.get("notes"), min_length=8)
