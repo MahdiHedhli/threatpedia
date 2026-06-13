@@ -25,7 +25,7 @@ def load_json(name: str) -> dict:
 class SupplyChainCanaryTests(unittest.TestCase):
     def test_purl_builder_normalizes_supported_ecosystems(self) -> None:
         self.assertEqual(normalize_name("pypi", "Demo_Pkg"), "demo-pkg")
-        self.assertEqual(build_purl("npm", "@Scope/Demo", "1.2.3"), "pkg:npm/scope/demo@1.2.3")
+        self.assertEqual(build_purl("npm", "@Scope/Demo", "1.2.3"), "pkg:npm/%40scope/demo@1.2.3")
         self.assertEqual(build_purl("pypi", "Demo_Pkg", "1.2.3"), "pkg:pypi/demo-pkg@1.2.3")
         self.assertEqual(
             build_purl("go", "github.com/acme/lib", "v1.2.3"),
@@ -45,7 +45,7 @@ class SupplyChainCanaryTests(unittest.TestCase):
         event = events[0]
         self.assertEqual(event.ecosystem, "npm")
         self.assertEqual(event.name, "@scope/demo")
-        self.assertEqual(event.purl, "pkg:npm/scope/demo@1.2.3")
+        self.assertEqual(event.purl, "pkg:npm/%40scope/demo@1.2.3")
         self.assertEqual(event.feed_name, "npm-registry-change-trigger")
         self.assertEqual(event.feed_cursor, "seq:123")
         self.assertEqual(event.observed_facts["dependencies"], {"left-pad": "^1.3.0"})
@@ -56,6 +56,17 @@ class SupplyChainCanaryTests(unittest.TestCase):
         updates = pypi_adapter.parse_updates_rss(rss)
         self.assertEqual(updates[0]["project"], "Demo_Pkg")
         self.assertEqual(updates[0]["version"], "1.2.3")
+
+        malformed = pypi_adapter.parse_updates_rss(
+            """
+            <rss><channel><item>
+              <title>Broken_Pkg 1.2.4</title>
+              <link>https://example.invalid/broken</link>
+              <pubDate>not-a-date</pubDate>
+            </item></channel></rss>
+            """
+        )
+        self.assertEqual(malformed[0]["published_at"], "")
 
         project_json = load_json("pypi_project.json")
         event = pypi_adapter.release_event_from_project_json(
@@ -134,7 +145,7 @@ class SupplyChainCanaryTests(unittest.TestCase):
         self.assertIn("CREATE TABLE IF NOT EXISTS supply_label_observation", schema_sql)
         self.assertIn("CREATE TABLE IF NOT EXISTS supply_feed_cursor", schema_sql)
         self.assertIn(
-            "ON CONFLICT (ecosystem, name, version) DO NOTHING",
+            "ON CONFLICT (ecosystem, name, version) DO UPDATE",
             storage.UPSERT_RELEASE_EVENT_SQL,
         )
         self.assertIn("ON CONFLICT (ecosystem, feed_name) DO UPDATE", storage.UPSERT_FEED_CURSOR_SQL)

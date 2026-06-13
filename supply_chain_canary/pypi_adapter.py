@@ -45,11 +45,17 @@ class _PyPIUpdatesParser(HTMLParser):
                 project, version = title.rsplit(" ", 1)
                 pub_date = self._current_item.get("pubdate", "").strip()
                 link = self._current_item.get("link", "").strip()
+                published_at = ""
+                if pub_date:
+                    try:
+                        published_at = parsedate_to_datetime(pub_date).isoformat()
+                    except (TypeError, ValueError):
+                        published_at = ""
                 self.items.append(
                     {
                         "project": project.strip(),
                         "version": version.strip(),
-                        "published_at": parsedate_to_datetime(pub_date).isoformat() if pub_date else "",
+                        "published_at": published_at,
                         "link": link,
                         "cursor": pub_date or link or title,
                     }

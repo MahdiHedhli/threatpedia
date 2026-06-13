@@ -40,7 +40,8 @@ INSERT INTO supply_release_event (
   %(raw_registry_metadata)s::jsonb,
   %(observed_at)s
 )
-ON CONFLICT (ecosystem, name, version) DO NOTHING
+ON CONFLICT (ecosystem, name, version) DO UPDATE SET
+  observed_at = EXCLUDED.observed_at
 RETURNING id;
 """
 

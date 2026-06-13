@@ -25,7 +25,7 @@ def package_metadata_url(package_name: str) -> str:
 def fetch_package_metadata(package_name: str, timeout: int = 20) -> dict[str, Any]:
     request = Request(
         package_metadata_url(package_name),
-        headers={"Accept": "application/vnd.npm.install-v1+json, application/json"},
+        headers={"Accept": "application/json"},
     )
     with urlopen(request, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))

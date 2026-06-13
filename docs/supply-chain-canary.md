@@ -17,6 +17,9 @@ package URL (PURL) as the canonical package-version key:
 - PyPI: `pkg:pypi/<normalized-name>@<version>`
 - Go: `pkg:golang/<module-path>@<version>`
 
+Scoped npm packages retain the namespace in encoded form, for example
+`pkg:npm/%40angular/animation@12.3.1`.
+
 The normalized event keeps:
 
 - ecosystem, package name, version, PURL
@@ -61,8 +64,11 @@ Phase 0 uses Postgres only. The schema lives in
 `supply_release_event` is idempotent on:
 
 ```text
-ecosystem, name, version, published_at, feed_cursor
+ecosystem, name, version
 ```
+
+Repeated observations for the same package version update the stored
+observation timestamp rather than inserting a duplicate release-event row.
 
 The raw registry payload is stored with each event so future enrichers can
 re-derive facts without trusting transient adapter behavior.
