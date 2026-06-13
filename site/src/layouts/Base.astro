@@ -4,11 +4,35 @@ import { getCollection } from 'astro:content';
 interface Props {
   title: string;
   description?: string;
+  canonicalPath?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  robots?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description = 'The Definitive Cyber Threat Encyclopedia' } = Astro.props;
+const {
+  title,
+  description = 'The Definitive Cyber Threat Encyclopedia',
+  canonicalPath,
+  ogTitle,
+  ogDescription,
+  robots,
+  jsonLd,
+} = Astro.props;
 const enablePlausibleAnalytics = import.meta.env.PROD;
+const supplyChainEnv =
+  typeof process !== 'undefined'
+    ? process.env?.ENABLE_SUPPLY_CHAIN_PAGES
+    : import.meta.env.ENABLE_SUPPLY_CHAIN_PAGES;
+const enableSupplyChainPages = String(supplyChainEnv || '').toLowerCase() === 'true';
 const plausibleScriptSrc = 'https://plausible.io/js/pa-JU90GDszdzYfdcQawYHNo.js';
+const canonicalUrl = canonicalPath ? new URL(canonicalPath, Astro.site ?? 'https://threatpedia.wiki').toString() : null;
+const hasOpenGraph = Boolean(ogTitle || ogDescription || canonicalUrl);
+const openGraphTitle = ogTitle || `${title} — Threatpedia`;
+const openGraphDescription = ogDescription || description;
+const openGraphType = canonicalPath?.startsWith('/supply-chain/incidents/') ? 'article' : 'website';
+const serializedJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : null;
 
 // Build ticker items from all collections
 interface TickerItem {
@@ -90,6 +114,16 @@ try {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {hasOpenGraph && (
+      <>
+        <meta property="og:title" content={openGraphTitle} />
+        <meta property="og:description" content={openGraphDescription} />
+        <meta property="og:type" content={openGraphType} />
+        {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+      </>
+    )}
     <meta name="theme-color" content="#080b10" />
     <link rel="icon" type="image/svg+xml" href="/tp-favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -104,6 +138,7 @@ try {
         </script>
       </>
     )}
+    {serializedJsonLd && <script type="application/ld+json" set:html={serializedJsonLd} />}
     <title>{title} — Threatpedia</title>
   </head>
   <body>
@@ -155,6 +190,7 @@ try {
         <a href="/campaigns/">Campaigns</a>
         <a href="/threat-actors/">Threat Actors</a>
         <a href="/zero-days/">Zero-Days</a>
+        {enableSupplyChainPages && <a href="/supply-chain/">Supply Chain</a>}
         <a href="/glossary/">Glossary</a>
         <a href="/roadmap/">Roadmap</a>
         <a href="/privacy/">Privacy</a>
