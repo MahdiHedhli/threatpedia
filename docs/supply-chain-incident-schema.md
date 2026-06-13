@@ -79,7 +79,8 @@ case studies.
 Package components must include a canonical `package_url` PURL. Non-package
 software, services, websites, and update channels should use `null`. See
 `docs/supply-chain-purl-model.md` for the canonical PURL grammar and validation
-contract.
+contract. `pkg:generic/...` is allowed only for reviewed cross-ecosystem
+placeholders and requires `purl_justification`.
 
 ## Attack Stages
 

@@ -7,6 +7,7 @@
     "id": "pkg-multiple-internal-dependency-names",
     "name": "internal dependency names",
     "package_url": "pkg:generic/internal-dependency-names",
+    "purl_justification": "Dependency-confusion internal names are cross-ecosystem private identifiers with no public registry package home.",
     "source_incident_ids": [
       "SC-2021-DEPENDENCY-CONFUSION"
     ]

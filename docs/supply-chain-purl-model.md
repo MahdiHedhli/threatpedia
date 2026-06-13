@@ -60,6 +60,8 @@ pkg:generic/internal-dependency-names
 
 This is reserved for explicit abstract package placeholders. It must not be used to avoid modeling a known npm, PyPI, or Go package.
 
+Every `pkg:generic/...` package component and package entity must include `purl_justification`. The justification records why no registry-specific PURL exists. This keeps `generic` visible as a reviewed exception because generic PURLs do not join cleanly to OSV, deps.dev, OpenSSF Scorecard, or release-feed package keys.
+
 ## Validator Contract
 
 The incident validator requires every `affected_components` item with `component_type: "package"` to carry a canonical `package_url`.
@@ -73,6 +75,7 @@ Both validators fail if a package PURL:
 - does not match the entity or component ecosystem
 - does not match the entity or component package name after canonical normalization
 - uses non-canonical spelling or encoding
+- uses the `generic` PURL type without an explicit `purl_justification`
 
 Non-package components, such as software, services, websites, and update channels, are not package records and do not require PURLs in Phase 2A.
 
