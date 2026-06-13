@@ -112,6 +112,15 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
             ["schema.properties.schema_version: expected object"],
         )
 
+    def test_schema_required_fields_are_order_insensitive(self) -> None:
+        schema = load_json(SCHEMA_PATH)
+        schema["required"] = list(reversed(schema["required"]))
+
+        self.assertEqual(validator.validate_schema_file(schema), [])
+
+        schema["required"].pop()
+        self.assertEqual(validator.validate_schema_file(schema), ["schema.required: does not match validator required fields"])
+
 
 if __name__ == "__main__":
     unittest.main()

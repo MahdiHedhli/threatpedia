@@ -238,7 +238,7 @@ def validate_schema_file(schema: Any) -> list[str]:
     if schema_version.get("const") != SCHEMA_VERSION:
         errors.append("schema.schema_version.const: does not match validator schema version")
     required = schema.get("required")
-    if required != REQUIRED_FIELDS:
+    if not isinstance(required, list) or set(required) != set(REQUIRED_FIELDS):
         errors.append("schema.required: does not match validator required fields")
     return errors
 
