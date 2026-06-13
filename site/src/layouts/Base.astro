@@ -31,6 +31,7 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, Astro.site ?? 'https
 const hasOpenGraph = Boolean(ogTitle || ogDescription || canonicalUrl);
 const openGraphTitle = ogTitle || `${title} — Threatpedia`;
 const openGraphDescription = ogDescription || description;
+const openGraphType = canonicalPath?.startsWith('/supply-chain/incidents/') ? 'article' : 'website';
 const serializedJsonLd = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : null;
 
 // Build ticker items from all collections
@@ -119,7 +120,7 @@ try {
       <>
         <meta property="og:title" content={openGraphTitle} />
         <meta property="og:description" content={openGraphDescription} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={openGraphType} />
         {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       </>
     )}

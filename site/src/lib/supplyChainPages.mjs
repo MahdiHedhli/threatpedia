@@ -389,6 +389,16 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
         description,
         url: `https://threatpedia.wiki/supply-chain/incidents/${incident.id}/`,
         datePublished: incident.disclosed_at || incident.first_observed_at,
+        author: {
+          '@type': 'Organization',
+          name: 'Threatpedia',
+          url: 'https://threatpedia.wiki/',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Threatpedia',
+          url: 'https://threatpedia.wiki/',
+        },
         about: (Array.isArray(incident.supply_chain_vectors) ? incident.supply_chain_vectors : []).map((vector) => ({
           '@type': 'Thing',
           name: vector,
