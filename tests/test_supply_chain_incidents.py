@@ -59,6 +59,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".disclosed_at: expected YYYY-MM-DD date" in error for error in errors))
         self.assertTrue(any(".references[0].url: expected http(s) URL" in error for error in errors))
 
+    def test_non_string_id_is_reported_without_crashing(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["id"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any("<missing-id>.id: expected SC-YYYY-SLUG identifier" in error for error in errors))
+
     def test_dates_must_use_hyphenated_full_date_format(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["first_observed_at"] = "2024-W13-5"
@@ -79,6 +87,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".affected_components[0].package_url: expected null or package URL" in error for error in errors))
 
+    def test_malformed_url_is_rejected_without_crashing(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["references"][0]["url"] = "https://example.com:bad-port"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".references[0].url: expected http(s) URL" in error for error in errors))
+
     def test_schema_enums_are_enforced(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["supply_chain_vectors"] = ["scoring"]
@@ -88,6 +104,13 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".supply_chain_vectors[0]: invalid value" in error for error in errors))
         self.assertTrue(any(".impact_categories[0]: invalid value" in error for error in errors))
+
+    def test_schema_shape_errors_are_reported_without_crashing(self) -> None:
+        self.assertEqual(validator.validate_schema_file({"properties": []}), ["schema.properties: expected object"])
+        self.assertEqual(
+            validator.validate_schema_file({"properties": {"schema_version": []}}),
+            ["schema.properties.schema_version: expected object"],
+        )
 
 
 if __name__ == "__main__":

@@ -87,8 +87,12 @@ def parse_date(value: Any) -> date | None:
 def is_valid_url(value: Any) -> bool:
     if not isinstance(value, str) or any(char.isspace() for char in value):
         return False
-    parsed = urlparse(value)
-    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+    try:
+        parsed = urlparse(value)
+        parsed.port
+        return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+    except ValueError:
+        return False
 
 
 def require_string(errors: list[str], path: str, value: Any, *, min_length: int = 1) -> None:
@@ -153,14 +157,15 @@ def validate_incident(incident: Any) -> list[str]:
     if not isinstance(incident, dict):
         return ["incident: expected object"]
 
-    incident_id = incident.get("id", "<missing-id>")
+    raw_id = incident.get("id")
+    incident_id = raw_id if isinstance(raw_id, str) else "<missing-id>"
     for field in REQUIRED_FIELDS:
         if field not in incident:
             errors.append(f"{incident_id}.{field}: missing required field")
 
     if incident.get("schema_version") != SCHEMA_VERSION:
         errors.append(f"{incident_id}.schema_version: expected {SCHEMA_VERSION!r}")
-    if not isinstance(incident.get("id"), str) or not ID_PATTERN.match(incident["id"]):
+    if not isinstance(raw_id, str) or not ID_PATTERN.match(raw_id):
         errors.append(f"{incident_id}.id: expected SC-YYYY-SLUG identifier")
     require_string(errors, f"{incident_id}.title", incident.get("title"), min_length=8)
     require_string(errors, f"{incident_id}.summary", incident.get("summary"), min_length=40)
@@ -224,7 +229,13 @@ def validate_schema_file(schema: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(schema, dict):
         return ["schema: expected object"]
-    if schema.get("properties", {}).get("schema_version", {}).get("const") != SCHEMA_VERSION:
+    properties = schema.get("properties", {})
+    if not isinstance(properties, dict):
+        return ["schema.properties: expected object"]
+    schema_version = properties.get("schema_version", {})
+    if not isinstance(schema_version, dict):
+        return ["schema.properties.schema_version: expected object"]
+    if schema_version.get("const") != SCHEMA_VERSION:
         errors.append("schema.schema_version.const: does not match validator schema version")
     required = schema.get("required")
     if required != REQUIRED_FIELDS:
