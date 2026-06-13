@@ -129,7 +129,19 @@ the page path also supports a noindex robots value.
 
 ## Public Enablement Checklist
 
-Before enabling the section publicly:
+Before enabling the section publicly, run the readiness gate:
+
+```bash
+node scripts/check_supply_chain_public_readiness.mjs
+```
+
+The gate writes `.worker-state/supply-chain-public-readiness.json` and returns a
+single PASS/FAIL decision. See
+[Supply Chain Public Readiness Gate](./supply-chain-public-readiness.md) for the
+full readiness contract.
+
+If the gate fails and an operator needs to inspect individual steps, the manual
+checks are:
 
 1. Run the corpus validators:
 
