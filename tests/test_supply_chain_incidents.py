@@ -50,12 +50,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
     def test_required_fields_dates_and_references_are_enforced(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         del incident["title"]
+        del incident["confidence"]
         incident["disclosed_at"] = "not-a-date"
         incident["references"][0]["url"] = "not a url"
 
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".title: missing required field" in error for error in errors))
+        self.assertTrue(any(".confidence: missing required field" in error for error in errors))
         self.assertTrue(any(".disclosed_at: expected YYYY-MM-DD date" in error for error in errors))
         self.assertTrue(any(".references[0].url: expected http(s) URL" in error for error in errors))
 
@@ -131,11 +133,42 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["supply_chain_vectors"] = ["scoring"]
         incident["impact_categories"] = ["risk_engine"]
+        incident["confidence"] = "score-10"
+        incident["evidence_level"] = "ai"
+        incident["attack_stage"] = "attribution"
 
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".supply_chain_vectors[0]: invalid value" in error for error in errors))
         self.assertTrue(any(".impact_categories[0]: invalid value" in error for error in errors))
+        self.assertTrue(any(".confidence: invalid value" in error for error in errors))
+        self.assertTrue(any(".evidence_level: invalid value" in error for error in errors))
+        self.assertTrue(any(".attack_stage: invalid value" in error for error in errors))
+
+    def test_structured_depth_fields_are_enforced(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["distribution_channels"] = [
+            {
+                "name": "",
+                "channel_type": "package_registry",
+                "ecosystem": "npm"
+            }
+        ]
+        incident["maintainers"] = [
+            {
+                "name": "Example Maintainer",
+                "aliases": ["example"],
+                "id_slug": "example"
+            }
+        ]
+        incident["source_artifact_divergence"] = "yes"
+        del incident["maintainers"][0]["id_slug"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
+        self.assertTrue(any(".maintainers[0].id_slug: missing required field" in error for error in errors))
 
     def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
@@ -160,6 +193,17 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         schema["required"].pop()
         self.assertEqual(validator.validate_schema_file(schema), ["schema.required: does not match validator required fields"])
+
+    def test_source_artifact_divergence_requires_distribution_channels(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["source_artifact_divergence"] = True
+        incident["distribution_channels"] = []
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(
+            any(".source_artifact_divergence: cannot be true when distribution_channels is empty" in error for error in errors)
+        )
 
 
 if __name__ == "__main__":

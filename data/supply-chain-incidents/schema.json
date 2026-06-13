@@ -16,7 +16,16 @@
     "supply_chain_vectors",
     "impact_categories",
     "references",
-    "tags"
+    "tags",
+    "confidence",
+    "evidence_level",
+    "attack_stage",
+    "source_artifact_divergence",
+    "maintainers",
+    "repositories",
+    "build_systems",
+    "distribution_channels",
+    "compromised_accounts"
   ],
   "properties": {
     "schema_version": {
@@ -35,7 +44,9 @@
       "minLength": 40
     },
     "status": {
-      "enum": ["confirmed"]
+      "enum": [
+        "confirmed"
+      ]
     },
     "first_observed_at": {
       "type": "string",
@@ -110,15 +121,93 @@
       "items": {
         "type": "string"
       }
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "evidence_level": {
+      "enum": [
+        "primary",
+        "vendor",
+        "researcher",
+        "media",
+        "inferred"
+      ]
+    },
+    "attack_stage": {
+      "enum": [
+        "source_compromise",
+        "build_compromise",
+        "account_compromise",
+        "package_publish",
+        "dependency_resolution",
+        "distribution_compromise",
+        "ci_cd_compromise"
+      ]
+    },
+    "source_artifact_divergence": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "maintainers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/maintainer"
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repository"
+      }
+    },
+    "build_systems": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/build_system"
+      }
+    },
+    "distribution_channels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/distribution_channel"
+      }
+    },
+    "compromised_accounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/compromised_account"
+      }
     }
   },
   "$defs": {
     "affected_component": {
       "type": "object",
-      "required": ["component_type", "ecosystem", "name", "vendor"],
+      "required": [
+        "component_type",
+        "ecosystem",
+        "name",
+        "vendor"
+      ],
       "properties": {
         "component_type": {
-          "enum": ["package", "project", "software", "service", "update_channel", "website"]
+          "enum": [
+            "package",
+            "project",
+            "software",
+            "service",
+            "update_channel",
+            "website"
+          ]
         },
         "ecosystem": {
           "type": "string"
@@ -137,7 +226,12 @@
     },
     "reference": {
       "type": "object",
-      "required": ["title", "publisher", "url", "published_at"],
+      "required": [
+        "title",
+        "publisher",
+        "url",
+        "published_at"
+      ],
       "properties": {
         "title": {
           "type": "string"
@@ -152,6 +246,113 @@
         "published_at": {
           "type": "string",
           "format": "date"
+        }
+      }
+    },
+    "maintainer": {
+      "type": "object",
+      "required": [
+        "name",
+        "aliases",
+        "id_slug"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id_slug": {
+          "type": "string"
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "name",
+        "host",
+        "owner",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "build_system": {
+      "type": "object",
+      "required": [
+        "name",
+        "provider",
+        "category"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    },
+    "distribution_channel": {
+      "type": "object",
+      "required": [
+        "name",
+        "channel_type",
+        "ecosystem"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "channel_type": {
+          "type": "string"
+        },
+        "ecosystem": {
+          "type": "string"
+        }
+      }
+    },
+    "compromised_account": {
+      "type": "object",
+      "required": [
+        "name",
+        "provider",
+        "account_type",
+        "role"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "account_type": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
         }
       }
     }

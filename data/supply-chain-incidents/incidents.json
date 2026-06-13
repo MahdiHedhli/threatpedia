@@ -7,7 +7,10 @@
     "status": "confirmed",
     "first_observed_at": "2016-02-20",
     "disclosed_at": "2016-02-21",
-    "affected_ecosystems": ["linux", "distribution-website"],
+    "affected_ecosystems": [
+      "linux",
+      "distribution-website"
+    ],
     "affected_components": [
       {
         "component_type": "website",
@@ -17,8 +20,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["distribution_site_compromise"],
-    "impact_categories": ["malware_distribution", "backdoor"],
+    "supply_chain_vectors": [
+      "distribution_site_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "backdoor"
+    ],
     "references": [
       {
         "title": "Beware of hacked ISOs if you downloaded Linux Mint on February 20th",
@@ -27,7 +35,26 @@
         "published_at": "2016-02-21"
       }
     ],
-    "tags": ["iso", "distribution"]
+    "tags": [
+      "iso",
+      "distribution"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": true,
+    "notes": "Backdoored ISO was distributed through the public Linux Mint download site.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Linux Mint download site",
+        "channel_type": "website_download",
+        "ecosystem": "linux"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -37,7 +64,10 @@
     "status": "confirmed",
     "first_observed_at": "2017-06-27",
     "disclosed_at": "2017-07-01",
-    "affected_ecosystems": ["windows", "vendor-update"],
+    "affected_ecosystems": [
+      "windows",
+      "vendor-update"
+    ],
     "affected_components": [
       {
         "component_type": "software",
@@ -47,8 +77,14 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["vendor_update_compromise"],
-    "impact_categories": ["destructive_payload", "ransomware_delivery", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "vendor_update_compromise"
+    ],
+    "impact_categories": [
+      "destructive_payload",
+      "ransomware_delivery",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Petya Ransomware",
@@ -57,7 +93,26 @@
         "published_at": "2017-07-01"
       }
     ],
-    "tags": ["notpetya", "software-update"]
+    "tags": [
+      "notpetya",
+      "software-update"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Compromise centered on a vendor software update channel used by downstream customers.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Vendor software update channel",
+        "channel_type": "software_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -67,7 +122,10 @@
     "status": "confirmed",
     "first_observed_at": "2017-08-15",
     "disclosed_at": "2017-09-18",
-    "affected_ecosystems": ["windows", "vendor-update"],
+    "affected_ecosystems": [
+      "windows",
+      "vendor-update"
+    ],
     "affected_components": [
       {
         "component_type": "software",
@@ -77,8 +135,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["signed_update_compromise"],
-    "impact_categories": ["malware_distribution", "backdoor"],
+    "supply_chain_vectors": [
+      "signed_update_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "backdoor"
+    ],
     "references": [
       {
         "title": "CCleaner Command and Control Causes Concern",
@@ -87,7 +150,26 @@
         "published_at": "2017-09-18"
       }
     ],
-    "tags": ["signed-update", "windows"]
+    "tags": [
+      "signed-update",
+      "windows"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Signed CCleaner installer/update artifacts carried malicious code.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Signed software installer/update channel",
+        "channel_type": "signed_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -97,7 +179,9 @@
     "status": "confirmed",
     "first_observed_at": "2018-07-12",
     "disclosed_at": "2018-07-12",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -105,10 +189,23 @@
         "name": "eslint-scope",
         "vendor": "ESLint",
         "package_url": "pkg:npm/eslint-scope"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "eslint-config-eslint",
+        "vendor": "ESLint",
+        "package_url": "pkg:npm/eslint-config-eslint"
       }
     ],
-    "supply_chain_vectors": ["maintainer_account_compromise", "package_repository_compromise"],
-    "impact_categories": ["credential_theft", "developer_workstation_compromise"],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise"
+    ],
     "references": [
       {
         "title": "Postmortem for Malicious Package Publishes",
@@ -117,7 +214,40 @@
         "published_at": "2018-07-12"
       }
     ],
-    "tags": ["npm", "maintainer-account"]
+    "tags": [
+      "npm",
+      "maintainer-account"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Malicious npm publishes followed maintainer account compromise.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "eslint/eslint-scope",
+        "host": "github.com",
+        "owner": "eslint",
+        "url": "https://github.com/eslint/eslint-scope"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "eslint-scope npm maintainer account",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -127,7 +257,9 @@
     "status": "confirmed",
     "first_observed_at": "2018-09-09",
     "disclosed_at": "2018-11-26",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -135,10 +267,22 @@
         "name": "event-stream",
         "vendor": "open source maintainers",
         "package_url": "pkg:npm/event-stream"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "flatmap-stream",
+        "vendor": "right9ctrl",
+        "package_url": "pkg:npm/flatmap-stream"
       }
     ],
-    "supply_chain_vectors": ["malicious_dependency"],
-    "impact_categories": ["credential_theft", "crypto_theft"],
+    "supply_chain_vectors": [
+      "malicious_dependency"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "crypto_theft"
+    ],
     "references": [
       {
         "title": "I don't have time to maintain this package",
@@ -147,7 +291,46 @@
         "published_at": "2018-11-26"
       }
     ],
-    "tags": ["npm", "dependency"]
+    "tags": [
+      "npm",
+      "dependency"
+    ],
+    "confidence": "high",
+    "evidence_level": "primary",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Maintainer transfer introduced flatmap-stream into the event-stream dependency path.",
+    "maintainers": [
+      {
+        "name": "Dominic Tarr",
+        "aliases": [
+          "dominictarr"
+        ],
+        "id_slug": "dominictarr"
+      },
+      {
+        "name": "right9ctrl",
+        "aliases": [],
+        "id_slug": "right9ctrl"
+      }
+    ],
+    "repositories": [
+      {
+        "name": "dominictarr/event-stream",
+        "host": "github.com",
+        "owner": "dominictarr",
+        "url": "https://github.com/dominictarr/event-stream"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -157,7 +340,10 @@
     "status": "confirmed",
     "first_observed_at": "2018-06-01",
     "disclosed_at": "2019-03-25",
-    "affected_ecosystems": ["windows", "vendor-update"],
+    "affected_ecosystems": [
+      "windows",
+      "vendor-update"
+    ],
     "affected_components": [
       {
         "component_type": "update_channel",
@@ -167,8 +353,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["signed_update_compromise"],
-    "impact_categories": ["malware_distribution", "backdoor"],
+    "supply_chain_vectors": [
+      "signed_update_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "backdoor"
+    ],
     "references": [
       {
         "title": "Operation ShadowHammer",
@@ -177,7 +368,26 @@
         "published_at": "2019-03-25"
       }
     ],
-    "tags": ["signed-update", "targeted"]
+    "tags": [
+      "signed-update",
+      "targeted"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Signed ASUS Live Update channel distributed targeted malicious updates.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Signed software installer/update channel",
+        "channel_type": "signed_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -187,7 +397,10 @@
     "status": "confirmed",
     "first_observed_at": "2020-03-01",
     "disclosed_at": "2020-03-09",
-    "affected_ecosystems": ["java", "source-repository"],
+    "affected_ecosystems": [
+      "java",
+      "source-repository"
+    ],
     "affected_components": [
       {
         "component_type": "project",
@@ -197,8 +410,14 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["source_repository_compromise", "build_system_compromise"],
-    "impact_categories": ["developer_workstation_compromise", "malware_distribution"],
+    "supply_chain_vectors": [
+      "source_repository_compromise",
+      "build_system_compromise"
+    ],
+    "impact_categories": [
+      "developer_workstation_compromise",
+      "malware_distribution"
+    ],
     "references": [
       {
         "title": "Octopus Scanner Malware: Open Source Supply Chain",
@@ -207,7 +426,32 @@
         "published_at": "2020-03-09"
       }
     ],
-    "tags": ["github", "java"]
+    "tags": [
+      "github",
+      "java"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "source_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Malicious NetBeans projects used developer build workflows to propagate.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "NetBeans project build process",
+        "provider": "NetBeans",
+        "category": "developer-build"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "Source repository",
+        "channel_type": "source_repository",
+        "ecosystem": "source-control"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -217,7 +461,10 @@
     "status": "confirmed",
     "first_observed_at": "2020-03-01",
     "disclosed_at": "2020-12-13",
-    "affected_ecosystems": ["windows", "vendor-update"],
+    "affected_ecosystems": [
+      "windows",
+      "vendor-update"
+    ],
     "affected_components": [
       {
         "component_type": "software",
@@ -227,8 +474,14 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["build_system_compromise", "signed_update_compromise"],
-    "impact_categories": ["backdoor", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "build_system_compromise",
+      "signed_update_compromise"
+    ],
+    "impact_categories": [
+      "backdoor",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
@@ -237,7 +490,32 @@
         "published_at": "2020-12-17"
       }
     ],
-    "tags": ["build-system", "sunburst"]
+    "tags": [
+      "build-system",
+      "sunburst"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "build_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Compromise affected the Orion build and signed update pipeline.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "SolarWinds Orion build system",
+        "provider": "SolarWinds",
+        "category": "vendor-build"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "Signed software installer/update channel",
+        "channel_type": "signed_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -247,7 +525,11 @@
     "status": "confirmed",
     "first_observed_at": "2021-02-09",
     "disclosed_at": "2021-02-09",
-    "affected_ecosystems": ["npm", "pypi", "rubygems"],
+    "affected_ecosystems": [
+      "npm",
+      "pypi",
+      "rubygems"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -257,8 +539,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["dependency_confusion"],
-    "impact_categories": ["developer_workstation_compromise", "data_exfiltration"],
+    "supply_chain_vectors": [
+      "dependency_confusion"
+    ],
+    "impact_categories": [
+      "developer_workstation_compromise",
+      "data_exfiltration"
+    ],
     "references": [
       {
         "title": "Dependency Confusion: How I Hacked Into Apple, Microsoft and Dozens of Other Companies",
@@ -267,7 +554,36 @@
         "published_at": "2021-02-09"
       }
     ],
-    "tags": ["dependency-confusion", "research"]
+    "tags": [
+      "dependency-confusion",
+      "research"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "dependency_resolution",
+    "source_artifact_divergence": false,
+    "notes": "Research demonstrated dependency resolver behavior across public registries.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      },
+      {
+        "name": "RubyGems",
+        "channel_type": "package_registry",
+        "ecosystem": "rubygems"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -277,7 +593,10 @@
     "status": "confirmed",
     "first_observed_at": "2021-03-28",
     "disclosed_at": "2021-03-28",
-    "affected_ecosystems": ["php", "source-repository"],
+    "affected_ecosystems": [
+      "php",
+      "source-repository"
+    ],
     "affected_components": [
       {
         "component_type": "project",
@@ -287,8 +606,12 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["source_repository_compromise"],
-    "impact_categories": ["backdoor"],
+    "supply_chain_vectors": [
+      "source_repository_compromise"
+    ],
+    "impact_categories": [
+      "backdoor"
+    ],
     "references": [
       {
         "title": "PHP Git server compromise notice",
@@ -297,7 +620,40 @@
         "published_at": "2021-03-28"
       }
     ],
-    "tags": ["source-control", "php"]
+    "tags": [
+      "source-control",
+      "php"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "source_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Malicious commits were pushed to the PHP source repository before release.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "php/php-src",
+        "host": "github.com",
+        "owner": "php",
+        "url": "https://github.com/php/php-src"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Source repository",
+        "channel_type": "source_repository",
+        "ecosystem": "source-control"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "PHP git server commit identity",
+        "provider": "PHP Git",
+        "account_type": "source_control_account",
+        "role": "source_commit"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -307,7 +663,9 @@
     "status": "confirmed",
     "first_observed_at": "2021-01-31",
     "disclosed_at": "2021-04-15",
-    "affected_ecosystems": ["ci-cd"],
+    "affected_ecosystems": [
+      "ci-cd"
+    ],
     "affected_components": [
       {
         "component_type": "service",
@@ -317,8 +675,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["build_system_compromise"],
-    "impact_categories": ["credential_theft", "data_exfiltration"],
+    "supply_chain_vectors": [
+      "build_system_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "data_exfiltration"
+    ],
     "references": [
       {
         "title": "Bash Uploader Security Update",
@@ -327,7 +690,39 @@
         "published_at": "2021-04-15"
       }
     ],
-    "tags": ["ci-cd", "credentials"]
+    "tags": [
+      "ci-cd",
+      "credentials"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "ci_cd_compromise",
+    "source_artifact_divergence": true,
+    "notes": "Uploader script compromise affected CI environments and exposed environment variables.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "codecov/codecov-bash",
+        "host": "github.com",
+        "owner": "codecov",
+        "url": "https://github.com/codecov/codecov-bash"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "Codecov Bash Uploader distribution pipeline",
+        "provider": "Codecov",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "Codecov Bash Uploader download path",
+        "channel_type": "script_download",
+        "ecosystem": "ci-cd"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -337,7 +732,10 @@
     "status": "confirmed",
     "first_observed_at": "2021-07-02",
     "disclosed_at": "2021-07-02",
-    "affected_ecosystems": ["managed-service", "windows"],
+    "affected_ecosystems": [
+      "managed-service",
+      "windows"
+    ],
     "affected_components": [
       {
         "component_type": "software",
@@ -347,8 +745,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["vendor_update_compromise"],
-    "impact_categories": ["ransomware_delivery", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "vendor_update_compromise"
+    ],
+    "impact_categories": [
+      "ransomware_delivery",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Kaseya VSA Supply-Chain Ransomware Attack",
@@ -357,7 +760,26 @@
         "published_at": "2021-07-02"
       }
     ],
-    "tags": ["ransomware", "msp"]
+    "tags": [
+      "ransomware",
+      "msp"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Managed service provider update path distributed ransomware to downstream customers.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Vendor software update channel",
+        "channel_type": "software_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -367,7 +789,9 @@
     "status": "confirmed",
     "first_observed_at": "2021-10-22",
     "disclosed_at": "2021-10-22",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -377,8 +801,14 @@
         "package_url": "pkg:npm/ua-parser-js"
       }
     ],
-    "supply_chain_vectors": ["maintainer_account_compromise", "package_repository_compromise"],
-    "impact_categories": ["credential_theft", "cryptomining"],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "cryptomining"
+    ],
     "references": [
       {
         "title": "Malware in ua-parser-js",
@@ -387,7 +817,33 @@
         "published_at": "2021-10-22"
       }
     ],
-    "tags": ["npm", "account-compromise"]
+    "tags": [
+      "npm",
+      "account-compromise"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Malicious npm versions were published after package account compromise.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "ua-parser-js npm maintainer account",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -397,7 +853,9 @@
     "status": "confirmed",
     "first_observed_at": "2021-11-04",
     "disclosed_at": "2021-11-04",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -407,8 +865,12 @@
         "package_url": "pkg:npm/rc"
       }
     ],
-    "supply_chain_vectors": ["package_repository_compromise"],
-    "impact_categories": ["malware_distribution"],
+    "supply_chain_vectors": [
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution"
+    ],
     "references": [
       {
         "title": "Embedded malware in rc",
@@ -417,7 +879,26 @@
         "published_at": "2021-11-04"
       }
     ],
-    "tags": ["npm", "malicious-package"]
+    "tags": [
+      "npm",
+      "malicious-package"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Malicious npm package versions were published through the registry.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -427,7 +908,9 @@
     "status": "confirmed",
     "first_observed_at": "2022-01-08",
     "disclosed_at": "2022-01-09",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -444,8 +927,13 @@
         "package_url": "pkg:npm/faker"
       }
     ],
-    "supply_chain_vectors": ["protestware"],
-    "impact_categories": ["destructive_payload", "protest_payload"],
+    "supply_chain_vectors": [
+      "protestware"
+    ],
+    "impact_categories": [
+      "destructive_payload",
+      "protest_payload"
+    ],
     "references": [
       {
         "title": "colors.js issue discussion after disruptive release",
@@ -454,7 +942,41 @@
         "published_at": "2022-01-09"
       }
     ],
-    "tags": ["npm", "protestware"]
+    "tags": [
+      "npm",
+      "protestware"
+    ],
+    "confidence": "high",
+    "evidence_level": "primary",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Maintainer-published protestware releases affected downstream npm consumers.",
+    "maintainers": [
+      {
+        "name": "Marak Squires",
+        "aliases": [
+          "Marak"
+        ],
+        "id_slug": "marak-squires"
+      }
+    ],
+    "repositories": [
+      {
+        "name": "Marak/colors.js",
+        "host": "github.com",
+        "owner": "Marak",
+        "url": "https://github.com/Marak/colors.js"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -464,7 +986,9 @@
     "status": "confirmed",
     "first_observed_at": "2022-03-08",
     "disclosed_at": "2022-03-16",
-    "affected_ecosystems": ["npm"],
+    "affected_ecosystems": [
+      "npm"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -472,10 +996,22 @@
         "name": "node-ipc",
         "vendor": "open source maintainer",
         "package_url": "pkg:npm/node-ipc"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "peacenotwar",
+        "vendor": "RIAEvangelist",
+        "package_url": "pkg:npm/peacenotwar"
       }
     ],
-    "supply_chain_vectors": ["protestware"],
-    "impact_categories": ["destructive_payload", "protest_payload"],
+    "supply_chain_vectors": [
+      "protestware"
+    ],
+    "impact_categories": [
+      "destructive_payload",
+      "protest_payload"
+    ],
     "references": [
       {
         "title": "Peacenotwar malicious npm node-ipc package vulnerability",
@@ -484,7 +1020,41 @@
         "published_at": "2022-03-16"
       }
     ],
-    "tags": ["npm", "protestware"]
+    "tags": [
+      "npm",
+      "protestware"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Protestware behavior was distributed through npm package releases and dependencies.",
+    "maintainers": [
+      {
+        "name": "RIAEvangelist",
+        "aliases": [
+          "Brandon Nozaki Miller"
+        ],
+        "id_slug": "riaevangelist"
+      }
+    ],
+    "repositories": [
+      {
+        "name": "RIAEvangelist/node-ipc",
+        "host": "github.com",
+        "owner": "RIAEvangelist",
+        "url": "https://github.com/RIAEvangelist/node-ipc"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -494,7 +1064,9 @@
     "status": "confirmed",
     "first_observed_at": "2022-05-21",
     "disclosed_at": "2022-05-24",
-    "affected_ecosystems": ["pypi"],
+    "affected_ecosystems": [
+      "pypi"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -504,8 +1076,14 @@
         "package_url": "pkg:pypi/ctx"
       }
     ],
-    "supply_chain_vectors": ["maintainer_account_compromise", "package_repository_compromise"],
-    "impact_categories": ["credential_theft", "data_exfiltration"],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "data_exfiltration"
+    ],
     "references": [
       {
         "title": "Account Takeover and Malicious Replacement of ctx Project",
@@ -514,7 +1092,33 @@
         "published_at": "2022-05-24"
       }
     ],
-    "tags": ["pypi", "account-takeover"]
+    "tags": [
+      "pypi",
+      "account-takeover"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": false,
+    "notes": "PyPI project takeover replaced a package with credential-harvesting behavior.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "ctx PyPI project account",
+        "provider": "PyPI",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -524,7 +1128,10 @@
     "status": "confirmed",
     "first_observed_at": "2022-12-25",
     "disclosed_at": "2022-12-31",
-    "affected_ecosystems": ["pypi", "python"],
+    "affected_ecosystems": [
+      "pypi",
+      "python"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -541,8 +1148,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["dependency_confusion"],
-    "impact_categories": ["credential_theft", "developer_workstation_compromise"],
+    "supply_chain_vectors": [
+      "dependency_confusion"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise"
+    ],
     "references": [
       {
         "title": "Compromised PyTorch-nightly dependency chain between December 25th and December 30th, 2022",
@@ -551,7 +1163,39 @@
         "published_at": "2022-12-31"
       }
     ],
-    "tags": ["pypi", "dependency-confusion"]
+    "tags": [
+      "pypi",
+      "dependency-confusion"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "dependency_resolution",
+    "source_artifact_divergence": false,
+    "notes": "Dependency confusion affected PyTorch nightly dependency resolution.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "pytorch/pytorch",
+        "host": "github.com",
+        "owner": "pytorch",
+        "url": "https://github.com/pytorch/pytorch"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "PyTorch nightly build pipeline",
+        "provider": "PyTorch",
+        "category": "project-build"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -561,7 +1205,11 @@
     "status": "confirmed",
     "first_observed_at": "2023-03-22",
     "disclosed_at": "2023-03-29",
-    "affected_ecosystems": ["windows", "macos", "vendor-update"],
+    "affected_ecosystems": [
+      "windows",
+      "macos",
+      "vendor-update"
+    ],
     "affected_components": [
       {
         "component_type": "software",
@@ -571,8 +1219,15 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["build_system_compromise", "signed_update_compromise"],
-    "impact_categories": ["malware_distribution", "backdoor", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "build_system_compromise",
+      "signed_update_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "backdoor",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "3CX Software Supply Chain Compromise",
@@ -581,7 +1236,32 @@
         "published_at": "2023-04-20"
       }
     ],
-    "tags": ["desktop", "signed-update"]
+    "tags": [
+      "desktop",
+      "signed-update"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "build_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Compromise affected desktop application build/distribution for downstream customers.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "3CX DesktopApp build pipeline",
+        "provider": "3CX",
+        "category": "vendor-build"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "Signed software installer/update channel",
+        "channel_type": "signed_update",
+        "ecosystem": "vendor-update"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -591,7 +1271,10 @@
     "status": "confirmed",
     "first_observed_at": "2023-12-14",
     "disclosed_at": "2023-12-14",
-    "affected_ecosystems": ["npm", "web3"],
+    "affected_ecosystems": [
+      "npm",
+      "web3"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -601,8 +1284,14 @@
         "package_url": "pkg:npm/%40ledgerhq/connect-kit"
       }
     ],
-    "supply_chain_vectors": ["maintainer_account_compromise", "package_repository_compromise"],
-    "impact_categories": ["crypto_theft", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "crypto_theft",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Security Incident Report",
@@ -611,7 +1300,33 @@
         "published_at": "2023-12-14"
       }
     ],
-    "tags": ["npm", "web3"]
+    "tags": [
+      "npm",
+      "web3"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Compromised npm publish path for Ledger Connect Kit affected downstream dapps.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "@ledgerhq/connect-kit npm publish account",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -621,7 +1336,10 @@
     "status": "confirmed",
     "first_observed_at": "2024-02-24",
     "disclosed_at": "2024-03-29",
-    "affected_ecosystems": ["linux", "source-release"],
+    "affected_ecosystems": [
+      "linux",
+      "source-release"
+    ],
     "affected_components": [
       {
         "component_type": "project",
@@ -631,8 +1349,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["source_repository_compromise", "malicious_dependency"],
-    "impact_categories": ["backdoor"],
+    "supply_chain_vectors": [
+      "source_repository_compromise",
+      "malicious_dependency"
+    ],
+    "impact_categories": [
+      "backdoor"
+    ],
     "references": [
       {
         "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
@@ -641,7 +1364,41 @@
         "published_at": "2024-03-29"
       }
     ],
-    "tags": ["linux", "backdoor"]
+    "tags": [
+      "linux",
+      "backdoor"
+    ],
+    "confidence": "high",
+    "evidence_level": "primary",
+    "attack_stage": "source_compromise",
+    "source_artifact_divergence": true,
+    "notes": "Backdoor was present in upstream release artifacts, making source-artifact divergence a key modeling primitive.",
+    "maintainers": [
+      {
+        "name": "Jia Tan",
+        "aliases": [
+          "JiaT75"
+        ],
+        "id_slug": "jia-tan"
+      }
+    ],
+    "repositories": [
+      {
+        "name": "tukaani-project/xz",
+        "host": "github.com",
+        "owner": "tukaani-project",
+        "url": "https://github.com/tukaani-project/xz"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Upstream source release tarball",
+        "channel_type": "source_release",
+        "ecosystem": "linux"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -651,7 +1408,10 @@
     "status": "confirmed",
     "first_observed_at": "2024-06-25",
     "disclosed_at": "2024-06-25",
-    "affected_ecosystems": ["web", "cdn"],
+    "affected_ecosystems": [
+      "web",
+      "cdn"
+    ],
     "affected_components": [
       {
         "component_type": "service",
@@ -661,8 +1421,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["cdn_script_compromise"],
-    "impact_categories": ["malware_distribution", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "cdn_script_compromise"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Polyfill supply chain attack hits 100K+ sites",
@@ -671,7 +1436,26 @@
         "published_at": "2024-06-25"
       }
     ],
-    "tags": ["cdn", "javascript"]
+    "tags": [
+      "cdn",
+      "javascript"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": null,
+    "notes": "Third-party CDN script delivery path served malicious JavaScript to downstream sites.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Third-party CDN script",
+        "channel_type": "cdn_script",
+        "ecosystem": "web"
+      }
+    ],
+    "compromised_accounts": []
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -681,7 +1465,10 @@
     "status": "confirmed",
     "first_observed_at": "2024-12-04",
     "disclosed_at": "2024-12-11",
-    "affected_ecosystems": ["pypi", "github-actions"],
+    "affected_ecosystems": [
+      "pypi",
+      "github-actions"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -691,8 +1478,14 @@
         "package_url": "pkg:pypi/ultralytics"
       }
     ],
-    "supply_chain_vectors": ["build_system_compromise", "package_repository_compromise"],
-    "impact_categories": ["cryptomining", "developer_workstation_compromise"],
+    "supply_chain_vectors": [
+      "build_system_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "cryptomining",
+      "developer_workstation_compromise"
+    ],
     "references": [
       {
         "title": "Supply-chain attack analysis: Ultralytics",
@@ -701,7 +1494,46 @@
         "published_at": "2024-12-11"
       }
     ],
-    "tags": ["pypi", "github-actions"]
+    "tags": [
+      "pypi",
+      "github-actions"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "ci_cd_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Compromised GitHub Actions/PyPI publishing flow produced malicious package releases.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "ultralytics/ultralytics",
+        "host": "github.com",
+        "owner": "ultralytics",
+        "url": "https://github.com/ultralytics/ultralytics"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "Ultralytics PyPI publishing token",
+        "provider": "PyPI",
+        "account_type": "package_registry_token",
+        "role": "package_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -711,7 +1543,10 @@
     "status": "confirmed",
     "first_observed_at": "2024-10-30",
     "disclosed_at": "2024-10-31",
-    "affected_ecosystems": ["npm", "web"],
+    "affected_ecosystems": [
+      "npm",
+      "web"
+    ],
     "affected_components": [
       {
         "component_type": "package",
@@ -721,8 +1556,14 @@
         "package_url": "pkg:npm/%40lottiefiles/lottie-player"
       }
     ],
-    "supply_chain_vectors": ["maintainer_account_compromise", "package_repository_compromise"],
-    "impact_categories": ["crypto_theft", "downstream_customer_compromise"],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "crypto_theft",
+      "downstream_customer_compromise"
+    ],
     "references": [
       {
         "title": "Resolution of Security Incident with @lottiefiles/lottie-player Package",
@@ -731,7 +1572,33 @@
         "published_at": "2024-10-31"
       }
     ],
-    "tags": ["npm", "web3"]
+    "tags": [
+      "npm",
+      "web3"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Compromised npm publishing account released wallet-draining package versions.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "@lottiefiles/lottie-player npm publish account",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ]
   },
   {
     "schema_version": "supply-chain-incident/1",
@@ -741,7 +1608,10 @@
     "status": "confirmed",
     "first_observed_at": "2025-03-14",
     "disclosed_at": "2025-03-15",
-    "affected_ecosystems": ["github-actions", "ci-cd"],
+    "affected_ecosystems": [
+      "github-actions",
+      "ci-cd"
+    ],
     "affected_components": [
       {
         "component_type": "service",
@@ -751,8 +1621,13 @@
         "package_url": null
       }
     ],
-    "supply_chain_vectors": ["ci_cd_action_compromise"],
-    "impact_categories": ["credential_theft", "developer_workstation_compromise"],
+    "supply_chain_vectors": [
+      "ci_cd_action_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise"
+    ],
     "references": [
       {
         "title": "Harden-Runner detection: tj-actions/changed-files action is compromised",
@@ -761,6 +1636,45 @@
         "published_at": "2025-03-15"
       }
     ],
-    "tags": ["github-actions", "ci-cd"]
+    "tags": [
+      "github-actions",
+      "ci-cd"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "ci_cd_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Compromised GitHub Action exposed secrets from downstream workflows.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "tj-actions/changed-files",
+        "host": "github.com",
+        "owner": "tj-actions",
+        "url": "https://github.com/tj-actions/changed-files"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "GitHub Actions Marketplace",
+        "channel_type": "ci_cd_marketplace",
+        "ecosystem": "github-actions"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "tj-actions GitHub Action release path",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "action_release"
+      }
+    ]
   }
 ]

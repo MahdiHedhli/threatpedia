@@ -1,6 +1,19 @@
 [
   {
     "aliases": [
+      "codecov/codecov-bash"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-codecov-codecov-bash",
+    "name": "codecov/codecov-bash",
+    "owner": "codecov",
+    "source_incident_ids": [
+      "SC-2021-CODECOV-BASH-UPLOADER"
+    ],
+    "url": "https://github.com/codecov/codecov-bash"
+  },
+  {
+    "aliases": [
       "dominictarr/event-stream"
     ],
     "host": "github.com",
@@ -11,6 +24,19 @@
       "SC-2018-NPM-EVENT-STREAM"
     ],
     "url": "https://github.com/dominictarr/event-stream"
+  },
+  {
+    "aliases": [
+      "eslint/eslint-scope"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-eslint-eslint-scope",
+    "name": "eslint/eslint-scope",
+    "owner": "eslint",
+    "source_incident_ids": [
+      "SC-2018-ESLINT-SCOPE"
+    ],
+    "url": "https://github.com/eslint/eslint-scope"
   },
   {
     "aliases": [
@@ -27,6 +53,58 @@
   },
   {
     "aliases": [
+      "php/php-src"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-php-php-src",
+    "name": "php/php-src",
+    "owner": "php",
+    "source_incident_ids": [
+      "SC-2021-PHP-GIT-SERVER"
+    ],
+    "url": "https://github.com/php/php-src"
+  },
+  {
+    "aliases": [
+      "pytorch/pytorch"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-pytorch-pytorch",
+    "name": "pytorch/pytorch",
+    "owner": "pytorch",
+    "source_incident_ids": [
+      "SC-2022-PYTORCH-NIGHTLY"
+    ],
+    "url": "https://github.com/pytorch/pytorch"
+  },
+  {
+    "aliases": [
+      "RIAEvangelist/node-ipc"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-riaevangelist-node-ipc",
+    "name": "RIAEvangelist/node-ipc",
+    "owner": "RIAEvangelist",
+    "source_incident_ids": [
+      "SC-2022-NODE-IPC"
+    ],
+    "url": "https://github.com/RIAEvangelist/node-ipc"
+  },
+  {
+    "aliases": [
+      "tj-actions/changed-files"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-tj-actions-changed-files",
+    "name": "tj-actions/changed-files",
+    "owner": "tj-actions",
+    "source_incident_ids": [
+      "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+    ],
+    "url": "https://github.com/tj-actions/changed-files"
+  },
+  {
+    "aliases": [
       "tukaani-project/xz"
     ],
     "host": "github.com",
@@ -37,5 +115,18 @@
       "SC-2024-XZ-UTILS"
     ],
     "url": "https://github.com/tukaani-project/xz"
+  },
+  {
+    "aliases": [
+      "ultralytics/ultralytics"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-ultralytics-ultralytics",
+    "name": "ultralytics/ultralytics",
+    "owner": "ultralytics",
+    "source_incident_ids": [
+      "SC-2024-ULTRALYTICS-PYPI"
+    ],
+    "url": "https://github.com/ultralytics/ultralytics"
   }
 ]

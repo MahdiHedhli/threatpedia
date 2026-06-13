@@ -5,14 +5,34 @@
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2016-LINUX-MINT-ISO",
+    "target": "channel-linux-website-download-linux-mint-download-site",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2016-LINUX-MINT-ISO",
+    "target": "channel-linux-website-download-linux-mint-download-site",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2017-CCLEANER",
     "target": "org-piriform",
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2017-CCLEANER",
+    "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2017-NOTPETYA-MEDOC",
     "target": "org-intellect-service",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2017-NOTPETYA-MEDOC",
+    "target": "channel-vendor-update-software-update-vendor-software-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2018-ESLINT-SCOPE",
@@ -21,12 +41,37 @@
   },
   {
     "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "pkg-npm-eslint-config-eslint",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
     "target": "pkg-npm-eslint-scope",
     "type": "AFFECTED_PACKAGE"
   },
   {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "repo-github-com-eslint-eslint-scope",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "account-npm-eslint-scope-npm-maintainer-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2018-ESLINT-SCOPE",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2018-NPM-EVENT-STREAM",
     "target": "maintainer-dominictarr",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "maintainer-right9ctrl",
     "type": "AFFECTED_MAINTAINER"
   },
   {
@@ -36,8 +81,18 @@
   },
   {
     "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "pkg-npm-flatmap-stream",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
     "target": "repo-github-com-dominictarr-event-stream",
     "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2019-ASUS-SHADOWHAMMER",
@@ -45,9 +100,34 @@
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2019-ASUS-SHADOWHAMMER",
+    "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2020-OCTOPUS-SCANNER",
+    "target": "build-netbeans-netbeans-project-build-process",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2020-OCTOPUS-SCANNER",
+    "target": "channel-source-control-source-repository-source-repository",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2020-SOLARWINDS-ORION",
     "target": "org-solarwinds",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2020-SOLARWINDS-ORION",
+    "target": "build-solarwinds-solarwinds-orion-build-system",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2020-SOLARWINDS-ORION",
+    "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
@@ -55,9 +135,44 @@
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+    "target": "repo-github-com-codecov-codecov-bash",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+    "target": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+    "target": "build-codecov-codecov-bash-uploader-distribution-pipeline",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+    "target": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
     "target": "pkg-multiple-internal-dependency-names",
     "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+    "target": "channel-rubygems-package-registry-rubygems",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2021-KASEYA-VSA",
@@ -65,9 +180,19 @@
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2021-KASEYA-VSA",
+    "target": "channel-vendor-update-software-update-vendor-software-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2021-NPM-RC",
     "target": "pkg-npm-rc",
     "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2021-NPM-RC",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2021-PHP-GIT-SERVER",
@@ -75,9 +200,34 @@
     "type": "AFFECTED_ORGANIZATION"
   },
   {
+    "source": "incident-SC-2021-PHP-GIT-SERVER",
+    "target": "repo-github-com-php-php-src",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2021-PHP-GIT-SERVER",
+    "target": "account-php-git-php-git-server-commit-identity",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2021-PHP-GIT-SERVER",
+    "target": "channel-source-control-source-repository-source-repository",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2021-UA-PARSER-JS",
     "target": "pkg-npm-ua-parser-js",
     "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "account-npm-ua-parser-js-npm-maintainer-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2022-COLORS-FAKER",
@@ -100,6 +250,11 @@
     "type": "AFFECTED_REPOSITORY"
   },
   {
+    "source": "incident-SC-2022-COLORS-FAKER",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2022-NODE-IPC",
     "target": "maintainer-riaevangelist",
     "type": "AFFECTED_MAINTAINER"
@@ -110,9 +265,34 @@
     "type": "AFFECTED_PACKAGE"
   },
   {
+    "source": "incident-SC-2022-NODE-IPC",
+    "target": "pkg-npm-peacenotwar",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-NODE-IPC",
+    "target": "repo-github-com-riaevangelist-node-ipc",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2022-NODE-IPC",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2022-PYPI-CTX",
     "target": "pkg-pypi-ctx",
     "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2022-PYPI-CTX",
+    "target": "account-pypi-ctx-pypi-project-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2022-PYPI-CTX",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2022-PYTORCH-NIGHTLY",
@@ -125,6 +305,21 @@
     "type": "AFFECTED_PACKAGE"
   },
   {
+    "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+    "target": "repo-github-com-pytorch-pytorch",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+    "target": "build-pytorch-pytorch-nightly-build-pipeline",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
     "target": "org-ledger",
     "type": "AFFECTED_ORGANIZATION"
@@ -135,9 +330,29 @@
     "type": "AFFECTED_PACKAGE"
   },
   {
+    "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+    "target": "account-npm-ledgerhq-connect-kit-npm-publish-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2023-THREE-CX-DESKTOP",
     "target": "org-3cx",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "build-3cx-3cx-desktopapp-build-pipeline",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2024-LOTTIE-PLAYER",
@@ -150,9 +365,24 @@
     "type": "AFFECTED_PACKAGE"
   },
   {
+    "source": "incident-SC-2024-LOTTIE-PLAYER",
+    "target": "account-npm-lottiefiles-lottie-player-npm-publish-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2024-LOTTIE-PLAYER",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2024-POLYFILL-IO",
     "target": "org-polyfill-io",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2024-POLYFILL-IO",
+    "target": "channel-web-cdn-script-third-party-cdn-script",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2024-ULTRALYTICS-PYPI",
@@ -163,6 +393,26 @@
     "source": "incident-SC-2024-ULTRALYTICS-PYPI",
     "target": "pkg-pypi-ultralytics",
     "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "repo-github-com-ultralytics-ultralytics",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "account-pypi-ultralytics-pypi-publishing-token",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
     "source": "incident-SC-2024-XZ-UTILS",
@@ -180,8 +430,38 @@
     "type": "AFFECTED_REPOSITORY"
   },
   {
+    "source": "incident-SC-2024-XZ-UTILS",
+    "target": "channel-linux-source-release-upstream-source-release-tarball",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2024-XZ-UTILS",
+    "target": "channel-linux-source-release-upstream-source-release-tarball",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
     "target": "org-tj-actions",
     "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "target": "repo-github-com-tj-actions-changed-files",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "target": "account-github-tj-actions-github-action-release-path",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+    "type": "USED_DISTRIBUTION_CHANNEL"
   }
 ]
