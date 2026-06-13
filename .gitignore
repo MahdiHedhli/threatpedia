@@ -77,3 +77,6 @@ desktop.ini
 /out
 /build
 *.log
+
+# ── Local Worker State ────────────────────────────────────────────────────────
+.worker-state/
