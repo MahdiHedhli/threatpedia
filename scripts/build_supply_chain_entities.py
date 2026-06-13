@@ -168,7 +168,7 @@ def upsert_repository(repositories: dict[str, dict[str, Any]], repo: dict[str, s
 
 def upsert_maintainer(maintainers: dict[str, dict[str, Any]], hint: dict[str, Any], incident_id: str) -> str:
     name = hint["name"]
-    aliases = sorted(set(hint.get("aliases", []) + [name]))
+    aliases = sorted(set((hint.get("aliases") or []) + [name]))
     entity_id = stable_id("maintainer", hint["id_slug"])
     entity = maintainers.setdefault(
         entity_id,
@@ -268,24 +268,24 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
                 add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
         divergence_channel_targets: list[str] = []
-        for maintainer in incident.get("maintainers", []):
+        for maintainer in incident.get("maintainers") or []:
             maintainer_id = upsert_maintainer(maintainers, maintainer, incident_id)
             add_relationship(relationship(source, maintainer_id, "AFFECTED_MAINTAINER"))
 
-        for repo in incident.get("repositories", []):
+        for repo in incident.get("repositories") or []:
             repo_id = upsert_repository(repositories, repo, incident_id)
             add_relationship(relationship(source, repo_id, "AFFECTED_REPOSITORY"))
 
-        for item in incident.get("build_systems", []):
+        for item in incident.get("build_systems") or []:
             build_system_id = upsert_build_system(build_systems, item, incident_id)
             add_relationship(relationship(source, build_system_id, "USED_BUILD_SYSTEM"))
 
-        for item in incident.get("distribution_channels", []):
+        for item in incident.get("distribution_channels") or []:
             channel_id = upsert_distribution_channel(distribution_channels, item, incident_id)
             divergence_channel_targets.append(channel_id)
             add_relationship(relationship(source, channel_id, "USED_DISTRIBUTION_CHANNEL"))
 
-        for item in incident.get("compromised_accounts", []):
+        for item in incident.get("compromised_accounts") or []:
             account_id = upsert_account(accounts, item, incident_id)
             add_relationship(relationship(source, account_id, "COMPROMISED_ACCOUNT"))
 

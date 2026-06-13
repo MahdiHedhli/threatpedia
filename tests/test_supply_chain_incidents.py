@@ -181,6 +181,17 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         schema["required"].pop()
         self.assertEqual(validator.validate_schema_file(schema), ["schema.required: does not match validator required fields"])
 
+    def test_source_artifact_divergence_requires_distribution_channels(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["source_artifact_divergence"] = True
+        incident["distribution_channels"] = []
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(
+            any(".source_artifact_divergence: cannot be true when distribution_channels is empty" in error for error in errors)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
