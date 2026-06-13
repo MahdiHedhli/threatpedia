@@ -214,6 +214,29 @@ checks are:
    - non-featured incidents still render without editorial sections
    - no scoring, recommendations, live-feed copy, or generated conclusions
 
+## Production Enablement
+
+Production deployment was enabled on 2026-06-13 by setting
+`ENABLE_SUPPLY_CHAIN_PAGES=true` on the GitHub Pages Astro build step in
+`.github/workflows/deploy.yml`.
+
+Validation result at enablement: PASS.
+
+Required checks before and after changing production deployment configuration:
+
+```bash
+python3 scripts/validate_supply_chain_incidents.py
+python3 scripts/validate_supply_chain_graph.py
+node scripts/test-supply-chain-pages.mjs
+node scripts/check_supply_chain_public_readiness.mjs
+cd site && rm -rf dist && ENABLE_SUPPLY_CHAIN_PAGES=true npm run build
+```
+
+Rollback is a deployment configuration change: set
+`ENABLE_SUPPLY_CHAIN_PAGES=false` or remove the build-step environment variable
+from `.github/workflows/deploy.yml`, redeploy, and confirm `/supply-chain/` and
+the Supply Chain nav link are absent.
+
 ## Supply Chain Editorial Checklist
 
 Use this checklist before adding or changing a featured incident editorial page:
