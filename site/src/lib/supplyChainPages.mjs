@@ -1,13 +1,13 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const cwd = process.cwd();
-const repoRoot = existsSync(path.join(cwd, 'data/supply-chain-incidents/incidents.json'))
-  ? cwd
-  : path.resolve(cwd, '..');
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(moduleDir, '../../..');
 const incidentPath = path.join(repoRoot, 'data/supply-chain-incidents/incidents.json');
 const relationshipPath = path.join(repoRoot, 'data/supply-chain-relationships/relationships.json');
 const entityDir = path.join(repoRoot, 'data/supply-chain-entities');
+let cachedData = null;
 
 export const SUPPLY_CHAIN_ENTITY_TYPES = [
   { key: 'packages', segment: 'packages', label: 'Package', plural: 'Packages' },
@@ -37,6 +37,7 @@ function readJson(filePath) {
 }
 
 export function loadSupplyChainData() {
+  if (cachedData) return cachedData;
   const incidents = readJson(incidentPath);
   const relationships = readJson(relationshipPath);
   const entities = Object.fromEntries(
@@ -49,7 +50,8 @@ export function loadSupplyChainData() {
     });
   });
   const incidentByNodeId = new Map(incidents.map((incident) => [`incident-${incident.id}`, incident]));
-  return { incidents, relationships, entities, entityById, incidentByNodeId };
+  cachedData = { incidents, relationships, entities, entityById, incidentByNodeId };
+  return cachedData;
 }
 
 export function validateSupplyChainPageData(data = loadSupplyChainData()) {
