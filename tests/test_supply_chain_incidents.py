@@ -67,6 +67,30 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertEqual([error for error in errors if ".title" in error], [f"{incident['id']}.title: missing required field"])
 
+    def test_missing_nested_required_fields_report_once(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        del incident["affected_components"][0]["ecosystem"]
+        del incident["references"][0]["url"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertEqual(
+            [error for error in errors if ".affected_components[0].ecosystem" in error],
+            [f"{incident['id']}.affected_components[0].ecosystem: missing required field"],
+        )
+        self.assertEqual(
+            [error for error in errors if ".references[0].url" in error],
+            [f"{incident['id']}.references[0].url: missing required field"],
+        )
+
+    def test_empty_tags_are_allowed_by_schema_and_validator(self) -> None:
+        incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
+        incident["tags"] = []
+
+        errors = validator.validate_incident(incident)
+
+        self.assertEqual([error for error in errors if ".tags" in error], [])
+
     def test_non_string_id_is_reported_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["id"] = None

@@ -155,7 +155,7 @@
     "title": "ASUS Live Update Operation ShadowHammer",
     "summary": "Attackers compromised the ASUS Live Update utility and distributed signed malicious updates to selected downstream systems.",
     "status": "confirmed",
-    "first_observed_at": "2019-01-01",
+    "first_observed_at": "2018-06-01",
     "disclosed_at": "2019-03-25",
     "affected_ecosystems": ["windows", "vendor-update"],
     "affected_components": [

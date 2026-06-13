@@ -130,7 +130,8 @@
           "type": "string"
         },
         "package_url": {
-          "type": ["string", "null"]
+          "type": ["string", "null"],
+          "pattern": "^pkg:[a-z0-9.+-]+/[^\\s]+$"
         }
       }
     },

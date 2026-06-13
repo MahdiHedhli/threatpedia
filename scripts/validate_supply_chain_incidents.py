@@ -100,8 +100,11 @@ def require_string(errors: list[str], path: str, value: Any, *, min_length: int 
         errors.append(f"{path}: expected non-empty string")
 
 
-def require_string_list(errors: list[str], path: str, value: Any) -> None:
-    if not isinstance(value, list) or not value:
+def require_string_list(errors: list[str], path: str, value: Any, *, allow_empty: bool = False) -> None:
+    if not isinstance(value, list):
+        errors.append(f"{path}: expected list")
+        return
+    if not value and not allow_empty:
         errors.append(f"{path}: expected non-empty list")
         return
     for index, item in enumerate(value):
@@ -126,10 +129,13 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
     for field in REQUIRED_COMPONENT_FIELDS:
         if field not in component:
             errors.append(f"{path}.{field}: missing required field")
-    require_string(errors, f"{path}.ecosystem", component.get("ecosystem"))
-    require_string(errors, f"{path}.name", component.get("name"))
-    require_string(errors, f"{path}.vendor", component.get("vendor"))
-    if component.get("component_type") not in VALID_COMPONENT_TYPES:
+    if "ecosystem" in component:
+        require_string(errors, f"{path}.ecosystem", component.get("ecosystem"))
+    if "name" in component:
+        require_string(errors, f"{path}.name", component.get("name"))
+    if "vendor" in component:
+        require_string(errors, f"{path}.vendor", component.get("vendor"))
+    if "component_type" in component and component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
     package_url = component.get("package_url")
     if package_url is not None and not (isinstance(package_url, str) and PURL_PATTERN.fullmatch(package_url)):
@@ -144,11 +150,13 @@ def validate_reference(errors: list[str], incident_id: str, index: int, referenc
     for field in REQUIRED_REFERENCE_FIELDS:
         if field not in reference:
             errors.append(f"{path}.{field}: missing required field")
-    require_string(errors, f"{path}.title", reference.get("title"))
-    require_string(errors, f"{path}.publisher", reference.get("publisher"))
-    if not is_valid_url(reference.get("url")):
+    if "title" in reference:
+        require_string(errors, f"{path}.title", reference.get("title"))
+    if "publisher" in reference:
+        require_string(errors, f"{path}.publisher", reference.get("publisher"))
+    if "url" in reference and not is_valid_url(reference.get("url")):
         errors.append(f"{path}.url: expected http(s) URL")
-    if parse_date(reference.get("published_at")) is None:
+    if "published_at" in reference and parse_date(reference.get("published_at")) is None:
         errors.append(f"{path}.published_at: expected YYYY-MM-DD date")
 
 
@@ -195,7 +203,7 @@ def validate_incident(incident: Any) -> list[str]:
     if "impact_categories" in incident:
         require_enum_list(errors, f"{incident_id}.impact_categories", incident.get("impact_categories"), VALID_IMPACTS)
     if "tags" in incident:
-        require_string_list(errors, f"{incident_id}.tags", incident.get("tags"))
+        require_string_list(errors, f"{incident_id}.tags", incident.get("tags"), allow_empty=True)
 
     if "affected_components" in incident:
         components = incident.get("affected_components")
