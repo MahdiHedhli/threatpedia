@@ -21,7 +21,7 @@ bulk-support lanes are out of scope here (see ADR 0009).
 ┌─────────────────┐   ┌────────────────┐   ┌────────────────┐   ┌──────────┐
 │ pipeline-       │──▶│ .github/       │──▶│ pipeline-      │──▶│ PR on    │
 │ discovery.yml   │   │ pipeline/      │   │ dispatcher     │   │ main for │
-│ (6h cron)       │   │ tasks/*.json   │   │ .yml (2h cron) │   │ KK review│
+│ (3h cron)       │   │ tasks/*.json   │   │ .yml (1h cron) │   │ KK review│
 └─────────────────┘   └────────────────┘   └────────────────┘   └──────────┘
         │                      │                    │
    invokes                 consumed by          invokes
@@ -48,10 +48,10 @@ manual operator use; do not wire into the scheduled flow.
 
 | Component | What it is | When it runs |
 |---|---|---|
-| `.github/workflows/pipeline-discovery.yml` | GitHub Actions cron workflow — thin wrapper | Every 6 hours + manual dispatch |
+| `.github/workflows/pipeline-discovery.yml` | GitHub Actions cron workflow — thin wrapper | Every 3 hours + manual dispatch |
 | `scripts/pipeline-discover.mjs` | Node script — single source of truth for feed fetch, scoring, dedup, task emission | Invoked by the workflow above |
 | `.github/pipeline/tasks/TASK-*.json` | Pipeline task files — discovered and dispatched individually | Created by discovery, read/written by dispatcher |
-| `.github/workflows/pipeline-dispatcher.yml` | GitHub Actions cron workflow — dispatches tasks to agents | Every 2 hours + manual dispatch |
+| `.github/workflows/pipeline-dispatcher.yml` | GitHub Actions cron workflow — dispatches tasks to agents | Hourly + manual dispatch |
 | `.github/workflows/pipeline-post-merge-audit.yml` | GitHub Actions push workflow — re-validates changed merged content on `main` and opens/updates an audit issue on failure | Push to `main` + manual dispatch |
 | `scripts/pipeline-run-task.mjs` | Node script — agent-agnostic task runner and validator | Invoked by the dispatcher, executed under the agent's subscription |
 | `scripts/validate-content-corpus.mjs` | Shared content validator for PR gating and post-merge audits | Invoked by workflows, reads newline-delimited changed-file lists |
@@ -69,7 +69,7 @@ discovery queues are open, validated, and stable.
 
 ## The lifecycle of a single task
 
-1. **Discovery** (6h cron, `pipeline-discovery.yml`)
+1. **Discovery** (3h cron, `pipeline-discovery.yml`)
    - Prepares the long-lived branch `pipeline/discovery`. Three cases:
      - **Branch doesn't exist** → create from `main`
      - **Branch exists + open PR from it** → accumulate onto the existing branch
@@ -123,9 +123,9 @@ discovery queues are open, validated, and stable.
 2. **Queue backpressure check** (next dispatcher tick)
    - `pipeline-dispatcher.yml` loads all tasks. If the count of tasks with
      `status: pr_open` (plus any legacy `validation | review` stage items) is
-     ≥ `queues.editorial.max_pending` (default 50), the dispatcher backs
+     ≥ `queues.editorial.max_pending` (default 100), the dispatcher backs
      off without dispatching more. When the queue drains below
-     `backpressure_resume` (default 40), dispatch resumes.
+     `backpressure_resume` (default 80), dispatch resumes.
 
 3. **Circuit breaker check**
    - If the three most recent task failures all occurred within the last
@@ -143,7 +143,7 @@ discovery queues are open, validated, and stable.
 
 6. **Dispatch**
    - Up to `queues.dispatcher.tasks_per_run` `pending` tasks per cycle
-     (default 6), sorted P0 → P3 then oldest-first, get dispatched by
+     (default 12), sorted P0 → P3 then oldest-first, get dispatched by
      opening an agent-pickup GitHub Issue. The agent
      (Claude Code / Gemini / human) claims the task by running
      `node scripts/pipeline-run-task.mjs --task TASK-XXXX --lock`, which
@@ -320,14 +320,14 @@ same queue/validation path as discovery-generated tasks.
 | Manual link dedup | `pipeline-ingest-issue.yml` + `scripts/pipeline-submit-link.mjs` | Blocks manual submissions when submitted source URLs already exist in corpus/tasks | Workflow + script |
 | Rejection memory (operator veto) | `pipeline-discover.mjs` reads `.github/pipeline/rejected-candidates.json` | Rejected CVEs and non-CVE candidate keys skipped at discovery time | File on `main`; see Rejection memory section |
 | Discovery lookback | workflow env `DAYS` → `--days` | 14 days | Workflow input |
-| Discovery per-run cap | workflow env `LIMIT` → `--limit` | 5 tasks | Workflow input |
+| Discovery per-run cap | workflow env `LIMIT` → `--limit` | 20 tasks | Workflow input |
 | Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
 | Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
-| Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 50 pending · stay paused until queue < 40 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
+| Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 100 pending · stay paused until queue < 80 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
 | Dependency blocking | `pipeline-dispatcher.yml` | Per-task `depends_on[]` | Task file |
@@ -389,7 +389,7 @@ falls below the resume threshold.
 
 The dispatcher task dispatch ceiling is configurable through
 `queues.dispatcher.tasks_per_run` in `.github/pipeline/config.yml`. Keep this
-below review backpressure thresholds; the default is 6 per dispatcher cycle.
+below review backpressure thresholds; the default is 12 per dispatcher cycle.
 
 ---
 
@@ -441,7 +441,7 @@ work — but it should be updated to the canonical form in the same PR.
 
 ## Rejection memory
 
-Discovery re-surfaces the same CVE on every 6h cron run unless it shows up
+Discovery re-surfaces the same CVE on every 3h cron run unless it shows up
 as "already known" in dedup. Before Slice 4c, dedup only knew about two
 sources: the live corpus and the open task set. Closing an accumulation PR
 without merging left no durable signal, so vetoed candidates came back.

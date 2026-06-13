@@ -1175,7 +1175,7 @@ function buildZeroDayTask(candidate, taskId, exploitId) {
       astro_build: true,
     },
     depends_on: [],
-    preconditions: ['editorial queue depth < 50'],
+    preconditions: ['editorial queue depth < 100'],
     output: {
       file_pattern: `site/src/content/zero-days/${slug}.md`,
       branch: `pipeline/${taskId}`,
@@ -1258,7 +1258,7 @@ function buildIncidentTask(candidate, taskId) {
       astro_build: true,
     },
     depends_on: [],
-    preconditions: ['editorial queue depth < 50'],
+    preconditions: ['editorial queue depth < 100'],
     output: {
       file_pattern: `site/src/content/incidents/${slug}.md`,
       branch: `pipeline/${taskId}`,
@@ -1356,7 +1356,7 @@ function buildThreatActorTask(candidate, taskId) {
       astro_build: true,
     },
     depends_on: [],
-    preconditions: ['editorial queue depth < 50'],
+    preconditions: ['editorial queue depth < 100'],
     output: {
       file_pattern: `site/src/content/threat-actors/${actorSlug}.md`,
       branch: `pipeline/${taskId}`,
@@ -1526,7 +1526,7 @@ function buildCampaignTask(candidate, taskId) {
       astro_build: true,
     },
     depends_on: [],
-    preconditions: ['editorial queue depth < 50'],
+    preconditions: ['editorial queue depth < 100'],
     output: {
       file_pattern: `site/src/content/campaigns/${campaignSlug}.md`,
       branch: `pipeline/${taskId}`,
