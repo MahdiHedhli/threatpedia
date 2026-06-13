@@ -7,13 +7,17 @@ const incidentRelativePath = 'data/supply-chain-incidents/incidents.json';
 
 function findRepoRoot(startDirs) {
   const seen = new Set();
+
   for (const startDir of startDirs) {
     let currentDir = path.resolve(startDir);
+
     while (!seen.has(currentDir)) {
       seen.add(currentDir);
+
       if (existsSync(path.join(currentDir, incidentRelativePath))) {
         return currentDir;
       }
+
       const parentDir = path.dirname(currentDir);
       if (parentDir === currentDir) {
         break;
@@ -21,6 +25,7 @@ function findRepoRoot(startDirs) {
       currentDir = parentDir;
     }
   }
+
   throw new Error(`Unable to locate Supply Chain corpus from ${startDirs.join(', ')}`);
 }
 
@@ -142,46 +147,26 @@ const ENTITY_COLLECTION_LABELS = {
   accounts: 'Compromised Account',
 };
 
+const editorialSectionDefinitions = [
+  { key: 'executive_summary', title: 'Executive Summary', type: 'claim' },
+  { key: 'timeline', title: 'Timeline', type: 'timeline' },
+  { key: 'attack_chain', title: 'Attack Chain', type: 'attack_chain' },
+  { key: 'affected_ecosystem', title: 'Affected Ecosystem', type: 'claim' },
+  { key: 'defensive_lessons', title: 'Defensive Lessons', type: 'claim' },
+  { key: 'detection_notes', title: 'Detection Notes', type: 'claim' },
+  { key: 'open_questions', title: 'Open Questions', type: 'claim' },
+];
+
 function entityTypeLabel(entity) {
   return ENTITY_COLLECTION_LABELS[entity.entityCollection] || entity.entityCollection;
 }
 
-export function isSupplyChainPagesEnabled(env = typeof process !== 'undefined' ? process.env || {} : {}) {
+export function isSupplyChainPagesEnabled(env = (typeof process !== 'undefined' ? process.env : null) || {}) {
   return String(env.ENABLE_SUPPLY_CHAIN_PAGES || '').toLowerCase() === 'true';
 }
 
 function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, 'utf-8'));
-}
-
-function isPlainObject(value) {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
-}
-
-function supplyChainPageDataShapeErrors(data) {
-  const errors = [];
-  if (!isPlainObject(data)) {
-    return ['data: expected object'];
-  }
-  if (!Array.isArray(data.incidents)) errors.push('data.incidents: expected array');
-  if (!Array.isArray(data.relationships)) errors.push('data.relationships: expected array');
-  if (!isPlainObject(data.entities)) {
-    errors.push('data.entities: expected object');
-  } else {
-    Object.keys(allEntityFiles).forEach((key) => {
-      if (!Array.isArray(data.entities[key])) errors.push(`data.entities.${key}: expected array`);
-    });
-  }
-  if (!(data.entityById instanceof Map)) errors.push('data.entityById: expected Map');
-  if (!(data.incidentByNodeId instanceof Map)) errors.push('data.incidentByNodeId: expected Map');
-  return errors;
-}
-
-function assertSupplyChainPageData(data, context) {
-  const errors = supplyChainPageDataShapeErrors(data);
-  if (errors.length > 0) {
-    throw new Error(`${context}: invalid Supply Chain page data:\n${errors.join('\n')}`);
-  }
 }
 
 export function loadSupplyChainData() {
@@ -204,9 +189,6 @@ export function loadSupplyChainData() {
 
 export function validateSupplyChainPageData(data = loadSupplyChainData()) {
   const errors = [];
-  errors.push(...supplyChainPageDataShapeErrors(data));
-  if (errors.length > 0) return errors;
-
   const validIncidentNodes = new Set(data.incidents.map((incident) => `incident-${incident.id}`));
   data.relationships.forEach((relationship, index) => {
     const sourceExists = validIncidentNodes.has(relationship.source) || data.entityById.has(relationship.source);
@@ -338,8 +320,34 @@ function incidentEntities(data, incidentId, collectionKey, relationshipType) {
   return (incident?.[collectionKey] || []).map((item) => ({ label: item.name, id: item.name, href: null }));
 }
 
+function referenceMapFor(incident) {
+  return new Map((incident.references || []).filter((reference) => reference.id).map((reference) => [reference.id, reference]));
+}
+
+function referencesForItem(item, referenceById) {
+  return (item.reference_ids || []).map((referenceId) => referenceById.get(referenceId)).filter(Boolean);
+}
+
+function editorialSectionsFor(incident) {
+  const referenceById = referenceMapFor(incident);
+  return editorialSectionDefinitions
+    .map((section) => {
+      const items = incident[section.key];
+      if (!Array.isArray(items) || items.length === 0) return null;
+      return {
+        key: section.key,
+        title: section.title,
+        type: section.type,
+        items: items.map((item) => ({
+          ...item,
+          references: referencesForItem(item, referenceById),
+        })),
+      };
+    })
+    .filter(Boolean);
+}
+
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
-  assertSupplyChainPageData(data, 'getSupplyChainIndexModel');
   const featuredIncidents = SUPPLY_CHAIN_FEATURED_INCIDENT_IDS.map((id) => {
     const incident = data.incidents.find((item) => item.id === id);
     if (!incident) throw new Error(`Featured Supply Chain incident not found: ${id}`);
@@ -386,6 +394,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       maintainers: data.entities.maintainers.length,
       buildSystems: data.entities.build_systems.length,
       distributionChannels: data.entities.distribution_channels.length,
+      compromisedAccounts: data.entities.accounts.length,
       relationships: data.relationships.length,
     },
     incidents: data.incidents
@@ -402,7 +411,6 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
 }
 
 export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
-  assertSupplyChainPageData(data, 'getSupplyChainIncidentPage');
   const incident = data.incidents.find((item) => item.id === id);
   if (!incident) return null;
   const description = incident.summary;
@@ -410,6 +418,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     kind: 'incident',
     title: incident.title,
     incident,
+    editorialSections: editorialSectionsFor(incident),
     connectedEntities: incidentConnectedEntities(data, id),
     seo: {
       title: `Supply Chain: ${incident.title}`,
@@ -453,7 +462,6 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
 }
 
 export function getSupplyChainEntityPage(collectionKey, id, data = loadSupplyChainData()) {
-  assertSupplyChainPageData(data, 'getSupplyChainEntityPage');
   const collection = data.entities[collectionKey] || [];
   const entity = collection.find((item) => item.id === id);
   if (!entity) return null;
