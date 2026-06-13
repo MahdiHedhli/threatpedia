@@ -207,6 +207,23 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         schema["required"].pop()
         self.assertEqual(validator.validate_schema_file(schema), ["schema.required: does not match validator required fields"])
 
+    def test_schema_requires_generic_purl_justification_contract(self) -> None:
+        schema = load_json(SCHEMA_PATH)
+        affected_component = schema["$defs"]["affected_component"]
+
+        self.assertEqual(validator.validate_schema_file(schema), [])
+
+        affected_component["properties"]["purl_justification"]["minLength"] = 1
+        self.assertTrue(any("purl_justification.minLength" in error for error in validator.validate_schema_file(schema)))
+
+        schema = load_json(SCHEMA_PATH)
+        del schema["$defs"]["affected_component"]["if"]
+        self.assertTrue(any("affected_component.if" in error for error in validator.validate_schema_file(schema)))
+
+        schema = load_json(SCHEMA_PATH)
+        del schema["$defs"]["affected_component"]["then"]
+        self.assertTrue(any("affected_component.then" in error for error in validator.validate_schema_file(schema)))
+
     def test_source_artifact_divergence_requires_distribution_channels(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["source_artifact_divergence"] = True
