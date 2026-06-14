@@ -232,6 +232,14 @@ function entityLink(data, entityId) {
   return { href, label: entity.name, id: entity.id };
 }
 
+function attributionItemLink(data, item, collectionKey) {
+  if (!item?.id) return null;
+  const linkedEntity = entityLink(data, item.id);
+  if (linkedEntity) return linkedEntity;
+  const href = item.href || (collectionKey === 'campaigns' && item.slug ? `/campaigns/${item.slug}/` : null);
+  return { href, label: item.name || item.id, id: item.id };
+}
+
 function compareLabel(a, b) {
   return (a.label || '').localeCompare(b.label || '');
 }
@@ -295,6 +303,7 @@ function entityConnectionsFor(data, entityId) {
 
 function incidentConnectedEntities(data, incidentId) {
   const nodeId = `incident-${incidentId}`;
+  const incident = data.incidents.find((item) => item.id === incidentId);
   const rows = relationshipRows(data, nodeId)
     .filter((row) => row.entity)
     .map((row) => ({
@@ -304,7 +313,16 @@ function incidentConnectedEntities(data, incidentId) {
       type: row.type,
       entityType: entityTypeLabel(row.entity),
     }));
-  return dedupeRows(rows).sort(compareLabel);
+  const actorRows = (incident?.threat_actors || [])
+    .map((item) => attributionItemLink(data, item, 'actors'))
+    .filter(Boolean)
+    .map((item) => ({ ...item, type: 'ATTRIBUTED_TO_ACTOR', entityType: 'Threat Actor' }));
+  const campaignRows = (incident?.campaigns || [])
+    .map((item) => attributionItemLink(data, item, 'campaigns'))
+    .filter(Boolean)
+    .map((item) => ({ ...item, type: 'RELATED_CAMPAIGN', entityType: 'Campaign' }));
+  const attributionRows = [...actorRows, ...campaignRows];
+  return dedupeRows([...rows, ...attributionRows]).sort(compareLabel);
 }
 
 function incidentEntityLinks(data, incidentId, relationshipType) {
@@ -314,6 +332,15 @@ function incidentEntityLinks(data, incidentId, relationshipType) {
     .map((relationship) => entityLink(data, relationship.target))
     .filter(Boolean)
     .sort(compareLabel);
+}
+
+function incidentAttributionLinks(data, incidentId, relationshipType, collectionKey) {
+  const relationshipLinks = incidentEntityLinks(data, incidentId, relationshipType);
+  const incident = data.incidents.find((item) => item.id === incidentId);
+  const corpusLinks = (incident?.[collectionKey] || [])
+    .map((item) => attributionItemLink(data, item, collectionKey))
+    .filter(Boolean);
+  return dedupeRows([...relationshipLinks, ...corpusLinks]).sort(compareLabel);
 }
 
 function incidentEntities(data, incidentId, collectionKey, relationshipType) {
@@ -465,8 +492,8 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
       repositories: incidentEntityLinks(data, id, 'AFFECTED_REPOSITORY'),
       organizations: incidentEntityLinks(data, id, 'AFFECTED_ORGANIZATION'),
       maintainers: incidentEntityLinks(data, id, 'AFFECTED_MAINTAINER'),
-      actors: incidentEntityLinks(data, id, 'ATTRIBUTED_TO_ACTOR'),
-      campaigns: incidentEntityLinks(data, id, 'RELATED_CAMPAIGN'),
+      actors: incidentAttributionLinks(data, id, 'ATTRIBUTED_TO_ACTOR', 'threat_actors'),
+      campaigns: incidentAttributionLinks(data, id, 'RELATED_CAMPAIGN', 'campaigns'),
       buildSystems: incidentEntities(data, id, 'build_systems', 'USED_BUILD_SYSTEM'),
       distributionChannels: incidentEntities(data, id, 'distribution_channels', 'USED_DISTRIBUTION_CHANNEL'),
       compromisedAccounts: incidentEntities(data, id, 'compromised_accounts', 'COMPROMISED_ACCOUNT'),

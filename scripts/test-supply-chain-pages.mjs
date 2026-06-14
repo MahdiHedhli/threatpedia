@@ -148,6 +148,31 @@ assert.ok(
   xz.sections.attributionEvidence.every((item) => item.references.length > 0),
   'attribution evidence references should resolve'
 );
+const staleAttributionRelationshipData = {
+  ...data,
+  relationships: data.relationships.filter(
+    (relationship) =>
+      !(
+        relationship.source === 'incident-SC-2024-XZ-UTILS' &&
+        relationship.target === 'actor-unc-xz-utils-operator' &&
+        relationship.type === 'ATTRIBUTED_TO_ACTOR'
+      )
+  ),
+};
+assert.equal(
+  validateSupplyChainPageData(staleAttributionRelationshipData).length,
+  0,
+  'page data validator should still pass when an actor remains connected elsewhere'
+);
+const staleXz = getSupplyChainIncidentPage('SC-2024-XZ-UTILS', staleAttributionRelationshipData);
+assert.ok(
+  staleXz.sections.actors.some((actor) => actor.id === 'actor-unc-xz-utils-operator'),
+  'incident pages should fall back to corpus threat_actors when generated incident attribution edges are stale'
+);
+assert.ok(
+  staleXz.connectedEntities.some((entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor'),
+  'incident connected entities should fall back to corpus threat_actors when generated incident attribution edges are stale'
+);
 
 const threeCx = getSupplyChainIncidentPage('SC-2023-THREE-CX-DESKTOP', data);
 assert.ok(
