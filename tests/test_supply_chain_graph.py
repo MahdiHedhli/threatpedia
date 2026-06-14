@@ -315,6 +315,33 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any("ATTRIBUTED_TO_ACTOR must start from an incident or maintainer node" in error for error in errors))
         self.assertTrue(any("RELATED_CAMPAIGN must start from an incident node" in error for error in errors))
 
+    def test_incident_attribution_links_require_incident_scoped_relationships(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = [
+            relationship
+            for relationship in copy.deepcopy(load_json(RELATIONSHIP_PATH))
+            if not (
+                relationship["source"] == "incident-SC-2024-XZ-UTILS"
+                and relationship["target"] == "actor-unc-xz-utils-operator"
+                and relationship["type"] == "ATTRIBUTED_TO_ACTOR"
+            )
+            and not (
+                relationship["source"] == "incident-SC-2023-THREE-CX-DESKTOP"
+                and relationship["target"] == "campaign-tp-camp-2023-0002"
+                and relationship["type"] == "RELATED_CAMPAIGN"
+            )
+        ]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(
+            any("missing ATTRIBUTED_TO_ACTOR relationship for actor-unc-xz-utils-operator" in error for error in errors)
+        )
+        self.assertTrue(
+            any("missing RELATED_CAMPAIGN relationship for campaign-tp-camp-2023-0002" in error for error in errors)
+        )
+
     def test_new_entity_type_required_fields_are_validated(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
