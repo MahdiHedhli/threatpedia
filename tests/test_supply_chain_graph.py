@@ -342,6 +342,28 @@ class SupplyChainGraphTests(unittest.TestCase):
             any("missing RELATED_CAMPAIGN relationship for campaign-tp-camp-2023-0002" in error for error in errors)
         )
 
+    def test_actor_entity_refs_require_graph_relationships(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = [
+            relationship
+            for relationship in copy.deepcopy(load_json(RELATIONSHIP_PATH))
+            if not (
+                relationship["source"] == "maintainer-jia-tan"
+                and relationship["target"] == "actor-unc-xz-utils-operator"
+                and relationship["type"] == "ATTRIBUTED_TO_ACTOR"
+            )
+        ]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(
+            any(
+                "missing ATTRIBUTED_TO_ACTOR relationship from maintainer-jia-tan to actor-unc-xz-utils-operator" in error
+                for error in errors
+            )
+        )
+
     def test_new_entity_type_required_fields_are_validated(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

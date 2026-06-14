@@ -241,6 +241,11 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                 key = (source, actor["id"], "ATTRIBUTED_TO_ACTOR")
                 if key not in relationship_keys:
                     errors.append(f"{source}: missing ATTRIBUTED_TO_ACTOR relationship for {actor['id']}")
+                for entity_ref in actor.get("entity_refs") or []:
+                    if isinstance(entity_ref, str):
+                        key = (entity_ref, actor["id"], "ATTRIBUTED_TO_ACTOR")
+                        if key not in relationship_keys:
+                            errors.append(f"{source}: missing ATTRIBUTED_TO_ACTOR relationship from {entity_ref} to {actor['id']}")
         for campaign in incident.get("campaigns") or []:
             if isinstance(campaign, dict) and isinstance(campaign.get("id"), str):
                 key = (source, campaign["id"], "RELATED_CAMPAIGN")
