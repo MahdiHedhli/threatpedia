@@ -275,6 +275,7 @@ def upsert_account(accounts: dict[str, dict[str, Any]], item: dict[str, str], in
 
 def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
     entity_id = item["id"]
+    item_aliases = (item.get("aliases") or []) + [item["name"]]
     entity = actors.setdefault(
         entity_id,
         {
@@ -282,13 +283,17 @@ def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incide
             "name": item["name"],
             "actor_type": item["actor_type"],
             "attribution_confidence": item["confidence"],
-            "aliases": sorted(set(item.get("aliases") or [item["name"]])),
+            "aliases": sorted(set(item_aliases)),
             "source_incident_ids": [],
             **({"href": item["href"]} if item.get("href") else {}),
             **({"notes": item["notes"]} if item.get("notes") else {}),
         },
     )
-    entity["aliases"] = sorted(set(entity.get("aliases", []) + (item.get("aliases") or [item["name"]])))
+    entity["aliases"] = sorted(set(entity.get("aliases", []) + item_aliases))
+    if "href" not in entity and item.get("href"):
+        entity["href"] = item["href"]
+    if "notes" not in entity and item.get("notes"):
+        entity["notes"] = item["notes"]
     if ATTRIBUTION_CONFIDENCE_PRIORITY.get(item["confidence"], 0) > ATTRIBUTION_CONFIDENCE_PRIORITY.get(
         entity["attribution_confidence"],
         0,
@@ -300,6 +305,7 @@ def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incide
 
 def upsert_campaign(campaigns: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
     entity_id = item["id"]
+    item_aliases = (item.get("aliases") or []) + [item["name"], item["campaign_id"]]
     entity = campaigns.setdefault(
         entity_id,
         {
@@ -307,12 +313,12 @@ def upsert_campaign(campaigns: dict[str, dict[str, Any]], item: dict[str, Any], 
             "name": item["name"],
             "campaign_id": item["campaign_id"],
             "slug": item["slug"],
-            "aliases": sorted(set(item.get("aliases") or [item["name"], item["campaign_id"]])),
+            "aliases": sorted(set(item_aliases)),
             "source_incident_ids": [],
             "href": f"/campaigns/{item['slug']}/",
         },
     )
-    entity["aliases"] = sorted(set(entity.get("aliases", []) + (item.get("aliases") or [item["name"], item["campaign_id"]])))
+    entity["aliases"] = sorted(set(entity.get("aliases", []) + item_aliases))
     add_source(entity, incident_id)
     return entity_id
 
