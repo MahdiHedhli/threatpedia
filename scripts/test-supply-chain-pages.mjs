@@ -221,6 +221,11 @@ assert.ok(
   ),
   'maintainer page should surface provisional actor connections even without a public actor route'
 );
+assert.equal(
+  jiaTanMaintainer.connectedEntities.filter((entity) => entity.id === 'actor-unc-xz-utils-operator').length,
+  1,
+  'maintainer page should not duplicate actor connections that are both direct and incident-derived'
+);
 
 const brokenData = {
   ...data,

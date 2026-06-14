@@ -281,13 +281,14 @@ function entityConnectionsFor(data, entityId) {
       type: row.type,
       entityType: entityTypeLabel(row.entity),
     }));
+  const directEntityIds = new Set(direct.map((row) => row.id));
 
   const incidentNodes = relationshipRows(data, entityId)
     .filter((row) => row.incident)
     .map((row) => `incident-${row.incident.id}`);
   const throughIncidents = incidentNodes.flatMap((incidentNode) =>
     relationshipRows(data, incidentNode)
-      .filter((row) => row.entity && row.entity.id !== entityId)
+      .filter((row) => row.entity && row.entity.id !== entityId && !directEntityIds.has(row.entity.id))
       .map((row) => ({
         href: linkForEntity(row.entity),
         label: row.entity.name,
