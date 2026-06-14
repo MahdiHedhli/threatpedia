@@ -308,6 +308,27 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any("expected maintainer-* or incident-* identifier" in error for error in errors))
 
+    def test_missing_attribution_link_fields_report_once(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        del incident["threat_actors"][0]["source_refs"]
+        del incident["campaigns"][0]["campaign_id"]
+        del incident["attribution_evidence"][0]["summary"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertEqual(
+            [error for error in errors if ".threat_actors[0].source_refs" in error],
+            [f"{incident['id']}.threat_actors[0].source_refs: missing required field"],
+        )
+        self.assertEqual(
+            [error for error in errors if ".campaigns[0].campaign_id" in error],
+            [f"{incident['id']}.campaigns[0].campaign_id: missing required field"],
+        )
+        self.assertEqual(
+            [error for error in errors if ".attribution_evidence[0].summary" in error],
+            [f"{incident['id']}.attribution_evidence[0].summary: missing required field"],
+        )
+
     def test_attribution_confidence_enum_is_enforced(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
         incident["attribution_confidence"] = "apt-score"

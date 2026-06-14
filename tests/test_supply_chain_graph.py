@@ -77,6 +77,55 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertEqual(actor["attribution_confidence"], "confirmed")
 
+    def test_actor_and_campaign_aliases_include_canonical_names(self) -> None:
+        actors: dict[str, dict] = {}
+        campaigns: dict[str, dict] = {}
+        actor_id = builder.upsert_actor(
+            actors,
+            {
+                "id": "actor-example",
+                "name": "Example Actor",
+                "actor_type": "public",
+                "confidence": "suspected",
+                "aliases": ["Alias Only"],
+                "href": "/threat-actors/example/",
+            },
+            "SC-2024-XZ-UTILS",
+        )
+        builder.upsert_actor(
+            actors,
+            {
+                "id": "actor-example",
+                "name": "Example Actor",
+                "actor_type": "public",
+                "confidence": "confirmed",
+                "aliases": ["Second Alias"],
+                "notes": "Later incident adds notes.",
+            },
+            "SC-2024-XZ-UTILS-SIBLING",
+        )
+        campaign_id = builder.upsert_campaign(
+            campaigns,
+            {
+                "id": "campaign-example",
+                "campaign_id": "TP-CAMP-2024-9999",
+                "name": "Example Campaign",
+                "slug": "example-campaign",
+                "aliases": ["Campaign Alias"],
+            },
+            "SC-2024-XZ-UTILS",
+        )
+
+        self.assertEqual(actor_id, "actor-example")
+        self.assertIn("Example Actor", actors["actor-example"]["aliases"])
+        self.assertIn("Second Alias", actors["actor-example"]["aliases"])
+        self.assertEqual(actors["actor-example"]["href"], "/threat-actors/example/")
+        self.assertEqual(actors["actor-example"]["notes"], "Later incident adds notes.")
+        self.assertEqual(actors["actor-example"]["attribution_confidence"], "confirmed")
+        self.assertEqual(campaign_id, "campaign-example")
+        self.assertIn("Example Campaign", campaigns["campaign-example"]["aliases"])
+        self.assertIn("TP-CAMP-2024-9999", campaigns["campaign-example"]["aliases"])
+
     def test_source_artifact_divergence_targets_distribution_channels(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))
         relationships = [

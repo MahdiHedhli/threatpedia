@@ -438,13 +438,16 @@ def validate_attribution_link(
     for field in required_fields:
         if field not in record:
             errors.append(f"{path}.{field}: missing required field")
-    require_string(errors, f"{path}.id", record.get("id"))
-    require_string(errors, f"{path}.name", record.get("name"))
-    if record.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
+    if "id" in record:
+        require_string(errors, f"{path}.id", record.get("id"))
+    if "name" in record:
+        require_string(errors, f"{path}.name", record.get("name"))
+    if "confidence" in record and record.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
         errors.append(f"{path}.confidence: invalid value {record.get('confidence')!r}")
-    validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
+    if "source_refs" in record:
+        validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
     if field_name == "threat_actors":
-        if record.get("actor_type") not in VALID_ACTOR_TYPES:
+        if "actor_type" in record and record.get("actor_type") not in VALID_ACTOR_TYPES:
             errors.append(f"{path}.actor_type: invalid value {record.get('actor_type')!r}")
         if isinstance(record.get("id"), str) and not record["id"].startswith("actor-"):
             errors.append(f"{path}.id: expected actor-* identifier")
@@ -459,8 +462,10 @@ def validate_attribution_link(
                     errors.append(f"{path}.entity_refs[{entity_index}]: expected maintainer-* or incident-* identifier")
         return ("ATTRIBUTED_TO_ACTOR", record.get("id")) if isinstance(record.get("id"), str) else None
     if field_name == "campaigns":
-        require_string(errors, f"{path}.campaign_id", record.get("campaign_id"))
-        require_string(errors, f"{path}.slug", record.get("slug"))
+        if "campaign_id" in record:
+            require_string(errors, f"{path}.campaign_id", record.get("campaign_id"))
+        if "slug" in record:
+            require_string(errors, f"{path}.slug", record.get("slug"))
         if isinstance(record.get("id"), str) and not record["id"].startswith("campaign-"):
             errors.append(f"{path}.id: expected campaign-* identifier")
         return ("RELATED_CAMPAIGN", record.get("id")) if isinstance(record.get("id"), str) else None
@@ -512,14 +517,18 @@ def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> 
         for field in REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS:
             if field not in record:
                 errors.append(f"{path}.{field}: missing required field")
-        require_string(errors, f"{path}.target", record.get("target"))
-        require_string(errors, f"{path}.summary", record.get("summary"), min_length=20)
-        relationship_type = record.get("relationship_type")
-        if relationship_type not in VALID_ATTRIBUTION_RELATIONSHIPS:
-            errors.append(f"{path}.relationship_type: invalid value {relationship_type!r}")
-        validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
-        if isinstance(record.get("target"), str) and isinstance(relationship_type, str):
-            seen_evidence.add((relationship_type, record["target"]))
+        if "target" in record:
+            require_string(errors, f"{path}.target", record.get("target"))
+        if "summary" in record:
+            require_string(errors, f"{path}.summary", record.get("summary"), min_length=20)
+        if "relationship_type" in record:
+            relationship_type = record.get("relationship_type")
+            if relationship_type not in VALID_ATTRIBUTION_RELATIONSHIPS:
+                errors.append(f"{path}.relationship_type: invalid value {relationship_type!r}")
+        if "source_refs" in record:
+            validate_reference_id_list(errors, incident_id, f"{path}.source_refs", record.get("source_refs"), valid_reference_ids)
+        if isinstance(record.get("target"), str) and isinstance(record.get("relationship_type"), str):
+            seen_evidence.add((record["relationship_type"], record["target"]))
 
     for relationship_type, target in sorted(expected_evidence - seen_evidence):
         errors.append(f"{incident_id}.attribution_evidence: missing {relationship_type} evidence for {target}")
