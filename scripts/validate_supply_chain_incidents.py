@@ -455,6 +455,8 @@ def validate_attribution_link(
             for entity_index, entity_ref in enumerate(entity_refs):
                 if not isinstance(entity_ref, str) or not entity_ref.strip():
                     errors.append(f"{path}.entity_refs[{entity_index}]: expected non-empty string")
+                elif not (entity_ref.startswith("maintainer-") or entity_ref.startswith("incident-")):
+                    errors.append(f"{path}.entity_refs[{entity_index}]: expected maintainer-* or incident-* identifier")
         return ("ATTRIBUTED_TO_ACTOR", record.get("id")) if isinstance(record.get("id"), str) else None
     if field_name == "campaigns":
         require_string(errors, f"{path}.campaign_id", record.get("campaign_id"))
@@ -521,6 +523,8 @@ def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> 
 
     for relationship_type, target in sorted(expected_evidence - seen_evidence):
         errors.append(f"{incident_id}.attribution_evidence: missing {relationship_type} evidence for {target}")
+    for relationship_type, target in sorted(seen_evidence - expected_evidence):
+        errors.append(f"{incident_id}.attribution_evidence: unexpected {relationship_type} evidence for {target} without matching link")
 
 
 def validate_incident(incident: Any) -> list[str]:
