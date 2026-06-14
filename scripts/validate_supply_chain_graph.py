@@ -225,12 +225,27 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    relationship_keys = {
+        (relationship.get("source"), relationship.get("target"), relationship.get("type"))
+        for relationship in relationships
+        if isinstance(relationship, dict)
+    }
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
         source = incident_node_id(incident["id"])
         if incident.get("source_artifact_divergence") is True and (source, "SOURCE_ARTIFACT_DIVERGENCE") not in relationships_by_source_type:
             errors.append(f"{source}: missing SOURCE_ARTIFACT_DIVERGENCE relationship")
+        for actor in incident.get("threat_actors") or []:
+            if isinstance(actor, dict) and isinstance(actor.get("id"), str):
+                key = (source, actor["id"], "ATTRIBUTED_TO_ACTOR")
+                if key not in relationship_keys:
+                    errors.append(f"{source}: missing ATTRIBUTED_TO_ACTOR relationship for {actor['id']}")
+        for campaign in incident.get("campaigns") or []:
+            if isinstance(campaign, dict) and isinstance(campaign.get("id"), str):
+                key = (source, campaign["id"], "RELATED_CAMPAIGN")
+                if key not in relationship_keys:
+                    errors.append(f"{source}: missing RELATED_CAMPAIGN relationship for {campaign['id']}")
     return errors
 
 
