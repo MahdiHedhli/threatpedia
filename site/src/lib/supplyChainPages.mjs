@@ -272,8 +272,7 @@ function entityConnectionsFor(data, entityId) {
       id: row.entity.id,
       type: row.type,
       entityType: entityTypeLabel(row.entity),
-    }))
-    .filter((item) => item.href);
+    }));
 
   const incidentNodes = relationshipRows(data, entityId)
     .filter((row) => row.incident)
@@ -289,7 +288,6 @@ function entityConnectionsFor(data, entityId) {
         entityType: entityTypeLabel(row.entity),
         context: data.incidentByNodeId.get(incidentNode)?.title,
       }))
-      .filter((item) => item.href)
   );
 
   return dedupeRows([...direct, ...throughIncidents]).sort(compareLabel);

@@ -66,6 +66,17 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("actor-lazarus-group", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
 
+    def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
+        corpus = copy.deepcopy(load_json(CORPUS_PATH))
+        first = next(item for item in corpus if item["id"] == "SC-2024-XZ-UTILS")
+        second = copy.deepcopy(first)
+        second["id"] = "SC-2024-XZ-UTILS-SIBLING"
+        second["threat_actors"][0]["confidence"] = "confirmed"
+        graph = builder.build_graph([first, second])
+        actor = next(entity for entity in graph["actors"] if entity["id"] == "actor-unc-xz-utils-operator")
+
+        self.assertEqual(actor["attribution_confidence"], "confirmed")
+
     def test_source_artifact_divergence_targets_distribution_channels(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))
         relationships = [

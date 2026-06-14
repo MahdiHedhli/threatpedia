@@ -292,6 +292,22 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any("unknown reference ID 'ref-missing'" in error for error in errors))
         self.assertTrue(any("missing ATTRIBUTED_TO_ACTOR evidence" in error for error in errors))
 
+    def test_attribution_evidence_cannot_be_orphaned(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2024-XZ-UTILS"))
+        incident["threat_actors"] = []
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any("unexpected ATTRIBUTED_TO_ACTOR evidence" in error for error in errors))
+
+    def test_actor_entity_refs_are_bounded_to_incident_or_maintainer_nodes(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2024-XZ-UTILS"))
+        incident["threat_actors"][0]["entity_refs"] = ["pkg-npm-event-stream"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any("expected maintainer-* or incident-* identifier" in error for error in errors))
+
     def test_attribution_confidence_enum_is_enforced(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
         incident["attribution_confidence"] = "apt-score"

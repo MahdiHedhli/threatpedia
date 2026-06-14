@@ -71,6 +71,13 @@ GITHUB_SYSTEM_PATHS = {
     "topics",
     "trending",
 }
+ATTRIBUTION_CONFIDENCE_PRIORITY = {
+    "confirmed": 4,
+    "likely": 3,
+    "suspected": 2,
+    "disputed": 1,
+    "unknown": 0,
+}
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -282,6 +289,11 @@ def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incide
         },
     )
     entity["aliases"] = sorted(set(entity.get("aliases", []) + (item.get("aliases") or [item["name"]])))
+    if ATTRIBUTION_CONFIDENCE_PRIORITY.get(item["confidence"], 0) > ATTRIBUTION_CONFIDENCE_PRIORITY.get(
+        entity["attribution_confidence"],
+        0,
+    ):
+        entity["attribution_confidence"] = item["confidence"]
     add_source(entity, incident_id)
     return entity_id
 

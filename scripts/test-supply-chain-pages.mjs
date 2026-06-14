@@ -189,6 +189,14 @@ assert.equal(
 assert.ok(eventStreamPackage.seo.ogTitle, 'entity page should include Open Graph title');
 assert.ok(eventStreamPackage.seo.jsonLd, 'entity page should include JSON-LD');
 
+const jiaTanMaintainer = getSupplyChainEntityPage('maintainers', 'maintainer-jia-tan', data);
+assert.ok(
+  jiaTanMaintainer.connectedEntities.some(
+    (entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor' && entity.href === null
+  ),
+  'maintainer page should surface provisional actor connections even without a public actor route'
+);
+
 const brokenData = {
   ...data,
   relationships: data.relationships.map((relationship, index) =>
