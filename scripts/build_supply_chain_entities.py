@@ -285,8 +285,6 @@ def upsert_actor(actors: dict[str, dict[str, Any]], item: dict[str, Any], incide
             "attribution_confidence": item["confidence"],
             "aliases": sorted(set(item_aliases)),
             "source_incident_ids": [],
-            **({"href": item["href"]} if item.get("href") else {}),
-            **({"notes": item["notes"]} if item.get("notes") else {}),
         },
     )
     entity["aliases"] = sorted(set(entity.get("aliases", []) + item_aliases))
