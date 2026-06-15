@@ -40,6 +40,7 @@ jobs:
           python3 -m py_compile \
             scripts/supply_chain_purl.py \
             scripts/build_supply_chain_entities.py \
+            scripts/audit_supply_chain_purls_edges.py \
             scripts/validate_supply_chain_incidents.py \
             scripts/validate_supply_chain_graph.py
 
@@ -49,8 +50,11 @@ jobs:
       - name: Validate graph primitives
         run: python3 scripts/validate_supply_chain_graph.py
 
+      - name: Audit PURLs and graph edges
+        run: python3 scripts/audit_supply_chain_purls_edges.py
+
       - name: Run supply-chain unit tests
-        run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py
+        run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py tests/test_supply_chain_purl_edge_audit.py
 
       - name: Run page model test
         run: node scripts/test-supply-chain-pages.mjs
