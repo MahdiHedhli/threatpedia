@@ -83,12 +83,12 @@ def split_references_by_replay_date(
     if not isinstance(references, list):
         return available, later, undated
 
-    for reference in references:
+    for index, reference in enumerate(references):
         if not isinstance(reference, dict):
             continue
         reference_id = reference.get("id")
         if not isinstance(reference_id, str) or not reference_id:
-            continue
+            reference_id = f"references[{index}]"
         published_at = parse_date(reference.get("published_at"))
         if replay_date is None or published_at is None:
             undated.append(reference_id)
@@ -142,18 +142,28 @@ def build_timeline(incident: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_backtest(corpus: list[dict[str, Any]], incident_ids: tuple[str, ...] = DEFAULT_INCIDENT_IDS) -> dict[str, Any]:
-    incidents_by_id = {incident.get("id"): incident for incident in corpus if isinstance(incident, dict)}
+def build_backtest(corpus: Any, incident_ids: tuple[str, ...] = DEFAULT_INCIDENT_IDS) -> dict[str, Any]:
+    input_errors = []
+    if not isinstance(corpus, list):
+        input_errors.append("corpus: expected array")
+        corpus = []
+
+    incidents_by_id = {
+        incident.get("id"): incident
+        for incident in corpus
+        if isinstance(incident, dict) and isinstance(incident.get("id"), str)
+    }
     missing_ids = [incident_id for incident_id in incident_ids if incident_id not in incidents_by_id]
     timelines = [build_timeline(incidents_by_id[incident_id]) for incident_id in incident_ids if incident_id in incidents_by_id]
 
     return {
-        "status": "PASS" if not missing_ids else "FAIL",
+        "status": "PASS" if not missing_ids and not input_errors else "FAIL",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "model": "stored-fields-only",
         "non_goals": ["scoring", "risk_engine", "automated_attribution", "ai_inference"],
         "incident_ids": list(incident_ids),
         "missing_incident_ids": missing_ids,
+        "input_errors": input_errors,
         "timelines": timelines,
     }
 

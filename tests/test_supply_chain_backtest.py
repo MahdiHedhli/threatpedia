@@ -1,26 +1,20 @@
 from __future__ import annotations
 
 import copy
-import importlib.util
 import json
 from pathlib import Path
+import sys
 import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
+SCRIPT_DIR = REPO_ROOT / "scripts"
 
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 
-def load_module(name: str, path: Path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"failed to load {path}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-backtest = load_module("supply_chain_backtest", REPO_ROOT / "scripts" / "supply_chain_backtest.py")
+import supply_chain_backtest as backtest
 
 
 def load_json(path: Path):
@@ -80,6 +74,28 @@ class SupplyChainBacktestTests(unittest.TestCase):
         self.assertEqual(timeline["publish_date"], "2021-11-01")
         self.assertIn("ref-socket-boltdb-go", timeline["available_at_the_time"]["reference_ids"])
         self.assertIn("ref-post-disclosure-analysis", timeline["later_discovered_evidence"]["reference_ids"])
+
+    def test_references_without_ids_are_not_silently_dropped(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        event_stream = copy.deepcopy(next(item for item in corpus if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        event_stream["references"].append(
+            {
+                "title": "Undated reference without ID",
+                "publisher": "Researcher",
+                "url": "https://example.com/no-id",
+                "published_at": None,
+            }
+        )
+
+        timeline = backtest.build_timeline(event_stream)
+
+        self.assertIn("references[1]", timeline["undated_evidence"]["reference_ids"])
+
+    def test_non_array_corpus_fails_without_crashing(self) -> None:
+        report = backtest.build_backtest({"not": "an array"}, ("SC-2024-XZ-UTILS",))
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertEqual(report["input_errors"], ["corpus: expected array"])
 
     def test_missing_required_replay_incident_fails(self) -> None:
         report = backtest.build_backtest([], ("SC-2024-XZ-UTILS",))
