@@ -4,6 +4,7 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
@@ -36,6 +37,8 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["invalid_purls"], [])
         self.assertEqual(report["dangling_actor_edges"], [])
         self.assertEqual(report["dangling_campaign_edges"], [])
+        self.assertEqual(report["dangling_package_edges"], [])
+        self.assertEqual(report["dangling_release_edges"], [])
         self.assertEqual(len(report["generic_purl_exceptions"]), 1)
 
     def test_package_and_release_purl_checks_detect_failures(self) -> None:
@@ -56,6 +59,23 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
             "missing",
         )
 
+    def test_malformed_package_and_release_rows_fail_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            packages = audit.load_json(entity_dir / "packages.json")
+            releases = audit.load_json(entity_dir / "releases.json")
+            packages.append("not-an-object")
+            releases.append("not-an-object")
+            (entity_dir / "packages.json").write_text(json.dumps(packages), encoding="utf-8")
+            (entity_dir / "releases.json").write_text(json.dumps(releases), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("packages[" in error and "expected object" in error for error in report["invalid_purls"]))
+        self.assertTrue(any("releases[" in error and "expected object" in error for error in report["invalid_purls"]))
+
     def test_dangling_cross_corpus_edge_fails_audit(self) -> None:
         relationships = audit.load_json(RELATIONSHIP_PATH)
         broken_relationships = copy.deepcopy(relationships)
@@ -74,6 +94,38 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
 
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("actor-does-not-exist" in error for error in report["dangling_actor_edges"]))
+
+    def test_dangling_package_and_release_edges_fail_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.extend(
+            [
+                {
+                    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                    "target": "pkg-does-not-exist",
+                    "type": "AFFECTED_PACKAGE",
+                },
+                {
+                    "source": "pkg-does-not-exist",
+                    "target": "release-npm-flatmap-stream-0-1-1",
+                    "type": "PACKAGE_RELEASE",
+                },
+                {
+                    "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                    "target": "release-does-not-exist",
+                    "type": "INCIDENT_AFFECTED_RELEASE",
+                },
+            ]
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("pkg-does-not-exist" in error for error in report["dangling_package_edges"]))
+        self.assertTrue(any("release-does-not-exist" in error for error in report["dangling_release_edges"]))
 
 
 if __name__ == "__main__":

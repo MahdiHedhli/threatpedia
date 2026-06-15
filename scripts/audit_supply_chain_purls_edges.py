@@ -27,10 +27,14 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def canonical_package_result(package: dict[str, Any]) -> tuple[str, str] | None:
+def canonical_package_result(package: Any, index: int | None = None) -> tuple[str, str] | None:
+    label = f"packages[{index}]" if index is not None else "package"
+    if not isinstance(package, dict):
+        return ("invalid", f"{label}: expected object")
+    package_id = package.get("id", "<missing-id>")
     package_url = package.get("package_url")
     if not isinstance(package_url, str) or not package_url.strip():
-        return ("missing", f"{package.get('id', '<missing-id>')}: missing package_url")
+        return ("missing", f"{package_id}: missing package_url")
     try:
         canonical = canonicalize_purl(
             package_url,
@@ -38,18 +42,22 @@ def canonical_package_result(package: dict[str, Any]) -> tuple[str, str] | None:
             package_name=package.get("name"),
         )
     except PurlError as exc:
-        return ("invalid", f"{package.get('id', '<missing-id>')}: invalid package_url: {exc}")
+        return ("invalid", f"{package_id}: invalid package_url: {exc}")
     if canonical != package_url:
-        return ("invalid", f"{package.get('id', '<missing-id>')}: non-canonical package_url, expected {canonical}")
+        return ("invalid", f"{package_id}: non-canonical package_url, expected {canonical}")
     if parse_purl(canonical).type == "generic":
-        return ("generic_exception", f"{package.get('id', '<missing-id>')}: generic package_url is justified but not release-spine joinable")
+        return ("generic_exception", f"{package_id}: generic package_url is justified but not release-spine joinable")
     return None
 
 
-def canonical_release_result(release: dict[str, Any]) -> tuple[str, str] | None:
+def canonical_release_result(release: Any, index: int | None = None) -> tuple[str, str] | None:
+    label = f"releases[{index}]" if index is not None else "release"
+    if not isinstance(release, dict):
+        return ("invalid", f"{label}: expected object")
+    release_id = release.get("id", "<missing-id>")
     purl = release.get("purl")
     if not isinstance(purl, str) or not purl.strip():
-        return ("missing", f"{release.get('id', '<missing-id>')}: missing purl")
+        return ("missing", f"{release_id}: missing purl")
     try:
         canonical = canonicalize_purl(
             purl,
@@ -57,14 +65,14 @@ def canonical_release_result(release: dict[str, Any]) -> tuple[str, str] | None:
             package_name=release.get("package_name"),
         )
     except PurlError as exc:
-        return ("invalid", f"{release.get('id', '<missing-id>')}: invalid purl: {exc}")
+        return ("invalid", f"{release_id}: invalid purl: {exc}")
     parsed = parse_purl(canonical)
     if canonical != purl:
-        return ("invalid", f"{release.get('id', '<missing-id>')}: non-canonical purl, expected {canonical}")
+        return ("invalid", f"{release_id}: non-canonical purl, expected {canonical}")
     if not parsed.version:
-        return ("missing", f"{release.get('id', '<missing-id>')}: missing PURL version")
+        return ("missing", f"{release_id}: missing PURL version")
     if parsed.type == "generic":
-        return ("invalid", f"{release.get('id', '<missing-id>')}: generic release PURL is not joinable")
+        return ("invalid", f"{release_id}: generic release PURL is not joinable")
     return None
 
 
@@ -78,8 +86,8 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     purl_results = [
         result
         for result in (
-            [canonical_package_result(package) for package in packages]
-            + [canonical_release_result(release) for release in releases]
+            [canonical_package_result(package, index) for index, package in enumerate(packages)]
+            + [canonical_release_result(release, index) for index, release in enumerate(releases)]
         )
         if result is not None
     ]
@@ -91,19 +99,44 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     campaign_ids = {
         campaign["id"] for campaign in campaigns if isinstance(campaign, dict) and isinstance(campaign.get("id"), str)
     }
+    package_ids = {
+        package["id"] for package in packages if isinstance(package, dict) and isinstance(package.get("id"), str)
+    }
+    release_ids = {
+        release["id"] for release in releases if isinstance(release, dict) and isinstance(release.get("id"), str)
+    }
     dangling_actor_edges = []
     dangling_campaign_edges = []
+    dangling_package_edges = []
+    dangling_release_edges = []
     for index, relationship in enumerate(relationships):
         if not isinstance(relationship, dict):
             continue
         rel_type = relationship.get("type")
+        source = relationship.get("source")
         target = relationship.get("target")
         if rel_type == "ATTRIBUTED_TO_ACTOR" and target not in actor_ids:
             dangling_actor_edges.append(f"relationships[{index}]: missing actor target {target!r}")
         if rel_type == "RELATED_CAMPAIGN" and target not in campaign_ids:
             dangling_campaign_edges.append(f"relationships[{index}]: missing campaign target {target!r}")
+        if rel_type == "AFFECTED_PACKAGE" and target not in package_ids:
+            dangling_package_edges.append(f"relationships[{index}]: missing package target {target!r}")
+        if rel_type == "PACKAGE_RELEASE":
+            if source not in package_ids:
+                dangling_package_edges.append(f"relationships[{index}]: missing package source {source!r}")
+            if target not in release_ids:
+                dangling_release_edges.append(f"relationships[{index}]: missing release target {target!r}")
+        if rel_type == "INCIDENT_AFFECTED_RELEASE" and target not in release_ids:
+            dangling_release_edges.append(f"relationships[{index}]: missing release target {target!r}")
 
-    failures = missing_purls + invalid_purls + dangling_actor_edges + dangling_campaign_edges
+    failures = (
+        missing_purls
+        + invalid_purls
+        + dangling_actor_edges
+        + dangling_campaign_edges
+        + dangling_package_edges
+        + dangling_release_edges
+    )
     return {
         "status": "PASS" if not failures else "FAIL",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
@@ -114,6 +147,8 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         "generic_purl_exceptions": generic_exceptions,
         "dangling_actor_edges": dangling_actor_edges,
         "dangling_campaign_edges": dangling_campaign_edges,
+        "dangling_package_edges": dangling_package_edges,
+        "dangling_release_edges": dangling_release_edges,
         "failures": failures,
     }
 
@@ -141,6 +176,8 @@ def render_report(audit: dict[str, Any]) -> str:
             f"- Generic PURL exceptions: {len(audit['generic_purl_exceptions'])}",
             f"- Dangling actor edges: {len(audit['dangling_actor_edges'])}",
             f"- Dangling campaign edges: {len(audit['dangling_campaign_edges'])}",
+            f"- Dangling package edges: {len(audit['dangling_package_edges'])}",
+            f"- Dangling release edges: {len(audit['dangling_release_edges'])}",
             "",
             "## Missing PURLs",
             "",
@@ -162,6 +199,14 @@ def render_report(audit: dict[str, Any]) -> str:
             "",
             bullet_list(audit["dangling_campaign_edges"]).rstrip(),
             "",
+            "## Dangling Package Edges",
+            "",
+            bullet_list(audit["dangling_package_edges"]).rstrip(),
+            "",
+            "## Dangling Release Edges",
+            "",
+            bullet_list(audit["dangling_release_edges"]).rstrip(),
+            "",
         ]
     )
 
@@ -180,7 +225,9 @@ def main(argv: list[str] | None = None) -> int:
         f"packages={audit['package_count']} releases={audit['release_count']} "
         f"missing_purls={len(audit['missing_purls'])} invalid_purls={len(audit['invalid_purls'])} "
         f"dangling_actor_edges={len(audit['dangling_actor_edges'])} "
-        f"dangling_campaign_edges={len(audit['dangling_campaign_edges'])}"
+        f"dangling_campaign_edges={len(audit['dangling_campaign_edges'])} "
+        f"dangling_package_edges={len(audit['dangling_package_edges'])} "
+        f"dangling_release_edges={len(audit['dangling_release_edges'])}"
     )
     return 0 if audit["status"] == "PASS" else 1
 
