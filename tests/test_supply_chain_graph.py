@@ -31,7 +31,10 @@ def load_json(path: Path):
 
 
 def find_entity(entities: list[dict], entity_id: str) -> dict:
-    return next(entity for entity in entities if entity["id"] == entity_id)
+    for entity in entities:
+        if entity.get("id") == entity_id:
+            return entity
+    raise ValueError(f"entity not found: {entity_id}")
 
 
 class SupplyChainGraphTests(unittest.TestCase):
@@ -192,7 +195,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         second["id"] = "SC-2024-XZ-UTILS-SIBLING"
         second["threat_actors"][0]["confidence"] = "confirmed"
         graph = builder.build_graph([first, second])
-        actor = next(entity for entity in graph["actors"] if entity["id"] == "actor-unc-xz-utils-operator")
+        actor = find_entity(graph["actors"], "actor-unc-xz-utils-operator")
 
         self.assertEqual(actor["attribution_confidence"], "confirmed")
 
@@ -357,9 +360,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
-        flatmap_release = next(entity for entity in entities_by_type["releases"] if entity["id"] == "release-npm-flatmap-stream-0-1-1")
-        ua_parser_release = next(entity for entity in entities_by_type["releases"] if entity["id"] == "release-npm-ua-parser-js-0-7-29")
-        tinycolor_release = next(entity for entity in entities_by_type["releases"] if entity["id"] == "release-npm-ctrl-tinycolor-4-1-1")
+        flatmap_release = find_entity(entities_by_type["releases"], "release-npm-flatmap-stream-0-1-1")
+        ua_parser_release = find_entity(entities_by_type["releases"], "release-npm-ua-parser-js-0-7-29")
+        tinycolor_release = find_entity(entities_by_type["releases"], "release-npm-ctrl-tinycolor-4-1-1")
         flatmap_release["purl"] = "pkg:npm/flatmap-stream"
         ua_parser_release["published_at"] = "2021-99-99"
         del tinycolor_release["disclosed_at"]
@@ -453,7 +456,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
         entities_by_type["maintainers"] = copy.deepcopy(entities_by_type["maintainers"])
-        maintainer = next(entity for entity in entities_by_type["maintainers"] if entity["id"] == "maintainer-dominictarr")
+        maintainer = find_entity(entities_by_type["maintainers"], "maintainer-dominictarr")
         del maintainer["onboarding_date"]
         maintainer["first_publish_date"] = "2018-99-99"
         maintainer["repositories"] = ["pkg-not-a-repository"]
