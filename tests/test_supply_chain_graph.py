@@ -55,8 +55,12 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
+        self.assertIn("pkg-npm-ctrl-tinycolor", package_ids)
+        self.assertIn("pkg-golang-github-com-boltdb-go-bolt", package_ids)
         self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
         self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
+        self.assertIn("release-npm-ctrl-tinycolor-4-1-1", release_ids)
+        self.assertIn("release-golang-github-com-boltdb-go-bolt-v1-3-1", release_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
         self.assertIn("maintainer-dominictarr", maintainer_ids)
         self.assertIn("org-codecov", organization_ids)
@@ -67,6 +71,8 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("account-npm-eslint-scope-npm-maintainer-account", account_ids)
         self.assertIn("actor-unc-xz-utils-operator", actor_ids)
         self.assertIn("actor-lazarus-group", actor_ids)
+        self.assertIn("actor-shai-hulud-operator", actor_ids)
+        self.assertIn("actor-boltdb-go-operator", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
         self.assertIn(
             {
@@ -246,8 +252,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
-        entities_by_type["releases"][0]["purl"] = "pkg:npm/flatmap-stream"
-        entities_by_type["releases"][1]["published_at"] = "2021-99-99"
+        flatmap_release = next(entity for entity in entities_by_type["releases"] if entity["id"] == "release-npm-flatmap-stream-0-1-1")
+        ua_parser_release = next(entity for entity in entities_by_type["releases"] if entity["id"] == "release-npm-ua-parser-js-0-7-29")
+        flatmap_release["purl"] = "pkg:npm/flatmap-stream"
+        ua_parser_release["published_at"] = "2021-99-99"
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 

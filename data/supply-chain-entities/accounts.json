@@ -2,6 +2,19 @@
   {
     "account_type": "source_control_account",
     "aliases": [
+      "boltdb-go GitHub account"
+    ],
+    "id": "account-github-boltdb-go-github-account",
+    "name": "boltdb-go GitHub account",
+    "provider": "GitHub",
+    "role": "source_repository_owner",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
       "tj-actions GitHub Action release path"
     ],
     "id": "account-github-tj-actions-github-action-release-path",
@@ -10,6 +23,32 @@
     "role": "action_release",
     "source_incident_ids": [
       "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "victim GitHub tokens"
+    ],
+    "id": "account-github-victim-github-tokens",
+    "name": "victim GitHub tokens",
+    "provider": "GitHub",
+    "role": "workflow_secret_access",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "compromised npm maintainer tokens"
+    ],
+    "id": "account-npm-compromised-npm-maintainer-tokens",
+    "name": "compromised npm maintainer tokens",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {

@@ -33,6 +33,7 @@
     "provider": "GitHub",
     "source_incident_ids": [
       "SC-2024-ULTRALYTICS-PYPI",
+      "SC-2025-NPM-SHAI-HULUD",
       "SC-2025-TJ-ACTIONS-CHANGED-FILES"
     ]
   },

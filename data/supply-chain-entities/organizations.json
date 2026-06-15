@@ -21,12 +21,32 @@
   },
   {
     "aliases": [
+      "boltdb-go"
+    ],
+    "id": "org-boltdb-go",
+    "name": "boltdb-go",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
       "Codecov"
     ],
     "id": "org-codecov",
     "name": "Codecov",
     "source_incident_ids": [
       "SC-2021-CODECOV-BASH-UPLOADER"
+    ]
+  },
+  {
+    "aliases": [
+      "ctrl"
+    ],
+    "id": "org-ctrl",
+    "name": "ctrl",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {
@@ -127,6 +147,16 @@
     "name": "PyTorch",
     "source_incident_ids": [
       "SC-2022-PYTORCH-NIGHTLY"
+    ]
+  },
+  {
+    "aliases": [
+      "rxnt"
+    ],
+    "id": "org-rxnt",
+    "name": "rxnt",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {

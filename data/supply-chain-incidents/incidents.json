@@ -2424,5 +2424,300 @@
         "role": "action_release"
       }
     ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2025-NPM-SHAI-HULUD",
+    "title": "Shai-Hulud npm self-propagating package compromise",
+    "summary": "The Shai-Hulud campaign compromised npm packages with credential-harvesting malware that used stolen npm tokens to publish malicious versions of additional packages.",
+    "status": "confirmed",
+    "first_observed_at": "2025-09-15",
+    "first_public_warning_at": "2025-09-15",
+    "disclosed_at": "2025-09-16",
+    "affected_ecosystems": [
+      "npm",
+      "github-actions",
+      "ci-cd"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "@ctrl/tinycolor",
+        "vendor": "ctrl",
+        "package_url": "pkg:npm/%40ctrl/tinycolor"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "rxnt-authentication",
+        "vendor": "rxnt",
+        "package_url": "pkg:npm/rxnt-authentication"
+      }
+    ],
+    "releases": [
+      {
+        "package_name": "@ctrl/tinycolor",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40ctrl/tinycolor@4.1.1",
+        "version": "4.1.1",
+        "published_at": "2025-09-15",
+        "malicious_range": "4.1.1",
+        "references": [
+          "ref-wiz-shai-hulud",
+          "ref-npm-tinycolor-registry"
+        ],
+        "disclosed_at": "2025-09-16"
+      },
+      {
+        "package_name": "@ctrl/tinycolor",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/%40ctrl/tinycolor@4.1.2",
+        "version": "4.1.2",
+        "published_at": "2025-09-15",
+        "malicious_range": "4.1.2",
+        "references": [
+          "ref-wiz-shai-hulud",
+          "ref-npm-tinycolor-registry"
+        ],
+        "disclosed_at": "2025-09-16"
+      }
+    ],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise",
+      "ci_cd_action_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-stepsecurity-shai-hulud",
+        "title": "Shai-Hulud: Self-Replicating Worm Compromises 500+ NPM Packages",
+        "publisher": "StepSecurity",
+        "url": "https://www.stepsecurity.io/blog/ctrl-tinycolor-and-40-npm-packages-compromised",
+        "published_at": "2025-09-15"
+      },
+      {
+        "id": "ref-wiz-shai-hulud",
+        "title": "Shai-Hulud: Ongoing Package Supply Chain Worm Delivering Data-Stealing Malware",
+        "publisher": "Wiz",
+        "url": "https://www.wiz.io/blog/shai-hulud-npm-supply-chain-attack",
+        "published_at": "2025-09-16"
+      },
+      {
+        "id": "ref-npm-tinycolor-registry",
+        "title": "@ctrl/tinycolor npm registry metadata",
+        "publisher": "npm",
+        "url": "https://registry.npmjs.org/@ctrl%2ftinycolor",
+        "published_at": "2025-09-15"
+      }
+    ],
+    "tags": [
+      "npm",
+      "self-propagating",
+      "credential-theft",
+      "github-actions"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Modeled with @ctrl/tinycolor release dates confirmed from npm registry metadata and broader package scope from StepSecurity/Wiz reporting.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "GitHub Actions workflow",
+        "channel_type": "ci_cd_workflow",
+        "ecosystem": "github-actions"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "compromised npm maintainer tokens",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      },
+      {
+        "name": "victim GitHub tokens",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "workflow_secret_access"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-shai-hulud-operator",
+        "name": "Shai-Hulud operator",
+        "actor_type": "provisional",
+        "confidence": "suspected",
+        "aliases": [
+          "Shai-Hulud operator"
+        ],
+        "notes": "Provisional operator node for the self-propagating npm campaign; no public APT or nation-state label is asserted.",
+        "source_refs": [
+          "ref-stepsecurity-shai-hulud",
+          "ref-wiz-shai-hulud"
+        ]
+      }
+    ],
+    "attribution_confidence": "suspected",
+    "attribution_evidence": [
+      {
+        "target": "actor-shai-hulud-operator",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-stepsecurity-shai-hulud",
+          "ref-wiz-shai-hulud"
+        ],
+        "summary": "Public reporting supports a coherent Shai-Hulud operator/campaign behavior, but this corpus does not assign a named APT or state sponsor."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "title": "Go BoltDB typosquat module proxy backdoor",
+    "summary": "Socket researchers disclosed a backdoored Go module typosquatting BoltDB that persisted through Go Module Proxy caching even after the source repository tag was changed.",
+    "status": "confirmed",
+    "first_observed_at": "2021-11-01",
+    "first_public_warning_at": "2025-02-04",
+    "disclosed_at": "2025-02-04",
+    "affected_ecosystems": [
+      "golang",
+      "go-module-proxy",
+      "github"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "golang",
+        "name": "github.com/boltdb-go/bolt",
+        "vendor": "boltdb-go",
+        "package_url": "pkg:golang/github.com/boltdb-go/bolt"
+      }
+    ],
+    "releases": [
+      {
+        "package_name": "github.com/boltdb-go/bolt",
+        "ecosystem": "golang",
+        "purl": "pkg:golang/github.com/boltdb-go/bolt@v1.3.1",
+        "version": "v1.3.1",
+        "published_at": "2021-11-01",
+        "malicious_range": "v1.3.1",
+        "references": [
+          "ref-socket-boltdb-go"
+        ],
+        "disclosed_at": "2025-02-04"
+      }
+    ],
+    "supply_chain_vectors": [
+      "package_repository_compromise",
+      "source_repository_compromise"
+    ],
+    "impact_categories": [
+      "backdoor",
+      "developer_workstation_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-socket-boltdb-go",
+        "title": "Go Supply Chain Attack: Malicious Package Exploits Go Module Proxy Caching for Persistence",
+        "publisher": "Socket",
+        "url": "https://socket.dev/blog/malicious-package-exploits-go-module-proxy-caching-for-persistence",
+        "published_at": "2025-02-04"
+      },
+      {
+        "id": "ref-go-sum-boltdb-go",
+        "title": "Go checksum database lookup for github.com/boltdb-go/bolt v1.3.1",
+        "publisher": "sum.golang.org",
+        "url": "https://sum.golang.org/lookup/github.com/boltdb-go/bolt@v1.3.1",
+        "published_at": "2025-02-04"
+      }
+    ],
+    "tags": [
+      "golang",
+      "typosquat",
+      "module-proxy",
+      "backdoor"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "dependency_resolution",
+    "source_artifact_divergence": true,
+    "notes": "Socket reports the malicious v1.3.1 module was uploaded to the Go Module Proxy in November 2021; this record uses 2021-11-01 as a month-level publish anchor for replay rather than asserting day precision.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "boltdb-go/bolt",
+        "host": "github.com",
+        "owner": "boltdb-go",
+        "url": "https://github.com/boltdb-go/bolt"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Go Module Proxy",
+        "channel_type": "package_registry",
+        "ecosystem": "golang"
+      },
+      {
+        "name": "GitHub repository",
+        "channel_type": "source_repository",
+        "ecosystem": "github"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "boltdb-go GitHub account",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "source_repository_owner"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-boltdb-go-operator",
+        "name": "boltdb-go operator",
+        "actor_type": "provisional",
+        "confidence": "suspected",
+        "aliases": [
+          "boltdb-go"
+        ],
+        "notes": "Provisional operator node for the GitHub alias used to distribute the backdoored Go typosquat; no public APT or nation-state label is asserted.",
+        "source_refs": [
+          "ref-socket-boltdb-go"
+        ]
+      }
+    ],
+    "attribution_confidence": "suspected",
+    "attribution_evidence": [
+      {
+        "target": "actor-boltdb-go-operator",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-socket-boltdb-go"
+        ],
+        "summary": "Socket identifies the boltdb-go GitHub alias as the distribution identity for the typosquat; Threatpedia models it as a provisional operator without broader attribution."
+      }
+    ]
   }
 ]

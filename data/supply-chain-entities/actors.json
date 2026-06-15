@@ -15,6 +15,20 @@
     ]
   },
   {
+    "actor_type": "provisional",
+    "aliases": [
+      "boltdb-go",
+      "boltdb-go operator"
+    ],
+    "attribution_confidence": "suspected",
+    "id": "actor-boltdb-go-operator",
+    "name": "boltdb-go operator",
+    "notes": "Provisional operator node for the GitHub alias used to distribute the backdoored Go typosquat; no public APT or nation-state label is asserted.",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
     "actor_type": "public",
     "aliases": [
       "Lazarus Group",
@@ -40,6 +54,19 @@
     "name": "Sandworm",
     "source_incident_ids": [
       "SC-2017-NOTPETYA-MEDOC"
+    ]
+  },
+  {
+    "actor_type": "provisional",
+    "aliases": [
+      "Shai-Hulud operator"
+    ],
+    "attribution_confidence": "suspected",
+    "id": "actor-shai-hulud-operator",
+    "name": "Shai-Hulud operator",
+    "notes": "Provisional operator node for the self-propagating npm campaign; no public APT or nation-state label is asserted.",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {
