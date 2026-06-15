@@ -226,7 +226,10 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
-        self.assertTrue(any(".maintainers[0].id_slug: expected non-empty string" in error for error in errors))
+        self.assertEqual(
+            [error for error in errors if ".maintainers[0].id_slug" in error],
+            [f"{incident['id']}.maintainers[0].id_slug: missing required field"],
+        )
         self.assertTrue(any(".maintainers[1].first_publish_date: expected YYYY-MM-DD date or null" in error for error in errors))
         self.assertTrue(any(".maintainers[1].repositories[0]: expected repo-* entity id" in error for error in errors))
         self.assertTrue(any(".maintainers[1].account_ids[0]: expected account-* entity id" in error for error in errors))

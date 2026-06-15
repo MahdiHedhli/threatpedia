@@ -250,6 +250,14 @@ function compareTitle(a, b) {
   return (a.title || '').localeCompare(b.title || '');
 }
 
+function normalizeEntitySlug(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function daysBetween(startDate, endDate) {
   if (!startDate || !endDate) return null;
   const start = Date.parse(`${startDate}T00:00:00Z`);
@@ -385,7 +393,7 @@ function maintainerTenureAtMaliciousRelease(data, incidentId) {
     const anchorDate = maintainer.onboarding_date || maintainer.first_publish_date;
     if (!anchorDate) return [];
     const anchorLabel = maintainer.onboarding_date ? 'onboarding' : 'first publish';
-    const maintainerId = `maintainer-${maintainer.id_slug}`;
+    const maintainerId = `maintainer-${normalizeEntitySlug(maintainer.id_slug)}`;
     const maintainerLink = entityLink(data, maintainerId) || { href: null, label: maintainer.name, id: maintainerId };
     return releases
       .map((release) => {
