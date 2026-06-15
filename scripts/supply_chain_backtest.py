@@ -88,7 +88,8 @@ def split_references_by_replay_date(
             continue
         reference_id = reference.get("id")
         if not isinstance(reference_id, str) or not reference_id:
-            reference_id = f"references[{index}]"
+            url = reference.get("url")
+            reference_id = url if isinstance(url, str) and url.strip() else f"references[{index}]"
         published_at = parse_date(reference.get("published_at"))
         if replay_date is None or published_at is None:
             undated.append(reference_id)
