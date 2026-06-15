@@ -110,8 +110,12 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     dangling_package_edges = []
     dangling_release_edges = []
     invalid_relationship_edges = []
+    if not isinstance(relationships, list):
+        relationships = []
+        invalid_relationship_edges.append("relationships: expected list")
     for index, relationship in enumerate(relationships):
         if not isinstance(relationship, dict):
+            invalid_relationship_edges.append(f"relationships[{index}]: expected object")
             continue
         rel_type = relationship.get("type")
         source = relationship.get("source")

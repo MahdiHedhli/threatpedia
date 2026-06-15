@@ -31,8 +31,8 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         report = audit.build_audit(ENTITY_DIR, RELATIONSHIP_PATH)
 
         self.assertEqual(report["status"], "PASS")
-        self.assertEqual(report["package_count"], 19)
-        self.assertEqual(report["release_count"], 7)
+        self.assertEqual(report["package_count"], len(audit.load_json(ENTITY_DIR / "packages.json")))
+        self.assertEqual(report["release_count"], len(audit.load_json(ENTITY_DIR / "releases.json")))
         self.assertEqual(report["missing_purls"], [])
         self.assertEqual(report["invalid_purls"], [])
         self.assertEqual(report["dangling_actor_edges"], [])
@@ -148,11 +148,40 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertTrue(any("PACKAGE_RELEASE source must be string" in error for error in report["invalid_relationship_edges"]))
         self.assertTrue(any("PACKAGE_RELEASE target must be string" in error for error in report["invalid_relationship_edges"]))
 
+    def test_malformed_relationships_data_fails_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps({"not": "a list"}), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertIn("relationships: expected list", report["invalid_relationship_edges"])
+
+    def test_malformed_relationship_rows_fail_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append("not-an-object")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("expected object" in error for error in report["invalid_relationship_edges"]))
+
     def test_main_creates_report_parent_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            relationship_path = Path(tmpdir) / "relationships.json"
             report_path = Path(tmpdir) / "nested" / "audit.md"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            relationship_path.write_text(RELATIONSHIP_PATH.read_text(encoding="utf-8"), encoding="utf-8")
 
-            exit_code = audit.main(["--report", str(report_path)])
+            exit_code = audit.main(
+                ["--entity-dir", str(entity_dir), "--relationships", str(relationship_path), "--report", str(report_path)]
+            )
             report_exists = report_path.exists()
 
         self.assertEqual(exit_code, 0)
