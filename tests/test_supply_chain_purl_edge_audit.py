@@ -39,6 +39,7 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["dangling_campaign_edges"], [])
         self.assertEqual(report["dangling_package_edges"], [])
         self.assertEqual(report["dangling_release_edges"], [])
+        self.assertEqual(report["invalid_relationship_edges"], [])
         self.assertEqual(len(report["generic_purl_exceptions"]), 1)
 
     def test_package_and_release_purl_checks_detect_failures(self) -> None:
@@ -126,6 +127,36 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("pkg-does-not-exist" in error for error in report["dangling_package_edges"]))
         self.assertTrue(any("release-does-not-exist" in error for error in report["dangling_release_edges"]))
+
+    def test_non_string_relationship_endpoints_fail_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": ["pkg-npm-event-stream"],
+                "target": ["release-npm-flatmap-stream-0-1-1"],
+                "type": "PACKAGE_RELEASE",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("PACKAGE_RELEASE source must be string" in error for error in report["invalid_relationship_edges"]))
+        self.assertTrue(any("PACKAGE_RELEASE target must be string" in error for error in report["invalid_relationship_edges"]))
+
+    def test_main_creates_report_parent_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            report_path = Path(tmpdir) / "nested" / "audit.md"
+
+            exit_code = audit.main(["--report", str(report_path)])
+            report_exists = report_path.exists()
+
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(report_exists)
 
 
 if __name__ == "__main__":
