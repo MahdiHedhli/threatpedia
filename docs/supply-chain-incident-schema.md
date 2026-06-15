@@ -71,6 +71,9 @@ The core fields are:
 - `campaigns`: optional evidence-backed campaign links
 - `attribution_confidence`: optional incident-level attribution confidence
 - `attribution_evidence`: local evidence records for each actor/campaign edge
+- `propagation_edges`: optional hand-modeled package/release propagation edges
+  for worm fan-out or cascades, each with `source`, `target`, `tier`, and
+  `evidence_refs`
 
 Maintainer records deliberately store dated anchors, not a mutable `tenure`
 field. Page generation derives tenure-at-malicious-release from
@@ -117,6 +120,30 @@ Every release must match an affected package component in the same incident.
 The `purl` must be canonical, versioned, and backed by local reference IDs.
 Generic release PURLs are not accepted because they cannot join cleanly to the
 release-event spine.
+
+## Propagation Edges
+
+`propagation_edges` are evidence-gated `SEEDED_BY` candidates emitted into the
+relationship store. They are hand-modeled only; there is no automated
+propagation reconstruction, inference engine, score, or canary logic in this
+phase.
+
+Each edge must point from one package or release entity ID to another:
+
+```json
+{
+  "source": "release-npm-ctrl-tinycolor-4-1-1",
+  "target": "release-npm-ctrl-tinycolor-4-1-2",
+  "tier": "temporal",
+  "evidence_refs": ["ref-example"],
+  "notes": "optional bounded analyst note"
+}
+```
+
+Use `causal` only when public analysis documents that one compromise enabled
+the next. Use `temporal` when public release or publish ordering is known but
+causation is not asserted. Prefer omitting an edge over implying unsupported
+causation.
 
 ## Attack Stages
 

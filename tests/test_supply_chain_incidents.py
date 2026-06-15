@@ -47,6 +47,7 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(component["name"] == "@ctrl/tinycolor" for component in shai_hulud["affected_components"]))
         self.assertTrue(any(release["malicious_range"] == "4.1.1" for release in shai_hulud["releases"]))
         self.assertEqual(shai_hulud["threat_actors"][0]["actor_type"], "provisional")
+        self.assertTrue(any(edge["tier"] == "temporal" for edge in shai_hulud["propagation_edges"]))
 
         boltdb = by_id["SC-2025-GO-BOLTDB-TYPOSQUAT"]
         self.assertEqual(boltdb["first_public_warning_at"], "2025-02-04")
@@ -194,6 +195,18 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".releases[0].purl: generic release PURLs are not joinable" in error for error in errors))
+
+    def test_propagation_edges_require_tier_and_evidence(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["tier"] = "inferred-causal"
+        incident["propagation_edges"][0]["evidence_refs"] = ["ref-does-not-exist"]
+        incident["propagation_edges"][0]["source"] = "incident-SC-2025-NPM-SHAI-HULUD"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0].tier: invalid value" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].evidence_refs[0]: unknown reference ID" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].source: expected pkg-* or release-* entity id" in error for error in errors))
 
     def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))

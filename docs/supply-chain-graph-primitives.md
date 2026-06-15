@@ -8,6 +8,8 @@ where public evidence supports the edge.
 Phase 2C adds version-addressable release entities for package incidents with
 precise public release evidence. Phase 2D strengthens maintainer entities with
 dated anchors and explicit repository/account links.
+Phase 2 S0 adds evidence-tiered propagation edges for hand-modeled package or
+release chains.
 
 This is a lightweight relationship layer, not a graph database.
 
@@ -76,6 +78,7 @@ Allowed relationship types are intentionally narrow:
 - `RELATED_CAMPAIGN`
 - `PACKAGE_RELEASE`
 - `INCIDENT_AFFECTED_RELEASE`
+- `SEEDED_BY`
 - `MAINTAINS_REPOSITORY`
 - `USES_ACCOUNT`
 - `USED_BUILD_SYSTEM`
@@ -125,6 +128,24 @@ Release edges make specific malicious or affected versions graph-addressable:
 release entity. Release nodes are not public-routed entity pages in Phase 2C,
 but incident pages can display them as affected releases.
 
+Propagation edges model ordered compromise chains without inference:
+
+```json
+{
+  "source": "release-npm-ctrl-tinycolor-4-1-1",
+  "target": "release-npm-ctrl-tinycolor-4-1-2",
+  "type": "SEEDED_BY",
+  "tier": "temporal",
+  "evidence_refs": ["ref-npm-tinycolor-registry", "ref-wiz-shai-hulud"]
+}
+```
+
+`SEEDED_BY` starts from and targets package or release entities only. Each edge
+must carry a `tier` of `causal` or `temporal` and at least one evidence
+reference. `causal` means public analysis documents that one compromise enabled
+the next. `temporal` means only ordering is represented and must render as
+precedence, not causation. The propagation subgraph must remain acyclic.
+
 Maintainer intelligence edges connect maintainer identities to supported
 repository/account primitives:
 
@@ -154,7 +175,8 @@ The Phase 2E pass over 27 incidents currently emits:
 - Compromised accounts: 11
 - Actors: 6
 - Campaigns: 3
-- Relationships: 138
+- Relationships: 139
+- SEEDED_BY propagation edges: 1
 
 ## Build and Validate
 

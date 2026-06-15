@@ -2483,6 +2483,18 @@
         "disclosed_at": "2025-09-16"
       }
     ],
+    "propagation_edges": [
+      {
+        "source": "release-npm-ctrl-tinycolor-4-1-1",
+        "target": "release-npm-ctrl-tinycolor-4-1-2",
+        "tier": "temporal",
+        "evidence_refs": [
+          "ref-wiz-shai-hulud",
+          "ref-npm-tinycolor-registry"
+        ],
+        "notes": "Same-day malicious release ordering is modeled as temporal precedence only; this edge does not assert direct causation between the two releases."
+      }
+    ],
     "supply_chain_vectors": [
       "maintainer_account_compromise",
       "package_repository_compromise",

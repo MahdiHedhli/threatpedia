@@ -89,6 +89,18 @@ class SupplyChainGraphTests(unittest.TestCase):
             },
             graph["relationships"],
         )
+        self.assertIn(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-1",
+                "target": "release-npm-ctrl-tinycolor-4-1-2",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-npm-tinycolor-registry", "ref-wiz-shai-hulud"],
+                "incident_id": "SC-2025-NPM-SHAI-HULUD",
+                "notes": "Same-day malicious release ordering is modeled as temporal precedence only; this edge does not assert direct causation between the two releases.",
+            },
+            graph["relationships"],
+        )
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
@@ -554,6 +566,75 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any("missing SOURCE_ARTIFACT_DIVERGENCE relationship" in error for error in errors))
+
+    def test_seeded_by_requires_valid_metadata_and_endpoints(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2025-NPM-SHAI-HULUD",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "guessed",
+                "evidence_refs": [],
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY must start from a package or release node" in error for error in errors))
+        self.assertTrue(any(".tier: expected one of" in error for error in errors))
+        self.assertTrue(any(".evidence_refs: expected non-empty reference list" in error for error in errors))
+
+    def test_seeded_by_missing_generated_relationship_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = [
+            relationship
+            for relationship in copy.deepcopy(load_json(RELATIONSHIP_PATH))
+            if relationship["type"] != "SEEDED_BY"
+        ]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("missing SEEDED_BY relationship" in error for error in errors))
+
+    def test_seeded_by_rejects_generic_package_endpoint(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "pkg-multiple-internal-dependency-names",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY package endpoint must be release-spine joinable" in error for error in errors))
+
+    def test_seeded_by_cycle_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in errors))
 
 
 if __name__ == "__main__":

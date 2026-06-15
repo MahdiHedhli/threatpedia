@@ -142,6 +142,8 @@ VALID_IMPACTS = {
 VALID_ATTRIBUTION_CONFIDENCE = {"confirmed", "likely", "suspected", "disputed", "unknown"}
 VALID_ACTOR_TYPES = {"public", "provisional"}
 VALID_ATTRIBUTION_RELATIONSHIPS = {"ATTRIBUTED_TO_ACTOR", "RELATED_CAMPAIGN"}
+VALID_PROPAGATION_TIERS = {"causal", "temporal"}
+PROPAGATION_ENDPOINT_PATTERN = re.compile(r"^(pkg|release)-[a-z0-9][a-z0-9-]*$")
 
 
 def load_json(path: Path) -> Any:
@@ -632,6 +634,36 @@ def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> 
         errors.append(f"{incident_id}.attribution_evidence: unexpected {relationship_type} evidence for {target} without matching link")
 
 
+def validate_propagation_edges(errors: list[str], incident: dict[str, Any]) -> None:
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
+    valid_reference_ids = reference_ids_for(incident)
+    edges = incident.get("propagation_edges", [])
+    if not isinstance(edges, list):
+        errors.append(f"{incident_id}.propagation_edges: expected list")
+        return
+    for index, edge in enumerate(edges):
+        path = f"{incident_id}.propagation_edges[{index}]"
+        if not isinstance(edge, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        for field in ["source", "target", "tier", "evidence_refs"]:
+            if field not in edge:
+                errors.append(f"{path}.{field}: missing required field")
+        for field in ["source", "target"]:
+            if field in edge:
+                value = edge.get(field)
+                if not isinstance(value, str) or not PROPAGATION_ENDPOINT_PATTERN.fullmatch(value):
+                    errors.append(f"{path}.{field}: expected pkg-* or release-* entity id")
+        if isinstance(edge.get("source"), str) and edge.get("source") == edge.get("target"):
+            errors.append(f"{path}: source and target must differ")
+        if "tier" in edge and edge.get("tier") not in VALID_PROPAGATION_TIERS:
+            errors.append(f"{path}.tier: invalid value {edge.get('tier')!r}")
+        if "evidence_refs" in edge:
+            validate_reference_id_list(errors, incident_id, f"{path}.evidence_refs", edge.get("evidence_refs"), valid_reference_ids)
+        if "notes" in edge:
+            require_string(errors, f"{path}.notes", edge.get("notes"), min_length=20)
+
+
 def validate_incident(incident: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(incident, dict):
@@ -745,6 +777,7 @@ def validate_incident(incident: Any) -> list[str]:
         incident.get("compromised_accounts"),
     )
     validate_attribution_fields(errors, incident)
+    validate_propagation_edges(errors, incident)
     validate_editorial_fields(errors, incident)
 
     return errors
@@ -815,12 +848,22 @@ def validate_schema_file(schema: Any) -> list[str]:
         errors.append("schema.$defs.affected_component.if: must match generic package URLs")
     if not isinstance(generic_then, dict) or generic_then.get("required") != ["purl_justification"]:
         errors.append("schema.$defs.affected_component.then: must require purl_justification")
-    for def_name in ["attribution_confidence", "threat_actor_link", "campaign_link", "attribution_evidence"]:
+    for def_name in ["attribution_confidence", "threat_actor_link", "campaign_link", "attribution_evidence", "propagation_edge"]:
         if def_name not in defs:
             errors.append(f"schema.$defs.{def_name}: missing required Phase 2B definition")
     attribution_confidence = defs.get("attribution_confidence") if isinstance(defs, dict) else None
     if not isinstance(attribution_confidence, dict) or set(attribution_confidence.get("enum", [])) != VALID_ATTRIBUTION_CONFIDENCE:
         errors.append("schema.$defs.attribution_confidence.enum: does not match validator")
+    propagation_edge = defs.get("propagation_edge") if isinstance(defs, dict) else None
+    if not isinstance(propagation_edge, dict):
+        errors.append("schema.$defs.propagation_edge: expected object")
+    else:
+        if set(propagation_edge.get("required", [])) != {"source", "target", "tier", "evidence_refs"}:
+            errors.append("schema.$defs.propagation_edge.required: does not match validator")
+        propagation_properties = propagation_edge.get("properties")
+        tier = propagation_properties.get("tier") if isinstance(propagation_properties, dict) else None
+        if not isinstance(tier, dict) or set(tier.get("enum", [])) != VALID_PROPAGATION_TIERS:
+            errors.append("schema.$defs.propagation_edge.properties.tier.enum: does not match validator")
     return errors
 
 
