@@ -215,6 +215,18 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
     def test_structured_depth_fields_are_enforced(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["maintainers"]))
+        if len(incident["maintainers"]) < 2:
+            incident["maintainers"].append(
+                {
+                    "name": "Temporary maintainer",
+                    "id_slug": "temporary-maintainer",
+                    "aliases": [],
+                    "onboarding_date": None,
+                    "first_publish_date": None,
+                    "repositories": [],
+                    "account_ids": [],
+                }
+            )
         incident["distribution_channels"][0]["name"] = ""
         incident["source_artifact_divergence"] = "yes"
         del incident["maintainers"][0]["id_slug"]
