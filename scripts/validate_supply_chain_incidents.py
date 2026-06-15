@@ -275,10 +275,11 @@ def validate_release(
     ecosystem = release.get("ecosystem")
     purl = release.get("purl")
     version = release.get("version")
-    if isinstance(package_name, str) and isinstance(ecosystem, str):
+    release_identity_fields_are_strings = isinstance(package_name, str) and isinstance(ecosystem, str)
+    if release_identity_fields_are_strings:
         if (ecosystem, package_name) not in package_components:
             errors.append(f"{path}: release package must match an affected package component")
-    if isinstance(purl, str):
+    if isinstance(purl, str) and release_identity_fields_are_strings:
         try:
             canonical = canonicalize_purl(purl, ecosystem=ecosystem, package_name=package_name)
         except PurlError as exc:

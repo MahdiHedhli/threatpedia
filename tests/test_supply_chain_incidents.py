@@ -179,6 +179,16 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".releases[0].purl: generic release PURLs are not joinable" in error for error in errors))
 
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
+        incident["releases"][0]["package_name"] = None
+        incident["releases"][0]["ecosystem"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".releases[0].ecosystem: expected non-empty string" in error for error in errors))
+
     def test_malformed_url_is_rejected_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["references"][0]["url"] = "https://example.com:bad-port"

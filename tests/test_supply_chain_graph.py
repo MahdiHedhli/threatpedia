@@ -246,6 +246,19 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
         self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
 
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["package_name"] = None
+        entities_by_type["releases"][0]["ecosystem"] = None
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
+
     def test_release_relationship_sources_are_bounded(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

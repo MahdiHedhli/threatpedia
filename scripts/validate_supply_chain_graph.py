@@ -153,7 +153,12 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 if parse_purl(canonical).type == "generic":
                     if not isinstance(entity.get("purl_justification"), str) or len(entity["purl_justification"].strip()) < 20:
                         errors.append(f"{entity_id}.purl_justification: expected non-empty generic PURL justification")
-        if entity_type == "releases" and isinstance(entity.get("purl"), str):
+        if (
+            entity_type == "releases"
+            and isinstance(entity.get("purl"), str)
+            and isinstance(entity.get("ecosystem"), str)
+            and isinstance(entity.get("package_name"), str)
+        ):
             try:
                 canonical = canonicalize_purl(
                     entity["purl"],
