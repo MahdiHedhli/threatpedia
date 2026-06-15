@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import copy
+import contextlib
+import io
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -91,11 +94,53 @@ class SupplyChainBacktestTests(unittest.TestCase):
 
         self.assertIn("https://example.com/no-id", timeline["undated_evidence"]["reference_ids"])
 
+    def test_whitespace_reference_ids_fall_back_to_url(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        event_stream = copy.deepcopy(next(item for item in corpus if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        event_stream["references"].append(
+            {
+                "id": "   ",
+                "title": "Reference with blank ID",
+                "publisher": "Researcher",
+                "url": "https://example.com/blank-id",
+                "published_at": None,
+            }
+        )
+
+        timeline = backtest.build_timeline(event_stream)
+
+        self.assertIn("https://example.com/blank-id", timeline["undated_evidence"]["reference_ids"])
+
     def test_non_array_corpus_fails_without_crashing(self) -> None:
         report = backtest.build_backtest({"not": "an array"}, ("SC-2024-XZ-UTILS",))
 
         self.assertEqual(report["status"], "FAIL")
         self.assertEqual(report["input_errors"], ["corpus: expected array"])
+
+    def test_main_reports_missing_corpus_file_without_crashing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            missing_path = Path(tmpdir) / "missing.json"
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                exit_code = backtest.main(["--corpus", str(missing_path)])
+
+        report = json.loads(output.getvalue())
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("failed to read" in error for error in report["input_errors"]))
+
+    def test_main_reports_malformed_corpus_json_without_crashing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            corpus_path = Path(tmpdir) / "incidents.json"
+            corpus_path.write_text("{not-json", encoding="utf-8")
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                exit_code = backtest.main(["--corpus", str(corpus_path)])
+
+        report = json.loads(output.getvalue())
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("invalid JSON" in error for error in report["input_errors"]))
 
     def test_missing_required_replay_incident_fails(self) -> None:
         report = backtest.build_backtest([], ("SC-2024-XZ-UTILS",))

@@ -23,6 +23,19 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def error_report(message: str) -> dict[str, Any]:
+    return {
+        "status": "FAIL",
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "model": "stored-fields-only",
+        "non_goals": ["scoring", "risk_engine", "automated_attribution", "ai_inference"],
+        "incident_ids": [],
+        "missing_incident_ids": [],
+        "input_errors": [message],
+        "timelines": [],
+    }
+
+
 def parse_date(value: Any) -> date | None:
     if not isinstance(value, str) or not value.strip():
         return None
@@ -56,8 +69,8 @@ def release_publish_dates(incident: dict[str, Any]) -> list[tuple[date, dict[str
     return sorted(dated_releases, key=lambda item: item[0])
 
 
-def publish_anchor(incident: dict[str, Any]) -> tuple[date | None, str | None, list[str]]:
-    releases = release_publish_dates(incident)
+def publish_anchor(dated_releases: list[tuple[date, dict[str, Any]]], incident: dict[str, Any]) -> tuple[date | None, str | None, list[str]]:
+    releases = dated_releases
     if releases:
         return releases[0][0], "release.published_at", []
 
@@ -87,9 +100,11 @@ def split_references_by_replay_date(
         if not isinstance(reference, dict):
             continue
         reference_id = reference.get("id")
-        if not isinstance(reference_id, str) or not reference_id:
+        if isinstance(reference_id, str) and reference_id.strip():
+            reference_id = reference_id.strip()
+        else:
             url = reference.get("url")
-            reference_id = url if isinstance(url, str) and url.strip() else f"references[{index}]"
+            reference_id = url.strip() if isinstance(url, str) and url.strip() else f"references[{index}]"
         published_at = parse_date(reference.get("published_at"))
         if replay_date is None or published_at is None:
             undated.append(reference_id)
@@ -101,7 +116,8 @@ def split_references_by_replay_date(
 
 
 def build_timeline(incident: dict[str, Any]) -> dict[str, Any]:
-    publish_date, publish_source, notes = publish_anchor(incident)
+    dated_releases = release_publish_dates(incident)
+    publish_date, publish_source, notes = publish_anchor(dated_releases, incident)
     first_warning = parse_date(incident.get("first_public_warning_at"))
     disclosure = parse_date(incident.get("disclosed_at"))
     discovery_date = first_warning or disclosure
@@ -115,7 +131,7 @@ def build_timeline(incident: dict[str, Any]) -> dict[str, Any]:
             "published_at": release.get("published_at"),
             "malicious_range": release.get("malicious_range"),
         }
-        for _, release in release_publish_dates(incident)
+        for _, release in dated_releases
     ]
 
     return {
@@ -176,7 +192,14 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     incident_ids = tuple(args.incident_ids) if args.incident_ids else DEFAULT_INCIDENT_IDS
-    report = build_backtest(load_json(args.corpus), incident_ids)
+    try:
+        corpus = load_json(args.corpus)
+    except OSError as exc:
+        report = error_report(f"corpus: failed to read {args.corpus}: {exc}")
+    except json.JSONDecodeError as exc:
+        report = error_report(f"corpus: invalid JSON in {args.corpus}: {exc}")
+    else:
+        report = build_backtest(corpus, incident_ids)
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0 if report["status"] == "PASS" else 1
 
