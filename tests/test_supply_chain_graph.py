@@ -30,6 +30,10 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def find_entity(entities: list[dict], entity_id: str) -> dict:
+    return next(entity for entity in entities if entity["id"] == entity_id)
+
+
 class SupplyChainGraphTests(unittest.TestCase):
     def test_generated_graph_validates(self) -> None:
         corpus = load_json(CORPUS_PATH)
@@ -169,8 +173,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["aliases"].append(entities_by_type["packages"][1]["aliases"][0])
-        entities_by_type["packages"][0]["ecosystem"] = entities_by_type["packages"][1]["ecosystem"]
+        event_stream = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        flatmap_stream = find_entity(entities_by_type["packages"], "pkg-npm-flatmap-stream")
+        event_stream["aliases"].append(flatmap_stream["aliases"][0])
+        event_stream["ecosystem"] = flatmap_stream["ecosystem"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -181,7 +187,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        first = entities_by_type["packages"][0]
+        first = find_entity(entities_by_type["packages"], "pkg-multiple-internal-dependency-names")
         sibling = copy.deepcopy(first)
         sibling["id"] = "pkg-pypi-internal-dependency-names"
         sibling["ecosystem"] = "pypi"
@@ -205,7 +211,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -216,7 +222,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["package_url"] = None
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["package_url"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -227,8 +233,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["name"] = None
-        entities_by_type["packages"][0]["ecosystem"] = None
+        package = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        package["name"] = None
+        package["ecosystem"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
