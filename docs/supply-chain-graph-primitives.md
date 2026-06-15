@@ -6,7 +6,8 @@ and compromised accounts from the curated incident corpus. Phase 2B connects
 the supply-chain corpus to existing Threatpedia actor and campaign entities
 where public evidence supports the edge.
 Phase 2C adds version-addressable release entities for package incidents with
-precise public release evidence.
+precise public release evidence. Phase 2D strengthens maintainer entities with
+dated anchors and explicit repository/account links.
 
 This is a lightweight relationship layer, not a graph database.
 
@@ -46,6 +47,10 @@ Release entities carry `purl`, `package_name`, `version`, `published_at`,
 `ecosystem`, `malicious_range`, `references`, and nullable `disclosed_at`.
 Release PURLs are versioned canonical PURLs and must remain joinable to the
 release-event spine.
+Maintainer entities also carry `onboarding_date`, `first_publish_date`,
+`repositories`, and `account_ids`. The graph does not store `tenure`; pages can
+derive tenure-at-malicious-release from those anchors and release
+`published_at` values.
 Repository entities also carry `host`, `url`, and `owner`.
 Build-system, distribution-channel, and account entities carry type-specific
 fields copied from the incident corpus.
@@ -71,6 +76,8 @@ Allowed relationship types are intentionally narrow:
 - `RELATED_CAMPAIGN`
 - `PACKAGE_RELEASE`
 - `INCIDENT_AFFECTED_RELEASE`
+- `MAINTAINS_REPOSITORY`
+- `USES_ACCOUNT`
 - `USED_BUILD_SYSTEM`
 - `USED_DISTRIBUTION_CHANNEL`
 - `COMPROMISED_ACCOUNT`
@@ -118,9 +125,24 @@ Release edges make specific malicious or affected versions graph-addressable:
 release entity. Release nodes are not public-routed entity pages in Phase 2C,
 but incident pages can display them as affected releases.
 
+Maintainer intelligence edges connect maintainer identities to supported
+repository/account primitives:
+
+```json
+{
+  "source": "maintainer-dominictarr",
+  "target": "repo-github-com-dominictarr-event-stream",
+  "type": "MAINTAINS_REPOSITORY"
+}
+```
+
+`MAINTAINS_REPOSITORY` and `USES_ACCOUNT` start from maintainer nodes. These
+edges are not trust or behavior scores; they only preserve structured public
+evidence needed to compute future canary primitives.
+
 ## Current Graph Density
 
-The Phase 2C pass over the same 25 incidents currently emits:
+The Phase 2D pass over the same 25 incidents currently emits:
 
 - Maintainers: 5
 - Packages: 16
@@ -132,7 +154,7 @@ The Phase 2C pass over the same 25 incidents currently emits:
 - Compromised accounts: 8
 - Actors: 4
 - Campaigns: 3
-- Relationships: 109
+- Relationships: 113
 
 ## Build and Validate
 
@@ -161,6 +183,7 @@ This phase supports lookup questions such as:
 - incidents involving a package
 - incidents involving a specific package release
 - incidents involving a maintainer
+- maintained repositories or accounts connected to a maintainer
 - incidents involving a repository
 - incidents involving an organization
 - incidents involving a build system

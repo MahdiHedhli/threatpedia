@@ -520,9 +520,29 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "maintainer-dominictarr",
+    "target": "repo-github-com-dominictarr-event-stream",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
     "source": "maintainer-jia-tan",
     "target": "actor-unc-xz-utils-operator",
     "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "maintainer-jia-tan",
+    "target": "repo-github-com-tukaani-project-xz",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-marak-squires",
+    "target": "repo-github-com-marak-colors-js",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-riaevangelist",
+    "target": "repo-github-com-riaevangelist-node-ipc",
+    "type": "MAINTAINS_REPOSITORY"
   },
   {
     "source": "pkg-npm-flatmap-stream",

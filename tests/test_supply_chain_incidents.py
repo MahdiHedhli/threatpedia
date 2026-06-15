@@ -218,12 +218,18 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         incident["distribution_channels"][0]["name"] = ""
         incident["source_artifact_divergence"] = "yes"
         del incident["maintainers"][0]["id_slug"]
+        incident["maintainers"][1]["first_publish_date"] = "2018-99-99"
+        incident["maintainers"][1]["repositories"] = ["pkg-not-a-repository"]
+        incident["maintainers"][1]["account_ids"] = ["repo-not-an-account"]
 
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
         self.assertTrue(any(".maintainers[0].id_slug: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".maintainers[1].first_publish_date: expected YYYY-MM-DD date or null" in error for error in errors))
+        self.assertTrue(any(".maintainers[1].repositories[0]: expected repo-* entity id" in error for error in errors))
+        self.assertTrue(any(".maintainers[1].account_ids[0]: expected account-* entity id" in error for error in errors))
 
     def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])

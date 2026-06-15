@@ -49,6 +49,8 @@ VALID_RELATIONSHIP_TYPES = {
     "USED_DISTRIBUTION_CHANNEL",
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
+    "MAINTAINS_REPOSITORY",
+    "USES_ACCOUNT",
 }
 ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|release|repo|org)-[a-z0-9][a-z0-9-]*$")
 RELATIONSHIP_TARGET_PREFIXES = {
@@ -65,6 +67,8 @@ RELATIONSHIP_TARGET_PREFIXES = {
     "USED_DISTRIBUTION_CHANNEL": "channel-",
     "PACKAGE_RELEASE": "release-",
     "INCIDENT_AFFECTED_RELEASE": "release-",
+    "MAINTAINS_REPOSITORY": "repo-",
+    "USES_ACCOUNT": "account-",
 }
 ENTITY_TYPE_REQUIRED_FIELDS = {
     "accounts": ["provider", "account_type", "role"],
@@ -191,6 +195,26 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 errors.append(f"{entity_id}.references: expected non-empty list")
             elif not all(isinstance(ref, str) and ref.strip() for ref in references):
                 errors.append(f"{entity_id}.references: expected non-empty string references")
+        if entity_type == "maintainers":
+            for field in ["onboarding_date", "first_publish_date"]:
+                if field not in entity:
+                    errors.append(f"{entity_id}.{field}: missing required field")
+                elif entity.get(field) is not None and parse_date(entity.get(field)) is None:
+                    errors.append(f"{entity_id}.{field}: expected YYYY-MM-DD date or null")
+            repositories = entity.get("repositories")
+            if not isinstance(repositories, list):
+                errors.append(f"{entity_id}.repositories: expected list")
+                repositories = []
+            for repo_index, repo_id in enumerate(repositories):
+                if not isinstance(repo_id, str) or not repo_id.startswith("repo-"):
+                    errors.append(f"{entity_id}.repositories[{repo_index}]: expected repo-* entity id")
+            account_ids = entity.get("account_ids")
+            if not isinstance(account_ids, list):
+                errors.append(f"{entity_id}.account_ids: expected list")
+                account_ids = []
+            for account_index, account_id in enumerate(account_ids):
+                if not isinstance(account_id, str) or not account_id.startswith("account-"):
+                    errors.append(f"{entity_id}.account_ids[{account_index}]: expected account-* entity id")
         source_incident_ids = entity.get("source_incident_ids")
         if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")
@@ -256,6 +280,10 @@ def validate_relationships(
                 errors.append(f"{path}.source: PACKAGE_RELEASE must start from a package node")
             if rel_type == "INCIDENT_AFFECTED_RELEASE" and not source.startswith("incident-"):
                 errors.append(f"{path}.source: INCIDENT_AFFECTED_RELEASE must start from an incident node")
+            if rel_type == "MAINTAINS_REPOSITORY" and not source.startswith("maintainer-"):
+                errors.append(f"{path}.source: MAINTAINS_REPOSITORY must start from a maintainer node")
+            if rel_type == "USES_ACCOUNT" and not source.startswith("maintainer-"):
+                errors.append(f"{path}.source: USES_ACCOUNT must start from a maintainer node")
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
@@ -310,6 +338,16 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                 key = (source, campaign["id"], "RELATED_CAMPAIGN")
                 if key not in relationship_keys:
                     errors.append(f"{source}: missing RELATED_CAMPAIGN relationship for {campaign['id']}")
+        for maintainer in incident.get("maintainers") or []:
+            if not isinstance(maintainer, dict) or not isinstance(maintainer.get("id_slug"), str):
+                continue
+            maintainer_id = f"maintainer-{normalize_alias(maintainer['id_slug'])}"
+            for repo_id in maintainer.get("repositories") or []:
+                if isinstance(repo_id, str) and (maintainer_id, repo_id, "MAINTAINS_REPOSITORY") not in relationship_keys:
+                    errors.append(f"{source}: missing MAINTAINS_REPOSITORY relationship from {maintainer_id} to {repo_id}")
+            for account_id in maintainer.get("account_ids") or []:
+                if isinstance(account_id, str) and (maintainer_id, account_id, "USES_ACCOUNT") not in relationship_keys:
+                    errors.append(f"{source}: missing USES_ACCOUNT relationship from {maintainer_id} to {account_id}")
         for release in incident.get("releases") or []:
             if not isinstance(release, dict):
                 continue

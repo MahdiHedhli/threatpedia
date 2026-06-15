@@ -49,6 +49,8 @@ RELATIONSHIP_TYPES = {
     "USED_DISTRIBUTION_CHANNEL",
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
+    "MAINTAINS_REPOSITORY",
+    "USES_ACCOUNT",
 }
 GENERIC_VENDOR_NAMES = {
     "malicious publisher",
@@ -130,6 +132,14 @@ def add_source(entity: dict[str, Any], incident_id: str) -> None:
     sources = set(entity.get("source_incident_ids", []))
     sources.add(incident_id)
     entity["source_incident_ids"] = sorted(sources)
+
+
+def earliest_date(current: Any, candidate: Any) -> Any:
+    if not isinstance(candidate, str) or not candidate:
+        return current
+    if not isinstance(current, str) or not current:
+        return candidate
+    return min(current, candidate)
 
 
 def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any], incident_id: str) -> str:
@@ -242,16 +252,26 @@ def upsert_maintainer(maintainers: dict[str, dict[str, Any]], hint: dict[str, An
     name = hint["name"]
     aliases = sorted(set((hint.get("aliases") or []) + [name]))
     entity_id = stable_id("maintainer", hint["id_slug"])
+    repositories = sorted(set(hint.get("repositories") or []))
+    account_ids = sorted(set(hint.get("account_ids") or []))
     entity = maintainers.setdefault(
         entity_id,
         {
             "id": entity_id,
             "name": name,
             "aliases": aliases,
+            "onboarding_date": hint.get("onboarding_date"),
+            "first_publish_date": hint.get("first_publish_date"),
+            "repositories": repositories,
+            "account_ids": account_ids,
             "source_incident_ids": [],
         },
     )
     entity["aliases"] = sorted(set(entity.get("aliases", []) + aliases))
+    entity["onboarding_date"] = earliest_date(entity.get("onboarding_date"), hint.get("onboarding_date"))
+    entity["first_publish_date"] = earliest_date(entity.get("first_publish_date"), hint.get("first_publish_date"))
+    entity["repositories"] = sorted(set(entity.get("repositories", []) + repositories))
+    entity["account_ids"] = sorted(set(entity.get("account_ids", []) + account_ids))
     add_source(entity, incident_id)
     return entity_id
 
@@ -400,6 +420,10 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
         for maintainer in incident.get("maintainers") or []:
             maintainer_id = upsert_maintainer(maintainers, maintainer, incident_id)
             add_relationship(relationship(source, maintainer_id, "AFFECTED_MAINTAINER"))
+            for repo_id in maintainer.get("repositories") or []:
+                add_relationship(relationship(maintainer_id, repo_id, "MAINTAINS_REPOSITORY"))
+            for account_id in maintainer.get("account_ids") or []:
+                add_relationship(relationship(maintainer_id, account_id, "USES_ACCOUNT"))
 
         for repo in incident.get("repositories") or []:
             repo_id = upsert_repository(repositories, repo, incident_id)

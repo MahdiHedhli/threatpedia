@@ -470,12 +470,22 @@
         "aliases": [
           "dominictarr"
         ],
-        "id_slug": "dominictarr"
+        "id_slug": "dominictarr",
+        "onboarding_date": null,
+        "first_publish_date": null,
+        "repositories": [
+          "repo-github-com-dominictarr-event-stream"
+        ],
+        "account_ids": []
       },
       {
         "name": "right9ctrl",
         "aliases": [],
-        "id_slug": "right9ctrl"
+        "id_slug": "right9ctrl",
+        "onboarding_date": null,
+        "first_publish_date": "2018-09-09",
+        "repositories": [],
+        "account_ids": []
       }
     ],
     "repositories": [
@@ -1403,7 +1413,13 @@
         "aliases": [
           "Marak"
         ],
-        "id_slug": "marak-squires"
+        "id_slug": "marak-squires",
+        "onboarding_date": null,
+        "first_publish_date": null,
+        "repositories": [
+          "repo-github-com-marak-colors-js"
+        ],
+        "account_ids": []
       }
     ],
     "repositories": [
@@ -1481,7 +1497,13 @@
         "aliases": [
           "Brandon Nozaki Miller"
         ],
-        "id_slug": "riaevangelist"
+        "id_slug": "riaevangelist",
+        "onboarding_date": null,
+        "first_publish_date": null,
+        "repositories": [
+          "repo-github-com-riaevangelist-node-ipc"
+        ],
+        "account_ids": []
       }
     ],
     "repositories": [
@@ -2099,7 +2121,13 @@
         "aliases": [
           "JiaT75"
         ],
-        "id_slug": "jia-tan"
+        "id_slug": "jia-tan",
+        "onboarding_date": null,
+        "first_publish_date": null,
+        "repositories": [
+          "repo-github-com-tukaani-project-xz"
+        ],
+        "account_ids": []
       }
     ],
     "repositories": [

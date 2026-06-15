@@ -68,6 +68,14 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("actor-unc-xz-utils-operator", actor_ids)
         self.assertIn("actor-lazarus-group", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
+        self.assertIn(
+            {
+                "source": "maintainer-dominictarr",
+                "target": "repo-github-com-dominictarr-event-stream",
+                "type": "MAINTAINS_REPOSITORY",
+            },
+            graph["relationships"],
+        )
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
@@ -288,6 +296,58 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
         self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
+
+    def test_maintainer_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "repo-github-com-dominictarr-event-stream",
+                "type": "MAINTAINS_REPOSITORY",
+            }
+        )
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "account-npm-eslint-scope-npm-maintainer-account",
+                "type": "USES_ACCOUNT",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("MAINTAINS_REPOSITORY must start from a maintainer node" in error for error in errors))
+        self.assertTrue(any("USES_ACCOUNT must start from a maintainer node" in error for error in errors))
+
+    def test_maintainer_entities_require_anchor_fields_and_implied_edges(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        entities_by_type["maintainers"] = copy.deepcopy(entities_by_type["maintainers"])
+        maintainer = next(entity for entity in entities_by_type["maintainers"] if entity["id"] == "maintainer-dominictarr")
+        del maintainer["onboarding_date"]
+        maintainer["first_publish_date"] = "2018-99-99"
+        maintainer["repositories"] = ["pkg-not-a-repository"]
+        maintainer["account_ids"] = ["repo-not-an-account"]
+        relationships = [
+            relationship
+            for relationship in relationships
+            if not (
+                relationship["source"] == "maintainer-dominictarr"
+                and relationship["target"] == "repo-github-com-dominictarr-event-stream"
+                and relationship["type"] == "MAINTAINS_REPOSITORY"
+            )
+        ]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".onboarding_date: missing required field" in error for error in errors))
+        self.assertTrue(any(".first_publish_date: expected YYYY-MM-DD date or null" in error for error in errors))
+        self.assertTrue(any(".repositories[0]: expected repo-* entity id" in error for error in errors))
+        self.assertTrue(any(".account_ids[0]: expected account-* entity id" in error for error in errors))
+        self.assertTrue(any("missing MAINTAINS_REPOSITORY relationship" in error for error in errors))
 
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)
