@@ -89,7 +89,7 @@ class SupplyChainBacktestTests(unittest.TestCase):
 
         timeline = backtest.build_timeline(event_stream)
 
-        self.assertIn("references[1]", timeline["undated_evidence"]["reference_ids"])
+        self.assertIn("https://example.com/no-id", timeline["undated_evidence"]["reference_ids"])
 
     def test_non_array_corpus_fails_without_crashing(self) -> None:
         report = backtest.build_backtest({"not": "an array"}, ("SC-2024-XZ-UTILS",))
