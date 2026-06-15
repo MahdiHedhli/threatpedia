@@ -153,30 +153,29 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 if parse_purl(canonical).type == "generic":
                     if not isinstance(entity.get("purl_justification"), str) or len(entity["purl_justification"].strip()) < 20:
                         errors.append(f"{entity_id}.purl_justification: expected non-empty generic PURL justification")
-        if (
-            entity_type == "releases"
-            and isinstance(entity.get("purl"), str)
-            and isinstance(entity.get("ecosystem"), str)
-            and isinstance(entity.get("package_name"), str)
-        ):
-            try:
-                canonical = canonicalize_purl(
-                    entity["purl"],
-                    ecosystem=entity.get("ecosystem"),
-                    package_name=entity.get("package_name"),
-                )
-            except PurlError as exc:
-                errors.append(f"{entity_id}.purl: invalid canonical release PURL: {exc}")
-            else:
-                parsed = parse_purl(canonical)
-                if entity["purl"] != canonical:
-                    errors.append(f"{entity_id}.purl: expected canonical release PURL {canonical!r}")
-                if not parsed.version:
-                    errors.append(f"{entity_id}.purl: expected versioned package URL")
-                elif parsed.version != entity.get("version"):
-                    errors.append(f"{entity_id}.version: does not match PURL version {parsed.version!r}")
-                if parsed.type == "generic":
-                    errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
+        if entity_type == "releases":
+            purl = entity.get("purl")
+            ecosystem = entity.get("ecosystem")
+            package_name = entity.get("package_name")
+            if isinstance(purl, str) and isinstance(ecosystem, str) and isinstance(package_name, str):
+                try:
+                    canonical = canonicalize_purl(
+                        purl,
+                        ecosystem=ecosystem,
+                        package_name=package_name,
+                    )
+                except PurlError as exc:
+                    errors.append(f"{entity_id}.purl: invalid canonical release PURL: {exc}")
+                else:
+                    parsed = parse_purl(canonical)
+                    if purl != canonical:
+                        errors.append(f"{entity_id}.purl: expected canonical release PURL {canonical!r}")
+                    if not parsed.version:
+                        errors.append(f"{entity_id}.purl: expected versioned package URL")
+                    elif parsed.version != entity.get("version"):
+                        errors.append(f"{entity_id}.version: does not match PURL version {parsed.version!r}")
+                    if parsed.type == "generic":
+                        errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
             if parse_date(entity.get("published_at")) is None:
                 errors.append(f"{entity_id}.published_at: expected YYYY-MM-DD date")
             if entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:

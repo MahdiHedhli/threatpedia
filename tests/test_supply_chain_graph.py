@@ -253,11 +253,17 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
         entities_by_type["releases"][0]["package_name"] = None
         entities_by_type["releases"][0]["ecosystem"] = None
+        entities_by_type["releases"][0]["published_at"] = "2021-99-99"
+        entities_by_type["releases"][0]["malicious_range"] = ""
+        entities_by_type["releases"][0]["references"] = []
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any(".package_name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".malicious_range: expected non-empty string or null" in error for error in errors))
+        self.assertTrue(any(".references: expected non-empty list" in error for error in errors))
 
     def test_release_relationship_sources_are_bounded(self) -> None:
         corpus = load_json(CORPUS_PATH)
