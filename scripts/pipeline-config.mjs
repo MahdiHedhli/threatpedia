@@ -61,6 +61,13 @@ export const DEFAULTS = Object.freeze({
     failure_window_minutes: 120,
     alert_channel: 'issues',
   },
+  ready_issue: {
+    warn_minutes: 60,
+    stall_minutes: 180,
+    stall_minutes_by_priority: {
+      P0: 60,
+    },
+  },
   validation: {
     min_sources: 3,
     min_h2_sections: 5,

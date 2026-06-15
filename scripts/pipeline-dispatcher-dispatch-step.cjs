@@ -5,8 +5,9 @@ const path = require('path');
 
 const TASKS_DIR = '.github/pipeline/tasks';
 const DISPATCH_LABEL = 'pipeline/ready';
+const STALLED_READY_LABEL = 'pipeline/stalled-ready-issue';
 
-module.exports = async function runDispatcherDispatchStep({ github, context }) {
+module.exports = async function runDispatcherDispatchStep({ github, context, core = null }) {
   const DEFAULTS = {
     tasksPerRun: 12,
     maxEditorial: 100,
@@ -15,7 +16,28 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
     staleLockMinutes: 30,
     cooldownMinutes: 60,
     failureWindowMinutes: 120,
+    readyIssueWarnMinutes: 60,
+    readyIssueStallMinutes: 180,
+    readyIssuePriorityStallMinutes: { P0: 60 },
   };
+
+  function parsePositiveInt(value, fallback) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+  }
+
+  function parsePriorityStallMinutes(value) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return { ...DEFAULTS.readyIssuePriorityStallMinutes };
+    }
+
+    const parsed = {};
+    for (const [priority, minutes] of Object.entries(value)) {
+      const normalized = parsePositiveInt(minutes, null);
+      if (normalized) parsed[String(priority).toUpperCase()] = normalized;
+    }
+    return { ...DEFAULTS.readyIssuePriorityStallMinutes, ...parsed };
+  }
 
   function loadConfig() {
     try {
@@ -36,6 +58,17 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
         staleLockMinutes: cfg?.scheduling?.stale_lock_minutes ?? DEFAULTS.staleLockMinutes,
         cooldownMinutes: cfg?.circuit_breaker?.cooldown_minutes ?? DEFAULTS.cooldownMinutes,
         failureWindowMinutes: cfg?.circuit_breaker?.failure_window_minutes ?? DEFAULTS.failureWindowMinutes,
+        readyIssueWarnMinutes: parsePositiveInt(
+          cfg?.ready_issue?.warn_minutes,
+          DEFAULTS.readyIssueWarnMinutes
+        ),
+        readyIssueStallMinutes: parsePositiveInt(
+          cfg?.ready_issue?.stall_minutes,
+          DEFAULTS.readyIssueStallMinutes
+        ),
+        readyIssuePriorityStallMinutes: parsePriorityStallMinutes(
+          cfg?.ready_issue?.stall_minutes_by_priority
+        ),
         _source: cfg._source || 'file',
         _reason: cfg._reason,
         _path: cfg._path,
@@ -59,6 +92,8 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
   console.log(`  failureWindowMinutes: ${config.failureWindowMinutes}  (circuit_breaker.failure_window_minutes)`);
   console.log(`  cooldownMinutes:      ${config.cooldownMinutes}  (circuit_breaker.cooldown_minutes)`);
   console.log(`  staleLockMinutes:     ${config.staleLockMinutes}  (scheduling.stale_lock_minutes)`);
+  console.log(`  readyIssueWarnMin:    ${config.readyIssueWarnMinutes}  (ready_issue.warn_minutes)`);
+  console.log(`  readyIssueStallMin:   ${config.readyIssueStallMinutes}  (ready_issue.stall_minutes)`);
   console.log('──────────────────────────────────────────────────────────');
 
   function loadTasks() {
@@ -135,6 +170,136 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
       state_reason: 'completed',
     });
     removeOpenIssue(issue.number);
+  }
+
+  function emitWarning(message) {
+    console.log(`::warning::${message}`);
+    if (core?.warning) core.warning(message);
+  }
+
+  function minutesSince(timestamp) {
+    const millis = Date.parse(timestamp || '');
+    if (!Number.isFinite(millis)) return 0;
+    return Math.max(0, (now.getTime() - millis) / 60000);
+  }
+
+  function readyIssueStallThreshold(task) {
+    const priority = String(task.priority || '').toUpperCase();
+    return config.readyIssuePriorityStallMinutes[priority] || config.readyIssueStallMinutes;
+  }
+
+  function readyIssueAgeMinutes(issue) {
+    return minutesSince(issue.updated_at || issue.created_at);
+  }
+
+  function readyIssueHasAssignee(issue) {
+    return Array.isArray(issue.assignees) && issue.assignees.length > 0;
+  }
+
+  function readyIssueTaskUrl(issue) {
+    return issue.html_url || `Issue #${issue.number}`;
+  }
+
+  async function findStalledReadyIssue(taskId) {
+    const { data } = await github.rest.issues.listForRepo({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      state: 'open',
+      labels: STALLED_READY_LABEL,
+      per_page: 100,
+    });
+    return data.find((issue) =>
+      String(issue.title || '').includes(taskId) ||
+      String(issue.body || '').includes(`\`${taskId}\``)
+    ) || null;
+  }
+
+  async function closeStalledReadyIssue(taskId, reason) {
+    const alertIssue = await findStalledReadyIssue(taskId);
+    if (!alertIssue) return;
+
+    console.log(`Closing stalled-ready alert #${alertIssue.number}: ${reason}`);
+    await github.rest.issues.createComment({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      issue_number: alertIssue.number,
+      body: `Auto-closing: ${reason}`,
+    });
+    await github.rest.issues.update({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      issue_number: alertIssue.number,
+      state: 'closed',
+      state_reason: 'completed',
+    });
+  }
+
+  function stalledReadyIssueBody(task, readyIssue, ageMinutes, thresholdMinutes) {
+    return [
+      `The dispatcher found a valid \`${DISPATCH_LABEL}\` Issue for \`${task.task_id}\`, but no worker has consumed it.`,
+      '',
+      '| Field | Value |',
+      '|---|---|',
+      `| Task | \`${task.task_id}\` |`,
+      `| Type | \`${task.type || 'unknown'}\` |`,
+      `| Priority | \`${task.priority || 'unknown'}\` |`,
+      `| Ready Issue | ${readyIssueTaskUrl(readyIssue)} |`,
+      `| Ready Issue Age | ${Math.round(ageMinutes)} minutes since last activity |`,
+      `| Stall Threshold | ${thresholdMinutes} minutes |`,
+      `| Topic | ${task.input?.topic || 'unknown'} |`,
+      '',
+      'The dispatcher already checked for recoverable state before opening this alert:',
+      '',
+      '- no covering task PR is open',
+      '- the task is still `pending` in `draft` stage',
+      '- duplicate ready issues were reconciled separately',
+      '',
+      'This is a supervision failure, not an article-generation failure. Route the ready issue to a drafting worker, or assign it to signal active human ownership. The dispatcher will keep dispatching other eligible work.',
+    ].join('\n');
+  }
+
+  async function alertIfReadyIssueStalled(task, readyIssue) {
+    const ageMinutes = readyIssueAgeMinutes(readyIssue);
+    const stallThreshold = readyIssueStallThreshold(task);
+
+    if (ageMinutes < config.readyIssueWarnMinutes) return;
+
+    emitWarning(
+      `${task.task_id} has open ready Issue #${readyIssue.number} with no covering PR after ${Math.round(ageMinutes)} minutes.`
+    );
+
+    if (readyIssueHasAssignee(readyIssue)) {
+      console.log(`Ready Issue #${readyIssue.number} is assigned; treating it as actively owned.`);
+      await closeStalledReadyIssue(task.task_id, `${task.task_id} ready Issue #${readyIssue.number} is assigned`);
+      return;
+    }
+
+    if (ageMinutes < stallThreshold) return;
+
+    const title = `[PIPELINE ALERT] Stalled ready issue — ${task.task_id}`;
+    const body = stalledReadyIssueBody(task, readyIssue, ageMinutes, stallThreshold);
+    const existingAlert = await findStalledReadyIssue(task.task_id);
+
+    if (existingAlert) {
+      console.log(`Refreshing stalled-ready alert #${existingAlert.number} for ${task.task_id}`);
+      await github.rest.issues.update({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: existingAlert.number,
+        title,
+        body,
+      });
+      return;
+    }
+
+    console.log(`Opening stalled-ready alert for ${task.task_id}`);
+    await github.rest.issues.create({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      title,
+      body,
+      labels: ['pipeline/alert', STALLED_READY_LABEL],
+    });
   }
 
   async function loadPrForTask(task) {
@@ -293,6 +458,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
             `${taskId} is already covered by open PR #${coveringPr.number}`
           );
         }
+        await closeStalledReadyIssue(taskId, `${taskId} is now covered by open PR #${coveringPr.number}`);
         continue;
       }
 
@@ -303,13 +469,18 @@ module.exports = async function runDispatcherDispatchStep({ github, context }) {
             `${taskId} is no longer ready for pickup (status=${task.status}, stage=${task.stage})`
           );
         }
+        await closeStalledReadyIssue(
+          taskId,
+          `${taskId} is no longer ready for pickup (status=${task.status}, stage=${task.stage})`
+        );
         continue;
       }
 
-      const [, ...duplicates] = issues;
+      const [primary, ...duplicates] = issues;
       for (const issue of duplicates) {
         await closePipelineIssue(issue, `duplicate pipeline issue for ${taskId}`);
       }
+      await alertIfReadyIssueStalled(task, primary);
     }
   }
 
