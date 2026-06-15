@@ -50,10 +50,13 @@ class SupplyChainGraphTests(unittest.TestCase):
         account_ids = {entity["id"] for entity in graph["accounts"]}
         actor_ids = {entity["id"] for entity in graph["actors"]}
         campaign_ids = {entity["id"] for entity in graph["campaigns"]}
+        release_ids = {entity["id"] for entity in graph["releases"]}
 
         self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
+        self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
+        self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
         self.assertIn("maintainer-dominictarr", maintainer_ids)
         self.assertIn("org-codecov", organization_ids)
@@ -229,6 +232,43 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any(".purl_justification: expected non-empty generic PURL justification" in error for error in errors))
+
+    def test_release_entities_require_versioned_canonical_purls(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["purl"] = "pkg:npm/flatmap-stream"
+        entities_by_type["releases"][1]["published_at"] = "2021-99-99"
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+
+    def test_release_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "PACKAGE_RELEASE",
+            }
+        )
+        relationships.append(
+            {
+                "source": "pkg-npm-flatmap-stream",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "INCIDENT_AFFECTED_RELEASE",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
+        self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
 
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)

@@ -31,6 +31,7 @@ ENTITY_FILES = {
     "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
+    "releases": "releases.json",
     "repositories": "repositories.json",
     "organizations": "organizations.json",
 }
@@ -46,6 +47,8 @@ RELATIONSHIP_TYPES = {
     "SOURCE_ARTIFACT_DIVERGENCE",
     "USED_BUILD_SYSTEM",
     "USED_DISTRIBUTION_CHANNEL",
+    "PACKAGE_RELEASE",
+    "INCIDENT_AFFECTED_RELEASE",
 }
 GENERIC_VENDOR_NAMES = {
     "malicious publisher",
@@ -164,6 +167,38 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
         entity["package_url"] = package_url
     if is_generic_purl:
         entity["purl_justification"] = purl_justification
+    add_source(entity, incident_id)
+    return entity_id
+
+
+def upsert_release(releases: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
+    ecosystem = item["ecosystem"]
+    package_name = item["package_name"]
+    version = item["version"]
+    purl = canonicalize_purl(item["purl"], ecosystem=ecosystem, package_name=package_name)
+    parsed = parse_purl(purl)
+    if parsed.version != version:
+        raise ValueError(f"{incident_id}: release version {version!r} does not match PURL {purl!r}")
+    entity_id = stable_id("release", ecosystem, package_name, version)
+    name = f"{package_name}@{version}"
+    entity = releases.setdefault(
+        entity_id,
+        {
+            "id": entity_id,
+            "name": name,
+            "purl": purl,
+            "package_name": package_name,
+            "version": version,
+            "published_at": item["published_at"],
+            "ecosystem": ecosystem,
+            "malicious_range": item.get("malicious_range"),
+            "references": sorted(item.get("references") or []),
+            "disclosed_at": item.get("disclosed_at"),
+            "aliases": sorted({name, purl}),
+            "source_incident_ids": [],
+        },
+    )
+    entity["references"] = sorted(set(entity.get("references", []) + (item.get("references") or [])))
     add_source(entity, incident_id)
     return entity_id
 
@@ -335,6 +370,7 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     distribution_channels: dict[str, dict[str, Any]] = {}
     maintainers: dict[str, dict[str, Any]] = {}
     packages: dict[str, dict[str, Any]] = {}
+    releases: dict[str, dict[str, Any]] = {}
     repositories: dict[str, dict[str, Any]] = {}
     organizations: dict[str, dict[str, Any]] = {}
     relationships: dict[tuple[str, str, str], dict[str, str]] = {}
@@ -353,6 +389,12 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
             org_id = upsert_organization(organizations, component["vendor"], incident_id)
             if org_id:
                 add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
+
+        for item in incident.get("releases") or []:
+            release_id = upsert_release(releases, item, incident_id)
+            package_id = stable_id("pkg", item["ecosystem"], item["package_name"])
+            add_relationship(relationship(package_id, release_id, "PACKAGE_RELEASE"))
+            add_relationship(relationship(source, release_id, "INCIDENT_AFFECTED_RELEASE"))
 
         divergence_channel_targets: list[str] = []
         for maintainer in incident.get("maintainers") or []:
@@ -398,6 +440,7 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
         "distribution_channels": sorted(distribution_channels.values(), key=lambda item: item["id"]),
         "maintainers": sorted(maintainers.values(), key=lambda item: item["id"]),
         "packages": sorted(packages.values(), key=lambda item: item["id"]),
+        "releases": sorted(releases.values(), key=lambda item: item["id"]),
         "repositories": sorted(repositories.values(), key=lambda item: item["id"]),
         "organizations": sorted(organizations.values(), key=lambda item: item["id"]),
         "relationships": sorted(relationships.values(), key=lambda item: (item["source"], item["type"], item["target"])),
@@ -426,6 +469,7 @@ def main(argv: list[str] | None = None) -> int:
         f"actors={len(graph['actors'])} "
         f"campaigns={len(graph['campaigns'])} "
         f"packages={len(graph['packages'])} "
+        f"releases={len(graph['releases'])} "
         f"repositories={len(graph['repositories'])} "
         f"organizations={len(graph['organizations'])} "
         f"build_systems={len(graph['build_systems'])} "

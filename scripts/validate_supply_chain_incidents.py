@@ -60,6 +60,16 @@ REQUIRED_REPOSITORY_FIELDS = ["name", "host", "owner", "url"]
 REQUIRED_BUILD_SYSTEM_FIELDS = ["name", "provider", "category"]
 REQUIRED_DISTRIBUTION_CHANNEL_FIELDS = ["name", "channel_type", "ecosystem"]
 REQUIRED_COMPROMISED_ACCOUNT_FIELDS = ["name", "provider", "account_type", "role"]
+REQUIRED_RELEASE_FIELDS = [
+    "package_name",
+    "ecosystem",
+    "purl",
+    "version",
+    "published_at",
+    "malicious_range",
+    "references",
+    "disclosed_at",
+]
 REQUIRED_THREAT_ACTOR_FIELDS = ["id", "name", "actor_type", "confidence", "source_refs"]
 REQUIRED_CAMPAIGN_FIELDS = ["id", "campaign_id", "name", "slug", "confidence", "source_refs"]
 REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS = ["target", "relationship_type", "source_refs", "summary"]
@@ -229,6 +239,58 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
                 errors.append(f"{path}.package_url: expected canonical package URL {canonical!r}")
             if parse_purl(canonical).type == "generic":
                 require_string(errors, f"{path}.purl_justification", component.get("purl_justification"), min_length=20)
+
+
+def validate_release(
+    errors: list[str],
+    incident_id: str,
+    index: int,
+    release: Any,
+    valid_reference_ids: set[str],
+    package_components: set[tuple[str, str]],
+) -> None:
+    path = f"{incident_id}.releases[{index}]"
+    if not isinstance(release, dict):
+        errors.append(f"{path}: expected object")
+        return
+    for field in REQUIRED_RELEASE_FIELDS:
+        if field not in release:
+            errors.append(f"{path}.{field}: missing required field")
+
+    for field in ["package_name", "ecosystem", "purl", "version"]:
+        if field in release:
+            require_string(errors, f"{path}.{field}", release.get(field))
+
+    if "published_at" in release and parse_date(release.get("published_at")) is None:
+        errors.append(f"{path}.published_at: expected YYYY-MM-DD date")
+    if "disclosed_at" in release and release.get("disclosed_at") is not None and parse_date(release.get("disclosed_at")) is None:
+        errors.append(f"{path}.disclosed_at: expected YYYY-MM-DD date or null")
+    if "malicious_range" in release and release.get("malicious_range") is not None:
+        require_string(errors, f"{path}.malicious_range", release.get("malicious_range"))
+
+    if "references" in release:
+        validate_reference_id_list(errors, incident_id, f"{path}.references", release.get("references"), valid_reference_ids)
+
+    package_name = release.get("package_name")
+    ecosystem = release.get("ecosystem")
+    purl = release.get("purl")
+    version = release.get("version")
+    if isinstance(package_name, str) and isinstance(ecosystem, str):
+        if (ecosystem, package_name) not in package_components:
+            errors.append(f"{path}: release package must match an affected package component")
+    if isinstance(purl, str):
+        try:
+            canonical = canonicalize_purl(purl, ecosystem=ecosystem, package_name=package_name)
+        except PurlError as exc:
+            errors.append(f"{path}.purl: invalid canonical release PURL: {exc}")
+        else:
+            parsed = parse_purl(canonical)
+            if purl != canonical:
+                errors.append(f"{path}.purl: expected canonical release PURL {canonical!r}")
+            if not parsed.version:
+                errors.append(f"{path}.purl: expected versioned package URL")
+            elif isinstance(version, str) and parsed.version != version:
+                errors.append(f"{path}.version: does not match PURL version {parsed.version!r}")
 
 
 def validate_reference(errors: list[str], incident_id: str, index: int, reference: Any) -> None:
@@ -605,6 +667,19 @@ def validate_incident(incident: Any) -> list[str]:
     else:
         for index, reference in enumerate(references):
             validate_reference(errors, incident_id, index, reference)
+    valid_reference_ids = reference_ids_for(incident)
+
+    releases = incident.get("releases", [])
+    package_components = {
+        (component.get("ecosystem"), component.get("name"))
+        for component in (components if isinstance(components, list) else [])
+        if isinstance(component, dict) and component.get("component_type") == "package"
+    }
+    if not isinstance(releases, list):
+        errors.append(f"{incident_id}.releases: expected list")
+    else:
+        for index, release in enumerate(releases):
+            validate_release(errors, incident_id, index, release, valid_reference_ids, package_components)
 
     maintainers = incident.get("maintainers")
     if not isinstance(maintainers, list):

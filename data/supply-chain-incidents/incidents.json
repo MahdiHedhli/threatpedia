@@ -332,6 +332,20 @@
         "package_url": "pkg:npm/flatmap-stream"
       }
     ],
+    "releases": [
+      {
+        "package_name": "flatmap-stream",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/flatmap-stream@0.1.1",
+        "version": "0.1.1",
+        "published_at": "2018-09-09",
+        "malicious_range": "0.1.1",
+        "references": [
+          "ref-github-event-stream-116"
+        ],
+        "disclosed_at": "2018-11-26"
+      }
+    ],
     "supply_chain_vectors": [
       "malicious_dependency"
     ],
@@ -1107,6 +1121,44 @@
         "name": "ua-parser-js",
         "vendor": "open source maintainers",
         "package_url": "pkg:npm/ua-parser-js"
+      }
+    ],
+    "releases": [
+      {
+        "package_name": "ua-parser-js",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/ua-parser-js@0.7.29",
+        "version": "0.7.29",
+        "published_at": "2021-10-22",
+        "malicious_range": "0.7.29",
+        "references": [
+          "ref-github-advisory-ua-parser-js"
+        ],
+        "disclosed_at": "2021-10-22"
+      },
+      {
+        "package_name": "ua-parser-js",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/ua-parser-js@0.8.0",
+        "version": "0.8.0",
+        "published_at": "2021-10-22",
+        "malicious_range": "0.8.0",
+        "references": [
+          "ref-github-advisory-ua-parser-js"
+        ],
+        "disclosed_at": "2021-10-22"
+      },
+      {
+        "package_name": "ua-parser-js",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/ua-parser-js@1.0.0",
+        "version": "1.0.0",
+        "published_at": "2021-10-22",
+        "malicious_range": "1.0.0",
+        "references": [
+          "ref-github-advisory-ua-parser-js"
+        ],
+        "disclosed_at": "2021-10-22"
       }
     ],
     "supply_chain_vectors": [
