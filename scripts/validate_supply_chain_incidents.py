@@ -291,6 +291,8 @@ def validate_release(
                 errors.append(f"{path}.purl: expected versioned package URL")
             elif isinstance(version, str) and parsed.version != version:
                 errors.append(f"{path}.version: does not match PURL version {parsed.version!r}")
+            if parsed.type == "generic":
+                errors.append(f"{path}.purl: generic release PURLs are not joinable")
 
 
 def validate_reference(errors: list[str], incident_id: str, index: int, reference: Any) -> None:

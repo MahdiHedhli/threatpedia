@@ -170,7 +170,7 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                     errors.append(f"{entity_id}.purl: expected versioned package URL")
                 elif parsed.version != entity.get("version"):
                     errors.append(f"{entity_id}.version: does not match PURL version {parsed.version!r}")
-                if parse_purl(canonical).type == "generic":
+                if parsed.type == "generic":
                     errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
             if parse_date(entity.get("published_at")) is None:
                 errors.append(f"{entity_id}.published_at: expected YYYY-MM-DD date")
