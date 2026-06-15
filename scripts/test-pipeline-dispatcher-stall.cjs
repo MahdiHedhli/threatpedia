@@ -89,6 +89,7 @@ function createMockGithub({ readyIssues = [], alertIssues = [], openPrs = [] } =
     createdIssues: [],
     updatedIssues: [],
     comments: [],
+    issueLists: [],
     pullsListed: [],
   };
 
@@ -111,6 +112,7 @@ function createMockGithub({ readyIssues = [], alertIssues = [], openPrs = [] } =
     rest: {
       issues: {
         listForRepo: async ({ labels }) => {
+          calls.issueLists.push(labels);
           if (labels === 'pipeline/ready') {
             return { data: state.readyIssues.filter((issue) => issue.state === 'open') };
           }
@@ -170,7 +172,7 @@ function createMockGithub({ readyIssues = [], alertIssues = [], openPrs = [] } =
   return { github, calls, state };
 }
 
-async function runScenario({ task = baseTask(), mock }) {
+async function runScenario({ task = baseTask(), tasks = null, mock }) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'threatpedia-dispatcher-test-'));
   process.chdir(tempDir);
   process.env.CONFIG_JSON = JSON.stringify({
@@ -182,7 +184,9 @@ async function runScenario({ task = baseTask(), mock }) {
   });
 
   try {
-    writeTaskFixture(task);
+    for (const item of tasks || [task]) {
+      writeTaskFixture(item);
+    }
     await runDispatcher({
       github: mock.github,
       context: { repo: { owner: 'example', repo: 'repo' } },
@@ -207,6 +211,37 @@ async function testStaleUnassignedReadyIssueCreatesAlert() {
   assert.ok(alert, 'expected a stalled-ready alert to be created');
   assert.match(alert.title, /TASK-2026-9999/);
   assert.match(alert.body, /no worker has consumed it/);
+}
+
+async function testStalledReadyIssueLookupIsCachedPerRun() {
+  const firstTask = baseTask({ task_id: 'TASK-2026-9999' });
+  const secondTask = baseTask({
+    task_id: 'TASK-2026-9998',
+    output: {
+      branch: 'pipeline/TASK-2026-9998',
+      path: 'site/src/content/zero-days/synthetic-2.md',
+    },
+  });
+  const mock = createMockGithub({
+    readyIssues: [
+      readyIssue(),
+      readyIssue({
+        number: 4002,
+        title: '[PIPELINE] TASK-2026-9998: Synthetic stale ready issue test',
+        body: '## Pipeline Task: `TASK-2026-9998`',
+      }),
+    ],
+  });
+
+  await runScenario({ tasks: [firstTask, secondTask], mock });
+
+  const stalledListCalls = mock.calls.issueLists.filter((label) => label === 'pipeline/stalled-ready-issue');
+  assert.equal(stalledListCalls.length, 1, 'stalled-ready alerts should be listed once per dispatcher run');
+  assert.equal(
+    mock.calls.createdIssues.filter((issue) => issue.labels?.includes('pipeline/stalled-ready-issue')).length,
+    2,
+    'both stale ready issues should still create alerts from the cached list'
+  );
 }
 
 async function testAssignedReadyIssueDoesNotCreateAlert() {
@@ -254,10 +289,41 @@ async function testCoveringPrClosesReadyIssueAndAlert() {
   );
 }
 
+async function testPrBackedTaskClosesAlertWithoutReadyIssue() {
+  const existingAlert = alertIssue();
+  const mock = createMockGithub({
+    alertIssues: [existingAlert],
+    openPrs: [
+      {
+        number: 7001,
+        state: 'open',
+        html_url: 'https://github.com/example/repo/pull/7001',
+      },
+    ],
+  });
+
+  await runScenario({
+    task: baseTask({
+      status: 'pr_open',
+      pr_number: 7001,
+      pr_url: 'https://github.com/example/repo/pull/7001',
+    }),
+    mock,
+  });
+
+  assert.equal(existingAlert.state, 'closed', 'pr_open task should close stale alert even without a ready issue');
+  assert.ok(
+    mock.calls.comments.some((comment) => comment.issue_number === existingAlert.number),
+    'expected stale alert close to leave an explanatory comment'
+  );
+}
+
 async function main() {
   await testStaleUnassignedReadyIssueCreatesAlert();
+  await testStalledReadyIssueLookupIsCachedPerRun();
   await testAssignedReadyIssueDoesNotCreateAlert();
   await testCoveringPrClosesReadyIssueAndAlert();
+  await testPrBackedTaskClosesAlertWithoutReadyIssue();
   console.log('pipeline-dispatcher stall tests passed');
 }
 

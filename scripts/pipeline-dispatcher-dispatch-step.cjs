@@ -148,9 +148,30 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
   const openPipelineIssues = await loadOpenPipelineIssues();
   const taskIndex = new Map(allTasks.map((task) => [task.task_id, task]));
 
+  async function loadOpenStalledReadyIssues() {
+    const issues = await github.paginate(
+      github.rest.issues.listForRepo,
+      {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        state: 'open',
+        labels: STALLED_READY_LABEL,
+        per_page: 100,
+      }
+    );
+    return issues.filter((issue) => !issue.pull_request);
+  }
+
+  const openStalledReadyIssues = await loadOpenStalledReadyIssues();
+
   function removeOpenIssue(issueNumber) {
     const index = openPipelineIssues.findIndex((issue) => issue.number === issueNumber);
     if (index >= 0) openPipelineIssues.splice(index, 1);
+  }
+
+  function removeOpenStalledReadyIssue(issueNumber) {
+    const index = openStalledReadyIssues.findIndex((issue) => issue.number === issueNumber);
+    if (index >= 0) openStalledReadyIssues.splice(index, 1);
   }
 
   function findOpenPipelineIssue(taskId) {
@@ -201,14 +222,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
   }
 
   async function findStalledReadyIssue(taskId) {
-    const { data } = await github.rest.issues.listForRepo({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      state: 'open',
-      labels: STALLED_READY_LABEL,
-      per_page: 100,
-    });
-    return data.find((issue) =>
+    return openStalledReadyIssues.find((issue) =>
       String(issue.title || '').includes(taskId) ||
       String(issue.body || '').includes(`\`${taskId}\``)
     ) || null;
@@ -232,6 +246,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
       state: 'closed',
       state_reason: 'completed',
     });
+    removeOpenStalledReadyIssue(alertIssue.number);
   }
 
   function stalledReadyIssueBody(task, readyIssue, ageMinutes, thresholdMinutes) {
@@ -282,24 +297,26 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
 
     if (existingAlert) {
       console.log(`Refreshing stalled-ready alert #${existingAlert.number} for ${task.task_id}`);
-      await github.rest.issues.update({
+      const { data: refreshedAlert } = await github.rest.issues.update({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: existingAlert.number,
         title,
         body,
       });
+      Object.assign(existingAlert, refreshedAlert);
       return;
     }
 
     console.log(`Opening stalled-ready alert for ${task.task_id}`);
-    await github.rest.issues.create({
+    const { data: createdAlert } = await github.rest.issues.create({
       owner: context.repo.owner,
       repo: context.repo.repo,
       title,
       body,
       labels: ['pipeline/alert', STALLED_READY_LABEL],
     });
+    openStalledReadyIssues.push(createdAlert);
   }
 
   async function loadPrForTask(task) {
@@ -381,6 +398,7 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
           });
           saveTask(task);
         }
+        await closeStalledReadyIssue(task.task_id, `${task.task_id} is already covered by open PR #${pr.number}`);
         continue;
       }
 
