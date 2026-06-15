@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pending",
   "created": "2026-06-15T20:49:54.656Z",
-  "updated": "2026-06-15T20:49:54.656Z",
+  "updated": "2026-06-15T21:59:24.925Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -77,6 +77,14 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 95)"
+    },
+    {
+      "timestamp": "2026-06-15T21:59:24.925Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1160"
     }
   ]
 }
