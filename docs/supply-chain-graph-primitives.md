@@ -142,19 +142,19 @@ evidence needed to compute future canary primitives.
 
 ## Current Graph Density
 
-The Phase 2D pass over the same 25 incidents currently emits:
+The Phase 2E pass over 27 incidents currently emits:
 
 - Maintainers: 5
-- Packages: 16
-- Releases: 4
-- Repositories: 10
-- Organizations: 17
+- Packages: 19
+- Releases: 7
+- Repositories: 11
+- Organizations: 20
 - Build systems: 6
-- Distribution channels: 11
-- Compromised accounts: 8
-- Actors: 4
+- Distribution channels: 14
+- Compromised accounts: 11
+- Actors: 6
 - Campaigns: 3
-- Relationships: 113
+- Relationships: 138
 
 ## Build and Validate
 

@@ -1,6 +1,18 @@
 [
   {
     "aliases": [
+      "github.com/boltdb-go/bolt"
+    ],
+    "ecosystem": "golang",
+    "id": "pkg-golang-github-com-boltdb-go-bolt",
+    "name": "github.com/boltdb-go/bolt",
+    "package_url": "pkg:golang/github.com/boltdb-go/bolt",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
       "internal dependency names"
     ],
     "ecosystem": "multiple",
@@ -22,6 +34,18 @@
     "package_url": "pkg:npm/colors",
     "source_incident_ids": [
       "SC-2022-COLORS-FAKER"
+    ]
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-ctrl-tinycolor",
+    "name": "@ctrl/tinycolor",
+    "package_url": "pkg:npm/%40ctrl/tinycolor",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {
@@ -142,6 +166,18 @@
     "package_url": "pkg:npm/rc",
     "source_incident_ids": [
       "SC-2021-NPM-RC"
+    ]
+  },
+  {
+    "aliases": [
+      "rxnt-authentication"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-rxnt-authentication",
+    "name": "rxnt-authentication",
+    "package_url": "pkg:npm/rxnt-authentication",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {

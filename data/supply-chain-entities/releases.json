@@ -1,6 +1,71 @@
 [
   {
     "aliases": [
+      "github.com/boltdb-go/bolt@v1.3.1",
+      "pkg:golang/github.com/boltdb-go/bolt@v1.3.1"
+    ],
+    "disclosed_at": "2025-02-04",
+    "ecosystem": "golang",
+    "id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "malicious_range": "v1.3.1",
+    "name": "github.com/boltdb-go/bolt@v1.3.1",
+    "package_name": "github.com/boltdb-go/bolt",
+    "published_at": "2021-11-01",
+    "purl": "pkg:golang/github.com/boltdb-go/bolt@v1.3.1",
+    "references": [
+      "ref-socket-boltdb-go"
+    ],
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ],
+    "version": "v1.3.1"
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor@4.1.1",
+      "pkg:npm/%40ctrl/tinycolor@4.1.1"
+    ],
+    "disclosed_at": "2025-09-16",
+    "ecosystem": "npm",
+    "id": "release-npm-ctrl-tinycolor-4-1-1",
+    "malicious_range": "4.1.1",
+    "name": "@ctrl/tinycolor@4.1.1",
+    "package_name": "@ctrl/tinycolor",
+    "published_at": "2025-09-15",
+    "purl": "pkg:npm/%40ctrl/tinycolor@4.1.1",
+    "references": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ],
+    "version": "4.1.1"
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor@4.1.2",
+      "pkg:npm/%40ctrl/tinycolor@4.1.2"
+    ],
+    "disclosed_at": "2025-09-16",
+    "ecosystem": "npm",
+    "id": "release-npm-ctrl-tinycolor-4-1-2",
+    "malicious_range": "4.1.2",
+    "name": "@ctrl/tinycolor@4.1.2",
+    "package_name": "@ctrl/tinycolor",
+    "published_at": "2025-09-15",
+    "purl": "pkg:npm/%40ctrl/tinycolor@4.1.2",
+    "references": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ],
+    "version": "4.1.2"
+  },
+  {
+    "aliases": [
       "flatmap-stream@0.1.1",
       "pkg:npm/flatmap-stream@0.1.1"
     ],

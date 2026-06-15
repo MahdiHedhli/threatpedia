@@ -495,6 +495,116 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "org-boltdb-go",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "pkg-golang-github-com-boltdb-go-bolt",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "repo-github-com-boltdb-go-bolt",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "actor-boltdb-go-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "account-github-boltdb-go-github-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-github-source-repository-github-repository",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-golang-package-registry-go-module-proxy",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-github-source-repository-github-repository",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-golang-package-registry-go-module-proxy",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "org-ctrl",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "org-rxnt",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "pkg-npm-ctrl-tinycolor",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "pkg-npm-rxnt-authentication",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "actor-shai-hulud-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "account-github-victim-github-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "account-npm-compromised-npm-maintainer-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
     "target": "org-tj-actions",
     "type": "AFFECTED_ORGANIZATION"
@@ -543,6 +653,21 @@
     "source": "maintainer-riaevangelist",
     "target": "repo-github-com-riaevangelist-node-ipc",
     "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "pkg-golang-github-com-boltdb-go-bolt",
+    "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ctrl-tinycolor",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ctrl-tinycolor",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "PACKAGE_RELEASE"
   },
   {
     "source": "pkg-npm-flatmap-stream",

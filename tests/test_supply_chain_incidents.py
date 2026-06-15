@@ -34,9 +34,25 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         corpus = load_json(CORPUS_PATH)
         schema = load_json(SCHEMA_PATH)
 
-        self.assertGreaterEqual(len(corpus), 25)
+        self.assertGreaterEqual(len(corpus), 27)
         self.assertEqual(validator.validate_schema_file(schema), [])
         self.assertEqual(validator.validate_corpus(corpus), [])
+
+    def test_phase_2e_mandatory_incidents_are_modeled_end_to_end(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        by_id = {incident["id"]: incident for incident in corpus}
+
+        shai_hulud = by_id["SC-2025-NPM-SHAI-HULUD"]
+        self.assertEqual(shai_hulud["first_public_warning_at"], "2025-09-15")
+        self.assertTrue(any(component["name"] == "@ctrl/tinycolor" for component in shai_hulud["affected_components"]))
+        self.assertTrue(any(release["malicious_range"] == "4.1.1" for release in shai_hulud["releases"]))
+        self.assertEqual(shai_hulud["threat_actors"][0]["actor_type"], "provisional")
+
+        boltdb = by_id["SC-2025-GO-BOLTDB-TYPOSQUAT"]
+        self.assertEqual(boltdb["first_public_warning_at"], "2025-02-04")
+        self.assertTrue(any(component["name"] == "github.com/boltdb-go/bolt" for component in boltdb["affected_components"]))
+        self.assertEqual(boltdb["releases"][0]["malicious_range"], "v1.3.1")
+        self.assertTrue(boltdb["source_artifact_divergence"])
 
     def test_duplicate_ids_fail_validation(self) -> None:
         corpus = load_json(CORPUS_PATH)
