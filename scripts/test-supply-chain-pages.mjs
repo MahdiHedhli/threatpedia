@@ -53,6 +53,7 @@ assert.equal(routes.length, expectedRouteCount, 'enabled route count should matc
 const index = getSupplyChainIndexModel(data);
 assert.equal(index.counts.incidents, data.incidents.length, 'index should expose incident count');
 assert.equal(index.counts.relationships, data.relationships.length, 'index should expose relationship count');
+assert.equal(index.counts.releases, data.entities.releases.length, 'index should expose release count');
 assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'index should expose build system count');
 assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
 assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
@@ -172,6 +173,17 @@ assert.ok(
 assert.ok(
   staleXz.connectedEntities.some((entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor'),
   'incident connected entities should fall back to corpus threat_actors when generated incident attribution edges are stale'
+);
+
+const uaParser = getSupplyChainIncidentPage('SC-2021-UA-PARSER-JS', data);
+assert.equal(uaParser.sections.releases.length, 3, 'ua-parser-js page should include three affected releases');
+assert.ok(
+  uaParser.sections.releases.some((release) => release.id === 'release-npm-ua-parser-js-0-7-29'),
+  'ua-parser-js page should include release entity details'
+);
+assert.ok(
+  uaParser.sections.releases.every((release) => release.context.includes('pkg:npm/ua-parser-js@')),
+  'release rows should expose versioned PURL context'
 );
 
 const threeCx = getSupplyChainIncidentPage('SC-2023-THREE-CX-DESKTOP', data);

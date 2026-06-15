@@ -89,6 +89,7 @@ const allEntityFiles = {
   maintainers: 'maintainers.json',
   organizations: 'organizations.json',
   packages: 'packages.json',
+  releases: 'releases.json',
   repositories: 'repositories.json',
 };
 
@@ -144,6 +145,7 @@ const ENTITY_COLLECTION_LABELS = {
   repositories: 'Repository',
   organizations: 'Organization',
   maintainers: 'Maintainer',
+  releases: 'Release',
   build_systems: 'Build System',
   distribution_channels: 'Distribution Channel',
   accounts: 'Compromised Account',
@@ -335,6 +337,28 @@ function incidentEntityLinks(data, incidentId, relationshipType) {
     .sort(compareLabel);
 }
 
+function incidentReleaseLinks(data, incidentId) {
+  const nodeId = `incident-${incidentId}`;
+  return data.relationships
+    .filter((relationship) => relationship.source === nodeId && relationship.type === 'INCIDENT_AFFECTED_RELEASE')
+    .map((relationship) => {
+      const release = data.entityById.get(relationship.target);
+      if (!release) return null;
+      return {
+        href: null,
+        label: release.name,
+        id: release.id,
+        type: relationship.type,
+        entityType: entityTypeLabel(release),
+        context: [release.purl, release.published_at ? `published ${release.published_at}` : null]
+          .filter(Boolean)
+          .join(' · '),
+      };
+    })
+    .filter(Boolean)
+    .sort(compareLabel);
+}
+
 function incidentAttributionLinks(data, incidentId, relationshipType, collectionKey) {
   const relationshipLinks = incidentEntityLinks(data, incidentId, relationshipType);
   const incident = data.incidents.find((item) => item.id === incidentId);
@@ -428,6 +452,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
     counts: {
       incidents: data.incidents.length,
       packages: data.entities.packages.length,
+      releases: data.entities.releases.length,
       repositories: data.entities.repositories.length,
       organizations: data.entities.organizations.length,
       maintainers: data.entities.maintainers.length,
@@ -490,6 +515,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     },
     sections: {
       packages: incidentEntityLinks(data, id, 'AFFECTED_PACKAGE'),
+      releases: incidentReleaseLinks(data, id),
       repositories: incidentEntityLinks(data, id, 'AFFECTED_REPOSITORY'),
       organizations: incidentEntityLinks(data, id, 'AFFECTED_ORGANIZATION'),
       maintainers: incidentEntityLinks(data, id, 'AFFECTED_MAINTAINER'),

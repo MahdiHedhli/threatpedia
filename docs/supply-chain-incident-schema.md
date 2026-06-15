@@ -45,6 +45,8 @@ The core fields are:
   `github-actions`, or `vendor-update`
 - `affected_components`: structured impacted packages, projects, services, or
   update channels
+- `releases`: optional version-addressable package releases with canonical
+  versioned PURLs, publish dates, malicious range notes, and local reference IDs
 - `supply_chain_vectors`: normalized vector labels
 - `impact_categories`: normalized impact labels
 - `references`: public documentation for the incident
@@ -87,6 +89,27 @@ software, services, websites, and update channels should use `null`. See
 `docs/supply-chain-purl-model.md` for the canonical PURL grammar and validation
 contract. `pkg:generic/...` is allowed only for reviewed cross-ecosystem
 placeholders and requires `purl_justification`.
+
+Release records are optional in Phase 2C and are used only when public evidence
+supports a precise package version and publish date. They use this shape:
+
+```json
+{
+  "package_name": "flatmap-stream",
+  "ecosystem": "npm",
+  "purl": "pkg:npm/flatmap-stream@0.1.1",
+  "version": "0.1.1",
+  "published_at": "YYYY-MM-DD",
+  "malicious_range": "0.1.1 or null",
+  "references": ["ref-example"],
+  "disclosed_at": "YYYY-MM-DD or null"
+}
+```
+
+Every release must match an affected package component in the same incident.
+The `purl` must be canonical, versioned, and backed by local reference IDs.
+Generic release PURLs are not accepted because they cannot join cleanly to the
+release-event spine.
 
 ## Attack Stages
 
