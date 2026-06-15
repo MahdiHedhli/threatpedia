@@ -688,5 +688,17 @@
     "source": "pkg-npm-ua-parser-js",
     "target": "release-npm-ua-parser-js-1-0-0",
     "type": "PACKAGE_RELEASE"
+  },
+  {
+    "evidence_refs": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "incident_id": "SC-2025-NPM-SHAI-HULUD",
+    "notes": "Same-day malicious release ordering is modeled as temporal precedence only; this edge does not assert direct causation between the two releases.",
+    "source": "release-npm-ctrl-tinycolor-4-1-1",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "tier": "temporal",
+    "type": "SEEDED_BY"
   }
 ]

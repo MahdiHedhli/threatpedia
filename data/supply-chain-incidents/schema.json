@@ -222,6 +222,12 @@
         "$ref": "#/$defs/attribution_evidence"
       }
     },
+    "propagation_edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/propagation_edge"
+      }
+    },
     "executive_summary": {
       "type": "array",
       "items": {
@@ -733,6 +739,38 @@
           "$ref": "#/$defs/reference_id_list"
         },
         "summary": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "propagation_edge": {
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "tier",
+        "evidence_refs"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^(pkg|release)-[a-z0-9][a-z0-9-]*$"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^(pkg|release)-[a-z0-9][a-z0-9-]*$"
+        },
+        "tier": {
+          "enum": [
+            "causal",
+            "temporal"
+          ]
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/reference_id_list"
+        },
+        "notes": {
           "type": "string",
           "minLength": 20
         }

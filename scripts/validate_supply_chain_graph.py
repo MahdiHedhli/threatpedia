@@ -50,6 +50,7 @@ VALID_RELATIONSHIP_TYPES = {
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
     "MAINTAINS_REPOSITORY",
+    "SEEDED_BY",
     "USES_ACCOUNT",
 }
 ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|release|repo|org)-[a-z0-9][a-z0-9-]*$")
@@ -68,6 +69,7 @@ RELATIONSHIP_TARGET_PREFIXES = {
     "PACKAGE_RELEASE": "release-",
     "INCIDENT_AFFECTED_RELEASE": "release-",
     "MAINTAINS_REPOSITORY": "repo-",
+    "SEEDED_BY": ("pkg-", "release-"),
     "USES_ACCOUNT": "account-",
 }
 ENTITY_TYPE_REQUIRED_FIELDS = {
@@ -83,6 +85,7 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "repositories": ["host", "url", "owner"],
 }
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+VALID_PROPAGATION_TIERS = {"causal", "temporal"}
 
 
 def load_json(path: Path) -> Any:
@@ -110,6 +113,18 @@ def incident_node_id(incident_id: str) -> str:
 def purl_identity(value: str) -> tuple[str, str | None, str]:
     parsed = parse_purl(value)
     return parsed.type, parsed.namespace, parsed.name
+
+
+def is_generic_package_entity(entity: dict[str, Any] | None) -> bool:
+    if not isinstance(entity, dict):
+        return False
+    package_url = entity.get("package_url")
+    if not isinstance(package_url, str):
+        return False
+    try:
+        return parse_purl(package_url).type == "generic"
+    except PurlError:
+        return False
 
 
 def load_entities(entity_dir: Path) -> dict[str, list[dict[str, Any]]]:
@@ -262,6 +277,7 @@ def validate_relationships(
     valid_nodes = entity_ids | incident_ids
     seen_relationships: set[tuple[str, str, str]] = set()
     connected_entities: set[str] = set()
+    seeded_by_edges: list[tuple[str, str, str]] = []
     for index, rel in enumerate(relationships):
         path = f"relationships[{index}]"
         if not isinstance(rel, dict):
@@ -309,6 +325,24 @@ def validate_relationships(
                 errors.append(f"{path}.source: MAINTAINS_REPOSITORY must start from a maintainer node")
             if rel_type == "USES_ACCOUNT" and not source.startswith("maintainer-"):
                 errors.append(f"{path}.source: USES_ACCOUNT must start from a maintainer node")
+            if rel_type == "SEEDED_BY":
+                if not source.startswith(("pkg-", "release-")):
+                    errors.append(f"{path}.source: SEEDED_BY must start from a package or release node")
+                elif source.startswith("pkg-") and is_generic_package_entity(entities_by_id.get(source)):
+                    errors.append(f"{path}.source: SEEDED_BY package endpoint must be release-spine joinable")
+                if target.startswith("pkg-") and is_generic_package_entity(entities_by_id.get(target)):
+                    errors.append(f"{path}.target: SEEDED_BY package endpoint must be release-spine joinable")
+                if source == target:
+                    errors.append(f"{path}: SEEDED_BY source and target must differ")
+                tier = rel.get("tier")
+                if tier not in VALID_PROPAGATION_TIERS:
+                    errors.append(f"{path}.tier: expected one of {sorted(VALID_PROPAGATION_TIERS)!r}")
+                evidence_refs = rel.get("evidence_refs")
+                if not isinstance(evidence_refs, list) or not evidence_refs:
+                    errors.append(f"{path}.evidence_refs: expected non-empty reference list")
+                elif not all(isinstance(ref, str) and ref.strip() for ref in evidence_refs):
+                    errors.append(f"{path}.evidence_refs: expected non-empty string references")
+                seeded_by_edges.append((source, target, path))
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
@@ -325,6 +359,35 @@ def validate_relationships(
     orphan_entities = sorted(entity_ids - connected_entities)
     for entity_id in orphan_entities:
         errors.append(f"{entity_id}: orphan entity with no relationships")
+    errors.extend(validate_seeded_by_acyclic(seeded_by_edges))
+    return errors
+
+
+def validate_seeded_by_acyclic(edges: list[tuple[str, str, str]]) -> list[str]:
+    graph: dict[str, list[tuple[str, str]]] = {}
+    for source, target, path in edges:
+        graph.setdefault(source, []).append((target, path))
+
+    errors: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(node: str, path_stack: list[str]) -> None:
+        if node in visiting:
+            cycle_start = path_stack.index(node) if node in path_stack else 0
+            cycle = " -> ".join(path_stack[cycle_start:] + [node])
+            errors.append(f"SEEDED_BY cycle detected: {cycle}")
+            return
+        if node in visited:
+            return
+        visiting.add(node)
+        for target, _edge_path in graph.get(node, []):
+            visit(target, path_stack + [target])
+        visiting.remove(node)
+        visited.add(node)
+
+    for node in sorted(graph):
+        visit(node, [node])
     return errors
 
 
@@ -386,6 +449,15 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                     errors.append(f"{source}: missing PACKAGE_RELEASE relationship for {release_id}")
                 if (source, release_id, "INCIDENT_AFFECTED_RELEASE") not in relationship_keys:
                     errors.append(f"{source}: missing INCIDENT_AFFECTED_RELEASE relationship for {release_id}")
+        for propagation_edge in incident.get("propagation_edges") or []:
+            if not isinstance(propagation_edge, dict):
+                continue
+            edge_source = propagation_edge.get("source")
+            edge_target = propagation_edge.get("target")
+            if isinstance(edge_source, str) and isinstance(edge_target, str):
+                key = (edge_source, edge_target, "SEEDED_BY")
+                if key not in relationship_keys:
+                    errors.append(f"{source}: missing SEEDED_BY relationship from {edge_source} to {edge_target}")
     return errors
 
 

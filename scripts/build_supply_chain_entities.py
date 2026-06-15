@@ -50,6 +50,7 @@ RELATIONSHIP_TYPES = {
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
     "MAINTAINS_REPOSITORY",
+    "SEEDED_BY",
     "USES_ACCOUNT",
 }
 GENERIC_VENDOR_NAMES = {
@@ -376,10 +377,12 @@ def upsert_campaign(campaigns: dict[str, dict[str, Any]], item: dict[str, Any], 
     return entity_id
 
 
-def relationship(source: str, target: str, relationship_type: str) -> dict[str, str]:
+def relationship(source: str, target: str, relationship_type: str, **metadata: Any) -> dict[str, Any]:
     if relationship_type not in RELATIONSHIP_TYPES:
         raise ValueError(f"invalid relationship type: {relationship_type}")
-    return {"source": source, "target": target, "type": relationship_type}
+    item = {"source": source, "target": target, "type": relationship_type}
+    item.update(metadata)
+    return item
 
 
 def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
@@ -393,9 +396,9 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     releases: dict[str, dict[str, Any]] = {}
     repositories: dict[str, dict[str, Any]] = {}
     organizations: dict[str, dict[str, Any]] = {}
-    relationships: dict[tuple[str, str, str], dict[str, str]] = {}
+    relationships: dict[tuple[str, str, str], dict[str, Any]] = {}
 
-    def add_relationship(item: dict[str, str]) -> None:
+    def add_relationship(item: dict[str, Any]) -> None:
         relationships[(item["source"], item["target"], item["type"])] = item
 
     for incident in corpus:
@@ -455,6 +458,19 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
         if incident.get("source_artifact_divergence") is True:
             for channel_id in divergence_channel_targets:
                 add_relationship(relationship(source, channel_id, "SOURCE_ARTIFACT_DIVERGENCE"))
+
+        for item in incident.get("propagation_edges") or []:
+            add_relationship(
+                relationship(
+                    item["source"],
+                    item["target"],
+                    "SEEDED_BY",
+                    tier=item["tier"],
+                    evidence_refs=sorted(item["evidence_refs"]),
+                    incident_id=incident_id,
+                    **({"notes": item["notes"]} if item.get("notes") else {}),
+                )
+            )
 
     return {
         "accounts": sorted(accounts.values(), key=lambda item: item["id"]),

@@ -42,6 +42,9 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["dangling_release_edges"], [])
         self.assertEqual(report["invalid_relationship_edges"], [])
         self.assertEqual(report["invalid_package_release_edges"], [])
+        self.assertEqual(report["invalid_seeded_by_edges"], [])
+        self.assertEqual(report["seeded_by_count"], 1)
+        self.assertEqual(report["seeded_by_tier_counts"]["temporal"], 1)
         self.assertEqual(len(report["generic_purl_exceptions"]), 1)
 
     def test_package_and_release_purl_checks_detect_failures(self) -> None:
@@ -201,6 +204,60 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
 
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("version does not match PURL version" in error for error in report["invalid_purls"]))
+
+    def test_seeded_by_edges_require_evidence_tier_and_acyclic_graph(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+            }
+        )
+        broken_relationships.append(
+            {
+                "source": "pkg-does-not-exist",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "guessed",
+                "evidence_refs": [],
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("missing SEEDED_BY source" in error for error in report["invalid_seeded_by_edges"]))
+        self.assertTrue(any("tier must be causal or temporal" in error for error in report["invalid_seeded_by_edges"]))
+        self.assertTrue(any("evidence_refs must be non-empty" in error for error in report["invalid_seeded_by_edges"]))
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in report["invalid_seeded_by_edges"]))
+
+    def test_seeded_by_rejects_generic_package_endpoint(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "pkg-multiple-internal-dependency-names",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("not release-spine joinable" in error for error in report["invalid_seeded_by_edges"]))
 
     def test_actor_and_campaign_edges_require_existing_content_pages(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
