@@ -34,14 +34,15 @@ def purl_identity(value: str) -> tuple[str, str | None, str]:
 
 
 def href_exists(site_content_dir: Path, href: str, expected_collection: str) -> bool:
-    if not href.startswith("/"):
+    if not href.startswith("/") or href.startswith("//"):
         return False
-    normalized = href.strip("/")
+    normalized = href[1:].rstrip("/")
     if not normalized:
         return False
-    if Path(normalized).suffix:
+    parts = normalized.split("/")
+    if any(part in {"", ".", ".."} for part in parts):
         return False
-    if any(part in {".", ".."} for part in Path(normalized).parts):
+    if Path(normalized).suffix:
         return False
     if not normalized.startswith(f"{expected_collection}/"):
         return False
