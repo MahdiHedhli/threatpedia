@@ -14,13 +14,15 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from supply_chain_purl import PurlError, canonicalize_purl, parse_purl
+from supply_chain_purl import PurlError, canonicalize_purl, emit_purl, parse_purl
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
 DEFAULT_REPORT_PATH = REPO_ROOT / "docs" / "supply-chain-purl-edge-audit.md"
+CONTENT_ROOT = REPO_ROOT / "site" / "src" / "content"
+GENERIC_JUSTIFICATION_MIN_LENGTH = 20
 
 
 def load_json(path: Path) -> Any:
@@ -46,6 +48,13 @@ def canonical_package_result(package: Any, index: int | None = None) -> tuple[st
     if canonical != package_url:
         return ("invalid", f"{package_id}: non-canonical package_url, expected {canonical}")
     if parse_purl(canonical).type == "generic":
+        justification = package.get("purl_justification")
+        if not isinstance(justification, str) or len(justification.strip()) < GENERIC_JUSTIFICATION_MIN_LENGTH:
+            return (
+                "invalid",
+                f"{package_id}: generic package_url requires purl_justification "
+                f"with at least {GENERIC_JUSTIFICATION_MIN_LENGTH} characters",
+            )
         return ("generic_exception", f"{package_id}: generic package_url is justified but not release-spine joinable")
     return None
 
@@ -73,7 +82,53 @@ def canonical_release_result(release: Any, index: int | None = None) -> tuple[st
         return ("missing", f"{release_id}: missing PURL version")
     if parsed.type == "generic":
         return ("invalid", f"{release_id}: generic release PURL is not joinable")
+    version = release.get("version")
+    if not isinstance(version, str) or not version.strip():
+        return ("invalid", f"{release_id}: missing version")
+    if parsed.version != version.strip():
+        return (
+            "invalid",
+            f"{release_id}: PURL version {parsed.version!r} does not match version {version!r}",
+        )
     return None
+
+
+def package_base_purl(package: Any) -> str | None:
+    if not isinstance(package, dict):
+        return None
+    package_url = package.get("package_url")
+    if not isinstance(package_url, str):
+        return None
+    try:
+        return canonicalize_purl(package_url, ecosystem=package.get("ecosystem"), package_name=package.get("name"))
+    except PurlError:
+        return None
+
+
+def release_base_purl(release: Any) -> str | None:
+    if not isinstance(release, dict):
+        return None
+    purl = release.get("purl")
+    if not isinstance(purl, str):
+        return None
+    try:
+        canonical = canonicalize_purl(purl, ecosystem=release.get("ecosystem"), package_name=release.get("package_name"))
+        parsed = parse_purl(canonical)
+    except PurlError:
+        return None
+    return emit_purl(parsed._replace(version=None))
+
+
+def content_href_exists(href: Any) -> bool:
+    if not isinstance(href, str) or not href.startswith("/"):
+        return False
+    parts = [part for part in href.strip("/").split("/") if part]
+    if len(parts) != 2:
+        return False
+    collection, slug = parts
+    if collection not in {"threat-actors", "campaigns"}:
+        return False
+    return (CONTENT_ROOT / collection / f"{slug}.md").exists() or (CONTENT_ROOT / collection / f"{slug}.mdx").exists()
 
 
 def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
@@ -95,21 +150,39 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     invalid_purls = [message for category, message in purl_results if category == "invalid"]
     generic_exceptions = [message for category, message in purl_results if category == "generic_exception"]
 
-    actor_ids = {actor["id"] for actor in actors if isinstance(actor, dict) and isinstance(actor.get("id"), str)}
+    actor_by_id = {actor["id"]: actor for actor in actors if isinstance(actor, dict) and isinstance(actor.get("id"), str)}
+    campaign_by_id = {
+        campaign["id"]: campaign
+        for campaign in campaigns
+        if isinstance(campaign, dict) and isinstance(campaign.get("id"), str)
+    }
+    package_by_id = {
+        package["id"]: package for package in packages if isinstance(package, dict) and isinstance(package.get("id"), str)
+    }
+    release_by_id = {
+        release["id"]: release for release in releases if isinstance(release, dict) and isinstance(release.get("id"), str)
+    }
+    actor_ids = set(actor_by_id)
     campaign_ids = {
         campaign["id"] for campaign in campaigns if isinstance(campaign, dict) and isinstance(campaign.get("id"), str)
     }
-    package_ids = {
-        package["id"] for package in packages if isinstance(package, dict) and isinstance(package.get("id"), str)
-    }
-    release_ids = {
-        release["id"] for release in releases if isinstance(release, dict) and isinstance(release.get("id"), str)
-    }
+    package_ids = set(package_by_id)
+    release_ids = set(release_by_id)
     dangling_actor_edges = []
     dangling_campaign_edges = []
+    broken_actor_hrefs = []
+    broken_campaign_hrefs = []
     dangling_package_edges = []
     dangling_release_edges = []
     invalid_relationship_edges = []
+    for actor_id, actor in actor_by_id.items():
+        href = actor.get("href")
+        if isinstance(href, str) and href.strip() and not content_href_exists(href):
+            broken_actor_hrefs.append(f"{actor_id}: href does not resolve to content {href!r}")
+    for campaign_id, campaign in campaign_by_id.items():
+        href = campaign.get("href")
+        if isinstance(href, str) and href.strip() and not content_href_exists(href):
+            broken_campaign_hrefs.append(f"{campaign_id}: href does not resolve to content {href!r}")
     if not isinstance(relationships, list):
         relationships = []
         invalid_relationship_edges.append("relationships: expected list")
@@ -144,6 +217,14 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
                 invalid_relationship_edges.append(f"relationships[{index}]: PACKAGE_RELEASE target must be string")
             elif target not in release_ids:
                 dangling_release_edges.append(f"relationships[{index}]: missing release target {target!r}")
+            elif isinstance(source, str) and source in package_ids:
+                package_purl = package_base_purl(package_by_id[source])
+                release_purl = release_base_purl(release_by_id[target])
+                if package_purl and release_purl and package_purl != release_purl:
+                    invalid_relationship_edges.append(
+                        f"relationships[{index}]: PACKAGE_RELEASE PURL mismatch {source!r} -> {target!r} "
+                        f"({package_purl!r} != {release_purl!r})"
+                    )
         if rel_type == "INCIDENT_AFFECTED_RELEASE":
             if not isinstance(target, str):
                 invalid_relationship_edges.append(f"relationships[{index}]: INCIDENT_AFFECTED_RELEASE target must be string")
@@ -155,6 +236,8 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         + invalid_purls
         + dangling_actor_edges
         + dangling_campaign_edges
+        + broken_actor_hrefs
+        + broken_campaign_hrefs
         + dangling_package_edges
         + dangling_release_edges
         + invalid_relationship_edges
@@ -169,6 +252,8 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         "generic_purl_exceptions": generic_exceptions,
         "dangling_actor_edges": dangling_actor_edges,
         "dangling_campaign_edges": dangling_campaign_edges,
+        "broken_actor_hrefs": broken_actor_hrefs,
+        "broken_campaign_hrefs": broken_campaign_hrefs,
         "dangling_package_edges": dangling_package_edges,
         "dangling_release_edges": dangling_release_edges,
         "invalid_relationship_edges": invalid_relationship_edges,
@@ -199,6 +284,8 @@ def render_report(audit: dict[str, Any]) -> str:
             f"- Generic PURL exceptions: {len(audit['generic_purl_exceptions'])}",
             f"- Dangling actor edges: {len(audit['dangling_actor_edges'])}",
             f"- Dangling campaign edges: {len(audit['dangling_campaign_edges'])}",
+            f"- Broken actor hrefs: {len(audit['broken_actor_hrefs'])}",
+            f"- Broken campaign hrefs: {len(audit['broken_campaign_hrefs'])}",
             f"- Dangling package edges: {len(audit['dangling_package_edges'])}",
             f"- Dangling release edges: {len(audit['dangling_release_edges'])}",
             f"- Invalid relationship edges: {len(audit['invalid_relationship_edges'])}",
@@ -222,6 +309,14 @@ def render_report(audit: dict[str, Any]) -> str:
             "## Dangling Campaign Edges",
             "",
             bullet_list(audit["dangling_campaign_edges"]).rstrip(),
+            "",
+            "## Broken Actor Hrefs",
+            "",
+            bullet_list(audit["broken_actor_hrefs"]).rstrip(),
+            "",
+            "## Broken Campaign Hrefs",
+            "",
+            bullet_list(audit["broken_campaign_hrefs"]).rstrip(),
             "",
             "## Dangling Package Edges",
             "",
@@ -255,6 +350,8 @@ def main(argv: list[str] | None = None) -> int:
         f"missing_purls={len(audit['missing_purls'])} invalid_purls={len(audit['invalid_purls'])} "
         f"dangling_actor_edges={len(audit['dangling_actor_edges'])} "
         f"dangling_campaign_edges={len(audit['dangling_campaign_edges'])} "
+        f"broken_actor_hrefs={len(audit['broken_actor_hrefs'])} "
+        f"broken_campaign_hrefs={len(audit['broken_campaign_hrefs'])} "
         f"dangling_package_edges={len(audit['dangling_package_edges'])} "
         f"dangling_release_edges={len(audit['dangling_release_edges'])} "
         f"invalid_relationship_edges={len(audit['invalid_relationship_edges'])}"

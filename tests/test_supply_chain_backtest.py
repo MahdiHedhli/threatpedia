@@ -78,6 +78,27 @@ class SupplyChainBacktestTests(unittest.TestCase):
         self.assertIn("ref-socket-boltdb-go", timeline["available_at_the_time"]["reference_ids"])
         self.assertIn("ref-post-disclosure-analysis", timeline["later_discovered_evidence"]["reference_ids"])
 
+    def test_future_release_purls_are_not_available_at_replay_time(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        event_stream = copy.deepcopy(next(item for item in corpus if item["id"] == "SC-2018-NPM-EVENT-STREAM"))
+        event_stream["releases"].append(
+            {
+                "package_name": "event-stream",
+                "ecosystem": "npm",
+                "purl": "pkg:npm/event-stream@9.9.9",
+                "version": "9.9.9",
+                "published_at": "2019-01-01",
+                "malicious_range": "9.9.9",
+                "references": ["ref-later"],
+                "disclosed_at": "2019-01-01",
+            }
+        )
+
+        timeline = backtest.build_timeline(event_stream)
+
+        self.assertNotIn("pkg:npm/event-stream@9.9.9", timeline["available_at_the_time"]["release_purls"])
+        self.assertIn("pkg:npm/event-stream@9.9.9", timeline["later_discovered_evidence"]["release_purls"])
+
     def test_references_without_ids_are_not_silently_dropped(self) -> None:
         corpus = load_json(CORPUS_PATH)
         event_stream = copy.deepcopy(next(item for item in corpus if item["id"] == "SC-2018-NPM-EVENT-STREAM"))

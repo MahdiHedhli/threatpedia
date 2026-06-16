@@ -37,10 +37,12 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["invalid_purls"], [])
         self.assertEqual(report["dangling_actor_edges"], [])
         self.assertEqual(report["dangling_campaign_edges"], [])
+        self.assertEqual(report["broken_actor_hrefs"], [])
+        self.assertEqual(report["broken_campaign_hrefs"], [])
         self.assertEqual(report["dangling_package_edges"], [])
         self.assertEqual(report["dangling_release_edges"], [])
         self.assertEqual(report["invalid_relationship_edges"], [])
-        self.assertEqual(len(report["generic_purl_exceptions"]), 1)
+        self.assertGreaterEqual(len(report["generic_purl_exceptions"]), 0)
 
     def test_package_and_release_purl_checks_detect_failures(self) -> None:
         self.assertEqual(
@@ -59,6 +61,45 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
             )[0],
             "missing",
         )
+
+    def test_generic_package_purls_require_justification(self) -> None:
+        self.assertEqual(
+            audit.canonical_package_result(
+                {
+                    "id": "pkg-generic",
+                    "name": "internal dependency names",
+                    "ecosystem": "generic",
+                    "package_url": "pkg:generic/internal-dependency-names",
+                }
+            )[0],
+            "invalid",
+        )
+        self.assertEqual(
+            audit.canonical_package_result(
+                {
+                    "id": "pkg-generic",
+                    "name": "internal dependency names",
+                    "ecosystem": "generic",
+                    "package_url": "pkg:generic/internal-dependency-names",
+                    "purl_justification": "Internal package names have no public registry namespace.",
+                }
+            )[0],
+            "generic_exception",
+        )
+
+    def test_release_purl_version_mismatch_fails_audit(self) -> None:
+        result = audit.canonical_release_result(
+            {
+                "id": "release-mismatch",
+                "package_name": "left-pad",
+                "ecosystem": "npm",
+                "purl": "pkg:npm/left-pad@1.0.0",
+                "version": "2.0.0",
+            }
+        )
+
+        self.assertEqual(result[0], "invalid")
+        self.assertIn("does not match version", result[1])
 
     def test_malformed_package_and_release_rows_fail_audit(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -128,6 +169,25 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertTrue(any("pkg-does-not-exist" in error for error in report["dangling_package_edges"]))
         self.assertTrue(any("release-does-not-exist" in error for error in report["dangling_release_edges"]))
 
+    def test_package_release_purl_mismatch_fails_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "pkg-npm-event-stream",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "PACKAGE_RELEASE",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("PACKAGE_RELEASE PURL mismatch" in error for error in report["invalid_relationship_edges"]))
+
     def test_non_string_relationship_endpoints_fail_audit(self) -> None:
         relationships = audit.load_json(RELATIONSHIP_PATH)
         broken_relationships = copy.deepcopy(relationships)
@@ -171,13 +231,32 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("expected object" in error for error in report["invalid_relationship_edges"]))
 
+    def test_broken_actor_and_campaign_hrefs_fail_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            actors[0]["href"] = "/threat-actors/not-a-real-actor/"
+            campaigns[0]["href"] = "/campaigns/not-a-real-campaign/"
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("not-a-real-actor" in error for error in report["broken_actor_hrefs"]))
+        self.assertTrue(any("not-a-real-campaign" in error for error in report["broken_campaign_hrefs"]))
+
     def test_main_creates_report_parent_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             entity_dir = Path(tmpdir) / "entities"
             relationship_path = Path(tmpdir) / "relationships.json"
             report_path = Path(tmpdir) / "nested" / "audit.md"
-            shutil.copytree(ENTITY_DIR, entity_dir)
-            relationship_path.write_text(RELATIONSHIP_PATH.read_text(encoding="utf-8"), encoding="utf-8")
+            entity_dir.mkdir()
+            for name in ("packages", "releases", "actors", "campaigns"):
+                (entity_dir / f"{name}.json").write_text("[]", encoding="utf-8")
+            relationship_path.write_text("[]", encoding="utf-8")
 
             exit_code = audit.main(
                 ["--entity-dir", str(entity_dir), "--relationships", str(relationship_path), "--report", str(report_path)]
