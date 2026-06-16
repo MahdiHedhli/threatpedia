@@ -600,6 +600,28 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("missing SEEDED_BY relationship" in error for error in errors))
 
+    def test_seeded_by_metadata_must_match_corpus_edge(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+
+        cases = [
+            ("tier", "causal", "expected 'temporal'"),
+            ("evidence_refs", ["ref-wiz-shai-hulud"], "expected ['ref-npm-tinycolor-registry', 'ref-wiz-shai-hulud']"),
+            ("incident_id", "SC-2018-NPM-EVENT-STREAM", "expected 'SC-2025-NPM-SHAI-HULUD'"),
+        ]
+        for field, value, expected_message in cases:
+            with self.subTest(field=field):
+                relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+                seeded_by = next(relationship for relationship in relationships if relationship["type"] == "SEEDED_BY")
+                seeded_by[field] = value
+
+                errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+                self.assertTrue(
+                    any(expected_message in error for error in errors),
+                    f"expected SEEDED_BY metadata mismatch for {field}: {errors}",
+                )
+
     def test_seeded_by_rejects_generic_package_endpoint(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

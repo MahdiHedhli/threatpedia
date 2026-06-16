@@ -405,6 +405,11 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    relationships_by_key = {
+        (relationship.get("source"), relationship.get("target"), relationship.get("type")): relationship
+        for relationship in relationships
+        if isinstance(relationship, dict)
+    }
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
@@ -458,6 +463,27 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                 key = (edge_source, edge_target, "SEEDED_BY")
                 if key not in relationship_keys:
                     errors.append(f"{source}: missing SEEDED_BY relationship from {edge_source} to {edge_target}")
+                    continue
+                relationship = relationships_by_key.get(key) or {}
+                expected_tier = propagation_edge.get("tier")
+                if relationship.get("tier") != expected_tier:
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship from {edge_source} to {edge_target} has tier "
+                        f"{relationship.get('tier')!r}; expected {expected_tier!r}"
+                    )
+                expected_incident_id = incident["id"]
+                if relationship.get("incident_id") != expected_incident_id:
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship from {edge_source} to {edge_target} has incident_id "
+                        f"{relationship.get('incident_id')!r}; expected {expected_incident_id!r}"
+                    )
+                expected_evidence_refs = sorted(ref for ref in propagation_edge.get("evidence_refs") or [] if isinstance(ref, str))
+                relationship_evidence_refs = sorted(ref for ref in relationship.get("evidence_refs") or [] if isinstance(ref, str))
+                if relationship_evidence_refs != expected_evidence_refs:
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship from {edge_source} to {edge_target} has evidence_refs "
+                        f"{relationship_evidence_refs!r}; expected {expected_evidence_refs!r}"
+                    )
     return errors
 
 
