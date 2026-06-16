@@ -441,15 +441,46 @@ def validate_maintainer(errors: list[str], incident_id: str, index: int, maintai
     if not isinstance(maintainer, dict):
         errors.append(f"{path}: expected object")
         return
-    require_string(errors, f"{path}.name", maintainer.get("name"))
-    require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
-    aliases = maintainer.get("aliases")
-    if not isinstance(aliases, list):
-        errors.append(f"{path}.aliases: expected list")
-        return
-    for alias_index, alias in enumerate(aliases):
-        if not isinstance(alias, str) or not alias.strip():
-            errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
+    required_fields = [
+        "name",
+        "aliases",
+        "id_slug",
+        "onboarding_date",
+        "first_publish_date",
+        "repositories",
+        "account_ids",
+    ]
+    for field in required_fields:
+        if field not in maintainer:
+            errors.append(f"{path}.{field}: missing required field")
+    if "name" in maintainer:
+        require_string(errors, f"{path}.name", maintainer.get("name"))
+    if "id_slug" in maintainer:
+        require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
+    if "aliases" in maintainer:
+        aliases = maintainer.get("aliases")
+        if not isinstance(aliases, list):
+            errors.append(f"{path}.aliases: expected list")
+        else:
+            for alias_index, alias in enumerate(aliases):
+                if not isinstance(alias, str) or not alias.strip():
+                    errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
+    for field in ["onboarding_date", "first_publish_date"]:
+        if field in maintainer and maintainer.get(field) is not None and parse_date(maintainer.get(field)) is None:
+            errors.append(f"{path}.{field}: expected YYYY-MM-DD date or null")
+    if "repositories" in maintainer:
+        require_string_list(errors, f"{path}.repositories", maintainer.get("repositories"), allow_empty=True)
+        if isinstance(maintainer.get("repositories"), list):
+            for repo_index, repo_id in enumerate(maintainer["repositories"]):
+                if isinstance(repo_id, str) and not repo_id.startswith("repo-"):
+                    errors.append(f"{path}.repositories[{repo_index}]: expected repo-* entity id")
+    if "account_ids" in maintainer:
+        require_string_list(errors, f"{path}.account_ids", maintainer.get("account_ids"), allow_empty=True)
+        if isinstance(maintainer.get("account_ids"), list):
+            for account_index, account_id in enumerate(maintainer["account_ids"]):
+                if isinstance(account_id, str) and not account_id.startswith("account-"):
+                    errors.append(f"{path}.account_ids[{account_index}]: expected account-* entity id")
+
 
 def validate_repository(errors: list[str], incident_id: str, index: int, repository: Any) -> None:
     path = f"{incident_id}.repositories[{index}]"

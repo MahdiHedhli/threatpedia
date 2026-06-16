@@ -186,6 +186,17 @@ assert.ok(
   'release rows should expose versioned PURL context'
 );
 
+const eventStream = getSupplyChainIncidentPage('SC-2018-NPM-EVENT-STREAM', data);
+assert.ok(
+  eventStream.sections.maintainerTenureAtMaliciousRelease.some(
+    (row) =>
+      row.maintainer.id === 'maintainer-right9ctrl' &&
+      row.release.id === 'release-npm-flatmap-stream-0-1-1' &&
+      row.days === 0
+  ),
+  'event-stream page should derive maintainer tenure at malicious release from stored anchors'
+);
+
 const threeCx = getSupplyChainIncidentPage('SC-2023-THREE-CX-DESKTOP', data);
 assert.ok(
   threeCx.sections.actors.some((actor) => actor.href === '/threat-actors/lazarus-group/'),
@@ -227,6 +238,10 @@ assert.ok(eventStreamPackage.seo.ogTitle, 'entity page should include Open Graph
 assert.ok(eventStreamPackage.seo.jsonLd, 'entity page should include JSON-LD');
 
 const jiaTanMaintainer = getSupplyChainEntityPage('maintainers', 'maintainer-jia-tan', data);
+assert.ok(
+  jiaTanMaintainer.connectedEntities.some((entity) => entity.id === 'repo-github-com-tukaani-project-xz'),
+  'maintainer page should surface maintained repository connections'
+);
 assert.ok(
   jiaTanMaintainer.connectedEntities.some(
     (entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor' && entity.href === null

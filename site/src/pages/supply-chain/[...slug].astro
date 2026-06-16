@@ -217,6 +217,40 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
       <EntityList title="Compromised Accounts" items={page.sections.compromisedAccounts} />
       <EntityList title="Connected Entities" items={page.connectedEntities} />
 
+      {page.sections.maintainerTenureAtMaliciousRelease.length > 0 && (
+        <section class="sc-section">
+          <h2>Tenure At Malicious Release</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Maintainer</th>
+                  <th>Anchor</th>
+                  <th>Release</th>
+                  <th>Elapsed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {page.sections.maintainerTenureAtMaliciousRelease.map((row) => (
+                  <tr>
+                    <td>
+                      {row.maintainer.href ? (
+                        <a href={row.maintainer.href}>{row.maintainer.label}</a>
+                      ) : (
+                        row.maintainer.label
+                      )}
+                    </td>
+                    <td>{titleCase(row.anchorLabel)} · {row.anchorDate}</td>
+                    <td><span class="mono">{row.release.purl}</span><br />published {row.release.publishedAt}</td>
+                    <td>{row.days} days</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
       {page.sections.attributionEvidence.length > 0 && (
         <section class="sc-section">
           <h2>Attribution Evidence</h2>

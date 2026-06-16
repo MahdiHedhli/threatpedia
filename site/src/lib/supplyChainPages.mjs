@@ -250,6 +250,22 @@ function compareTitle(a, b) {
   return (a.title || '').localeCompare(b.title || '');
 }
 
+function normalizeEntitySlug(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function daysBetween(startDate, endDate) {
+  if (!startDate || !endDate) return null;
+  const start = Date.parse(`${startDate}T00:00:00Z`);
+  const end = Date.parse(`${endDate}T00:00:00Z`);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
+  return Math.floor((end - start) / 86400000);
+}
+
 function incidentLinksFor(data, entityId) {
   return relationshipRows(data, entityId)
     .filter((row) => row.incident)
@@ -357,6 +373,47 @@ function incidentReleaseLinks(data, incidentId) {
     })
     .filter(Boolean)
     .sort(compareLabel);
+}
+
+function incidentReleaseEntities(data, incidentId) {
+  const nodeId = `incident-${incidentId}`;
+  return data.relationships
+    .filter((relationship) => relationship.source === nodeId && relationship.type === 'INCIDENT_AFFECTED_RELEASE')
+    .map((relationship) => data.entityById.get(relationship.target))
+    .filter(Boolean)
+    .sort((a, b) => (a.published_at || '').localeCompare(b.published_at || '') || (a.name || '').localeCompare(b.name || ''));
+}
+
+function maintainerTenureAtMaliciousRelease(data, incidentId) {
+  const incident = data.incidents.find((item) => item.id === incidentId);
+  if (!incident) return [];
+  const releases = incidentReleaseEntities(data, incidentId);
+  if (releases.length === 0) return [];
+  return (incident.maintainers || []).flatMap((maintainer) => {
+    const anchorDate = maintainer.onboarding_date || maintainer.first_publish_date;
+    if (!anchorDate) return [];
+    const anchorLabel = maintainer.onboarding_date ? 'onboarding' : 'first publish';
+    const maintainerId = `maintainer-${normalizeEntitySlug(maintainer.id_slug)}`;
+    const maintainerLink = entityLink(data, maintainerId) || { href: null, label: maintainer.name, id: maintainerId };
+    return releases
+      .map((release) => {
+        const days = daysBetween(anchorDate, release.published_at);
+        if (days === null) return null;
+        return {
+          maintainer: maintainerLink,
+          anchorDate,
+          anchorLabel,
+          release: {
+            label: release.name,
+            id: release.id,
+            purl: release.purl,
+            publishedAt: release.published_at,
+          },
+          days,
+        };
+      })
+      .filter(Boolean);
+  });
 }
 
 function incidentAttributionLinks(data, incidentId, relationshipType, collectionKey) {
@@ -525,6 +582,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
       distributionChannels: incidentEntities(data, id, 'distribution_channels', 'USED_DISTRIBUTION_CHANNEL'),
       compromisedAccounts: incidentEntities(data, id, 'compromised_accounts', 'COMPROMISED_ACCOUNT'),
       attributionEvidence: attributionEvidenceFor(incident),
+      maintainerTenureAtMaliciousRelease: maintainerTenureAtMaliciousRelease(data, id),
     },
   };
 }

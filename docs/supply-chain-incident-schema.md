@@ -58,7 +58,9 @@ The core fields are:
   entered or propagated
 - `source_artifact_divergence`: `true`, `false`, or `null` when unknown
 - `maintainers`: named maintainers or maintainership handles when directly
-  supported
+  supported. Maintainer records include aliases, dated anchors
+  (`onboarding_date`, `first_publish_date`), and explicit repository/account
+  entity IDs where public evidence supports those links.
 - `repositories`: source repositories tied to the incident
 - `build_systems`: build or CI/CD systems tied to the incident
 - `distribution_channels`: registries, update channels, CDN scripts, source
@@ -69,6 +71,11 @@ The core fields are:
 - `campaigns`: optional evidence-backed campaign links
 - `attribution_confidence`: optional incident-level attribution confidence
 - `attribution_evidence`: local evidence records for each actor/campaign edge
+
+Maintainer records deliberately store dated anchors, not a mutable `tenure`
+field. Page generation derives tenure-at-malicious-release from
+`onboarding_date` or `first_publish_date` and the affected release
+`published_at` value when both are known.
 
 Featured incident pages may also carry editorial fields:
 
