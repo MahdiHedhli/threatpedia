@@ -33,13 +33,15 @@ def purl_identity(value: str) -> tuple[str, str | None, str]:
     return parsed.type, parsed.namespace, parsed.name
 
 
-def href_exists(site_content_dir: Path, href: str) -> bool:
+def href_exists(site_content_dir: Path, href: str, expected_collection: str) -> bool:
     if not href.startswith("/"):
         return False
     normalized = href.strip("/")
     if not normalized:
         return False
     if Path(normalized).suffix:
+        return False
+    if not normalized.startswith(f"{expected_collection}/"):
         return False
     path = site_content_dir / normalized
     return path.with_suffix(".md").is_file() or path.with_suffix(".mdx").is_file()
@@ -163,7 +165,7 @@ def build_audit(entity_dir: Path, relationship_path: Path, site_content_dir: Pat
                 href = actor.get("href") if isinstance(actor, dict) else None
                 actor_type = actor.get("actor_type") if isinstance(actor, dict) else None
                 if isinstance(href, str) and href.strip():
-                    if not href_exists(site_content_dir, href):
+                    if not href_exists(site_content_dir, href, "threat-actors"):
                         dangling_actor_edges.append(f"relationships[{index}]: actor target {target!r} href {href!r} has no page")
                 elif actor_type != "provisional":
                     dangling_actor_edges.append(f"relationships[{index}]: actor target {target!r} has no href")
@@ -177,7 +179,7 @@ def build_audit(entity_dir: Path, relationship_path: Path, site_content_dir: Pat
                 href = campaign.get("href") if isinstance(campaign, dict) else None
                 if not isinstance(href, str) or not href.strip():
                     dangling_campaign_edges.append(f"relationships[{index}]: campaign target {target!r} has no href")
-                elif not href_exists(site_content_dir, href):
+                elif not href_exists(site_content_dir, href, "campaigns"):
                     dangling_campaign_edges.append(f"relationships[{index}]: campaign target {target!r} href {href!r} has no page")
         if rel_type == "AFFECTED_PACKAGE":
             if not isinstance(target, str):

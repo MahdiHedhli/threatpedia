@@ -253,6 +253,27 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertTrue(any("lazarus-group" in error for error in report["dangling_actor_edges"]))
         self.assertTrue(any("3cx-supply-chain-compromise" in error for error in report["dangling_campaign_edges"]))
 
+    def test_actor_and_campaign_hrefs_must_match_expected_collections(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = (
+                "/campaigns/3cx-supply-chain-compromise/"
+            )
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = (
+                "/threat-actors/lazarus-group/"
+            )
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("3cx-supply-chain-compromise" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("lazarus-group" in error for error in report["dangling_campaign_edges"]))
+
     def test_provisional_actor_without_href_passes_audit(self) -> None:
         report = audit.build_audit(ENTITY_DIR, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
 
