@@ -245,7 +245,6 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
                 invalid_relationship_edges.append(
                     f"relationships[{index}]: ATTRIBUTED_TO_ACTOR source must be an incident or maintainer {source!r}"
                 )
-        if rel_type == "ATTRIBUTED_TO_ACTOR":
             if not isinstance(target, str):
                 invalid_relationship_edges.append(f"relationships[{index}]: ATTRIBUTED_TO_ACTOR target must be string")
             elif target not in actor_ids:

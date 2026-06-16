@@ -124,32 +124,27 @@ def build_timeline(incident: dict[str, Any]) -> dict[str, Any]:
     latency_basis = "first_public_warning_at" if first_warning else "disclosed_at"
     available_refs, later_refs, undated_refs = split_references_by_replay_date(incident, discovery_date)
 
-    releases = [
-        {
-            "purl": release.get("purl"),
-            "version": release.get("version"),
-            "published_at": release.get("published_at"),
-            "malicious_range": release.get("malicious_range"),
-            "published_date": published_at,
-        }
-        for published_at, release in dated_releases
-    ]
     available_release_purls = []
     later_release_purls = []
     undated_release_purls = []
-    for release in releases:
+    releases = []
+    for published_at, release in dated_releases:
         purl = release.get("purl")
-        if not purl:
-            continue
-        published_at = release.get("published_date")
-        if discovery_date is None or published_at is None:
-            undated_release_purls.append(purl)
-        elif published_at <= discovery_date:
-            available_release_purls.append(purl)
-        else:
-            later_release_purls.append(purl)
-    for release in releases:
-        release.pop("published_date", None)
+        if purl:
+            if discovery_date is None or published_at is None:
+                undated_release_purls.append(purl)
+            elif published_at <= discovery_date:
+                available_release_purls.append(purl)
+            else:
+                later_release_purls.append(purl)
+        releases.append(
+            {
+                "purl": purl,
+                "version": release.get("version"),
+                "published_at": release.get("published_at"),
+                "malicious_range": release.get("malicious_range"),
+            }
+        )
 
     return {
         "incident_id": incident.get("id"),
