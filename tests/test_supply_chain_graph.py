@@ -246,7 +246,7 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
         self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
-        self.assertTrue(any(".disclosed_at: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".disclosed_at: missing required field" in error for error in errors))
 
     def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
         corpus = load_json(CORPUS_PATH)

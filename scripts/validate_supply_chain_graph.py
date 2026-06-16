@@ -75,7 +75,7 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "maintainers": [],
     "organizations": [],
     "packages": ["ecosystem", "package_url"],
-    "releases": ["purl", "package_name", "version", "published_at", "disclosed_at", "ecosystem"],
+    "releases": ["purl", "package_name", "version", "published_at", "ecosystem"],
     "repositories": ["host", "url", "owner"],
 }
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -178,7 +178,9 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                         errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
             if parse_date(entity.get("published_at")) is None:
                 errors.append(f"{entity_id}.published_at: expected YYYY-MM-DD date")
-            if entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:
+            if "disclosed_at" not in entity:
+                errors.append(f"{entity_id}.disclosed_at: missing required field")
+            elif entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:
                 errors.append(f"{entity_id}.disclosed_at: expected YYYY-MM-DD date or null")
             if "malicious_range" not in entity:
                 errors.append(f"{entity_id}.malicious_range: missing required field")
