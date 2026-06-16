@@ -150,6 +150,20 @@ def collect_incident_ids(corpus: list[dict[str, Any]]) -> set[str]:
     return {incident_node_id(incident["id"]) for incident in corpus if isinstance(incident, dict) and isinstance(incident.get("id"), str)}
 
 
+def collect_reference_ids_by_incident(corpus: list[dict[str, Any]]) -> dict[str, set[str]]:
+    references_by_incident: dict[str, set[str]] = {}
+    for incident in corpus:
+        if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
+            continue
+        reference_ids = {
+            reference["id"]
+            for reference in incident.get("references") or []
+            if isinstance(reference, dict) and isinstance(reference.get("id"), str)
+        }
+        references_by_incident[incident["id"]] = reference_ids
+    return references_by_incident
+
+
 def validate_entity_file(errors: list[str], entity_type: str, entities: Any, incident_ids: set[str]) -> set[str]:
     ids: set[str] = set()
     alias_owners: dict[str, str] = {}
@@ -262,6 +276,30 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 errors.append(f"{entity_type}: normalized alias {normalized!r} belongs to both {owner} and {entity_id}")
             alias_owners[alias_key] = entity_id
     return ids
+
+
+def validate_release_references(
+    errors: list[str],
+    releases: Any,
+    references_by_incident: dict[str, set[str]],
+) -> None:
+    if not isinstance(releases, list):
+        return
+    for index, release in enumerate(releases):
+        if not isinstance(release, dict):
+            continue
+        entity_id = release.get("id", f"releases[{index}]")
+        source_incident_ids = release.get("source_incident_ids")
+        references = release.get("references")
+        if not isinstance(source_incident_ids, list) or not isinstance(references, list):
+            continue
+        allowed_references: set[str] = set()
+        for source_id in source_incident_ids:
+            if isinstance(source_id, str):
+                allowed_references.update(references_by_incident.get(source_id, set()))
+        for reference_index, reference in enumerate(references):
+            if isinstance(reference, str) and reference not in allowed_references:
+                errors.append(f"{entity_id}.references[{reference_index}]: unknown source reference id {reference!r}")
 
 
 def validate_relationships(
@@ -381,6 +419,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
         corpus = []
 
     raw_incident_ids = collect_raw_incident_ids(corpus)
+    references_by_incident = collect_reference_ids_by_incident(corpus)
     incident_ids = collect_incident_ids(corpus)
     all_entity_ids: set[str] = set()
     for entity_type, entities in entities_by_type.items():
@@ -390,6 +429,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             errors.append(f"{entity_id}: duplicate id across entity files")
         all_entity_ids |= entity_ids
 
+    validate_release_references(errors, entities_by_type.get("releases"), references_by_incident)
     errors.extend(
         validate_relationships(
             relationships,

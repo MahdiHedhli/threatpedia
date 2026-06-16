@@ -82,6 +82,7 @@ ATTRIBUTION_CONFIDENCE_PRIORITY = {
     "disputed": 1,
     "unknown": 0,
 }
+RELEASE_METADATA_FIELDS = ("published_at", "malicious_range", "disclosed_at")
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -226,6 +227,12 @@ def upsert_release(
     existing = releases.get(entity_id)
     if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
         raise ValueError(f"{incident_id}: release id collision for {ecosystem}/{package_name}@{version}: {entity_id}")
+    if existing is not None:
+        for field in RELEASE_METADATA_FIELDS:
+            if existing.get(field) != item.get(field):
+                raise ValueError(
+                    f"{incident_id}: conflicting release metadata for {ecosystem}/{package_name}@{version}: {field}"
+                )
     name = f"{package_name}@{version}"
     entity = releases.setdefault(
         entity_id,

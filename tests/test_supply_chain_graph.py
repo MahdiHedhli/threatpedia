@@ -106,6 +106,7 @@ class SupplyChainGraphTests(unittest.TestCase):
                         "disclosed_at": "2026-01-04",
                     },
                 ],
+                "references": [{"id": "ref-example", "title": "Example", "url": "https://example.com"}],
                 "source_artifact_divergence": False,
             }
         ]
@@ -127,6 +128,44 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
         self.assertEqual(release_ids, reversed_release_ids)
         self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
+
+    def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
+        first = {
+            "schema_version": "supply-chain-incident/1",
+            "id": "SC-TEST-DUPLICATE-RELEASE-A",
+            "title": "duplicate release fixture A",
+            "affected_components": [
+                {
+                    "component_type": "package",
+                    "ecosystem": "npm",
+                    "name": "example-pkg",
+                    "vendor": "example",
+                    "package_url": "pkg:npm/example-pkg",
+                }
+            ],
+            "releases": [
+                {
+                    "package_name": "example-pkg",
+                    "ecosystem": "npm",
+                    "purl": "pkg:npm/example-pkg@1.0.0",
+                    "version": "1.0.0",
+                    "published_at": "2026-01-01",
+                    "malicious_range": "1.0.0",
+                    "references": ["ref-example-a"],
+                    "disclosed_at": "2026-01-02",
+                }
+            ],
+            "source_artifact_divergence": False,
+        }
+        second = copy.deepcopy(first)
+        second["id"] = "SC-TEST-DUPLICATE-RELEASE-B"
+        second["releases"][0]["published_at"] = "2026-01-03"
+        second["releases"][0]["references"] = ["ref-example-b"]
+
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([first, second])
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([second, first])
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
@@ -306,6 +345,17 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
         self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
         self.assertTrue(any(".disclosed_at: missing required field" in error for error in errors))
+
+    def test_release_entity_references_must_exist_in_source_incidents(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["references"] = ["ref-does-not-exist"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".references[0]: unknown source reference id 'ref-does-not-exist'" in error for error in errors))
 
     def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
         corpus = load_json(CORPUS_PATH)
