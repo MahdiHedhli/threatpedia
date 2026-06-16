@@ -111,15 +111,21 @@ class SupplyChainGraphTests(unittest.TestCase):
         ]
 
         graph = builder.build_graph(corpus)
+        reversed_corpus = copy.deepcopy(corpus)
+        reversed_corpus[0]["releases"] = list(reversed(reversed_corpus[0]["releases"]))
+        reversed_graph = builder.build_graph(reversed_corpus)
         entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
         release_ids = {entity["id"] for entity in graph["releases"]}
+        reversed_release_ids = {entity["id"] for entity in reversed_graph["releases"]}
         release_versions = {entity["version"] for entity in graph["releases"]}
         base_id = "release-npm-example-pkg-1-0-0-alpha-1"
 
         self.assertEqual(len(graph["releases"]), 2)
         self.assertEqual(release_versions, {"1.0.0-alpha.1", "1.0.0-alpha-1"})
-        self.assertIn(base_id, release_ids)
+        self.assertNotIn(base_id, release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha.1')}", release_ids)
         self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
+        self.assertEqual(release_ids, reversed_release_ids)
         self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:

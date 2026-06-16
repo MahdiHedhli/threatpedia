@@ -113,17 +113,29 @@ def exact_version_suffix(version: str) -> str:
     return hashlib.sha256(version.encode("utf-8")).hexdigest()[:12]
 
 
-def release_entity_id(releases: dict[str, dict[str, Any]], ecosystem: str, package_name: str, version: str) -> str:
+def release_entity_id(collision_base_ids: set[str], ecosystem: str, package_name: str, version: str) -> str:
     base_id = stable_id("release", ecosystem, package_name, version)
-    existing = releases.get(base_id)
-    if existing is None or same_release_identity(existing, ecosystem, package_name, version):
+    if base_id not in collision_base_ids:
         return base_id
 
-    hashed_id = f"{base_id}-v{exact_version_suffix(version)}"
-    existing = releases.get(hashed_id)
-    if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
-        raise ValueError(f"release id collision for {ecosystem}/{package_name}@{version}: {hashed_id}")
-    return hashed_id
+    return f"{base_id}-v{exact_version_suffix(version)}"
+
+
+def release_collision_base_ids(corpus: list[dict[str, Any]]) -> set[str]:
+    identities_by_base_id: dict[str, set[tuple[str, str, str]]] = {}
+    for incident in corpus:
+        if not isinstance(incident, dict):
+            continue
+        for release in incident.get("releases") or []:
+            if not isinstance(release, dict):
+                continue
+            ecosystem = release.get("ecosystem")
+            package_name = release.get("package_name")
+            version = release.get("version")
+            if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
+                base_id = stable_id("release", ecosystem, package_name, version)
+                identities_by_base_id.setdefault(base_id, set()).add((ecosystem, package_name, version))
+    return {base_id for base_id, identities in identities_by_base_id.items() if len(identities) > 1}
 
 
 def incident_node_id(incident_id: str) -> str:
@@ -197,7 +209,12 @@ def upsert_package(packages: dict[str, dict[str, Any]], component: dict[str, Any
     return entity_id
 
 
-def upsert_release(releases: dict[str, dict[str, Any]], item: dict[str, Any], incident_id: str) -> str:
+def upsert_release(
+    releases: dict[str, dict[str, Any]],
+    item: dict[str, Any],
+    incident_id: str,
+    collision_base_ids: set[str],
+) -> str:
     ecosystem = item["ecosystem"]
     package_name = item["package_name"]
     version = item["version"]
@@ -205,7 +222,10 @@ def upsert_release(releases: dict[str, dict[str, Any]], item: dict[str, Any], in
     parsed = parse_purl(purl)
     if parsed.version != version:
         raise ValueError(f"{incident_id}: release version {version!r} does not match PURL {purl!r}")
-    entity_id = release_entity_id(releases, ecosystem, package_name, version)
+    entity_id = release_entity_id(collision_base_ids, ecosystem, package_name, version)
+    existing = releases.get(entity_id)
+    if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
+        raise ValueError(f"{incident_id}: release id collision for {ecosystem}/{package_name}@{version}: {entity_id}")
     name = f"{package_name}@{version}"
     entity = releases.setdefault(
         entity_id,
@@ -400,6 +420,7 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     repositories: dict[str, dict[str, Any]] = {}
     organizations: dict[str, dict[str, Any]] = {}
     relationships: dict[tuple[str, str, str], dict[str, str]] = {}
+    collision_base_ids = release_collision_base_ids(corpus)
 
     def add_relationship(item: dict[str, str]) -> None:
         relationships[(item["source"], item["target"], item["type"])] = item
@@ -417,7 +438,7 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
                 add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
         for item in incident.get("releases") or []:
-            release_id = upsert_release(releases, item, incident_id)
+            release_id = upsert_release(releases, item, incident_id, collision_base_ids)
             package_id = stable_id("pkg", item["ecosystem"], item["package_name"])
             add_relationship(relationship(package_id, release_id, "PACKAGE_RELEASE"))
             add_relationship(relationship(source, release_id, "INCIDENT_AFFECTED_RELEASE"))

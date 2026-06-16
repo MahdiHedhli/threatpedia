@@ -96,29 +96,33 @@ def stable_id(prefix: str, *parts: str) -> str:
     return f"{prefix}-{slug}"
 
 
-def same_release_identity(entity: dict[str, Any], ecosystem: str, package_name: str, version: str) -> bool:
-    return (
-        entity.get("ecosystem") == ecosystem
-        and entity.get("package_name") == package_name
-        and entity.get("version") == version
-    )
-
-
 def exact_version_suffix(version: str) -> str:
     return hashlib.sha256(version.encode("utf-8")).hexdigest()[:12]
 
 
-def release_entity_id(releases: dict[str, dict[str, Any]], ecosystem: str, package_name: str, version: str) -> str:
+def release_entity_id(collision_base_ids: set[str], ecosystem: str, package_name: str, version: str) -> str:
     base_id = stable_id("release", ecosystem, package_name, version)
-    existing = releases.get(base_id)
-    if existing is None or same_release_identity(existing, ecosystem, package_name, version):
+    if base_id not in collision_base_ids:
         return base_id
 
-    hashed_id = f"{base_id}-v{exact_version_suffix(version)}"
-    existing = releases.get(hashed_id)
-    if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
-        raise ValueError(f"release id collision for {ecosystem}/{package_name}@{version}: {hashed_id}")
-    return hashed_id
+    return f"{base_id}-v{exact_version_suffix(version)}"
+
+
+def release_collision_base_ids(corpus: list[dict[str, Any]]) -> set[str]:
+    identities_by_base_id: dict[str, set[tuple[str, str, str]]] = {}
+    for incident in corpus:
+        if not isinstance(incident, dict):
+            continue
+        for release in incident.get("releases") or []:
+            if not isinstance(release, dict):
+                continue
+            ecosystem = release.get("ecosystem")
+            package_name = release.get("package_name")
+            version = release.get("version")
+            if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
+                base_id = stable_id("release", ecosystem, package_name, version)
+                identities_by_base_id.setdefault(base_id, set()).add((ecosystem, package_name, version))
+    return {base_id for base_id, identities in identities_by_base_id.items() if len(identities) > 1}
 
 
 def parse_date(value: Any) -> date | None:
@@ -332,7 +336,7 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
-    implied_releases: dict[str, dict[str, Any]] = {}
+    collision_base_ids = release_collision_base_ids(corpus)
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
@@ -362,15 +366,7 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
             version = release.get("version")
             if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
                 package_id = stable_id("pkg", ecosystem, package_name)
-                release_id = release_entity_id(implied_releases, ecosystem, package_name, version)
-                implied_releases.setdefault(
-                    release_id,
-                    {
-                        "ecosystem": ecosystem,
-                        "package_name": package_name,
-                        "version": version,
-                    },
-                )
+                release_id = release_entity_id(collision_base_ids, ecosystem, package_name, version)
                 if (package_id, release_id, "PACKAGE_RELEASE") not in relationship_keys:
                     errors.append(f"{source}: missing PACKAGE_RELEASE relationship for {release_id}")
                 if (source, release_id, "INCIDENT_AFFECTED_RELEASE") not in relationship_keys:
