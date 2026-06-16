@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-15T20:49:54.656Z",
-  "updated": "2026-06-15T21:59:24.925Z",
+  "updated": "2026-06-16T15:42:28.883Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -85,6 +85,23 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1160"
+    },
+    {
+      "timestamp": "2026-06-16T15:39:34.996Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-16T15:42:28.882Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1172"
     }
-  ]
+  ],
+  "pr_number": 1172,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1172"
 }
