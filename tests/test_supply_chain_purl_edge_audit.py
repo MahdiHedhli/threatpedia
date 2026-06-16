@@ -260,6 +260,25 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("expected object" in error for error in report["invalid_relationship_edges"]))
 
+    def test_unknown_relationship_type_fails_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "pkg-npm-event-stream",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "UNKNOWN_RELATIONSHIP_TYPE",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("unknown relationship type" in error for error in report["invalid_relationship_edges"]))
+
     def test_broken_actor_and_campaign_hrefs_fail_audit(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             entity_dir = Path(tmpdir) / "entities"

@@ -36,6 +36,12 @@ INCIDENT_SOURCE_RELATIONSHIP_TYPES = {
     "USED_BUILD_SYSTEM",
     "USED_DISTRIBUTION_CHANNEL",
 }
+VALID_RELATIONSHIP_TYPES = INCIDENT_SOURCE_RELATIONSHIP_TYPES | {
+    "ATTRIBUTED_TO_ACTOR",
+    "MAINTAINS_REPOSITORY",
+    "PACKAGE_RELEASE",
+    "USES_ACCOUNT",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -224,6 +230,9 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
         rel_type = relationship.get("type")
         source = relationship.get("source")
         target = relationship.get("target")
+        if rel_type not in VALID_RELATIONSHIP_TYPES:
+            invalid_relationship_edges.append(f"relationships[{index}]: unknown relationship type {rel_type!r}")
+            continue
         if rel_type in INCIDENT_SOURCE_RELATIONSHIP_TYPES:
             if not isinstance(source, str):
                 invalid_relationship_edges.append(f"relationships[{index}]: {rel_type} source must be string")
