@@ -250,6 +250,10 @@ function compareTitle(a, b) {
   return (a.title || '').localeCompare(b.title || '');
 }
 
+function compareDateDesc(a, b) {
+  return (b.sortDate || '').localeCompare(a.sortDate || '') || compareTitle(a, b);
+}
+
 function normalizeEntitySlug(value) {
   return String(value || '')
     .trim()
@@ -264,6 +268,42 @@ function daysBetween(startDate, endDate) {
   const end = Date.parse(`${endDate}T00:00:00Z`);
   if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
   return Math.floor((end - start) / 86400000);
+}
+
+function displayLabel(value) {
+  if (value === 'ci_cd_compromise') return 'CI/CD Compromise';
+  return String(value || 'unknown')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function severityForAttackStage(stage) {
+  const stageSeverity = {
+    build_compromise: 'critical',
+    ci_cd_compromise: 'critical',
+    source_compromise: 'high',
+    account_compromise: 'high',
+    dependency_resolution: 'high',
+    package_publish: 'medium',
+    distribution_compromise: 'medium',
+  };
+  return stageSeverity[stage] || 'medium';
+}
+
+function incidentSortDate(incident) {
+  return incident.disclosed_at || incident.first_public_warning_at || incident.first_observed_at || '';
+}
+
+function incidentLinkRow(incident) {
+  return {
+    id: incident.id,
+    title: incident.title,
+    href: `/supply-chain/incidents/${incident.id}/`,
+    attackStage: incident.attack_stage,
+    evidenceLevel: incident.evidence_level,
+    confidence: incident.confidence,
+    sortDate: incidentSortDate(incident),
+  };
 }
 
 function incidentLinksFor(data, entityId) {
@@ -467,6 +507,121 @@ function editorialSectionsFor(incident) {
     .filter(Boolean);
 }
 
+function buildGraphHeroModel(data) {
+  const nodeCount =
+    data.incidents.length + Object.values(data.entities).reduce((total, collection) => total + collection.length, 0);
+  const latestIncident = data.incidents
+    .map((incident) => incidentLinkRow(incident))
+    .sort(compareDateDesc)[0];
+  return {
+    title: 'Supply Chain',
+    eyebrow: 'Corpus Graph',
+    summary:
+      'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
+    status: 'Corpus graph preview',
+    nodeCount,
+    relationshipCount: data.relationships.length,
+    latestIncident,
+  };
+}
+
+function buildAttackVectorBars(data) {
+  const byStage = new Map();
+  data.incidents.forEach((incident) => {
+    const stage = incident.attack_stage || 'unknown';
+    const existing = byStage.get(stage) || {
+      stage,
+      label: displayLabel(stage),
+      count: 0,
+      incidents: [],
+      severity: severityForAttackStage(stage),
+    };
+    existing.count += 1;
+    existing.incidents.push(incidentLinkRow(incident));
+    byStage.set(stage, existing);
+  });
+  const maxCount = Math.max(...Array.from(byStage.values()).map((row) => row.count), 1);
+  return Array.from(byStage.values())
+    .map((row) => ({
+      ...row,
+      incidents: row.incidents.sort(compareDateDesc),
+      percent: Math.max(8, Math.round((row.count / maxCount) * 100)),
+      command: { type: 'filter-stage', value: row.stage },
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+}
+
+function buildAttributionRows(data) {
+  return data.entities.actors
+    .map((actor) => {
+      const incidentIds = new Set(actor.source_incident_ids || []);
+      data.relationships
+        .filter((relationship) => relationship.type === 'ATTRIBUTED_TO_ACTOR' && relationship.target === actor.id)
+        .forEach((relationship) => {
+          const incident = data.incidentByNodeId.get(relationship.source);
+          if (incident) incidentIds.add(incident.id);
+        });
+      const incidents = Array.from(incidentIds)
+        .map((id) => data.incidents.find((incident) => incident.id === id))
+        .filter(Boolean)
+        .map((incident) => incidentLinkRow(incident))
+        .sort(compareDateDesc);
+      const campaigns = data.entities.campaigns
+        .filter((campaign) => (campaign.source_incident_ids || []).some((id) => incidentIds.has(id)))
+        .map((campaign) => ({
+          id: campaign.id,
+          label: campaign.name,
+          href: campaign.href || (campaign.slug ? `/campaigns/${campaign.slug}/` : null),
+        }))
+        .sort(compareLabel);
+      return {
+        id: actor.id,
+        label: actor.name,
+        href: actor.href || null,
+        confidence: actor.attribution_confidence || 'unknown',
+        actorType: actor.actor_type || 'unknown',
+        incidentCount: incidents.length,
+        incidents,
+        campaigns,
+        command: { type: 'select-actor', value: actor.id },
+      };
+    })
+    .filter((row) => row.incidentCount > 0)
+    .sort((a, b) => b.incidentCount - a.incidentCount || a.label.localeCompare(b.label));
+}
+
+function buildDwellTimeline(data) {
+  const rows = data.incidents
+    .map((incident) => {
+      const startDate = incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at;
+      const warningDate = incident.first_public_warning_at || incident.disclosed_at;
+      const disclosedDate = incident.disclosed_at;
+      const dwellDays = daysBetween(startDate, disclosedDate);
+      if (!startDate || !disclosedDate || dwellDays === null) return null;
+      const warningDays = daysBetween(startDate, warningDate);
+      return {
+        ...incidentLinkRow(incident),
+        startDate,
+        warningDate,
+        disclosedDate,
+        dwellDays,
+        warningDays: warningDays ?? dwellDays,
+        severity: severityForAttackStage(incident.attack_stage),
+        command: { type: 'select-incident', value: incident.id },
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.dwellDays - a.dwellDays || compareDateDesc(a, b))
+    .slice(0, 12);
+  const maxDays = Math.max(...rows.map((row) => row.dwellDays), 1);
+  return rows.map((row) => ({
+    ...row,
+    barPercent: Math.max(6, Math.round((row.dwellDays / maxDays) * 100)),
+    warningPercent: Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100))),
+    disclosedPercent: Math.min(100, Math.max(0, Math.round((row.dwellDays / maxDays) * 100))),
+  }));
+}
+
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
   const featuredIncidents = SUPPLY_CHAIN_FEATURED_INCIDENT_IDS.map((id) => {
     const incident = data.incidents.find((item) => item.id === id);
@@ -481,12 +636,17 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       confidence: incident.confidence,
     };
   });
+  const incidents = data.incidents.map((incident) => incidentLinkRow(incident)).sort(compareTitle);
 
   return {
     kind: 'index',
     title: 'Supply Chain',
+    graphHero: buildGraphHeroModel(data),
     lede: SUPPLY_CHAIN_INDEX_COPY.lede,
     explanatorySections: SUPPLY_CHAIN_INDEX_COPY.sections,
+    attackVectorBars: buildAttackVectorBars(data),
+    attributionRows: buildAttributionRows(data),
+    dwellTimeline: buildDwellTimeline(data),
     featuredIncidents,
     entitySummaries: entitySummaryDefinitions.map((summary) => ({
       ...summary,
@@ -518,16 +678,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       compromisedAccounts: data.entities.accounts.length,
       relationships: data.relationships.length,
     },
-    incidents: data.incidents
-      .map((incident) => ({
-        id: incident.id,
-        title: incident.title,
-        summary: incident.summary,
-        href: `/supply-chain/incidents/${incident.id}/`,
-        attackStage: incident.attack_stage,
-        evidenceLevel: incident.evidence_level,
-      }))
-      .sort(compareTitle),
+    incidents,
   };
 }
 

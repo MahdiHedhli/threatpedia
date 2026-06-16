@@ -60,6 +60,34 @@ assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'ind
 assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
 assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
 assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should not expose the internal codename');
+assert.equal(index.graphHero.status, 'Corpus graph preview', 'index should expose the G1 graph placeholder state');
+assert.ok(index.graphHero.nodeCount > data.incidents.length, 'graph hero should expose corpus node count');
+assert.equal(index.graphHero.relationshipCount, data.relationships.length, 'graph hero should expose relationship count');
+assert.ok(index.attackVectorBars.length > 0, 'index should include attack vector controls');
+assert.equal(
+  index.attackVectorBars.reduce((total, row) => total + row.count, 0),
+  data.incidents.length,
+  'attack vector bars should cover all incidents'
+);
+index.attackVectorBars.forEach((row) => {
+  assert.equal(row.command.type, 'filter-stage', `attack vector should include graph filter command: ${row.stage}`);
+  assert.ok(row.percent >= 8 && row.percent <= 100, `attack vector width should be bounded: ${row.stage}`);
+  assert.ok(row.incidents.length === row.count, `attack vector incident list should match count: ${row.stage}`);
+});
+assert.ok(index.attributionRows.length > 0, 'index should include attribution rows');
+index.attributionRows.forEach((row) => {
+  assert.equal(row.command.type, 'select-actor', `attribution row should include graph select command: ${row.id}`);
+  assert.ok(row.incidentCount > 0, `attribution row should be backed by incidents: ${row.id}`);
+});
+assert.ok(index.dwellTimeline.length > 0, 'index should include dwell timeline rows');
+index.dwellTimeline.forEach((row) => {
+  assert.equal(row.command.type, 'select-incident', `dwell row should include graph select command: ${row.id}`);
+  assert.ok(row.dwellDays >= 0, `dwell row should expose non-negative dwell days: ${row.id}`);
+  assert.ok(row.barPercent >= 6 && row.barPercent <= 100, `dwell bar width should be bounded: ${row.id}`);
+  assert.ok(row.warningPercent >= 0 && row.warningPercent <= 100, `warning marker should be bounded: ${row.id}`);
+  assert.ok(row.disclosedPercent >= 0 && row.disclosedPercent <= 100, `disclosure marker should be bounded: ${row.id}`);
+  assert.ok(routeUrls.has(row.href), `dwell incident route should resolve: ${row.href}`);
+});
 assert.equal(index.explanatorySections.length, 4, 'index should include explanatory sections');
 assert.equal(index.featuredIncidents.length, 5, 'index should include five featured incidents');
 assert.deepEqual(

@@ -23,6 +23,18 @@ function titleCase(value) {
   return label(value).replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function compactNumber(value) {
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value || 0);
+}
+
+function percentStyle(value) {
+  return `--bar:${value || 0}%;`;
+}
+
+function severityClass(value) {
+  return `severity-${value || 'medium'}`;
+}
+
 function referenceLabel(reference) {
   return `${reference.publisher}: ${reference.title}`;
 }
@@ -46,16 +58,49 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   jsonLd={jsonLd}
 >
   {page.kind === 'index' && (
-    <section class="supply-chain-page">
-      <header class="sc-header">
-        <p class="eyebrow">Threatpedia</p>
-        <h1>Supply Chain</h1>
-        <p class="lede">{page.lede}</p>
-      </header>
+    <section class="supply-chain-page supply-chain-index">
+      <section class="graph-hero" aria-labelledby="supply-chain-title">
+        <div class="hero-copy">
+          <p class="eyebrow">{page.graphHero.eyebrow}</p>
+          <h1 id="supply-chain-title">Supply Chain</h1>
+          <p class="lede">{page.graphHero.summary}</p>
+          <div class="hero-meta" aria-label="Supply Chain graph summary">
+            <span>{compactNumber(page.graphHero.nodeCount)} nodes</span>
+            <span>{compactNumber(page.graphHero.relationshipCount)} edges</span>
+            {page.graphHero.latestIncident && <span>Latest: {page.graphHero.latestIncident.sortDate}</span>}
+          </div>
+        </div>
+        <div class="graph-placeholder" role="img" aria-label="Static preview of the Supply Chain corpus graph">
+          <div class="graph-status">
+            <span>{page.graphHero.status}</span>
+            <span>Actors to releases</span>
+          </div>
+          <div class="graph-field" aria-hidden="true">
+            <span class="lane lane-actor"></span>
+            <span class="lane lane-campaign"></span>
+            <span class="lane lane-incident"></span>
+            <span class="lane lane-package"></span>
+            <span class="edge edge-one"></span>
+            <span class="edge edge-two"></span>
+            <span class="edge edge-three"></span>
+            <span class="node node-actor">Actor</span>
+            <span class="node node-campaign">Campaign</span>
+            <span class="node node-incident">Incident</span>
+            <span class="node node-package">Package</span>
+            <span class="node node-release">Release</span>
+            <span class="node node-org">Org</span>
+          </div>
+          <div class="graph-caption">
+            <strong>{page.graphHero.latestIncident?.title}</strong>
+            <span>{page.graphHero.latestIncident ? titleCase(page.graphHero.latestIncident.attackStage) : 'Corpus ready'}</span>
+          </div>
+        </div>
+      </section>
 
-      <section class="metric-grid" aria-label="Supply Chain corpus counts">
+      <section class="metric-grid stat-strip" aria-label="Supply Chain corpus counts">
         <div><span>{page.counts.incidents}</span><p>Incidents</p></div>
         <div><span>{page.counts.packages}</span><p>Packages</p></div>
+        <div><span>{page.counts.releases}</span><p>Releases</p></div>
         <div><span>{page.counts.repositories}</span><p>Repositories</p></div>
         <div><span>{page.counts.organizations}</span><p>Organizations</p></div>
         <div><span>{page.counts.maintainers}</span><p>Maintainers</p></div>
@@ -65,20 +110,87 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
         <div><span>{page.counts.relationships}</span><p>Relationships</p></div>
       </section>
 
-      <section class="copy-grid" aria-label="Supply Chain explanation">
-        {page.explanatorySections.map((section) => (
-          <article class="info-panel">
-            <h2>{section.title}</h2>
-            <p>{section.body}</p>
-          </article>
-        ))}
+      <section class="viz-grid" aria-label="Supply Chain corpus controls">
+        <section class="viz-panel attack-panel">
+          <div class="panel-heading">
+            <p class="eyebrow">How They Got In</p>
+            <h2>Attack Vectors</h2>
+          </div>
+          <div class="attack-bars">
+            {page.attackVectorBars.map((row) => (
+              <button
+                type="button"
+                class={`attack-bar ${severityClass(row.severity)}`}
+                style={percentStyle(row.percent)}
+                data-graph-command={row.command.type}
+                data-graph-value={row.command.value}
+              >
+                <span>{row.label}</span>
+                <strong>{row.count}</strong>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section class="viz-panel attribution-panel">
+          <div class="panel-heading">
+            <p class="eyebrow">Who Is Connected</p>
+            <h2>Attribution</h2>
+          </div>
+          <div class="attribution-list">
+            {page.attributionRows.map((row) => (
+              <a
+                class="attribution-row"
+                href={row.href || '#supply-chain-title'}
+                data-graph-command={row.command.type}
+                data-graph-value={row.command.value}
+              >
+                <span class="confidence-dot" data-confidence={row.confidence}></span>
+                <span>
+                  <strong>{row.label}</strong>
+                  <em>{titleCase(row.confidence)} confidence</em>
+                </span>
+                <b>{row.incidentCount}</b>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="viz-panel dwell-panel">
+          <div class="panel-heading">
+            <p class="eyebrow">Warning To Disclosure</p>
+            <h2>Dwell Timeline</h2>
+          </div>
+          <div class="dwell-list">
+            {page.dwellTimeline.map((row) => (
+              <a
+                class={`dwell-row ${severityClass(row.severity)}`}
+                href={row.href}
+                style={percentStyle(row.barPercent)}
+                data-graph-command={row.command.type}
+                data-graph-value={row.command.value}
+              >
+                <span class="dwell-title">{row.title}</span>
+                <span class="dwell-track">
+                  <i class="dwell-fill"></i>
+                  <i class="dwell-marker warning" style={`left:${row.warningPercent}%;`}></i>
+                  <i class="dwell-marker disclosed" style={`left:${row.disclosedPercent}%;`}></i>
+                </span>
+                <span class="dwell-days">{row.dwellDays}d</span>
+              </a>
+            ))}
+          </div>
+        </section>
       </section>
 
-      <section class="sc-section">
-        <h2>Featured Incidents</h2>
+      <section class="sc-section featured-section">
+        <div class="section-heading">
+          <p class="eyebrow">Featured Cases</p>
+          <h2>Incident Cards</h2>
+        </div>
         <div class="featured-grid">
           {page.featuredIncidents.map((incident) => (
-            <article class="incident-card">
+            <article class="incident-card" data-graph-command="select-incident" data-graph-value={incident.id}>
               <a href={incident.href}>{incident.title}</a>
               <p>{incident.summary}</p>
               <div class="card-meta">
@@ -91,8 +203,20 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
         </div>
       </section>
 
+      <section class="copy-grid" aria-label="Supply Chain explanation">
+        {page.explanatorySections.map((section) => (
+          <article class="info-panel">
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
+          </article>
+        ))}
+      </section>
+
       <section class="sc-section">
-        <h2>Entity Summary</h2>
+        <div class="section-heading">
+          <p class="eyebrow">Corpus Shape</p>
+          <h2>Entity Summary</h2>
+        </div>
         <div class="entity-summary-grid">
           {page.entitySummaries.map((entity) => (
             <article class="entity-card">
@@ -101,32 +225,6 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
               <p>{entity.description}</p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section class="sc-section">
-        <h2>Incidents</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Attack Stage</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              {page.incidents.map((incident) => (
-                <tr>
-                  <td><span class="mono">{incident.id}</span></td>
-                  <td><a href={incident.href}>{incident.title}</a></td>
-                  <td>{titleCase(incident.attackStage)}</td>
-                  <td>{titleCase(incident.evidenceLevel)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </section>
     </section>
@@ -307,6 +405,429 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
     max-width: 1180px;
   }
 
+  .supply-chain-index {
+    max-width: 1240px;
+  }
+
+  .graph-hero {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(420px, 1.28fr);
+    gap: 24px;
+    min-height: 520px;
+    align-items: stretch;
+    margin-bottom: 18px;
+  }
+
+  .hero-copy {
+    align-self: center;
+    padding: 24px 0;
+  }
+
+  .hero-copy h1 {
+    margin: 0 0 14px;
+    border-bottom: none;
+    color: var(--white);
+    font-size: clamp(2.6rem, 5vw, 5.4rem);
+    line-height: 0.95;
+    padding-bottom: 0;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .hero-meta span,
+  .graph-status span,
+  .graph-caption span {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    padding: 6px 8px;
+    text-transform: uppercase;
+  }
+
+  .graph-placeholder {
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background:
+      linear-gradient(rgba(232, 160, 32, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 160, 32, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 28% 32%, rgba(255, 68, 68, 0.11), transparent 22%),
+      radial-gradient(circle at 72% 58%, rgba(232, 160, 32, 0.13), transparent 28%),
+      var(--surface);
+    background-size: 42px 42px, 42px 42px, auto, auto, auto;
+  }
+
+  .graph-status,
+  .graph-caption {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    gap: 8px;
+  }
+
+  .graph-status {
+    top: 16px;
+    left: 16px;
+  }
+
+  .graph-caption {
+    right: 16px;
+    bottom: 16px;
+    align-items: center;
+    max-width: min(440px, calc(100% - 32px));
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(8, 11, 16, 0.82);
+    padding: 10px;
+  }
+
+  .graph-caption strong {
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .graph-caption span {
+    flex: 0 0 auto;
+  }
+
+  .graph-field {
+    position: absolute;
+    inset: 62px 22px 70px;
+  }
+
+  .lane,
+  .edge,
+  .node {
+    position: absolute;
+    display: block;
+  }
+
+  .lane {
+    left: 2%;
+    right: 2%;
+    height: 1px;
+    background: rgba(90, 106, 126, 0.28);
+  }
+
+  .lane-actor { top: 18%; }
+  .lane-campaign { top: 36%; }
+  .lane-incident { top: 56%; }
+  .lane-package { top: 76%; }
+
+  .edge {
+    height: 1px;
+    transform-origin: left center;
+    background: rgba(232, 160, 32, 0.38);
+  }
+
+  .edge-one {
+    top: 23%;
+    left: 17%;
+    width: 38%;
+    transform: rotate(17deg);
+  }
+
+  .edge-two {
+    top: 49%;
+    left: 40%;
+    width: 31%;
+    transform: rotate(23deg);
+  }
+
+  .edge-three {
+    top: 70%;
+    left: 52%;
+    width: 28%;
+    border-top: 1px dashed rgba(232, 160, 32, 0.42);
+    background: transparent;
+    transform: rotate(-13deg);
+  }
+
+  .node {
+    min-width: 82px;
+    border: 1px solid rgba(232, 160, 32, 0.55);
+    border-radius: 999px;
+    background: rgba(13, 17, 23, 0.92);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    padding: 8px 10px;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 0 28px rgba(232, 160, 32, 0.08);
+  }
+
+  .node-actor {
+    top: 11%;
+    left: 8%;
+    border-color: var(--severity-critical);
+  }
+
+  .node-campaign {
+    top: 31%;
+    left: 45%;
+  }
+
+  .node-incident {
+    top: 51%;
+    left: 62%;
+    border-color: var(--severity-high);
+    color: var(--white);
+  }
+
+  .node-package {
+    top: 73%;
+    left: 43%;
+  }
+
+  .node-release {
+    top: 64%;
+    left: 78%;
+    border-color: var(--severity-medium);
+  }
+
+  .node-org {
+    top: 80%;
+    left: 68%;
+    border-color: var(--severity-low);
+  }
+
+  .stat-strip {
+    margin-bottom: 24px;
+  }
+
+  .viz-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.05fr) minmax(250px, 0.75fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .viz-panel {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 16px;
+  }
+
+  .dwell-panel {
+    grid-column: 1 / -1;
+  }
+
+  .panel-heading,
+  .section-heading {
+    margin-bottom: 14px;
+  }
+
+  .panel-heading h2,
+  .section-heading h2 {
+    margin: 0;
+    border-bottom: none;
+    color: var(--white);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    padding-bottom: 0;
+    text-transform: uppercase;
+  }
+
+  .attack-bars,
+  .attribution-list,
+  .dwell-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .attack-bar,
+  .attribution-row,
+  .dwell-row {
+    position: relative;
+    min-height: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(8, 11, 16, 0.5);
+    color: var(--text);
+  }
+
+  .attack-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    overflow: hidden;
+    gap: 16px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+  }
+
+  .attack-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--bar);
+    opacity: 0.22;
+    background: var(--severity-medium);
+  }
+
+  .attack-bar span,
+  .attack-bar strong {
+    position: relative;
+    z-index: 1;
+  }
+
+  .attack-bar span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .attack-bar strong {
+    color: var(--white);
+    font-family: var(--font-mono);
+  }
+
+  .attribution-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  .attribution-row strong,
+  .attribution-row em {
+    display: block;
+  }
+
+  .attribution-row strong {
+    color: var(--white);
+    line-height: 1.25;
+  }
+
+  .attribution-row em {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-style: normal;
+    letter-spacing: 0.12em;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .attribution-row b {
+    color: var(--amber);
+    font-family: var(--font-mono);
+  }
+
+  .confidence-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--severity-medium);
+    box-shadow: 0 0 0 4px rgba(232, 160, 32, 0.1);
+  }
+
+  .confidence-dot[data-confidence='confirmed'],
+  .confidence-dot[data-confidence='high'] {
+    background: var(--severity-low);
+  }
+
+  .confidence-dot[data-confidence='likely'],
+  .confidence-dot[data-confidence='medium'] {
+    background: var(--severity-high);
+  }
+
+  .confidence-dot[data-confidence='suspected'],
+  .confidence-dot[data-confidence='low'] {
+    background: var(--severity-medium);
+  }
+
+  .dwell-row {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) minmax(180px, 2fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  .dwell-title {
+    color: var(--white);
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  .dwell-track {
+    position: relative;
+    height: 12px;
+    border: 1px solid var(--border);
+    background: rgba(8, 11, 16, 0.7);
+  }
+
+  .dwell-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--bar);
+    background: var(--severity-medium);
+    opacity: 0.45;
+  }
+
+  .dwell-marker {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--white);
+  }
+
+  .dwell-marker.warning {
+    background: var(--amber);
+  }
+
+  .dwell-marker.disclosed {
+    background: var(--severity-critical);
+  }
+
+  .dwell-days {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .severity-critical::before,
+  .severity-critical .dwell-fill {
+    background: var(--severity-critical);
+  }
+
+  .severity-high::before,
+  .severity-high .dwell-fill {
+    background: var(--severity-high);
+  }
+
+  .severity-medium::before,
+  .severity-medium .dwell-fill {
+    background: var(--severity-medium);
+  }
+
+  .severity-low::before,
+  .severity-low .dwell-fill {
+    background: var(--severity-low);
+  }
+
   .sc-header {
     margin-bottom: 30px;
     padding-bottom: 20px;
@@ -359,7 +880,7 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   .entity-card {
     border: 1px solid var(--border);
     background: var(--surface);
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 16px;
   }
 
@@ -429,7 +950,7 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   .attack-chain-list li {
     border: 1px solid var(--border);
     background: var(--surface);
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 16px;
   }
 
@@ -592,6 +1113,29 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   }
 
   @media (max-width: 720px) {
+    .graph-hero,
+    .viz-grid,
+    .dwell-row {
+      grid-template-columns: 1fr;
+    }
+
+    .graph-hero {
+      min-height: auto;
+    }
+
+    .graph-placeholder {
+      min-height: 420px;
+    }
+
+    .graph-caption {
+      display: block;
+    }
+
+    .graph-caption span {
+      display: inline-block;
+      margin-top: 8px;
+    }
+
     .timeline-list li,
     .entity-list li,
     .reference-list li {
