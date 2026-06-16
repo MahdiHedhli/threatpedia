@@ -55,7 +55,8 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         boltdb = by_id["SC-2025-GO-BOLTDB-TYPOSQUAT"]
         boltdb_releases = boltdb.get("releases") or []
         self.assertEqual(boltdb["first_public_warning_at"], "2025-02-04")
-        self.assertTrue(any(component["name"] == "github.com/boltdb-go/bolt" for component in boltdb["affected_components"]))
+        boltdb_components = boltdb.get("affected_components") or []
+        self.assertTrue(any(component.get("name") == "github.com/boltdb-go/bolt" for component in boltdb_components))
         self.assertTrue(any(release.get("malicious_range") == "v1.3.1" for release in boltdb_releases))
         self.assertEqual(boltdb["supply_chain_vectors"], ["dependency_confusion", "malicious_dependency"])
         self.assertEqual(boltdb["compromised_accounts"], [])
