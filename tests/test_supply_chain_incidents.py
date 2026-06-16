@@ -43,15 +43,22 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         by_id = {incident["id"]: incident for incident in corpus}
 
         shai_hulud = by_id["SC-2025-NPM-SHAI-HULUD"]
+        shai_actors = shai_hulud.get("threat_actors") or []
+        shai_components = shai_hulud.get("affected_components") or []
+        shai_releases = shai_hulud.get("releases") or []
         self.assertEqual(shai_hulud["first_public_warning_at"], "2025-09-15")
-        self.assertTrue(any(component["name"] == "@ctrl/tinycolor" for component in shai_hulud["affected_components"]))
-        self.assertTrue(any(release["malicious_range"] == "4.1.1" for release in shai_hulud["releases"]))
-        self.assertEqual(shai_hulud["threat_actors"][0]["actor_type"], "provisional")
+        self.assertEqual(shai_hulud["first_observed_at"], "2025-09-14")
+        self.assertTrue(any(component.get("name") == "@ctrl/tinycolor" for component in shai_components))
+        self.assertTrue(any(release.get("malicious_range") == "4.1.1" for release in shai_releases))
+        self.assertTrue(any(actor.get("actor_type") == "provisional" for actor in shai_actors))
 
         boltdb = by_id["SC-2025-GO-BOLTDB-TYPOSQUAT"]
+        boltdb_releases = boltdb.get("releases") or []
         self.assertEqual(boltdb["first_public_warning_at"], "2025-02-04")
         self.assertTrue(any(component["name"] == "github.com/boltdb-go/bolt" for component in boltdb["affected_components"]))
-        self.assertEqual(boltdb["releases"][0]["malicious_range"], "v1.3.1")
+        self.assertTrue(any(release.get("malicious_range") == "v1.3.1" for release in boltdb_releases))
+        self.assertEqual(boltdb["supply_chain_vectors"], ["dependency_confusion", "malicious_dependency"])
+        self.assertEqual(boltdb["compromised_accounts"], [])
         self.assertTrue(boltdb["source_artifact_divergence"])
 
     def test_duplicate_ids_fail_validation(self) -> None:

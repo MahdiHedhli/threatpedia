@@ -496,11 +496,6 @@
   },
   {
     "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
-    "target": "org-boltdb-go",
-    "type": "AFFECTED_ORGANIZATION"
-  },
-  {
-    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
     "target": "pkg-golang-github-com-boltdb-go-bolt",
     "type": "AFFECTED_PACKAGE"
   },
@@ -513,11 +508,6 @@
     "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
     "target": "actor-boltdb-go-operator",
     "type": "ATTRIBUTED_TO_ACTOR"
-  },
-  {
-    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
-    "target": "account-github-boltdb-go-github-account",
-    "type": "COMPROMISED_ACCOUNT"
   },
   {
     "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",

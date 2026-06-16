@@ -31,7 +31,11 @@ def load_json(path: Path):
 
 
 def find_entity(entities: list[dict], entity_id: str) -> dict:
+    if not isinstance(entities, list):
+        raise ValueError("entities must be a list")
     for entity in entities:
+        if not isinstance(entity, dict):
+            continue
         if entity.get("id") == entity_id:
             return entity
     raise ValueError(f"entity not found: {entity_id}")
@@ -276,7 +280,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
         event_stream = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
         flatmap_stream = find_entity(entities_by_type["packages"], "pkg-npm-flatmap-stream")
-        event_stream["aliases"].append(flatmap_stream["aliases"][0])
+        flatmap_aliases = flatmap_stream.get("aliases") or []
+        self.assertGreater(len(flatmap_aliases), 0)
+        event_stream["aliases"].append(flatmap_aliases[0])
         event_stream["ecosystem"] = flatmap_stream["ecosystem"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
@@ -365,7 +371,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         tinycolor_release = find_entity(entities_by_type["releases"], "release-npm-ctrl-tinycolor-4-1-1")
         flatmap_release["purl"] = "pkg:npm/flatmap-stream"
         ua_parser_release["published_at"] = "2021-99-99"
-        del tinycolor_release["disclosed_at"]
+        tinycolor_release.pop("disclosed_at", None)
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -457,7 +463,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
         entities_by_type["maintainers"] = copy.deepcopy(entities_by_type["maintainers"])
         maintainer = find_entity(entities_by_type["maintainers"], "maintainer-dominictarr")
-        del maintainer["onboarding_date"]
+        maintainer.pop("onboarding_date", None)
         maintainer["first_publish_date"] = "2018-99-99"
         maintainer["repositories"] = ["pkg-not-a-repository"]
         maintainer["account_ids"] = ["repo-not-an-account"]

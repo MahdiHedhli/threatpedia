@@ -148,13 +148,13 @@ The Phase 2E pass over 27 incidents currently emits:
 - Packages: 19
 - Releases: 7
 - Repositories: 11
-- Organizations: 20
+- Organizations: 19
 - Build systems: 6
 - Distribution channels: 14
-- Compromised accounts: 11
+- Compromised accounts: 10
 - Actors: 6
 - Campaigns: 3
-- Relationships: 138
+- Relationships: 136
 
 ## Build and Validate
 

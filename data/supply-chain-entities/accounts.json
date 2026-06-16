@@ -2,19 +2,6 @@
   {
     "account_type": "source_control_account",
     "aliases": [
-      "boltdb-go GitHub account"
-    ],
-    "id": "account-github-boltdb-go-github-account",
-    "name": "boltdb-go GitHub account",
-    "provider": "GitHub",
-    "role": "source_repository_owner",
-    "source_incident_ids": [
-      "SC-2025-GO-BOLTDB-TYPOSQUAT"
-    ]
-  },
-  {
-    "account_type": "source_control_account",
-    "aliases": [
       "tj-actions GitHub Action release path"
     ],
     "id": "account-github-tj-actions-github-action-release-path",

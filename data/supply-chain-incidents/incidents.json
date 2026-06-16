@@ -2431,7 +2431,7 @@
     "title": "Shai-Hulud npm self-propagating package compromise",
     "summary": "The Shai-Hulud campaign compromised npm packages with credential-harvesting malware that used stolen npm tokens to publish malicious versions of additional packages.",
     "status": "confirmed",
-    "first_observed_at": "2025-09-15",
+    "first_observed_at": "2025-09-14",
     "first_public_warning_at": "2025-09-15",
     "disclosed_at": "2025-09-16",
     "affected_ecosystems": [
@@ -2526,7 +2526,7 @@
     "evidence_level": "researcher",
     "attack_stage": "package_publish",
     "source_artifact_divergence": false,
-    "notes": "Modeled with @ctrl/tinycolor release dates confirmed from npm registry metadata and broader package scope from StepSecurity/Wiz reporting.",
+    "notes": "Modeled with @ctrl/tinycolor release dates confirmed from npm registry metadata and broader package scope from StepSecurity/Wiz reporting; first observed date follows public reporting that rxnt-authentication was updated before the @ctrl/tinycolor wave.",
     "maintainers": [],
     "repositories": [],
     "build_systems": [
@@ -2610,7 +2610,7 @@
         "component_type": "package",
         "ecosystem": "golang",
         "name": "github.com/boltdb-go/bolt",
-        "vendor": "boltdb-go",
+        "vendor": "malicious publisher",
         "package_url": "pkg:golang/github.com/boltdb-go/bolt"
       }
     ],
@@ -2629,8 +2629,8 @@
       }
     ],
     "supply_chain_vectors": [
-      "package_repository_compromise",
-      "source_repository_compromise"
+      "dependency_confusion",
+      "malicious_dependency"
     ],
     "impact_categories": [
       "backdoor",
@@ -2685,14 +2685,7 @@
         "ecosystem": "github"
       }
     ],
-    "compromised_accounts": [
-      {
-        "name": "boltdb-go GitHub account",
-        "provider": "GitHub",
-        "account_type": "source_control_account",
-        "role": "source_repository_owner"
-      }
-    ],
+    "compromised_accounts": [],
     "threat_actors": [
       {
         "id": "actor-boltdb-go-operator",

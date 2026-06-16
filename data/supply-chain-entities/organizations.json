@@ -21,16 +21,6 @@
   },
   {
     "aliases": [
-      "boltdb-go"
-    ],
-    "id": "org-boltdb-go",
-    "name": "boltdb-go",
-    "source_incident_ids": [
-      "SC-2025-GO-BOLTDB-TYPOSQUAT"
-    ]
-  },
-  {
-    "aliases": [
       "Codecov"
     ],
     "id": "org-codecov",
