@@ -19,10 +19,23 @@ from supply_chain_purl import PurlError, canonicalize_purl, emit_purl, parse_pur
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
+DEFAULT_INCIDENT_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
 DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
 DEFAULT_REPORT_PATH = REPO_ROOT / "docs" / "supply-chain-purl-edge-audit.md"
 CONTENT_ROOT = REPO_ROOT / "site" / "src" / "content"
 GENERIC_JUSTIFICATION_MIN_LENGTH = 20
+INCIDENT_SOURCE_RELATIONSHIP_TYPES = {
+    "AFFECTED_MAINTAINER",
+    "AFFECTED_ORGANIZATION",
+    "AFFECTED_PACKAGE",
+    "AFFECTED_REPOSITORY",
+    "COMPROMISED_ACCOUNT",
+    "INCIDENT_AFFECTED_RELEASE",
+    "RELATED_CAMPAIGN",
+    "SOURCE_ARTIFACT_DIVERGENCE",
+    "USED_BUILD_SYSTEM",
+    "USED_DISTRIBUTION_CHANNEL",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -33,7 +46,9 @@ def canonical_package_result(package: Any, index: int | None = None) -> tuple[st
     label = f"packages[{index}]" if index is not None else "package"
     if not isinstance(package, dict):
         return ("invalid", f"{label}: expected object")
-    package_id = package.get("id", "<missing-id>")
+    package_id = package.get("id")
+    if not isinstance(package_id, str) or not package_id.strip():
+        return ("invalid", f"{label}: missing or invalid id")
     package_url = package.get("package_url")
     if not isinstance(package_url, str) or not package_url.strip():
         return ("missing", f"{package_id}: missing package_url")
@@ -63,7 +78,9 @@ def canonical_release_result(release: Any, index: int | None = None) -> tuple[st
     label = f"releases[{index}]" if index is not None else "release"
     if not isinstance(release, dict):
         return ("invalid", f"{label}: expected object")
-    release_id = release.get("id", "<missing-id>")
+    release_id = release.get("id")
+    if not isinstance(release_id, str) or not release_id.strip():
+        return ("invalid", f"{label}: missing or invalid id")
     purl = release.get("purl")
     if not isinstance(purl, str) or not purl.strip():
         return ("missing", f"{release_id}: missing purl")
@@ -122,7 +139,8 @@ def release_base_purl(release: Any) -> str | None:
 def content_href_exists(href: Any) -> bool:
     if not isinstance(href, str) or not href.startswith("/"):
         return False
-    parts = [part for part in href.strip("/").split("/") if part]
+    path = href.split("?", 1)[0].split("#", 1)[0]
+    parts = [part for part in path.strip("/").split("/") if part]
     if len(parts) != 2:
         return False
     collection, slug = parts
@@ -131,12 +149,14 @@ def content_href_exists(href: Any) -> bool:
     return (CONTENT_ROOT / collection / f"{slug}.md").exists() or (CONTENT_ROOT / collection / f"{slug}.mdx").exists()
 
 
-def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
+def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path = DEFAULT_INCIDENT_PATH) -> dict[str, Any]:
     packages = load_json(entity_dir / "packages.json")
     releases = load_json(entity_dir / "releases.json")
     actors = load_json(entity_dir / "actors.json")
     campaigns = load_json(entity_dir / "campaigns.json")
+    maintainers = load_json(entity_dir / "maintainers.json")
     relationships = load_json(relationship_path)
+    incidents = load_json(incident_path)
 
     purl_results = [
         result
@@ -162,6 +182,16 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     release_by_id = {
         release["id"]: release for release in releases if isinstance(release, dict) and isinstance(release.get("id"), str)
     }
+    incident_ids = {
+        f"incident-{incident['id']}"
+        for incident in incidents
+        if isinstance(incident, dict) and isinstance(incident.get("id"), str)
+    }
+    maintainer_ids = {
+        maintainer["id"]
+        for maintainer in maintainers
+        if isinstance(maintainer, dict) and isinstance(maintainer.get("id"), str)
+    }
     actor_ids = set(actor_by_id)
     campaign_ids = {
         campaign["id"] for campaign in campaigns if isinstance(campaign, dict) and isinstance(campaign.get("id"), str)
@@ -170,6 +200,7 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
     release_ids = set(release_by_id)
     dangling_actor_edges = []
     dangling_campaign_edges = []
+    dangling_incident_edges = []
     broken_actor_hrefs = []
     broken_campaign_hrefs = []
     dangling_package_edges = []
@@ -193,6 +224,18 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         rel_type = relationship.get("type")
         source = relationship.get("source")
         target = relationship.get("target")
+        if rel_type in INCIDENT_SOURCE_RELATIONSHIP_TYPES:
+            if not isinstance(source, str):
+                invalid_relationship_edges.append(f"relationships[{index}]: {rel_type} source must be string")
+            elif source not in incident_ids:
+                dangling_incident_edges.append(f"relationships[{index}]: missing incident source {source!r}")
+        if rel_type == "ATTRIBUTED_TO_ACTOR":
+            if not isinstance(source, str):
+                invalid_relationship_edges.append(f"relationships[{index}]: ATTRIBUTED_TO_ACTOR source must be string")
+            elif source not in incident_ids and source not in maintainer_ids:
+                invalid_relationship_edges.append(
+                    f"relationships[{index}]: ATTRIBUTED_TO_ACTOR source must be an incident or maintainer {source!r}"
+                )
         if rel_type == "ATTRIBUTED_TO_ACTOR":
             if not isinstance(target, str):
                 invalid_relationship_edges.append(f"relationships[{index}]: ATTRIBUTED_TO_ACTOR target must be string")
@@ -236,6 +279,7 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         + invalid_purls
         + dangling_actor_edges
         + dangling_campaign_edges
+        + dangling_incident_edges
         + broken_actor_hrefs
         + broken_campaign_hrefs
         + dangling_package_edges
@@ -252,6 +296,7 @@ def build_audit(entity_dir: Path, relationship_path: Path) -> dict[str, Any]:
         "generic_purl_exceptions": generic_exceptions,
         "dangling_actor_edges": dangling_actor_edges,
         "dangling_campaign_edges": dangling_campaign_edges,
+        "dangling_incident_edges": dangling_incident_edges,
         "broken_actor_hrefs": broken_actor_hrefs,
         "broken_campaign_hrefs": broken_campaign_hrefs,
         "dangling_package_edges": dangling_package_edges,
@@ -284,6 +329,7 @@ def render_report(audit: dict[str, Any]) -> str:
             f"- Generic PURL exceptions: {len(audit['generic_purl_exceptions'])}",
             f"- Dangling actor edges: {len(audit['dangling_actor_edges'])}",
             f"- Dangling campaign edges: {len(audit['dangling_campaign_edges'])}",
+            f"- Dangling incident edges: {len(audit['dangling_incident_edges'])}",
             f"- Broken actor hrefs: {len(audit['broken_actor_hrefs'])}",
             f"- Broken campaign hrefs: {len(audit['broken_campaign_hrefs'])}",
             f"- Dangling package edges: {len(audit['dangling_package_edges'])}",
@@ -309,6 +355,10 @@ def render_report(audit: dict[str, Any]) -> str:
             "## Dangling Campaign Edges",
             "",
             bullet_list(audit["dangling_campaign_edges"]).rstrip(),
+            "",
+            "## Dangling Incident Edges",
+            "",
+            bullet_list(audit["dangling_incident_edges"]).rstrip(),
             "",
             "## Broken Actor Hrefs",
             "",
@@ -337,11 +387,16 @@ def render_report(audit: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--entity-dir", type=Path, default=DEFAULT_ENTITY_DIR)
+    parser.add_argument("--incidents", type=Path, default=DEFAULT_INCIDENT_PATH)
     parser.add_argument("--relationships", type=Path, default=DEFAULT_RELATIONSHIP_PATH)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT_PATH)
     args = parser.parse_args(argv)
 
-    audit = build_audit(args.entity_dir, args.relationships)
+    try:
+        audit = build_audit(args.entity_dir, args.relationships, args.incidents)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"Error loading audit data: {exc}", file=sys.stderr)
+        return 1
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(render_report(audit), encoding="utf-8")
     print(
@@ -350,6 +405,7 @@ def main(argv: list[str] | None = None) -> int:
         f"missing_purls={len(audit['missing_purls'])} invalid_purls={len(audit['invalid_purls'])} "
         f"dangling_actor_edges={len(audit['dangling_actor_edges'])} "
         f"dangling_campaign_edges={len(audit['dangling_campaign_edges'])} "
+        f"dangling_incident_edges={len(audit['dangling_incident_edges'])} "
         f"broken_actor_hrefs={len(audit['broken_actor_hrefs'])} "
         f"broken_campaign_hrefs={len(audit['broken_campaign_hrefs'])} "
         f"dangling_package_edges={len(audit['dangling_package_edges'])} "

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import copy
+import contextlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import shutil
@@ -37,6 +39,7 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["invalid_purls"], [])
         self.assertEqual(report["dangling_actor_edges"], [])
         self.assertEqual(report["dangling_campaign_edges"], [])
+        self.assertEqual(report["dangling_incident_edges"], [])
         self.assertEqual(report["broken_actor_hrefs"], [])
         self.assertEqual(report["broken_campaign_hrefs"], [])
         self.assertEqual(report["dangling_package_edges"], [])
@@ -60,6 +63,13 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
                 }
             )[0],
             "missing",
+        )
+        self.assertEqual(audit.canonical_package_result({"name": "bad", "ecosystem": "npm", "package_url": "pkg:npm/bad"})[0], "invalid")
+        self.assertEqual(
+            audit.canonical_release_result(
+                {"package_name": "bad", "ecosystem": "npm", "purl": "pkg:npm/bad@1.0.0", "version": "1.0.0"}
+            )[0],
+            "invalid",
         )
 
     def test_generic_package_purls_require_justification(self) -> None:
@@ -136,6 +146,25 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
 
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("actor-does-not-exist" in error for error in report["dangling_actor_edges"]))
+
+    def test_dangling_incident_source_fails_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "incident-SC-DOES-NOT-EXIST",
+                "target": "pkg-npm-event-stream",
+                "type": "AFFECTED_PACKAGE",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("SC-DOES-NOT-EXIST" in error for error in report["dangling_incident_edges"]))
 
     def test_dangling_package_and_release_edges_fail_audit(self) -> None:
         relationships = audit.load_json(RELATIONSHIP_PATH)
@@ -248,23 +277,68 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertTrue(any("not-a-real-actor" in error for error in report["broken_actor_hrefs"]))
         self.assertTrue(any("not-a-real-campaign" in error for error in report["broken_campaign_hrefs"]))
 
+    def test_content_href_resolver_accepts_query_and_fragment(self) -> None:
+        self.assertTrue(audit.content_href_exists("/threat-actors/sandworm/#timeline"))
+        self.assertTrue(audit.content_href_exists("/campaigns/lazarus-3cx-supply-chain-compromise-2023/?view=graph"))
+
     def test_main_creates_report_parent_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             entity_dir = Path(tmpdir) / "entities"
             relationship_path = Path(tmpdir) / "relationships.json"
             report_path = Path(tmpdir) / "nested" / "audit.md"
             entity_dir.mkdir()
-            for name in ("packages", "releases", "actors", "campaigns"):
+            for name in ("packages", "releases", "actors", "campaigns", "maintainers"):
                 (entity_dir / f"{name}.json").write_text("[]", encoding="utf-8")
+            incidents_path = Path(tmpdir) / "incidents.json"
+            incidents_path.write_text("[]", encoding="utf-8")
             relationship_path.write_text("[]", encoding="utf-8")
 
             exit_code = audit.main(
-                ["--entity-dir", str(entity_dir), "--relationships", str(relationship_path), "--report", str(report_path)]
+                [
+                    "--entity-dir",
+                    str(entity_dir),
+                    "--incidents",
+                    str(incidents_path),
+                    "--relationships",
+                    str(relationship_path),
+                    "--report",
+                    str(report_path),
+                ]
             )
             report_exists = report_path.exists()
 
         self.assertEqual(exit_code, 0)
         self.assertTrue(report_exists)
+
+    def test_main_reports_invalid_json_without_traceback(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            entity_dir.mkdir()
+            for name in ("packages", "releases", "actors", "campaigns", "maintainers"):
+                (entity_dir / f"{name}.json").write_text("[]", encoding="utf-8")
+            incidents_path = Path(tmpdir) / "incidents.json"
+            incidents_path.write_text("{bad-json", encoding="utf-8")
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text("[]", encoding="utf-8")
+            report_path = Path(tmpdir) / "audit.md"
+            stderr = io.StringIO()
+
+            with contextlib.redirect_stderr(stderr):
+                exit_code = audit.main(
+                    [
+                        "--entity-dir",
+                        str(entity_dir),
+                        "--incidents",
+                        str(incidents_path),
+                        "--relationships",
+                        str(relationship_path),
+                        "--report",
+                        str(report_path),
+                    ]
+                )
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn("Error loading audit data", stderr.getvalue())
 
 
 if __name__ == "__main__":
