@@ -69,6 +69,59 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("actor-lazarus-group", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
 
+    def test_builder_preserves_exact_release_versions_when_normalized_slugs_collide(self) -> None:
+        corpus = [
+            {
+                "schema_version": "supply-chain-incident/1",
+                "id": "SC-TEST-RELEASE-COLLISION",
+                "title": "release collision fixture",
+                "affected_components": [
+                    {
+                        "component_type": "package",
+                        "ecosystem": "npm",
+                        "name": "example-pkg",
+                        "vendor": "example",
+                        "package_url": "pkg:npm/example-pkg",
+                    }
+                ],
+                "releases": [
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha.1",
+                        "version": "1.0.0-alpha.1",
+                        "published_at": "2026-01-01",
+                        "malicious_range": "1.0.0-alpha.1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-02",
+                    },
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha-1",
+                        "version": "1.0.0-alpha-1",
+                        "published_at": "2026-01-03",
+                        "malicious_range": "1.0.0-alpha-1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-04",
+                    },
+                ],
+                "source_artifact_divergence": False,
+            }
+        ]
+
+        graph = builder.build_graph(corpus)
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
+        release_ids = {entity["id"] for entity in graph["releases"]}
+        release_versions = {entity["version"] for entity in graph["releases"]}
+        base_id = "release-npm-example-pkg-1-0-0-alpha-1"
+
+        self.assertEqual(len(graph["releases"]), 2)
+        self.assertEqual(release_versions, {"1.0.0-alpha.1", "1.0.0-alpha-1"})
+        self.assertIn(base_id, release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
+
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
         first = next(item for item in corpus if item["id"] == "SC-2024-XZ-UTILS")

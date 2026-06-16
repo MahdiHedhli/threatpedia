@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -100,6 +101,31 @@ def stable_id(prefix: str, *parts: str) -> str:
     return f"{prefix}-{slug}"
 
 
+def same_release_identity(entity: dict[str, Any], ecosystem: str, package_name: str, version: str) -> bool:
+    return (
+        entity.get("ecosystem") == ecosystem
+        and entity.get("package_name") == package_name
+        and entity.get("version") == version
+    )
+
+
+def exact_version_suffix(version: str) -> str:
+    return hashlib.sha256(version.encode("utf-8")).hexdigest()[:12]
+
+
+def release_entity_id(releases: dict[str, dict[str, Any]], ecosystem: str, package_name: str, version: str) -> str:
+    base_id = stable_id("release", ecosystem, package_name, version)
+    existing = releases.get(base_id)
+    if existing is None or same_release_identity(existing, ecosystem, package_name, version):
+        return base_id
+
+    hashed_id = f"{base_id}-v{exact_version_suffix(version)}"
+    existing = releases.get(hashed_id)
+    if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
+        raise ValueError(f"release id collision for {ecosystem}/{package_name}@{version}: {hashed_id}")
+    return hashed_id
+
+
 def incident_node_id(incident_id: str) -> str:
     return f"incident-{incident_id}"
 
@@ -179,7 +205,7 @@ def upsert_release(releases: dict[str, dict[str, Any]], item: dict[str, Any], in
     parsed = parse_purl(purl)
     if parsed.version != version:
         raise ValueError(f"{incident_id}: release version {version!r} does not match PURL {purl!r}")
-    entity_id = stable_id("release", ecosystem, package_name, version)
+    entity_id = release_entity_id(releases, ecosystem, package_name, version)
     name = f"{package_name}@{version}"
     entity = releases.setdefault(
         entity_id,

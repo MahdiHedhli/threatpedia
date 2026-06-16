@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -88,6 +89,36 @@ def load_json(path: Path) -> Any:
 
 def normalize_alias(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.strip().lower()).strip("-")
+
+
+def stable_id(prefix: str, *parts: str) -> str:
+    slug = "-".join(filter(None, (normalize_alias(part) for part in parts)))
+    return f"{prefix}-{slug}"
+
+
+def same_release_identity(entity: dict[str, Any], ecosystem: str, package_name: str, version: str) -> bool:
+    return (
+        entity.get("ecosystem") == ecosystem
+        and entity.get("package_name") == package_name
+        and entity.get("version") == version
+    )
+
+
+def exact_version_suffix(version: str) -> str:
+    return hashlib.sha256(version.encode("utf-8")).hexdigest()[:12]
+
+
+def release_entity_id(releases: dict[str, dict[str, Any]], ecosystem: str, package_name: str, version: str) -> str:
+    base_id = stable_id("release", ecosystem, package_name, version)
+    existing = releases.get(base_id)
+    if existing is None or same_release_identity(existing, ecosystem, package_name, version):
+        return base_id
+
+    hashed_id = f"{base_id}-v{exact_version_suffix(version)}"
+    existing = releases.get(hashed_id)
+    if existing is not None and not same_release_identity(existing, ecosystem, package_name, version):
+        raise ValueError(f"release id collision for {ecosystem}/{package_name}@{version}: {hashed_id}")
+    return hashed_id
 
 
 def parse_date(value: Any) -> date | None:
@@ -211,7 +242,17 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 errors.append(f"{entity_id}.aliases: expected non-empty string aliases")
                 continue
             normalized = normalize_alias(alias)
-            alias_key = f"{entity.get('ecosystem', '')}:{normalized}" if entity_type == "packages" else normalized
+            if entity_type == "packages":
+                alias_key = f"{entity.get('ecosystem', '')}:{normalized}"
+            elif entity_type == "releases":
+                alias_key = (
+                    f"{entity.get('ecosystem', '')}:"
+                    f"{entity.get('package_name', '')}:"
+                    f"{entity.get('version', '')}:"
+                    f"{normalized}"
+                )
+            else:
+                alias_key = normalized
             owner = alias_owners.get(alias_key)
             if owner and owner != entity_id:
                 errors.append(f"{entity_type}: normalized alias {normalized!r} belongs to both {owner} and {entity_id}")
@@ -291,6 +332,7 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    implied_releases: dict[str, dict[str, Any]] = {}
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
@@ -319,8 +361,16 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
             package_name = release.get("package_name")
             version = release.get("version")
             if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
-                package_id = f"pkg-{normalize_alias(ecosystem)}-{normalize_alias(package_name)}"
-                release_id = f"release-{normalize_alias(ecosystem)}-{normalize_alias(package_name)}-{normalize_alias(version)}"
+                package_id = stable_id("pkg", ecosystem, package_name)
+                release_id = release_entity_id(implied_releases, ecosystem, package_name, version)
+                implied_releases.setdefault(
+                    release_id,
+                    {
+                        "ecosystem": ecosystem,
+                        "package_name": package_name,
+                        "version": version,
+                    },
+                )
                 if (package_id, release_id, "PACKAGE_RELEASE") not in relationship_keys:
                     errors.append(f"{source}: missing PACKAGE_RELEASE relationship for {release_id}")
                 if (source, release_id, "INCIDENT_AFFECTED_RELEASE") not in relationship_keys:
