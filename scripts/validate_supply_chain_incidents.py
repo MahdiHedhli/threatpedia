@@ -819,7 +819,7 @@ def validate_schema_file(schema: Any) -> list[str]:
     if schema_version.get("const") != SCHEMA_VERSION:
         errors.append("schema.schema_version.const: does not match validator schema version")
     required = schema.get("required")
-    if not isinstance(required, list) or set(required) != set(REQUIRED_FIELDS):
+    if not isinstance(required, list) or not all(isinstance(field, str) for field in required) or set(required) != set(REQUIRED_FIELDS):
         errors.append("schema.required: does not match validator required fields")
     defs = schema.get("$defs")
     affected_component = defs.get("affected_component") if isinstance(defs, dict) else None
@@ -852,19 +852,24 @@ def validate_schema_file(schema: Any) -> list[str]:
         if def_name not in defs:
             errors.append(f"schema.$defs.{def_name}: missing required Phase 2B definition")
     attribution_confidence = defs.get("attribution_confidence") if isinstance(defs, dict) else None
-    if not isinstance(attribution_confidence, dict) or set(attribution_confidence.get("enum", [])) != VALID_ATTRIBUTION_CONFIDENCE:
+    attribution_enum = attribution_confidence.get("enum") if isinstance(attribution_confidence, dict) else None
+    if not isinstance(attribution_confidence, dict) or not isinstance(attribution_enum, list) or not all(
+        isinstance(value, str) for value in attribution_enum
+    ) or set(attribution_enum) != VALID_ATTRIBUTION_CONFIDENCE:
         errors.append("schema.$defs.attribution_confidence.enum: does not match validator")
     propagation_edge = defs.get("propagation_edge") if isinstance(defs, dict) else None
     if not isinstance(propagation_edge, dict):
         errors.append("schema.$defs.propagation_edge: expected object")
     else:
         required_fields = propagation_edge.get("required")
-        if not isinstance(required_fields, list) or set(required_fields) != {"source", "target", "tier", "evidence_refs"}:
+        if not isinstance(required_fields, list) or not all(
+            isinstance(field, str) for field in required_fields
+        ) or set(required_fields) != {"source", "target", "tier", "evidence_refs"}:
             errors.append("schema.$defs.propagation_edge.required: does not match validator")
         propagation_properties = propagation_edge.get("properties")
         tier = propagation_properties.get("tier") if isinstance(propagation_properties, dict) else None
         tier_enum = tier.get("enum") if isinstance(tier, dict) else None
-        if not isinstance(tier_enum, list) or set(tier_enum) != VALID_PROPAGATION_TIERS:
+        if not isinstance(tier_enum, list) or not all(isinstance(value, str) for value in tier_enum) or set(tier_enum) != VALID_PROPAGATION_TIERS:
             errors.append("schema.$defs.propagation_edge.properties.tier.enum: does not match validator")
     return errors
 
