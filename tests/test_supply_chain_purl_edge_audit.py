@@ -12,6 +12,7 @@ import unittest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+SITE_CONTENT_DIR = REPO_ROOT / "site" / "src" / "content"
 
 
 def load_module(name: str, path: Path):
@@ -40,6 +41,7 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["dangling_package_edges"], [])
         self.assertEqual(report["dangling_release_edges"], [])
         self.assertEqual(report["invalid_relationship_edges"], [])
+        self.assertEqual(report["invalid_package_release_edges"], [])
         self.assertEqual(len(report["generic_purl_exceptions"]), 1)
 
     def test_package_and_release_purl_checks_detect_failures(self) -> None:
@@ -170,6 +172,155 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
 
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("expected object" in error for error in report["invalid_relationship_edges"]))
+
+    def test_package_release_purl_mismatch_fails_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        for relationship in broken_relationships:
+            if relationship["type"] == "PACKAGE_RELEASE" and relationship["source"] == "pkg-npm-flatmap-stream":
+                relationship["source"] = "pkg-npm-event-stream"
+                break
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("PACKAGE_RELEASE PURL mismatch" in error for error in report["invalid_package_release_edges"]))
+
+    def test_release_version_mismatch_fails_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            releases = audit.load_json(entity_dir / "releases.json")
+            releases[0]["version"] = "definitely-not-the-purl-version"
+            (entity_dir / "releases.json").write_text(json.dumps(releases), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("version does not match PURL version" in error for error in report["invalid_purls"]))
+
+    def test_actor_and_campaign_edges_require_existing_content_pages(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = "/threat-actors/no-such-actor/"
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = "/campaigns/no-such-campaign/"
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("no-such-actor" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("no-such-campaign" in error for error in report["dangling_campaign_edges"]))
+
+    def test_actor_and_campaign_hrefs_must_be_routes_not_filenames(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = "/threat-actors/lazarus-group.md/"
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = "/campaigns/3cx-supply-chain-compromise.md/"
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("lazarus-group.md" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("3cx-supply-chain-compromise.md" in error for error in report["dangling_campaign_edges"]))
+
+    def test_actor_and_campaign_hrefs_must_be_absolute_routes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = "threat-actors/lazarus-group/"
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = "campaigns/3cx-supply-chain-compromise/"
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("lazarus-group" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("3cx-supply-chain-compromise" in error for error in report["dangling_campaign_edges"]))
+
+    def test_actor_and_campaign_hrefs_reject_scheme_relative_and_empty_segments(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = (
+                "//threat-actors/lazarus-group/"
+            )
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = (
+                "/campaigns//3cx-supply-chain-compromise/"
+            )
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("//threat-actors" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("campaigns//" in error for error in report["dangling_campaign_edges"]))
+
+    def test_actor_and_campaign_hrefs_must_match_expected_collections(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = (
+                "/campaigns/3cx-supply-chain-compromise/"
+            )
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = (
+                "/threat-actors/lazarus-group/"
+            )
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("3cx-supply-chain-compromise" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("lazarus-group" in error for error in report["dangling_campaign_edges"]))
+
+    def test_actor_and_campaign_hrefs_reject_traversal_segments(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            entity_dir = Path(tmpdir) / "entities"
+            shutil.copytree(ENTITY_DIR, entity_dir)
+            actors = audit.load_json(entity_dir / "actors.json")
+            campaigns = audit.load_json(entity_dir / "campaigns.json")
+            next(actor for actor in actors if actor["id"] == "actor-lazarus-group")["href"] = (
+                "/threat-actors/../campaigns/3cx-supply-chain-compromise/"
+            )
+            next(campaign for campaign in campaigns if campaign["id"] == "campaign-tp-camp-2023-0002")["href"] = (
+                "/campaigns/../threat-actors/lazarus-group/"
+            )
+            (entity_dir / "actors.json").write_text(json.dumps(actors), encoding="utf-8")
+            (entity_dir / "campaigns.json").write_text(json.dumps(campaigns), encoding="utf-8")
+
+            report = audit.build_audit(entity_dir, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("../campaigns" in error for error in report["dangling_actor_edges"]))
+        self.assertTrue(any("../threat-actors" in error for error in report["dangling_campaign_edges"]))
+
+    def test_provisional_actor_without_href_passes_audit(self) -> None:
+        report = audit.build_audit(ENTITY_DIR, RELATIONSHIP_PATH, SITE_CONTENT_DIR)
+
+        self.assertEqual(report["status"], "PASS")
+        self.assertFalse(any("actor-unc-xz-utils-operator" in error for error in report["dangling_actor_edges"]))
 
     def test_main_creates_report_parent_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

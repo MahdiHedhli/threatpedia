@@ -107,6 +107,11 @@ def incident_node_id(incident_id: str) -> str:
     return f"incident-{incident_id}"
 
 
+def purl_identity(value: str) -> tuple[str, str | None, str]:
+    parsed = parse_purl(value)
+    return parsed.type, parsed.namespace, parsed.name
+
+
 def load_entities(entity_dir: Path) -> dict[str, list[dict[str, Any]]]:
     return {entity_type: load_json(entity_dir / filename) for entity_type, filename in ENTITY_FILES.items()}
 
@@ -182,7 +187,9 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                         errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
             if parse_date(entity.get("published_at")) is None:
                 errors.append(f"{entity_id}.published_at: expected YYYY-MM-DD date")
-            if entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:
+            if "disclosed_at" not in entity:
+                errors.append(f"{entity_id}.disclosed_at: missing required field")
+            elif entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:
                 errors.append(f"{entity_id}.disclosed_at: expected YYYY-MM-DD date or null")
             if "malicious_range" not in entity:
                 errors.append(f"{entity_id}.malicious_range: missing required field")
@@ -246,6 +253,7 @@ def validate_relationships(
     *,
     entity_ids: set[str],
     incident_ids: set[str],
+    entities_by_id: dict[str, dict[str, Any]],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(relationships, list):
@@ -278,6 +286,23 @@ def validate_relationships(
                 errors.append(f"{path}.source: RELATED_CAMPAIGN must start from an incident node")
             if rel_type == "PACKAGE_RELEASE" and not source.startswith("pkg-"):
                 errors.append(f"{path}.source: PACKAGE_RELEASE must start from a package node")
+            if rel_type == "PACKAGE_RELEASE" and source.startswith("pkg-") and target.startswith("release-"):
+                package = entities_by_id.get(source)
+                release = entities_by_id.get(target)
+                if isinstance(package, dict) and isinstance(release, dict):
+                    package_url = package.get("package_url")
+                    release_purl = release.get("purl")
+                    if isinstance(package_url, str) and isinstance(release_purl, str):
+                        try:
+                            package_identity = purl_identity(package_url)
+                            release_identity = purl_identity(release_purl)
+                        except PurlError as exc:
+                            errors.append(f"{path}: failed to compare package/release PURLs: {exc}")
+                        else:
+                            if package_identity != release_identity:
+                                errors.append(
+                                    f"{path}: PACKAGE_RELEASE PURL mismatch {package_url!r} -> {release_purl!r}"
+                                )
             if rel_type == "INCIDENT_AFFECTED_RELEASE" and not source.startswith("incident-"):
                 errors.append(f"{path}.source: INCIDENT_AFFECTED_RELEASE must start from an incident node")
             if rel_type == "MAINTAINS_REPOSITORY" and not source.startswith("maintainer-"):
@@ -373,8 +398,13 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
     raw_incident_ids = collect_raw_incident_ids(corpus)
     incident_ids = collect_incident_ids(corpus)
     all_entity_ids: set[str] = set()
+    entities_by_id: dict[str, dict[str, Any]] = {}
     for entity_type, entities in entities_by_type.items():
         entity_ids = validate_entity_file(errors, entity_type, entities, raw_incident_ids)
+        if isinstance(entities, list):
+            for entity in entities:
+                if isinstance(entity, dict) and isinstance(entity.get("id"), str):
+                    entities_by_id[entity["id"]] = entity
         duplicates = all_entity_ids & entity_ids
         for entity_id in sorted(duplicates):
             errors.append(f"{entity_id}: duplicate id across entity files")
@@ -385,6 +415,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             relationships,
             entity_ids=all_entity_ids,
             incident_ids=incident_ids,
+            entities_by_id=entities_by_id,
         )
     )
     errors.extend(validate_corpus_implied_relationships(corpus, relationships))

@@ -272,6 +272,17 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
         self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
 
+    def test_release_entities_require_disclosed_at_presence(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        del find_entity(entities_by_type["releases"], "release-npm-flatmap-stream-0-1-1")["disclosed_at"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".disclosed_at: missing required field" in error for error in errors))
+
     def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
@@ -314,6 +325,19 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
         self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
+
+    def test_package_release_relationship_purls_must_match(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        for relationship in relationships:
+            if relationship["type"] == "PACKAGE_RELEASE" and relationship["source"] == "pkg-npm-flatmap-stream":
+                relationship["source"] = "pkg-npm-event-stream"
+                break
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("PACKAGE_RELEASE PURL mismatch" in error for error in errors))
 
     def test_maintainer_relationship_sources_are_bounded(self) -> None:
         corpus = load_json(CORPUS_PATH)
