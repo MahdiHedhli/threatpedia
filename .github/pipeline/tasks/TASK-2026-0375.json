@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-16T20:43:46.357Z",
-  "updated": "2026-06-16T20:43:46.357Z",
+  "updated": "2026-06-16T21:16:53.071Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "dangermouse-bot",
+  "locked_at": "2026-06-16T21:16:53.070Z",
   "input": {
     "topic": "Widget Factory Joomla Content Editor Improper Access Control Vulnerability (CVE-2026-48907)",
     "sources": [
@@ -73,6 +73,13 @@
       "to": "pending",
       "agent": "pipeline-discovery",
       "note": "Auto-discovered from CISA KEV (score: 65)"
+    },
+    {
+      "timestamp": "2026-06-16T21:16:53.071Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
     }
   ]
 }
