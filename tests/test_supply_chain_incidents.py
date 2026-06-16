@@ -298,6 +298,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any("propagation_edge.required" in error for error in errors))
         self.assertTrue(any("propagation_edge.properties.tier.enum" in error for error in errors))
 
+    def test_schema_missing_propagation_edge_reports_phase_2_s0(self) -> None:
+        schema = load_json(SCHEMA_PATH)
+        del schema["$defs"]["propagation_edge"]
+
+        errors = validator.validate_schema_file(schema)
+
+        self.assertIn("schema.$defs.propagation_edge: missing required Phase 2 S0 definition", errors)
+
     def test_schema_required_fields_are_order_insensitive(self) -> None:
         schema = load_json(SCHEMA_PATH)
         schema["required"] = list(reversed(schema["required"]))

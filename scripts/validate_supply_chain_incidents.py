@@ -850,7 +850,8 @@ def validate_schema_file(schema: Any) -> list[str]:
         errors.append("schema.$defs.affected_component.then: must require purl_justification")
     for def_name in ["attribution_confidence", "threat_actor_link", "campaign_link", "attribution_evidence", "propagation_edge"]:
         if def_name not in defs:
-            errors.append(f"schema.$defs.{def_name}: missing required Phase 2B definition")
+            phase = "Phase 2 S0" if def_name == "propagation_edge" else "Phase 2B"
+            errors.append(f"schema.$defs.{def_name}: missing required {phase} definition")
     attribution_confidence = defs.get("attribution_confidence") if isinstance(defs, dict) else None
     attribution_enum = attribution_confidence.get("enum") if isinstance(attribution_confidence, dict) else None
     if not isinstance(attribution_confidence, dict) or not isinstance(attribution_enum, list) or not all(
