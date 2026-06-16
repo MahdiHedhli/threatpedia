@@ -118,16 +118,13 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
           </div>
           <div class="attack-bars">
             {page.attackVectorBars.map((row) => (
-              <button
-                type="button"
+              <div
                 class={`attack-bar ${severityClass(row.severity)}`}
                 style={percentStyle(row.percent)}
-                data-graph-command={row.command.type}
-                data-graph-value={row.command.value}
               >
                 <span>{row.label}</span>
                 <strong>{row.count}</strong>
-              </button>
+              </div>
             ))}
           </div>
         </section>
@@ -667,8 +664,6 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
     overflow: hidden;
     gap: 16px;
     padding: 10px 12px;
-    cursor: pointer;
-    font: inherit;
     text-align: left;
   }
 
