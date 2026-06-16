@@ -101,6 +101,11 @@
   },
   {
     "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "release-npm-flatmap-stream-0-1-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
     "target": "channel-npm-package-registry-npm-registry",
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
@@ -243,6 +248,21 @@
     "source": "incident-SC-2021-UA-PARSER-JS",
     "target": "account-npm-ua-parser-js-npm-maintainer-account",
     "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-0-7-29",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-0-8-0",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-1-0-0",
+    "type": "INCIDENT_AFFECTED_RELEASE"
   },
   {
     "source": "incident-SC-2021-UA-PARSER-JS",
@@ -503,5 +523,25 @@
     "source": "maintainer-jia-tan",
     "target": "actor-unc-xz-utils-operator",
     "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "pkg-npm-flatmap-stream",
+    "target": "release-npm-flatmap-stream-0-1-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-0-7-29",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-0-8-0",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-1-0-0",
+    "type": "PACKAGE_RELEASE"
   }
 ]

@@ -147,6 +147,48 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".affected_components[0].purl_justification" in error for error in errors))
 
+    def test_release_records_require_versioned_canonical_purls_and_references(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
+        incident["releases"][0]["purl"] = "pkg:npm/ua-parser-js"
+        incident["releases"][1]["references"] = ["ref-does-not-exist"]
+        incident["releases"][2]["package_name"] = "not-affected"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].purl: expected versioned package URL" in error for error in errors))
+        self.assertTrue(any(".releases[1].references[0]: unknown reference ID" in error for error in errors))
+        self.assertTrue(any(".releases[2]: release package must match an affected package component" in error for error in errors))
+
+    def test_release_records_reject_generic_purls(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-DEPENDENCY-CONFUSION"))
+        incident["releases"] = [
+            {
+                "package_name": "internal dependency names",
+                "ecosystem": "multiple",
+                "purl": "pkg:generic/internal-dependency-names@1.0.0",
+                "version": "1.0.0",
+                "published_at": "2021-02-09",
+                "malicious_range": "1.0.0",
+                "references": ["ref-does-not-exist"],
+                "disclosed_at": "2021-02-09",
+            }
+        ]
+        incident["references"][0]["id"] = "ref-does-not-exist"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].purl: generic release PURLs are not joinable" in error for error in errors))
+
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
+        incident["releases"][0]["package_name"] = None
+        incident["releases"][0]["ecosystem"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".releases[0].ecosystem: expected non-empty string" in error for error in errors))
+
     def test_malformed_url_is_rejected_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["references"][0]["url"] = "https://example.com:bad-port"

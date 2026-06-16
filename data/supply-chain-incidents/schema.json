@@ -77,6 +77,12 @@
         "$ref": "#/$defs/affected_component"
       }
     },
+    "releases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/release"
+      }
+    },
     "supply_chain_vectors": {
       "type": "array",
       "minItems": 1,
@@ -339,6 +345,57 @@
         },
         "published_at": {
           "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "package_name",
+        "ecosystem",
+        "purl",
+        "version",
+        "published_at",
+        "malicious_range",
+        "references",
+        "disclosed_at"
+      ],
+      "properties": {
+        "package_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ecosystem": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purl": {
+          "type": "string",
+          "pattern": "^pkg:[a-z0-9.+-]+/[^\\s]+@[A-Za-z0-9][^\\s]*$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "malicious_range": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "references": {
+          "$ref": "#/$defs/reference_id_list"
+        },
+        "disclosed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date"
         }
       }

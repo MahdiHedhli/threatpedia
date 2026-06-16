@@ -50,10 +50,13 @@ class SupplyChainGraphTests(unittest.TestCase):
         account_ids = {entity["id"] for entity in graph["accounts"]}
         actor_ids = {entity["id"] for entity in graph["actors"]}
         campaign_ids = {entity["id"] for entity in graph["campaigns"]}
+        release_ids = {entity["id"] for entity in graph["releases"]}
 
         self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
+        self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
+        self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
         self.assertIn("maintainer-dominictarr", maintainer_ids)
         self.assertIn("org-codecov", organization_ids)
@@ -65,6 +68,104 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("actor-unc-xz-utils-operator", actor_ids)
         self.assertIn("actor-lazarus-group", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
+
+    def test_builder_preserves_exact_release_versions_when_normalized_slugs_collide(self) -> None:
+        corpus = [
+            {
+                "schema_version": "supply-chain-incident/1",
+                "id": "SC-TEST-RELEASE-COLLISION",
+                "title": "release collision fixture",
+                "affected_components": [
+                    {
+                        "component_type": "package",
+                        "ecosystem": "npm",
+                        "name": "example-pkg",
+                        "vendor": "example",
+                        "package_url": "pkg:npm/example-pkg",
+                    }
+                ],
+                "releases": [
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha.1",
+                        "version": "1.0.0-alpha.1",
+                        "published_at": "2026-01-01",
+                        "malicious_range": "1.0.0-alpha.1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-02",
+                    },
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha-1",
+                        "version": "1.0.0-alpha-1",
+                        "published_at": "2026-01-03",
+                        "malicious_range": "1.0.0-alpha-1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-04",
+                    },
+                ],
+                "references": [{"id": "ref-example", "title": "Example", "url": "https://example.com"}],
+                "source_artifact_divergence": False,
+            }
+        ]
+
+        graph = builder.build_graph(corpus)
+        reversed_corpus = copy.deepcopy(corpus)
+        reversed_corpus[0]["releases"] = list(reversed(reversed_corpus[0]["releases"]))
+        reversed_graph = builder.build_graph(reversed_corpus)
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
+        release_ids = {entity["id"] for entity in graph["releases"]}
+        reversed_release_ids = {entity["id"] for entity in reversed_graph["releases"]}
+        release_versions = {entity["version"] for entity in graph["releases"]}
+        base_id = "release-npm-example-pkg-1-0-0-alpha-1"
+
+        self.assertEqual(len(graph["releases"]), 2)
+        self.assertEqual(release_versions, {"1.0.0-alpha.1", "1.0.0-alpha-1"})
+        self.assertNotIn(base_id, release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha.1')}", release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
+        self.assertEqual(release_ids, reversed_release_ids)
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
+
+    def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
+        first = {
+            "schema_version": "supply-chain-incident/1",
+            "id": "SC-TEST-DUPLICATE-RELEASE-A",
+            "title": "duplicate release fixture A",
+            "affected_components": [
+                {
+                    "component_type": "package",
+                    "ecosystem": "npm",
+                    "name": "example-pkg",
+                    "vendor": "example",
+                    "package_url": "pkg:npm/example-pkg",
+                }
+            ],
+            "releases": [
+                {
+                    "package_name": "example-pkg",
+                    "ecosystem": "npm",
+                    "purl": "pkg:npm/example-pkg@1.0.0",
+                    "version": "1.0.0",
+                    "published_at": "2026-01-01",
+                    "malicious_range": "1.0.0",
+                    "references": ["ref-example-a"],
+                    "disclosed_at": "2026-01-02",
+                }
+            ],
+            "source_artifact_divergence": False,
+        }
+        second = copy.deepcopy(first)
+        second["id"] = "SC-TEST-DUPLICATE-RELEASE-B"
+        second["releases"][0]["published_at"] = "2026-01-03"
+        second["releases"][0]["references"] = ["ref-example-b"]
+
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([first, second])
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([second, first])
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
@@ -229,6 +330,75 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any(".purl_justification: expected non-empty generic PURL justification" in error for error in errors))
+
+    def test_release_entities_require_versioned_canonical_purls(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["purl"] = "pkg:npm/flatmap-stream"
+        entities_by_type["releases"][1]["published_at"] = "2021-99-99"
+        del entities_by_type["releases"][2]["disclosed_at"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".disclosed_at: missing required field" in error for error in errors))
+
+    def test_release_entity_references_must_exist_in_source_incidents(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["references"] = ["ref-does-not-exist"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".references[0]: unknown source reference id 'ref-does-not-exist'" in error for error in errors))
+
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["package_name"] = None
+        entities_by_type["releases"][0]["ecosystem"] = None
+        entities_by_type["releases"][0]["published_at"] = "2021-99-99"
+        entities_by_type["releases"][0]["malicious_range"] = ""
+        entities_by_type["releases"][0]["references"] = []
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".malicious_range: expected non-empty string or null" in error for error in errors))
+        self.assertTrue(any(".references: expected non-empty list" in error for error in errors))
+
+    def test_release_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "PACKAGE_RELEASE",
+            }
+        )
+        relationships.append(
+            {
+                "source": "pkg-npm-flatmap-stream",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "INCIDENT_AFFECTED_RELEASE",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
+        self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
 
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)

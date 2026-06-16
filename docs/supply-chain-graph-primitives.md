@@ -5,6 +5,8 @@ deepened those primitives by extracting build systems, distribution channels,
 and compromised accounts from the curated incident corpus. Phase 2B connects
 the supply-chain corpus to existing Threatpedia actor and campaign entities
 where public evidence supports the edge.
+Phase 2C adds version-addressable release entities for package incidents with
+precise public release evidence.
 
 This is a lightweight relationship layer, not a graph database.
 
@@ -19,6 +21,7 @@ data/supply-chain-incidents/incidents.json
 ```text
 data/supply-chain-entities/maintainers.json
 data/supply-chain-entities/packages.json
+data/supply-chain-entities/releases.json
 data/supply-chain-entities/repositories.json
 data/supply-chain-entities/organizations.json
 data/supply-chain-entities/build_systems.json
@@ -39,6 +42,10 @@ Package entities also carry `ecosystem` and a required canonical `package_url`
 PURL. Generic package PURLs require `purl_justification` because they are
 reviewed exceptions, not registry-joinable package keys. See
 `docs/supply-chain-purl-model.md` for the canonical grammar.
+Release entities carry `purl`, `package_name`, `version`, `published_at`,
+`ecosystem`, `malicious_range`, `references`, and nullable `disclosed_at`.
+Release PURLs are versioned canonical PURLs and must remain joinable to the
+release-event spine.
 Repository entities also carry `host`, `url`, and `owner`.
 Build-system, distribution-channel, and account entities carry type-specific
 fields copied from the incident corpus.
@@ -62,6 +69,8 @@ Allowed relationship types are intentionally narrow:
 - `ATTRIBUTED_TO_ACTOR`
 - `RELATED_INCIDENT`
 - `RELATED_CAMPAIGN`
+- `PACKAGE_RELEASE`
+- `INCIDENT_AFFECTED_RELEASE`
 - `USED_BUILD_SYSTEM`
 - `USED_DISTRIBUTION_CHANNEL`
 - `COMPROMISED_ACCOUNT`
@@ -94,12 +103,28 @@ maintainer identity and the provisional operator node. Every actor and campaign
 target must resolve to an emitted entity; dangling actor/campaign edges are hard
 validation failures.
 
+Release edges make specific malicious or affected versions graph-addressable:
+
+```json
+{
+  "source": "pkg-npm-flatmap-stream",
+  "target": "release-npm-flatmap-stream-0-1-1",
+  "type": "PACKAGE_RELEASE"
+}
+```
+
+`PACKAGE_RELEASE` starts from a package entity and targets a release entity.
+`INCIDENT_AFFECTED_RELEASE` starts from an incident node and targets the same
+release entity. Release nodes are not public-routed entity pages in Phase 2C,
+but incident pages can display them as affected releases.
+
 ## Current Graph Density
 
-The Phase 2B pass over the same 25 incidents currently emits:
+The Phase 2C pass over the same 25 incidents currently emits:
 
 - Maintainers: 5
 - Packages: 16
+- Releases: 4
 - Repositories: 10
 - Organizations: 17
 - Build systems: 6
@@ -107,7 +132,7 @@ The Phase 2B pass over the same 25 incidents currently emits:
 - Compromised accounts: 8
 - Actors: 4
 - Campaigns: 3
-- Relationships: 101
+- Relationships: 109
 
 ## Build and Validate
 
@@ -134,6 +159,7 @@ python3 -m unittest discover -s tests
 This phase supports lookup questions such as:
 
 - incidents involving a package
+- incidents involving a specific package release
 - incidents involving a maintainer
 - incidents involving a repository
 - incidents involving an organization
