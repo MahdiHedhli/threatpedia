@@ -7,7 +7,7 @@
     "check:supply-chain-preview": "node check_supply_chain_preview.mjs",
     "check:supply-chain-public-readiness": "node check_supply_chain_public_readiness.mjs",
     "social:share-x": "node social-share-x.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test-vulncheck-kev-intake.mjs && node test-pipeline-dispatcher-stall.cjs"
   },
   "keywords": [],
   "author": "",
