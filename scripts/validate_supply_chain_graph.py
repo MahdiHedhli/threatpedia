@@ -286,9 +286,14 @@ def validate_relationships(
         source = rel.get("source")
         target = rel.get("target")
         rel_type = rel.get("type")
-        if rel_type not in VALID_RELATIONSHIP_TYPES:
+        valid_rel_type = isinstance(rel_type, str) and rel_type in VALID_RELATIONSHIP_TYPES
+        if not valid_rel_type:
             errors.append(f"{path}.type: invalid relationship type {rel_type!r}")
-        elif isinstance(source, str) and isinstance(target, str):
+        if not isinstance(source, str):
+            errors.append(f"{path}.source: expected string")
+        if not isinstance(target, str):
+            errors.append(f"{path}.target: expected string")
+        if valid_rel_type and isinstance(source, str) and isinstance(target, str):
             expected_prefix = RELATIONSHIP_TARGET_PREFIXES[rel_type]
             if rel_type.startswith("AFFECTED_") and not source.startswith("incident-"):
                 errors.append(f"{path}.source: {rel_type} must start from an incident node")
@@ -343,17 +348,18 @@ def validate_relationships(
                 elif not all(isinstance(ref, str) and ref.strip() for ref in evidence_refs):
                     errors.append(f"{path}.evidence_refs: expected non-empty string references")
                 seeded_by_edges.append((source, target, path))
-        if source not in valid_nodes:
+        if isinstance(source, str) and source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
-        if target not in valid_nodes:
+        if isinstance(target, str) and target not in valid_nodes:
             errors.append(f"{path}.target: unknown target {target!r}")
-        key = (source, target, rel_type)
-        if key in seen_relationships:
-            errors.append(f"{path}: duplicate relationship {key!r}")
-        seen_relationships.add(key)
-        if source in entity_ids:
+        if isinstance(source, str) and isinstance(target, str) and isinstance(rel_type, str):
+            key = (source, target, rel_type)
+            if key in seen_relationships:
+                errors.append(f"{path}: duplicate relationship {key!r}")
+            seen_relationships.add(key)
+        if isinstance(source, str) and source in entity_ids:
             connected_entities.add(source)
-        if target in entity_ids:
+        if isinstance(target, str) and target in entity_ids:
             connected_entities.add(target)
 
     orphan_entities = sorted(entity_ids - connected_entities)
@@ -375,7 +381,7 @@ def validate_seeded_by_acyclic(edges: list[tuple[str, str, str]]) -> list[str]:
     def visit(node: str, path_stack: list[str]) -> None:
         if node in visiting:
             cycle_start = path_stack.index(node) if node in path_stack else 0
-            cycle = " -> ".join(path_stack[cycle_start:] + [node])
+            cycle = " -> ".join(path_stack[cycle_start:])
             errors.append(f"SEEDED_BY cycle detected: {cycle}")
             return
         if node in visited:
@@ -399,17 +405,26 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         (relationship.get("source"), relationship.get("type"))
         for relationship in relationships
         if isinstance(relationship, dict)
+        and isinstance(relationship.get("source"), str)
+        and isinstance(relationship.get("type"), str)
     }
     relationship_keys = {
         (relationship.get("source"), relationship.get("target"), relationship.get("type"))
         for relationship in relationships
         if isinstance(relationship, dict)
+        and isinstance(relationship.get("source"), str)
+        and isinstance(relationship.get("target"), str)
+        and isinstance(relationship.get("type"), str)
     }
     relationships_by_key = {
         (relationship.get("source"), relationship.get("target"), relationship.get("type")): relationship
         for relationship in relationships
         if isinstance(relationship, dict)
+        and isinstance(relationship.get("source"), str)
+        and isinstance(relationship.get("target"), str)
+        and isinstance(relationship.get("type"), str)
     }
+    expected_seeded_by_keys = set()
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
@@ -461,6 +476,7 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
             edge_target = propagation_edge.get("target")
             if isinstance(edge_source, str) and isinstance(edge_target, str):
                 key = (edge_source, edge_target, "SEEDED_BY")
+                expected_seeded_by_keys.add(key)
                 if key not in relationship_keys:
                     errors.append(f"{source}: missing SEEDED_BY relationship from {edge_source} to {edge_target}")
                     continue
@@ -477,13 +493,37 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                         f"{source}: SEEDED_BY relationship from {edge_source} to {edge_target} has incident_id "
                         f"{relationship.get('incident_id')!r}; expected {expected_incident_id!r}"
                     )
-                expected_evidence_refs = sorted(ref for ref in propagation_edge.get("evidence_refs") or [] if isinstance(ref, str))
-                relationship_evidence_refs = sorted(ref for ref in relationship.get("evidence_refs") or [] if isinstance(ref, str))
+                raw_expected_refs = propagation_edge.get("evidence_refs")
+                raw_relationship_refs = relationship.get("evidence_refs")
+                expected_evidence_refs = (
+                    sorted(ref for ref in raw_expected_refs if isinstance(ref, str))
+                    if isinstance(raw_expected_refs, list)
+                    else []
+                )
+                relationship_evidence_refs = (
+                    sorted(ref for ref in raw_relationship_refs if isinstance(ref, str))
+                    if isinstance(raw_relationship_refs, list)
+                    else []
+                )
                 if relationship_evidence_refs != expected_evidence_refs:
                     errors.append(
                         f"{source}: SEEDED_BY relationship from {edge_source} to {edge_target} has evidence_refs "
                         f"{relationship_evidence_refs!r}; expected {expected_evidence_refs!r}"
                     )
+    for relationship in relationships:
+        if not isinstance(relationship, dict) or relationship.get("type") != "SEEDED_BY":
+            continue
+        edge_source = relationship.get("source")
+        edge_target = relationship.get("target")
+        if not isinstance(edge_source, str) or not isinstance(edge_target, str):
+            continue
+        key = (edge_source, edge_target, "SEEDED_BY")
+        if key not in expected_seeded_by_keys:
+            errors.append(
+                "relationships: unsupported SEEDED_BY relationship from "
+                f"{edge_source!r} to {edge_target!r}; "
+                "declare it in the source incident propagation_edges"
+            )
     return errors
 
 

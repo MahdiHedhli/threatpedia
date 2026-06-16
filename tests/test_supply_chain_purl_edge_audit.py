@@ -259,6 +259,28 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("not release-spine joinable" in error for error in report["invalid_seeded_by_edges"]))
 
+    def test_seeded_by_relationships_must_be_declared_in_corpus(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "release-npm-ua-parser-js-0-7-29",
+                "target": "release-npm-ua-parser-js-0-8-0",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-npm-ua-parser-js-registry"],
+                "incident_id": "SC-2021-UA-PARSER-JS",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("unsupported SEEDED_BY relationship" in error for error in report["invalid_seeded_by_edges"]))
+
     def test_actor_and_campaign_edges_require_existing_content_pages(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             entity_dir = Path(tmpdir) / "entities"

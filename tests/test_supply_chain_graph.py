@@ -587,6 +587,24 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any(".tier: expected one of" in error for error in errors))
         self.assertTrue(any(".evidence_refs: expected non-empty reference list" in error for error in errors))
 
+    def test_implied_relationship_validation_does_not_crash_on_malformed_relationship_keys(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": ["release-npm-ctrl-tinycolor-4-1-1"],
+                "target": "release-npm-ctrl-tinycolor-4-1-2",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("relationships" in error and ".source: expected string" in error for error in errors))
+
     def test_seeded_by_missing_generated_relationship_fails(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
@@ -600,6 +618,25 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("missing SEEDED_BY relationship" in error for error in errors))
 
+    def test_seeded_by_extra_relationship_without_corpus_edge_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "release-npm-ua-parser-js-0-7-29",
+                "target": "release-npm-ua-parser-js-0-8-0",
+                "type": "SEEDED_BY",
+                "tier": "temporal",
+                "evidence_refs": ["ref-npm-ua-parser-js-registry"],
+                "incident_id": "SC-2021-UA-PARSER-JS",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unsupported SEEDED_BY relationship" in error for error in errors))
+
     def test_seeded_by_metadata_must_match_corpus_edge(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
@@ -607,6 +644,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         cases = [
             ("tier", "causal", "expected 'temporal'"),
             ("evidence_refs", ["ref-wiz-shai-hulud"], "expected ['ref-npm-tinycolor-registry', 'ref-wiz-shai-hulud']"),
+            ("evidence_refs", "ref-wiz-shai-hulud", "has evidence_refs []"),
             ("incident_id", "SC-2018-NPM-EVENT-STREAM", "expected 'SC-2025-NPM-SHAI-HULUD'"),
         ]
         for field, value, expected_message in cases:
@@ -657,6 +695,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any("SEEDED_BY cycle detected" in error for error in errors))
+        self.assertFalse(
+            any(error.endswith("release-npm-ctrl-tinycolor-4-1-1 -> release-npm-ctrl-tinycolor-4-1-1") for error in errors),
+            f"cycle message should not duplicate the terminal node: {errors}",
+        )
 
 
 if __name__ == "__main__":

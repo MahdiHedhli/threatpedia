@@ -20,6 +20,7 @@ from supply_chain_purl import PurlError, canonicalize_purl, parse_purl
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+DEFAULT_CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
 DEFAULT_REPORT_PATH = REPO_ROOT / "docs" / "supply-chain-purl-edge-audit.md"
 DEFAULT_SITE_CONTENT_DIR = REPO_ROOT / "site" / "src" / "content"
 VALID_PROPAGATION_TIERS = {"causal", "temporal"}
@@ -63,7 +64,7 @@ def seeded_by_cycle_errors(edges: list[tuple[str, str]]) -> list[str]:
     def visit(node: str, path_stack: list[str]) -> None:
         if node in visiting:
             cycle_start = path_stack.index(node) if node in path_stack else 0
-            cycle = " -> ".join(path_stack[cycle_start:] + [node])
+            cycle = " -> ".join(path_stack[cycle_start:])
             errors.append(f"SEEDED_BY cycle detected: {cycle}")
             return
         if node in visited:
@@ -89,6 +90,23 @@ def is_generic_package_entity(entity: dict[str, Any] | None) -> bool:
         return parse_purl(package_url).type == "generic"
     except PurlError:
         return False
+
+
+def expected_seeded_by_keys(corpus: Any) -> set[tuple[str, str]]:
+    if not isinstance(corpus, list):
+        return set()
+    keys = set()
+    for incident in corpus:
+        if not isinstance(incident, dict):
+            continue
+        for propagation_edge in incident.get("propagation_edges") or []:
+            if not isinstance(propagation_edge, dict):
+                continue
+            source = propagation_edge.get("source")
+            target = propagation_edge.get("target")
+            if isinstance(source, str) and isinstance(target, str):
+                keys.add((source, target))
+    return keys
 
 
 def canonical_package_result(package: Any, index: int | None = None) -> tuple[str, str] | None:
@@ -142,12 +160,18 @@ def canonical_release_result(release: Any, index: int | None = None) -> tuple[st
     return None
 
 
-def build_audit(entity_dir: Path, relationship_path: Path, site_content_dir: Path = DEFAULT_SITE_CONTENT_DIR) -> dict[str, Any]:
+def build_audit(
+    entity_dir: Path,
+    relationship_path: Path,
+    site_content_dir: Path = DEFAULT_SITE_CONTENT_DIR,
+    corpus_path: Path = DEFAULT_CORPUS_PATH,
+) -> dict[str, Any]:
     packages = load_json(entity_dir / "packages.json")
     releases = load_json(entity_dir / "releases.json")
     actors = load_json(entity_dir / "actors.json")
     campaigns = load_json(entity_dir / "campaigns.json")
     relationships = load_json(relationship_path)
+    corpus = load_json(corpus_path)
 
     purl_results = [
         result
@@ -192,6 +216,7 @@ def build_audit(entity_dir: Path, relationship_path: Path, site_content_dir: Pat
     invalid_seeded_by_edges = []
     seeded_by_edges = []
     seeded_by_tier_counts = {"causal": 0, "temporal": 0}
+    expected_propagation_edges = expected_seeded_by_keys(corpus)
     if not isinstance(relationships, list):
         relationships = []
         invalid_relationship_edges.append("relationships: expected list")
@@ -284,6 +309,11 @@ def build_audit(entity_dir: Path, relationship_path: Path, site_content_dir: Pat
             if isinstance(source, str) and isinstance(target, str):
                 if source == target:
                     invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY source and target must differ")
+                if (source, target) not in expected_propagation_edges:
+                    invalid_seeded_by_edges.append(
+                        f"relationships[{index}]: unsupported SEEDED_BY relationship {source!r} -> {target!r}; "
+                        "declare it in the source incident propagation_edges"
+                    )
                 seeded_by_edges.append((source, target))
             tier = relationship.get("tier")
             if tier not in VALID_PROPAGATION_TIERS:
@@ -410,11 +440,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--entity-dir", type=Path, default=DEFAULT_ENTITY_DIR)
     parser.add_argument("--relationships", type=Path, default=DEFAULT_RELATIONSHIP_PATH)
+    parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS_PATH)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT_PATH)
     parser.add_argument("--site-content-dir", type=Path, default=DEFAULT_SITE_CONTENT_DIR)
     args = parser.parse_args(argv)
 
-    audit = build_audit(args.entity_dir, args.relationships, args.site_content_dir)
+    audit = build_audit(args.entity_dir, args.relationships, args.site_content_dir, args.corpus)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(render_report(audit), encoding="utf-8")
     print(

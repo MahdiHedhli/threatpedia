@@ -289,6 +289,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
             validator.validate_schema_file({"properties": {"schema_version": []}}),
             ["schema.properties.schema_version: expected object"],
         )
+        schema = load_json(SCHEMA_PATH)
+        schema["$defs"]["propagation_edge"]["required"] = {}
+        schema["$defs"]["propagation_edge"]["properties"]["tier"]["enum"] = {}
+
+        errors = validator.validate_schema_file(schema)
+
+        self.assertTrue(any("propagation_edge.required" in error for error in errors))
+        self.assertTrue(any("propagation_edge.properties.tier.enum" in error for error in errors))
 
     def test_schema_required_fields_are_order_insensitive(self) -> None:
         schema = load_json(SCHEMA_PATH)

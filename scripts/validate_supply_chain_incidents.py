@@ -858,11 +858,13 @@ def validate_schema_file(schema: Any) -> list[str]:
     if not isinstance(propagation_edge, dict):
         errors.append("schema.$defs.propagation_edge: expected object")
     else:
-        if set(propagation_edge.get("required", [])) != {"source", "target", "tier", "evidence_refs"}:
+        required_fields = propagation_edge.get("required")
+        if not isinstance(required_fields, list) or set(required_fields) != {"source", "target", "tier", "evidence_refs"}:
             errors.append("schema.$defs.propagation_edge.required: does not match validator")
         propagation_properties = propagation_edge.get("properties")
         tier = propagation_properties.get("tier") if isinstance(propagation_properties, dict) else None
-        if not isinstance(tier, dict) or set(tier.get("enum", [])) != VALID_PROPAGATION_TIERS:
+        tier_enum = tier.get("enum") if isinstance(tier, dict) else None
+        if not isinstance(tier_enum, list) or set(tier_enum) != VALID_PROPAGATION_TIERS:
             errors.append("schema.$defs.propagation_edge.properties.tier.enum: does not match validator")
     return errors
 
