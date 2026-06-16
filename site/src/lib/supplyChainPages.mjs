@@ -264,8 +264,10 @@ function normalizeEntitySlug(value) {
 
 function daysBetween(startDate, endDate) {
   if (!startDate || !endDate) return null;
-  const start = Date.parse(`${startDate}T00:00:00Z`);
-  const end = Date.parse(`${endDate}T00:00:00Z`);
+  const normalizedStartDate = String(startDate).includes('T') ? startDate : `${startDate}T00:00:00Z`;
+  const normalizedEndDate = String(endDate).includes('T') ? endDate : `${endDate}T00:00:00Z`;
+  const start = Date.parse(normalizedStartDate);
+  const end = Date.parse(normalizedEndDate);
   if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
   return Math.floor((end - start) / 86400000);
 }
@@ -508,7 +510,7 @@ function editorialSectionsFor(incident) {
 }
 
 function buildGraphHeroModel(data) {
-  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
+  const incidents = Array.isArray(data?.incidents) ? data.incidents.filter(Boolean) : [];
   const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
   const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
   const nodeCount =
@@ -531,9 +533,9 @@ function buildGraphHeroModel(data) {
 }
 
 function buildAttackVectorBars(data) {
-  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
+  if (!Array.isArray(data?.incidents)) return [];
   const byStage = new Map();
-  incidents.forEach((incident) => {
+  data.incidents.filter(Boolean).forEach((incident) => {
     const stage = incident.attack_stage || 'unknown';
     const existing = byStage.get(stage) || {
       stage,
@@ -569,16 +571,17 @@ function buildAttributionRows(data) {
     return [];
   }
 
-  const incidentById = new Map(data.incidents.map((incident) => [incident.id, incident]));
+  const incidents = data.incidents.filter(Boolean);
+  const incidentById = new Map(incidents.map((incident) => [incident.id, incident]));
   const attributedRelationshipsByActor = new Map();
-  data.relationships.forEach((relationship) => {
+  data.relationships.filter(Boolean).forEach((relationship) => {
     if (relationship.type !== 'ATTRIBUTED_TO_ACTOR') return;
     const actorRelationships = attributedRelationshipsByActor.get(relationship.target) || [];
     actorRelationships.push(relationship);
     attributedRelationshipsByActor.set(relationship.target, actorRelationships);
   });
   const campaignsByIncidentId = new Map();
-  data.entities.campaigns.forEach((campaign) => {
+  data.entities.campaigns.filter(Boolean).forEach((campaign) => {
     const campaignIncidentIds = Array.isArray(campaign.source_incident_ids) ? campaign.source_incident_ids : [];
     campaignIncidentIds.forEach((incidentId) => {
       const campaigns = campaignsByIncidentId.get(incidentId) || [];
@@ -588,6 +591,7 @@ function buildAttributionRows(data) {
   });
 
   return data.entities.actors
+    .filter(Boolean)
     .map((actor) => {
       const incidentIds = new Set(Array.isArray(actor.source_incident_ids) ? actor.source_incident_ids : []);
       (attributedRelationshipsByActor.get(actor.id) || []).forEach((relationship) => {
@@ -598,14 +602,14 @@ function buildAttributionRows(data) {
             : null);
         if (incident) incidentIds.add(incident.id);
       });
-      const incidents = Array.from(incidentIds)
+      const actorIncidents = Array.from(incidentIds)
         .map((id) => incidentById.get(id))
         .filter(Boolean)
         .map((incident) => incidentLinkRow(incident))
         .sort(compareDateDesc);
       const campaignSet = new Set();
-      incidentIds.forEach((incidentId) => {
-        (campaignsByIncidentId.get(incidentId) || []).forEach((campaign) => {
+      actorIncidents.forEach((incident) => {
+        (campaignsByIncidentId.get(incident.id) || []).forEach((campaign) => {
           campaignSet.add(campaign);
         });
       });
@@ -618,12 +622,12 @@ function buildAttributionRows(data) {
         .sort(compareLabel);
       return {
         id: actor.id,
-        label: actor.name,
+        label: actor.name || actor.id,
         href: actor.href || null,
         confidence: actor.attribution_confidence || 'unknown',
         actorType: actor.actor_type || 'unknown',
-        incidentCount: incidents.length,
-        incidents,
+        incidentCount: actorIncidents.length,
+        incidents: actorIncidents,
         campaigns,
         command: { type: 'select-actor', value: actor.id },
       };
@@ -633,8 +637,9 @@ function buildAttributionRows(data) {
 }
 
 function buildDwellTimeline(data) {
-  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
-  const rows = incidents
+  if (!Array.isArray(data?.incidents)) return [];
+  const rows = data.incidents
+    .filter(Boolean)
     .map((incident) => {
       const startDate = incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at;
       const warningDate = incident.first_public_warning_at || incident.disclosed_at;
@@ -659,19 +664,24 @@ function buildDwellTimeline(data) {
   const maxDays = Math.max(...rows.map((row) => row.dwellDays), 1);
   return rows.map((row) => {
     const rawDwellPercent = Math.min(100, Math.max(0, Math.round((row.dwellDays / maxDays) * 100)));
+    const rawWarningPercent = Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100)));
     const barPercent = Math.max(6, rawDwellPercent);
+    const warningPercent = row.warningDays === row.dwellDays ? barPercent : Math.min(barPercent, rawWarningPercent);
     return {
       ...row,
       barPercent,
-      warningPercent: Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100))),
+      warningPercent,
       disclosedPercent: barPercent,
     };
   });
 }
 
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
+  const incidents = Array.isArray(data?.incidents) ? data.incidents.filter(Boolean) : [];
+  const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
+  const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
   const featuredIncidents = SUPPLY_CHAIN_FEATURED_INCIDENT_IDS.map((id) => {
-    const incident = data.incidents.find((item) => item.id === id);
+    const incident = incidents.find((item) => item.id === id);
     if (!incident) throw new Error(`Featured Supply Chain incident not found: ${id}`);
     return {
       id: incident.id,
@@ -683,7 +693,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       confidence: incident.confidence,
     };
   });
-  const incidents = data.incidents
+  const incidentRows = incidents
     .map((incident) => ({
       ...incidentLinkRow(incident),
       summary: incident.summary,
@@ -702,7 +712,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
     featuredIncidents,
     entitySummaries: entitySummaryDefinitions.map((summary) => ({
       ...summary,
-      count: data.entities[summary.key]?.length || 0,
+      count: Array.isArray(entities[summary.key]) ? entities[summary.key].length : 0,
     })),
     seo: {
       title: 'Supply Chain',
@@ -719,18 +729,18 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       },
     },
     counts: {
-      incidents: data.incidents.length,
-      packages: data.entities.packages.length,
-      releases: data.entities.releases.length,
-      repositories: data.entities.repositories.length,
-      organizations: data.entities.organizations.length,
-      maintainers: data.entities.maintainers.length,
-      buildSystems: data.entities.build_systems.length,
-      distributionChannels: data.entities.distribution_channels.length,
-      compromisedAccounts: data.entities.accounts.length,
-      relationships: data.relationships.length,
+      incidents: incidents.length,
+      packages: Array.isArray(entities.packages) ? entities.packages.length : 0,
+      releases: Array.isArray(entities.releases) ? entities.releases.length : 0,
+      repositories: Array.isArray(entities.repositories) ? entities.repositories.length : 0,
+      organizations: Array.isArray(entities.organizations) ? entities.organizations.length : 0,
+      maintainers: Array.isArray(entities.maintainers) ? entities.maintainers.length : 0,
+      buildSystems: Array.isArray(entities.build_systems) ? entities.build_systems.length : 0,
+      distributionChannels: Array.isArray(entities.distribution_channels) ? entities.distribution_channels.length : 0,
+      compromisedAccounts: Array.isArray(entities.accounts) ? entities.accounts.length : 0,
+      relationships: relationships.length,
     },
-    incidents,
+    incidents: incidentRows,
   };
 }
 
