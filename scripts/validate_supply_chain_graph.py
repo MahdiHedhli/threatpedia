@@ -75,7 +75,7 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "maintainers": [],
     "organizations": [],
     "packages": ["ecosystem", "package_url"],
-    "releases": ["purl", "package_name", "version", "published_at", "ecosystem"],
+    "releases": ["purl", "package_name", "version", "published_at", "disclosed_at", "ecosystem"],
     "repositories": ["host", "url", "owner"],
 }
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
