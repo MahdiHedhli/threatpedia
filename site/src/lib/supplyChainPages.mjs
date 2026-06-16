@@ -508,11 +508,16 @@ function editorialSectionsFor(incident) {
 }
 
 function buildGraphHeroModel(data) {
+  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
+  const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
+  const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
   const nodeCount =
-    data.incidents.length + Object.values(data.entities).reduce((total, collection) => total + collection.length, 0);
-  const latestIncident = data.incidents
-    .map((incident) => incidentLinkRow(incident))
-    .sort(compareDateDesc)[0];
+    incidents.length +
+    Object.values(entities).reduce((total, collection) => total + (Array.isArray(collection) ? collection.length : 0), 0);
+  const latestIncident =
+    incidents.length > 0
+      ? incidents.map((incident) => incidentLinkRow(incident)).sort(compareDateDesc)[0] || null
+      : null;
   return {
     title: 'Supply Chain',
     eyebrow: 'Corpus Graph',
@@ -520,14 +525,15 @@ function buildGraphHeroModel(data) {
       'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
     status: 'Corpus graph preview',
     nodeCount,
-    relationshipCount: data.relationships.length,
+    relationshipCount: relationships.length,
     latestIncident,
   };
 }
 
 function buildAttackVectorBars(data) {
+  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
   const byStage = new Map();
-  data.incidents.forEach((incident) => {
+  incidents.forEach((incident) => {
     const stage = incident.attack_stage || 'unknown';
     const existing = byStage.get(stage) || {
       stage,
@@ -548,29 +554,65 @@ function buildAttackVectorBars(data) {
       percent: Math.max(8, Math.round((row.count / maxCount) * 100)),
       command: { type: 'filter-stage', value: row.stage },
     }))
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+    .sort((a, b) => b.count - a.count || compareLabel(a, b));
 }
 
 function buildAttributionRows(data) {
+  if (
+    !data ||
+    !Array.isArray(data.relationships) ||
+    !Array.isArray(data.incidents) ||
+    !data.entities ||
+    !Array.isArray(data.entities.actors) ||
+    !Array.isArray(data.entities.campaigns)
+  ) {
+    return [];
+  }
+
+  const incidentById = new Map(data.incidents.map((incident) => [incident.id, incident]));
+  const attributedRelationshipsByActor = new Map();
+  data.relationships.forEach((relationship) => {
+    if (relationship.type !== 'ATTRIBUTED_TO_ACTOR') return;
+    const actorRelationships = attributedRelationshipsByActor.get(relationship.target) || [];
+    actorRelationships.push(relationship);
+    attributedRelationshipsByActor.set(relationship.target, actorRelationships);
+  });
+  const campaignsByIncidentId = new Map();
+  data.entities.campaigns.forEach((campaign) => {
+    const campaignIncidentIds = Array.isArray(campaign.source_incident_ids) ? campaign.source_incident_ids : [];
+    campaignIncidentIds.forEach((incidentId) => {
+      const campaigns = campaignsByIncidentId.get(incidentId) || [];
+      campaigns.push(campaign);
+      campaignsByIncidentId.set(incidentId, campaigns);
+    });
+  });
+
   return data.entities.actors
     .map((actor) => {
-      const incidentIds = new Set(actor.source_incident_ids || []);
-      data.relationships
-        .filter((relationship) => relationship.type === 'ATTRIBUTED_TO_ACTOR' && relationship.target === actor.id)
-        .forEach((relationship) => {
-          const incident = data.incidentByNodeId.get(relationship.source);
-          if (incident) incidentIds.add(incident.id);
-        });
+      const incidentIds = new Set(Array.isArray(actor.source_incident_ids) ? actor.source_incident_ids : []);
+      (attributedRelationshipsByActor.get(actor.id) || []).forEach((relationship) => {
+        const incident =
+          data.incidentByNodeId?.get(relationship.source) ||
+          (typeof relationship.source === 'string' && relationship.source.startsWith('incident-')
+            ? incidentById.get(relationship.source.slice('incident-'.length))
+            : null);
+        if (incident) incidentIds.add(incident.id);
+      });
       const incidents = Array.from(incidentIds)
-        .map((id) => data.incidents.find((incident) => incident.id === id))
+        .map((id) => incidentById.get(id))
         .filter(Boolean)
         .map((incident) => incidentLinkRow(incident))
         .sort(compareDateDesc);
-      const campaigns = data.entities.campaigns
-        .filter((campaign) => (campaign.source_incident_ids || []).some((id) => incidentIds.has(id)))
+      const campaignSet = new Set();
+      incidentIds.forEach((incidentId) => {
+        (campaignsByIncidentId.get(incidentId) || []).forEach((campaign) => {
+          campaignSet.add(campaign);
+        });
+      });
+      const campaigns = Array.from(campaignSet)
         .map((campaign) => ({
           id: campaign.id,
-          label: campaign.name,
+          label: campaign.name || campaign.id,
           href: campaign.href || (campaign.slug ? `/campaigns/${campaign.slug}/` : null),
         }))
         .sort(compareLabel);
@@ -587,11 +629,12 @@ function buildAttributionRows(data) {
       };
     })
     .filter((row) => row.incidentCount > 0)
-    .sort((a, b) => b.incidentCount - a.incidentCount || a.label.localeCompare(b.label));
+    .sort((a, b) => b.incidentCount - a.incidentCount || compareLabel(a, b));
 }
 
 function buildDwellTimeline(data) {
-  const rows = data.incidents
+  const incidents = Array.isArray(data?.incidents) ? data.incidents : [];
+  const rows = incidents
     .map((incident) => {
       const startDate = incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at;
       const warningDate = incident.first_public_warning_at || incident.disclosed_at;
@@ -614,12 +657,16 @@ function buildDwellTimeline(data) {
     .sort((a, b) => b.dwellDays - a.dwellDays || compareDateDesc(a, b))
     .slice(0, 12);
   const maxDays = Math.max(...rows.map((row) => row.dwellDays), 1);
-  return rows.map((row) => ({
-    ...row,
-    barPercent: Math.max(6, Math.round((row.dwellDays / maxDays) * 100)),
-    warningPercent: Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100))),
-    disclosedPercent: Math.min(100, Math.max(0, Math.round((row.dwellDays / maxDays) * 100))),
-  }));
+  return rows.map((row) => {
+    const rawDwellPercent = Math.min(100, Math.max(0, Math.round((row.dwellDays / maxDays) * 100)));
+    const barPercent = Math.max(6, rawDwellPercent);
+    return {
+      ...row,
+      barPercent,
+      warningPercent: Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100))),
+      disclosedPercent: barPercent,
+    };
+  });
 }
 
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
@@ -636,7 +683,12 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       confidence: incident.confidence,
     };
   });
-  const incidents = data.incidents.map((incident) => incidentLinkRow(incident)).sort(compareTitle);
+  const incidents = data.incidents
+    .map((incident) => ({
+      ...incidentLinkRow(incident),
+      summary: incident.summary,
+    }))
+    .sort(compareTitle);
 
   return {
     kind: 'index',

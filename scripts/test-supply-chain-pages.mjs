@@ -63,6 +63,11 @@ assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should n
 assert.equal(index.graphHero.status, 'Corpus graph preview', 'index should expose the G1 graph placeholder state');
 assert.ok(index.graphHero.nodeCount > data.incidents.length, 'graph hero should expose corpus node count');
 assert.equal(index.graphHero.relationshipCount, data.relationships.length, 'graph hero should expose relationship count');
+assert.equal(index.incidents.length, data.incidents.length, 'index should expose every incident row');
+assert.ok(index.incidents.every((incident) => incident.summary), 'index incident rows should preserve summaries');
+index.incidents.forEach((incident) => {
+  assert.ok(routeUrls.has(incident.href), `index incident route should resolve: ${incident.href}`);
+});
 assert.ok(index.attackVectorBars.length > 0, 'index should include attack vector controls');
 assert.equal(
   index.attackVectorBars.reduce((total, row) => total + row.count, 0),
@@ -79,6 +84,34 @@ index.attributionRows.forEach((row) => {
   assert.equal(row.command.type, 'select-actor', `attribution row should include graph select command: ${row.id}`);
   assert.ok(row.incidentCount > 0, `attribution row should be backed by incidents: ${row.id}`);
 });
+const malformedAttributionData = {
+  ...data,
+  incidentByNodeId: undefined,
+  entities: {
+    ...data.entities,
+    actors: [{ ...data.entities.actors[0], source_incident_ids: 'not-an-array' }],
+    campaigns: [
+      { ...data.entities.campaigns[0], source_incident_ids: 'not-an-array' },
+      {
+        ...data.entities.campaigns[0],
+        id: 'campaign-missing-name',
+        name: null,
+        source_incident_ids: [data.entities.actors[0].source_incident_ids[0]],
+      },
+    ],
+  },
+};
+const malformedAttributionIndex = getSupplyChainIndexModel(malformedAttributionData);
+assert.ok(
+  malformedAttributionIndex.attributionRows.length > 0,
+  'attribution rows should resolve incident relationships without incidentByNodeId'
+);
+assert.ok(
+  malformedAttributionIndex.attributionRows.some((row) =>
+    row.campaigns.some((campaign) => campaign.id === 'campaign-missing-name' && campaign.label === 'campaign-missing-name')
+  ),
+  'attribution rows should fall back to campaign ID when a campaign name is missing'
+);
 assert.ok(index.dwellTimeline.length > 0, 'index should include dwell timeline rows');
 index.dwellTimeline.forEach((row) => {
   assert.equal(row.command.type, 'select-incident', `dwell row should include graph select command: ${row.id}`);
@@ -86,6 +119,7 @@ index.dwellTimeline.forEach((row) => {
   assert.ok(row.barPercent >= 6 && row.barPercent <= 100, `dwell bar width should be bounded: ${row.id}`);
   assert.ok(row.warningPercent >= 0 && row.warningPercent <= 100, `warning marker should be bounded: ${row.id}`);
   assert.ok(row.disclosedPercent >= 0 && row.disclosedPercent <= 100, `disclosure marker should be bounded: ${row.id}`);
+  assert.equal(row.disclosedPercent, row.barPercent, `disclosure marker should align with visible dwell bar: ${row.id}`);
   assert.ok(routeUrls.has(row.href), `dwell incident route should resolve: ${row.href}`);
 });
 assert.equal(index.explanatorySections.length, 4, 'index should include explanatory sections');
