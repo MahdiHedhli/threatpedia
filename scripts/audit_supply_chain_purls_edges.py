@@ -41,6 +41,8 @@ def href_exists(site_content_dir: Path, href: str, expected_collection: str) -> 
         return False
     if Path(normalized).suffix:
         return False
+    if any(part in {".", ".."} for part in Path(normalized).parts):
+        return False
     if not normalized.startswith(f"{expected_collection}/"):
         return False
     path = site_content_dir / normalized
