@@ -9,6 +9,7 @@ on:
       - "data/supply-chain-incidents/**"
       - "data/supply-chain-relationships/**"
       - "docs/supply-chain*.md"
+      - "scripts/audit_supply_chain_purls_edges.py"
       - "scripts/build_supply_chain_entities.py"
       - "scripts/supply_chain_purl.py"
       - "scripts/validate_supply_chain_graph.py"
