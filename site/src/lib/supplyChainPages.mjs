@@ -264,12 +264,14 @@ function normalizeEntitySlug(value) {
 
 function daysBetween(startDate, endDate) {
   if (!startDate || !endDate) return null;
-  const normalizedStartDate = String(startDate).includes('T') ? startDate : `${startDate}T00:00:00Z`;
-  const normalizedEndDate = String(endDate).includes('T') ? endDate : `${endDate}T00:00:00Z`;
-  const start = Date.parse(normalizedStartDate);
-  const end = Date.parse(normalizedEndDate);
+  const normalize = (value) => {
+    if (value instanceof Date) return value.toISOString().split('T')[0];
+    return String(value).split('T')[0];
+  };
+  const start = Date.parse(`${normalize(startDate)}T00:00:00Z`);
+  const end = Date.parse(`${normalize(endDate)}T00:00:00Z`);
   if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
-  return Math.floor((end - start) / 86400000);
+  return Math.round((end - start) / 86400000);
 }
 
 function displayLabel(value) {
