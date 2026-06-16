@@ -30,6 +30,17 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def find_entity(entities: list[dict], entity_id: str) -> dict:
+    if not isinstance(entities, list):
+        raise ValueError("entities must be a list")
+    for entity in entities:
+        if not isinstance(entity, dict):
+            continue
+        if entity.get("id") == entity_id:
+            return entity
+    raise ValueError(f"entity not found: {entity_id}")
+
+
 class SupplyChainGraphTests(unittest.TestCase):
     def test_generated_graph_validates(self) -> None:
         corpus = load_json(CORPUS_PATH)
@@ -55,8 +66,12 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
+        self.assertIn("pkg-npm-ctrl-tinycolor", package_ids)
+        self.assertIn("pkg-golang-github-com-boltdb-go-bolt", package_ids)
         self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
         self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
+        self.assertIn("release-npm-ctrl-tinycolor-4-1-1", release_ids)
+        self.assertIn("release-golang-github-com-boltdb-go-bolt-v1-3-1", release_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
         self.assertIn("maintainer-dominictarr", maintainer_ids)
         self.assertIn("org-codecov", organization_ids)
@@ -67,6 +82,8 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("account-npm-eslint-scope-npm-maintainer-account", account_ids)
         self.assertIn("actor-unc-xz-utils-operator", actor_ids)
         self.assertIn("actor-lazarus-group", actor_ids)
+        self.assertIn("actor-shai-hulud-operator", actor_ids)
+        self.assertIn("actor-boltdb-go-operator", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
         self.assertIn(
             {
@@ -182,7 +199,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         second["id"] = "SC-2024-XZ-UTILS-SIBLING"
         second["threat_actors"][0]["confidence"] = "confirmed"
         graph = builder.build_graph([first, second])
-        actor = next(entity for entity in graph["actors"] if entity["id"] == "actor-unc-xz-utils-operator")
+        actor = find_entity(graph["actors"], "actor-unc-xz-utils-operator")
 
         self.assertEqual(actor["attribution_confidence"], "confirmed")
 
@@ -261,8 +278,12 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["aliases"].append(entities_by_type["packages"][1]["aliases"][0])
-        entities_by_type["packages"][0]["ecosystem"] = entities_by_type["packages"][1]["ecosystem"]
+        event_stream = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        flatmap_stream = find_entity(entities_by_type["packages"], "pkg-npm-flatmap-stream")
+        flatmap_aliases = flatmap_stream.get("aliases") or []
+        self.assertGreater(len(flatmap_aliases), 0)
+        event_stream["aliases"].append(flatmap_aliases[0])
+        event_stream["ecosystem"] = flatmap_stream["ecosystem"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -273,7 +294,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        first = entities_by_type["packages"][0]
+        first = find_entity(entities_by_type["packages"], "pkg-multiple-internal-dependency-names")
         sibling = copy.deepcopy(first)
         sibling["id"] = "pkg-pypi-internal-dependency-names"
         sibling["ecosystem"] = "pypi"
@@ -297,7 +318,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -308,7 +329,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["package_url"] = None
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["package_url"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -319,8 +340,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["name"] = None
-        entities_by_type["packages"][0]["ecosystem"] = None
+        package = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        package["name"] = None
+        package["ecosystem"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -344,9 +366,12 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
-        entities_by_type["releases"][0]["purl"] = "pkg:npm/flatmap-stream"
-        entities_by_type["releases"][1]["published_at"] = "2021-99-99"
-        del entities_by_type["releases"][2]["disclosed_at"]
+        flatmap_release = find_entity(entities_by_type["releases"], "release-npm-flatmap-stream-0-1-1")
+        ua_parser_release = find_entity(entities_by_type["releases"], "release-npm-ua-parser-js-0-7-29")
+        tinycolor_release = find_entity(entities_by_type["releases"], "release-npm-ctrl-tinycolor-4-1-1")
+        flatmap_release["purl"] = "pkg:npm/flatmap-stream"
+        ua_parser_release["published_at"] = "2021-99-99"
+        tinycolor_release.pop("disclosed_at", None)
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -437,8 +462,8 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
         entities_by_type["maintainers"] = copy.deepcopy(entities_by_type["maintainers"])
-        maintainer = next(entity for entity in entities_by_type["maintainers"] if entity["id"] == "maintainer-dominictarr")
-        del maintainer["onboarding_date"]
+        maintainer = find_entity(entities_by_type["maintainers"], "maintainer-dominictarr")
+        maintainer.pop("onboarding_date", None)
         maintainer["first_publish_date"] = "2018-99-99"
         maintainer["repositories"] = ["pkg-not-a-repository"]
         maintainer["account_ids"] = ["repo-not-an-account"]

@@ -37,6 +37,8 @@ const routeUrls = new Set(routes.map(routeUrl));
 assert.ok(routeUrls.has('/supply-chain/'), 'index route should be generated');
 assert.ok(routeUrls.has('/supply-chain/incidents/SC-2021-CODECOV-BASH-UPLOADER/'), 'incident route should be generated');
 assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-event-stream/'), 'package route should be generated');
+assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-ctrl-tinycolor/'), 'Shai-Hulud package route should be generated');
+assert.ok(routeUrls.has('/supply-chain/packages/pkg-golang-github-com-boltdb-go-bolt/'), 'Go typosquat package route should be generated');
 assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-codecov-bash/'), 'repository route should be generated');
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');

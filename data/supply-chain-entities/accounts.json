@@ -13,6 +13,32 @@
     ]
   },
   {
+    "account_type": "source_control_account",
+    "aliases": [
+      "victim GitHub tokens"
+    ],
+    "id": "account-github-victim-github-tokens",
+    "name": "victim GitHub tokens",
+    "provider": "GitHub",
+    "role": "workflow_secret_access",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "compromised npm maintainer tokens"
+    ],
+    "id": "account-npm-compromised-npm-maintainer-tokens",
+    "name": "compromised npm maintainer tokens",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ]
+  },
+  {
     "account_type": "package_registry_account",
     "aliases": [
       "eslint-scope npm maintainer account"

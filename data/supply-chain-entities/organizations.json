@@ -31,6 +31,16 @@
   },
   {
     "aliases": [
+      "ctrl"
+    ],
+    "id": "org-ctrl",
+    "name": "ctrl",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
       "ESLint"
     ],
     "id": "org-eslint",
@@ -127,6 +137,16 @@
     "name": "PyTorch",
     "source_incident_ids": [
       "SC-2022-PYTORCH-NIGHTLY"
+    ]
+  },
+  {
+    "aliases": [
+      "rxnt"
+    ],
+    "id": "org-rxnt",
+    "name": "rxnt",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {

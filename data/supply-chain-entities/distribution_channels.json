@@ -25,6 +25,42 @@
   },
   {
     "aliases": [
+      "GitHub Actions workflow"
+    ],
+    "channel_type": "ci_cd_workflow",
+    "ecosystem": "github-actions",
+    "id": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+    "name": "GitHub Actions workflow",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
+      "GitHub repository"
+    ],
+    "channel_type": "source_repository",
+    "ecosystem": "github",
+    "id": "channel-github-source-repository-github-repository",
+    "name": "GitHub repository",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
+      "Go Module Proxy"
+    ],
+    "channel_type": "package_registry",
+    "ecosystem": "golang",
+    "id": "channel-golang-package-registry-go-module-proxy",
+    "name": "Go Module Proxy",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
       "Upstream source release tarball"
     ],
     "channel_type": "source_release",
@@ -64,7 +100,8 @@
       "SC-2022-COLORS-FAKER",
       "SC-2022-NODE-IPC",
       "SC-2023-LEDGER-CONNECT-KIT",
-      "SC-2024-LOTTIE-PLAYER"
+      "SC-2024-LOTTIE-PLAYER",
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {
