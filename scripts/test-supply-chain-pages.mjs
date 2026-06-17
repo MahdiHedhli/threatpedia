@@ -376,6 +376,7 @@ assert.ok(
     supplyChainGraphSource.includes('selectEntityContext') &&
     supplyChainGraphSource.includes('source_incident_ids') &&
     supplyChainGraphSource.includes('connected incident') &&
+    supplyChainGraphSource.includes("laneIndex.get(actorId) ?? laneIndex.get('actor-unattributed') ?? 0") &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&
