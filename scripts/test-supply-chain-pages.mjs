@@ -78,8 +78,24 @@ assert.ok(
   'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
-  baseLayoutSource.includes("document.addEventListener('astro:page-load', () => {\n      document.body.style.overflow = '';"),
+  baseLayoutSource.includes('function initializeThreatpediaLayout()'),
+  'Base layout should expose a reusable initializer for first load and Astro transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('initializeThreatpediaLayout();'),
+  'Base layout should bind menu/search/content enhancement immediately on first server-rendered load'
+);
+assert.ok(
+  baseLayoutSource.includes("document.addEventListener('astro:page-load', initializeThreatpediaLayout)"),
+  'Base layout should rerun bindings after Astro page transitions'
+);
+assert.ok(
+  baseLayoutSource.includes("document.body.style.overflow = '';"),
   'Base layout should clear stale scroll locks after Astro page transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('searchInput.dataset.threatpediaAutoSearchFor !== autoSearchKey'),
+  'Base layout should not repeat URL auto-search on duplicate initializer calls for the same page'
 );
 assert.ok(
   !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),

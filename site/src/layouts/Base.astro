@@ -281,7 +281,7 @@ try {
         document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';
       }
 
-      document.addEventListener('astro:page-load', () => {
+      function initializeThreatpediaLayout() {
       document.body.style.overflow = '';
       scopeAstroTransitionsToSupplyChain();
 
@@ -444,7 +444,9 @@ try {
 
       // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
       const urlQ = new URLSearchParams(window.location.search).get('q');
-      if (urlQ && searchInput) {
+      const autoSearchKey = `${window.location.pathname}${window.location.search}`;
+      if (urlQ && searchInput && searchInput.dataset.threatpediaAutoSearchFor !== autoSearchKey) {
+        searchInput.dataset.threatpediaAutoSearchFor = autoSearchKey;
         // Open hamburger menu, populate search, run query
         if (btn && overlay && panel && !panel.classList.contains('open')) {
           panel.classList.add('open');
@@ -1092,7 +1094,10 @@ try {
         })();
 
       })();
-      });
+      }
+
+      initializeThreatpediaLayout();
+      document.addEventListener('astro:page-load', initializeThreatpediaLayout);
     </script>
   </body>
 </html>
