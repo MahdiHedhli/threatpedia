@@ -203,12 +203,15 @@ function packageIdForRelease(releaseId, edges) {
 function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 0) {
   const centerX = incident.x + 280;
   const centerY = incident.y + 16;
-  const orgIds = context.orgIds.length > 0 ? context.orgIds : ['virtual-org-unattributed'];
   const visibleChildren = sortBloomNodes(
     [...context.orgIds, ...context.packageIds, ...context.releaseIds]
       .map((id) => sourceNodes.get(id))
       .filter(Boolean)
   );
+  if (visibleChildren.length === 0) {
+    return { incidentId: incident.id, nodes: [], edges: [], hiddenCount: 0, bounds: boundsForNodes([incident]) };
+  }
+  const orgIds = context.orgIds.length > 0 ? context.orgIds : ['virtual-org-unattributed'];
   const needsAggregation = visibleChildren.length > BLOOM_NODE_BUDGET;
   const visibleIds = new Set(
     visibleChildren
@@ -819,6 +822,7 @@ class SupplyChainGraph {
     }
     this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
     this.pageSelection = { type, value };
+    this.keyboardNodeId = incidentNodes[0]?.id || null;
     this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
     this.updateCaption(
@@ -846,6 +850,7 @@ class SupplyChainGraph {
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
     this.pageSelection = { type: 'stage', value: stage };
+    this.keyboardNodeId = nodes[0]?.id || null;
     this.focusReflow = false;
     this.lastBloomIncidentId = null;
     this.updateReflowControl();
