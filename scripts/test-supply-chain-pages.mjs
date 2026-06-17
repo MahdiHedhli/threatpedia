@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   SUPPLY_CHAIN_FEATURED_INCIDENT_IDS,
   getSupplyChainEntityPage,
@@ -11,6 +12,7 @@ import {
 } from '../site/src/lib/supplyChainPages.mjs';
 
 const data = loadSupplyChainData();
+const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
 
 function routeUrl(route) {
   return route.slug ? `/supply-chain/${route.slug}/` : '/supply-chain/';
@@ -42,6 +44,10 @@ assert.ok(routeUrls.has('/supply-chain/packages/pkg-golang-github-com-boltdb-go-
 assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-codecov-bash/'), 'repository route should be generated');
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');
+assert.ok(
+  supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
+  'route should persist graph hero across Supply Chain navigation'
+);
 
 const expectedRouteCount =
   1 +
@@ -195,6 +201,8 @@ assert.ok(index.seo.ogDescription, 'index should include Open Graph description'
 assert.ok(index.seo.jsonLd, 'index should include JSON-LD');
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
+assert.ok(codecov.graphHero, 'incident pages should expose graph hero data');
+assert.equal(codecov.graphHero.nodeCount, index.graphHero.nodeCount, 'incident graph hero should use shared corpus node count');
 assert.ok(codecov.incident.summary, 'incident page should include summary');
 assert.equal(codecov.incident.confidence, 'high', 'incident page should include confidence');
 assert.equal(codecov.incident.evidence_level, 'vendor', 'incident page should include evidence level');
@@ -315,6 +323,12 @@ assert.ok(
 );
 
 const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
+assert.ok(eventStreamPackage.graphHero, 'entity pages should expose graph hero data');
+assert.equal(
+  eventStreamPackage.graphHero.relationshipCount,
+  index.graphHero.relationshipCount,
+  'entity graph hero should use shared corpus relationship count'
+);
 assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should include related incidents');
 eventStreamPackage.relatedIncidents.forEach((incident) => {
   assert.ok(routeUrls.has(incident.href), `related incident route should resolve: ${incident.href}`);

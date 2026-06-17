@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -139,6 +140,7 @@ try {
       </>
     )}
     {serializedJsonLd && <script type="application/ld+json" set:html={serializedJsonLd} />}
+    <ClientRouter />
     <title>{title} — Threatpedia</title>
   </head>
   <body>

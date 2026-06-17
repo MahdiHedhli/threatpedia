@@ -754,6 +754,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     kind: 'incident',
     title: incident.title,
     incident,
+    graphHero: buildGraphHeroModel(data),
     editorialSections: editorialSectionsFor(incident),
     connectedEntities: incidentConnectedEntities(data, id),
     seo: {
@@ -815,6 +816,7 @@ export function getSupplyChainEntityPage(collectionKey, id, data = loadSupplyCha
     title: entity.name,
     entity: { ...entity, entityCollection: collectionKey },
     entityType: type.label,
+    graphHero: buildGraphHeroModel(data),
     relatedIncidents,
     connectedIncidents: relatedIncidents,
     connectedEntities: entityConnectionsFor(data, id),
