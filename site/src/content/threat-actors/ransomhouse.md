@@ -118,9 +118,11 @@ Public attribution remains moderate rather than confirmed at the individual-oper
 
 **Lateral Movement**: Remote Services: SSH (T1021.004), especially against virtualization infrastructure.
 
+**Defense Impairment**: Disable or Modify System Firewall (T1686) covers firewall manipulation used to ease ransomware deployment.
+
 **Exfiltration**: Exfiltration Over Web Service (T1567) before extortion.
 
-**Impact**: Data Encrypted for Impact (T1486) and disable-or-modify defensive controls such as firewalls (T1686).
+**Impact**: Data Encrypted for Impact (T1486).
 
 ## Sources & References
 

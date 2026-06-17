@@ -113,11 +113,13 @@ In November 2024, the DOJ charged five individuals associated with Scattered Spi
 
 ## MITRE ATT&CK Profile
 
-**Initial Access**: Phishing for credentials (T1566.002), social engineering of help desks (T1684.001), and SIM swapping for MFA bypass.
+**Initial Access**: Phishing for credentials (T1566.002), social engineering of help desks, and SIM swapping for MFA bypass.
 
 **Credential Access**: MFA fatigue attacks (T1621), credential phishing with fake SSO pages, and SIM swapping.
 
 **Persistence**: Creation of new user accounts (T1136), enrollment of new MFA devices, and OAuth application registration in cloud environments.
+
+**Stealth**: Impersonation of help desk targets (T1684.001) supports credential reset and MFA enrollment abuse.
 
 **Impact**: Ransomware deployment (T1486) as BlackCat affiliates, data theft, and extortion.
 
