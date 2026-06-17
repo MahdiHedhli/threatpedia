@@ -465,6 +465,11 @@ assert.ok(
   'graph client should prevent actor/campaign/entity selections from implicitly reactivating semantic bloom'
 );
 assert.ok(
+  supplyChainGraphSource.includes('if (visibleChildren.length === 0)') &&
+    supplyChainGraphSource.includes('return { incidentId: incident.id, nodes: [], edges: [], hiddenCount: 0, bounds: boundsForNodes([incident]) };'),
+  'graph client should not fabricate virtual bloom nodes for incidents without payload children'
+);
+assert.ok(
   supplyChainGraphSource.includes("edge.type === 'SEEDED_BY'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
@@ -489,6 +494,11 @@ assert.ok(
     supplyChainGraphSource.includes('this.pageSelection = { type, value }') &&
     supplyChainRouteSource.includes('.graph-linked-active'),
   'graph client should implement G6 page-to-graph commands and reverse active-state binding'
+);
+assert.ok(
+  supplyChainGraphSource.includes('this.keyboardNodeId = incidentNodes[0]?.id || null;') &&
+    supplyChainGraphSource.includes('this.keyboardNodeId = nodes[0]?.id || null;'),
+  'graph client should reset keyboard focus for context and stage selections'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.onPageLoad = () =>') &&
