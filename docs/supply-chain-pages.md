@@ -36,6 +36,24 @@ data/supply-chain-entities/*.json
 data/supply-chain-relationships/relationships.json
 ```
 
+The graph hero does not parse those raw corpus files at runtime. The site build
+compiles them into one browser-facing payload:
+
+```text
+site/public/supply-chain-graph.json
+```
+
+Generate or check the payload with:
+
+```bash
+node scripts/build-supply-chain-graph.mjs
+node scripts/build-supply-chain-graph.mjs --check
+```
+
+The Phase 1.0 G2 renderer draws only the actor, campaign, and incident tiers.
+Package and release nodes are preserved in the payload for later level-of-detail
+slices, but they remain payload-only until the dive-and-bloom work lands.
+
 ## Local Build
 
 Disabled/default build:

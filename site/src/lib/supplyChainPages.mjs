@@ -538,7 +538,7 @@ function buildEmptyGraphHeroModel() {
     eyebrow: 'Corpus Graph',
     summary:
       'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
-    status: 'Corpus graph preview',
+    status: 'WebGL graph loading',
     nodeCount: 0,
     relationshipCount: 0,
     latestIncident: null,
@@ -568,7 +568,7 @@ function buildGraphHeroModel(data) {
     eyebrow: 'Corpus Graph',
     summary:
       'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
-    status: 'Corpus graph preview',
+    status: 'WebGL graph loading',
     nodeCount,
     relationshipCount: relationships.length,
     latestIncident,
