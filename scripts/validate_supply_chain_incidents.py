@@ -113,6 +113,7 @@ VALID_ATTACK_STAGES = {
     "ci_cd_compromise",
 }
 VALID_COMPONENT_TYPES = {"package", "project", "software", "service", "update_channel", "website"}
+VALID_COMPONENT_ROLES = {"affected", "upstream_seed"}
 VALID_VECTORS = {
     "build_system_compromise",
     "cdn_script_compromise",
@@ -225,6 +226,11 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
         require_string(errors, f"{path}.vendor", component.get("vendor"))
     if component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
+    component_role = component.get("component_role", "affected")
+    if component_role not in VALID_COMPONENT_ROLES:
+        errors.append(f"{path}.component_role: invalid value {component_role!r}")
+    if component_role == "upstream_seed" and component.get("component_type") != "package":
+        errors.append(f"{path}.component_role: upstream_seed requires package component_type")
     package_url = component.get("package_url")
     if component.get("component_type") == "package" and package_url is None:
         errors.append(f"{path}.package_url: expected canonical package URL for package component")

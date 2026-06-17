@@ -171,6 +171,12 @@ Temporal edges are precedence markers, not causation claims. The default is to
 omit a propagation edge rather than infer one. Validators require all
 `SEEDED_BY` endpoints to resolve and the propagation subgraph to remain acyclic.
 
+If a package exists only to anchor an upstream propagation source, model it as
+an affected component with `component_role: "upstream_seed"`. The builder will
+create the package entity so the `SEEDED_BY` edge resolves, but it will not emit
+`AFFECTED_PACKAGE` or `AFFECTED_ORGANIZATION` edges for that upstream seed on
+the downstream incident.
+
 ## Current Graph Density
 
 The Phase 2E pass over 27 incidents currently emits:
@@ -179,13 +185,13 @@ The Phase 2E pass over 27 incidents currently emits:
 - Packages: 21
 - Releases: 7
 - Repositories: 11
-- Organizations: 20
+- Organizations: 19
 - Build systems: 6
 - Distribution channels: 14
 - Compromised accounts: 10
 - Actors: 6
 - Campaigns: 3
-- Relationships: 142
+- Relationships: 140
 
 After S0, the graph also carries 3 `SEEDED_BY` propagation edges across the
 3CX/X_TRADER and Shai-Hulud modeled chains.

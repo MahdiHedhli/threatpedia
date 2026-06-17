@@ -68,6 +68,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
         self.assertIn("pkg-npm-ctrl-tinycolor", package_ids)
         self.assertIn("pkg-golang-github-com-boltdb-go-bolt", package_ids)
+        self.assertIn("pkg-generic-x-trader", package_ids)
         self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
         self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
         self.assertIn("release-npm-ctrl-tinycolor-4-1-1", release_ids)
@@ -90,6 +91,22 @@ class SupplyChainGraphTests(unittest.TestCase):
                 "source": "maintainer-dominictarr",
                 "target": "repo-github-com-dominictarr-event-stream",
                 "type": "MAINTAINS_REPOSITORY",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "pkg-generic-x-trader",
+                "type": "AFFECTED_PACKAGE",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "org-trading-technologies",
+                "type": "AFFECTED_ORGANIZATION",
             },
             graph["relationships"],
         )

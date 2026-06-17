@@ -386,17 +386,7 @@
   },
   {
     "source": "incident-SC-2023-THREE-CX-DESKTOP",
-    "target": "org-trading-technologies",
-    "type": "AFFECTED_ORGANIZATION"
-  },
-  {
-    "source": "incident-SC-2023-THREE-CX-DESKTOP",
     "target": "pkg-generic-3cx-desktopapp",
-    "type": "AFFECTED_PACKAGE"
-  },
-  {
-    "source": "incident-SC-2023-THREE-CX-DESKTOP",
-    "target": "pkg-generic-x-trader",
     "type": "AFFECTED_PACKAGE"
   },
   {

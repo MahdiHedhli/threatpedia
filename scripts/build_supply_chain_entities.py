@@ -458,12 +458,15 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
         source = incident_node_id(incident_id)
 
         for component in incident.get("affected_components", []):
+            component_role = component.get("component_role", "affected")
             if component.get("component_type") == "package":
                 package_id = upsert_package(packages, component, incident_id)
-                add_relationship(relationship(source, package_id, "AFFECTED_PACKAGE"))
-            org_id = upsert_organization(organizations, component["vendor"], incident_id)
-            if org_id:
-                add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
+                if component_role != "upstream_seed":
+                    add_relationship(relationship(source, package_id, "AFFECTED_PACKAGE"))
+            if component_role != "upstream_seed":
+                org_id = upsert_organization(organizations, component["vendor"], incident_id)
+                if org_id:
+                    add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
         for item in incident.get("releases") or []:
             release_id = upsert_release(releases, item, incident_id, collision_base_ids)

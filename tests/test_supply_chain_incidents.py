@@ -171,6 +171,16 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".affected_components[0].purl_justification" in error for error in errors))
 
+    def test_upstream_seed_component_role_is_explicit_and_package_only(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        upstream_seed = next(component for component in incident["affected_components"] if component["name"] == "X_TRADER")
+        self.assertEqual(upstream_seed.get("component_role"), "upstream_seed")
+
+        upstream_seed["component_type"] = "software"
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components" in error and "upstream_seed requires package component_type" in error for error in errors))
+
     def test_release_records_require_versioned_canonical_purls_and_references(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
         incident["releases"][0]["purl"] = "pkg:npm/ua-parser-js"

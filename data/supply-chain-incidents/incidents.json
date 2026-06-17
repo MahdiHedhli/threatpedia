@@ -1697,6 +1697,7 @@
       },
       {
         "component_type": "package",
+        "component_role": "upstream_seed",
         "ecosystem": "generic",
         "name": "X_TRADER",
         "vendor": "Trading Technologies",
