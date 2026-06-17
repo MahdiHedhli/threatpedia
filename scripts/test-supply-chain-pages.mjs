@@ -68,9 +68,10 @@ assert.ok(
 assert.ok(
   baseLayoutSource.includes('const to = ev.to;') &&
     baseLayoutSource.includes('if (to)') &&
+    baseLayoutSource.includes('to.pathname !== fromPath || to.search !== window.location.search') &&
     baseLayoutSource.includes('ev.preventDefault();') &&
     baseLayoutSource.includes('window.location.href = to.href;'),
-  'Base layout transition fallback should guard optional Astro destination data'
+  'Base layout transition fallback should guard optional destination data and preserve same-page hash navigation'
 );
 assert.ok(
   !baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
@@ -134,8 +135,10 @@ assert.ok(
   baseLayoutSource.includes('document.documentElement.dataset.threatpediaTooltipBound') &&
     baseLayoutSource.includes("document.addEventListener('mouseover',") &&
     baseLayoutSource.includes("document.addEventListener('focusin',") &&
+    baseLayoutSource.includes("target?.closest('.tp-tooltip')") &&
+    baseLayoutSource.includes('clearTimeout(tooltipHideTimeout);') &&
     !baseLayoutSource.includes("span.addEventListener('mouseenter'"),
-  'Base layout should use delegated tooltip listeners that survive Astro cache restores'
+  'Base layout should use delegated tooltip listeners that survive Astro cache restores and keep tooltip links focusable'
 );
 assert.ok(
   baseLayoutSource.includes('let glossaryPromise = null;') &&

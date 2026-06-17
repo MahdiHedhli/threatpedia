@@ -240,8 +240,10 @@ try {
           const toPath = to?.pathname || '';
           if (!(isSupplyChainPath(fromPath) && isSupplyChainPath(toPath))) {
             if (to) {
-              ev.preventDefault();
-              window.location.href = to.href;
+              if (to.pathname !== fromPath || to.search !== window.location.search) {
+                ev.preventDefault();
+                window.location.href = to.href;
+              }
             }
           }
         });
@@ -459,8 +461,13 @@ try {
           }
         });
         document.addEventListener('focusin', (e) => {
-          const target = e.target instanceof HTMLElement ? e.target.closest('.tp-linked-term') : null;
-          if (target) showTooltip(target);
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          const term = target?.closest('.tp-linked-term');
+          if (term) {
+            showTooltip(term);
+          } else if (target?.closest('.tp-tooltip')) {
+            clearTimeout(tooltipHideTimeout);
+          }
         });
         document.addEventListener('focusout', (e) => {
           const target = e.target instanceof HTMLElement ? e.target.closest('.tp-linked-term') : null;
