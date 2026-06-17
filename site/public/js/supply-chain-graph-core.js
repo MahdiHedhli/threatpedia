@@ -888,11 +888,7 @@ class SupplyChainGraph {
 
   activeBloomLayout() {
     const incidentId = this.activeBloomIncidentId();
-    if (incidentId) return this.ensureBloomLayout(incidentId);
-    if (this.lastBloomIncidentId && this.selection?.type !== 'stage' && !this.focusReflow) {
-      return this.ensureBloomLayout(this.lastBloomIncidentId);
-    }
-    return null;
+    return incidentId ? this.ensureBloomLayout(incidentId) : null;
   }
 
   incidentIdForBloomNode(nodeId) {
@@ -905,8 +901,8 @@ class SupplyChainGraph {
     return null;
   }
 
-  visibleGraph() {
-    const bloom = this.activeBloomLayout();
+  visibleGraph(forcedBloom = null) {
+    const bloom = forcedBloom || this.activeBloomLayout();
     const nodes = bloom ? [...this.layout.nodes, ...bloom.nodes] : this.layout.nodes;
     const visibleById = new Map(nodes.map((node) => [node.id, node]));
     const edges = this.layout.edges
@@ -939,6 +935,7 @@ class SupplyChainGraph {
 
   clusterFor(node) {
     const clusterIds = new Set([node.id]);
+    let forcedBloom = null;
     if (node.tier === 'actor') {
       this.layout.edges.forEach((edge) => {
         if (edge.source === node.id) clusterIds.add(edge.target);
@@ -953,8 +950,8 @@ class SupplyChainGraph {
         if (edge.target === node.id) clusterIds.add(edge.source);
         if (edge.source === node.id) clusterIds.add(edge.target);
       });
-      const bloom = this.ensureBloomLayout(node.id);
-      bloom?.nodes.forEach((item) => clusterIds.add(item.id));
+      forcedBloom = this.ensureBloomLayout(node.id);
+      forcedBloom?.nodes.forEach((item) => clusterIds.add(item.id));
     } else if (node.tier === 'technique') {
       this.layout.edges.forEach((edge) => {
         if (edge.source === node.id && edge.type === 'INCIDENT_TECHNIQUE') {
@@ -973,11 +970,11 @@ class SupplyChainGraph {
       const incidentId = this.incidentIdForBloomNode(node.id);
       if (incidentId) {
         clusterIds.add(incidentId);
-        const bloom = this.ensureBloomLayout(incidentId);
-        bloom?.nodes.forEach((item) => {
+        forcedBloom = this.ensureBloomLayout(incidentId);
+        forcedBloom?.nodes.forEach((item) => {
           if (item.id === node.id || item.tier === 'organization' || item.tier === 'package') clusterIds.add(item.id);
         });
-        bloom?.edges.forEach((edge) => {
+        forcedBloom?.edges.forEach((edge) => {
           if (edge.type === 'SEEDED_BY' && (edge.source === node.id || edge.target === node.id)) {
             clusterIds.add(edge.source);
             clusterIds.add(edge.target);
@@ -985,7 +982,7 @@ class SupplyChainGraph {
         });
       }
     }
-    const visible = this.getVisibleGraph();
+    const visible = this.visibleGraph(forcedBloom);
     return visible.nodes.filter((item) => clusterIds.has(item.id));
   }
 
