@@ -1,6 +1,7 @@
 ---
 interface Item {
   href?: string | null;
+  id?: string;
   label: string;
   type?: string;
   entityType?: string;
@@ -17,16 +18,81 @@ const { title, items } = Astro.props;
 function titleCase(value?: string) {
   return String(value || '').toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
+
+function slugFromHref(href?: string | null) {
+  if (!href || !href.startsWith('/supply-chain/')) return null;
+  const parts = href.split('/').filter(Boolean);
+  return parts[parts.length - 1] || null;
+}
+
+function graphTypeFor(item: Item) {
+  const explicit = String(item.entityType || item.type || '').toLowerCase().replace(/\s+/g, '_');
+  if (explicit === 'threat_actor' || explicit === 'actor') return 'actor';
+  if (explicit === 'campaign') return 'campaign';
+  if (explicit === 'supply_chain_incident' || explicit === 'incident') return 'incident';
+  if (explicit === 'package' || explicit === 'repository' || explicit === 'organization' || explicit === 'maintainer') return explicit;
+  if (item.href?.startsWith('/supply-chain/incidents/')) return 'incident';
+  if (item.href?.startsWith('/supply-chain/packages/')) return 'package';
+  if (item.href?.startsWith('/supply-chain/repositories/')) return 'repository';
+  if (item.href?.startsWith('/supply-chain/organizations/')) return 'organization';
+  if (item.href?.startsWith('/supply-chain/maintainers/')) return 'maintainer';
+  if (item.href?.startsWith('/threat-actors/')) return 'actor';
+  if (item.href?.startsWith('/campaigns/')) return 'campaign';
+  return null;
+}
+
+function graphValueFor(item: Item) {
+  return item.id || slugFromHref(item.href);
+}
+
+function graphCommandFor(type: string | null) {
+  if (type === 'incident') return 'select-incident';
+  if (type === 'actor') return 'select-actor';
+  if (type) return 'select-entity';
+  return null;
+}
+
+const decoratedItems = items.map((item) => {
+  const graphType = graphTypeFor(item);
+  const graphValue = graphValueFor(item);
+  return {
+    ...item,
+    graphType,
+    graphValue,
+    graphCommand: graphValue ? graphCommandFor(graphType) : null,
+  };
+});
 ---
 
 <section class="sc-section">
   <h2>{title}</h2>
   {items.length > 0 ? (
     <ul class="entity-list">
-      {items.map((item) => (
+      {decoratedItems.map((item) => (
         <li>
           <span class="entity-main">
-            {item.href ? <a href={item.href}>{item.label}</a> : <span>{item.label}</span>}
+            {item.href ? (
+              <a
+                href={item.href}
+                data-graph-command={item.graphCommand}
+                data-graph-type={item.graphType}
+                data-graph-value={item.graphValue}
+                data-graph-target-type={item.graphType}
+                data-graph-target-value={item.graphValue}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <span
+                data-graph-command={item.graphCommand}
+                data-graph-type={item.graphType}
+                data-graph-value={item.graphValue}
+                data-graph-target-type={item.graphType}
+                data-graph-target-value={item.graphValue}
+              >
+                {item.label}
+              </span>
+            )}
             {item.context && <small>{item.context}</small>}
           </span>
           {(item.entityType || item.type) && <em>{titleCase(item.entityType || item.type)}</em>}
@@ -80,6 +146,16 @@ function titleCase(value?: string) {
   .entity-list small {
     display: block;
     margin-top: 4px;
+  }
+
+  .entity-list [data-graph-target-type] {
+    border-radius: 4px;
+    transition: color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .entity-list [data-graph-target-type].graph-linked-active {
+    color: var(--white);
+    box-shadow: 0 2px 0 var(--amber);
   }
 
   @media (max-width: 720px) {
