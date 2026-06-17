@@ -225,59 +225,21 @@ try {
 
     <script>
       let searchIndex = null;
-      let escapeKeyBound = false;
+      let searchTimeout;
 
       function isSupplyChainPath(pathname) {
         return pathname === '/supply-chain' || pathname === '/supply-chain/' || pathname.startsWith('/supply-chain/');
       }
 
-      function isInternalNavigationLink(anchor) {
-        if (!anchor || (anchor.target && anchor.target !== '_self') || anchor.hasAttribute('download')) return false;
-        const href = anchor.getAttribute('href');
-        if (
-          !href ||
-          href.startsWith('#') ||
-          href.startsWith('mailto:') ||
-          href.startsWith('tel:') ||
-          href.startsWith('javascript:')
-        ) return false;
-        try {
-          const targetUrl = new URL(href, window.location.href);
-          return targetUrl.origin === window.location.origin;
-        } catch {
-          return false;
-        }
-      }
-
-      function shouldUseClientTransition(anchor) {
-        if (!isInternalNavigationLink(anchor)) return false;
-        const targetUrl = new URL(anchor.getAttribute('href'), window.location.href);
-        return isSupplyChainPath(window.location.pathname) && isSupplyChainPath(targetUrl.pathname);
-      }
-
-      function scopeAstroTransitionsToSupplyChain() {
-        document.querySelectorAll('a[href]').forEach((anchor) => {
-          if (!isInternalNavigationLink(anchor)) return;
-          if (shouldUseClientTransition(anchor)) {
-            anchor.removeAttribute('data-astro-reload');
-          } else {
-            anchor.setAttribute('data-astro-reload', '');
+      if (!document.documentElement.dataset.threatpediaTransitionScopeBound) {
+        document.addEventListener('astro:before-preparation', (ev) => {
+          const fromPath = ev.from?.pathname || window.location.pathname;
+          const toPath = ev.to?.pathname || '';
+          if (!(isSupplyChainPath(fromPath) && isSupplyChainPath(toPath))) {
+            ev.preventDefault();
+            window.location.href = ev.to.href;
           }
         });
-      }
-
-      function scopeAstroTransitionForClick(event) {
-        const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
-        if (!isInternalNavigationLink(anchor)) return;
-        if (shouldUseClientTransition(anchor)) {
-          anchor.removeAttribute('data-astro-reload');
-        } else {
-          anchor.setAttribute('data-astro-reload', '');
-        }
-      }
-
-      if (!document.documentElement.dataset.threatpediaTransitionScopeBound) {
-        document.addEventListener('click', scopeAstroTransitionForClick, { capture: true });
         document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';
       }
 
@@ -288,17 +250,11 @@ try {
         document.body.style.overflow = '';
       }
 
-      function initializeThreatpediaLayout() {
-      document.body.style.overflow = '';
-      scopeAstroTransitionsToSupplyChain();
-
-      // ── Hamburger menu ──────────────────────────────────────────────────
-      const btn = document.getElementById('hamburger-btn');
-      const overlay = document.getElementById('menu-overlay');
-      const panel = document.getElementById('menu-panel');
-      const searchInput = document.getElementById('menu-search');
-
       function toggleMenu() {
+        const btn = document.getElementById('hamburger-btn');
+        const overlay = document.getElementById('menu-overlay');
+        const panel = document.getElementById('menu-panel');
+        const searchInput = document.getElementById('menu-search');
         if (!btn || !overlay || !panel) return;
         const isOpen = panel.classList.toggle('open');
         overlay.classList.toggle('open');
@@ -307,44 +263,23 @@ try {
         if (isOpen && searchInput) searchInput.focus();
       }
 
-      if (btn && !btn.dataset.threatpediaBound) {
-        btn.addEventListener('click', toggleMenu);
-        btn.dataset.threatpediaBound = 'true';
-      }
-      if (overlay && !overlay.dataset.threatpediaBound) {
-        overlay.addEventListener('click', closeMenu);
-        overlay.dataset.threatpediaBound = 'true';
-      }
-      if (!escapeKeyBound) {
+      if (!document.documentElement.dataset.threatpediaMenuBound) {
+        document.addEventListener('click', (e) => {
+          const target = e.target instanceof Element ? e.target : null;
+          if (target?.closest('#hamburger-btn')) {
+            toggleMenu();
+            return;
+          }
+          if (target?.closest('#menu-overlay')) {
+            closeMenu();
+          }
+        });
         document.addEventListener('keydown', (e) => {
           if (e.key !== 'Escape') return;
           closeMenu();
         });
-        escapeKeyBound = true;
+        document.documentElement.dataset.threatpediaMenuBound = 'true';
       }
-
-      // ── Ticker scroll speed ─────────────────────────────────────────────
-      const tickerTrack = document.querySelector('.ticker-track');
-      if (tickerTrack) {
-        requestAnimationFrame(() => {
-          const halfWidth = tickerTrack.scrollWidth / 2;
-          const duration = halfWidth / 40; // 40px/sec
-          tickerTrack.style.setProperty('--ticker-duration', duration + 's');
-        });
-      }
-
-      // ── Highlight active nav link ───────────────────────────────────────
-      document.querySelectorAll('.menu-links a.active').forEach((a) => a.classList.remove('active'));
-      document.querySelectorAll('.menu-links a').forEach((a) => {
-        if (window.location.pathname === a.getAttribute('href') ||
-            (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
-          a.classList.add('active');
-        }
-      });
-
-      // ── Sitewide search ─────────────────────────────────────────────────
-      const resultsEl = document.getElementById('search-results');
-      let searchTimeout;
 
       async function loadSearchIndex() {
         if (searchIndex) return searchIndex;
@@ -362,6 +297,7 @@ try {
       }
 
       function doSearch(query) {
+        const resultsEl = document.getElementById('search-results');
         if (!resultsEl) return;
         if (!searchIndex || !query) { resultsEl.style.display = 'none'; return; }
         const q = query.toLowerCase();
@@ -418,30 +354,73 @@ try {
         resultsEl.style.display = 'block';
       }
 
-      if (searchInput && !searchInput.dataset.threatpediaBound) {
-        searchInput.addEventListener('input', () => {
-          clearTimeout(searchTimeout);
-          const q = searchInput.value.trim();
-          if (!q) {
-            if (resultsEl) resultsEl.style.display = 'none';
-            return;
+      function handleSearchInput(searchInput) {
+        const resultsEl = document.getElementById('search-results');
+        clearTimeout(searchTimeout);
+        const q = searchInput.value.trim();
+        if (!q) {
+          if (resultsEl) resultsEl.style.display = 'none';
+          return;
+        }
+        searchTimeout = setTimeout(async () => {
+          await loadSearchIndex();
+          if (searchInput.value.trim() === q) {
+            doSearch(q);
           }
-          searchTimeout = setTimeout(async () => {
-            await loadSearchIndex();
-            if (searchInput.value.trim() === q) {
-              doSearch(q);
-            }
-          }, 150);
-        });
-
-        searchInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && resultsEl && resultsEl.style.display === 'block') {
-            resultsEl.style.display = 'none';
-            e.stopPropagation();
-          }
-        });
-        searchInput.dataset.threatpediaBound = 'true';
+        }, 150);
       }
+
+      function handleSearchKeydown(e) {
+        const resultsEl = document.getElementById('search-results');
+        if (e.key === 'Escape' && resultsEl && resultsEl.style.display === 'block') {
+          resultsEl.style.display = 'none';
+          e.stopPropagation();
+        }
+      }
+
+      if (!document.documentElement.dataset.threatpediaSearchBound) {
+        document.addEventListener('input', (e) => {
+          if (e.target instanceof HTMLInputElement && e.target.id === 'menu-search') {
+            handleSearchInput(e.target);
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.target instanceof HTMLInputElement && e.target.id === 'menu-search') {
+            handleSearchKeydown(e);
+          }
+        }, { capture: true });
+        document.documentElement.dataset.threatpediaSearchBound = 'true';
+      }
+
+      function initializeThreatpediaLayout() {
+      document.body.style.overflow = '';
+
+      // ── Hamburger menu ──────────────────────────────────────────────────
+      const btn = document.getElementById('hamburger-btn');
+      const overlay = document.getElementById('menu-overlay');
+      const panel = document.getElementById('menu-panel');
+      const searchInput = document.getElementById('menu-search');
+
+      // ── Ticker scroll speed ─────────────────────────────────────────────
+      const tickerTrack = document.querySelector('.ticker-track');
+      if (tickerTrack) {
+        requestAnimationFrame(() => {
+          const halfWidth = tickerTrack.scrollWidth / 2;
+          const duration = halfWidth / 40; // 40px/sec
+          tickerTrack.style.setProperty('--ticker-duration', duration + 's');
+        });
+      }
+
+      // ── Highlight active nav link ───────────────────────────────────────
+      document.querySelectorAll('.menu-links a.active').forEach((a) => a.classList.remove('active'));
+      document.querySelectorAll('.menu-links a').forEach((a) => {
+        if (window.location.pathname === a.getAttribute('href') ||
+            (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
+          a.classList.add('active');
+        }
+      });
+
+      // ── Sitewide search ─────────────────────────────────────────────────
 
       // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
       const urlQ = new URLSearchParams(window.location.search).get('q');

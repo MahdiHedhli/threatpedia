@@ -54,32 +54,38 @@ assert.ok(
   'route should not persist page-specific hero copy or selection data'
 );
 assert.ok(
-  baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
-  'Base layout should scope Astro client transitions to Supply Chain routes only'
+  baseLayoutSource.includes("document.addEventListener('astro:before-preparation'"),
+  'Base layout should use Astro before-preparation to scope client transitions'
 );
 assert.ok(
-  baseLayoutSource.includes('function isInternalNavigationLink(anchor)'),
-  'Base layout should only scope same-origin internal navigation links'
+  baseLayoutSource.includes('isSupplyChainPath(fromPath) && isSupplyChainPath(toPath)'),
+  'Base layout should keep client transitions only between Supply Chain routes'
 );
 assert.ok(
-  baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
-  'Base layout should force normal reloads for non-Supply-Chain internal navigation'
+  baseLayoutSource.includes('ev.preventDefault();') && baseLayoutSource.includes('window.location.href = ev.to.href;'),
+  'Base layout should force normal navigation outside Supply Chain routes'
 );
 assert.ok(
-  baseLayoutSource.includes('if (!isInternalNavigationLink(anchor)) return;'),
-  'Base layout should not force reloads onto hashes, external links, mailto, or tel links'
+  !baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
+  'Base layout should not mutate anchor data-astro-reload attributes after Astro morphs'
 );
 assert.ok(
-  baseLayoutSource.includes("document.addEventListener('click', scopeAstroTransitionForClick, { capture: true })"),
-  'Base layout should scope dynamically inserted links before Astro handles clicks'
+  !baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
+  'Base layout should not rely on per-anchor reload markers'
 );
 assert.ok(
   baseLayoutSource.includes("document.body.style.overflow = isOpen ? 'hidden' : '';"),
   'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
+  baseLayoutSource.includes('function toggleMenu()') &&
+    baseLayoutSource.includes("document.getElementById('hamburger-btn')") &&
+    baseLayoutSource.includes('document.documentElement.dataset.threatpediaMenuBound'),
+  'Base layout should use delegated hamburger menu handling against the current DOM'
+);
+assert.ok(
   baseLayoutSource.includes('function closeMenu()') && baseLayoutSource.includes("if (e.key !== 'Escape') return;\n          closeMenu();"),
-  'Base layout should use the shared closeMenu helper for Escape key handling'
+  'Base layout should use the shared closeMenu helper for delegated Escape key handling'
 );
 assert.ok(
   baseLayoutSource.includes('function initializeThreatpediaLayout()'),
@@ -102,20 +108,28 @@ assert.ok(
   'Base layout should not repeat URL auto-search on duplicate initializer calls for the same page'
 );
 assert.ok(
-  baseLayoutSource.includes('if (searchInput.value.trim() === q)'),
+  baseLayoutSource.includes('function handleSearchInput(searchInput)') &&
+    baseLayoutSource.includes('if (searchInput.value.trim() === q)'),
   'Base layout search should not render stale async query results'
 );
 assert.ok(
-  baseLayoutSource.includes('e.stopPropagation();'),
+  baseLayoutSource.includes('function handleSearchKeydown(e)') && baseLayoutSource.includes('e.stopPropagation();'),
   'Base layout search Escape handling should not close the full menu when dismissing visible results'
 );
 assert.ok(
-  !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
+  baseLayoutSource.includes('document.documentElement.dataset.threatpediaSearchBound') &&
+    baseLayoutSource.includes("document.addEventListener('input',") &&
+    baseLayoutSource.includes("document.addEventListener('keydown', (e) =>") &&
+    baseLayoutSource.includes('}, { capture: true });'),
+  'Base layout should use delegated search listeners with capture-phase Escape handling'
+);
+assert.ok(
+  !/function initializeThreatpediaLayout\(\) \{[\s\S]*?if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
   'Base layout page-load handler should not return early when menu elements are absent'
 );
 assert.ok(
-  baseLayoutSource.includes('if (btn && !btn.dataset.threatpediaBound)'),
-  'Base layout should guard menu handler binding when menu elements are absent'
+  !baseLayoutSource.includes('btn.dataset.threatpediaBound') && !baseLayoutSource.includes('searchInput.dataset.threatpediaBound'),
+  'Base layout should not store listener guards on morphable menu or search elements'
 );
 
 const expectedRouteCount =
