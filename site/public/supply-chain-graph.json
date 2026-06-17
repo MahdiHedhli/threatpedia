@@ -24,7 +24,7 @@
     "distribution_channel": 14,
     "maintainer": 5,
     "organization": 19,
-    "package": 19,
+    "package": 21,
     "release": 7,
     "repository": 11
   },
@@ -1990,6 +1990,46 @@
       ]
     },
     {
+      "id": "pkg-generic-3cx-desktopapp",
+      "entity_id": "pkg-generic-3cx-desktopapp",
+      "type": "package",
+      "label": "3CX DesktopApp",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/3cx-desktopapp",
+      "href": "/supply-chain/packages/pkg-generic-3cx-desktopapp/",
+      "ecosystem": "generic",
+      "aliases": [
+        "3CX DesktopApp"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "pkg-generic-x-trader",
+      "entity_id": "pkg-generic-x-trader",
+      "type": "package",
+      "label": "X_TRADER",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/x-trader",
+      "href": "/supply-chain/packages/pkg-generic-x-trader/",
+      "ecosystem": "generic",
+      "aliases": [
+        "X_TRADER"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
       "id": "pkg-golang-github-com-boltdb-go-bolt",
       "entity_id": "pkg-golang-github-com-boltdb-go-bolt",
       "type": "package",
@@ -3043,6 +3083,14 @@
       "source_refs": []
     },
     {
+      "id": "AFFECTED_PACKAGE:incident-SC-2023-THREE-CX-DESKTOP->pkg-generic-3cx-desktopapp",
+      "source": "incident-SC-2023-THREE-CX-DESKTOP",
+      "target": "pkg-generic-3cx-desktopapp",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "AFFECTED_PACKAGE:incident-SC-2024-LOTTIE-PLAYER->pkg-npm-lottiefiles-lottie-player",
       "source": "incident-SC-2024-LOTTIE-PLAYER",
       "target": "pkg-npm-lottiefiles-lottie-player",
@@ -3471,6 +3519,30 @@
       "source": "campaign-tp-camp-2023-0002",
       "target": "incident-SC-2023-THREE-CX-DESKTOP",
       "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SEEDED_BY:pkg-generic-x-trader->pkg-generic-3cx-desktopapp",
+      "source": "pkg-generic-x-trader",
+      "target": "pkg-generic-3cx-desktopapp",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SEEDED_BY:pkg-npm-rxnt-authentication->release-npm-ctrl-tinycolor-4-1-1",
+      "source": "pkg-npm-rxnt-authentication",
+      "target": "release-npm-ctrl-tinycolor-4-1-1",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SEEDED_BY:release-npm-ctrl-tinycolor-4-1-1->release-npm-ctrl-tinycolor-4-1-2",
+      "source": "release-npm-ctrl-tinycolor-4-1-1",
+      "target": "release-npm-ctrl-tinycolor-4-1-2",
+      "type": "SEEDED_BY",
       "evidence_tier": null,
       "source_refs": []
     },
