@@ -14,6 +14,7 @@ import { buildSupplyChainGraphData } from './build-supply-chain-graph.mjs';
 
 const data = loadSupplyChainData();
 const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
+const supplyChainPagesSource = readFileSync(new URL('../site/src/lib/supplyChainPages.mjs', import.meta.url), 'utf-8');
 const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
 const supplyChainEntityListSource = readFileSync(new URL('../site/src/components/SupplyChainEntityList.astro', import.meta.url), 'utf-8');
 const supplyChainGraphSource = readFileSync(new URL('../site/public/js/supply-chain-graph-core.js', import.meta.url), 'utf-8');
@@ -72,6 +73,15 @@ assert.ok(
     supplyChainEntityListSource.includes('data-graph-target-type={item.graphType}') &&
     supplyChainEntityListSource.includes('data-graph-target-value={item.graphValue}'),
   'entity lists should expose graph command targets while preserving routed links'
+);
+assert.ok(
+  supplyChainPagesSource.includes('function incidentPropagationTimeline') &&
+    supplyChainPagesSource.includes("relationship.type === 'SEEDED_BY'") &&
+    supplyChainPagesSource.includes('relationship.source_incident_id === incidentId') &&
+    supplyChainRouteSource.includes('page.propagationTimeline.length > 0') &&
+    supplyChainRouteSource.includes('class={`propagation-hop propagation-${edge.tier}`}') &&
+    supplyChainRouteSource.includes('Evidence-Gated Propagation'),
+  'incident pages should render G7 propagation timelines from local SEEDED_BY edges only'
 );
 assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
@@ -527,6 +537,7 @@ assert.ok(codecov.sections.buildSystems.length > 0, 'incident page should includ
 assert.ok(codecov.sections.distributionChannels.length > 0, 'incident page should include distribution channels');
 assert.ok(codecov.incident.references.length > 0, 'incident page should include references');
 assert.equal(codecov.editorialSections.length, 0, 'non-featured incident page should not render editorial sections');
+assert.equal(codecov.propagationTimeline.length, 0, 'incidents without SEEDED_BY edges should not expose propagation timelines');
 assert.ok(codecov.connectedEntities.length > 0, 'incident page should include relationship-aware connected entities');
 assert.equal(
   new Set(codecov.connectedEntities.map((entity) => entity.href || entity.id)).size,
@@ -633,6 +644,19 @@ assert.ok(
 assert.ok(
   threeCx.sections.campaigns.some((campaign) => campaign.href === '/campaigns/lazarus-3cx-supply-chain-compromise-2023/'),
   '3CX page should link to the existing campaign page'
+);
+assert.equal(threeCx.propagationTimeline.length, 1, '3CX page should expose the X_TRADER causal propagation edge');
+assert.equal(threeCx.propagationTimeline[0].tier, 'causal', '3CX propagation edge should preserve causal tier');
+assert.ok(
+  threeCx.propagationTimeline[0].references.length > 0,
+  '3CX propagation edge should resolve evidence references'
+);
+
+const shaiHulud = getSupplyChainIncidentPage('SC-2025-NPM-SHAI-HULUD', data);
+assert.equal(shaiHulud.propagationTimeline.length, 2, 'Shai-Hulud page should expose temporal wave propagation edges');
+assert.ok(
+  shaiHulud.propagationTimeline.every((edge) => edge.tier === 'temporal' && edge.references.length > 0),
+  'Shai-Hulud temporal propagation edges should preserve tier and evidence references'
 );
 
 const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
