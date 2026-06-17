@@ -477,13 +477,13 @@ try {
       }
 
       function initializeThreatpediaLayout() {
-        document.body.style.overflow = '';
-
         // ── Hamburger menu ──────────────────────────────────────────────────
         const btn = document.getElementById('hamburger-btn');
         const overlay = document.getElementById('menu-overlay');
         const panel = document.getElementById('menu-panel');
         const searchInput = document.getElementById('menu-search');
+        const menuIsOpen = panel?.classList.contains('open');
+        document.body.style.overflow = menuIsOpen ? 'hidden' : '';
 
         // ── Ticker scroll speed ─────────────────────────────────────────────
         const tickerTrack = document.querySelector('.ticker-track');
