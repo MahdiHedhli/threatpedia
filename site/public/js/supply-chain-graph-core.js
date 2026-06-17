@@ -672,11 +672,18 @@ class SupplyChainGraph {
       if (!commandTarget) return;
       const command = commandTarget.dataset.graphCommand;
       const value = commandTarget.dataset.graphValue;
+      const type = commandTarget.dataset.graphType;
       if (command === 'select-incident') this.selectByEntityId('incident', value);
       if (command === 'select-actor') this.selectByEntityId('actor', value);
+      if (command === 'select-entity' && type) {
+        if (!this.selectByEntityId(type, value)) this.selectEntityContext(type, value);
+      }
       if (command === 'filter-stage') this.filterStage(value);
     });
-    document.addEventListener('astro:page-load', () => this.selectFromRoute());
+    document.addEventListener('astro:page-load', () => {
+      this.selectFromRoute();
+      this.syncPageSelection();
+    });
     this.root.addEventListener('keydown', (event) => this.handleKeydown(event));
   }
 
@@ -800,15 +807,18 @@ class SupplyChainGraph {
     this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
     this.keyboardNodeId = incidentNodes[0]?.id || null;
     this.lastBloomIncidentId = null;
+    this.pageSelection = { type, value };
     this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
     this.updateCaption(
       entity?.label || value,
       `${incidentNodes.length} connected incident${incidentNodes.length === 1 ? '' : 's'} framed for this entity.`
     );
+    this.syncPageSelection();
   }
 
   showOverview() {
     this.selection = null;
+    this.pageSelection = { type: 'overview', value: 'recent' };
     this.keyboardNodeId = null;
     this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport));
@@ -816,6 +826,7 @@ class SupplyChainGraph {
       'Supply Chain Graph',
       `${this.payload.nodes.length} corpus nodes and ${this.payload.edges.length} typed edges loaded.`
     );
+    this.syncPageSelection();
   }
 
   filterStage(stage) {
@@ -823,11 +834,13 @@ class SupplyChainGraph {
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
     this.keyboardNodeId = nodes[0]?.id || null;
+    this.pageSelection = { type: 'stage', value: stage };
     this.focusReflow = false;
     this.lastBloomIncidentId = null;
     this.updateReflowControl();
     this.setCameraTarget(fitBounds(nodes, this.viewport));
     this.updateCaption(`Attack stage: ${stage.replace(/_/g, ' ')}`, `${nodes.length} incident${nodes.length === 1 ? '' : 's'} selected.`);
+    this.syncPageSelection();
   }
 
   selectNode(node) {
@@ -845,6 +858,7 @@ class SupplyChainGraph {
         ? cluster.filter((item) => item.tier === 'technique' || item.tier === 'incident').map((item) => item.id)
         : cluster.some((item) => item.id === node.id) ? cluster.map((item) => item.id) : [node.id];
     this.selection = { type: node.type, value: node.id, nodes: new Set(selectionNodes) };
+    this.pageSelection = { type: node.type, value: node.entity_id || node.id };
     if (node.tier === 'technique') {
       this.frameSelectedTechniqueWideShot(cluster);
     } else if (node.tier === 'incident') {
@@ -856,6 +870,7 @@ class SupplyChainGraph {
     }
     this.updateCaption(node.label, node.summary || `${node.type.replace(/_/g, ' ')} node selected.`);
     this.updateReflowControl();
+    this.syncPageSelection();
   }
 
   keyboardNodes() {
@@ -1042,6 +1057,20 @@ class SupplyChainGraph {
     if (this.captionBody) this.captionBody.textContent = body;
     if (this.status) this.status.textContent = title;
     if (this.description) this.description.textContent = `${title}. ${body}`;
+  }
+
+  syncPageSelection() {
+    const active = this.pageSelection || { type: 'overview', value: 'recent' };
+    this.root.dataset.graphSelectionType = active.type;
+    this.root.dataset.graphSelectionValue = active.value;
+    document.querySelectorAll('[data-graph-target-type][data-graph-target-value]').forEach((target) => {
+      const targetType = target.dataset.graphTargetType;
+      const targetValue = target.dataset.graphTargetValue;
+      const isActive = targetType === active.type && targetValue === active.value;
+      target.classList.toggle('graph-linked-active', isActive);
+      if (isActive) target.setAttribute('aria-current', 'true');
+      else target.removeAttribute('aria-current');
+    });
   }
 
   colorForNode(node) {

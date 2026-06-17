@@ -171,13 +171,19 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
           </div>
           <div class="attack-bars">
             {page.attackVectorBars.map((row) => (
-              <div
+              <button
+                type="button"
                 class={`attack-bar ${severityClass(row.severity)}`}
                 style={percentStyle(row.percent)}
+                data-graph-command={row.command.type}
+                data-graph-value={row.command.value}
+                data-graph-target-type="stage"
+                data-graph-target-value={row.stage}
+                aria-label={`Filter graph to ${row.label}`}
               >
                 <span>{row.label}</span>
                 <strong>{row.count}</strong>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -194,6 +200,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
                 href={row.href || '#supply-chain-title'}
                 data-graph-command={row.command.type}
                 data-graph-value={row.command.value}
+                data-graph-target-type="actor"
+                data-graph-target-value={row.command.value}
               >
                 <span class="confidence-dot" data-confidence={row.confidence}></span>
                 <span>
@@ -219,6 +227,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
                 style={percentStyle(row.barPercent)}
                 data-graph-command={row.command.type}
                 data-graph-value={row.command.value}
+                data-graph-target-type="incident"
+                data-graph-target-value={row.command.value}
               >
                 <span class="dwell-title">{row.title}</span>
                 <span class="dwell-track">
@@ -240,7 +250,13 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         </div>
         <div class="featured-grid">
           {page.featuredIncidents.map((incident) => (
-            <article class="incident-card" data-graph-command="select-incident" data-graph-value={incident.id}>
+            <article
+              class="incident-card"
+              data-graph-command="select-incident"
+              data-graph-value={incident.id}
+              data-graph-target-type="incident"
+              data-graph-target-value={incident.id}
+            >
               <a href={incident.href}>{incident.title}</a>
               <p>{incident.summary}</p>
               <div class="card-meta">
@@ -285,7 +301,14 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         </div>
         <div class="incident-list-grid">
           {page.incidents.map((incident) => (
-            <a class="incident-list-row" href={incident.href}>
+            <a
+              class="incident-list-row"
+              href={incident.href}
+              data-graph-command="select-incident"
+              data-graph-value={incident.id}
+              data-graph-target-type="incident"
+              data-graph-target-value={incident.id}
+            >
               <span>
                 <strong>{incident.title}</strong>
                 <em>{incident.summary}</em>
@@ -849,6 +872,9 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .attack-bar {
+    appearance: none;
+    width: 100%;
+    cursor: pointer;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
@@ -856,6 +882,11 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     gap: 16px;
     padding: 10px 12px;
     text-align: left;
+  }
+
+  .attack-bar,
+  .attack-bar:focus {
+    font: inherit;
   }
 
   .attack-bar::before {
@@ -892,6 +923,25 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     gap: 12px;
     padding: 10px;
     text-decoration: none;
+  }
+
+  .attack-bar:hover,
+  .attack-bar:focus-visible,
+  .attribution-row:hover,
+  .attribution-row:focus-visible,
+  .dwell-row:hover,
+  .dwell-row:focus-visible,
+  .incident-card.graph-linked-active,
+  .incident-list-row:hover,
+  .incident-list-row:focus-visible,
+  .incident-list-row.graph-linked-active,
+  .graph-linked-active {
+    border-color: rgba(232, 160, 32, 0.72);
+    box-shadow: 0 0 0 1px rgba(232, 160, 32, 0.16), 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .graph-linked-active {
+    color: var(--white);
   }
 
   .attribution-row strong,

@@ -15,6 +15,7 @@ import { buildSupplyChainGraphData } from './build-supply-chain-graph.mjs';
 const data = loadSupplyChainData();
 const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
 const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
+const supplyChainEntityListSource = readFileSync(new URL('../site/src/components/SupplyChainEntityList.astro', import.meta.url), 'utf-8');
 const supplyChainGraphSource = readFileSync(new URL('../site/public/js/supply-chain-graph-core.js', import.meta.url), 'utf-8');
 const supplyChainGraphPayload = JSON.parse(
   readFileSync(new URL('../site/public/supply-chain-graph.json', import.meta.url), 'utf-8')
@@ -53,6 +54,24 @@ assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maint
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
+);
+assert.ok(
+  supplyChainRouteSource.includes('data-graph-target-type="stage"') &&
+    supplyChainRouteSource.includes('data-graph-target-type="actor"') &&
+    supplyChainRouteSource.includes('data-graph-target-type="incident"') &&
+    supplyChainRouteSource.includes('data-graph-target-value={row.stage}') &&
+    supplyChainRouteSource.includes('data-graph-target-value={incident.id}') &&
+    supplyChainRouteSource.includes('class={`attack-bar ${severityClass(row.severity)}`') &&
+    supplyChainRouteSource.includes('aria-label={`Filter graph to ${row.label}`}'),
+  'index panels should expose G6 graph command targets for stage, actor, and incident controls'
+);
+assert.ok(
+  supplyChainEntityListSource.includes('function graphTypeFor') &&
+    supplyChainEntityListSource.includes('function graphCommandFor') &&
+    supplyChainEntityListSource.includes("return 'select-entity'") &&
+    supplyChainEntityListSource.includes('data-graph-target-type={item.graphType}') &&
+    supplyChainEntityListSource.includes('data-graph-target-value={item.graphValue}'),
+  'entity lists should expose graph command targets while preserving routed links'
 );
 assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
@@ -457,7 +476,7 @@ assert.ok(
   'graph client should render causal and temporal SEEDED_BY edges distinctly'
 );
 assert.ok(
-    supplyChainGraphSource.includes('handleKeydown') &&
+  supplyChainGraphSource.includes('handleKeydown') &&
     supplyChainGraphSource.includes('keyboardNodes()') &&
     supplyChainGraphSource.includes("closest?.('a, button, input, select, textarea, summary, [contenteditable=\"true\"]')") &&
     supplyChainGraphSource.includes("event.key === 'Escape'") &&
@@ -470,6 +489,16 @@ assert.ok(
   supplyChainGraphSource.includes('this.keyboardNodeId = incidentNodes[0]?.id || null;') &&
     supplyChainGraphSource.includes('this.keyboardNodeId = nodes[0]?.id || null;'),
   'graph client should reset keyboard focus for context and stage selections'
+);
+assert.ok(
+  supplyChainGraphSource.includes("command === 'select-entity'") &&
+    supplyChainGraphSource.includes('syncPageSelection') &&
+    supplyChainGraphSource.includes("document.querySelectorAll('[data-graph-target-type][data-graph-target-value]')") &&
+    supplyChainGraphSource.includes("target.classList.toggle('graph-linked-active', isActive)") &&
+    supplyChainGraphSource.includes("target.setAttribute('aria-current', 'true')") &&
+    supplyChainGraphSource.includes('this.pageSelection = { type, value }') &&
+    supplyChainRouteSource.includes('.graph-linked-active'),
+  'graph client should implement G6 page-to-graph commands and reverse active-state binding'
 );
 assert.ok(
   supplyChainGraphSource.includes('labelPriority') &&
