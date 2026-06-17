@@ -557,7 +557,7 @@ class SupplyChainGraph {
     this.bind();
     this.resize();
     this.selectFromRoute();
-    requestAnimationFrame(() => this.frame());
+    this.animationFrame = requestAnimationFrame(() => this.frame());
   }
 
   initWebGL() {
@@ -623,8 +623,8 @@ class SupplyChainGraph {
   }
 
   bind() {
-    const resizeObserver = new ResizeObserver(() => this.resize());
-    resizeObserver.observe(this.root);
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.root);
     this.canvas.addEventListener('pointerdown', (event) => {
       this.canvas.setPointerCapture(event.pointerId);
       this.drag = {
@@ -667,7 +667,7 @@ class SupplyChainGraph {
       this.reflowButton.setAttribute('aria-pressed', String(this.focusReflow));
       this.reflowButton.textContent = this.focusReflow ? 'Restore wide shot' : 'Focus reflow';
     });
-    document.addEventListener('click', (event) => {
+    this.onDocumentClick = (event) => {
       const commandTarget = event.target.closest('[data-graph-command][data-graph-value]');
       if (!commandTarget) return;
       const command = commandTarget.dataset.graphCommand;
@@ -679,12 +679,28 @@ class SupplyChainGraph {
         if (!this.selectByEntityId(type, value)) this.selectEntityContext(type, value);
       }
       if (command === 'filter-stage') this.filterStage(value);
-    });
-    document.addEventListener('astro:page-load', () => {
+    };
+    document.addEventListener('click', this.onDocumentClick);
+    this.onPageLoad = () => {
+      if (!document.body.contains(this.root)) {
+        this.destroy();
+        return;
+      }
       this.selectFromRoute();
       this.syncPageSelection();
-    });
+    };
+    document.addEventListener('astro:page-load', this.onPageLoad);
     this.root.addEventListener('keydown', (event) => this.handleKeydown(event));
+  }
+
+  destroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    if (this.onDocumentClick) document.removeEventListener('click', this.onDocumentClick);
+    if (this.onPageLoad) document.removeEventListener('astro:page-load', this.onPageLoad);
+    this.resizeObserver?.disconnect();
+    this.bloomWorker?.terminate();
+    if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 
   resize() {
@@ -1302,6 +1318,10 @@ class SupplyChainGraph {
   }
 
   frame() {
+    if (this.destroyed || !document.body.contains(this.root)) {
+      this.destroy();
+      return;
+    }
     this.camera = {
       cx: lerp(this.camera.cx, this.targetCamera.cx, this.reduceMotion ? 1 : 0.14),
       cy: lerp(this.camera.cy, this.targetCamera.cy, this.reduceMotion ? 1 : 0.14),
@@ -1316,7 +1336,7 @@ class SupplyChainGraph {
     this.drawNodes();
     this.drawLabels();
     this.currentVisibleGraph = null;
-    requestAnimationFrame(() => this.frame());
+    this.animationFrame = requestAnimationFrame(() => this.frame());
   }
 }
 
