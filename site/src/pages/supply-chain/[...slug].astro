@@ -46,6 +46,22 @@ const ogTitle = page?.seo?.ogTitle;
 const ogDescription = page?.seo?.ogDescription;
 const jsonLd = page?.seo?.jsonLd;
 const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
+const graphHero = page.kind === 'index'
+  ? page.graphHero
+  : {
+      ...page.graphHero,
+      eyebrow: page.kind === 'incident' ? 'Supply Chain Incident' : page.entityType,
+      title: page.kind === 'incident' ? page.incident.title : page.entity.name,
+      summary: page.kind === 'incident'
+        ? page.incident.summary
+        : `${page.entityType} node with ${page.relatedIncidents.length} connected incident${page.relatedIncidents.length === 1 ? '' : 's'}.`,
+      status: 'Corpus graph preview',
+      nodeCount: page.graphHero?.nodeCount,
+      relationshipCount: page.graphHero?.relationshipCount,
+      latestIncident: page.graphHero?.latestIncident,
+    };
+const graphSelectionType = page.kind === 'incident' ? 'incident' : page.kind === 'entity' ? page.entityType.toLowerCase() : 'overview';
+const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.kind === 'entity' ? page.entity.id : 'recent';
 ---
 
 <Base
@@ -57,46 +73,65 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   robots={robots}
   jsonLd={jsonLd}
 >
+  <section
+    class="graph-hero graph-hero-persistent"
+    aria-labelledby="supply-chain-title"
+    data-graph-selection-type={graphSelectionType}
+    data-graph-selection-value={graphSelectionValue}
+  >
+    <div
+      class="graph-placeholder"
+      transition:persist="supply-chain-graph-hero"
+      role="img"
+      aria-label="Persistent preview of the Supply Chain corpus graph"
+    >
+      <div class="graph-status">
+        <span>{graphHero.status}</span>
+        <span>Actor → Release</span>
+      </div>
+      <div class="graph-field" aria-hidden="true">
+        <span class="lane lane-actor"></span>
+        <span class="lane lane-campaign"></span>
+        <span class="lane lane-incident"></span>
+        <span class="lane lane-package"></span>
+        <span class="edge edge-one"></span>
+        <span class="edge edge-two"></span>
+        <span class="edge edge-three"></span>
+        <span class="node node-actor">Actor</span>
+        <span class="node node-campaign">Campaign</span>
+        <span class="node node-incident">Incident</span>
+        <span class="node node-package">Package</span>
+        <span class="node node-release">Release</span>
+        <span class="node node-org">Org</span>
+      </div>
+      <div class="graph-caption">
+        <strong>Supply Chain Graph</strong>
+        <span>Persistent corpus surface</span>
+      </div>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">{graphHero.eyebrow}</p>
+      {page.kind === 'index' ? (
+        <h1 id="supply-chain-title">Supply Chain</h1>
+      ) : (
+        <p id="supply-chain-title" class="graph-context-title">Focused Graph View</p>
+      )}
+      <p class="lede">
+        {page.kind === 'index'
+          ? graphHero.summary
+          : `The persistent graph is framed to this ${page.kind === 'incident' ? 'incident' : page.entityType.toLowerCase()} while the canonical page heading and details continue below.`}
+      </p>
+      <div class="hero-meta" aria-label="Supply Chain graph summary">
+        {graphHero.nodeCount !== undefined && <span>{compactNumber(graphHero.nodeCount)} nodes</span>}
+        {graphHero.relationshipCount !== undefined && <span>{compactNumber(graphHero.relationshipCount)} edges</span>}
+        {page.kind === 'index' && graphHero.latestIncident && <span>Latest: {graphHero.latestIncident.sortDate}</span>}
+        {page.kind !== 'index' && <span>Cold links hydrate here</span>}
+      </div>
+    </div>
+  </section>
+
   {page.kind === 'index' && (
     <section class="supply-chain-page supply-chain-index">
-      <section class="graph-hero" aria-labelledby="supply-chain-title">
-        <div class="hero-copy">
-          <p class="eyebrow">{page.graphHero.eyebrow}</p>
-          <h1 id="supply-chain-title">Supply Chain</h1>
-          <p class="lede">{page.graphHero.summary}</p>
-          <div class="hero-meta" aria-label="Supply Chain graph summary">
-            <span>{compactNumber(page.graphHero.nodeCount)} nodes</span>
-            <span>{compactNumber(page.graphHero.relationshipCount)} edges</span>
-            {page.graphHero.latestIncident && <span>Latest: {page.graphHero.latestIncident.sortDate}</span>}
-          </div>
-        </div>
-        <div class="graph-placeholder" role="img" aria-label="Static preview of the Supply Chain corpus graph">
-          <div class="graph-status">
-            <span>{page.graphHero.status}</span>
-            <span>Actors to releases</span>
-          </div>
-          <div class="graph-field" aria-hidden="true">
-            <span class="lane lane-actor"></span>
-            <span class="lane lane-campaign"></span>
-            <span class="lane lane-incident"></span>
-            <span class="lane lane-package"></span>
-            <span class="edge edge-one"></span>
-            <span class="edge edge-two"></span>
-            <span class="edge edge-three"></span>
-            <span class="node node-actor">Actor</span>
-            <span class="node node-campaign">Campaign</span>
-            <span class="node node-incident">Incident</span>
-            <span class="node node-package">Package</span>
-            <span class="node node-release">Release</span>
-            <span class="node node-org">Org</span>
-          </div>
-          <div class="graph-caption">
-            <strong>{page.graphHero.latestIncident?.title}</strong>
-            <span>{page.graphHero.latestIncident ? titleCase(page.graphHero.latestIncident.attackStage) : 'Corpus ready'}</span>
-          </div>
-        </div>
-      </section>
-
       <section class="metric-grid stat-strip" aria-label="Supply Chain corpus counts">
         <div><span>{page.counts.incidents}</span><p>Incidents</p></div>
         <div><span>{page.counts.packages}</span><p>Packages</p></div>
@@ -426,32 +461,56 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
 
   .graph-hero {
     display: grid;
-    grid-template-columns: minmax(280px, 0.72fr) minmax(420px, 1.28fr);
-    gap: 24px;
-    min-height: 520px;
-    align-items: stretch;
-    margin-bottom: 18px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 1240px;
+    margin: 0 auto 18px;
   }
 
   .hero-copy {
-    align-self: center;
-    padding: 24px 0;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.6fr) minmax(280px, 1fr);
+    gap: 16px 28px;
+    align-items: end;
+    border: 1px solid var(--border);
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    background: var(--surface);
+    padding: 20px 22px;
   }
 
   .hero-copy h1 {
-    margin: 0 0 14px;
+    margin: 0;
     border-bottom: none;
     color: var(--white);
-    font-size: clamp(2.6rem, 5vw, 5.4rem);
-    line-height: 0.95;
+    font-size: clamp(2rem, 4.3vw, 4.2rem);
+    line-height: 0.98;
     padding-bottom: 0;
   }
 
+  .graph-context-title {
+    margin: 0;
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 3vw, 2.4rem);
+    line-height: 1.08;
+  }
+
+  .hero-copy .eyebrow {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .hero-copy .lede {
+    margin: 0;
+  }
+
   .hero-meta {
+    grid-column: 1 / -1;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 24px;
+    margin-top: 0;
   }
 
   .hero-meta span,
@@ -469,9 +528,9 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
   .graph-placeholder {
     position: relative;
     overflow: hidden;
-    min-height: 500px;
+    min-height: clamp(360px, 52vh, 580px);
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     background:
       linear-gradient(rgba(232, 160, 32, 0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(232, 160, 32, 0.05) 1px, transparent 1px),
@@ -1172,6 +1231,7 @@ const robots = supplyChainPagesEnabled ? undefined : 'noindex, nofollow';
 
   @media (max-width: 820px) {
     .graph-hero,
+    .hero-copy,
     .viz-grid,
     .dwell-row {
       grid-template-columns: 1fr;
