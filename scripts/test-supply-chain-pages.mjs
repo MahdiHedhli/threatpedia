@@ -501,6 +501,17 @@ assert.ok(
   'graph client should implement G6 page-to-graph commands and reverse active-state binding'
 );
 assert.ok(
+  supplyChainGraphSource.includes('this.onPageLoad = () =>') &&
+    supplyChainGraphSource.includes('!document.body.contains(this.root)') &&
+    supplyChainGraphSource.includes('this.destroy();') &&
+    supplyChainGraphSource.includes("document.removeEventListener('astro:page-load', this.onPageLoad)") &&
+    supplyChainGraphSource.includes("document.removeEventListener('click', this.onDocumentClick)") &&
+    supplyChainGraphSource.includes('this.resizeObserver?.disconnect()') &&
+    supplyChainGraphSource.includes('this.bloomWorker?.terminate()') &&
+    supplyChainGraphSource.includes('cancelAnimationFrame(this.animationFrame)'),
+  'graph client should clean up global listeners, observers, workers, and animation frames when the persisted island is removed'
+);
+assert.ok(
   supplyChainGraphSource.includes('labelPriority') &&
     supplyChainGraphSource.includes('labelCandidates') &&
     supplyChainGraphSource.includes('labelFits') &&
