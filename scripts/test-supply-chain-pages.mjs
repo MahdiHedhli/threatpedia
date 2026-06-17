@@ -57,6 +57,7 @@ assert.ok(
 assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
+    supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
     supplyChainRouteSource.includes('/js/supply-chain-graph-core.js'),
   'route should mount the persisted WebGL graph island'
 );
@@ -339,6 +340,11 @@ assert.ok(
   supplyChainGraphPayload.renderer_contract.g2_drawable_tiers.includes('incident'),
   'graph payload should declare G2 drawable tiers'
 );
+assert.ok(
+  supplyChainGraphPayload.renderer_contract.g3_drawable_tiers.includes('technique') &&
+    supplyChainGraphPayload.renderer_contract.technique_focus === 'wide-shot-default-with-operator-reflow',
+  'graph payload should declare G3 technique focus behavior'
+);
 assert.equal(
   supplyChainGraphPayload.renderer_contract.package_release_lod,
   'payload-only-until-G4',
@@ -352,23 +358,33 @@ assert.ok(
 assert.ok(
   supplyChainGraphPayload.nodes.some((node) => node.type === 'actor') &&
     supplyChainGraphPayload.nodes.some((node) => node.type === 'campaign') &&
-    supplyChainGraphPayload.nodes.some((node) => node.type === 'incident'),
-  'graph payload should include actor, campaign, and incident tiers'
+    supplyChainGraphPayload.nodes.some((node) => node.type === 'incident') &&
+    supplyChainGraphPayload.nodes.some((node) => node.type === 'technique'),
+  'graph payload should include actor, campaign, incident, and technique tiers'
 );
 assert.ok(
   supplyChainGraphPayload.edges.some((edge) => edge.type === 'ATTRIBUTED_TO_ACTOR') &&
-    supplyChainGraphPayload.edges.some((edge) => edge.type === 'RELATED_CAMPAIGN'),
-  'graph payload should include actor and campaign graph edges'
+    supplyChainGraphPayload.edges.some((edge) => edge.type === 'RELATED_CAMPAIGN') &&
+    supplyChainGraphPayload.edges.some((edge) => edge.type === 'INCIDENT_TECHNIQUE'),
+  'graph payload should include actor, campaign, and technique graph edges'
 );
 assert.ok(
   supplyChainGraphSource.includes("getContext('webgl2'") &&
     supplyChainGraphSource.includes("getContext('webgl'") &&
     supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
     supplyChainGraphSource.includes('function isG2DrawableNode') &&
-    supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident'])") &&
+    supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique'])") &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp('),
-  'graph client should use WebGL, quadtree picking, G2 LOD culling, and clamped camera targets'
+  'graph client should use WebGL, quadtree picking, G2/G3 LOD culling, and clamped camera targets'
+);
+assert.ok(
+    supplyChainGraphSource.includes('this.focusReflow') &&
+    supplyChainGraphSource.includes('Focus reflow') &&
+    supplyChainGraphSource.includes("edge.type === 'INCIDENT_TECHNIQUE'") &&
+    supplyChainGraphSource.includes("this.selection?.type === 'technique'") &&
+    supplyChainGraphSource.includes('z: Math.min(fit.z, 0.82)'),
+  'graph client should implement technique selection through explicit focus-reflow state'
 );
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);

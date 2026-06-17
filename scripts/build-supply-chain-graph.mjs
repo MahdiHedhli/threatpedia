@@ -46,6 +46,7 @@ const tierByType = {
   package: 'package',
   release: 'release',
   repository: 'repository',
+  technique: 'technique',
 };
 
 const severityByAttackStage = {
@@ -67,6 +68,14 @@ function displayLabel(value) {
     .replace(/[_-]+/g, ' ')
     .replace(/\b\w/g, (char) => char.toUpperCase())
     .replace('Ci/Cd', 'CI/CD');
+}
+
+function slugify(value) {
+  return String(value || 'unknown')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function nodeHref(type, id, entity = {}) {
@@ -204,6 +213,34 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
     });
   });
 
+  const techniqueById = new Map();
+  incidents.forEach((incident) => {
+    incidentTechniques(incident).forEach((technique) => {
+      const id = `technique-${slugify(technique)}`;
+      if (!techniqueById.has(id)) {
+        techniqueById.set(id, {
+          id,
+          entity_id: technique,
+          type: 'technique',
+          label: displayLabel(technique),
+          tier: 'technique',
+          sev: null,
+          time: null,
+          parent: null,
+          techniques: [technique],
+          purl: null,
+          href: null,
+          source_incident_ids: [],
+        });
+      }
+      techniqueById.get(id).source_incident_ids.push(incident.id);
+    });
+  });
+  nodes.push(...Array.from(techniqueById.values()).map((node) => ({
+    ...node,
+    source_incident_ids: Array.from(new Set(node.source_incident_ids)).sort(),
+  })));
+
   Object.entries(entities).forEach(([collection, collectionItems]) => {
     const type = entityTypeByCollection[collection];
     if (!type || !Array.isArray(collectionItems)) return;
@@ -232,7 +269,20 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
     .map((relationship) => normalizeRelationshipEdge(relationship, nodeIds))
     .filter(Boolean);
   const derivedEdges = deriveIncidentContextEdges(nodes, incidents, entities);
-  const edges = uniqueEdges([...corpusEdges, ...derivedEdges]);
+  const techniqueEdges = incidents.flatMap((incident) =>
+    incidentTechniques(incident).map((technique) => {
+      const source = `technique-${slugify(technique)}`;
+      const target = `incident-${incident.id}`;
+      return {
+        id: `INCIDENT_TECHNIQUE:${source}->${target}`,
+        source,
+        target,
+        type: 'INCIDENT_TECHNIQUE',
+        derived: true,
+      };
+    })
+  );
+  const edges = uniqueEdges([...corpusEdges, ...derivedEdges, ...techniqueEdges]);
 
   const parentByIncident = new Map();
   edges.forEach((edge) => {
@@ -269,6 +319,8 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
     },
     renderer_contract: {
       g2_drawable_tiers: ['actor', 'campaign', 'incident'],
+      g3_drawable_tiers: ['actor', 'campaign', 'incident', 'technique'],
+      technique_focus: 'wide-shot-default-with-operator-reflow',
       package_release_lod: 'payload-only-until-G4',
       layout: 'time-anchored-actor-lanes',
     },

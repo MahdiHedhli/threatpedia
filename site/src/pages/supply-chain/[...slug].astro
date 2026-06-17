@@ -91,6 +91,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         <span data-sc-graph-status>{graphHero.status}</span>
         <span>Actor to Incident</span>
       </div>
+      <button
+        class="graph-focus-reflow"
+        type="button"
+        data-sc-graph-focus-reflow
+        aria-pressed="false"
+        hidden
+        disabled
+      >
+        Focus reflow
+      </button>
       <canvas
         class="sc-graph-canvas"
         data-sc-graph-canvas
@@ -583,9 +593,14 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .graph-status,
+  .graph-focus-reflow,
   .graph-caption {
     position: absolute;
     z-index: 4;
+  }
+
+  .graph-status,
+  .graph-caption {
     display: flex;
     gap: 8px;
   }
@@ -593,6 +608,26 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   .graph-status {
     top: 16px;
     left: 16px;
+  }
+
+  .graph-focus-reflow {
+    top: 16px;
+    right: 16px;
+    border: 1px solid rgba(232, 160, 32, 0.7);
+    border-radius: 4px;
+    background: rgba(8, 11, 16, 0.86);
+    color: var(--white);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    padding: 8px 10px;
+    text-transform: uppercase;
+  }
+
+  .graph-focus-reflow:disabled,
+  .graph-focus-reflow[hidden] {
+    display: none;
   }
 
   .graph-caption {
