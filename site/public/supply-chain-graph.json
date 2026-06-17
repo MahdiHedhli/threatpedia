@@ -19,7 +19,13 @@
       "technique"
     ],
     "technique_focus": "wide-shot-default-with-operator-reflow",
-    "package_release_lod": "payload-only-until-G4",
+    "package_release_lod": "g4-dive-and-bloom",
+    "bloom_tiers": [
+      "organization",
+      "package",
+      "release"
+    ],
+    "seeded_by_edges": "causal-solid-temporal-dashed",
     "layout": "time-anchored-actor-lanes"
   },
   "counts": {
@@ -5682,7 +5688,13 @@
       "target": "pkg-generic-3cx-desktopapp",
       "type": "SEEDED_BY",
       "evidence_tier": null,
-      "source_refs": []
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-mandiant-3cx"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2023-THREE-CX-DESKTOP",
+      "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps."
     },
     {
       "id": "SEEDED_BY:pkg-npm-rxnt-authentication->release-npm-ctrl-tinycolor-4-1-1",
@@ -5690,7 +5702,14 @@
       "target": "release-npm-ctrl-tinycolor-4-1-1",
       "type": "SEEDED_BY",
       "evidence_tier": null,
-      "source_refs": []
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-stepsecurity-shai-hulud",
+        "ref-wiz-shai-hulud"
+      ],
+      "propagation_tier": "temporal",
+      "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+      "summary": "Public reporting places rxnt-authentication activity before the @ctrl/tinycolor wave and describes token reuse, but this edge is temporal precedence rather than asserted package-to-package causation."
     },
     {
       "id": "SEEDED_BY:release-npm-ctrl-tinycolor-4-1-1->release-npm-ctrl-tinycolor-4-1-2",
@@ -5698,7 +5717,14 @@
       "target": "release-npm-ctrl-tinycolor-4-1-2",
       "type": "SEEDED_BY",
       "evidence_tier": null,
-      "source_refs": []
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-npm-tinycolor-registry",
+        "ref-wiz-shai-hulud"
+      ],
+      "propagation_tier": "temporal",
+      "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+      "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation."
     },
     {
       "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2016-LINUX-MINT-ISO->channel-linux-website-download-linux-mint-download-site",

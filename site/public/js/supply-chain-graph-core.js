@@ -1,5 +1,8 @@
 const GRAPH_DATA_URL = '/supply-chain-graph.json';
-const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique']);
+const BASE_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique']);
+const BLOOM_TIERS = new Set(['organization', 'package', 'release']);
+const BLOOM_NODE_BUDGET = 28;
+const BLOOM_Z_THRESHOLD = 1.55;
 const SEVERITY_COLORS = {
   critical: [1.0, 0.267, 0.267, 1],
   high: [1.0, 0.647, 0.0, 1],
@@ -8,6 +11,10 @@ const SEVERITY_COLORS = {
   actor: [1.0, 0.267, 0.267, 1],
   campaign: [0.91, 0.627, 0.125, 1],
   technique: [0.804, 0.835, 0.878, 1],
+  organization: [0.49, 0.69, 1.0, 1],
+  package: [0.318, 0.812, 0.4, 1],
+  release: [0.804, 0.835, 0.878, 1],
+  propagation: [1.0, 0.647, 0.0, 1],
   default: [0.804, 0.835, 0.878, 1],
   muted: [0.353, 0.416, 0.494, 0.32],
 };
@@ -34,11 +41,21 @@ function tierRank(tier) {
   if (tier === 'technique') return 1;
   if (tier === 'campaign') return 2;
   if (tier === 'incident') return 3;
-  return 3;
+  if (tier === 'organization') return 4;
+  if (tier === 'package') return 5;
+  if (tier === 'release') return 6;
+  return 7;
 }
 
-function isG2DrawableNode(node) {
-  return DRAWABLE_TIERS.has(node?.tier);
+function isBaseDrawableNode(node) {
+  return BASE_DRAWABLE_TIERS.has(node?.tier);
+}
+
+function bloomRank(node) {
+  if (node.tier === 'organization') return 0;
+  if (node.tier === 'package') return 1;
+  if (node.tier === 'release') return 2;
+  return 3;
 }
 
 class SupplyChainQuadtree {
@@ -145,14 +162,212 @@ function fitBounds(nodes, viewport, padding = 120) {
   };
 }
 
+function boundsForNodes(nodes, fallback = { x0: -1200, y0: -240, x1: 1200, y1: 720 }) {
+  if (!nodes.length) return { ...fallback };
+  return nodes.reduce(
+    (acc, node) => ({
+      x0: Math.min(acc.x0, node.x - (node.radius || 10) * 3),
+      y0: Math.min(acc.y0, node.y - (node.radius || 10) * 3),
+      x1: Math.max(acc.x1, node.x + (node.radius || 10) * 3),
+      y1: Math.max(acc.y1, node.y + (node.radius || 10) * 3),
+    }),
+    { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity }
+  );
+}
+
+function mergeBounds(...boundsList) {
+  return boundsList.filter(Boolean).reduce(
+    (acc, bounds) => ({
+      x0: Math.min(acc.x0, bounds.x0),
+      y0: Math.min(acc.y0, bounds.y0),
+      x1: Math.max(acc.x1, bounds.x1),
+      y1: Math.max(acc.y1, bounds.y1),
+    }),
+    { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity }
+  );
+}
+
+function incidentNodeIdFromSourceIncidentId(sourceIncidentId) {
+  return sourceIncidentId ? `incident-${sourceIncidentId}` : null;
+}
+
+function sortBloomNodes(nodes) {
+  return nodes.sort((a, b) => bloomRank(a) - bloomRank(b) || (a.label || '').localeCompare(b.label || ''));
+}
+
+function packageIdForRelease(releaseId, edges) {
+  const edge = edges.find((item) => item.type === 'PACKAGE_RELEASE' && item.target === releaseId);
+  return edge?.source || null;
+}
+
+function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 0) {
+  const centerX = incident.x + 280;
+  const centerY = incident.y + 16;
+  const orgIds = context.orgIds.length > 0 ? context.orgIds : ['virtual-org-unattributed'];
+  const visibleChildren = sortBloomNodes(
+    [...context.orgIds, ...context.packageIds, ...context.releaseIds]
+      .map((id) => sourceNodes.get(id))
+      .filter(Boolean)
+  );
+  const needsAggregation = visibleChildren.length > BLOOM_NODE_BUDGET;
+  const visibleIds = new Set(
+    visibleChildren
+      .slice(0, BLOOM_NODE_BUDGET)
+      .map((node) => node.id)
+  );
+  context.orgIds.forEach((id) => visibleIds.add(id));
+  const hiddenCount = needsAggregation
+    ? visibleChildren.filter((node) => !visibleIds.has(node.id) && !context.orgIds.includes(node.id)).length
+    : 0;
+
+  const nodes = [];
+  orgIds.forEach((orgId, orgIndex) => {
+    const source = sourceNodes.get(orgId);
+    const angle = ((orgIndex + offset * 0.03) / Math.max(1, orgIds.length)) * Math.PI * 2 - Math.PI / 2;
+    const orgRadius = orgIds.length === 1 ? 0 : 96 + orgIds.length * 8;
+    const orgNode = source
+      ? { ...source }
+      : {
+          id: orgId,
+          entity_id: orgId,
+          type: 'organization',
+          tier: 'organization',
+          label: 'Unattributed Cluster',
+          radius: 11,
+        };
+    orgNode.x = centerX + Math.cos(angle) * orgRadius;
+    orgNode.y = centerY + Math.sin(angle) * orgRadius;
+    orgNode.radius = 12;
+    orgNode.bloom_parent = incident.id;
+    nodes.push(orgNode);
+
+    const packagesForOrg = context.packageIds
+      .map((id) => sourceNodes.get(id))
+      .filter((node) => node && visibleIds.has(node.id))
+      .filter((node, index) => {
+        if (orgIds.length === 1) return true;
+        return index % orgIds.length === orgIndex;
+      });
+    packagesForOrg.forEach((packageNode, packageIndex) => {
+      const packageAngle = (packageIndex / Math.max(1, packagesForOrg.length)) * Math.PI * 2 - Math.PI / 2;
+      const packageRadius = 54 + Math.floor(packageIndex / 8) * 30;
+      nodes.push({
+        ...packageNode,
+        x: orgNode.x + Math.cos(packageAngle) * packageRadius,
+        y: orgNode.y + Math.sin(packageAngle) * packageRadius,
+        radius: 8,
+        bloom_parent: incident.id,
+      });
+    });
+  });
+
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  context.releaseIds
+    .map((id) => sourceNodes.get(id))
+    .filter((node) => node && visibleIds.has(node.id))
+    .forEach((releaseNode, releaseIndex) => {
+      const packageId = packageIdForRelease(releaseNode.id, sourceEdges);
+      const parentPackage = packageId ? nodeById.get(packageId) : null;
+      const angle = (releaseIndex % 4) * (Math.PI / 2) + Math.PI / 4;
+      const anchor = parentPackage || incident;
+      const radius = parentPackage ? 30 : 128;
+      const node = {
+        ...releaseNode,
+        x: anchor.x + Math.cos(angle) * radius,
+        y: anchor.y + Math.sin(angle) * radius,
+        radius: 6,
+        bloom_parent: incident.id,
+      };
+      nodes.push(node);
+      nodeById.set(node.id, node);
+    });
+
+  if (hiddenCount > 0) {
+    nodes.push({
+      id: `${incident.id}::bloom-more`,
+      entity_id: `${incident.id}::bloom-more`,
+      type: 'aggregate',
+      tier: 'package',
+      label: `+${hiddenCount} more`,
+      x: centerX + 164,
+      y: centerY + 118,
+      radius: 10,
+      bloom_parent: incident.id,
+      aggregate: true,
+    });
+  }
+
+  const visibleSet = new Set(nodes.map((node) => node.id));
+  const edgeTypes = new Set(['AFFECTED_ORGANIZATION', 'AFFECTED_PACKAGE', 'PACKAGE_RELEASE', 'INCIDENT_AFFECTED_RELEASE', 'SEEDED_BY']);
+  const edges = sourceEdges
+    .filter((edge) => edgeTypes.has(edge.type))
+    .filter((edge) => {
+      if (edge.source === incident.id && visibleSet.has(edge.target)) return true;
+      if (edge.target === incident.id && visibleSet.has(edge.source)) return true;
+      if (visibleSet.has(edge.source) && visibleSet.has(edge.target)) return true;
+      if (edge.type === 'SEEDED_BY' && edge.source_incident_id && incidentNodeIdFromSourceIncidentId(edge.source_incident_id) === incident.id) {
+        return visibleSet.has(edge.source) && visibleSet.has(edge.target);
+      }
+      return false;
+    });
+
+  return { incidentId: incident.id, nodes, edges, hiddenCount, bounds: boundsForNodes([incident, ...nodes]) };
+}
+
+function buildBloomContext(incidentNodes, allNodes, edges) {
+  const contextByIncident = new Map(incidentNodes.map((incident) => [
+    incident.id,
+    { incidentId: incident.id, orgIds: [], packageIds: [], releaseIds: [] },
+  ]));
+  const add = (incidentId, key, value) => {
+    if (!incidentId || !value || !contextByIncident.has(incidentId)) return;
+    const list = contextByIncident.get(incidentId)[key];
+    if (!list.includes(value)) list.push(value);
+  };
+
+  edges.forEach((edge) => {
+    if (edge.type === 'AFFECTED_ORGANIZATION') add(edge.source, 'orgIds', edge.target);
+    if (edge.type === 'AFFECTED_PACKAGE') add(edge.source, 'packageIds', edge.target);
+    if (edge.type === 'INCIDENT_AFFECTED_RELEASE') add(edge.source, 'releaseIds', edge.target);
+    if (edge.type === 'PACKAGE_RELEASE') {
+      allNodes.forEach((node) => {
+        if (Array.isArray(node.source_incident_ids) && node.id === edge.source) {
+          node.source_incident_ids.forEach((sourceIncidentId) => add(`incident-${sourceIncidentId}`, 'releaseIds', edge.target));
+        }
+      });
+    }
+    if (edge.type === 'SEEDED_BY') {
+      const incidentId = incidentNodeIdFromSourceIncidentId(edge.source_incident_id);
+      add(incidentId, edge.source?.startsWith('release-') ? 'releaseIds' : 'packageIds', edge.source);
+      add(incidentId, edge.target?.startsWith('release-') ? 'releaseIds' : 'packageIds', edge.target);
+      const sourcePackageId = edge.source?.startsWith('release-') ? packageIdForRelease(edge.source, edges) : null;
+      const targetPackageId = edge.target?.startsWith('release-') ? packageIdForRelease(edge.target, edges) : null;
+      add(incidentId, 'packageIds', sourcePackageId);
+      add(incidentId, 'packageIds', targetPackageId);
+    }
+  });
+
+  allNodes.forEach((node) => {
+    if (!BLOOM_TIERS.has(node.tier) || !Array.isArray(node.source_incident_ids)) return;
+    node.source_incident_ids.forEach((sourceIncidentId) => {
+      const incidentId = `incident-${sourceIncidentId}`;
+      if (node.tier === 'organization') add(incidentId, 'orgIds', node.id);
+      if (node.tier === 'package') add(incidentId, 'packageIds', node.id);
+      if (node.tier === 'release') add(incidentId, 'releaseIds', node.id);
+    });
+  });
+
+  return contextByIncident;
+}
+
 function buildLayout(payload) {
-  const drawableNodes = payload.nodes.filter(isG2DrawableNode);
-  const nodeById = new Map(drawableNodes.map((node) => [node.id, { ...node }]));
-  const layoutNodes = Array.from(nodeById.values());
-  const incidentNodes = layoutNodes.filter((node) => node.tier === 'incident');
-  const actorNodes = layoutNodes.filter((node) => node.tier === 'actor');
-  const campaignNodes = layoutNodes.filter((node) => node.tier === 'campaign');
-  const techniqueNodes = layoutNodes.filter((node) => node.tier === 'technique');
+  const allNodes = payload.nodes.map((node) => ({ ...node }));
+  const nodeById = new Map(allNodes.map((node) => [node.id, node]));
+  const baseNodes = allNodes.filter(isBaseDrawableNode);
+  const incidentNodes = baseNodes.filter((node) => node.tier === 'incident');
+  const actorNodes = baseNodes.filter((node) => node.tier === 'actor');
+  const campaignNodes = baseNodes.filter((node) => node.tier === 'campaign');
+  const techniqueNodes = baseNodes.filter((node) => node.tier === 'technique');
   const actorIds = new Set(actorNodes.map((node) => node.id));
   const campaignIds = new Set(campaignNodes.map((node) => node.id));
   const incidentActor = new Map();
@@ -222,11 +437,18 @@ function buildLayout(payload) {
     node.radius = 12;
   });
 
-  const laidOutNodes = Array.from(nodeById.values()).sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
+  allNodes.forEach((node) => {
+    if (node.x !== undefined && node.y !== undefined) return;
+    node.x = 0;
+    node.y = 0;
+    node.radius = node.tier === 'release' ? 6 : node.tier === 'package' ? 8 : node.tier === 'organization' ? 12 : 9;
+  });
+
+  const laidOutNodes = baseNodes.sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
   const laidOutById = new Map(laidOutNodes.map((node) => [node.id, node]));
   const edges = payload.edges
-    .filter((edge) => laidOutById.has(edge.source) && laidOutById.has(edge.target))
-    .map((edge) => ({ ...edge, sourceNode: laidOutById.get(edge.source), targetNode: laidOutById.get(edge.target) }));
+    .filter((edge) => nodeById.has(edge.source) && nodeById.has(edge.target))
+    .map((edge) => ({ ...edge, sourceNode: nodeById.get(edge.source), targetNode: nodeById.get(edge.target) }));
   const bounds = laidOutNodes.reduce(
     (acc, node) => ({
       x0: Math.min(acc.x0, node.x - 180),
@@ -239,7 +461,57 @@ function buildLayout(payload) {
 
   const quadtree = new SupplyChainQuadtree(bounds);
   laidOutNodes.forEach((node) => quadtree.insert(node));
-  return { nodes: laidOutNodes, nodeById: laidOutById, edges, bounds, quadtree };
+  const bloomContext = buildBloomContext(incidentNodes, allNodes, edges);
+  return { nodes: laidOutNodes, allNodes, nodeById, baseNodeById: laidOutById, edges, bounds, quadtree, bloomContext };
+}
+
+function createBloomLayoutWorker() {
+  if (!('Worker' in window) || !('Blob' in window) || !('URL' in window)) return null;
+  const source = `
+    function boundsForNodes(nodes) {
+      return nodes.reduce((acc, node) => ({
+        x0: Math.min(acc.x0, node.x - (node.radius || 8) * 3),
+        y0: Math.min(acc.y0, node.y - (node.radius || 8) * 3),
+        x1: Math.max(acc.x1, node.x + (node.radius || 8) * 3),
+        y1: Math.max(acc.y1, node.y + (node.radius || 8) * 3),
+      }), { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity });
+    }
+    self.onmessage = (event) => {
+      const { requestId, incident, layout } = event.data || {};
+      const nodes = (layout?.nodes || []).map((node) => ({ ...node }));
+      for (let iteration = 0; iteration < 10; iteration += 1) {
+        for (let a = 0; a < nodes.length; a += 1) {
+          for (let b = a + 1; b < nodes.length; b += 1) {
+            const left = nodes[a];
+            const right = nodes[b];
+            if (left.aggregate || right.aggregate) continue;
+            const minDistance = (left.radius || 8) + (right.radius || 8) + 13;
+            const dx = right.x - left.x;
+            const dy = right.y - left.y;
+            const distance = Math.hypot(dx, dy) || 1;
+            if (distance >= minDistance) continue;
+            const push = (minDistance - distance) / 2;
+            const ux = dx / distance;
+            const uy = dy / distance;
+            left.x -= ux * push;
+            left.y -= uy * push;
+            right.x += ux * push;
+            right.y += uy * push;
+          }
+        }
+      }
+      self.postMessage({
+        requestId,
+        layout: {
+          ...layout,
+          nodes,
+          bounds: boundsForNodes([incident, ...nodes]),
+          worker_settled: true,
+        },
+      });
+    };
+  `;
+  return new Worker(URL.createObjectURL(new Blob([source], { type: 'text/javascript' })));
 }
 
 class SupplyChainGraph {
@@ -254,6 +526,20 @@ class SupplyChainGraph {
     this.reflowButton = root.querySelector('[data-sc-graph-focus-reflow]');
     this.viewport = { width: 1, height: 1, dpr: 1 };
     this.layout = buildLayout(payload);
+    this.bloomLayouts = new Map();
+    this.bloomWorkerRequests = new Map();
+    this.bloomWorker = createBloomLayoutWorker();
+    if (this.bloomWorker) {
+      this.bloomWorker.onmessage = (event) => {
+        const { requestId, layout } = event.data || {};
+        const incidentId = this.bloomWorkerRequests.get(requestId);
+        this.bloomWorkerRequests.delete(requestId);
+        if (!incidentId || !layout) return;
+        this.bloomLayouts.set(incidentId, layout);
+        this.lastLabelKey = '';
+      };
+    }
+    this.lastBloomIncidentId = null;
     this.camera = { cx: 0, cy: 0, z: 1 };
     this.targetCamera = { cx: 0, cy: 0, z: 1 };
     this.selection = null;
@@ -367,6 +653,7 @@ class SupplyChainGraph {
       event.preventDefault();
       const zoomFactor = Math.exp(-event.deltaY * 0.001);
       this.setCameraTarget({ ...this.targetCamera, z: clamp(this.targetCamera.z * zoomFactor, 0.22, 3.4) });
+      this.ensureSemanticBloom();
     }, { passive: false });
     this.reflowButton?.addEventListener('click', () => {
       if (this.selection?.type !== 'technique') return;
@@ -415,11 +702,16 @@ class SupplyChainGraph {
     return this.layout.nodes.filter((node) => relatedIds.has(node.id));
   }
 
+  activeBounds() {
+    const bloom = this.activeBloomLayout();
+    return bloom ? mergeBounds(this.layout.bounds, bloom.bounds) : this.layout.bounds;
+  }
+
   setCameraTarget(target, immediate = false) {
     const z = clamp(target.z, 0.22, 3.4);
     const halfWidth = this.viewport.width / z / 2;
     const halfHeight = this.viewport.height / z / 2;
-    const bounds = this.layout.bounds;
+    const bounds = this.activeBounds();
     this.targetCamera = {
       cx: clampAxis(target.cx, bounds.x0 + halfWidth, bounds.x1 - halfWidth),
       cy: clampAxis(target.cy, bounds.y0 + halfHeight, bounds.y1 - halfHeight),
@@ -446,8 +738,9 @@ class SupplyChainGraph {
   pick(clientX, clientY) {
     const world = this.screenToWorld(clientX, clientY);
     const radius = 24 / this.camera.z;
+    const visible = this.visibleGraph();
     if (this.focusReflow && this.selection?.type === 'technique') {
-      const nearest = this.layout.nodes.reduce((best, node) => {
+      const nearest = visible.nodes.reduce((best, node) => {
         const displayNode = this.displayNode(node);
         const distance = Math.hypot(displayNode.x - world.x, displayNode.y - world.y);
         if (distance > radius || (best && best.distance <= distance)) return best;
@@ -455,7 +748,7 @@ class SupplyChainGraph {
       }, null);
       return nearest?.point || null;
     }
-    const nearest = this.layout.quadtree.nearest(world.x, world.y, radius);
+    const nearest = visible.quadtree.nearest(world.x, world.y, radius);
     return nearest?.point || null;
   }
 
@@ -475,10 +768,11 @@ class SupplyChainGraph {
 
   selectByEntityId(type, value) {
     const normalizedType = type === 'threat actor' || type === 'threat_actor' ? 'actor' : type;
-    const node = this.layout.nodes.find(
+    const node = this.layout.allNodes.find(
       (item) => item.type === normalizedType && (item.id === value || item.entity_id === value)
     );
     if (!node) return false;
+    if (!BASE_DRAWABLE_TIERS.has(node.tier) && !BLOOM_TIERS.has(node.tier)) return false;
     this.selectNode(node);
     return true;
   }
@@ -507,6 +801,7 @@ class SupplyChainGraph {
 
   showOverview() {
     this.selection = null;
+    this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport));
     this.updateCaption(
       'Supply Chain Graph',
@@ -519,6 +814,7 @@ class SupplyChainGraph {
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
     this.focusReflow = false;
+    this.lastBloomIncidentId = null;
     this.updateReflowControl();
     this.setCameraTarget(fitBounds(nodes, this.viewport));
     this.updateCaption(`Attack stage: ${stage.replace(/_/g, ' ')}`, `${nodes.length} incident${nodes.length === 1 ? '' : 's'} selected.`);
@@ -526,19 +822,110 @@ class SupplyChainGraph {
 
   selectNode(node) {
     this.focusReflow = false;
+    if (node.tier === 'incident') this.ensureBloomLayout(node.id);
+    if (BLOOM_TIERS.has(node.tier)) {
+      const incidentId = this.incidentIdForBloomNode(node.id);
+      if (incidentId) this.ensureBloomLayout(incidentId);
+    }
     const cluster = this.clusterFor(node);
     const selectionNodes =
       node.tier === 'technique'
         ? cluster.filter((item) => item.tier === 'technique' || item.tier === 'incident').map((item) => item.id)
-        : [node.id];
+        : cluster.some((item) => item.id === node.id) ? cluster.map((item) => item.id) : [node.id];
     this.selection = { type: node.type, value: node.id, nodes: new Set(selectionNodes) };
     if (node.tier === 'technique') {
       this.frameSelectedTechniqueWideShot(cluster);
+    } else if (node.tier === 'incident') {
+      this.setCameraTarget(fitBounds(this.clusterFor(node), this.viewport, 190));
+    } else if (BLOOM_TIERS.has(node.tier)) {
+      this.setCameraTarget(fitBounds(cluster, this.viewport, 180));
     } else {
       this.setCameraTarget(fitBounds(cluster, this.viewport, node.tier === 'incident' ? 170 : 140));
     }
     this.updateCaption(node.label, node.summary || `${node.type.replace(/_/g, ' ')} node selected.`);
     this.updateReflowControl();
+  }
+
+  ensureBloomLayout(incidentId) {
+    const incident = this.layout.baseNodeById.get(incidentId);
+    const context = this.layout.bloomContext.get(incidentId);
+    if (!incident || !context) return null;
+    if (!this.bloomLayouts.has(incidentId)) {
+      const layout = buildBloomLayout(incident, context, this.layout.nodeById, this.layout.edges);
+      this.bloomLayouts.set(incidentId, layout);
+      if (this.bloomWorker) {
+        const requestId = `${incidentId}:${performance.now()}`;
+        this.bloomWorkerRequests.set(requestId, incidentId);
+        this.bloomWorker.postMessage({ requestId, incident, layout });
+      }
+    }
+    this.lastBloomIncidentId = incidentId;
+    return this.bloomLayouts.get(incidentId);
+  }
+
+  activeBloomIncidentId() {
+    if (this.selection?.type === 'incident') return this.selection.value;
+    if (this.selection && BLOOM_TIERS.has(this.selection.type)) {
+      const incidentId = this.incidentIdForBloomNode(this.selection.value);
+      if (incidentId) return incidentId;
+    }
+    if (this.camera.z < BLOOM_Z_THRESHOLD || this.focusReflow) return null;
+    const worldCenter = { x: this.camera.cx, y: this.camera.cy };
+    const nearest = this.layout.nodes
+      .filter((node) => node.tier === 'incident')
+      .reduce((best, node) => {
+        const distance = Math.hypot(node.x - worldCenter.x, node.y - worldCenter.y);
+        if (distance > 190 || (best && best.distance <= distance)) return best;
+        return { node, distance };
+      }, null);
+    return nearest?.node?.id || null;
+  }
+
+  ensureSemanticBloom() {
+    const incidentId = this.activeBloomIncidentId();
+    if (incidentId) this.ensureBloomLayout(incidentId);
+  }
+
+  activeBloomLayout() {
+    const incidentId = this.activeBloomIncidentId();
+    if (incidentId) return this.ensureBloomLayout(incidentId);
+    if (this.lastBloomIncidentId && this.selection?.type !== 'stage' && !this.focusReflow) {
+      return this.ensureBloomLayout(this.lastBloomIncidentId);
+    }
+    return null;
+  }
+
+  incidentIdForBloomNode(nodeId) {
+    for (const [incidentId, bloom] of this.bloomLayouts.entries()) {
+      if (bloom.nodes.some((node) => node.id === nodeId)) return incidentId;
+    }
+    for (const [incidentId, context] of this.layout.bloomContext.entries()) {
+      if (context.orgIds.includes(nodeId) || context.packageIds.includes(nodeId) || context.releaseIds.includes(nodeId)) return incidentId;
+    }
+    return null;
+  }
+
+  visibleGraph() {
+    const bloom = this.activeBloomLayout();
+    const nodes = bloom ? [...this.layout.nodes, ...bloom.nodes] : this.layout.nodes;
+    const visibleById = new Map(nodes.map((node) => [node.id, node]));
+    const edges = this.layout.edges
+      .filter((edge) => visibleById.has(edge.source) && visibleById.has(edge.target))
+      .filter((edge) => {
+        if (!bloom && (BLOOM_TIERS.has(edge.sourceNode?.tier) || BLOOM_TIERS.has(edge.targetNode?.tier))) return false;
+        if (edge.type === 'SEEDED_BY') return Boolean(bloom);
+        if (bloom?.edges.some((bloomEdge) => bloomEdge.id === edge.id)) return true;
+        return BASE_DRAWABLE_TIERS.has(edge.sourceNode?.tier) && BASE_DRAWABLE_TIERS.has(edge.targetNode?.tier);
+      })
+      .map((edge) => ({ ...edge, sourceNode: visibleById.get(edge.source), targetNode: visibleById.get(edge.target) }));
+    const bounds = bloom ? mergeBounds(this.layout.bounds, bloom.bounds) : this.layout.bounds;
+    const quadtree = new SupplyChainQuadtree(bounds);
+    nodes.forEach((node) => quadtree.insert(node));
+    return { nodes, nodeById: visibleById, edges, bounds, quadtree };
+  }
+
+  getVisibleGraph() {
+    return this.currentVisibleGraph || this.visibleGraph();
   }
 
   frameSelectedTechniqueWideShot(cluster = null) {
@@ -566,6 +953,8 @@ class SupplyChainGraph {
         if (edge.target === node.id) clusterIds.add(edge.source);
         if (edge.source === node.id) clusterIds.add(edge.target);
       });
+      const bloom = this.ensureBloomLayout(node.id);
+      bloom?.nodes.forEach((item) => clusterIds.add(item.id));
     } else if (node.tier === 'technique') {
       this.layout.edges.forEach((edge) => {
         if (edge.source === node.id && edge.type === 'INCIDENT_TECHNIQUE') {
@@ -580,8 +969,24 @@ class SupplyChainGraph {
           });
         }
       });
+    } else if (BLOOM_TIERS.has(node.tier)) {
+      const incidentId = this.incidentIdForBloomNode(node.id);
+      if (incidentId) {
+        clusterIds.add(incidentId);
+        const bloom = this.ensureBloomLayout(incidentId);
+        bloom?.nodes.forEach((item) => {
+          if (item.id === node.id || item.tier === 'organization' || item.tier === 'package') clusterIds.add(item.id);
+        });
+        bloom?.edges.forEach((edge) => {
+          if (edge.type === 'SEEDED_BY' && (edge.source === node.id || edge.target === node.id)) {
+            clusterIds.add(edge.source);
+            clusterIds.add(edge.target);
+          }
+        });
+      }
     }
-    return this.layout.nodes.filter((item) => clusterIds.has(item.id));
+    const visible = this.getVisibleGraph();
+    return visible.nodes.filter((item) => clusterIds.has(item.id));
   }
 
   updateReflowControl() {
@@ -601,6 +1006,9 @@ class SupplyChainGraph {
 
   colorForNode(node) {
     if (node.tier === 'technique') return SEVERITY_COLORS.technique;
+    if (node.tier === 'organization') return SEVERITY_COLORS.organization;
+    if (node.tier === 'package') return node.aggregate ? SEVERITY_COLORS.muted : SEVERITY_COLORS.package;
+    if (node.tier === 'release') return SEVERITY_COLORS.release;
     if (this.selection?.type === 'stage' && node.tier === 'incident') {
       return this.selection.nodes.has(node.id) ? SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default : SEVERITY_COLORS.muted;
     }
@@ -614,8 +1022,18 @@ class SupplyChainGraph {
 
   edgeAlpha(edge) {
     if (!this.selection) return 0.28;
+    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? 0.78 : 0.42;
     if (this.selection.nodes?.has(edge.source) || this.selection.nodes?.has(edge.target)) return 0.64;
     return 0.1;
+  }
+
+  colorForEdge(edge) {
+    if (edge.type === 'ATTRIBUTED_TO_ACTOR') return SEVERITY_COLORS.high;
+    if (edge.type === 'INCIDENT_TECHNIQUE') return SEVERITY_COLORS.technique;
+    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? SEVERITY_COLORS.propagation : SEVERITY_COLORS.muted;
+    if (edge.type === 'PACKAGE_RELEASE' || edge.type === 'INCIDENT_AFFECTED_RELEASE') return SEVERITY_COLORS.release;
+    if (edge.type === 'AFFECTED_ORGANIZATION' || edge.type === 'AFFECTED_PACKAGE') return SEVERITY_COLORS.package;
+    return SEVERITY_COLORS.medium;
   }
 
   displayNode(node) {
@@ -636,18 +1054,31 @@ class SupplyChainGraph {
   drawEdges() {
     const gl = this.gl;
     const values = [];
-    this.layout.edges.forEach((edge) => {
-      const alpha = this.edgeAlpha(edge);
-      const color =
-        edge.type === 'ATTRIBUTED_TO_ACTOR'
-          ? SEVERITY_COLORS.high
-          : edge.type === 'INCIDENT_TECHNIQUE'
-            ? SEVERITY_COLORS.technique
-            : SEVERITY_COLORS.medium;
-      const sourceNode = this.displayNode(edge.sourceNode);
-      const targetNode = this.displayNode(edge.targetNode);
+    const visible = this.getVisibleGraph();
+    const pushSegment = (sourceNode, targetNode, color, alpha) => {
       values.push(sourceNode.x, sourceNode.y, color[0], color[1], color[2], alpha);
       values.push(targetNode.x, targetNode.y, color[0], color[1], color[2], alpha);
+    };
+    visible.edges.forEach((edge) => {
+      const alpha = this.edgeAlpha(edge);
+      const color = this.colorForEdge(edge);
+      const sourceNode = this.displayNode(edge.sourceNode);
+      const targetNode = this.displayNode(edge.targetNode);
+      if (edge.type === 'SEEDED_BY' && edge.propagation_tier === 'temporal') {
+        const segments = 10;
+        for (let index = 0; index < segments; index += 2) {
+          const a = index / segments;
+          const b = (index + 1) / segments;
+          pushSegment(
+            { x: lerp(sourceNode.x, targetNode.x, a), y: lerp(sourceNode.y, targetNode.y, a) },
+            { x: lerp(sourceNode.x, targetNode.x, b), y: lerp(sourceNode.y, targetNode.y, b) },
+            color,
+            alpha
+          );
+        }
+      } else {
+        pushSegment(sourceNode, targetNode, color, alpha);
+      }
     });
     gl.useProgram(this.edgeProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffer);
@@ -672,7 +1103,7 @@ class SupplyChainGraph {
   drawNodes() {
     const gl = this.gl;
     const values = [];
-    this.layout.nodes.forEach((node) => {
+    this.getVisibleGraph().nodes.forEach((node) => {
       const displayNode = this.displayNode(node);
       const color = this.colorForNode(node);
       const selected = this.selection?.nodes?.has(node.id);
@@ -710,10 +1141,11 @@ class SupplyChainGraph {
   }
 
   drawLabels() {
-    const labelNodes = this.layout.nodes.filter(
+    const labelNodes = this.getVisibleGraph().nodes.filter(
       (node) =>
         node.tier === 'actor' ||
         node.tier === 'campaign' ||
+        (node.tier === 'organization' && node.bloom_parent) ||
         (node.tier === 'technique' && this.selection?.value === node.id) ||
         this.selection?.nodes?.has(node.id)
     );
@@ -745,12 +1177,15 @@ class SupplyChainGraph {
       cy: lerp(this.camera.cy, this.targetCamera.cy, this.reduceMotion ? 1 : 0.14),
       z: lerp(this.camera.z, this.targetCamera.z, this.reduceMotion ? 1 : 0.16),
     };
+    this.ensureSemanticBloom();
+    this.currentVisibleGraph = this.visibleGraph();
     const gl = this.gl;
     gl.clearColor(0.031, 0.043, 0.063, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     this.drawEdges();
     this.drawNodes();
     this.drawLabels();
+    this.currentVisibleGraph = null;
     requestAnimationFrame(() => this.frame());
   }
 }

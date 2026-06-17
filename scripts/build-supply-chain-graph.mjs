@@ -142,7 +142,7 @@ function normalizeRelationshipEdge(relationship, nodeIds) {
     target: relationship.target,
   };
 
-  return {
+  const edge = {
     id: `${relationship.type}:${directed.source}->${directed.target}`,
     source: directed.source,
     target: directed.target,
@@ -150,6 +150,11 @@ function normalizeRelationshipEdge(relationship, nodeIds) {
     evidence_tier: relationship.evidence_tier || null,
     source_refs: Array.isArray(relationship.source_refs) ? relationship.source_refs : [],
   };
+  if (Array.isArray(relationship.evidence_refs)) edge.evidence_refs = relationship.evidence_refs;
+  if (relationship.propagation_tier) edge.propagation_tier = relationship.propagation_tier;
+  if (relationship.source_incident_id) edge.source_incident_id = relationship.source_incident_id;
+  if (relationship.summary) edge.summary = relationship.summary;
+  return edge;
 }
 
 function deriveIncidentContextEdges(nodes, incidents, entities) {
@@ -321,7 +326,9 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       g2_drawable_tiers: ['actor', 'campaign', 'incident'],
       g3_drawable_tiers: ['actor', 'campaign', 'incident', 'technique'],
       technique_focus: 'wide-shot-default-with-operator-reflow',
-      package_release_lod: 'payload-only-until-G4',
+      package_release_lod: 'g4-dive-and-bloom',
+      bloom_tiers: ['organization', 'package', 'release'],
+      seeded_by_edges: 'causal-solid-temporal-dashed',
       layout: 'time-anchored-actor-lanes',
     },
     counts,
