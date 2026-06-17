@@ -187,8 +187,8 @@ assert.equal(index.counts.distributionChannels, data.entities.distribution_chann
 assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
 assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should not expose the internal codename');
 assert.equal(index.graphHero.status, 'WebGL graph loading', 'index should expose the G2 graph loading state');
-assert.ok(index.graphHero.nodeCount > data.incidents.length, 'graph hero should expose corpus node count');
-assert.equal(index.graphHero.relationshipCount, data.relationships.length, 'graph hero should expose relationship count');
+assert.equal(index.graphHero.nodeCount, supplyChainGraphPayload.nodes.length, 'graph hero should expose rendered graph node count');
+assert.equal(index.graphHero.relationshipCount, supplyChainGraphPayload.edges.length, 'graph hero should expose rendered graph edge count');
 assert.equal(index.incidents.length, data.incidents.length, 'index should expose every incident row');
 assert.ok(index.incidents.every((incident) => incident.summary), 'index incident rows should preserve summaries');
 index.incidents.forEach((incident) => {
@@ -389,6 +389,7 @@ assert.ok(
     supplyChainGraphSource.includes('Focus reflow') &&
     supplyChainGraphSource.includes("edge.type === 'INCIDENT_TECHNIQUE'") &&
     supplyChainGraphSource.includes("this.selection?.type === 'technique'") &&
+    supplyChainGraphSource.includes('frameSelectedTechniqueWideShot') &&
     supplyChainGraphSource.includes('z: Math.min(fit.z, 0.82)') &&
     supplyChainGraphSource.includes("contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN'") &&
     supplyChainGraphSource.includes("this.focusReflow && this.selection?.type === 'technique'") &&

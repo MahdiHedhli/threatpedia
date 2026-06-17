@@ -371,6 +371,7 @@ class SupplyChainGraph {
     this.reflowButton?.addEventListener('click', () => {
       if (this.selection?.type !== 'technique') return;
       this.focusReflow = !this.focusReflow;
+      if (!this.focusReflow) this.frameSelectedTechniqueWideShot();
       this.reflowButton.setAttribute('aria-pressed', String(this.focusReflow));
       this.reflowButton.textContent = this.focusReflow ? 'Restore wide shot' : 'Focus reflow';
     });
@@ -498,10 +499,22 @@ class SupplyChainGraph {
         ? cluster.filter((item) => item.tier === 'technique' || item.tier === 'incident').map((item) => item.id)
         : [node.id];
     this.selection = { type: node.type, value: node.id, nodes: new Set(selectionNodes) };
-    const fit = fitBounds(cluster, this.viewport, node.tier === 'technique' ? 300 : node.tier === 'incident' ? 170 : 140);
-    this.setCameraTarget(node.tier === 'technique' ? { ...fit, z: Math.min(fit.z, 0.82) } : fit);
+    if (node.tier === 'technique') {
+      this.frameSelectedTechniqueWideShot(cluster);
+    } else {
+      this.setCameraTarget(fitBounds(cluster, this.viewport, node.tier === 'incident' ? 170 : 140));
+    }
     this.updateCaption(node.label, node.summary || `${node.type.replace(/_/g, ' ')} node selected.`);
     this.updateReflowControl();
+  }
+
+  frameSelectedTechniqueWideShot(cluster = null) {
+    if (this.selection?.type !== 'technique') return;
+    const selectedNode = this.layout.nodeById.get(this.selection.value);
+    const techniqueCluster = cluster || (selectedNode ? this.clusterFor(selectedNode) : []);
+    if (!techniqueCluster.length) return;
+    const fit = fitBounds(techniqueCluster, this.viewport, 300);
+    this.setCameraTarget({ ...fit, z: Math.min(fit.z, 0.82) });
   }
 
   clusterFor(node) {
