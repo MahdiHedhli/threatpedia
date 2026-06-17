@@ -48,6 +48,10 @@ assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
 );
+assert.ok(
+  !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
+  'route should not persist page-specific hero copy or selection data'
+);
 
 const expectedRouteCount =
   1 +

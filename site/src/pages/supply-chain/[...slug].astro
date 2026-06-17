@@ -75,12 +75,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 >
   <section
     class="graph-hero graph-hero-persistent"
-    transition:persist="supply-chain-graph-hero"
     aria-labelledby="supply-chain-title"
     data-graph-selection-type={graphSelectionType}
     data-graph-selection-value={graphSelectionValue}
   >
-    <div class="graph-placeholder" role="img" aria-label="Persistent preview of the Supply Chain corpus graph">
+    <div
+      class="graph-placeholder"
+      transition:persist="supply-chain-graph-hero"
+      role="img"
+      aria-label="Persistent preview of the Supply Chain corpus graph"
+    >
       <div class="graph-status">
         <span>{graphHero.status}</span>
         <span>Actor → Release</span>
@@ -101,8 +105,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         <span class="node node-org">Org</span>
       </div>
       <div class="graph-caption">
-        <strong>{graphHero.title}</strong>
-        <span>{titleCase(graphSelectionType)}</span>
+        <strong>Supply Chain Graph</strong>
+        <span>Persistent corpus surface</span>
       </div>
     </div>
     <div class="hero-copy">
