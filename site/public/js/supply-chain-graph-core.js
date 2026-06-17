@@ -187,7 +187,7 @@ function buildLayout(payload) {
 
   incidentNodes.forEach((node, index) => {
     const actorId = incidentActor.get(node.id) || 'actor-unattributed';
-    const lane = laneIndex.get(actorId) || laneIndex.get('actor-unattributed') || 0;
+    const lane = laneIndex.get(actorId) ?? laneIndex.get('actor-unattributed') ?? 0;
     node.x = xForTime(node.time);
     node.y = lane * 190 + 72 + ((index % 3) - 1) * 18;
     node.radius = 10;
