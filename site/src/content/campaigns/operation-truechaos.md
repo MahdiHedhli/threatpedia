@@ -52,10 +52,10 @@ mitreMappings:
     techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Adversaries abused the trusted TrueConf on-premises update relationship to distribute a trojanized client package."
-  - techniqueId: "T1574.002"
-    techniqueName: "DLL Side-Loading"
-    tactic: "Defense Evasion"
-    notes: "Malicious updates dropped files used for DLL sideloading through legitimate-looking software paths."
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
+    tactic: "Stealth"
+    notes: "Malicious updates dropped legitimate binaries with malicious DLLs to hijack execution through trusted process paths."
   - techniqueId: "T1021.001"
     techniqueName: "Remote Desktop Protocol"
     tactic: "Lateral Movement"
@@ -94,19 +94,11 @@ The actors utilized the initial foothold to conduct hands-on-keyboard reconnaiss
 
 ## MITRE ATT&CK Mapping
 
-### Initial Access
-
 T1195.002 - Supply Chain Compromise: Compromise Software Supply Chain: The campaign's core vector involved hijacking the TrueConf update flow from a compromised on-premises server.
 
-### Defense Evasion
-
-T1574.002 - Hijack Execution Flow: DLL Side-Loading: Attackers used a combination of legitimate binaries and malicious DLLs to execute payloads and evade endpoint detection.
-
-### Lateral Movement
+T1574.001 - DLL: Attackers used a combination of legitimate binaries and malicious DLLs to execute payloads and evade endpoint detection.
 
 T1021.001 - Remote Services: Remote Desktop Protocol: Adversaries were observed using RDP to pivot between agencies within the compromised governmental IT infrastructure.
-
-### Command and Control
 
 T1071.001 - Application Layer Protocol: Web Protocols: The campaign utilized HTTP/S for C2 communications, frequently interacting with the Havoc framework.
 
