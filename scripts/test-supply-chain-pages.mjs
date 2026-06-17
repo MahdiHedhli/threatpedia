@@ -68,6 +68,7 @@ assert.ok(
 assert.ok(
   baseLayoutSource.includes('const to = ev.to;') &&
     baseLayoutSource.includes('if (to)') &&
+    baseLayoutSource.includes('ev.preventDefault();') &&
     baseLayoutSource.includes('window.location.href = to.href;'),
   'Base layout transition fallback should guard optional Astro destination data'
 );
@@ -128,6 +129,13 @@ assert.ok(
     baseLayoutSource.includes("document.addEventListener('keydown', (e) =>") &&
     baseLayoutSource.includes('}, { capture: true });'),
   'Base layout should use delegated search listeners with capture-phase Escape handling'
+);
+assert.ok(
+  baseLayoutSource.includes('document.documentElement.dataset.threatpediaTooltipBound') &&
+    baseLayoutSource.includes("document.addEventListener('mouseover',") &&
+    baseLayoutSource.includes("document.addEventListener('focusin',") &&
+    !baseLayoutSource.includes("span.addEventListener('mouseenter'"),
+  'Base layout should use delegated tooltip listeners that survive Astro cache restores'
 );
 assert.ok(
   !/function initializeThreatpediaLayout\(\) \{[\s\S]*?if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),

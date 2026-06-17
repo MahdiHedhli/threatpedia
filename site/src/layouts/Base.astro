@@ -237,8 +237,8 @@ try {
           const to = ev.to;
           const toPath = to?.pathname || '';
           if (!(isSupplyChainPath(fromPath) && isSupplyChainPath(toPath))) {
-            ev.preventDefault();
             if (to) {
+              ev.preventDefault();
               window.location.href = to.href;
             }
           }
@@ -393,6 +393,78 @@ try {
           }
         }, { capture: true });
         document.documentElement.dataset.threatpediaSearchBound = 'true';
+      }
+
+      let tooltipEl = null;
+      let tooltipHideTimeout;
+
+      function getTooltipElement() {
+        if (tooltipEl && document.body.contains(tooltipEl)) return tooltipEl;
+        tooltipEl = document.createElement('div');
+        tooltipEl.className = 'tp-tooltip';
+        tooltipEl.setAttribute('role', 'tooltip');
+        tooltipEl.style.display = 'none';
+        document.body.appendChild(tooltipEl);
+        return tooltipEl;
+      }
+
+      function showTooltip(anchor) {
+        clearTimeout(tooltipHideTimeout);
+        const html = anchor.getAttribute('data-tp-tooltip');
+        if (!html) return;
+        const tooltip = getTooltipElement();
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+
+        const rect = anchor.getBoundingClientRect();
+        const ttRect = tooltip.getBoundingClientRect();
+        let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+        let top = rect.bottom + 8;
+
+        if (left < 8) left = 8;
+        if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
+        if (top + ttRect.height > window.innerHeight - 8) {
+          top = rect.top - ttRect.height - 8;
+        }
+
+        tooltip.style.left = left + window.scrollX + 'px';
+        tooltip.style.top = top + window.scrollY + 'px';
+      }
+
+      function hideTooltip() {
+        tooltipHideTimeout = setTimeout(() => {
+          const tooltip = getTooltipElement();
+          tooltip.style.display = 'none';
+        }, 200);
+      }
+
+      if (!document.documentElement.dataset.threatpediaTooltipBound) {
+        document.addEventListener('mouseover', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          const term = target?.closest('.tp-linked-term');
+          if (term) {
+            showTooltip(term);
+            return;
+          }
+          if (target?.closest('.tp-tooltip')) {
+            clearTimeout(tooltipHideTimeout);
+          }
+        });
+        document.addEventListener('mouseout', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          if (target?.closest('.tp-linked-term, .tp-tooltip')) {
+            hideTooltip();
+          }
+        });
+        document.addEventListener('focusin', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target.closest('.tp-linked-term') : null;
+          if (target) showTooltip(target);
+        });
+        document.addEventListener('focusout', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target.closest('.tp-linked-term') : null;
+          if (target) hideTooltip();
+        });
+        document.documentElement.dataset.threatpediaTooltipBound = 'true';
       }
 
       function initializeThreatpediaLayout() {
@@ -900,45 +972,6 @@ try {
               return parts.join('');
             }
 
-            // ── Create tooltip element (singleton) ───────────────────────────
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tp-tooltip';
-            tooltip.setAttribute('role', 'tooltip');
-            tooltip.style.display = 'none';
-            document.body.appendChild(tooltip);
-
-            let hideTimeout;
-            function showTooltip(anchor) {
-              clearTimeout(hideTimeout);
-              const html = anchor.getAttribute('data-tp-tooltip');
-              if (!html) return;
-              tooltip.innerHTML = html;
-              tooltip.style.display = 'block';
-
-              // Position below the anchor
-              const rect = anchor.getBoundingClientRect();
-              const ttRect = tooltip.getBoundingClientRect();
-              let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
-              let top = rect.bottom + 8;
-
-              // Keep within viewport
-              if (left < 8) left = 8;
-              if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
-              if (top + ttRect.height > window.innerHeight - 8) {
-                top = rect.top - ttRect.height - 8; // flip above
-              }
-
-              tooltip.style.left = left + window.scrollX + 'px';
-              tooltip.style.top = top + window.scrollY + 'px';
-            }
-
-            function hideTooltip() {
-              hideTimeout = setTimeout(() => { tooltip.style.display = 'none'; }, 200);
-            }
-
-            tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-            tooltip.addEventListener('mouseleave', hideTooltip);
-
             // ── Walk text nodes and apply linking ────────────────────────────
             const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
               acceptNode(node) {
@@ -1047,10 +1080,6 @@ try {
                 if (tooltipHTML) {
                   span.setAttribute('data-tp-tooltip', tooltipHTML);
                   span.setAttribute('tabindex', '0');
-                  span.addEventListener('mouseenter', () => showTooltip(span));
-                  span.addEventListener('mouseleave', hideTooltip);
-                  span.addEventListener('focus', () => showTooltip(span));
-                  span.addEventListener('blur', hideTooltip);
 
                   // Add tier-specific styling class
                   if (crEntry?.tier === 1) span.classList.add('tp-tier1');
