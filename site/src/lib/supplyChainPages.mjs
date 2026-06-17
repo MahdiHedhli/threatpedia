@@ -311,14 +311,33 @@ function incidentLinkRow(incident) {
 }
 
 function incidentLinksFor(data, entityId) {
-  return relationshipRows(data, entityId)
+  const direct = relationshipRows(data, entityId)
     .filter((row) => row.incident)
     .map((row) => ({
       href: `/supply-chain/incidents/${row.incident.id}/`,
       label: row.incident.title,
       id: row.incident.id,
       type: row.type,
-    }))
+    }));
+  const seededByContext = data.relationships
+    .filter((relationship) => relationship.type === 'SEEDED_BY')
+    .filter((relationship) => relationship.source === entityId || relationship.target === entityId)
+    .map((relationship) => data.incidentByNodeId.get(`incident-${relationship.source_incident_id}`))
+    .filter(Boolean)
+    .map((incident) => ({
+      href: `/supply-chain/incidents/${incident.id}/`,
+      label: incident.title,
+      id: incident.id,
+      type: 'SEEDED_BY',
+    }));
+  const seen = new Set();
+  return [...direct, ...seededByContext]
+    .filter((row) => {
+      const key = `${row.id}:${row.type}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
     .sort(compareLabel);
 }
 
