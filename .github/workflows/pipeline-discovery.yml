@@ -175,6 +175,7 @@ jobs:
           fi
           node scripts/vulncheck-kev-intake.mjs \
             --execute \
+            --max-candidates 30 \
             --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
             --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
 
@@ -203,7 +204,22 @@ jobs:
 
             const BRANCH = process.env.DISCOVERY_BRANCH;
             const LABEL = process.env.DISCOVERY_LABEL;
+            const REVIEWERS = ['MahdiHedhli', 'dangermouse-bot', 'ernestpenfold-bot'];
             const { owner, repo } = context.repo;
+
+            async function requestDiscoveryReviewers(pullNumber) {
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner,
+                  repo,
+                  pull_number: pullNumber,
+                  reviewers: REVIEWERS,
+                });
+                console.log(`Requested reviewers on PR #${pullNumber}: ${REVIEWERS.join(', ')}`);
+              } catch (e) {
+                console.log(`Could not request all discovery reviewers on PR #${pullNumber}: ${e.message}`);
+              }
+            }
 
             // ── Enumerate task and source-packet prefill files currently on
             //    the branch but not on main. These are pending human review in
@@ -317,6 +333,7 @@ jobs:
             body += `**Merge** to accept the whole batch. **Close** (without merging) to discard this staged batch.\n`;
             body += `For a durable veto across future discovery runs, use the rejection-memory workflow and merge its PR.\n`;
             body += `Nothing auto-merges from this PR.\n\n`;
+            body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
             body += `---\n\n`;
             if (tasks.length > 0) {
               body += `**${tasks.length} task${tasks.length === 1 ? '' : 's'}** currently pending review.\n\n`;
@@ -365,6 +382,7 @@ jobs:
                 title,
                 body,
               });
+              await requestDiscoveryReviewers(pr.number);
             } else {
               console.log('Creating new discovery PR');
               const { data: pr } = await github.rest.pulls.create({
@@ -383,6 +401,7 @@ jobs:
               } catch (e) {
                 console.log(`Could not add label ${LABEL} to PR #${pr.number}: ${e.message}`);
               }
+              await requestDiscoveryReviewers(pr.number);
               console.log(`Opened PR #${pr.number}: ${pr.html_url}`);
             }
 

@@ -85,7 +85,7 @@ export const DEFAULTS = Object.freeze({
       enabled: true,
       backup_url: 'https://api.vulncheck.com/v3/backup/vulncheck-kev',
       lookback_days: 30,
-      max_candidates: 20,
+      max_candidates: 30,
       backlog_fill: true,
       sibling_limit_per_vendor_product_day: 4,
       local_throttle_ms: 250,
