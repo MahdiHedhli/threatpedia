@@ -434,6 +434,11 @@ assert.ok(
   'graph client should not keep cached bloom visible after semantic zoom or incident selection ends'
 );
 assert.ok(
+  supplyChainGraphSource.includes('if (this.selection) return null;') &&
+    supplyChainGraphSource.includes("if (node.tier !== 'incident' && !BLOOM_TIERS.has(node.tier)) this.lastBloomIncidentId = null;"),
+  'graph client should prevent actor/campaign/entity selections from implicitly reactivating semantic bloom'
+);
+assert.ok(
   supplyChainGraphSource.includes("edge.type === 'SEEDED_BY'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),

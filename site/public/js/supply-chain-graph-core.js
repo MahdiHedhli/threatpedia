@@ -792,6 +792,7 @@ class SupplyChainGraph {
       return;
     }
     this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
+    this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
     this.updateCaption(
       entity?.label || value,
@@ -822,6 +823,7 @@ class SupplyChainGraph {
 
   selectNode(node) {
     this.focusReflow = false;
+    if (node.tier !== 'incident' && !BLOOM_TIERS.has(node.tier)) this.lastBloomIncidentId = null;
     if (node.tier === 'incident') this.ensureBloomLayout(node.id);
     if (BLOOM_TIERS.has(node.tier)) {
       const incidentId = this.incidentIdForBloomNode(node.id);
@@ -869,6 +871,7 @@ class SupplyChainGraph {
       const incidentId = this.incidentIdForBloomNode(this.selection.value);
       if (incidentId) return incidentId;
     }
+    if (this.selection) return null;
     if (this.camera.z < BLOOM_Z_THRESHOLD || this.focusReflow) return null;
     const worldCenter = { x: this.camera.cx, y: this.camera.cy };
     const nearest = this.layout.nodes
