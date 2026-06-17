@@ -111,8 +111,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     </div>
     <div class="hero-copy">
       <p class="eyebrow">{graphHero.eyebrow}</p>
-      <h1 id="supply-chain-title">{page.kind === 'index' ? 'Supply Chain' : graphHero.title}</h1>
-      <p class="lede">{graphHero.summary}</p>
+      {page.kind === 'index' ? (
+        <h1 id="supply-chain-title">Supply Chain</h1>
+      ) : (
+        <p id="supply-chain-title" class="graph-context-title">Focused Graph View</p>
+      )}
+      <p class="lede">
+        {page.kind === 'index'
+          ? graphHero.summary
+          : `The persistent graph is framed to this ${page.kind === 'incident' ? 'incident' : page.entityType.toLowerCase()} while the canonical page heading and details continue below.`}
+      </p>
       <div class="hero-meta" aria-label="Supply Chain graph summary">
         {graphHero.nodeCount !== undefined && <span>{compactNumber(graphHero.nodeCount)} nodes</span>}
         {graphHero.relationshipCount !== undefined && <span>{compactNumber(graphHero.relationshipCount)} edges</span>}
@@ -478,6 +486,14 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     font-size: clamp(2rem, 4.3vw, 4.2rem);
     line-height: 0.98;
     padding-bottom: 0;
+  }
+
+  .graph-context-title {
+    margin: 0;
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 3vw, 2.4rem);
+    line-height: 1.08;
   }
 
   .hero-copy .eyebrow {
