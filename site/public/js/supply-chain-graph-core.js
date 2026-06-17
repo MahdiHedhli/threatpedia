@@ -858,6 +858,8 @@ class SupplyChainGraph {
   }
 
   handleKeydown(event) {
+    const interactiveTarget = event.target?.closest?.('a, button, input, select, textarea, summary, [contenteditable="true"]');
+    if (interactiveTarget && interactiveTarget !== this.root) return;
     const forwardKeys = new Set(['ArrowRight', 'ArrowDown']);
     const backwardKeys = new Set(['ArrowLeft', 'ArrowUp']);
     if (!forwardKeys.has(event.key) && !backwardKeys.has(event.key) && event.key !== 'Enter' && event.key !== 'Escape') return;
@@ -1296,6 +1298,8 @@ async function bootSupplyChainGraph() {
     root.dataset.graphStatus = 'failed';
     const status = root.querySelector('[data-sc-graph-status]');
     if (status) status.textContent = 'Graph unavailable';
+    const description = root.querySelector('[data-sc-graph-description]');
+    if (description) description.textContent = 'Supply Chain graph unavailable. Keyboard graph controls are not active.';
     console.error(error);
   }
 }
