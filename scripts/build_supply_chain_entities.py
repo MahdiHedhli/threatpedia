@@ -51,6 +51,7 @@ RELATIONSHIP_TYPES = {
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
     "MAINTAINS_REPOSITORY",
+    "SEEDED_BY",
     "USES_ACCOUNT",
 }
 GENERIC_VENDOR_NAMES = {
@@ -429,10 +430,10 @@ def upsert_campaign(campaigns: dict[str, dict[str, Any]], item: dict[str, Any], 
     return entity_id
 
 
-def relationship(source: str, target: str, relationship_type: str) -> dict[str, str]:
+def relationship(source: str, target: str, relationship_type: str, **metadata: Any) -> dict[str, Any]:
     if relationship_type not in RELATIONSHIP_TYPES:
         raise ValueError(f"invalid relationship type: {relationship_type}")
-    return {"source": source, "target": target, "type": relationship_type}
+    return {"source": source, "target": target, "type": relationship_type, **metadata}
 
 
 def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
@@ -446,23 +447,30 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     releases: dict[str, dict[str, Any]] = {}
     repositories: dict[str, dict[str, Any]] = {}
     organizations: dict[str, dict[str, Any]] = {}
-    relationships: dict[tuple[str, str, str], dict[str, str]] = {}
+    relationships: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     collision_base_ids = release_collision_base_ids(corpus)
 
-    def add_relationship(item: dict[str, str]) -> None:
-        relationships[(item["source"], item["target"], item["type"])] = item
+    def relationship_key(item: dict[str, Any]) -> tuple[str, str, str, str]:
+        source_incident_id = item.get("source_incident_id") if item.get("type") == "SEEDED_BY" else ""
+        return (item["source"], item["target"], item["type"], source_incident_id or "")
+
+    def add_relationship(item: dict[str, Any]) -> None:
+        relationships[relationship_key(item)] = item
 
     for incident in corpus:
         incident_id = incident["id"]
         source = incident_node_id(incident_id)
 
         for component in incident.get("affected_components", []):
+            component_role = component.get("component_role", "affected")
             if component.get("component_type") == "package":
                 package_id = upsert_package(packages, component, incident_id)
-                add_relationship(relationship(source, package_id, "AFFECTED_PACKAGE"))
-            org_id = upsert_organization(organizations, component["vendor"], incident_id)
-            if org_id:
-                add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
+                if component_role != "upstream_seed":
+                    add_relationship(relationship(source, package_id, "AFFECTED_PACKAGE"))
+            if component_role != "upstream_seed":
+                org_id = upsert_organization(organizations, component["vendor"], incident_id)
+                if org_id:
+                    add_relationship(relationship(source, org_id, "AFFECTED_ORGANIZATION"))
 
         for item in incident.get("releases") or []:
             release_id = upsert_release(releases, item, incident_id, collision_base_ids)
@@ -509,6 +517,19 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
         if incident.get("source_artifact_divergence") is True:
             for channel_id in divergence_channel_targets:
                 add_relationship(relationship(source, channel_id, "SOURCE_ARTIFACT_DIVERGENCE"))
+
+        for item in incident.get("propagation_edges") or []:
+            add_relationship(
+                relationship(
+                    item["source"],
+                    item["target"],
+                    "SEEDED_BY",
+                    propagation_tier=item["propagation_tier"],
+                    evidence_refs=sorted(item["evidence_refs"]),
+                    source_incident_id=incident_id,
+                    summary=item["summary"],
+                )
+            )
 
     return {
         "accounts": sorted(accounts.values(), key=lambda item: item["id"]),

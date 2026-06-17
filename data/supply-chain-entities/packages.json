@@ -1,6 +1,32 @@
 [
   {
     "aliases": [
+      "3CX DesktopApp"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-3cx-desktopapp",
+    "name": "3CX DesktopApp",
+    "package_url": "pkg:generic/3cx-desktopapp",
+    "purl_justification": "3CX DesktopApp is vendor desktop software, not a public package-registry artifact joinable to OSV or deps.dev.",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
+      "X_TRADER"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-x-trader",
+    "name": "X_TRADER",
+    "package_url": "pkg:generic/x-trader",
+    "purl_justification": "X_TRADER is vendor desktop trading software, not a public package-registry artifact joinable to OSV or deps.dev.",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
       "github.com/boltdb-go/bolt"
     ],
     "ecosystem": "golang",

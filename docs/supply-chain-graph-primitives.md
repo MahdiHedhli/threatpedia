@@ -8,6 +8,8 @@ where public evidence supports the edge.
 Phase 2C adds version-addressable release entities for package incidents with
 precise public release evidence. Phase 2D strengthens maintainer entities with
 dated anchors and explicit repository/account links.
+The Supply Chain 1.0 S0 pass adds evidence-gated `SEEDED_BY` propagation
+edges for hand-modeled compromise chains.
 
 This is a lightweight relationship layer, not a graph database.
 
@@ -78,6 +80,7 @@ Allowed relationship types are intentionally narrow:
 - `INCIDENT_AFFECTED_RELEASE`
 - `MAINTAINS_REPOSITORY`
 - `USES_ACCOUNT`
+- `SEEDED_BY`
 - `USED_BUILD_SYSTEM`
 - `USED_DISTRIBUTION_CHANNEL`
 - `COMPROMISED_ACCOUNT`
@@ -140,12 +143,46 @@ repository/account primitives:
 edges are not trust or behavior scores; they only preserve structured public
 evidence needed to compute future canary primitives.
 
+Propagation edges connect package or release nodes when public evidence
+supports an ordered compromise chain:
+
+```json
+{
+  "source": "pkg-generic-x-trader",
+  "target": "pkg-generic-3cx-desktopapp",
+  "type": "SEEDED_BY",
+  "propagation_tier": "causal",
+  "evidence_refs": ["ref-mandiant-3cx"],
+  "source_incident_id": "SC-2023-THREE-CX-DESKTOP",
+  "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise."
+}
+```
+
+`SEEDED_BY` is directed and must start from a `pkg-*` or `release-*` node and
+target a `pkg-*` or `release-*` node. Every edge carries:
+
+- `propagation_tier`: `causal` when public analysis documents that one
+  compromise enabled the next, or `temporal` when only ordering is supported.
+- `evidence_refs`: one or more reference IDs from the source incident.
+- `source_incident_id`: the corpus incident that carries the evidence.
+- `summary`: the bounded evidence note.
+
+Temporal edges are precedence markers, not causation claims. The default is to
+omit a propagation edge rather than infer one. Validators require all
+`SEEDED_BY` endpoints to resolve and the propagation subgraph to remain acyclic.
+
+If a package exists only to anchor an upstream propagation source, model it as
+an affected component with `component_role: "upstream_seed"`. The builder will
+create the package entity so the `SEEDED_BY` edge resolves, but it will not emit
+`AFFECTED_PACKAGE` or `AFFECTED_ORGANIZATION` edges for that upstream seed on
+the downstream incident.
+
 ## Current Graph Density
 
 The Phase 2E pass over 27 incidents currently emits:
 
 - Maintainers: 5
-- Packages: 19
+- Packages: 21
 - Releases: 7
 - Repositories: 11
 - Organizations: 19
@@ -154,7 +191,10 @@ The Phase 2E pass over 27 incidents currently emits:
 - Compromised accounts: 10
 - Actors: 6
 - Campaigns: 3
-- Relationships: 136
+- Relationships: 140
+
+After S0, the graph also carries 3 `SEEDED_BY` propagation edges across the
+3CX/X_TRADER and Shai-Hulud modeled chains.
 
 ## Build and Validate
 
@@ -192,6 +232,7 @@ This phase supports lookup questions such as:
 - supply-chain incidents connected to an existing actor or campaign
 - provisional operator edges where the evidence supports a coherent operator
   but not a named public APT
+- evidence-gated propagation chains where one package or release seeded another
 
 It does not implement:
 
@@ -203,3 +244,4 @@ It does not implement:
 - machine learning
 - dashboards
 - policy recommendations
+- automated propagation reconstruction

@@ -68,6 +68,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
         self.assertIn("pkg-npm-ctrl-tinycolor", package_ids)
         self.assertIn("pkg-golang-github-com-boltdb-go-bolt", package_ids)
+        self.assertIn("pkg-generic-x-trader", package_ids)
         self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
         self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
         self.assertIn("release-npm-ctrl-tinycolor-4-1-1", release_ids)
@@ -90,6 +91,22 @@ class SupplyChainGraphTests(unittest.TestCase):
                 "source": "maintainer-dominictarr",
                 "target": "repo-github-com-dominictarr-event-stream",
                 "type": "MAINTAINS_REPOSITORY",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "pkg-generic-x-trader",
+                "type": "AFFECTED_PACKAGE",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "org-trading-technologies",
+                "type": "AFFECTED_ORGANIZATION",
             },
             graph["relationships"],
         )
@@ -153,6 +170,30 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
         self.assertEqual(release_ids, reversed_release_ids)
         self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
+
+    def test_builder_preserves_seeded_by_context_for_duplicate_endpoint_pairs(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        shai_hulud = next(incident for incident in corpus if incident["id"] == "SC-2025-NPM-SHAI-HULUD")
+        duplicate = copy.deepcopy(shai_hulud)
+        duplicate["id"] = "SC-2099-NPM-SHAI-HULUD-DUPLICATE"
+        duplicate["title"] = "Fixture duplicate Shai-Hulud propagation incident"
+        edge = shai_hulud["propagation_edges"][0]
+
+        graph = builder.build_graph([*corpus, duplicate])
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
+        matching = [
+            relationship
+            for relationship in graph["relationships"]
+            if relationship["type"] == "SEEDED_BY"
+            and relationship["source"] == edge["source"]
+            and relationship["target"] == edge["target"]
+        ]
+
+        self.assertEqual(
+            {relationship["source_incident_id"] for relationship in matching},
+            {"SC-2025-NPM-SHAI-HULUD", "SC-2099-NPM-SHAI-HULUD-DUPLICATE"},
+        )
+        self.assertEqual(validator.validate_graph([*corpus, duplicate], entities_by_type, graph["relationships"]), [])
 
     def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
         first = {
@@ -432,6 +473,104 @@ class SupplyChainGraphTests(unittest.TestCase):
 
         self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
         self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
+
+    def test_seeded_by_edges_are_evidence_tiered_and_acyclic(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        seeded_by = [item for item in relationships if item["type"] == "SEEDED_BY"]
+
+        self.assertEqual(len(seeded_by), 3)
+        self.assertTrue(all(item["source"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["target"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["propagation_tier"] in {"causal", "temporal"} for item in seeded_by))
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+
+    def test_seeded_by_relationship_failures_are_reported(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2025-NPM-SHAI-HULUD",
+                "target": "pkg-npm-ctrl-tinycolor",
+                "type": "SEEDED_BY",
+                "propagation_tier": "inferred",
+                "evidence_refs": [],
+                "summary": "short",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY must start from a package or release node" in error for error in errors))
+        self.assertTrue(any(".propagation_tier: expected 'causal' or 'temporal'" in error for error in errors))
+        self.assertTrue(any(".evidence_refs: expected non-empty list" in error for error in errors))
+        self.assertTrue(any(".summary: expected evidence summary" in error for error in errors))
+        self.assertTrue(any(".source_incident_id: expected string" in error for error in errors))
+
+    def test_seeded_by_relationship_refs_must_resolve(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-does-not-exist"],
+                "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+                "summary": "Fixture creates an invalid propagation edge for validator coverage.",
+            }
+        )
+        relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "source_incident_id": "SC-2099-NOT-REAL",
+                "summary": "Fixture creates an unknown incident reference for validator coverage.",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unknown reference 'ref-does-not-exist'" in error for error in errors))
+        self.assertTrue(any(".source_incident_id: unknown incident 'SC-2099-NOT-REAL'" in error for error in errors))
+
+    def test_seeded_by_relationship_must_preserve_source_incident_context(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        seeded_by = next(item for item in relationships if item["type"] == "SEEDED_BY")
+        seeded_by["source_incident_id"] = "SC-2018-NPM-EVENT-STREAM"
+        seeded_by["evidence_refs"] = ["ref-github-event-stream-116"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("missing SEEDED_BY relationship" in error and "source_incident_id" in error for error in errors))
+
+    def test_seeded_by_cycle_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "summary": "Fixture creates a propagation cycle for validator coverage.",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in errors))
 
     def test_maintainer_relationship_sources_are_bounded(self) -> None:
         corpus = load_json(CORPUS_PATH)
