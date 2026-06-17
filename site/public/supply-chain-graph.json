@@ -1,0 +1,3830 @@
+{
+  "schema_version": "threatpedia-supply-chain-graph/1",
+  "generated_at": "2026-06-17T16:55:00.513Z",
+  "source": {
+    "incidents": "data/supply-chain-incidents/incidents.json",
+    "relationships": "data/supply-chain-relationships/relationships.json",
+    "entities": "data/supply-chain-entities/*.json"
+  },
+  "renderer_contract": {
+    "g2_drawable_tiers": [
+      "actor",
+      "campaign",
+      "incident"
+    ],
+    "package_release_lod": "payload-only-until-G4",
+    "layout": "time-anchored-actor-lanes"
+  },
+  "counts": {
+    "incident": 27,
+    "account": 10,
+    "actor": 6,
+    "build_system": 6,
+    "campaign": 3,
+    "distribution_channel": 14,
+    "maintainer": 5,
+    "organization": 19,
+    "package": 19,
+    "release": 7,
+    "repository": 11
+  },
+  "attack_stages": [
+    {
+      "id": "account_compromise",
+      "label": "Account Compromise"
+    },
+    {
+      "id": "build_compromise",
+      "label": "Build Compromise"
+    },
+    {
+      "id": "ci_cd_compromise",
+      "label": "Ci Cd Compromise"
+    },
+    {
+      "id": "dependency_resolution",
+      "label": "Dependency Resolution"
+    },
+    {
+      "id": "distribution_compromise",
+      "label": "Distribution Compromise"
+    },
+    {
+      "id": "package_publish",
+      "label": "Package Publish"
+    },
+    {
+      "id": "source_compromise",
+      "label": "Source Compromise"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "account-github-tj-actions-github-action-release-path",
+      "entity_id": "account-github-tj-actions-github-action-release-path",
+      "type": "account",
+      "label": "tj-actions GitHub Action release path",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "tj-actions GitHub Action release path"
+      ],
+      "source_incident_ids": [
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "account-github-victim-github-tokens",
+      "entity_id": "account-github-victim-github-tokens",
+      "type": "account",
+      "label": "victim GitHub tokens",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "victim GitHub tokens"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "account-npm-compromised-npm-maintainer-tokens",
+      "entity_id": "account-npm-compromised-npm-maintainer-tokens",
+      "type": "account",
+      "label": "compromised npm maintainer tokens",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "compromised npm maintainer tokens"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "account-npm-eslint-scope-npm-maintainer-account",
+      "entity_id": "account-npm-eslint-scope-npm-maintainer-account",
+      "type": "account",
+      "label": "eslint-scope npm maintainer account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "eslint-scope npm maintainer account"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "account-npm-ledgerhq-connect-kit-npm-publish-account",
+      "entity_id": "account-npm-ledgerhq-connect-kit-npm-publish-account",
+      "type": "account",
+      "label": "@ledgerhq/connect-kit npm publish account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "@ledgerhq/connect-kit npm publish account"
+      ],
+      "source_incident_ids": [
+        "SC-2023-LEDGER-CONNECT-KIT"
+      ]
+    },
+    {
+      "id": "account-npm-lottiefiles-lottie-player-npm-publish-account",
+      "entity_id": "account-npm-lottiefiles-lottie-player-npm-publish-account",
+      "type": "account",
+      "label": "@lottiefiles/lottie-player npm publish account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "@lottiefiles/lottie-player npm publish account"
+      ],
+      "source_incident_ids": [
+        "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "account-npm-ua-parser-js-npm-maintainer-account",
+      "entity_id": "account-npm-ua-parser-js-npm-maintainer-account",
+      "type": "account",
+      "label": "ua-parser-js npm maintainer account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "ua-parser-js npm maintainer account"
+      ],
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "account-php-git-php-git-server-commit-identity",
+      "entity_id": "account-php-git-php-git-server-commit-identity",
+      "type": "account",
+      "label": "PHP git server commit identity",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "PHP git server commit identity"
+      ],
+      "source_incident_ids": [
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "account-pypi-ctx-pypi-project-account",
+      "entity_id": "account-pypi-ctx-pypi-project-account",
+      "type": "account",
+      "label": "ctx PyPI project account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "ctx PyPI project account"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "account-pypi-ultralytics-pypi-publishing-token",
+      "entity_id": "account-pypi-ultralytics-pypi-publishing-token",
+      "type": "account",
+      "label": "Ultralytics PyPI publishing token",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Ultralytics PyPI publishing token"
+      ],
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "actor-apt29",
+      "entity_id": "actor-apt29",
+      "type": "actor",
+      "label": "APT29",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/threat-actors/apt29/",
+      "ecosystem": null,
+      "aliases": [
+        "APT29",
+        "Cozy Bear",
+        "SVR"
+      ],
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "actor-boltdb-go-operator",
+      "entity_id": "actor-boltdb-go-operator",
+      "type": "actor",
+      "label": "boltdb-go operator",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "boltdb-go",
+        "boltdb-go operator"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "actor-lazarus-group",
+      "entity_id": "actor-lazarus-group",
+      "type": "actor",
+      "label": "Lazarus Group",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/threat-actors/lazarus-group/",
+      "ecosystem": null,
+      "aliases": [
+        "Lazarus Group",
+        "UNC4736"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "actor-sandworm",
+      "entity_id": "actor-sandworm",
+      "type": "actor",
+      "label": "Sandworm",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/threat-actors/sandworm/",
+      "ecosystem": null,
+      "aliases": [
+        "GRU Unit 74455",
+        "Sandworm"
+      ],
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC"
+      ]
+    },
+    {
+      "id": "actor-shai-hulud-operator",
+      "entity_id": "actor-shai-hulud-operator",
+      "type": "actor",
+      "label": "Shai-Hulud operator",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Shai-Hulud operator"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "actor-unc-xz-utils-operator",
+      "entity_id": "actor-unc-xz-utils-operator",
+      "type": "actor",
+      "label": "UNC-XZ-UTILS",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Jia Tan operator cluster",
+        "UNC-XZ-UTILS"
+      ],
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "build-3cx-3cx-desktopapp-build-pipeline",
+      "entity_id": "build-3cx-3cx-desktopapp-build-pipeline",
+      "type": "build_system",
+      "label": "3CX DesktopApp build pipeline",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "3CX DesktopApp build pipeline"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "build-codecov-codecov-bash-uploader-distribution-pipeline",
+      "entity_id": "build-codecov-codecov-bash-uploader-distribution-pipeline",
+      "type": "build_system",
+      "label": "Codecov Bash Uploader distribution pipeline",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Codecov Bash Uploader distribution pipeline"
+      ],
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER"
+      ]
+    },
+    {
+      "id": "build-github-github-actions",
+      "entity_id": "build-github-github-actions",
+      "type": "build_system",
+      "label": "GitHub Actions",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "GitHub Actions"
+      ],
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "build-netbeans-netbeans-project-build-process",
+      "entity_id": "build-netbeans-netbeans-project-build-process",
+      "type": "build_system",
+      "label": "NetBeans project build process",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "NetBeans project build process"
+      ],
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER"
+      ]
+    },
+    {
+      "id": "build-pytorch-pytorch-nightly-build-pipeline",
+      "entity_id": "build-pytorch-pytorch-nightly-build-pipeline",
+      "type": "build_system",
+      "label": "PyTorch nightly build pipeline",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "PyTorch nightly build pipeline"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYTORCH-NIGHTLY"
+      ]
+    },
+    {
+      "id": "build-solarwinds-solarwinds-orion-build-system",
+      "entity_id": "build-solarwinds-solarwinds-orion-build-system",
+      "type": "build_system",
+      "label": "SolarWinds Orion build system",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "SolarWinds Orion build system"
+      ],
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "campaign-tp-camp-2017-0002",
+      "entity_id": "campaign-tp-camp-2017-0002",
+      "type": "campaign",
+      "label": "NotPetya Destructive Campaign: Sandworm Global Wiper Operation (2017)",
+      "tier": "campaign",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/campaigns/notpetya-destructive-campaign-2017/",
+      "ecosystem": null,
+      "aliases": [
+        "NotPetya Destructive Campaign: Sandworm Global Wiper Operation (2017)",
+        "TP-CAMP-2017-0002"
+      ],
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC"
+      ]
+    },
+    {
+      "id": "campaign-tp-camp-2020-0001",
+      "entity_id": "campaign-tp-camp-2020-0001",
+      "type": "campaign",
+      "label": "SolarWinds Supply Chain Espionage Campaign",
+      "tier": "campaign",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/campaigns/solarwinds-supply-chain-campaign/",
+      "ecosystem": null,
+      "aliases": [
+        "SolarWinds Supply Chain Espionage Campaign",
+        "TP-CAMP-2020-0001"
+      ],
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "campaign-tp-camp-2023-0002",
+      "entity_id": "campaign-tp-camp-2023-0002",
+      "type": "campaign",
+      "label": "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+      "tier": "campaign",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/campaigns/lazarus-3cx-supply-chain-compromise-2023/",
+      "ecosystem": null,
+      "aliases": [
+        "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+        "TP-CAMP-2023-0002"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "entity_id": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "type": "distribution_channel",
+      "label": "Codecov Bash Uploader download path",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "ci-cd",
+      "aliases": [
+        "Codecov Bash Uploader download path"
+      ],
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER"
+      ]
+    },
+    {
+      "id": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "entity_id": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "type": "distribution_channel",
+      "label": "GitHub Actions Marketplace",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "github-actions",
+      "aliases": [
+        "GitHub Actions Marketplace"
+      ],
+      "source_incident_ids": [
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "entity_id": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "type": "distribution_channel",
+      "label": "GitHub Actions workflow",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "github-actions",
+      "aliases": [
+        "GitHub Actions workflow"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "channel-github-source-repository-github-repository",
+      "entity_id": "channel-github-source-repository-github-repository",
+      "type": "distribution_channel",
+      "label": "GitHub repository",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "github",
+      "aliases": [
+        "GitHub repository"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "channel-golang-package-registry-go-module-proxy",
+      "entity_id": "channel-golang-package-registry-go-module-proxy",
+      "type": "distribution_channel",
+      "label": "Go Module Proxy",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "golang",
+      "aliases": [
+        "Go Module Proxy"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "channel-linux-source-release-upstream-source-release-tarball",
+      "entity_id": "channel-linux-source-release-upstream-source-release-tarball",
+      "type": "distribution_channel",
+      "label": "Upstream source release tarball",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "linux",
+      "aliases": [
+        "Upstream source release tarball"
+      ],
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "channel-linux-website-download-linux-mint-download-site",
+      "entity_id": "channel-linux-website-download-linux-mint-download-site",
+      "type": "distribution_channel",
+      "label": "Linux Mint download site",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "linux",
+      "aliases": [
+        "Linux Mint download site"
+      ],
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO"
+      ]
+    },
+    {
+      "id": "channel-npm-package-registry-npm-registry",
+      "entity_id": "channel-npm-package-registry-npm-registry",
+      "type": "distribution_channel",
+      "label": "npm registry",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "npm registry"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2018-NPM-EVENT-STREAM",
+        "SC-2021-DEPENDENCY-CONFUSION",
+        "SC-2021-NPM-RC",
+        "SC-2021-UA-PARSER-JS",
+        "SC-2022-COLORS-FAKER",
+        "SC-2022-NODE-IPC",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER",
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "channel-pypi-package-registry-pypi",
+      "entity_id": "channel-pypi-package-registry-pypi",
+      "type": "distribution_channel",
+      "label": "PyPI",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "pypi",
+      "aliases": [
+        "PyPI"
+      ],
+      "source_incident_ids": [
+        "SC-2021-DEPENDENCY-CONFUSION",
+        "SC-2022-PYPI-CTX",
+        "SC-2022-PYTORCH-NIGHTLY",
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "channel-rubygems-package-registry-rubygems",
+      "entity_id": "channel-rubygems-package-registry-rubygems",
+      "type": "distribution_channel",
+      "label": "RubyGems",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "rubygems",
+      "aliases": [
+        "RubyGems"
+      ],
+      "source_incident_ids": [
+        "SC-2021-DEPENDENCY-CONFUSION"
+      ]
+    },
+    {
+      "id": "channel-source-control-source-repository-source-repository",
+      "entity_id": "channel-source-control-source-repository-source-repository",
+      "type": "distribution_channel",
+      "label": "Source repository",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "source-control",
+      "aliases": [
+        "Source repository"
+      ],
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "entity_id": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "type": "distribution_channel",
+      "label": "Signed software installer/update channel",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "vendor-update",
+      "aliases": [
+        "Signed software installer/update channel"
+      ],
+      "source_incident_ids": [
+        "SC-2017-CCLEANER",
+        "SC-2019-ASUS-SHADOWHAMMER",
+        "SC-2020-SOLARWINDS-ORION",
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "channel-vendor-update-software-update-vendor-software-update-channel",
+      "entity_id": "channel-vendor-update-software-update-vendor-software-update-channel",
+      "type": "distribution_channel",
+      "label": "Vendor software update channel",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "vendor-update",
+      "aliases": [
+        "Vendor software update channel"
+      ],
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC",
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "channel-web-cdn-script-third-party-cdn-script",
+      "entity_id": "channel-web-cdn-script-third-party-cdn-script",
+      "type": "distribution_channel",
+      "label": "Third-party CDN script",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "web",
+      "aliases": [
+        "Third-party CDN script"
+      ],
+      "source_incident_ids": [
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "incident-SC-2016-LINUX-MINT-ISO",
+      "entity_id": "SC-2016-LINUX-MINT-ISO",
+      "type": "incident",
+      "label": "Linux Mint ISO distribution site compromise",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2016-02-21",
+      "parent": null,
+      "techniques": [
+        "distribution_site_compromise",
+        "malware_distribution",
+        "backdoor",
+        "iso",
+        "distribution"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2016-LINUX-MINT-ISO/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Attackers modified Linux Mint download infrastructure so some users received a backdoored ISO image instead of the legitimate distribution image."
+    },
+    {
+      "id": "incident-SC-2017-CCLEANER",
+      "entity_id": "SC-2017-CCLEANER",
+      "type": "incident",
+      "label": "CCleaner signed installer compromise",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2017-09-18",
+      "parent": null,
+      "techniques": [
+        "signed_update_compromise",
+        "malware_distribution",
+        "backdoor",
+        "signed-update",
+        "windows"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2017-CCLEANER/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "A legitimate CCleaner release was modified and signed, distributing malware to downstream users through the normal software update and download path."
+    },
+    {
+      "id": "incident-SC-2017-NOTPETYA-MEDOC",
+      "entity_id": "SC-2017-NOTPETYA-MEDOC",
+      "type": "incident",
+      "label": "NotPetya distributed through M.E.Doc update channel",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2017-07-01",
+      "parent": "campaign-tp-camp-2017-0002",
+      "techniques": [
+        "vendor_update_compromise",
+        "destructive_payload",
+        "ransomware_delivery",
+        "downstream_customer_compromise",
+        "notpetya",
+        "software-update"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2017-NOTPETYA-MEDOC/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "The NotPetya destructive malware outbreak was seeded through a compromised Ukrainian accounting software update mechanism used by M.E.Doc customers."
+    },
+    {
+      "id": "incident-SC-2018-ESLINT-SCOPE",
+      "entity_id": "SC-2018-ESLINT-SCOPE",
+      "type": "incident",
+      "label": "eslint-scope npm package credential-stealing release",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2018-07-12",
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "npm",
+        "maintainer-account"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2018-ESLINT-SCOPE/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "An attacker used compromised npm maintainer credentials to publish malicious eslint-scope and eslint-config-eslint releases that attempted to steal npm tokens."
+    },
+    {
+      "id": "incident-SC-2018-NPM-EVENT-STREAM",
+      "entity_id": "SC-2018-NPM-EVENT-STREAM",
+      "type": "incident",
+      "label": "event-stream malicious dependency insertion",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2018-11-26",
+      "parent": null,
+      "techniques": [
+        "malicious_dependency",
+        "credential_theft",
+        "crypto_theft",
+        "npm",
+        "dependency"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2018-NPM-EVENT-STREAM/",
+      "attack_stage": "package_publish",
+      "evidence_level": "primary",
+      "confidence": "high",
+      "summary": "A maintainer transfer enabled a malicious dependency to be added to the event-stream npm package dependency tree, targeting downstream cryptocurrency wallet software."
+    },
+    {
+      "id": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "entity_id": "SC-2019-ASUS-SHADOWHAMMER",
+      "type": "incident",
+      "label": "ASUS Live Update Operation ShadowHammer",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2019-03-25",
+      "parent": null,
+      "techniques": [
+        "signed_update_compromise",
+        "malware_distribution",
+        "backdoor",
+        "signed-update",
+        "targeted"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2019-ASUS-SHADOWHAMMER/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "Attackers compromised the ASUS Live Update utility and distributed signed malicious updates to selected downstream systems."
+    },
+    {
+      "id": "incident-SC-2020-OCTOPUS-SCANNER",
+      "entity_id": "SC-2020-OCTOPUS-SCANNER",
+      "type": "incident",
+      "label": "Octopus Scanner malicious NetBeans project campaign",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2020-03-09",
+      "parent": null,
+      "techniques": [
+        "source_repository_compromise",
+        "build_system_compromise",
+        "developer_workstation_compromise",
+        "malware_distribution",
+        "github",
+        "java"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2020-OCTOPUS-SCANNER/",
+      "attack_stage": "source_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "Malicious code planted in open source NetBeans projects propagated through developer builds and attempted to infect additional projects."
+    },
+    {
+      "id": "incident-SC-2020-SOLARWINDS-ORION",
+      "entity_id": "SC-2020-SOLARWINDS-ORION",
+      "type": "incident",
+      "label": "SolarWinds Orion software build compromise",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2020-12-13",
+      "parent": "campaign-tp-camp-2020-0001",
+      "techniques": [
+        "build_system_compromise",
+        "signed_update_compromise",
+        "backdoor",
+        "downstream_customer_compromise",
+        "build-system",
+        "sunburst"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2020-SOLARWINDS-ORION/",
+      "attack_stage": "build_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Attackers compromised the SolarWinds Orion build process and inserted the SUNBURST backdoor into signed software updates delivered to customers."
+    },
+    {
+      "id": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "entity_id": "SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "incident",
+      "label": "Codecov Bash Uploader credential exfiltration",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2021-04-15",
+      "parent": null,
+      "techniques": [
+        "build_system_compromise",
+        "credential_theft",
+        "data_exfiltration",
+        "ci-cd",
+        "credentials"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-CODECOV-BASH-UPLOADER/",
+      "attack_stage": "ci_cd_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "The Codecov Bash Uploader was modified by an attacker, enabling environment variable and credential exfiltration from affected CI environments."
+    },
+    {
+      "id": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "entity_id": "SC-2021-DEPENDENCY-CONFUSION",
+      "type": "incident",
+      "label": "Dependency confusion proof-of-concept campaign",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2021-02-09",
+      "parent": null,
+      "techniques": [
+        "dependency_confusion",
+        "developer_workstation_compromise",
+        "data_exfiltration",
+        "dependency-confusion",
+        "research"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-DEPENDENCY-CONFUSION/",
+      "attack_stage": "dependency_resolution",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "Researchers demonstrated that public package registries could be abused to satisfy internal dependency names and execute code in downstream build environments."
+    },
+    {
+      "id": "incident-SC-2021-KASEYA-VSA",
+      "entity_id": "SC-2021-KASEYA-VSA",
+      "type": "incident",
+      "label": "Kaseya VSA ransomware supply-chain attack",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2021-07-02",
+      "parent": null,
+      "techniques": [
+        "vendor_update_compromise",
+        "ransomware_delivery",
+        "downstream_customer_compromise",
+        "ransomware",
+        "msp"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-KASEYA-VSA/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Attackers abused Kaseya VSA management software to distribute ransomware through managed service provider environments to downstream customers."
+    },
+    {
+      "id": "incident-SC-2021-NPM-RC",
+      "entity_id": "SC-2021-NPM-RC",
+      "type": "incident",
+      "label": "rc npm package malicious release",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2021-11-04",
+      "parent": null,
+      "techniques": [
+        "package_repository_compromise",
+        "malware_distribution",
+        "npm",
+        "malicious-package"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-NPM-RC/",
+      "attack_stage": "package_publish",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "The rc npm package had malicious versions published that required users to downgrade and inspect systems for suspicious activity."
+    },
+    {
+      "id": "incident-SC-2021-PHP-GIT-SERVER",
+      "entity_id": "SC-2021-PHP-GIT-SERVER",
+      "type": "incident",
+      "label": "PHP source repository backdoor attempt",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2021-03-28",
+      "parent": null,
+      "techniques": [
+        "source_repository_compromise",
+        "backdoor",
+        "source-control",
+        "php"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-PHP-GIT-SERVER/",
+      "attack_stage": "source_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Attackers pushed malicious commits to the PHP source repository that would have introduced a backdoor if accepted into releases."
+    },
+    {
+      "id": "incident-SC-2021-UA-PARSER-JS",
+      "entity_id": "SC-2021-UA-PARSER-JS",
+      "type": "incident",
+      "label": "ua-parser-js npm package account compromise",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2021-10-22",
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "credential_theft",
+        "cryptomining",
+        "npm",
+        "account-compromise"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2021-UA-PARSER-JS/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Malicious versions of ua-parser-js were published to npm after maintainer account compromise, delivering credential-stealing and cryptomining payloads."
+    },
+    {
+      "id": "incident-SC-2022-COLORS-FAKER",
+      "entity_id": "SC-2022-COLORS-FAKER",
+      "type": "incident",
+      "label": "colors and faker npm protestware releases",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2022-01-09",
+      "parent": null,
+      "techniques": [
+        "protestware",
+        "destructive_payload",
+        "protest_payload",
+        "npm",
+        "protestware"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2022-COLORS-FAKER/",
+      "attack_stage": "package_publish",
+      "evidence_level": "primary",
+      "confidence": "high",
+      "summary": "The maintainer of colors and faker published intentionally disruptive releases that broke downstream consumers and demonstrated maintainer-driven supply-chain risk."
+    },
+    {
+      "id": "incident-SC-2022-NODE-IPC",
+      "entity_id": "SC-2022-NODE-IPC",
+      "type": "incident",
+      "label": "node-ipc peacenotwar protestware release",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2022-03-16",
+      "parent": null,
+      "techniques": [
+        "protestware",
+        "destructive_payload",
+        "protest_payload",
+        "npm",
+        "protestware"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2022-NODE-IPC/",
+      "attack_stage": "package_publish",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The node-ipc npm package included protestware behavior that modified files for users in certain geographies, creating downstream integrity and availability risk."
+    },
+    {
+      "id": "incident-SC-2022-PYPI-CTX",
+      "entity_id": "SC-2022-PYPI-CTX",
+      "type": "incident",
+      "label": "ctx PyPI project account takeover",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2022-05-24",
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "credential_theft",
+        "data_exfiltration",
+        "pypi",
+        "account-takeover"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2022-PYPI-CTX/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The ctx project on PyPI was taken over and replaced with malicious code that collected environment variables from affected users."
+    },
+    {
+      "id": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "entity_id": "SC-2022-PYTORCH-NIGHTLY",
+      "type": "incident",
+      "label": "PyTorch nightly dependency confusion compromise",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2022-12-31",
+      "parent": null,
+      "techniques": [
+        "dependency_confusion",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "pypi",
+        "dependency-confusion"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2022-PYTORCH-NIGHTLY/",
+      "attack_stage": "dependency_resolution",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "A malicious torchtriton package on PyPI was installed by some PyTorch nightly users because it shadowed an expected dependency name."
+    },
+    {
+      "id": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "entity_id": "SC-2023-LEDGER-CONNECT-KIT",
+      "type": "incident",
+      "label": "Ledger Connect Kit npm package compromise",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2023-12-14",
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "crypto_theft",
+        "downstream_customer_compromise",
+        "npm",
+        "web3"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2023-LEDGER-CONNECT-KIT/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "A compromised Ledger Connect Kit npm release injected malicious code into downstream web applications and targeted cryptocurrency wallet transactions."
+    },
+    {
+      "id": "incident-SC-2023-THREE-CX-DESKTOP",
+      "entity_id": "SC-2023-THREE-CX-DESKTOP",
+      "type": "incident",
+      "label": "3CX desktop application software supply-chain compromise",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2023-03-29",
+      "parent": "campaign-tp-camp-2023-0002",
+      "techniques": [
+        "build_system_compromise",
+        "signed_update_compromise",
+        "malware_distribution",
+        "backdoor",
+        "downstream_customer_compromise",
+        "desktop",
+        "signed-update"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2023-THREE-CX-DESKTOP/",
+      "attack_stage": "build_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "Attackers compromised 3CX desktop application builds, causing trojanized installers and updates to reach downstream customers."
+    },
+    {
+      "id": "incident-SC-2024-LOTTIE-PLAYER",
+      "entity_id": "SC-2024-LOTTIE-PLAYER",
+      "type": "incident",
+      "label": "LottieFiles lottie-player npm package compromise",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2024-10-31",
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "crypto_theft",
+        "downstream_customer_compromise",
+        "npm",
+        "web3"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2024-LOTTIE-PLAYER/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Compromised releases of the @lottiefiles/lottie-player npm package injected malicious wallet-draining code into downstream web applications."
+    },
+    {
+      "id": "incident-SC-2024-POLYFILL-IO",
+      "entity_id": "SC-2024-POLYFILL-IO",
+      "type": "incident",
+      "label": "Polyfill.io CDN script supply-chain compromise",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2024-06-25",
+      "parent": null,
+      "techniques": [
+        "cdn_script_compromise",
+        "malware_distribution",
+        "downstream_customer_compromise",
+        "cdn",
+        "javascript"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2024-POLYFILL-IO/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The Polyfill.io service began serving malicious JavaScript to downstream websites that embedded the third-party CDN script."
+    },
+    {
+      "id": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "entity_id": "SC-2024-ULTRALYTICS-PYPI",
+      "type": "incident",
+      "label": "Ultralytics PyPI package compromise",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2024-12-11",
+      "parent": null,
+      "techniques": [
+        "build_system_compromise",
+        "package_repository_compromise",
+        "cryptomining",
+        "developer_workstation_compromise",
+        "pypi",
+        "github-actions"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2024-ULTRALYTICS-PYPI/",
+      "attack_stage": "ci_cd_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "The ultralytics Python project suffered a supply-chain attack through compromised GitHub Actions workflows and PyPI publishing, resulting in malicious package releases."
+    },
+    {
+      "id": "incident-SC-2024-XZ-UTILS",
+      "entity_id": "SC-2024-XZ-UTILS",
+      "type": "incident",
+      "label": "XZ Utils backdoor attempt",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2024-03-29",
+      "parent": "actor-unc-xz-utils-operator",
+      "techniques": [
+        "source_repository_compromise",
+        "malicious_dependency",
+        "backdoor",
+        "linux",
+        "backdoor"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2024-XZ-UTILS/",
+      "attack_stage": "source_compromise",
+      "evidence_level": "primary",
+      "confidence": "high",
+      "summary": "A backdoor was inserted into upstream XZ Utils release tarballs, affecting some downstream Linux distribution packaging before broad removal."
+    },
+    {
+      "id": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "entity_id": "SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "incident",
+      "label": "Go BoltDB typosquat module proxy backdoor",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2025-02-04",
+      "parent": "actor-boltdb-go-operator",
+      "techniques": [
+        "dependency_confusion",
+        "malicious_dependency",
+        "backdoor",
+        "developer_workstation_compromise",
+        "golang",
+        "typosquat",
+        "module-proxy",
+        "backdoor"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2025-GO-BOLTDB-TYPOSQUAT/",
+      "attack_stage": "dependency_resolution",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "Socket researchers disclosed a backdoored Go module typosquatting BoltDB that persisted through Go Module Proxy caching even after the source repository tag was changed."
+    },
+    {
+      "id": "incident-SC-2025-NPM-SHAI-HULUD",
+      "entity_id": "SC-2025-NPM-SHAI-HULUD",
+      "type": "incident",
+      "label": "Shai-Hulud npm self-propagating package compromise",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2025-09-16",
+      "parent": "actor-shai-hulud-operator",
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "ci_cd_action_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "downstream_customer_compromise",
+        "npm",
+        "self-propagating",
+        "credential-theft",
+        "github-actions"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2025-NPM-SHAI-HULUD/",
+      "attack_stage": "package_publish",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The Shai-Hulud campaign compromised npm packages with credential-harvesting malware that used stolen npm tokens to publish malicious versions of additional packages."
+    },
+    {
+      "id": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "entity_id": "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "incident",
+      "label": "tj-actions changed-files GitHub Action compromise",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2025-03-15",
+      "parent": null,
+      "techniques": [
+        "ci_cd_action_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "github-actions",
+        "ci-cd"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2025-TJ-ACTIONS-CHANGED-FILES/",
+      "attack_stage": "ci_cd_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The tj-actions/changed-files GitHub Action was compromised, exposing secrets from affected workflow runs through malicious action behavior."
+    },
+    {
+      "id": "maintainer-dominictarr",
+      "entity_id": "maintainer-dominictarr",
+      "type": "maintainer",
+      "label": "Dominic Tarr",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-dominictarr/",
+      "ecosystem": null,
+      "aliases": [
+        "Dominic Tarr",
+        "dominictarr"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "maintainer-jia-tan",
+      "entity_id": "maintainer-jia-tan",
+      "type": "maintainer",
+      "label": "Jia Tan",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-jia-tan/",
+      "ecosystem": null,
+      "aliases": [
+        "Jia Tan",
+        "JiaT75"
+      ],
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "maintainer-marak-squires",
+      "entity_id": "maintainer-marak-squires",
+      "type": "maintainer",
+      "label": "Marak Squires",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-marak-squires/",
+      "ecosystem": null,
+      "aliases": [
+        "Marak",
+        "Marak Squires"
+      ],
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER"
+      ]
+    },
+    {
+      "id": "maintainer-riaevangelist",
+      "entity_id": "maintainer-riaevangelist",
+      "type": "maintainer",
+      "label": "RIAEvangelist",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-riaevangelist/",
+      "ecosystem": null,
+      "aliases": [
+        "Brandon Nozaki Miller",
+        "RIAEvangelist"
+      ],
+      "source_incident_ids": [
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "maintainer-right9ctrl",
+      "entity_id": "maintainer-right9ctrl",
+      "type": "maintainer",
+      "label": "right9ctrl",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-right9ctrl/",
+      "ecosystem": null,
+      "aliases": [
+        "right9ctrl"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "org-3cx",
+      "entity_id": "org-3cx",
+      "type": "organization",
+      "label": "3CX",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-3cx/",
+      "ecosystem": null,
+      "aliases": [
+        "3CX"
+      ],
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "org-asus",
+      "entity_id": "org-asus",
+      "type": "organization",
+      "label": "ASUS",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-asus/",
+      "ecosystem": null,
+      "aliases": [
+        "ASUS"
+      ],
+      "source_incident_ids": [
+        "SC-2019-ASUS-SHADOWHAMMER"
+      ]
+    },
+    {
+      "id": "org-codecov",
+      "entity_id": "org-codecov",
+      "type": "organization",
+      "label": "Codecov",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-codecov/",
+      "ecosystem": null,
+      "aliases": [
+        "Codecov"
+      ],
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER"
+      ]
+    },
+    {
+      "id": "org-ctrl",
+      "entity_id": "org-ctrl",
+      "type": "organization",
+      "label": "ctrl",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-ctrl/",
+      "ecosystem": null,
+      "aliases": [
+        "ctrl"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "org-eslint",
+      "entity_id": "org-eslint",
+      "type": "organization",
+      "label": "ESLint",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-eslint/",
+      "ecosystem": null,
+      "aliases": [
+        "ESLint"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "org-intellect-service",
+      "entity_id": "org-intellect-service",
+      "type": "organization",
+      "label": "Intellect Service",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-intellect-service/",
+      "ecosystem": null,
+      "aliases": [
+        "Intellect Service"
+      ],
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC"
+      ]
+    },
+    {
+      "id": "org-kaseya",
+      "entity_id": "org-kaseya",
+      "type": "organization",
+      "label": "Kaseya",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-kaseya/",
+      "ecosystem": null,
+      "aliases": [
+        "Kaseya"
+      ],
+      "source_incident_ids": [
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "org-ledger",
+      "entity_id": "org-ledger",
+      "type": "organization",
+      "label": "Ledger",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-ledger/",
+      "ecosystem": null,
+      "aliases": [
+        "Ledger"
+      ],
+      "source_incident_ids": [
+        "SC-2023-LEDGER-CONNECT-KIT"
+      ]
+    },
+    {
+      "id": "org-linux-mint",
+      "entity_id": "org-linux-mint",
+      "type": "organization",
+      "label": "Linux Mint",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-linux-mint/",
+      "ecosystem": null,
+      "aliases": [
+        "Linux Mint"
+      ],
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO"
+      ]
+    },
+    {
+      "id": "org-lottiefiles",
+      "entity_id": "org-lottiefiles",
+      "type": "organization",
+      "label": "LottieFiles",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-lottiefiles/",
+      "ecosystem": null,
+      "aliases": [
+        "LottieFiles"
+      ],
+      "source_incident_ids": [
+        "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "org-php-project",
+      "entity_id": "org-php-project",
+      "type": "organization",
+      "label": "PHP project",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-php-project/",
+      "ecosystem": null,
+      "aliases": [
+        "PHP project"
+      ],
+      "source_incident_ids": [
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "org-piriform",
+      "entity_id": "org-piriform",
+      "type": "organization",
+      "label": "Piriform",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-piriform/",
+      "ecosystem": null,
+      "aliases": [
+        "Piriform"
+      ],
+      "source_incident_ids": [
+        "SC-2017-CCLEANER"
+      ]
+    },
+    {
+      "id": "org-polyfill-io",
+      "entity_id": "org-polyfill-io",
+      "type": "organization",
+      "label": "Polyfill.io",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-polyfill-io/",
+      "ecosystem": null,
+      "aliases": [
+        "Polyfill.io"
+      ],
+      "source_incident_ids": [
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "org-pytorch",
+      "entity_id": "org-pytorch",
+      "type": "organization",
+      "label": "PyTorch",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-pytorch/",
+      "ecosystem": null,
+      "aliases": [
+        "PyTorch"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYTORCH-NIGHTLY"
+      ]
+    },
+    {
+      "id": "org-rxnt",
+      "entity_id": "org-rxnt",
+      "type": "organization",
+      "label": "rxnt",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-rxnt/",
+      "ecosystem": null,
+      "aliases": [
+        "rxnt"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "org-solarwinds",
+      "entity_id": "org-solarwinds",
+      "type": "organization",
+      "label": "SolarWinds",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-solarwinds/",
+      "ecosystem": null,
+      "aliases": [
+        "SolarWinds"
+      ],
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "org-tj-actions",
+      "entity_id": "org-tj-actions",
+      "type": "organization",
+      "label": "tj-actions",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-tj-actions/",
+      "ecosystem": null,
+      "aliases": [
+        "tj-actions"
+      ],
+      "source_incident_ids": [
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "org-tukaani-project",
+      "entity_id": "org-tukaani-project",
+      "type": "organization",
+      "label": "Tukaani Project",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-tukaani-project/",
+      "ecosystem": null,
+      "aliases": [
+        "Tukaani Project"
+      ],
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "org-ultralytics",
+      "entity_id": "org-ultralytics",
+      "type": "organization",
+      "label": "Ultralytics",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-ultralytics/",
+      "ecosystem": null,
+      "aliases": [
+        "Ultralytics"
+      ],
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "pkg-golang-github-com-boltdb-go-bolt",
+      "entity_id": "pkg-golang-github-com-boltdb-go-bolt",
+      "type": "package",
+      "label": "github.com/boltdb-go/bolt",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:golang/github.com/boltdb-go/bolt",
+      "href": "/supply-chain/packages/pkg-golang-github-com-boltdb-go-bolt/",
+      "ecosystem": "golang",
+      "aliases": [
+        "github.com/boltdb-go/bolt"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "pkg-multiple-internal-dependency-names",
+      "entity_id": "pkg-multiple-internal-dependency-names",
+      "type": "package",
+      "label": "internal dependency names",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/internal-dependency-names",
+      "href": "/supply-chain/packages/pkg-multiple-internal-dependency-names/",
+      "ecosystem": "multiple",
+      "aliases": [
+        "internal dependency names"
+      ],
+      "source_incident_ids": [
+        "SC-2021-DEPENDENCY-CONFUSION"
+      ]
+    },
+    {
+      "id": "pkg-npm-colors",
+      "entity_id": "pkg-npm-colors",
+      "type": "package",
+      "label": "colors",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/colors",
+      "href": "/supply-chain/packages/pkg-npm-colors/",
+      "ecosystem": "npm",
+      "aliases": [
+        "colors"
+      ],
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER"
+      ]
+    },
+    {
+      "id": "pkg-npm-ctrl-tinycolor",
+      "entity_id": "pkg-npm-ctrl-tinycolor",
+      "type": "package",
+      "label": "@ctrl/tinycolor",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40ctrl/tinycolor",
+      "href": "/supply-chain/packages/pkg-npm-ctrl-tinycolor/",
+      "ecosystem": "npm",
+      "aliases": [
+        "@ctrl/tinycolor"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "pkg-npm-eslint-config-eslint",
+      "entity_id": "pkg-npm-eslint-config-eslint",
+      "type": "package",
+      "label": "eslint-config-eslint",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/eslint-config-eslint",
+      "href": "/supply-chain/packages/pkg-npm-eslint-config-eslint/",
+      "ecosystem": "npm",
+      "aliases": [
+        "eslint-config-eslint"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "pkg-npm-eslint-scope",
+      "entity_id": "pkg-npm-eslint-scope",
+      "type": "package",
+      "label": "eslint-scope",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/eslint-scope",
+      "href": "/supply-chain/packages/pkg-npm-eslint-scope/",
+      "ecosystem": "npm",
+      "aliases": [
+        "eslint-scope"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "pkg-npm-event-stream",
+      "entity_id": "pkg-npm-event-stream",
+      "type": "package",
+      "label": "event-stream",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/event-stream",
+      "href": "/supply-chain/packages/pkg-npm-event-stream/",
+      "ecosystem": "npm",
+      "aliases": [
+        "event-stream"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "pkg-npm-faker",
+      "entity_id": "pkg-npm-faker",
+      "type": "package",
+      "label": "faker",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/faker",
+      "href": "/supply-chain/packages/pkg-npm-faker/",
+      "ecosystem": "npm",
+      "aliases": [
+        "faker"
+      ],
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER"
+      ]
+    },
+    {
+      "id": "pkg-npm-flatmap-stream",
+      "entity_id": "pkg-npm-flatmap-stream",
+      "type": "package",
+      "label": "flatmap-stream",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/flatmap-stream",
+      "href": "/supply-chain/packages/pkg-npm-flatmap-stream/",
+      "ecosystem": "npm",
+      "aliases": [
+        "flatmap-stream"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "pkg-npm-ledgerhq-connect-kit",
+      "entity_id": "pkg-npm-ledgerhq-connect-kit",
+      "type": "package",
+      "label": "@ledgerhq/connect-kit",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40ledgerhq/connect-kit",
+      "href": "/supply-chain/packages/pkg-npm-ledgerhq-connect-kit/",
+      "ecosystem": "npm",
+      "aliases": [
+        "@ledgerhq/connect-kit"
+      ],
+      "source_incident_ids": [
+        "SC-2023-LEDGER-CONNECT-KIT"
+      ]
+    },
+    {
+      "id": "pkg-npm-lottiefiles-lottie-player",
+      "entity_id": "pkg-npm-lottiefiles-lottie-player",
+      "type": "package",
+      "label": "@lottiefiles/lottie-player",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40lottiefiles/lottie-player",
+      "href": "/supply-chain/packages/pkg-npm-lottiefiles-lottie-player/",
+      "ecosystem": "npm",
+      "aliases": [
+        "@lottiefiles/lottie-player"
+      ],
+      "source_incident_ids": [
+        "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "pkg-npm-node-ipc",
+      "entity_id": "pkg-npm-node-ipc",
+      "type": "package",
+      "label": "node-ipc",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/node-ipc",
+      "href": "/supply-chain/packages/pkg-npm-node-ipc/",
+      "ecosystem": "npm",
+      "aliases": [
+        "node-ipc"
+      ],
+      "source_incident_ids": [
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "pkg-npm-peacenotwar",
+      "entity_id": "pkg-npm-peacenotwar",
+      "type": "package",
+      "label": "peacenotwar",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/peacenotwar",
+      "href": "/supply-chain/packages/pkg-npm-peacenotwar/",
+      "ecosystem": "npm",
+      "aliases": [
+        "peacenotwar"
+      ],
+      "source_incident_ids": [
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "pkg-npm-rc",
+      "entity_id": "pkg-npm-rc",
+      "type": "package",
+      "label": "rc",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/rc",
+      "href": "/supply-chain/packages/pkg-npm-rc/",
+      "ecosystem": "npm",
+      "aliases": [
+        "rc"
+      ],
+      "source_incident_ids": [
+        "SC-2021-NPM-RC"
+      ]
+    },
+    {
+      "id": "pkg-npm-rxnt-authentication",
+      "entity_id": "pkg-npm-rxnt-authentication",
+      "type": "package",
+      "label": "rxnt-authentication",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/rxnt-authentication",
+      "href": "/supply-chain/packages/pkg-npm-rxnt-authentication/",
+      "ecosystem": "npm",
+      "aliases": [
+        "rxnt-authentication"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "pkg-npm-ua-parser-js",
+      "entity_id": "pkg-npm-ua-parser-js",
+      "type": "package",
+      "label": "ua-parser-js",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/ua-parser-js",
+      "href": "/supply-chain/packages/pkg-npm-ua-parser-js/",
+      "ecosystem": "npm",
+      "aliases": [
+        "ua-parser-js"
+      ],
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "pkg-pypi-ctx",
+      "entity_id": "pkg-pypi-ctx",
+      "type": "package",
+      "label": "ctx",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/ctx",
+      "href": "/supply-chain/packages/pkg-pypi-ctx/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "ctx"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "pkg-pypi-torchtriton",
+      "entity_id": "pkg-pypi-torchtriton",
+      "type": "package",
+      "label": "torchtriton",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/torchtriton",
+      "href": "/supply-chain/packages/pkg-pypi-torchtriton/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "torchtriton"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYTORCH-NIGHTLY"
+      ]
+    },
+    {
+      "id": "pkg-pypi-ultralytics",
+      "entity_id": "pkg-pypi-ultralytics",
+      "type": "package",
+      "label": "ultralytics",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/ultralytics",
+      "href": "/supply-chain/packages/pkg-pypi-ultralytics/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "ultralytics"
+      ],
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "entity_id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "type": "release",
+      "label": "github.com/boltdb-go/bolt@v1.3.1",
+      "tier": "release",
+      "sev": null,
+      "time": "2021-11-01",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:golang/github.com/boltdb-go/bolt@v1.3.1",
+      "href": null,
+      "ecosystem": "golang",
+      "aliases": [
+        "github.com/boltdb-go/bolt@v1.3.1",
+        "pkg:golang/github.com/boltdb-go/bolt@v1.3.1"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "release-npm-ctrl-tinycolor-4-1-1",
+      "entity_id": "release-npm-ctrl-tinycolor-4-1-1",
+      "type": "release",
+      "label": "@ctrl/tinycolor@4.1.1",
+      "tier": "release",
+      "sev": null,
+      "time": "2025-09-15",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40ctrl/tinycolor@4.1.1",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "@ctrl/tinycolor@4.1.1",
+        "pkg:npm/%40ctrl/tinycolor@4.1.1"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "release-npm-ctrl-tinycolor-4-1-2",
+      "entity_id": "release-npm-ctrl-tinycolor-4-1-2",
+      "type": "release",
+      "label": "@ctrl/tinycolor@4.1.2",
+      "tier": "release",
+      "sev": null,
+      "time": "2025-09-15",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40ctrl/tinycolor@4.1.2",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "@ctrl/tinycolor@4.1.2",
+        "pkg:npm/%40ctrl/tinycolor@4.1.2"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "release-npm-flatmap-stream-0-1-1",
+      "entity_id": "release-npm-flatmap-stream-0-1-1",
+      "type": "release",
+      "label": "flatmap-stream@0.1.1",
+      "tier": "release",
+      "sev": null,
+      "time": "2018-09-09",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/flatmap-stream@0.1.1",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "flatmap-stream@0.1.1",
+        "pkg:npm/flatmap-stream@0.1.1"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "release-npm-ua-parser-js-0-7-29",
+      "entity_id": "release-npm-ua-parser-js-0-7-29",
+      "type": "release",
+      "label": "ua-parser-js@0.7.29",
+      "tier": "release",
+      "sev": null,
+      "time": "2021-10-22",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/ua-parser-js@0.7.29",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "pkg:npm/ua-parser-js@0.7.29",
+        "ua-parser-js@0.7.29"
+      ],
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "release-npm-ua-parser-js-0-8-0",
+      "entity_id": "release-npm-ua-parser-js-0-8-0",
+      "type": "release",
+      "label": "ua-parser-js@0.8.0",
+      "tier": "release",
+      "sev": null,
+      "time": "2021-10-22",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/ua-parser-js@0.8.0",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "pkg:npm/ua-parser-js@0.8.0",
+        "ua-parser-js@0.8.0"
+      ],
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "release-npm-ua-parser-js-1-0-0",
+      "entity_id": "release-npm-ua-parser-js-1-0-0",
+      "type": "release",
+      "label": "ua-parser-js@1.0.0",
+      "tier": "release",
+      "sev": null,
+      "time": "2021-10-22",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/ua-parser-js@1.0.0",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "pkg:npm/ua-parser-js@1.0.0",
+        "ua-parser-js@1.0.0"
+      ],
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "repo-github-com-boltdb-go-bolt",
+      "entity_id": "repo-github-com-boltdb-go-bolt",
+      "type": "repository",
+      "label": "boltdb-go/bolt",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-boltdb-go-bolt/",
+      "ecosystem": null,
+      "aliases": [
+        "boltdb-go/bolt"
+      ],
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "repo-github-com-codecov-codecov-bash",
+      "entity_id": "repo-github-com-codecov-codecov-bash",
+      "type": "repository",
+      "label": "codecov/codecov-bash",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-codecov-codecov-bash/",
+      "ecosystem": null,
+      "aliases": [
+        "codecov/codecov-bash"
+      ],
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER"
+      ]
+    },
+    {
+      "id": "repo-github-com-dominictarr-event-stream",
+      "entity_id": "repo-github-com-dominictarr-event-stream",
+      "type": "repository",
+      "label": "dominictarr/event-stream",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-dominictarr-event-stream/",
+      "ecosystem": null,
+      "aliases": [
+        "dominictarr/event-stream"
+      ],
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "repo-github-com-eslint-eslint-scope",
+      "entity_id": "repo-github-com-eslint-eslint-scope",
+      "type": "repository",
+      "label": "eslint/eslint-scope",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-eslint-eslint-scope/",
+      "ecosystem": null,
+      "aliases": [
+        "eslint/eslint-scope"
+      ],
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "repo-github-com-marak-colors-js",
+      "entity_id": "repo-github-com-marak-colors-js",
+      "type": "repository",
+      "label": "Marak/colors.js",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-marak-colors-js/",
+      "ecosystem": null,
+      "aliases": [
+        "Marak/colors.js"
+      ],
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER"
+      ]
+    },
+    {
+      "id": "repo-github-com-php-php-src",
+      "entity_id": "repo-github-com-php-php-src",
+      "type": "repository",
+      "label": "php/php-src",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-php-php-src/",
+      "ecosystem": null,
+      "aliases": [
+        "php/php-src"
+      ],
+      "source_incident_ids": [
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "repo-github-com-pytorch-pytorch",
+      "entity_id": "repo-github-com-pytorch-pytorch",
+      "type": "repository",
+      "label": "pytorch/pytorch",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-pytorch-pytorch/",
+      "ecosystem": null,
+      "aliases": [
+        "pytorch/pytorch"
+      ],
+      "source_incident_ids": [
+        "SC-2022-PYTORCH-NIGHTLY"
+      ]
+    },
+    {
+      "id": "repo-github-com-riaevangelist-node-ipc",
+      "entity_id": "repo-github-com-riaevangelist-node-ipc",
+      "type": "repository",
+      "label": "RIAEvangelist/node-ipc",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-riaevangelist-node-ipc/",
+      "ecosystem": null,
+      "aliases": [
+        "RIAEvangelist/node-ipc"
+      ],
+      "source_incident_ids": [
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "repo-github-com-tj-actions-changed-files",
+      "entity_id": "repo-github-com-tj-actions-changed-files",
+      "type": "repository",
+      "label": "tj-actions/changed-files",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-tj-actions-changed-files/",
+      "ecosystem": null,
+      "aliases": [
+        "tj-actions/changed-files"
+      ],
+      "source_incident_ids": [
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "repo-github-com-tukaani-project-xz",
+      "entity_id": "repo-github-com-tukaani-project-xz",
+      "type": "repository",
+      "label": "tukaani-project/xz",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-tukaani-project-xz/",
+      "ecosystem": null,
+      "aliases": [
+        "tukaani-project/xz"
+      ],
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "repo-github-com-ultralytics-ultralytics",
+      "entity_id": "repo-github-com-ultralytics-ultralytics",
+      "type": "repository",
+      "label": "ultralytics/ultralytics",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-ultralytics-ultralytics/",
+      "ecosystem": null,
+      "aliases": [
+        "ultralytics/ultralytics"
+      ],
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2018-NPM-EVENT-STREAM->maintainer-dominictarr",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "maintainer-dominictarr",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2018-NPM-EVENT-STREAM->maintainer-right9ctrl",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "maintainer-right9ctrl",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2022-COLORS-FAKER->maintainer-marak-squires",
+      "source": "incident-SC-2022-COLORS-FAKER",
+      "target": "maintainer-marak-squires",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2022-NODE-IPC->maintainer-riaevangelist",
+      "source": "incident-SC-2022-NODE-IPC",
+      "target": "maintainer-riaevangelist",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2024-XZ-UTILS->maintainer-jia-tan",
+      "source": "incident-SC-2024-XZ-UTILS",
+      "target": "maintainer-jia-tan",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2016-LINUX-MINT-ISO->org-linux-mint",
+      "source": "incident-SC-2016-LINUX-MINT-ISO",
+      "target": "org-linux-mint",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2017-CCLEANER->org-piriform",
+      "source": "incident-SC-2017-CCLEANER",
+      "target": "org-piriform",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2017-NOTPETYA-MEDOC->org-intellect-service",
+      "source": "incident-SC-2017-NOTPETYA-MEDOC",
+      "target": "org-intellect-service",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2018-ESLINT-SCOPE->org-eslint",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "org-eslint",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2019-ASUS-SHADOWHAMMER->org-asus",
+      "source": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "target": "org-asus",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2020-SOLARWINDS-ORION->org-solarwinds",
+      "source": "incident-SC-2020-SOLARWINDS-ORION",
+      "target": "org-solarwinds",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2021-CODECOV-BASH-UPLOADER->org-codecov",
+      "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "target": "org-codecov",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2021-KASEYA-VSA->org-kaseya",
+      "source": "incident-SC-2021-KASEYA-VSA",
+      "target": "org-kaseya",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2021-PHP-GIT-SERVER->org-php-project",
+      "source": "incident-SC-2021-PHP-GIT-SERVER",
+      "target": "org-php-project",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2022-PYTORCH-NIGHTLY->org-pytorch",
+      "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "target": "org-pytorch",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2023-LEDGER-CONNECT-KIT->org-ledger",
+      "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "target": "org-ledger",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2023-THREE-CX-DESKTOP->org-3cx",
+      "source": "incident-SC-2023-THREE-CX-DESKTOP",
+      "target": "org-3cx",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2024-LOTTIE-PLAYER->org-lottiefiles",
+      "source": "incident-SC-2024-LOTTIE-PLAYER",
+      "target": "org-lottiefiles",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2024-POLYFILL-IO->org-polyfill-io",
+      "source": "incident-SC-2024-POLYFILL-IO",
+      "target": "org-polyfill-io",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2024-ULTRALYTICS-PYPI->org-ultralytics",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "org-ultralytics",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2024-XZ-UTILS->org-tukaani-project",
+      "source": "incident-SC-2024-XZ-UTILS",
+      "target": "org-tukaani-project",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2025-NPM-SHAI-HULUD->org-ctrl",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "org-ctrl",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2025-NPM-SHAI-HULUD->org-rxnt",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "org-rxnt",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->org-tj-actions",
+      "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "org-tj-actions",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2018-ESLINT-SCOPE->pkg-npm-eslint-config-eslint",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "pkg-npm-eslint-config-eslint",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2018-ESLINT-SCOPE->pkg-npm-eslint-scope",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "pkg-npm-eslint-scope",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2018-NPM-EVENT-STREAM->pkg-npm-event-stream",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "pkg-npm-event-stream",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2018-NPM-EVENT-STREAM->pkg-npm-flatmap-stream",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "pkg-npm-flatmap-stream",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2021-DEPENDENCY-CONFUSION->pkg-multiple-internal-dependency-names",
+      "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "target": "pkg-multiple-internal-dependency-names",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2021-NPM-RC->pkg-npm-rc",
+      "source": "incident-SC-2021-NPM-RC",
+      "target": "pkg-npm-rc",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2021-UA-PARSER-JS->pkg-npm-ua-parser-js",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "pkg-npm-ua-parser-js",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-COLORS-FAKER->pkg-npm-colors",
+      "source": "incident-SC-2022-COLORS-FAKER",
+      "target": "pkg-npm-colors",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-COLORS-FAKER->pkg-npm-faker",
+      "source": "incident-SC-2022-COLORS-FAKER",
+      "target": "pkg-npm-faker",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-NODE-IPC->pkg-npm-node-ipc",
+      "source": "incident-SC-2022-NODE-IPC",
+      "target": "pkg-npm-node-ipc",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-NODE-IPC->pkg-npm-peacenotwar",
+      "source": "incident-SC-2022-NODE-IPC",
+      "target": "pkg-npm-peacenotwar",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-PYPI-CTX->pkg-pypi-ctx",
+      "source": "incident-SC-2022-PYPI-CTX",
+      "target": "pkg-pypi-ctx",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2022-PYTORCH-NIGHTLY->pkg-pypi-torchtriton",
+      "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "target": "pkg-pypi-torchtriton",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2023-LEDGER-CONNECT-KIT->pkg-npm-ledgerhq-connect-kit",
+      "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "target": "pkg-npm-ledgerhq-connect-kit",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2024-LOTTIE-PLAYER->pkg-npm-lottiefiles-lottie-player",
+      "source": "incident-SC-2024-LOTTIE-PLAYER",
+      "target": "pkg-npm-lottiefiles-lottie-player",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2024-ULTRALYTICS-PYPI->pkg-pypi-ultralytics",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "pkg-pypi-ultralytics",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->pkg-golang-github-com-boltdb-go-bolt",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "pkg-golang-github-com-boltdb-go-bolt",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2025-NPM-SHAI-HULUD->pkg-npm-ctrl-tinycolor",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "pkg-npm-ctrl-tinycolor",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2025-NPM-SHAI-HULUD->pkg-npm-rxnt-authentication",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "pkg-npm-rxnt-authentication",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2018-ESLINT-SCOPE->repo-github-com-eslint-eslint-scope",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "repo-github-com-eslint-eslint-scope",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2018-NPM-EVENT-STREAM->repo-github-com-dominictarr-event-stream",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "repo-github-com-dominictarr-event-stream",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2021-CODECOV-BASH-UPLOADER->repo-github-com-codecov-codecov-bash",
+      "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "target": "repo-github-com-codecov-codecov-bash",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2021-PHP-GIT-SERVER->repo-github-com-php-php-src",
+      "source": "incident-SC-2021-PHP-GIT-SERVER",
+      "target": "repo-github-com-php-php-src",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2022-COLORS-FAKER->repo-github-com-marak-colors-js",
+      "source": "incident-SC-2022-COLORS-FAKER",
+      "target": "repo-github-com-marak-colors-js",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2022-NODE-IPC->repo-github-com-riaevangelist-node-ipc",
+      "source": "incident-SC-2022-NODE-IPC",
+      "target": "repo-github-com-riaevangelist-node-ipc",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2022-PYTORCH-NIGHTLY->repo-github-com-pytorch-pytorch",
+      "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "target": "repo-github-com-pytorch-pytorch",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2024-ULTRALYTICS-PYPI->repo-github-com-ultralytics-ultralytics",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "repo-github-com-ultralytics-ultralytics",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2024-XZ-UTILS->repo-github-com-tukaani-project-xz",
+      "source": "incident-SC-2024-XZ-UTILS",
+      "target": "repo-github-com-tukaani-project-xz",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->repo-github-com-boltdb-go-bolt",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "repo-github-com-boltdb-go-bolt",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->repo-github-com-tj-actions-changed-files",
+      "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "repo-github-com-tj-actions-changed-files",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-apt29->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "actor-apt29",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-boltdb-go-operator->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "actor-boltdb-go-operator",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-lazarus-group->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "actor-lazarus-group",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-sandworm->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "actor-sandworm",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-shai-hulud-operator->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "actor-shai-hulud-operator",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-unc-xz-utils-operator->incident-SC-2024-XZ-UTILS",
+      "source": "actor-unc-xz-utils-operator",
+      "target": "incident-SC-2024-XZ-UTILS",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-unc-xz-utils-operator->maintainer-jia-tan",
+      "source": "actor-unc-xz-utils-operator",
+      "target": "maintainer-jia-tan",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2018-ESLINT-SCOPE->account-npm-eslint-scope-npm-maintainer-account",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "account-npm-eslint-scope-npm-maintainer-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2021-PHP-GIT-SERVER->account-php-git-php-git-server-commit-identity",
+      "source": "incident-SC-2021-PHP-GIT-SERVER",
+      "target": "account-php-git-php-git-server-commit-identity",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2021-UA-PARSER-JS->account-npm-ua-parser-js-npm-maintainer-account",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "account-npm-ua-parser-js-npm-maintainer-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2022-PYPI-CTX->account-pypi-ctx-pypi-project-account",
+      "source": "incident-SC-2022-PYPI-CTX",
+      "target": "account-pypi-ctx-pypi-project-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2023-LEDGER-CONNECT-KIT->account-npm-ledgerhq-connect-kit-npm-publish-account",
+      "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "target": "account-npm-ledgerhq-connect-kit-npm-publish-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2024-LOTTIE-PLAYER->account-npm-lottiefiles-lottie-player-npm-publish-account",
+      "source": "incident-SC-2024-LOTTIE-PLAYER",
+      "target": "account-npm-lottiefiles-lottie-player-npm-publish-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2024-ULTRALYTICS-PYPI->account-pypi-ultralytics-pypi-publishing-token",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "account-pypi-ultralytics-pypi-publishing-token",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2025-NPM-SHAI-HULUD->account-github-victim-github-tokens",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "account-github-victim-github-tokens",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2025-NPM-SHAI-HULUD->account-npm-compromised-npm-maintainer-tokens",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "account-npm-compromised-npm-maintainer-tokens",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->account-github-tj-actions-github-action-release-path",
+      "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "account-github-tj-actions-github-action-release-path",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2018-NPM-EVENT-STREAM->release-npm-flatmap-stream-0-1-1",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "release-npm-flatmap-stream-0-1-1",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2021-UA-PARSER-JS->release-npm-ua-parser-js-0-7-29",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "release-npm-ua-parser-js-0-7-29",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2021-UA-PARSER-JS->release-npm-ua-parser-js-0-8-0",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "release-npm-ua-parser-js-0-8-0",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2021-UA-PARSER-JS->release-npm-ua-parser-js-1-0-0",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "release-npm-ua-parser-js-1-0-0",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2025-NPM-SHAI-HULUD->release-npm-ctrl-tinycolor-4-1-1",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "release-npm-ctrl-tinycolor-4-1-1",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2025-NPM-SHAI-HULUD->release-npm-ctrl-tinycolor-4-1-2",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "release-npm-ctrl-tinycolor-4-1-2",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "MAINTAINS_REPOSITORY:maintainer-dominictarr->repo-github-com-dominictarr-event-stream",
+      "source": "maintainer-dominictarr",
+      "target": "repo-github-com-dominictarr-event-stream",
+      "type": "MAINTAINS_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "MAINTAINS_REPOSITORY:maintainer-jia-tan->repo-github-com-tukaani-project-xz",
+      "source": "maintainer-jia-tan",
+      "target": "repo-github-com-tukaani-project-xz",
+      "type": "MAINTAINS_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "MAINTAINS_REPOSITORY:maintainer-marak-squires->repo-github-com-marak-colors-js",
+      "source": "maintainer-marak-squires",
+      "target": "repo-github-com-marak-colors-js",
+      "type": "MAINTAINS_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "MAINTAINS_REPOSITORY:maintainer-riaevangelist->repo-github-com-riaevangelist-node-ipc",
+      "source": "maintainer-riaevangelist",
+      "target": "repo-github-com-riaevangelist-node-ipc",
+      "type": "MAINTAINS_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-golang-github-com-boltdb-go-bolt->release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "source": "pkg-golang-github-com-boltdb-go-bolt",
+      "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-ctrl-tinycolor->release-npm-ctrl-tinycolor-4-1-1",
+      "source": "pkg-npm-ctrl-tinycolor",
+      "target": "release-npm-ctrl-tinycolor-4-1-1",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-ctrl-tinycolor->release-npm-ctrl-tinycolor-4-1-2",
+      "source": "pkg-npm-ctrl-tinycolor",
+      "target": "release-npm-ctrl-tinycolor-4-1-2",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-flatmap-stream->release-npm-flatmap-stream-0-1-1",
+      "source": "pkg-npm-flatmap-stream",
+      "target": "release-npm-flatmap-stream-0-1-1",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-ua-parser-js->release-npm-ua-parser-js-0-7-29",
+      "source": "pkg-npm-ua-parser-js",
+      "target": "release-npm-ua-parser-js-0-7-29",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-ua-parser-js->release-npm-ua-parser-js-0-8-0",
+      "source": "pkg-npm-ua-parser-js",
+      "target": "release-npm-ua-parser-js-0-8-0",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-ua-parser-js->release-npm-ua-parser-js-1-0-0",
+      "source": "pkg-npm-ua-parser-js",
+      "target": "release-npm-ua-parser-js-1-0-0",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2017-0002->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "campaign-tp-camp-2017-0002",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2020-0001->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "campaign-tp-camp-2020-0001",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2023-0002->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "campaign-tp-camp-2023-0002",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2016-LINUX-MINT-ISO->channel-linux-website-download-linux-mint-download-site",
+      "source": "incident-SC-2016-LINUX-MINT-ISO",
+      "target": "channel-linux-website-download-linux-mint-download-site",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2021-CODECOV-BASH-UPLOADER->channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "target": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2024-XZ-UTILS->channel-linux-source-release-upstream-source-release-tarball",
+      "source": "incident-SC-2024-XZ-UTILS",
+      "target": "channel-linux-source-release-upstream-source-release-tarball",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->channel-github-source-repository-github-repository",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "channel-github-source-repository-github-repository",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->channel-golang-package-registry-go-module-proxy",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "channel-golang-package-registry-go-module-proxy",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2020-OCTOPUS-SCANNER->build-netbeans-netbeans-project-build-process",
+      "source": "incident-SC-2020-OCTOPUS-SCANNER",
+      "target": "build-netbeans-netbeans-project-build-process",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2020-SOLARWINDS-ORION->build-solarwinds-solarwinds-orion-build-system",
+      "source": "incident-SC-2020-SOLARWINDS-ORION",
+      "target": "build-solarwinds-solarwinds-orion-build-system",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2021-CODECOV-BASH-UPLOADER->build-codecov-codecov-bash-uploader-distribution-pipeline",
+      "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "target": "build-codecov-codecov-bash-uploader-distribution-pipeline",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2022-PYTORCH-NIGHTLY->build-pytorch-pytorch-nightly-build-pipeline",
+      "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "target": "build-pytorch-pytorch-nightly-build-pipeline",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2023-THREE-CX-DESKTOP->build-3cx-3cx-desktopapp-build-pipeline",
+      "source": "incident-SC-2023-THREE-CX-DESKTOP",
+      "target": "build-3cx-3cx-desktopapp-build-pipeline",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2024-ULTRALYTICS-PYPI->build-github-github-actions",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2025-NPM-SHAI-HULUD->build-github-github-actions",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->build-github-github-actions",
+      "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2016-LINUX-MINT-ISO->channel-linux-website-download-linux-mint-download-site",
+      "source": "incident-SC-2016-LINUX-MINT-ISO",
+      "target": "channel-linux-website-download-linux-mint-download-site",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2017-CCLEANER->channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "source": "incident-SC-2017-CCLEANER",
+      "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2017-NOTPETYA-MEDOC->channel-vendor-update-software-update-vendor-software-update-channel",
+      "source": "incident-SC-2017-NOTPETYA-MEDOC",
+      "target": "channel-vendor-update-software-update-vendor-software-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2018-ESLINT-SCOPE->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2018-ESLINT-SCOPE",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2018-NPM-EVENT-STREAM->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2018-NPM-EVENT-STREAM",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2019-ASUS-SHADOWHAMMER->channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "source": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2020-OCTOPUS-SCANNER->channel-source-control-source-repository-source-repository",
+      "source": "incident-SC-2020-OCTOPUS-SCANNER",
+      "target": "channel-source-control-source-repository-source-repository",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2020-SOLARWINDS-ORION->channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "source": "incident-SC-2020-SOLARWINDS-ORION",
+      "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-CODECOV-BASH-UPLOADER->channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "source": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "target": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-DEPENDENCY-CONFUSION->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-DEPENDENCY-CONFUSION->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-DEPENDENCY-CONFUSION->channel-rubygems-package-registry-rubygems",
+      "source": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "target": "channel-rubygems-package-registry-rubygems",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-KASEYA-VSA->channel-vendor-update-software-update-vendor-software-update-channel",
+      "source": "incident-SC-2021-KASEYA-VSA",
+      "target": "channel-vendor-update-software-update-vendor-software-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-NPM-RC->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2021-NPM-RC",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-PHP-GIT-SERVER->channel-source-control-source-repository-source-repository",
+      "source": "incident-SC-2021-PHP-GIT-SERVER",
+      "target": "channel-source-control-source-repository-source-repository",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2021-UA-PARSER-JS->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2021-UA-PARSER-JS",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2022-COLORS-FAKER->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2022-COLORS-FAKER",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2022-NODE-IPC->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2022-NODE-IPC",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2022-PYPI-CTX->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2022-PYPI-CTX",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2022-PYTORCH-NIGHTLY->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2023-LEDGER-CONNECT-KIT->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2023-THREE-CX-DESKTOP->channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "source": "incident-SC-2023-THREE-CX-DESKTOP",
+      "target": "channel-vendor-update-signed-update-signed-software-installer-update-channel",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2024-LOTTIE-PLAYER->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2024-LOTTIE-PLAYER",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2024-POLYFILL-IO->channel-web-cdn-script-third-party-cdn-script",
+      "source": "incident-SC-2024-POLYFILL-IO",
+      "target": "channel-web-cdn-script-third-party-cdn-script",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2024-ULTRALYTICS-PYPI->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2024-XZ-UTILS->channel-linux-source-release-upstream-source-release-tarball",
+      "source": "incident-SC-2024-XZ-UTILS",
+      "target": "channel-linux-source-release-upstream-source-release-tarball",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->channel-github-source-repository-github-repository",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "channel-github-source-repository-github-repository",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->channel-golang-package-registry-go-module-proxy",
+      "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "target": "channel-golang-package-registry-go-module-proxy",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-NPM-SHAI-HULUD->channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-NPM-SHAI-HULUD->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2025-NPM-SHAI-HULUD",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    }
+  ]
+}

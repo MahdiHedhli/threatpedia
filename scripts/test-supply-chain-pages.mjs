@@ -10,10 +10,15 @@ import {
   loadSupplyChainData,
   validateSupplyChainPageData,
 } from '../site/src/lib/supplyChainPages.mjs';
+import { buildSupplyChainGraphData } from './build-supply-chain-graph.mjs';
 
 const data = loadSupplyChainData();
 const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
 const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
+const supplyChainGraphSource = readFileSync(new URL('../site/public/js/supply-chain-graph-core.js', import.meta.url), 'utf-8');
+const supplyChainGraphPayload = JSON.parse(
+  readFileSync(new URL('../site/public/supply-chain-graph.json', import.meta.url), 'utf-8')
+);
 
 function routeUrl(route) {
   return route.slug ? `/supply-chain/${route.slug}/` : '/supply-chain/';
@@ -48,6 +53,12 @@ assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maint
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
+);
+assert.ok(
+  supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
+    supplyChainRouteSource.includes('data-sc-graph-canvas') &&
+    supplyChainRouteSource.includes('/js/supply-chain-graph-core.js'),
+  'route should mount the persisted WebGL graph island'
 );
 assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
@@ -174,7 +185,7 @@ assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'ind
 assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
 assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
 assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should not expose the internal codename');
-assert.equal(index.graphHero.status, 'Corpus graph preview', 'index should expose the G1 graph placeholder state');
+assert.equal(index.graphHero.status, 'WebGL graph loading', 'index should expose the G2 graph loading state');
 assert.ok(index.graphHero.nodeCount > data.incidents.length, 'graph hero should expose corpus node count');
 assert.equal(index.graphHero.relationshipCount, data.relationships.length, 'graph hero should expose relationship count');
 assert.equal(index.incidents.length, data.incidents.length, 'index should expose every incident row');
@@ -307,6 +318,58 @@ assert.equal(index.seo.canonicalPath, '/supply-chain/', 'index should include ca
 assert.ok(index.seo.ogTitle, 'index should include Open Graph title');
 assert.ok(index.seo.ogDescription, 'index should include Open Graph description');
 assert.ok(index.seo.jsonLd, 'index should include JSON-LD');
+
+const builtGraph = buildSupplyChainGraphData(data);
+assert.equal(
+  supplyChainGraphPayload.schema_version,
+  'threatpedia-supply-chain-graph/1',
+  'graph payload should expose the G2 schema version'
+);
+assert.equal(
+  supplyChainGraphPayload.nodes.length,
+  builtGraph.nodes.length,
+  'checked graph payload should match builder node count'
+);
+assert.equal(
+  supplyChainGraphPayload.edges.length,
+  builtGraph.edges.length,
+  'checked graph payload should match builder edge count'
+);
+assert.ok(
+  supplyChainGraphPayload.renderer_contract.g2_drawable_tiers.includes('incident'),
+  'graph payload should declare G2 drawable tiers'
+);
+assert.equal(
+  supplyChainGraphPayload.renderer_contract.package_release_lod,
+  'payload-only-until-G4',
+  'graph payload should keep package and release tiers payload-only until G4'
+);
+assert.ok(
+  supplyChainGraphPayload.nodes.some((node) => node.type === 'package') &&
+    supplyChainGraphPayload.nodes.some((node) => node.type === 'release'),
+  'graph payload should preserve package and release nodes for later LOD slices'
+);
+assert.ok(
+  supplyChainGraphPayload.nodes.some((node) => node.type === 'actor') &&
+    supplyChainGraphPayload.nodes.some((node) => node.type === 'campaign') &&
+    supplyChainGraphPayload.nodes.some((node) => node.type === 'incident'),
+  'graph payload should include actor, campaign, and incident tiers'
+);
+assert.ok(
+  supplyChainGraphPayload.edges.some((edge) => edge.type === 'ATTRIBUTED_TO_ACTOR') &&
+    supplyChainGraphPayload.edges.some((edge) => edge.type === 'RELATED_CAMPAIGN'),
+  'graph payload should include actor and campaign graph edges'
+);
+assert.ok(
+  supplyChainGraphSource.includes("getContext('webgl2'") &&
+    supplyChainGraphSource.includes("getContext('webgl'") &&
+    supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
+    supplyChainGraphSource.includes('function isG2DrawableNode') &&
+    supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident'])") &&
+    supplyChainGraphSource.includes('setCameraTarget') &&
+    supplyChainGraphSource.includes('clamp('),
+  'graph client should use WebGL, quadtree picking, G2 LOD culling, and clamped camera targets'
+);
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
 assert.ok(codecov.graphHero, 'incident pages should expose graph hero data');
