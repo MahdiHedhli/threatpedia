@@ -340,7 +340,7 @@ def validate_relationships(
         return ["relationships: expected list"]
 
     valid_nodes = entity_ids | incident_ids
-    seen_relationships: set[tuple[str, str, str]] = set()
+    seen_relationships: set[tuple[Any, Any, Any, Any]] = set()
     connected_entities: set[str] = set()
     seeded_by_edges: list[tuple[str, str, str]] = []
     for index, rel in enumerate(relationships):
@@ -404,7 +404,8 @@ def validate_relationships(
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
             errors.append(f"{path}.target: unknown target {target!r}")
-        key = (source, target, rel_type)
+        source_incident_context = rel.get("source_incident_id") if rel_type == "SEEDED_BY" else ""
+        key = (source, target, rel_type, source_incident_context or "")
         if key in seen_relationships:
             errors.append(f"{path}: duplicate relationship {key!r}")
         seen_relationships.add(key)

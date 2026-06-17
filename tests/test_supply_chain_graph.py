@@ -180,6 +180,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         edge = shai_hulud["propagation_edges"][0]
 
         graph = builder.build_graph([*corpus, duplicate])
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
         matching = [
             relationship
             for relationship in graph["relationships"]
@@ -192,6 +193,7 @@ class SupplyChainGraphTests(unittest.TestCase):
             {relationship["source_incident_id"] for relationship in matching},
             {"SC-2025-NPM-SHAI-HULUD", "SC-2099-NPM-SHAI-HULUD-DUPLICATE"},
         )
+        self.assertEqual(validator.validate_graph([*corpus, duplicate], entities_by_type, graph["relationships"]), [])
 
     def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
         first = {
