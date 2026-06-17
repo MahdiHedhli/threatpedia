@@ -62,6 +62,10 @@ assert.ok(
   'Base layout should force normal reloads for non-Supply-Chain internal navigation'
 );
 assert.ok(
+  baseLayoutSource.includes("document.addEventListener('click', scopeAstroTransitionForClick, { capture: true })"),
+  'Base layout should scope dynamically inserted links before Astro handles clicks'
+);
+assert.ok(
   !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
   'Base layout page-load handler should not return early when menu elements are absent'
 );

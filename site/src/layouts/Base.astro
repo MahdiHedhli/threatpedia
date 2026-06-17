@@ -255,6 +255,21 @@ try {
         });
       }
 
+      function scopeAstroTransitionForClick(event) {
+        const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
+        if (!anchor) return;
+        if (shouldUseClientTransition(anchor)) {
+          anchor.removeAttribute('data-astro-reload');
+        } else {
+          anchor.setAttribute('data-astro-reload', '');
+        }
+      }
+
+      if (!document.documentElement.dataset.threatpediaTransitionScopeBound) {
+        document.addEventListener('click', scopeAstroTransitionForClick, { capture: true });
+        document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';
+      }
+
       document.addEventListener('astro:page-load', () => {
       scopeAstroTransitionsToSupplyChain();
 
