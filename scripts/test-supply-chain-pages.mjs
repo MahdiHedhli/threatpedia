@@ -467,6 +467,11 @@ assert.ok(
   'graph client should provide keyboard traversal and truthful ARIA selected-node/failure text'
 );
 assert.ok(
+  supplyChainGraphSource.includes('this.keyboardNodeId = incidentNodes[0]?.id || null;') &&
+    supplyChainGraphSource.includes('this.keyboardNodeId = nodes[0]?.id || null;'),
+  'graph client should reset keyboard focus for context and stage selections'
+);
+assert.ok(
   supplyChainGraphSource.includes('labelPriority') &&
     supplyChainGraphSource.includes('labelCandidates') &&
     supplyChainGraphSource.includes('labelFits') &&

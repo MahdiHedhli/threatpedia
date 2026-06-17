@@ -798,6 +798,7 @@ class SupplyChainGraph {
       return;
     }
     this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
+    this.keyboardNodeId = incidentNodes[0]?.id || null;
     this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
     this.updateCaption(
@@ -821,6 +822,7 @@ class SupplyChainGraph {
     const nodes = this.layout.nodes.filter((node) => node.tier === 'incident' && node.attack_stage === stage);
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
+    this.keyboardNodeId = nodes[0]?.id || null;
     this.focusReflow = false;
     this.lastBloomIncidentId = null;
     this.updateReflowControl();
