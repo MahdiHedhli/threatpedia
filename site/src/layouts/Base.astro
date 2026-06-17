@@ -237,7 +237,9 @@ try {
           const toPath = ev.to?.pathname || '';
           if (!(isSupplyChainPath(fromPath) && isSupplyChainPath(toPath))) {
             ev.preventDefault();
-            window.location.href = ev.to.href;
+            if (ev.to) {
+              window.location.href = ev.to.href;
+            }
           }
         });
         document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';

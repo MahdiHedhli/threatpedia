@@ -66,6 +66,10 @@ assert.ok(
   'Base layout should force normal navigation outside Supply Chain routes'
 );
 assert.ok(
+  baseLayoutSource.includes('if (ev.to)') && baseLayoutSource.includes('window.location.href = ev.to.href;'),
+  'Base layout transition fallback should guard optional Astro destination data'
+);
+assert.ok(
   !baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
   'Base layout should not mutate anchor data-astro-reload attributes after Astro morphs'
 );
