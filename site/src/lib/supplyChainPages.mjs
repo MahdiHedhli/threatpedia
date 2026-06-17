@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSupplyChainGraphData } from '../../../scripts/build-supply-chain-graph.mjs';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 const incidentRelativePath = 'data/supply-chain-incidents/incidents.json';
@@ -556,9 +557,21 @@ function buildGraphHeroModel(data) {
   const incidents = data.incidents.filter(Boolean);
   const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
   const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
-  const nodeCount =
-    incidents.length +
-    Object.values(entities).reduce((total, collection) => total + (Array.isArray(collection) ? collection.length : 0), 0);
+  const graphCorpus = {
+    incidents: incidents.filter((incident) => incident && typeof incident === 'object' && typeof incident.id === 'string'),
+    relationships: relationships.filter((relationship) => relationship && typeof relationship === 'object'),
+    entities: Object.fromEntries(
+      Object.entries(entities).map(([key, collection]) => [
+        key,
+        Array.isArray(collection)
+          ? collection.filter((entity) => entity && typeof entity === 'object' && typeof entity.id === 'string')
+          : [],
+      ])
+    ),
+  };
+  const graphData = buildSupplyChainGraphData(graphCorpus);
+  const nodeCount = Array.isArray(graphData.nodes) ? graphData.nodes.length : 0;
+  const edgeCount = Array.isArray(graphData.edges) ? graphData.edges.length : relationships.length;
   const latestIncident =
     incidents.length > 0
       ? incidents.map((incident) => incidentLinkRow(incident)).sort(compareDateDesc)[0] || null
@@ -570,7 +583,7 @@ function buildGraphHeroModel(data) {
       'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
     status: 'WebGL graph loading',
     nodeCount,
-    relationshipCount: relationships.length,
+    relationshipCount: edgeCount,
     latestIncident,
   };
   graphHeroModelCache.set(data, graphHeroModel);

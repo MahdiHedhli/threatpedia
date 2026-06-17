@@ -12,11 +12,19 @@
       "campaign",
       "incident"
     ],
+    "g3_drawable_tiers": [
+      "actor",
+      "campaign",
+      "incident",
+      "technique"
+    ],
+    "technique_focus": "wide-shot-default-with-operator-reflow",
     "package_release_lod": "payload-only-until-G4",
     "layout": "time-anchored-actor-lanes"
   },
   "counts": {
     "incident": 27,
+    "technique": 58,
     "account": 10,
     "actor": 6,
     "build_system": 6,
@@ -2775,6 +2783,1137 @@
       "source_incident_ids": [
         "SC-2024-ULTRALYTICS-PYPI"
       ]
+    },
+    {
+      "id": "technique-account-compromise",
+      "entity_id": "account-compromise",
+      "type": "technique",
+      "label": "Account Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "account-compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "technique-account-takeover",
+      "entity_id": "account-takeover",
+      "type": "technique",
+      "label": "Account Takeover",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "account-takeover"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "technique-backdoor",
+      "entity_id": "backdoor",
+      "type": "technique",
+      "label": "Backdoor",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "backdoor"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO",
+        "SC-2017-CCLEANER",
+        "SC-2019-ASUS-SHADOWHAMMER",
+        "SC-2020-SOLARWINDS-ORION",
+        "SC-2021-PHP-GIT-SERVER",
+        "SC-2023-THREE-CX-DESKTOP",
+        "SC-2024-XZ-UTILS",
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-build-system",
+      "entity_id": "build-system",
+      "type": "technique",
+      "label": "Build System",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "build-system"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "technique-build-system-compromise",
+      "entity_id": "build_system_compromise",
+      "type": "technique",
+      "label": "Build System Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "build_system_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2020-SOLARWINDS-ORION",
+        "SC-2021-CODECOV-BASH-UPLOADER",
+        "SC-2023-THREE-CX-DESKTOP",
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "technique-cdn",
+      "entity_id": "cdn",
+      "type": "technique",
+      "label": "Cdn",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "cdn"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "technique-cdn-script-compromise",
+      "entity_id": "cdn_script_compromise",
+      "type": "technique",
+      "label": "Cdn Script Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "cdn_script_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "technique-ci-cd",
+      "entity_id": "ci-cd",
+      "type": "technique",
+      "label": "Ci Cd",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "ci-cd"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "technique-ci-cd-action-compromise",
+      "entity_id": "ci_cd_action_compromise",
+      "type": "technique",
+      "label": "Ci Cd Action Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "ci_cd_action_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "technique-credential-theft",
+      "entity_id": "credential_theft",
+      "type": "technique",
+      "label": "Credential Theft",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "credential_theft"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2018-NPM-EVENT-STREAM",
+        "SC-2021-CODECOV-BASH-UPLOADER",
+        "SC-2021-UA-PARSER-JS",
+        "SC-2022-PYPI-CTX",
+        "SC-2022-PYTORCH-NIGHTLY",
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "technique-credentials",
+      "entity_id": "credentials",
+      "type": "technique",
+      "label": "Credentials",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "credentials"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER"
+      ]
+    },
+    {
+      "id": "technique-crypto-theft",
+      "entity_id": "crypto_theft",
+      "type": "technique",
+      "label": "Crypto Theft",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "crypto_theft"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "technique-cryptomining",
+      "entity_id": "cryptomining",
+      "type": "technique",
+      "label": "Cryptomining",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "cryptomining"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-UA-PARSER-JS",
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "technique-data-exfiltration",
+      "entity_id": "data_exfiltration",
+      "type": "technique",
+      "label": "Data Exfiltration",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "data_exfiltration"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-CODECOV-BASH-UPLOADER",
+        "SC-2021-DEPENDENCY-CONFUSION",
+        "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "technique-dependency",
+      "entity_id": "dependency",
+      "type": "technique",
+      "label": "Dependency",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "dependency"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "technique-dependency-confusion",
+      "entity_id": "dependency_confusion",
+      "type": "technique",
+      "label": "Dependency Confusion",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "dependency_confusion"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-DEPENDENCY-CONFUSION",
+        "SC-2022-PYTORCH-NIGHTLY",
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-desktop",
+      "entity_id": "desktop",
+      "type": "technique",
+      "label": "Desktop",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "desktop"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "technique-destructive-payload",
+      "entity_id": "destructive_payload",
+      "type": "technique",
+      "label": "Destructive Payload",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "destructive_payload"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC",
+        "SC-2022-COLORS-FAKER",
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "technique-developer-workstation-compromise",
+      "entity_id": "developer_workstation_compromise",
+      "type": "technique",
+      "label": "Developer Workstation Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "developer_workstation_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2021-DEPENDENCY-CONFUSION",
+        "SC-2022-PYTORCH-NIGHTLY",
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2025-GO-BOLTDB-TYPOSQUAT",
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "technique-distribution",
+      "entity_id": "distribution",
+      "type": "technique",
+      "label": "Distribution",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "distribution"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO"
+      ]
+    },
+    {
+      "id": "technique-distribution-site-compromise",
+      "entity_id": "distribution_site_compromise",
+      "type": "technique",
+      "label": "Distribution Site Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "distribution_site_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO"
+      ]
+    },
+    {
+      "id": "technique-downstream-customer-compromise",
+      "entity_id": "downstream_customer_compromise",
+      "type": "technique",
+      "label": "Downstream Customer Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "downstream_customer_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC",
+        "SC-2020-SOLARWINDS-ORION",
+        "SC-2021-KASEYA-VSA",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2023-THREE-CX-DESKTOP",
+        "SC-2024-LOTTIE-PLAYER",
+        "SC-2024-POLYFILL-IO",
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-github",
+      "entity_id": "github",
+      "type": "technique",
+      "label": "Github",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "github"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER"
+      ]
+    },
+    {
+      "id": "technique-github-actions",
+      "entity_id": "github-actions",
+      "type": "technique",
+      "label": "Github Actions",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "github-actions"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      ]
+    },
+    {
+      "id": "technique-golang",
+      "entity_id": "golang",
+      "type": "technique",
+      "label": "Golang",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "golang"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-iso",
+      "entity_id": "iso",
+      "type": "technique",
+      "label": "Iso",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "iso"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO"
+      ]
+    },
+    {
+      "id": "technique-java",
+      "entity_id": "java",
+      "type": "technique",
+      "label": "Java",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "java"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER"
+      ]
+    },
+    {
+      "id": "technique-javascript",
+      "entity_id": "javascript",
+      "type": "technique",
+      "label": "Javascript",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "javascript"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "technique-linux",
+      "entity_id": "linux",
+      "type": "technique",
+      "label": "Linux",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "linux"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "technique-maintainer-account",
+      "entity_id": "maintainer-account",
+      "type": "technique",
+      "label": "Maintainer Account",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "maintainer-account"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "technique-maintainer-account-compromise",
+      "entity_id": "maintainer_account_compromise",
+      "type": "technique",
+      "label": "Maintainer Account Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "maintainer_account_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2021-UA-PARSER-JS",
+        "SC-2022-PYPI-CTX",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER",
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-malicious-dependency",
+      "entity_id": "malicious_dependency",
+      "type": "technique",
+      "label": "Malicious Dependency",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "malicious_dependency"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-NPM-EVENT-STREAM",
+        "SC-2024-XZ-UTILS",
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-malicious-package",
+      "entity_id": "malicious-package",
+      "type": "technique",
+      "label": "Malicious Package",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "malicious-package"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-NPM-RC"
+      ]
+    },
+    {
+      "id": "technique-malware-distribution",
+      "entity_id": "malware_distribution",
+      "type": "technique",
+      "label": "Malware Distribution",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "malware_distribution"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2016-LINUX-MINT-ISO",
+        "SC-2017-CCLEANER",
+        "SC-2019-ASUS-SHADOWHAMMER",
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2021-NPM-RC",
+        "SC-2023-THREE-CX-DESKTOP",
+        "SC-2024-POLYFILL-IO"
+      ]
+    },
+    {
+      "id": "technique-module-proxy",
+      "entity_id": "module-proxy",
+      "type": "technique",
+      "label": "Module Proxy",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "module-proxy"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-msp",
+      "entity_id": "msp",
+      "type": "technique",
+      "label": "Msp",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "msp"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "technique-notpetya",
+      "entity_id": "notpetya",
+      "type": "technique",
+      "label": "Notpetya",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "notpetya"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC"
+      ]
+    },
+    {
+      "id": "technique-npm",
+      "entity_id": "npm",
+      "type": "technique",
+      "label": "Npm",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "npm"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2018-NPM-EVENT-STREAM",
+        "SC-2021-NPM-RC",
+        "SC-2021-UA-PARSER-JS",
+        "SC-2022-COLORS-FAKER",
+        "SC-2022-NODE-IPC",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER",
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-package-repository-compromise",
+      "entity_id": "package_repository_compromise",
+      "type": "technique",
+      "label": "Package Repository Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "package_repository_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2018-ESLINT-SCOPE",
+        "SC-2021-NPM-RC",
+        "SC-2021-UA-PARSER-JS",
+        "SC-2022-PYPI-CTX",
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER",
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-php",
+      "entity_id": "php",
+      "type": "technique",
+      "label": "Php",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "php"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "technique-protest-payload",
+      "entity_id": "protest_payload",
+      "type": "technique",
+      "label": "Protest Payload",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "protest_payload"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER",
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "technique-protestware",
+      "entity_id": "protestware",
+      "type": "technique",
+      "label": "Protestware",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "protestware"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2022-COLORS-FAKER",
+        "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "technique-pypi",
+      "entity_id": "pypi",
+      "type": "technique",
+      "label": "Pypi",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "pypi"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2022-PYPI-CTX",
+        "SC-2022-PYTORCH-NIGHTLY",
+        "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "technique-ransomware",
+      "entity_id": "ransomware",
+      "type": "technique",
+      "label": "Ransomware",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "ransomware"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "technique-ransomware-delivery",
+      "entity_id": "ransomware_delivery",
+      "type": "technique",
+      "label": "Ransomware Delivery",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "ransomware_delivery"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC",
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "technique-research",
+      "entity_id": "research",
+      "type": "technique",
+      "label": "Research",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "research"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-DEPENDENCY-CONFUSION"
+      ]
+    },
+    {
+      "id": "technique-self-propagating",
+      "entity_id": "self-propagating",
+      "type": "technique",
+      "label": "Self Propagating",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "self-propagating"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-signed-update",
+      "entity_id": "signed-update",
+      "type": "technique",
+      "label": "Signed Update",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "signed-update"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-CCLEANER",
+        "SC-2019-ASUS-SHADOWHAMMER",
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "technique-signed-update-compromise",
+      "entity_id": "signed_update_compromise",
+      "type": "technique",
+      "label": "Signed Update Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "signed_update_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-CCLEANER",
+        "SC-2019-ASUS-SHADOWHAMMER",
+        "SC-2020-SOLARWINDS-ORION",
+        "SC-2023-THREE-CX-DESKTOP"
+      ]
+    },
+    {
+      "id": "technique-software-update",
+      "entity_id": "software-update",
+      "type": "technique",
+      "label": "Software Update",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "software-update"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC"
+      ]
+    },
+    {
+      "id": "technique-source-control",
+      "entity_id": "source-control",
+      "type": "technique",
+      "label": "Source Control",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "source-control"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "technique-source-repository-compromise",
+      "entity_id": "source_repository_compromise",
+      "type": "technique",
+      "label": "Source Repository Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "source_repository_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2021-PHP-GIT-SERVER",
+        "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "technique-sunburst",
+      "entity_id": "sunburst",
+      "type": "technique",
+      "label": "Sunburst",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "sunburst"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2020-SOLARWINDS-ORION"
+      ]
+    },
+    {
+      "id": "technique-targeted",
+      "entity_id": "targeted",
+      "type": "technique",
+      "label": "Targeted",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "targeted"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2019-ASUS-SHADOWHAMMER"
+      ]
+    },
+    {
+      "id": "technique-typosquat",
+      "entity_id": "typosquat",
+      "type": "technique",
+      "label": "Typosquat",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "typosquat"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "technique-vendor-update-compromise",
+      "entity_id": "vendor_update_compromise",
+      "type": "technique",
+      "label": "Vendor Update Compromise",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "vendor_update_compromise"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-NOTPETYA-MEDOC",
+        "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "technique-web3",
+      "entity_id": "web3",
+      "type": "technique",
+      "label": "Web3",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "web3"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2023-LEDGER-CONNECT-KIT",
+        "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "technique-windows",
+      "entity_id": "windows",
+      "type": "technique",
+      "label": "Windows",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "windows"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2017-CCLEANER"
+      ]
     }
   ],
   "edges": [
@@ -3409,6 +4548,1021 @@
       "type": "INCIDENT_AFFECTED_RELEASE",
       "evidence_tier": null,
       "source_refs": []
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-account-compromise->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-account-compromise",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-account-takeover->incident-SC-2022-PYPI-CTX",
+      "source": "technique-account-takeover",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2016-LINUX-MINT-ISO",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2016-LINUX-MINT-ISO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2017-CCLEANER",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2017-CCLEANER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2019-ASUS-SHADOWHAMMER",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2021-PHP-GIT-SERVER",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2021-PHP-GIT-SERVER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2024-XZ-UTILS",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2024-XZ-UTILS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-build-system",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-cdn->incident-SC-2024-POLYFILL-IO",
+      "source": "technique-cdn",
+      "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-cdn-script-compromise->incident-SC-2024-POLYFILL-IO",
+      "source": "technique-cdn-script-compromise",
+      "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd->incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "source": "technique-ci-cd",
+      "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "source": "technique-ci-cd",
+      "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2018-NPM-EVENT-STREAM",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2018-NPM-EVENT-STREAM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2022-PYPI-CTX",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2022-PYTORCH-NIGHTLY",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credentials->incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "source": "technique-credentials",
+      "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-crypto-theft->incident-SC-2018-NPM-EVENT-STREAM",
+      "source": "technique-crypto-theft",
+      "target": "incident-SC-2018-NPM-EVENT-STREAM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-crypto-theft->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-crypto-theft",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-crypto-theft->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-crypto-theft",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-cryptomining->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-cryptomining",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-cryptomining->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-cryptomining",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "source": "technique-data-exfiltration",
+      "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2021-DEPENDENCY-CONFUSION",
+      "source": "technique-data-exfiltration",
+      "target": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2022-PYPI-CTX",
+      "source": "technique-data-exfiltration",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-dependency->incident-SC-2018-NPM-EVENT-STREAM",
+      "source": "technique-dependency",
+      "target": "incident-SC-2018-NPM-EVENT-STREAM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-dependency-confusion->incident-SC-2021-DEPENDENCY-CONFUSION",
+      "source": "technique-dependency-confusion",
+      "target": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-dependency-confusion->incident-SC-2022-PYTORCH-NIGHTLY",
+      "source": "technique-dependency-confusion",
+      "target": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-dependency-confusion->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-dependency-confusion",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-desktop->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-desktop",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-destructive-payload->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-destructive-payload",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-destructive-payload->incident-SC-2022-COLORS-FAKER",
+      "source": "technique-destructive-payload",
+      "target": "incident-SC-2022-COLORS-FAKER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-destructive-payload->incident-SC-2022-NODE-IPC",
+      "source": "technique-destructive-payload",
+      "target": "incident-SC-2022-NODE-IPC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2021-DEPENDENCY-CONFUSION",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2022-PYTORCH-NIGHTLY",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-distribution->incident-SC-2016-LINUX-MINT-ISO",
+      "source": "technique-distribution",
+      "target": "incident-SC-2016-LINUX-MINT-ISO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-distribution-site-compromise->incident-SC-2016-LINUX-MINT-ISO",
+      "source": "technique-distribution-site-compromise",
+      "target": "incident-SC-2016-LINUX-MINT-ISO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2021-KASEYA-VSA",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2021-KASEYA-VSA",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2024-POLYFILL-IO",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-github",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-golang->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-golang",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-iso->incident-SC-2016-LINUX-MINT-ISO",
+      "source": "technique-iso",
+      "target": "incident-SC-2016-LINUX-MINT-ISO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-java->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-java",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-javascript->incident-SC-2024-POLYFILL-IO",
+      "source": "technique-javascript",
+      "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-linux->incident-SC-2024-XZ-UTILS",
+      "source": "technique-linux",
+      "target": "incident-SC-2024-XZ-UTILS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-maintainer-account",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2022-PYPI-CTX",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2018-NPM-EVENT-STREAM",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2018-NPM-EVENT-STREAM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2024-XZ-UTILS",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2024-XZ-UTILS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-package->incident-SC-2021-NPM-RC",
+      "source": "technique-malicious-package",
+      "target": "incident-SC-2021-NPM-RC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2016-LINUX-MINT-ISO",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2016-LINUX-MINT-ISO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2017-CCLEANER",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2017-CCLEANER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2019-ASUS-SHADOWHAMMER",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2021-NPM-RC",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2021-NPM-RC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2024-POLYFILL-IO",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-module-proxy->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-module-proxy",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-msp->incident-SC-2021-KASEYA-VSA",
+      "source": "technique-msp",
+      "target": "incident-SC-2021-KASEYA-VSA",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-notpetya->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-notpetya",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-npm",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2018-NPM-EVENT-STREAM",
+      "source": "technique-npm",
+      "target": "incident-SC-2018-NPM-EVENT-STREAM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2021-NPM-RC",
+      "source": "technique-npm",
+      "target": "incident-SC-2021-NPM-RC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-npm",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2022-COLORS-FAKER",
+      "source": "technique-npm",
+      "target": "incident-SC-2022-COLORS-FAKER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2022-NODE-IPC",
+      "source": "technique-npm",
+      "target": "incident-SC-2022-NODE-IPC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-npm",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-npm",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-npm",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2018-ESLINT-SCOPE",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2018-ESLINT-SCOPE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2021-NPM-RC",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2021-NPM-RC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2021-UA-PARSER-JS",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2021-UA-PARSER-JS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2022-PYPI-CTX",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-php->incident-SC-2021-PHP-GIT-SERVER",
+      "source": "technique-php",
+      "target": "incident-SC-2021-PHP-GIT-SERVER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-protest-payload->incident-SC-2022-COLORS-FAKER",
+      "source": "technique-protest-payload",
+      "target": "incident-SC-2022-COLORS-FAKER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-protest-payload->incident-SC-2022-NODE-IPC",
+      "source": "technique-protest-payload",
+      "target": "incident-SC-2022-NODE-IPC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-protestware->incident-SC-2022-COLORS-FAKER",
+      "source": "technique-protestware",
+      "target": "incident-SC-2022-COLORS-FAKER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-protestware->incident-SC-2022-NODE-IPC",
+      "source": "technique-protestware",
+      "target": "incident-SC-2022-NODE-IPC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-pypi->incident-SC-2022-PYPI-CTX",
+      "source": "technique-pypi",
+      "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-pypi->incident-SC-2022-PYTORCH-NIGHTLY",
+      "source": "technique-pypi",
+      "target": "incident-SC-2022-PYTORCH-NIGHTLY",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-pypi->incident-SC-2024-ULTRALYTICS-PYPI",
+      "source": "technique-pypi",
+      "target": "incident-SC-2024-ULTRALYTICS-PYPI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ransomware->incident-SC-2021-KASEYA-VSA",
+      "source": "technique-ransomware",
+      "target": "incident-SC-2021-KASEYA-VSA",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ransomware-delivery->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-ransomware-delivery",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ransomware-delivery->incident-SC-2021-KASEYA-VSA",
+      "source": "technique-ransomware-delivery",
+      "target": "incident-SC-2021-KASEYA-VSA",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-research->incident-SC-2021-DEPENDENCY-CONFUSION",
+      "source": "technique-research",
+      "target": "incident-SC-2021-DEPENDENCY-CONFUSION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-self-propagating->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "technique-self-propagating",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update->incident-SC-2017-CCLEANER",
+      "source": "technique-signed-update",
+      "target": "incident-SC-2017-CCLEANER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update->incident-SC-2019-ASUS-SHADOWHAMMER",
+      "source": "technique-signed-update",
+      "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-signed-update",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2017-CCLEANER",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2017-CCLEANER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2019-ASUS-SHADOWHAMMER",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2023-THREE-CX-DESKTOP",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2023-THREE-CX-DESKTOP",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-software-update->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-software-update",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-source-control->incident-SC-2021-PHP-GIT-SERVER",
+      "source": "technique-source-control",
+      "target": "incident-SC-2021-PHP-GIT-SERVER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-source-repository-compromise->incident-SC-2020-OCTOPUS-SCANNER",
+      "source": "technique-source-repository-compromise",
+      "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-source-repository-compromise->incident-SC-2021-PHP-GIT-SERVER",
+      "source": "technique-source-repository-compromise",
+      "target": "incident-SC-2021-PHP-GIT-SERVER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-source-repository-compromise->incident-SC-2024-XZ-UTILS",
+      "source": "technique-source-repository-compromise",
+      "target": "incident-SC-2024-XZ-UTILS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-sunburst->incident-SC-2020-SOLARWINDS-ORION",
+      "source": "technique-sunburst",
+      "target": "incident-SC-2020-SOLARWINDS-ORION",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-targeted->incident-SC-2019-ASUS-SHADOWHAMMER",
+      "source": "technique-targeted",
+      "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-typosquat->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "source": "technique-typosquat",
+      "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-vendor-update-compromise->incident-SC-2017-NOTPETYA-MEDOC",
+      "source": "technique-vendor-update-compromise",
+      "target": "incident-SC-2017-NOTPETYA-MEDOC",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-vendor-update-compromise->incident-SC-2021-KASEYA-VSA",
+      "source": "technique-vendor-update-compromise",
+      "target": "incident-SC-2021-KASEYA-VSA",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-web3->incident-SC-2023-LEDGER-CONNECT-KIT",
+      "source": "technique-web3",
+      "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-web3->incident-SC-2024-LOTTIE-PLAYER",
+      "source": "technique-web3",
+      "target": "incident-SC-2024-LOTTIE-PLAYER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-windows->incident-SC-2017-CCLEANER",
+      "source": "technique-windows",
+      "target": "incident-SC-2017-CCLEANER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
     },
     {
       "id": "MAINTAINS_REPOSITORY:maintainer-dominictarr->repo-github-com-dominictarr-event-stream",

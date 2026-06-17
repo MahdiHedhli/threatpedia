@@ -1,5 +1,5 @@
 const GRAPH_DATA_URL = '/supply-chain-graph.json';
-const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident']);
+const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique']);
 const SEVERITY_COLORS = {
   critical: [1.0, 0.267, 0.267, 1],
   high: [1.0, 0.647, 0.0, 1],
@@ -7,6 +7,7 @@ const SEVERITY_COLORS = {
   low: [0.318, 0.812, 0.4, 1],
   actor: [1.0, 0.267, 0.267, 1],
   campaign: [0.91, 0.627, 0.125, 1],
+  technique: [0.804, 0.835, 0.878, 1],
   default: [0.804, 0.835, 0.878, 1],
   muted: [0.353, 0.416, 0.494, 0.32],
 };
@@ -30,8 +31,9 @@ function dateNumber(value) {
 
 function tierRank(tier) {
   if (tier === 'actor') return 0;
-  if (tier === 'campaign') return 1;
-  if (tier === 'incident') return 2;
+  if (tier === 'technique') return 1;
+  if (tier === 'campaign') return 2;
+  if (tier === 'incident') return 3;
   return 3;
 }
 
@@ -150,6 +152,7 @@ function buildLayout(payload) {
   const incidentNodes = layoutNodes.filter((node) => node.tier === 'incident');
   const actorNodes = layoutNodes.filter((node) => node.tier === 'actor');
   const campaignNodes = layoutNodes.filter((node) => node.tier === 'campaign');
+  const techniqueNodes = layoutNodes.filter((node) => node.tier === 'technique');
   const actorIds = new Set(actorNodes.map((node) => node.id));
   const campaignIds = new Set(campaignNodes.map((node) => node.id));
   const incidentActor = new Map();
@@ -204,6 +207,21 @@ function buildLayout(payload) {
     node.radius = 13;
   });
 
+  techniqueNodes.forEach((node, index) => {
+    const incidentChildren = payload.edges
+      .filter((edge) => edge.type === 'INCIDENT_TECHNIQUE' && edge.source === node.id)
+      .map((edge) => nodeById.get(edge.target))
+      .filter(Boolean);
+    if (incidentChildren.length > 0) {
+      node.x = incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length;
+      node.y = -150 - (index % 3) * 36;
+    } else {
+      node.x = -760 + index * 120;
+      node.y = -180;
+    }
+    node.radius = 12;
+  });
+
   const laidOutNodes = Array.from(nodeById.values()).sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
   const laidOutById = new Map(laidOutNodes.map((node) => [node.id, node]));
   const edges = payload.edges
@@ -233,11 +251,13 @@ class SupplyChainGraph {
     this.status = root.querySelector('[data-sc-graph-status]');
     this.captionTitle = root.querySelector('[data-sc-graph-caption-title]');
     this.captionBody = root.querySelector('[data-sc-graph-caption-body]');
+    this.reflowButton = root.querySelector('[data-sc-graph-focus-reflow]');
     this.viewport = { width: 1, height: 1, dpr: 1 };
     this.layout = buildLayout(payload);
     this.camera = { cx: 0, cy: 0, z: 1 };
     this.targetCamera = { cx: 0, cy: 0, z: 1 };
     this.selection = null;
+    this.focusReflow = false;
     this.drag = null;
     this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.gl = this.canvas.getContext('webgl2', { antialias: true }) || this.canvas.getContext('webgl', { antialias: true });
@@ -348,6 +368,13 @@ class SupplyChainGraph {
       const zoomFactor = Math.exp(-event.deltaY * 0.001);
       this.setCameraTarget({ ...this.targetCamera, z: clamp(this.targetCamera.z * zoomFactor, 0.22, 3.4) });
     }, { passive: false });
+    this.reflowButton?.addEventListener('click', () => {
+      if (this.selection?.type !== 'technique') return;
+      this.focusReflow = !this.focusReflow;
+      if (!this.focusReflow) this.frameSelectedTechniqueWideShot();
+      this.reflowButton.setAttribute('aria-pressed', String(this.focusReflow));
+      this.reflowButton.textContent = this.focusReflow ? 'Restore wide shot' : 'Focus reflow';
+    });
     document.addEventListener('click', (event) => {
       const commandTarget = event.target.closest('[data-graph-command][data-graph-value]');
       if (!commandTarget) return;
@@ -419,6 +446,15 @@ class SupplyChainGraph {
   pick(clientX, clientY) {
     const world = this.screenToWorld(clientX, clientY);
     const radius = 24 / this.camera.z;
+    if (this.focusReflow && this.selection?.type === 'technique') {
+      const nearest = this.layout.nodes.reduce((best, node) => {
+        const displayNode = this.displayNode(node);
+        const distance = Math.hypot(displayNode.x - world.x, displayNode.y - world.y);
+        if (distance > radius || (best && best.distance <= distance)) return best;
+        return { point: node, distance };
+      }, null);
+      return nearest?.point || null;
+    }
     const nearest = this.layout.quadtree.nearest(world.x, world.y, radius);
     return nearest?.point || null;
   }
@@ -482,15 +518,36 @@ class SupplyChainGraph {
     const nodes = this.layout.nodes.filter((node) => node.tier === 'incident' && node.attack_stage === stage);
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
+    this.focusReflow = false;
+    this.updateReflowControl();
     this.setCameraTarget(fitBounds(nodes, this.viewport));
     this.updateCaption(`Attack stage: ${stage.replace(/_/g, ' ')}`, `${nodes.length} incident${nodes.length === 1 ? '' : 's'} selected.`);
   }
 
   selectNode(node) {
-    this.selection = { type: node.type, value: node.id, nodes: new Set([node.id]) };
+    this.focusReflow = false;
     const cluster = this.clusterFor(node);
-    this.setCameraTarget(fitBounds(cluster, this.viewport, node.tier === 'incident' ? 170 : 140));
+    const selectionNodes =
+      node.tier === 'technique'
+        ? cluster.filter((item) => item.tier === 'technique' || item.tier === 'incident').map((item) => item.id)
+        : [node.id];
+    this.selection = { type: node.type, value: node.id, nodes: new Set(selectionNodes) };
+    if (node.tier === 'technique') {
+      this.frameSelectedTechniqueWideShot(cluster);
+    } else {
+      this.setCameraTarget(fitBounds(cluster, this.viewport, node.tier === 'incident' ? 170 : 140));
+    }
     this.updateCaption(node.label, node.summary || `${node.type.replace(/_/g, ' ')} node selected.`);
+    this.updateReflowControl();
+  }
+
+  frameSelectedTechniqueWideShot(cluster = null) {
+    if (this.selection?.type !== 'technique') return;
+    const selectedNode = this.layout.nodeById.get(this.selection.value);
+    const techniqueCluster = cluster || (selectedNode ? this.clusterFor(selectedNode) : []);
+    if (!techniqueCluster.length) return;
+    const fit = fitBounds(techniqueCluster, this.viewport, 300);
+    this.setCameraTarget({ ...fit, z: Math.min(fit.z, 0.82) });
   }
 
   clusterFor(node) {
@@ -505,11 +562,35 @@ class SupplyChainGraph {
       });
     } else if (node.tier === 'incident') {
       this.layout.edges.forEach((edge) => {
+        if (edge.type === 'INCIDENT_TECHNIQUE') return;
         if (edge.target === node.id) clusterIds.add(edge.source);
         if (edge.source === node.id) clusterIds.add(edge.target);
       });
+    } else if (node.tier === 'technique') {
+      this.layout.edges.forEach((edge) => {
+        if (edge.source === node.id && edge.type === 'INCIDENT_TECHNIQUE') {
+          clusterIds.add(edge.target);
+          this.layout.edges.forEach((contextEdge) => {
+            if (
+              contextEdge.target === edge.target &&
+              (contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN')
+            ) {
+              clusterIds.add(contextEdge.source);
+            }
+          });
+        }
+      });
     }
     return this.layout.nodes.filter((item) => clusterIds.has(item.id));
+  }
+
+  updateReflowControl() {
+    if (!this.reflowButton) return;
+    const isTechnique = this.selection?.type === 'technique';
+    this.reflowButton.disabled = !isTechnique;
+    this.reflowButton.hidden = !isTechnique;
+    this.reflowButton.setAttribute('aria-pressed', String(isTechnique && this.focusReflow));
+    this.reflowButton.textContent = isTechnique && this.focusReflow ? 'Restore wide shot' : 'Focus reflow';
   }
 
   updateCaption(title, body) {
@@ -519,7 +600,11 @@ class SupplyChainGraph {
   }
 
   colorForNode(node) {
+    if (node.tier === 'technique') return SEVERITY_COLORS.technique;
     if (this.selection?.type === 'stage' && node.tier === 'incident') {
+      return this.selection.nodes.has(node.id) ? SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default : SEVERITY_COLORS.muted;
+    }
+    if (this.selection?.type === 'technique' && node.tier === 'incident') {
       return this.selection.nodes.has(node.id) ? SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default : SEVERITY_COLORS.muted;
     }
     if (node.tier === 'actor') return SEVERITY_COLORS.actor;
@@ -533,14 +618,36 @@ class SupplyChainGraph {
     return 0.1;
   }
 
+  displayNode(node) {
+    if (!this.focusReflow || this.selection?.type !== 'technique') return node;
+    if (node.id === this.selection.value) return { ...node, x: this.camera.cx, y: this.camera.cy - 40 };
+    if (!this.selection.nodes?.has(node.id) || node.tier !== 'incident') return node;
+    const incidents = this.layout.nodes.filter((item) => this.selection.nodes.has(item.id) && item.tier === 'incident');
+    const index = incidents.findIndex((item) => item.id === node.id);
+    const angle = (index / Math.max(1, incidents.length)) * Math.PI * 2 - Math.PI / 2;
+    const radius = 150 + Math.floor(index / 12) * 72;
+    return {
+      ...node,
+      x: this.camera.cx + Math.cos(angle) * radius,
+      y: this.camera.cy - 40 + Math.sin(angle) * radius,
+    };
+  }
+
   drawEdges() {
     const gl = this.gl;
     const values = [];
     this.layout.edges.forEach((edge) => {
       const alpha = this.edgeAlpha(edge);
-      const color = edge.type === 'ATTRIBUTED_TO_ACTOR' ? SEVERITY_COLORS.high : SEVERITY_COLORS.medium;
-      values.push(edge.sourceNode.x, edge.sourceNode.y, color[0], color[1], color[2], alpha);
-      values.push(edge.targetNode.x, edge.targetNode.y, color[0], color[1], color[2], alpha);
+      const color =
+        edge.type === 'ATTRIBUTED_TO_ACTOR'
+          ? SEVERITY_COLORS.high
+          : edge.type === 'INCIDENT_TECHNIQUE'
+            ? SEVERITY_COLORS.technique
+            : SEVERITY_COLORS.medium;
+      const sourceNode = this.displayNode(edge.sourceNode);
+      const targetNode = this.displayNode(edge.targetNode);
+      values.push(sourceNode.x, sourceNode.y, color[0], color[1], color[2], alpha);
+      values.push(targetNode.x, targetNode.y, color[0], color[1], color[2], alpha);
     });
     gl.useProgram(this.edgeProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffer);
@@ -566,9 +673,18 @@ class SupplyChainGraph {
     const gl = this.gl;
     const values = [];
     this.layout.nodes.forEach((node) => {
+      const displayNode = this.displayNode(node);
       const color = this.colorForNode(node);
       const selected = this.selection?.nodes?.has(node.id);
-      values.push(node.x, node.y, color[0], color[1], color[2], color[3], selected ? node.radius * 2.5 : node.radius * 2);
+      values.push(
+        displayNode.x,
+        displayNode.y,
+        color[0],
+        color[1],
+        color[2],
+        color[3],
+        selected ? node.radius * 2.5 : node.radius * 2
+      );
     });
     gl.useProgram(this.nodeProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.nodeBuffer);
@@ -595,10 +711,14 @@ class SupplyChainGraph {
 
   drawLabels() {
     const labelNodes = this.layout.nodes.filter(
-      (node) => node.tier === 'actor' || node.tier === 'campaign' || this.selection?.nodes?.has(node.id)
+      (node) =>
+        node.tier === 'actor' ||
+        node.tier === 'campaign' ||
+        (node.tier === 'technique' && this.selection?.value === node.id) ||
+        this.selection?.nodes?.has(node.id)
     );
     const labels = labelNodes.slice(0, 24).map((node) => {
-      const position = this.worldToScreen(node);
+      const position = this.worldToScreen(this.displayNode(node));
       return {
         node,
         x: Math.round(position.x + 12),
