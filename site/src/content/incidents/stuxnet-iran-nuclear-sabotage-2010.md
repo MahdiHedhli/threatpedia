@@ -67,13 +67,9 @@ mitreMappings:
     techniqueName: Exploitation for Client Execution
     tactic: Execution
     notes: Stuxnet used four zero-day exploits including the Windows Shell LNK vulnerability (CVE-2010-2568) to execute on target systems automatically when a USB drive was browsed.
-  - techniqueId: T0831
-    techniqueName: Manipulation of Control
-    tactic: Impair Process Control
-    notes: Stuxnet modified the frequency converter drives controlling IR-1 centrifuge rotor speeds at Natanz, alternating between speeds that caused mechanical stress and eventual physical destruction of the centrifuges.
 ---
 
-## Executive Summary
+## Summary
 
 Stuxnet was a purpose-built computer worm discovered in June 2010 that targeted Siemens Step 7 industrial control software used in programmable logic controllers (PLCs) managing centrifuge operations at Iran's Natanz uranium enrichment facility. The worm represented the first publicly documented case of a cyberweapon designed to cause physical destruction of industrial equipment.
 
@@ -123,7 +119,7 @@ Beyond the physical damage to centrifuges, Stuxnet's discovery had lasting effec
 
 The worm's uncontrolled propagation beyond the intended target — Stuxnet eventually infected an estimated 100,000 computers in over 100 countries — raised questions about the collateral effects of offensive cyber weapons and the risks of uncontrolled malware proliferation.
 
-## Historical Context
+## Attribution
 
 No government has officially claimed responsibility for Stuxnet. In June 2012, The New York Times reported that the worm was part of a joint U.S.-Israeli covert operation codenamed "Olympic Games," initiated under the George W. Bush administration and continued under the Obama administration. The reporting was based on interviews with current and former U.S., European, and Israeli officials.
 
@@ -131,7 +127,7 @@ Technical analysis by Symantec, Kaspersky Lab, and independent researchers ident
 
 Kaspersky Lab's analysis identified code similarities between Stuxnet and the Equation Group malware toolkit, which was subsequently linked to the U.S. National Security Agency's Tailored Access Operations unit following the Shadow Brokers leaks in 2016-2017.
 
-Attribution confidence is assessed as A2 (probably true, from a reliable source) based on investigative journalism and vendor technical analysis, in the absence of official government confirmation.
+The attribution remains probable based on investigative journalism and vendor technical analysis, in the absence of official government confirmation.
 
 ## Timeline
 
