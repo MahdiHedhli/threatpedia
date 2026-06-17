@@ -58,8 +58,15 @@ assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
     supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
+    supplyChainRouteSource.includes('aria-describedby="supply-chain-graph-description"') &&
+    supplyChainRouteSource.includes('tabindex="0"') &&
+    supplyChainRouteSource.includes('data-sc-graph-description') &&
     supplyChainRouteSource.includes('/js/supply-chain-graph-core.js'),
-  'route should mount the persisted WebGL graph island'
+  'route should mount the persisted keyboard-accessible WebGL graph island'
+);
+assert.ok(
+  supplyChainRouteSource.includes('Supply Chain graph is loading. Keyboard controls become available after graph initialization.'),
+  'route should not announce keyboard graph controls before initialization succeeds'
 );
 assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
@@ -448,6 +455,29 @@ assert.ok(
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
   'graph client should render causal and temporal SEEDED_BY edges distinctly'
+);
+assert.ok(
+    supplyChainGraphSource.includes('handleKeydown') &&
+    supplyChainGraphSource.includes('keyboardNodes()') &&
+    supplyChainGraphSource.includes("closest?.('a, button, input, select, textarea, summary, [contenteditable=\"true\"]')") &&
+    supplyChainGraphSource.includes("event.key === 'Escape'") &&
+    supplyChainGraphSource.includes('this.root.addEventListener') &&
+    supplyChainGraphSource.includes('this.description.textContent') &&
+    supplyChainGraphSource.includes('Keyboard graph controls are not active.'),
+  'graph client should provide keyboard traversal and truthful ARIA selected-node/failure text'
+);
+assert.ok(
+  supplyChainGraphSource.includes('this.keyboardNodeId = incidentNodes[0]?.id || null;') &&
+    supplyChainGraphSource.includes('this.keyboardNodeId = nodes[0]?.id || null;'),
+  'graph client should reset keyboard focus for context and stage selections'
+);
+assert.ok(
+  supplyChainGraphSource.includes('labelPriority') &&
+    supplyChainGraphSource.includes('labelCandidates') &&
+    supplyChainGraphSource.includes('labelFits') &&
+    supplyChainGraphSource.includes('this.labelPlacements') &&
+    supplyChainGraphSource.includes('sc-graph-label-keyboard'),
+  'graph client should provide greedy label de-confliction with placement hysteresis'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.focusReflow') &&

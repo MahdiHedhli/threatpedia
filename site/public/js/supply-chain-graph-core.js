@@ -526,6 +526,7 @@ class SupplyChainGraph {
     this.status = root.querySelector('[data-sc-graph-status]');
     this.captionTitle = root.querySelector('[data-sc-graph-caption-title]');
     this.captionBody = root.querySelector('[data-sc-graph-caption-body]');
+    this.description = root.querySelector('[data-sc-graph-description]');
     this.reflowButton = root.querySelector('[data-sc-graph-focus-reflow]');
     this.viewport = { width: 1, height: 1, dpr: 1 };
     this.layout = buildLayout(payload);
@@ -547,6 +548,7 @@ class SupplyChainGraph {
     this.targetCamera = { cx: 0, cy: 0, z: 1 };
     this.selection = null;
     this.focusReflow = false;
+    this.keyboardNodeId = null;
     this.drag = null;
     this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.gl = this.canvas.getContext('webgl2', { antialias: true }) || this.canvas.getContext('webgl', { antialias: true });
@@ -675,6 +677,7 @@ class SupplyChainGraph {
       if (command === 'filter-stage') this.filterStage(value);
     });
     document.addEventListener('astro:page-load', () => this.selectFromRoute());
+    this.root.addEventListener('keydown', (event) => this.handleKeydown(event));
   }
 
   resize() {
@@ -795,6 +798,7 @@ class SupplyChainGraph {
       return;
     }
     this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
+    this.keyboardNodeId = incidentNodes[0]?.id || null;
     this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
     this.updateCaption(
@@ -805,6 +809,7 @@ class SupplyChainGraph {
 
   showOverview() {
     this.selection = null;
+    this.keyboardNodeId = null;
     this.lastBloomIncidentId = null;
     this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport));
     this.updateCaption(
@@ -817,6 +822,7 @@ class SupplyChainGraph {
     const nodes = this.layout.nodes.filter((node) => node.tier === 'incident' && node.attack_stage === stage);
     if (nodes.length === 0) return;
     this.selection = { type: 'stage', value: stage, nodes: new Set(nodes.map((node) => node.id)) };
+    this.keyboardNodeId = nodes[0]?.id || null;
     this.focusReflow = false;
     this.lastBloomIncidentId = null;
     this.updateReflowControl();
@@ -827,6 +833,7 @@ class SupplyChainGraph {
   selectNode(node) {
     this.focusReflow = false;
     if (node.tier !== 'incident' && !BLOOM_TIERS.has(node.tier)) this.lastBloomIncidentId = null;
+    this.keyboardNodeId = node.id;
     if (node.tier === 'incident') this.ensureBloomLayout(node.id);
     if (BLOOM_TIERS.has(node.tier)) {
       const incidentId = this.incidentIdForBloomNode(node.id);
@@ -849,6 +856,35 @@ class SupplyChainGraph {
     }
     this.updateCaption(node.label, node.summary || `${node.type.replace(/_/g, ' ')} node selected.`);
     this.updateReflowControl();
+  }
+
+  keyboardNodes() {
+    return this.visibleGraph().nodes
+      .filter((node) => !node.aggregate)
+      .sort((a, b) => tierRank(a.tier) - tierRank(b.tier) || (a.y - b.y) || (a.x - b.x));
+  }
+
+  handleKeydown(event) {
+    const interactiveTarget = event.target?.closest?.('a, button, input, select, textarea, summary, [contenteditable="true"]');
+    if (interactiveTarget && interactiveTarget !== this.root) return;
+    const forwardKeys = new Set(['ArrowRight', 'ArrowDown']);
+    const backwardKeys = new Set(['ArrowLeft', 'ArrowUp']);
+    if (!forwardKeys.has(event.key) && !backwardKeys.has(event.key) && event.key !== 'Enter' && event.key !== 'Escape') return;
+    event.preventDefault();
+    if (event.key === 'Escape') {
+      this.showOverview();
+      return;
+    }
+    const nodes = this.keyboardNodes();
+    if (!nodes.length) return;
+    const currentIndex = Math.max(0, nodes.findIndex((node) => node.id === this.keyboardNodeId));
+    if (event.key === 'Enter') {
+      this.selectNode(nodes[currentIndex]);
+      return;
+    }
+    const direction = forwardKeys.has(event.key) ? 1 : -1;
+    const nextIndex = (currentIndex + direction + nodes.length) % nodes.length;
+    this.selectNode(nodes[nextIndex]);
   }
 
   ensureBloomLayout(incidentId) {
@@ -1005,6 +1041,7 @@ class SupplyChainGraph {
     if (this.captionTitle) this.captionTitle.textContent = title;
     if (this.captionBody) this.captionBody.textContent = body;
     if (this.status) this.status.textContent = title;
+    if (this.description) this.description.textContent = `${title}. ${body}`;
   }
 
   colorForNode(node) {
@@ -1037,6 +1074,56 @@ class SupplyChainGraph {
     if (edge.type === 'PACKAGE_RELEASE' || edge.type === 'INCIDENT_AFFECTED_RELEASE') return SEVERITY_COLORS.release;
     if (edge.type === 'AFFECTED_ORGANIZATION' || edge.type === 'AFFECTED_PACKAGE') return SEVERITY_COLORS.package;
     return SEVERITY_COLORS.medium;
+  }
+
+  labelPriority(node) {
+    if (node.id === this.keyboardNodeId) return 100;
+    if (this.selection?.nodes?.has(node.id)) return 90;
+    if (node.tier === 'actor' || node.tier === 'technique') return 72;
+    if (node.tier === 'organization') return 62;
+    if (node.tier === 'campaign') return 54;
+    if (node.tier === 'incident') return 46;
+    if (node.tier === 'package') return 34;
+    if (node.tier === 'release') return 26;
+    return 10;
+  }
+
+  labelCandidates(node) {
+    const position = this.worldToScreen(this.displayNode(node));
+    const width = Math.min(220, Math.max(68, String(node.label || '').length * 7.4 + 16));
+    const height = 24;
+    const anchors = [
+      { anchorIndex: 0, x: 12, y: -10 },
+      { anchorIndex: 1, x: -width - 12, y: -10 },
+      { anchorIndex: 2, x: 12, y: 14 },
+      { anchorIndex: 3, x: -width - 12, y: 14 },
+      { anchorIndex: 4, x: -width / 2, y: -34 },
+      { anchorIndex: 5, x: -width / 2, y: 20 },
+    ];
+    const previous = this.labelPlacements?.get(node.id);
+    if (Number.isInteger(previous)) {
+      const index = anchors.findIndex((anchor) => anchor.anchorIndex === previous);
+      if (index > 0) anchors.unshift(anchors.splice(index, 1)[0]);
+    }
+    return anchors.map((offset) => ({
+      anchorIndex: offset.anchorIndex,
+      x: Math.round(position.x + offset.x),
+      y: Math.round(position.y + offset.y),
+      width,
+      height,
+    }));
+  }
+
+  labelFits(candidate, occupied) {
+    if (candidate.x < 8 || candidate.y < 8 || candidate.x + candidate.width > this.viewport.width - 8 || candidate.y + candidate.height > this.viewport.height - 8) {
+      return false;
+    }
+    return !occupied.some((box) =>
+      candidate.x < box.x + box.width + 6 &&
+      candidate.x + candidate.width + 6 > box.x &&
+      candidate.y < box.y + box.height + 6 &&
+      candidate.y + candidate.height + 6 > box.y
+    );
   }
 
   displayNode(node) {
@@ -1144,29 +1231,40 @@ class SupplyChainGraph {
   }
 
   drawLabels() {
-    const labelNodes = this.getVisibleGraph().nodes.filter(
-      (node) =>
-        node.tier === 'actor' ||
-        node.tier === 'campaign' ||
-        (node.tier === 'organization' && node.bloom_parent) ||
-        (node.tier === 'technique' && this.selection?.value === node.id) ||
-        this.selection?.nodes?.has(node.id)
-    );
-    const labels = labelNodes.slice(0, 24).map((node) => {
-      const position = this.worldToScreen(this.displayNode(node));
-      return {
-        node,
-        x: Math.round(position.x + 12),
-        y: Math.round(position.y - 10),
-      };
-    });
+    if (!this.labelPlacements) this.labelPlacements = new Map();
+    const occupied = [];
+    const nextPlacements = new Map();
+    const labelNodes = this.getVisibleGraph().nodes
+      .filter((node) => {
+        if (node.aggregate) return true;
+        if (node.tier === 'actor' || node.tier === 'campaign') return true;
+        if (node.tier === 'organization' && node.bloom_parent) return true;
+        if (node.tier === 'technique' && this.selection?.value === node.id) return true;
+        return this.selection?.nodes?.has(node.id) || node.id === this.keyboardNodeId;
+      })
+      .sort((a, b) => this.labelPriority(b) - this.labelPriority(a));
+    const labels = [];
+    for (const node of labelNodes) {
+      const candidate = this.labelCandidates(node).find((item) => this.labelFits(item, occupied));
+      if (!candidate) continue;
+      occupied.push(candidate);
+      nextPlacements.set(node.id, candidate.anchorIndex);
+      labels.push({ node, ...candidate });
+      if (labels.length >= 32) break;
+    }
+    this.labelPlacements = nextPlacements;
     const labelKey = labels.map((item) => `${item.node.id}:${item.x}:${item.y}`).join('|');
     if (labelKey === this.lastLabelKey) return;
     this.lastLabelKey = labelKey;
     this.labelLayer.replaceChildren(
       ...labels.map((item) => {
         const label = document.createElement('span');
-        label.className = `sc-graph-label sc-graph-label-${item.node.tier}`;
+        label.className = [
+          'sc-graph-label',
+          `sc-graph-label-${item.node.tier}`,
+          this.selection?.nodes?.has(item.node.id) ? 'sc-graph-label-selected' : '',
+          item.node.id === this.keyboardNodeId ? 'sc-graph-label-keyboard' : '',
+        ].filter(Boolean).join(' ');
         label.textContent = item.node.label;
         label.style.transform = `translate(${item.x}px, ${item.y}px)`;
         return label;
@@ -1208,6 +1306,8 @@ async function bootSupplyChainGraph() {
     root.dataset.graphStatus = 'failed';
     const status = root.querySelector('[data-sc-graph-status]');
     if (status) status.textContent = 'Graph unavailable';
+    const description = root.querySelector('[data-sc-graph-description]');
+    if (description) description.textContent = 'Supply Chain graph unavailable. Keyboard graph controls are not active.';
     console.error(error);
   }
 }
