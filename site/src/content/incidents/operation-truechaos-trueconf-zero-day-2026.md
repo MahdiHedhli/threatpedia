@@ -55,12 +55,15 @@ sources:
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "Attackers abused the trusted update relationship between an on-premises TrueConf server and downstream clients."
-  - techniqueId: "T1574.002"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
-    tactic: "Defense Evasion"
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
+    tactic: "Execution"
+    attack-version: "v19.0"
+    confidence: "confirmed"
+    evidence: "Check Point reported DLL sideloading through PowerISO components dropped by the trojanized update package."
     notes: "Check Point reported DLL sideloading through PowerISO components dropped by the trojanized update package."
 ---
 

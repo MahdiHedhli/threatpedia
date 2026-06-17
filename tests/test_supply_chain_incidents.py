@@ -171,6 +171,16 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".affected_components[0].purl_justification" in error for error in errors))
 
+    def test_upstream_seed_component_role_is_explicit_and_package_only(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        upstream_seed = next(component for component in incident["affected_components"] if component["name"] == "X_TRADER")
+        self.assertEqual(upstream_seed.get("component_role"), "upstream_seed")
+
+        upstream_seed["component_type"] = "software"
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components" in error and "upstream_seed requires package component_type" in error for error in errors))
+
     def test_release_records_require_versioned_canonical_purls_and_references(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
         incident["releases"][0]["purl"] = "pkg:npm/ua-parser-js"
@@ -435,6 +445,26 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".first_public_warning_at: expected YYYY-MM-DD date or null" in error for error in errors))
+
+    def test_propagation_edges_require_evidence_and_valid_tier(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["source"] = "incident-SC-2025-NPM-SHAI-HULUD"
+        incident["propagation_edges"][0]["propagation_tier"] = "guessed"
+        incident["propagation_edges"][0]["evidence_refs"] = ["ref-missing"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0].source: expected pkg-* or release-* entity id" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].propagation_tier: invalid value 'guessed'" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].evidence_refs[0]: unknown reference ID 'ref-missing'" in error for error in errors))
+
+    def test_propagation_edges_reject_self_loops(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["target"] = incident["propagation_edges"][0]["source"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0]: source and target cannot be the same" in error for error in errors))
 
 
 if __name__ == "__main__":

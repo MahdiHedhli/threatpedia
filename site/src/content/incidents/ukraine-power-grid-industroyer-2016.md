@@ -44,13 +44,16 @@ sources:
     accessDate: "2026-04-19"
     archived: false
 mitreMappings:
-  - techniqueId: "T0831"
-    techniqueName: "Manipulation of Control"
+  - techniqueId: "T1485"
+    techniqueName: "Data Destruction"
     tactic: "Impact"
-    notes: "Industroyer was designed to directly manipulate industrial control processes."
+    attack-version: "v19.0"
+    confidence: "confirmed"
+    evidence: "The malware triggered a protective wiper routine to destroy local operating systems and configuration data."
+    notes: "Industroyer's wiper component destroyed operational systems and configuration data after the outage."
 ---
 
-## Executive Summary
+## Summary
 
 On December 17, 2016, a cyberattack on a transmission substation near Kyiv, Ukraine, caused a blackout affecting approximately one-fifth of the capital. The attack was carried out by the Russian GRU-associated group Sandworm, the same actor responsible for the earlier 2015 Ukrainian power grid attack. This event is exceptionally notable for the deployment of "Industroyer" (also known as CrashOverride), a purpose-built industrial control system (ICS) malware framework capable of directly speaking electric-sector protocols.
 
@@ -78,12 +81,7 @@ The malware triggered a protective wiper routine to destroy the local operating 
 
 The incident resulted in a loss of power for roughly 20% of Kyiv's electrical footprint for approximately an hour. While the outage duration was relatively short due to human intervention and physical manual overrides, the use of automated ICS-specific malware demonstrated a dangerous escalation in capability and intent by state-sponsored actors targeting civilian infrastructure.
 
-## MITRE ATT&CK Mapping
-
-### Impact
-T0831 - Manipulation of Control: Industroyer directly manipulated circuit breakers via automated ICS protocol payloads.
-
-## Historical Context
+## Attribution
 
 The U.S. Department of Justice fully attributed the 2016 Industroyer incident, alongside the 2015 BlackEnergy grid incident and the 2017 NotPetya wiper, to the Russian GRU Unit 74455 (Sandworm). The 2016 incident represents the second pillar of the overarching Sandworm Ukraine Power Grid Campaign.
 
@@ -106,4 +104,4 @@ The incident solidifies the necessity of stringent architectural segmentation be
 
 - [ESET: Industroyer - The Biggest Threat to Industrial Control Systems Since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) — ESET, 2017-06-12
 - [U.S. Department of Justice: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware and Other Disruptive Actions in Cyberspace](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — U.S. Department of Justice, 2020-10-19
-- [MITRE ATT&CK: 2016 Ukraine Electric Power Attack](https://attack.mitre.org/campaigns/C0028/) — MITRE, 2025-04-16
+- [MITRE ATT&CK: 2016 Ukraine Electric Power Attack](https://attack.mitre.org/campaigns/C0028/) — MITRE ATT&CK, 2025-04-16

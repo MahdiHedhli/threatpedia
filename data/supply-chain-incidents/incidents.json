@@ -1686,6 +1686,23 @@
         "name": "3CX DesktopApp",
         "vendor": "3CX",
         "package_url": null
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "generic",
+        "name": "3CX DesktopApp",
+        "vendor": "3CX",
+        "package_url": "pkg:generic/3cx-desktopapp",
+        "purl_justification": "3CX DesktopApp is vendor desktop software, not a public package-registry artifact joinable to OSV or deps.dev."
+      },
+      {
+        "component_type": "package",
+        "component_role": "upstream_seed",
+        "ecosystem": "generic",
+        "name": "X_TRADER",
+        "vendor": "Trading Technologies",
+        "package_url": "pkg:generic/x-trader",
+        "purl_justification": "X_TRADER is vendor desktop trading software, not a public package-registry artifact joinable to OSV or deps.dev."
       }
     ],
     "supply_chain_vectors": [
@@ -1851,6 +1868,17 @@
         "ref-mandiant-3cx"
       ],
       "summary": "The SmoothOperator campaign node covers the same 3CX software supply-chain compromise represented by this incident."
+      }
+  ],
+  "propagation_edges": [
+    {
+      "source": "pkg-generic-x-trader",
+      "target": "pkg-generic-3cx-desktopapp",
+      "propagation_tier": "causal",
+      "evidence_refs": [
+        "ref-mandiant-3cx"
+      ],
+      "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps."
     }
   ],
   "tags": [
@@ -2588,6 +2616,28 @@
           "ref-wiz-shai-hulud"
         ],
         "summary": "Public reporting supports a coherent Shai-Hulud operator/campaign behavior, but this corpus does not assign a named APT or state sponsor."
+      }
+    ],
+    "propagation_edges": [
+      {
+        "source": "pkg-npm-rxnt-authentication",
+        "target": "release-npm-ctrl-tinycolor-4-1-1",
+        "propagation_tier": "temporal",
+        "evidence_refs": [
+          "ref-stepsecurity-shai-hulud",
+          "ref-wiz-shai-hulud"
+        ],
+        "summary": "Public reporting places rxnt-authentication activity before the @ctrl/tinycolor wave and describes token reuse, but this edge is temporal precedence rather than asserted package-to-package causation."
+      },
+      {
+        "source": "release-npm-ctrl-tinycolor-4-1-1",
+        "target": "release-npm-ctrl-tinycolor-4-1-2",
+        "propagation_tier": "temporal",
+        "evidence_refs": [
+          "ref-npm-tinycolor-registry",
+          "ref-wiz-shai-hulud"
+        ],
+        "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation."
       }
     ]
   },
