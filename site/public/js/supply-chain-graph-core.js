@@ -428,6 +428,12 @@ class SupplyChainGraph {
     const value = hero?.dataset.graphSelectionValue;
     if (type === 'incident') this.selectByEntityId('incident', value);
     else if (type && type !== 'overview') this.selectByEntityId(type.replace(/\s+/g, '_'), value);
+    else if (!this.selection) {
+      this.updateCaption(
+        'Supply Chain Graph',
+        `${this.payload.nodes.length} corpus nodes and ${this.payload.edges.length} typed edges loaded.`
+      );
+    }
   }
 
   selectByEntityId(type, value) {
@@ -557,13 +563,23 @@ class SupplyChainGraph {
     const labelNodes = this.layout.nodes.filter(
       (node) => node.tier === 'actor' || node.tier === 'campaign' || this.selection?.nodes?.has(node.id)
     );
+    const labels = labelNodes.slice(0, 24).map((node) => {
+      const position = this.worldToScreen(node);
+      return {
+        node,
+        x: Math.round(position.x + 12),
+        y: Math.round(position.y - 10),
+      };
+    });
+    const labelKey = labels.map((item) => `${item.node.id}:${item.x}:${item.y}`).join('|');
+    if (labelKey === this.lastLabelKey) return;
+    this.lastLabelKey = labelKey;
     this.labelLayer.replaceChildren(
-      ...labelNodes.slice(0, 24).map((node) => {
-        const position = this.worldToScreen(node);
+      ...labels.map((item) => {
         const label = document.createElement('span');
-        label.className = `sc-graph-label sc-graph-label-${node.tier}`;
-        label.textContent = node.label;
-        label.style.transform = `translate(${Math.round(position.x + 12)}px, ${Math.round(position.y - 10)}px)`;
+        label.className = `sc-graph-label sc-graph-label-${item.node.tier}`;
+        label.textContent = item.node.label;
+        label.style.transform = `translate(${item.x}px, ${item.y}px)`;
         return label;
       })
     );
