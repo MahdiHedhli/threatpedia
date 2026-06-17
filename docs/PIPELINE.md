@@ -87,7 +87,7 @@ discovery queues are open, validated, and stable.
         prefill only. `node scripts/vulncheck-kev-intake.mjs --execute`
         requests the VulnCheck KEV backup descriptor, follows the published
         backup payload URL, selects records by top-level `date_added`
-        newest-first, emits up to 10 source-packet prefill artifacts per run,
+        newest-first, emits up to 30 source-packet prefill artifacts per run,
         and stages them in the discovery PR. It fills from the recent window
         first, then older unhandled records newest-to-oldest. It does not
         create draft tasks or article drafts. CISA remains authoritative for
