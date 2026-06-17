@@ -439,6 +439,11 @@ assert.ok(
   'graph client should prevent actor/campaign/entity selections from implicitly reactivating semantic bloom'
 );
 assert.ok(
+  supplyChainGraphSource.includes('if (visibleChildren.length === 0)') &&
+    supplyChainGraphSource.includes('return { incidentId: incident.id, nodes: [], edges: [], hiddenCount: 0, bounds: boundsForNodes([incident]) };'),
+  'graph client should not fabricate virtual bloom nodes for incidents without payload children'
+);
+assert.ok(
   supplyChainGraphSource.includes("edge.type === 'SEEDED_BY'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
