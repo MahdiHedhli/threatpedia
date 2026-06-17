@@ -37,12 +37,15 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "APT27 exploits web-facing applications including SharePoint, Exchange, and MySQL servers."
   - techniqueId: "T1505.003"
-    techniqueName: "Server Software Component: Web Shell"
+    techniqueName: "Web Shell"
     tactic: "Persistence"
     notes: "Deploys China Chopper and custom web shells on compromised web servers."
-  - techniqueId: "T1574.002"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
-    tactic: "Defense Evasion"
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
+    tactic: "Execution"
+    attack-version: "v19.0"
+    confidence: "confirmed"
+    evidence: "APT27 uses DLL side-loading with legitimate signed executables to load HyperBro and other backdoors."
     notes: "Uses DLL side-loading with legitimate signed executables to load HyperBro and other backdoors."
 attributionConfidence: A3
 attributionRationale: "Attributed to China-nexus actors by multiple cybersecurity vendors including Secureworks, Trend Micro, and Mandiant, based on infrastructure, tooling, and targeting analysis. No government indictment to date."
@@ -117,16 +120,18 @@ CISA advisory AA21-200B identified Chinese state-sponsored actors (including act
 
 **Initial Access**: Exploitation of public-facing applications (T1190) is the primary vector, targeting Exchange, SharePoint, and database servers. Spearphishing attachments (T1566.001) serve as a secondary vector.
 
-**Persistence**: Web shells (T1505.003), scheduled tasks (T1053), and DLL side-loading (T1574.002) maintain persistent access. HyperBro and SysUpdate install as services or scheduled tasks.
+**Execution**: DLL side-loading with signed legitimate executables (T1574.001) loads HyperBro and other backdoors during operations.
+
+**Persistence**: Web shells (T1505.003) and scheduled tasks (T1053) maintain persistent access. HyperBro and SysUpdate install as services or scheduled tasks.
 
 **Credential Access**: The group uses OS credential dumping (T1003) via Mimikatz, ProcDump, and custom tools to harvest domain credentials.
 
-**Defense Evasion**: DLL side-loading with signed binaries (T1574.002), process injection (T1055), and indicator removal (T1070) are used to evade security controls.
+**Defense Evasion**: Signed-binary abuse, process injection (T1055), and indicator removal (T1070) are used to evade security controls.
 
 **Exfiltration**: Data is compressed (T1560) and exfiltrated over C2 channels (T1041) using encrypted HTTPS communications.
 
 ## Sources & References
 
-- [MITRE ATT&CK: APT27](https://attack.mitre.org/groups/G0027/) -- MITRE ATT&CK
-- [CISA: Advisory AA21-200B](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200b) -- CISA, 2021-07-19
-- [Secureworks: Bronze Union](https://www.secureworks.com/research/bronze-union) -- Secureworks, 2017-06-27
+- [MITRE ATT&CK: APT27](https://attack.mitre.org/groups/G0027/) — MITRE ATT&CK, 2025-10-17
+- [CISA: Advisory AA21-200B](https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200b) — CISA, 2021-07-19
+- [Secureworks: Bronze Union](https://www.secureworks.com/research/bronze-union) — Secureworks, 2017-06-27

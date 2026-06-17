@@ -39,17 +39,13 @@ mitreMappings:
     tactic: "Impact"
     notes: "NotPetya and CaddyWiper were designed to irreversibly destroy data on targeted systems."
   - techniqueId: "T1059.001"
-    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    techniqueName: "PowerShell"
     tactic: "Execution"
     notes: "PowerShell scripts used in multiple campaigns for lateral movement and payload delivery."
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "NotPetya distributed via compromised M.E.Doc Ukrainian accounting software."
-  - techniqueId: "T1562.001"
-    techniqueName: "Impair Defenses: Disable or Modify Tools"
-    tactic: "Defense Evasion"
-    notes: "Industroyer manipulated ICS protocols to disable safety systems during power grid attacks."
 attributionConfidence: A1
 attributionRationale: "Attributed to GRU Unit 74455 by a 2020 U.S. DOJ indictment of six officers, corroborated by Five Eyes intelligence agencies and private-sector research from ESET, Mandiant, and Dragos."
 reviewStatus: "under_review"
@@ -79,7 +75,7 @@ sources:
     accessDate: "2026-04-16"
     archived: false
   - url: "https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and"
-    publisher: "US Department of Justice"
+    publisher: "U.S. Department of Justice"
     publisherType: government
     reliability: R1
     publicationDate: "2020-10-19"
@@ -157,8 +153,8 @@ CISA advisory AA22-110A (April 2022) and joint advisories from Five Eyes intelli
 
 ## Sources & References
 
-- [MITRE ATT&CK: Sandworm Team](https://attack.mitre.org/groups/G0034/) -- MITRE ATT&CK
-- [CISA: Advisory AA22-110A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a) -- CISA, 2022-04-20
-- [US DOJ: Six Russian GRU Officers Charged](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and) -- US Department of Justice, 2020-10-19
-- [Mandiant: Sandworm Disrupts Power in Ukraine](https://www.mandiant.com/resources/blog/sandworm-disrupts-power-ukraine-operational-technology) -- Mandiant, 2023-11-09
-- [ESET: TeleBots Supply Chain Attacks Against Ukraine](https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/) -- ESET, 2017-06-30
+- [MITRE ATT&CK: Sandworm Team](https://attack.mitre.org/groups/G0034/) — MITRE ATT&CK, 2025-10-17
+- [CISA: Advisory AA22-110A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-110a) — CISA, 2022-04-20
+- [U.S. Department of Justice: Six Russian GRU Officers Charged](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and) — U.S. Department of Justice, 2020-10-19
+- [Mandiant: Sandworm Disrupts Power in Ukraine](https://www.mandiant.com/resources/blog/sandworm-disrupts-power-ukraine-operational-technology) — Mandiant, 2023-11-09
+- [ESET: TeleBots Supply Chain Attacks Against Ukraine](https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/) — ESET, 2017-06-30

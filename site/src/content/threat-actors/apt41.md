@@ -34,16 +34,19 @@ tools:
   - "DUSTPAN"
 mitreMappings:
   - techniqueId: "T1195.002"
-    techniqueName: "Supply Chain Compromise: Compromise Software Supply Chain"
+    techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     notes: "APT41 has conducted multiple supply chain compromises of legitimate software vendors."
   - techniqueId: "T1059.001"
-    techniqueName: "Command and Scripting Interpreter: PowerShell"
+    techniqueName: "PowerShell"
     tactic: "Execution"
     notes: "Uses PowerShell scripts for payload delivery and post-compromise operations."
-  - techniqueId: "T1574.002"
-    techniqueName: "Hijack Execution Flow: DLL Side-Loading"
-    tactic: "Defense Evasion"
+  - techniqueId: "T1574.001"
+    techniqueName: "DLL"
+    tactic: "Execution"
+    attack-version: "v19.0"
+    confidence: "confirmed"
+    evidence: "DLL side-loading with signed legitimate binaries is a hallmark of APT41 operations."
     notes: "DLL side-loading with signed legitimate binaries is a hallmark of APT41 operations."
 attributionConfidence: A1
 attributionRationale: "Attributed to Chinese MSS-affiliated actors by a September 2020 DOJ indictment of five Chinese nationals and two Malaysian nationals."
@@ -67,7 +70,7 @@ sources:
     accessDate: "2026-04-16"
     archived: false
   - url: "https://www.justice.gov/opa/pr/seven-international-cyber-defendants-including-apt41-actors-charged-connection-computer"
-    publisher: "US Department of Justice"
+    publisher: "U.S. Department of Justice"
     publisherType: government
     reliability: R1
     publicationDate: "2020-09-16"
@@ -127,7 +130,7 @@ CISA advisory AA20-258A detailed APT41 exploitation of public-facing application
 
 **Initial Access**: Supply chain compromise (T1195.002), exploitation of public-facing applications (T1190), and spearphishing (T1566.001) are primary vectors.
 
-**Execution**: DLL side-loading (T1574.002), PowerShell (T1059.001), and custom loaders deploy backdoors while evading detection.
+**Execution**: DLL side-loading (T1574.001), PowerShell (T1059.001), and custom loaders deploy backdoors while evading detection.
 
 **Persistence**: ShadowPad and KEYPLUG install as services (T1543.003) or scheduled tasks (T1053). Bootkit-level persistence has been observed in some operations.
 
@@ -137,7 +140,7 @@ CISA advisory AA20-258A detailed APT41 exploitation of public-facing application
 
 ## Sources & References
 
-- [MITRE ATT&CK: APT41](https://attack.mitre.org/groups/G0096/) -- MITRE ATT&CK
-- [US DOJ: APT41 Actors Charged](https://www.justice.gov/opa/pr/seven-international-cyber-defendants-including-apt41-actors-charged-connection-computer) -- US Department of Justice, 2020-09-16
-- [CISA: Advisory AA20-258A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-258a) -- CISA, 2020-09-14
-- [Mandiant: APT41 Dual Espionage and Cybercrime](https://www.mandiant.com/resources/blog/apt41-dual-espionage-and-cyber-crime-operation) -- Mandiant, 2019-08-07
+- [MITRE ATT&CK: APT41](https://attack.mitre.org/groups/G0096/) — MITRE ATT&CK, 2025-10-17
+- [U.S. Department of Justice: APT41 Actors Charged](https://www.justice.gov/opa/pr/seven-international-cyber-defendants-including-apt41-actors-charged-connection-computer) — U.S. Department of Justice, 2020-09-16
+- [CISA: Advisory AA20-258A](https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-258a) — CISA, 2020-09-14
+- [Mandiant: APT41 Dual Espionage and Cybercrime](https://www.mandiant.com/resources/blog/apt41-dual-espionage-and-cyber-crime-operation) — Mandiant, 2019-08-07
