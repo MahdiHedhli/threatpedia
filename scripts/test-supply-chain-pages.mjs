@@ -138,6 +138,14 @@ assert.ok(
   'Base layout should use delegated tooltip listeners that survive Astro cache restores'
 );
 assert.ok(
+  baseLayoutSource.includes('let glossaryPromise = null;') &&
+    baseLayoutSource.includes('let crossRefPromise = null;') &&
+    baseLayoutSource.includes("glossaryPromise = tryFetch('/glossary-data.json', '/src/data/glossary-index.json')") &&
+    baseLayoutSource.includes("crossRefPromise = tryFetch('/cross-ref-index.json')") &&
+    baseLayoutSource.includes('glossaryPromise,\n              crossRefPromise,'),
+  'Base layout should cache glossary and cross-reference fetch promises across Astro transitions'
+);
+assert.ok(
   !/function initializeThreatpediaLayout\(\) \{[\s\S]*?if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
   'Base layout page-load handler should not return early when menu elements are absent'
 );

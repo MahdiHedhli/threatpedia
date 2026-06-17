@@ -226,6 +226,8 @@ try {
     <script>
       let searchIndex = null;
       let searchTimeout;
+      let glossaryPromise = null;
+      let crossRefPromise = null;
 
       function isSupplyChainPath(pathname) {
         return pathname === '/supply-chain' || pathname === '/supply-chain/' || pathname.startsWith('/supply-chain/');
@@ -860,9 +862,15 @@ try {
               }
               return null;
             };
+            if (!glossaryPromise) {
+              glossaryPromise = tryFetch('/glossary-data.json', '/src/data/glossary-index.json');
+            }
+            if (!crossRefPromise) {
+              crossRefPromise = tryFetch('/cross-ref-index.json');
+            }
             const [glossaryRes, crossRefRes] = await Promise.allSettled([
-              tryFetch('/glossary-data.json', '/src/data/glossary-index.json'),
-              tryFetch('/cross-ref-index.json'),
+              glossaryPromise,
+              crossRefPromise,
             ]);
 
             const glossary = glossaryRes.status === 'fulfilled' ? glossaryRes.value : [];
