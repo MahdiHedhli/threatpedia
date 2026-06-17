@@ -93,7 +93,9 @@ assert.ok(
   'Base layout should not rely on per-anchor reload markers'
 );
 assert.ok(
-  baseLayoutSource.includes("document.body.style.overflow = isOpen ? 'hidden' : '';"),
+  baseLayoutSource.includes('function syncBodyScrollLock') &&
+    baseLayoutSource.includes("document.body.style.overflow = panel?.classList.contains('open') ? 'hidden' : '';") &&
+    baseLayoutSource.includes('syncBodyScrollLock(panel);'),
   'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
@@ -119,12 +121,12 @@ assert.ok(
   'Base layout should rerun bindings after Astro page transitions'
 );
 assert.ok(
-  baseLayoutSource.includes("document.body.style.overflow = '';"),
+  baseLayoutSource.includes('syncBodyScrollLock();'),
   'Base layout should clear stale scroll locks after Astro page transitions'
 );
 assert.ok(
-  baseLayoutSource.includes("const menuIsOpen = panel?.classList.contains('open');") &&
-    baseLayoutSource.includes("document.body.style.overflow = menuIsOpen ? 'hidden' : '';"),
+  baseLayoutSource.includes('syncBodyScrollLock(panel);') &&
+    baseLayoutSource.indexOf('syncBodyScrollLock(panel);') !== baseLayoutSource.lastIndexOf('syncBodyScrollLock(panel);'),
   'Base layout should preserve scroll lock when duplicate page-load initialization sees an already-open search menu'
 );
 assert.ok(

@@ -254,7 +254,11 @@ try {
         document.getElementById('menu-panel')?.classList.remove('open');
         document.getElementById('menu-overlay')?.classList.remove('open');
         document.getElementById('hamburger-btn')?.classList.remove('open');
-        document.body.style.overflow = '';
+        syncBodyScrollLock();
+      }
+
+      function syncBodyScrollLock(panel = document.getElementById('menu-panel')) {
+        document.body.style.overflow = panel?.classList.contains('open') ? 'hidden' : '';
       }
 
       function toggleMenu() {
@@ -266,7 +270,7 @@ try {
         const isOpen = panel.classList.toggle('open');
         overlay.classList.toggle('open');
         btn.classList.toggle('open');
-        document.body.style.overflow = isOpen ? 'hidden' : '';
+        syncBodyScrollLock(panel);
         if (isOpen && searchInput) searchInput.focus();
       }
 
@@ -482,8 +486,7 @@ try {
         const overlay = document.getElementById('menu-overlay');
         const panel = document.getElementById('menu-panel');
         const searchInput = document.getElementById('menu-search');
-        const menuIsOpen = panel?.classList.contains('open');
-        document.body.style.overflow = menuIsOpen ? 'hidden' : '';
+        syncBodyScrollLock(panel);
 
         // ── Ticker scroll speed ─────────────────────────────────────────────
         const tickerTrack = document.querySelector('.ticker-track');
@@ -525,6 +528,7 @@ try {
             searchInput.focus();
           })();
         }
+        syncBodyScrollLock(panel);
 
         // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
         (function enhanceContent() {
