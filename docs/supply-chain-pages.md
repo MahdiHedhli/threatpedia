@@ -50,9 +50,14 @@ node scripts/build-supply-chain-graph.mjs
 node scripts/build-supply-chain-graph.mjs --check
 ```
 
-The Phase 1.0 G2 renderer draws only the actor, campaign, and incident tiers.
-Package and release nodes are preserved in the payload for later level-of-detail
-slices, but they remain payload-only until the dive-and-bloom work lands.
+The Phase 1.0 G2 renderer draws the actor, campaign, and incident tiers. G3
+adds cross-cutting technique/exploit nodes derived from incident vectors, tags,
+and impact categories. Selecting a technique highlights its incidents across
+actor lanes and pulls the camera back to a stable wide shot. The optional
+`Focus reflow` control clusters those incidents around the selected technique
+node and can be toggled back to the wide shot. Package and release nodes are
+preserved in the payload for later level-of-detail slices, but they remain
+payload-only until the dive-and-bloom work lands.
 
 ## Local Build
 
