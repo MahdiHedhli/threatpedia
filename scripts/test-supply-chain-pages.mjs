@@ -433,6 +433,10 @@ assert.ok(
   'graph client should include G4 semantic zoom, worker-settled bloom layout, LOD culling, and aggregation paths'
 );
 assert.ok(
+  !supplyChainGraphSource.includes('return this.ensureBloomLayout(this.lastBloomIncidentId)'),
+  'graph client should not keep cached bloom visible after semantic zoom or incident selection ends'
+);
+assert.ok(
   supplyChainGraphSource.includes("edge.type === 'SEEDED_BY'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
