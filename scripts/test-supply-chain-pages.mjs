@@ -78,6 +78,10 @@ assert.ok(
   'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
+  baseLayoutSource.includes("document.addEventListener('astro:page-load', () => {\n      document.body.style.overflow = '';"),
+  'Base layout should clear stale scroll locks after Astro page transitions'
+);
+assert.ok(
   !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
   'Base layout page-load handler should not return early when menu elements are absent'
 );
