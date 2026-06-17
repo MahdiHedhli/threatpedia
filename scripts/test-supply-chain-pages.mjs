@@ -395,6 +395,7 @@ assert.ok(
     supplyChainGraphSource.includes("edge.type === 'INCIDENT_TECHNIQUE'") &&
     supplyChainGraphSource.includes("this.selection?.type === 'technique'") &&
     supplyChainGraphSource.includes('frameSelectedTechniqueWideShot') &&
+    supplyChainGraphSource.includes("if (edge.type === 'INCIDENT_TECHNIQUE') return;") &&
     supplyChainGraphSource.includes('z: Math.min(fit.z, 0.82)') &&
     supplyChainGraphSource.includes("contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN'") &&
     supplyChainGraphSource.includes("this.focusReflow && this.selection?.type === 'technique'") &&

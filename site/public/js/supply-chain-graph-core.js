@@ -529,6 +529,7 @@ class SupplyChainGraph {
       });
     } else if (node.tier === 'incident') {
       this.layout.edges.forEach((edge) => {
+        if (edge.type === 'INCIDENT_TECHNIQUE') return;
         if (edge.target === node.id) clusterIds.add(edge.source);
         if (edge.source === node.id) clusterIds.add(edge.target);
       });
