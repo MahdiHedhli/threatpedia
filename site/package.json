@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "validate:campaigns": "node ../scripts/validate-campaign-corpus.mjs",
-    "build": "npm run validate:campaigns && astro build",
+    "build": "node ../scripts/build-supply-chain-graph.mjs && npm run validate:campaigns && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
