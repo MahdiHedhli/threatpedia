@@ -333,6 +333,7 @@ def validate_relationships(
     *,
     entity_ids: set[str],
     incident_ids: set[str],
+    references_by_incident: dict[str, set[str]],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(relationships, list):
@@ -375,6 +376,8 @@ def validate_relationships(
             if rel_type == "SEEDED_BY":
                 if not source.startswith(("pkg-", "release-")):
                     errors.append(f"{path}.source: SEEDED_BY must start from a package or release node")
+                if source == target:
+                    errors.append(f"{path}: source and target cannot be the same")
                 tier = rel.get("propagation_tier")
                 if tier not in {"causal", "temporal"}:
                     errors.append(f"{path}.propagation_tier: expected 'causal' or 'temporal'")
@@ -386,6 +389,16 @@ def validate_relationships(
                 summary = rel.get("summary")
                 if not isinstance(summary, str) or len(summary.strip()) < 20:
                     errors.append(f"{path}.summary: expected evidence summary")
+                source_incident_id = rel.get("source_incident_id")
+                if not isinstance(source_incident_id, str):
+                    errors.append(f"{path}.source_incident_id: expected string")
+                elif source_incident_id not in references_by_incident:
+                    errors.append(f"{path}.source_incident_id: unknown incident {source_incident_id!r}")
+                elif isinstance(evidence_refs, list):
+                    valid_refs = references_by_incident[source_incident_id]
+                    for ref in evidence_refs:
+                        if isinstance(ref, str) and ref not in valid_refs:
+                            errors.append(f"{path}.evidence_refs: unknown reference {ref!r} for {source_incident_id}")
                 seeded_by_edges.append((source, target, path))
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
@@ -531,6 +544,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             relationships,
             entity_ids=all_entity_ids,
             incident_ids=incident_ids,
+            references_by_incident=references_by_incident,
         )
     )
     errors.extend(validate_corpus_implied_relationships(corpus, relationships))

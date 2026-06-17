@@ -310,6 +310,29 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertTrue(any("propagation_tier" in error for error in report["invalid_seeded_by_edges"]))
         self.assertTrue(any("ref-does-not-exist" in error for error in report["invalid_seeded_by_edges"]))
 
+    def test_seeded_by_edge_reports_unknown_source_incident(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "source_incident_id": "SC-2099-NOT-REAL",
+                "summary": "Fixture creates an invalid source incident for audit coverage.",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("SC-2099-NOT-REAL" in error for error in report["invalid_seeded_by_edges"]))
+
     def test_seeded_by_cycle_fails_audit(self) -> None:
         relationships = audit.load_json(RELATIONSHIP_PATH)
         broken_relationships = copy.deepcopy(relationships)

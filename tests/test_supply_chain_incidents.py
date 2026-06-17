@@ -448,6 +448,14 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         self.assertTrue(any(".propagation_edges[0].propagation_tier: invalid value 'guessed'" in error for error in errors))
         self.assertTrue(any(".propagation_edges[0].evidence_refs[0]: unknown reference ID 'ref-missing'" in error for error in errors))
 
+    def test_propagation_edges_reject_self_loops(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["target"] = incident["propagation_edges"][0]["source"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0]: source and target cannot be the same" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

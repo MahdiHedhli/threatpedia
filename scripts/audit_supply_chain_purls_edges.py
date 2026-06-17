@@ -316,8 +316,10 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
             source_incident_id = relationship.get("source_incident_id")
             if not isinstance(source_incident_id, str):
                 invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY requires source_incident_id")
+            elif source_incident_id not in references_by_incident:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY source_incident_id {source_incident_id!r} not found in corpus")
             elif isinstance(evidence_refs, list):
-                valid_refs = references_by_incident.get(source_incident_id, set())
+                valid_refs = references_by_incident[source_incident_id]
                 for ref in evidence_refs:
                     if isinstance(ref, str) and ref not in valid_refs:
                         invalid_seeded_by_edges.append(

@@ -654,6 +654,8 @@ def validate_propagation_edges(errors: list[str], incident: dict[str, Any]) -> N
                 require_string(errors, f"{path}.{field}", record.get(field))
                 if isinstance(record.get(field), str) and not record[field].startswith(("pkg-", "release-")):
                     errors.append(f"{path}.{field}: expected pkg-* or release-* entity id")
+        if isinstance(record.get("source"), str) and isinstance(record.get("target"), str) and record["source"] == record["target"]:
+            errors.append(f"{path}: source and target cannot be the same")
         if "propagation_tier" in record and record.get("propagation_tier") not in VALID_PROPAGATION_TIERS:
             errors.append(f"{path}.propagation_tier: invalid value {record.get('propagation_tier')!r}")
         if "evidence_refs" in record:
