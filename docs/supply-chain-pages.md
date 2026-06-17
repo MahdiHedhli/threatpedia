@@ -67,6 +67,12 @@ edges render as solid lines; temporal precedence edges render as dim segmented
 lines. Large blooms are capped by a node budget and represented with an
 aggregation node instead of rendering every child at once.
 
+G7 adds an incident-page propagation timeline for incidents that have
+evidence-gated `SEEDED_BY` relationships. The section is corpus-driven and
+renders only modeled edges for that incident. Causal edges are labeled as
+causal; temporal edges are labeled as temporal precedence and styled separately
+so the page does not imply causation where the corpus only records ordering.
+
 ## Local Build
 
 Disabled/default build:
@@ -145,6 +151,10 @@ versioned PURL plus publish date when modeled. When
 maintainer date anchors and release publish dates are both present, incident
 pages derive a tenure-at-malicious-release row. The corpus stores the dated
 anchors only; it does not store a stale tenure field or score. When
+`SEEDED_BY` relationships are present for the incident, incident pages render a
+Propagation Timeline with source entity, target entity, edge tier, summary, and
+evidence references. Incidents without modeled propagation edges do not render
+that section. When
 Phase 2B actor or campaign links are present, incident pages also show threat
 actor links, campaign links, attribution confidence, and the local evidence
 basis for those edges. These links are corpus-driven convergence edges; they do
