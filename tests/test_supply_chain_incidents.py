@@ -436,6 +436,18 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".first_public_warning_at: expected YYYY-MM-DD date or null" in error for error in errors))
 
+    def test_propagation_edges_require_evidence_and_valid_tier(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["source"] = "incident-SC-2025-NPM-SHAI-HULUD"
+        incident["propagation_edges"][0]["propagation_tier"] = "guessed"
+        incident["propagation_edges"][0]["evidence_refs"] = ["ref-missing"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0].source: expected pkg-* or release-* entity id" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].propagation_tier: invalid value 'guessed'" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].evidence_refs[0]: unknown reference ID 'ref-missing'" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -40,6 +40,7 @@ VALID_RELATIONSHIP_TYPES = INCIDENT_SOURCE_RELATIONSHIP_TYPES | {
     "ATTRIBUTED_TO_ACTOR",
     "MAINTAINS_REPOSITORY",
     "PACKAGE_RELEASE",
+    "SEEDED_BY",
     "USES_ACCOUNT",
 }
 
@@ -163,6 +164,15 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
     maintainers = load_json(entity_dir / "maintainers.json")
     relationships = load_json(relationship_path)
     incidents = load_json(incident_path)
+    references_by_incident = {
+        incident["id"]: {
+            reference["id"]
+            for reference in incident.get("references") or []
+            if isinstance(reference, dict) and isinstance(reference.get("id"), str)
+        }
+        for incident in incidents
+        if isinstance(incident, dict) and isinstance(incident.get("id"), str)
+    }
 
     purl_results = [
         result
@@ -211,7 +221,9 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
     broken_campaign_hrefs = []
     dangling_package_edges = []
     dangling_release_edges = []
+    invalid_seeded_by_edges = []
     invalid_relationship_edges = []
+    seeded_by_edges = []
     for actor_id, actor in actor_by_id.items():
         href = actor.get("href")
         if isinstance(href, str) and href.strip() and not content_href_exists(href):
@@ -281,6 +293,40 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
                 invalid_relationship_edges.append(f"relationships[{index}]: INCIDENT_AFFECTED_RELEASE target must be string")
             elif target not in release_ids:
                 dangling_release_edges.append(f"relationships[{index}]: missing release target {target!r}")
+        if rel_type == "SEEDED_BY":
+            if not isinstance(source, str):
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY source must be string")
+            elif source not in package_ids and source not in release_ids:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: missing SEEDED_BY source {source!r}")
+            if not isinstance(target, str):
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY target must be string")
+            elif target not in package_ids and target not in release_ids:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: missing SEEDED_BY target {target!r}")
+            tier = relationship.get("propagation_tier")
+            if tier not in {"causal", "temporal"}:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY propagation_tier must be causal or temporal")
+            evidence_refs = relationship.get("evidence_refs")
+            if not isinstance(evidence_refs, list) or not evidence_refs:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY requires evidence_refs")
+            elif not all(isinstance(ref, str) and ref.strip() for ref in evidence_refs):
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY evidence_refs must be non-empty strings")
+            summary = relationship.get("summary")
+            if not isinstance(summary, str) or len(summary.strip()) < 20:
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY requires evidence summary")
+            source_incident_id = relationship.get("source_incident_id")
+            if not isinstance(source_incident_id, str):
+                invalid_seeded_by_edges.append(f"relationships[{index}]: SEEDED_BY requires source_incident_id")
+            elif isinstance(evidence_refs, list):
+                valid_refs = references_by_incident.get(source_incident_id, set())
+                for ref in evidence_refs:
+                    if isinstance(ref, str) and ref not in valid_refs:
+                        invalid_seeded_by_edges.append(
+                            f"relationships[{index}]: SEEDED_BY evidence ref {ref!r} not found in {source_incident_id}"
+                        )
+            if isinstance(source, str) and isinstance(target, str):
+                seeded_by_edges.append((source, target))
+
+    invalid_seeded_by_edges.extend(seeded_by_cycle_errors(seeded_by_edges))
 
     failures = (
         missing_purls
@@ -292,6 +338,7 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
         + broken_campaign_hrefs
         + dangling_package_edges
         + dangling_release_edges
+        + invalid_seeded_by_edges
         + invalid_relationship_edges
     )
     return {
@@ -309,9 +356,41 @@ def build_audit(entity_dir: Path, relationship_path: Path, incident_path: Path =
         "broken_campaign_hrefs": broken_campaign_hrefs,
         "dangling_package_edges": dangling_package_edges,
         "dangling_release_edges": dangling_release_edges,
+        "seeded_by_edge_count": len(seeded_by_edges),
+        "invalid_seeded_by_edges": invalid_seeded_by_edges,
         "invalid_relationship_edges": invalid_relationship_edges,
         "failures": failures,
     }
+
+
+def seeded_by_cycle_errors(edges: list[tuple[str, str]]) -> list[str]:
+    graph: dict[str, list[str]] = {}
+    for source, target in edges:
+        graph.setdefault(source, []).append(target)
+
+    errors: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            cycle = " -> ".join(stack[stack.index(node) :] + [node]) if node in stack else node
+            errors.append(f"SEEDED_BY cycle detected: {cycle}")
+            return
+        visiting.add(node)
+        stack.append(node)
+        for target in graph.get(node, []):
+            visit(target)
+        stack.pop()
+        visiting.remove(node)
+        visited.add(node)
+
+    for source in graph:
+        visit(source)
+    return errors
 
 
 def render_report(audit: dict[str, Any]) -> str:
@@ -342,6 +421,8 @@ def render_report(audit: dict[str, Any]) -> str:
             f"- Broken campaign hrefs: {len(audit['broken_campaign_hrefs'])}",
             f"- Dangling package edges: {len(audit['dangling_package_edges'])}",
             f"- Dangling release edges: {len(audit['dangling_release_edges'])}",
+            f"- SEEDED_BY edges: {audit['seeded_by_edge_count']}",
+            f"- Invalid SEEDED_BY edges: {len(audit['invalid_seeded_by_edges'])}",
             f"- Invalid relationship edges: {len(audit['invalid_relationship_edges'])}",
             "",
             "## Missing PURLs",
@@ -384,6 +465,10 @@ def render_report(audit: dict[str, Any]) -> str:
             "",
             bullet_list(audit["dangling_release_edges"]).rstrip(),
             "",
+            "## Invalid SEEDED_BY Edges",
+            "",
+            bullet_list(audit["invalid_seeded_by_edges"]).rstrip(),
+            "",
             "## Invalid Relationship Edges",
             "",
             bullet_list(audit["invalid_relationship_edges"]).rstrip(),
@@ -418,6 +503,8 @@ def main(argv: list[str] | None = None) -> int:
         f"broken_campaign_hrefs={len(audit['broken_campaign_hrefs'])} "
         f"dangling_package_edges={len(audit['dangling_package_edges'])} "
         f"dangling_release_edges={len(audit['dangling_release_edges'])} "
+        f"seeded_by_edges={audit['seeded_by_edge_count']} "
+        f"invalid_seeded_by_edges={len(audit['invalid_seeded_by_edges'])} "
         f"invalid_relationship_edges={len(audit['invalid_relationship_edges'])}"
     )
     return 0 if audit["status"] == "PASS" else 1

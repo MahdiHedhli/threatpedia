@@ -73,6 +73,7 @@ REQUIRED_RELEASE_FIELDS = [
 REQUIRED_THREAT_ACTOR_FIELDS = ["id", "name", "actor_type", "confidence", "source_refs"]
 REQUIRED_CAMPAIGN_FIELDS = ["id", "campaign_id", "name", "slug", "confidence", "source_refs"]
 REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS = ["target", "relationship_type", "source_refs", "summary"]
+REQUIRED_PROPAGATION_EDGE_FIELDS = ["source", "target", "propagation_tier", "evidence_refs", "summary"]
 FEATURED_INCIDENT_IDS = {
     "SC-2018-NPM-EVENT-STREAM",
     "SC-2020-SOLARWINDS-ORION",
@@ -142,6 +143,7 @@ VALID_IMPACTS = {
 VALID_ATTRIBUTION_CONFIDENCE = {"confirmed", "likely", "suspected", "disputed", "unknown"}
 VALID_ACTOR_TYPES = {"public", "provisional"}
 VALID_ATTRIBUTION_RELATIONSHIPS = {"ATTRIBUTED_TO_ACTOR", "RELATED_CAMPAIGN"}
+VALID_PROPAGATION_TIERS = {"causal", "temporal"}
 
 
 def load_json(path: Path) -> Any:
@@ -632,6 +634,34 @@ def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> 
         errors.append(f"{incident_id}.attribution_evidence: unexpected {relationship_type} evidence for {target} without matching link")
 
 
+def validate_propagation_edges(errors: list[str], incident: dict[str, Any]) -> None:
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
+    valid_reference_ids = reference_ids_for(incident)
+    records = incident.get("propagation_edges", [])
+    if not isinstance(records, list):
+        errors.append(f"{incident_id}.propagation_edges: expected list")
+        return
+    for index, record in enumerate(records):
+        path = f"{incident_id}.propagation_edges[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        for field in REQUIRED_PROPAGATION_EDGE_FIELDS:
+            if field not in record:
+                errors.append(f"{path}.{field}: missing required field")
+        for field in ["source", "target"]:
+            if field in record:
+                require_string(errors, f"{path}.{field}", record.get(field))
+                if isinstance(record.get(field), str) and not record[field].startswith(("pkg-", "release-")):
+                    errors.append(f"{path}.{field}: expected pkg-* or release-* entity id")
+        if "propagation_tier" in record and record.get("propagation_tier") not in VALID_PROPAGATION_TIERS:
+            errors.append(f"{path}.propagation_tier: invalid value {record.get('propagation_tier')!r}")
+        if "evidence_refs" in record:
+            validate_reference_id_list(errors, incident_id, f"{path}.evidence_refs", record.get("evidence_refs"), valid_reference_ids)
+        if "summary" in record:
+            require_string(errors, f"{path}.summary", record.get("summary"), min_length=20)
+
+
 def validate_incident(incident: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(incident, dict):
@@ -745,6 +775,7 @@ def validate_incident(incident: Any) -> list[str]:
         incident.get("compromised_accounts"),
     )
     validate_attribution_fields(errors, incident)
+    validate_propagation_edges(errors, incident)
     validate_editorial_fields(errors, incident)
 
     return errors

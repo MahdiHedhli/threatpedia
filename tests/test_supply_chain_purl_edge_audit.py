@@ -279,6 +279,60 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertTrue(any("unknown relationship type" in error for error in report["invalid_relationship_edges"]))
 
+    def test_seeded_by_edges_are_counted_and_validated(self) -> None:
+        report = audit.build_audit(ENTITY_DIR, RELATIONSHIP_PATH)
+
+        self.assertEqual(report["status"], "PASS")
+        self.assertEqual(report["seeded_by_edge_count"], 3)
+        self.assertEqual(report["invalid_seeded_by_edges"], [])
+
+    def test_seeded_by_edge_requires_tier_and_evidence(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "guessed",
+                "evidence_refs": ["ref-does-not-exist"],
+                "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+                "summary": "Fixture creates an invalid propagation edge for audit coverage.",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("propagation_tier" in error for error in report["invalid_seeded_by_edges"]))
+        self.assertTrue(any("ref-does-not-exist" in error for error in report["invalid_seeded_by_edges"]))
+
+    def test_seeded_by_cycle_fails_audit(self) -> None:
+        relationships = audit.load_json(RELATIONSHIP_PATH)
+        broken_relationships = copy.deepcopy(relationships)
+        broken_relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+                "summary": "Fixture creates a propagation cycle for audit coverage.",
+            }
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            relationship_path = Path(tmpdir) / "relationships.json"
+            relationship_path.write_text(json.dumps(broken_relationships), encoding="utf-8")
+
+            report = audit.build_audit(ENTITY_DIR, relationship_path)
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in report["invalid_seeded_by_edges"]))
+
     def test_broken_actor_and_campaign_hrefs_fail_audit(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             entity_dir = Path(tmpdir) / "entities"

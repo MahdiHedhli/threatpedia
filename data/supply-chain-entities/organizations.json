@@ -171,6 +171,16 @@
   },
   {
     "aliases": [
+      "Trading Technologies"
+    ],
+    "id": "org-trading-technologies",
+    "name": "Trading Technologies",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
       "Tukaani Project"
     ],
     "id": "org-tukaani-project",

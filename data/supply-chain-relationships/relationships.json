@@ -386,6 +386,21 @@
   },
   {
     "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "org-trading-technologies",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "pkg-generic-3cx-desktopapp",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "pkg-generic-x-trader",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
     "target": "actor-lazarus-group",
     "type": "ATTRIBUTED_TO_ACTOR"
   },
@@ -645,6 +660,17 @@
     "type": "MAINTAINS_REPOSITORY"
   },
   {
+    "evidence_refs": [
+      "ref-mandiant-3cx"
+    ],
+    "propagation_tier": "causal",
+    "source": "pkg-generic-x-trader",
+    "source_incident_id": "SC-2023-THREE-CX-DESKTOP",
+    "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps.",
+    "target": "pkg-generic-3cx-desktopapp",
+    "type": "SEEDED_BY"
+  },
+  {
     "source": "pkg-golang-github-com-boltdb-go-bolt",
     "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
     "type": "PACKAGE_RELEASE"
@@ -665,6 +691,18 @@
     "type": "PACKAGE_RELEASE"
   },
   {
+    "evidence_refs": [
+      "ref-stepsecurity-shai-hulud",
+      "ref-wiz-shai-hulud"
+    ],
+    "propagation_tier": "temporal",
+    "source": "pkg-npm-rxnt-authentication",
+    "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+    "summary": "Public reporting places rxnt-authentication activity before the @ctrl/tinycolor wave and describes token reuse, but this edge is temporal precedence rather than asserted package-to-package causation.",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "SEEDED_BY"
+  },
+  {
     "source": "pkg-npm-ua-parser-js",
     "target": "release-npm-ua-parser-js-0-7-29",
     "type": "PACKAGE_RELEASE"
@@ -678,5 +716,17 @@
     "source": "pkg-npm-ua-parser-js",
     "target": "release-npm-ua-parser-js-1-0-0",
     "type": "PACKAGE_RELEASE"
+  },
+  {
+    "evidence_refs": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "propagation_tier": "temporal",
+    "source": "release-npm-ctrl-tinycolor-4-1-1",
+    "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+    "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation.",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "SEEDED_BY"
   }
 ]

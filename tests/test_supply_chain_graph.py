@@ -433,6 +433,59 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
         self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
 
+    def test_seeded_by_edges_are_evidence_tiered_and_acyclic(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        seeded_by = [item for item in relationships if item["type"] == "SEEDED_BY"]
+
+        self.assertEqual(len(seeded_by), 3)
+        self.assertTrue(all(item["source"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["target"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["propagation_tier"] in {"causal", "temporal"} for item in seeded_by))
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+
+    def test_seeded_by_relationship_failures_are_reported(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2025-NPM-SHAI-HULUD",
+                "target": "pkg-npm-ctrl-tinycolor",
+                "type": "SEEDED_BY",
+                "propagation_tier": "inferred",
+                "evidence_refs": [],
+                "summary": "short",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY must start from a package or release node" in error for error in errors))
+        self.assertTrue(any(".propagation_tier: expected 'causal' or 'temporal'" in error for error in errors))
+        self.assertTrue(any(".evidence_refs: expected non-empty list" in error for error in errors))
+        self.assertTrue(any(".summary: expected evidence summary" in error for error in errors))
+
+    def test_seeded_by_cycle_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "summary": "Fixture creates a propagation cycle for validator coverage.",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in errors))
+
     def test_maintainer_relationship_sources_are_bounded(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
