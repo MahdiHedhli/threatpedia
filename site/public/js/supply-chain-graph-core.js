@@ -203,12 +203,15 @@ function packageIdForRelease(releaseId, edges) {
 function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 0) {
   const centerX = incident.x + 280;
   const centerY = incident.y + 16;
-  const orgIds = context.orgIds.length > 0 ? context.orgIds : ['virtual-org-unattributed'];
   const visibleChildren = sortBloomNodes(
     [...context.orgIds, ...context.packageIds, ...context.releaseIds]
       .map((id) => sourceNodes.get(id))
       .filter(Boolean)
   );
+  if (visibleChildren.length === 0) {
+    return { incidentId: incident.id, nodes: [], edges: [], hiddenCount: 0, bounds: boundsForNodes([incident]) };
+  }
+  const orgIds = context.orgIds.length > 0 ? context.orgIds : ['virtual-org-unattributed'];
   const needsAggregation = visibleChildren.length > BLOOM_NODE_BUDGET;
   const visibleIds = new Set(
     visibleChildren
