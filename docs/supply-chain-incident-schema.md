@@ -44,7 +44,10 @@ The core fields are:
 - `affected_ecosystems`: ecosystem labels such as `npm`, `pypi`, `windows`,
   `github-actions`, or `vendor-update`
 - `affected_components`: structured impacted packages, projects, services, or
-  update channels
+  update channels. Components default to `component_role: "affected"` when the
+  role is omitted. Use `component_role: "upstream_seed"` only for a package
+  entity that must exist as the source of an evidence-gated propagation edge but
+  must not be listed as an affected component of the downstream incident.
 - `releases`: optional version-addressable package releases with canonical
   versioned PURLs, publish dates, malicious range notes, and local reference IDs
 - `supply_chain_vectors`: normalized vector labels

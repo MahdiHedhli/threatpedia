@@ -51,6 +51,7 @@ VALID_RELATIONSHIP_TYPES = {
     "PACKAGE_RELEASE",
     "INCIDENT_AFFECTED_RELEASE",
     "MAINTAINS_REPOSITORY",
+    "SEEDED_BY",
     "USES_ACCOUNT",
 }
 ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|release|repo|org)-[a-z0-9][a-z0-9-]*$")
@@ -69,6 +70,7 @@ RELATIONSHIP_TARGET_PREFIXES = {
     "PACKAGE_RELEASE": "release-",
     "INCIDENT_AFFECTED_RELEASE": "release-",
     "MAINTAINS_REPOSITORY": "repo-",
+    "SEEDED_BY": ("pkg-", "release-"),
     "USES_ACCOUNT": "account-",
 }
 ENTITY_TYPE_REQUIRED_FIELDS = {
@@ -331,14 +333,16 @@ def validate_relationships(
     *,
     entity_ids: set[str],
     incident_ids: set[str],
+    references_by_incident: dict[str, set[str]],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(relationships, list):
         return ["relationships: expected list"]
 
     valid_nodes = entity_ids | incident_ids
-    seen_relationships: set[tuple[str, str, str]] = set()
+    seen_relationships: set[tuple[Any, Any, Any, Any]] = set()
     connected_entities: set[str] = set()
+    seeded_by_edges: list[tuple[str, str, str]] = []
     for index, rel in enumerate(relationships):
         path = f"relationships[{index}]"
         if not isinstance(rel, dict):
@@ -369,11 +373,39 @@ def validate_relationships(
                 errors.append(f"{path}.source: MAINTAINS_REPOSITORY must start from a maintainer node")
             if rel_type == "USES_ACCOUNT" and not source.startswith("maintainer-"):
                 errors.append(f"{path}.source: USES_ACCOUNT must start from a maintainer node")
+            if rel_type == "SEEDED_BY":
+                if not source.startswith(("pkg-", "release-")):
+                    errors.append(f"{path}.source: SEEDED_BY must start from a package or release node")
+                if source == target:
+                    errors.append(f"{path}: source and target cannot be the same")
+                tier = rel.get("propagation_tier")
+                if tier not in {"causal", "temporal"}:
+                    errors.append(f"{path}.propagation_tier: expected 'causal' or 'temporal'")
+                evidence_refs = rel.get("evidence_refs")
+                if not isinstance(evidence_refs, list) or not evidence_refs:
+                    errors.append(f"{path}.evidence_refs: expected non-empty list")
+                elif not all(isinstance(ref, str) and ref.strip() for ref in evidence_refs):
+                    errors.append(f"{path}.evidence_refs: expected non-empty string references")
+                summary = rel.get("summary")
+                if not isinstance(summary, str) or len(summary.strip()) < 20:
+                    errors.append(f"{path}.summary: expected evidence summary")
+                source_incident_id = rel.get("source_incident_id")
+                if not isinstance(source_incident_id, str):
+                    errors.append(f"{path}.source_incident_id: expected string")
+                elif source_incident_id not in references_by_incident:
+                    errors.append(f"{path}.source_incident_id: unknown incident {source_incident_id!r}")
+                elif isinstance(evidence_refs, list):
+                    valid_refs = references_by_incident[source_incident_id]
+                    for ref in evidence_refs:
+                        if isinstance(ref, str) and ref not in valid_refs:
+                            errors.append(f"{path}.evidence_refs: unknown reference {ref!r} for {source_incident_id}")
+                seeded_by_edges.append((source, target, path))
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
             errors.append(f"{path}.target: unknown target {target!r}")
-        key = (source, target, rel_type)
+        source_incident_context = rel.get("source_incident_id") if rel_type == "SEEDED_BY" else ""
+        key = (source, target, rel_type, source_incident_context or "")
         if key in seen_relationships:
             errors.append(f"{path}: duplicate relationship {key!r}")
         seen_relationships.add(key)
@@ -385,6 +417,37 @@ def validate_relationships(
     orphan_entities = sorted(entity_ids - connected_entities)
     for entity_id in orphan_entities:
         errors.append(f"{entity_id}: orphan entity with no relationships")
+    errors.extend(validate_seeded_by_acyclic(seeded_by_edges))
+    return errors
+
+
+def validate_seeded_by_acyclic(edges: list[tuple[str, str, str]]) -> list[str]:
+    graph: dict[str, list[tuple[str, str]]] = {}
+    for source, target, path in edges:
+        graph.setdefault(source, []).append((target, path))
+
+    errors: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            cycle = " -> ".join(stack[stack.index(node) :] + [node]) if node in stack else node
+            errors.append(f"SEEDED_BY cycle detected: {cycle}")
+            return
+        visiting.add(node)
+        stack.append(node)
+        for target, _path in graph.get(node, []):
+            visit(target)
+        stack.pop()
+        visiting.remove(node)
+        visited.add(node)
+
+    for source in graph:
+        visit(source)
     return errors
 
 
@@ -402,6 +465,11 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    seeded_by_relationships = [
+        relationship
+        for relationship in relationships
+        if isinstance(relationship, dict) and relationship.get("type") == "SEEDED_BY"
+    ]
     collision_base_ids = release_collision_base_ids(corpus)
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
@@ -447,6 +515,36 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                     errors.append(f"{source}: missing PACKAGE_RELEASE relationship for {release_id}")
                 if (source, release_id, "INCIDENT_AFFECTED_RELEASE") not in relationship_keys:
                     errors.append(f"{source}: missing INCIDENT_AFFECTED_RELEASE relationship for {release_id}")
+        for propagation_edge in incident.get("propagation_edges") or []:
+            if not isinstance(propagation_edge, dict):
+                continue
+            edge_source = propagation_edge.get("source")
+            edge_target = propagation_edge.get("target")
+            if isinstance(edge_source, str) and isinstance(edge_target, str):
+                matches = [
+                    relationship
+                    for relationship in seeded_by_relationships
+                    if relationship.get("source") == edge_source
+                    and relationship.get("target") == edge_target
+                    and relationship.get("source_incident_id") == incident["id"]
+                ]
+                if not matches:
+                    errors.append(
+                        f"{source}: missing SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        f"for source_incident_id {incident['id']}"
+                    )
+                    continue
+                expected_tier = propagation_edge.get("propagation_tier")
+                expected_refs = set(propagation_edge.get("evidence_refs") or [])
+                if not any(
+                    relationship.get("propagation_tier") == expected_tier
+                    and set(relationship.get("evidence_refs") or []) == expected_refs
+                    for relationship in matches
+                ):
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        "does not preserve propagation_tier/evidence_refs"
+                    )
     return errors
 
 
@@ -473,6 +571,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             relationships,
             entity_ids=all_entity_ids,
             incident_ids=incident_ids,
+            references_by_incident=references_by_incident,
         )
     )
     errors.extend(validate_corpus_implied_relationships(corpus, relationships))

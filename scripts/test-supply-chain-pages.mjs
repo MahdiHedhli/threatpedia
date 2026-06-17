@@ -441,6 +441,19 @@ assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should in
 eventStreamPackage.relatedIncidents.forEach((incident) => {
   assert.ok(routeUrls.has(incident.href), `related incident route should resolve: ${incident.href}`);
 });
+const xTraderPackage = getSupplyChainEntityPage('packages', 'pkg-generic-x-trader', data);
+assert.ok(
+  xTraderPackage.relatedIncidents.some(
+    (incident) => incident.id === 'SC-2023-THREE-CX-DESKTOP' && incident.type === 'SEEDED_BY'
+  ),
+  'SEEDED_BY package endpoints should preserve source incident context'
+);
+const threeCxPackage = getSupplyChainEntityPage('packages', 'pkg-generic-3cx-desktopapp', data);
+assert.equal(
+  threeCxPackage.relatedIncidents.filter((incident) => incident.id === 'SC-2023-THREE-CX-DESKTOP').length,
+  1,
+  'related incident lists should dedupe direct and SEEDED_BY context by incident id'
+);
 assert.ok(eventStreamPackage.connectedEntities.length > 0, 'entity page should include connected entities');
 eventStreamPackage.connectedEntities.forEach((entity) => {
   assert.ok(
