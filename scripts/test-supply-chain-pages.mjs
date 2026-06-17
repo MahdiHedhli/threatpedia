@@ -382,6 +382,9 @@ assert.ok(
     supplyChainGraphSource.includes('const layoutNodes = Array.from(nodeById.values())') &&
     supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'incident')") &&
     supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'technique')") &&
+    supplyChainGraphSource.includes('selectEntityContext') &&
+    supplyChainGraphSource.includes('source_incident_ids') &&
+    supplyChainGraphSource.includes('connected incident') &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&
