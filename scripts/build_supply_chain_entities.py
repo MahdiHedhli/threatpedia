@@ -447,11 +447,15 @@ def build_graph(corpus: list[dict[str, Any]]) -> dict[str, Any]:
     releases: dict[str, dict[str, Any]] = {}
     repositories: dict[str, dict[str, Any]] = {}
     organizations: dict[str, dict[str, Any]] = {}
-    relationships: dict[tuple[str, str, str], dict[str, Any]] = {}
+    relationships: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     collision_base_ids = release_collision_base_ids(corpus)
 
+    def relationship_key(item: dict[str, Any]) -> tuple[str, str, str, str]:
+        source_incident_id = item.get("source_incident_id") if item.get("type") == "SEEDED_BY" else ""
+        return (item["source"], item["target"], item["type"], source_incident_id or "")
+
     def add_relationship(item: dict[str, Any]) -> None:
-        relationships[(item["source"], item["target"], item["type"])] = item
+        relationships[relationship_key(item)] = item
 
     for incident in corpus:
         incident_id = incident["id"]

@@ -171,6 +171,28 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertEqual(release_ids, reversed_release_ids)
         self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
 
+    def test_builder_preserves_seeded_by_context_for_duplicate_endpoint_pairs(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        shai_hulud = next(incident for incident in corpus if incident["id"] == "SC-2025-NPM-SHAI-HULUD")
+        duplicate = copy.deepcopy(shai_hulud)
+        duplicate["id"] = "SC-2099-NPM-SHAI-HULUD-DUPLICATE"
+        duplicate["title"] = "Fixture duplicate Shai-Hulud propagation incident"
+        edge = shai_hulud["propagation_edges"][0]
+
+        graph = builder.build_graph([*corpus, duplicate])
+        matching = [
+            relationship
+            for relationship in graph["relationships"]
+            if relationship["type"] == "SEEDED_BY"
+            and relationship["source"] == edge["source"]
+            and relationship["target"] == edge["target"]
+        ]
+
+        self.assertEqual(
+            {relationship["source_incident_id"] for relationship in matching},
+            {"SC-2025-NPM-SHAI-HULUD", "SC-2099-NPM-SHAI-HULUD-DUPLICATE"},
+        )
+
     def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
         first = {
             "schema_version": "supply-chain-incident/1",
