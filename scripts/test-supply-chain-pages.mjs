@@ -12,6 +12,7 @@ import {
 } from '../site/src/lib/supplyChainPages.mjs';
 
 const data = loadSupplyChainData();
+const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
 const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
 
 function routeUrl(route) {
@@ -51,6 +52,14 @@ assert.ok(
 assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
   'route should not persist page-specific hero copy or selection data'
+);
+assert.ok(
+  baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
+  'Base layout should scope Astro client transitions to Supply Chain routes only'
+);
+assert.ok(
+  baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
+  'Base layout should force normal reloads for non-Supply-Chain internal navigation'
 );
 
 const expectedRouteCount =

@@ -227,7 +227,37 @@ try {
       let searchIndex = null;
       let escapeKeyBound = false;
 
+      function isSupplyChainPath(pathname) {
+        return pathname === '/supply-chain' || pathname === '/supply-chain/' || pathname.startsWith('/supply-chain/');
+      }
+
+      function shouldUseClientTransition(anchor) {
+        if (!anchor || anchor.target || anchor.hasAttribute('download')) return false;
+        const href = anchor.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+        let targetUrl;
+        try {
+          targetUrl = new URL(href, window.location.href);
+        } catch {
+          return false;
+        }
+        if (targetUrl.origin !== window.location.origin) return false;
+        return isSupplyChainPath(window.location.pathname) && isSupplyChainPath(targetUrl.pathname);
+      }
+
+      function scopeAstroTransitionsToSupplyChain() {
+        document.querySelectorAll('a[href]').forEach((anchor) => {
+          if (shouldUseClientTransition(anchor)) {
+            anchor.removeAttribute('data-astro-reload');
+          } else {
+            anchor.setAttribute('data-astro-reload', '');
+          }
+        });
+      }
+
       document.addEventListener('astro:page-load', () => {
+      scopeAstroTransitionsToSupplyChain();
+
       // ── Hamburger menu ──────────────────────────────────────────────────
       const btn = document.getElementById('hamburger-btn');
       const overlay = document.getElementById('menu-overlay');
