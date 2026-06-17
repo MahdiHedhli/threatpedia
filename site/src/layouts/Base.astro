@@ -263,9 +263,9 @@ try {
       const overlay = document.getElementById('menu-overlay');
       const panel = document.getElementById('menu-panel');
       const searchInput = document.getElementById('menu-search');
-      if (!btn || !overlay || !panel) return;
 
       function toggleMenu() {
+        if (!btn || !overlay || !panel) return;
         const isOpen = panel.classList.toggle('open');
         overlay.classList.toggle('open');
         btn.classList.toggle('open');
@@ -273,17 +273,18 @@ try {
       }
 
       function closeMenu() {
+        if (!btn || !overlay || !panel) return;
         panel.classList.remove('open');
         overlay.classList.remove('open');
         btn.classList.remove('open');
         document.body.style.overflow = '';
       }
 
-      if (!btn.dataset.threatpediaBound) {
+      if (btn && !btn.dataset.threatpediaBound) {
         btn.addEventListener('click', toggleMenu);
         btn.dataset.threatpediaBound = 'true';
       }
-      if (!overlay.dataset.threatpediaBound) {
+      if (overlay && !overlay.dataset.threatpediaBound) {
         overlay.addEventListener('click', closeMenu);
         overlay.dataset.threatpediaBound = 'true';
       }
@@ -417,7 +418,7 @@ try {
       const urlQ = new URLSearchParams(window.location.search).get('q');
       if (urlQ && searchInput) {
         // Open hamburger menu, populate search, run query
-        if (!panel.classList.contains('open')) {
+        if (btn && overlay && panel && !panel.classList.contains('open')) {
           panel.classList.add('open');
           overlay.classList.add('open');
           btn.classList.add('open');

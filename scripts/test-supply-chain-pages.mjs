@@ -61,6 +61,14 @@ assert.ok(
   baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
   'Base layout should force normal reloads for non-Supply-Chain internal navigation'
 );
+assert.ok(
+  !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
+  'Base layout page-load handler should not return early when menu elements are absent'
+);
+assert.ok(
+  baseLayoutSource.includes('if (btn && !btn.dataset.threatpediaBound)'),
+  'Base layout should guard menu handler binding when menu elements are absent'
+);
 
 const expectedRouteCount =
   1 +
