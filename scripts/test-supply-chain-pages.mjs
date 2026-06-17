@@ -58,8 +58,11 @@ assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
     supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
+    supplyChainRouteSource.includes('aria-describedby="supply-chain-graph-description"') &&
+    supplyChainRouteSource.includes('tabindex="0"') &&
+    supplyChainRouteSource.includes('data-sc-graph-description') &&
     supplyChainRouteSource.includes('/js/supply-chain-graph-core.js'),
-  'route should mount the persisted WebGL graph island'
+  'route should mount the persisted keyboard-accessible WebGL graph island'
 );
 assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
@@ -448,6 +451,22 @@ assert.ok(
     supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
     supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
   'graph client should render causal and temporal SEEDED_BY edges distinctly'
+);
+assert.ok(
+  supplyChainGraphSource.includes('handleKeydown') &&
+    supplyChainGraphSource.includes('keyboardNodes()') &&
+    supplyChainGraphSource.includes("event.key === 'Escape'") &&
+    supplyChainGraphSource.includes('this.root.addEventListener') &&
+    supplyChainGraphSource.includes('this.description.textContent'),
+  'graph client should provide keyboard traversal and ARIA selected-node text'
+);
+assert.ok(
+  supplyChainGraphSource.includes('labelPriority') &&
+    supplyChainGraphSource.includes('labelCandidates') &&
+    supplyChainGraphSource.includes('labelFits') &&
+    supplyChainGraphSource.includes('this.labelPlacements') &&
+    supplyChainGraphSource.includes('sc-graph-label-keyboard'),
+  'graph client should provide greedy label de-confliction with placement hysteresis'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.focusReflow') &&
