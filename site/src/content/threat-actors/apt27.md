@@ -120,11 +120,13 @@ CISA advisory AA21-200B identified Chinese state-sponsored actors (including act
 
 **Initial Access**: Exploitation of public-facing applications (T1190) is the primary vector, targeting Exchange, SharePoint, and database servers. Spearphishing attachments (T1566.001) serve as a secondary vector.
 
-**Persistence**: Web shells (T1505.003), scheduled tasks (T1053), and DLL side-loading (T1574.001) maintain persistent access. HyperBro and SysUpdate install as services or scheduled tasks.
+**Execution**: DLL side-loading with signed legitimate executables (T1574.001) loads HyperBro and other backdoors during operations.
+
+**Persistence**: Web shells (T1505.003) and scheduled tasks (T1053) maintain persistent access. HyperBro and SysUpdate install as services or scheduled tasks.
 
 **Credential Access**: The group uses OS credential dumping (T1003) via Mimikatz, ProcDump, and custom tools to harvest domain credentials.
 
-**Defense Evasion**: DLL side-loading with signed binaries (T1574.001), process injection (T1055), and indicator removal (T1070) are used to evade security controls.
+**Defense Evasion**: Signed-binary abuse, process injection (T1055), and indicator removal (T1070) are used to evade security controls.
 
 **Exfiltration**: Data is compressed (T1560) and exfiltrated over C2 channels (T1041) using encrypted HTTPS communications.
 
