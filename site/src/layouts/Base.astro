@@ -224,11 +224,16 @@ try {
     </footer>
 
     <script>
+      let searchIndex = null;
+      let escapeKeyBound = false;
+
+      document.addEventListener('astro:page-load', () => {
       // ── Hamburger menu ──────────────────────────────────────────────────
       const btn = document.getElementById('hamburger-btn');
       const overlay = document.getElementById('menu-overlay');
       const panel = document.getElementById('menu-panel');
       const searchInput = document.getElementById('menu-search');
+      if (!btn || !overlay || !panel) return;
 
       function toggleMenu() {
         const isOpen = panel.classList.toggle('open');
@@ -244,9 +249,24 @@ try {
         document.body.style.overflow = '';
       }
 
-      btn.addEventListener('click', toggleMenu);
-      overlay.addEventListener('click', closeMenu);
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+      if (!btn.dataset.threatpediaBound) {
+        btn.addEventListener('click', toggleMenu);
+        btn.dataset.threatpediaBound = 'true';
+      }
+      if (!overlay.dataset.threatpediaBound) {
+        overlay.addEventListener('click', closeMenu);
+        overlay.dataset.threatpediaBound = 'true';
+      }
+      if (!escapeKeyBound) {
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          document.getElementById('menu-panel')?.classList.remove('open');
+          document.getElementById('menu-overlay')?.classList.remove('open');
+          document.getElementById('hamburger-btn')?.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+        escapeKeyBound = true;
+      }
 
       // ── Ticker scroll speed ─────────────────────────────────────────────
       const tickerTrack = document.querySelector('.ticker-track');
@@ -259,6 +279,7 @@ try {
       }
 
       // ── Highlight active nav link ───────────────────────────────────────
+      document.querySelectorAll('.menu-links a.active').forEach((a) => a.classList.remove('active'));
       document.querySelectorAll('.menu-links a').forEach((a) => {
         if (window.location.pathname === a.getAttribute('href') ||
             (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
@@ -267,7 +288,6 @@ try {
       });
 
       // ── Sitewide search ─────────────────────────────────────────────────
-      let searchIndex = null;
       const resultsEl = document.getElementById('search-results');
       let searchTimeout;
 
@@ -287,6 +307,7 @@ try {
       }
 
       function doSearch(query) {
+        if (!resultsEl) return;
         if (!searchIndex || !query) { resultsEl.style.display = 'none'; return; }
         const q = query.toLowerCase();
         const matches = searchIndex
@@ -342,23 +363,29 @@ try {
         resultsEl.style.display = 'block';
       }
 
-      searchInput.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        const q = searchInput.value.trim();
-        if (!q) { resultsEl.style.display = 'none'; return; }
-        searchTimeout = setTimeout(async () => {
-          await loadSearchIndex();
-          doSearch(q);
-        }, 150);
-      });
+      if (searchInput && !searchInput.dataset.threatpediaBound) {
+        searchInput.addEventListener('input', () => {
+          clearTimeout(searchTimeout);
+          const q = searchInput.value.trim();
+          if (!q) {
+            if (resultsEl) resultsEl.style.display = 'none';
+            return;
+          }
+          searchTimeout = setTimeout(async () => {
+            await loadSearchIndex();
+            doSearch(q);
+          }, 150);
+        });
 
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
-      });
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && resultsEl) { resultsEl.style.display = 'none'; }
+        });
+        searchInput.dataset.threatpediaBound = 'true';
+      }
 
       // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
       const urlQ = new URLSearchParams(window.location.search).get('q');
-      if (urlQ) {
+      if (urlQ && searchInput) {
         // Open hamburger menu, populate search, run query
         if (!panel.classList.contains('open')) {
           panel.classList.add('open');
@@ -378,6 +405,8 @@ try {
       (function enhanceContent() {
         const content = document.querySelector('.content');
         if (!content) return;
+        if (content.dataset.threatpediaEnhanced === 'true') return;
+        content.dataset.threatpediaEnhanced = 'true';
 
         // ── Step 0: Promote section-like paragraphs to h2 BEFORE parsing ──
         const h2Promotions = [
@@ -1004,6 +1033,7 @@ try {
         })();
 
       })();
+      });
     </script>
   </body>
 </html>
