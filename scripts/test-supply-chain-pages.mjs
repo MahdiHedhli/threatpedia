@@ -354,13 +354,23 @@ assert.ok(
 );
 assert.equal(
   supplyChainGraphPayload.renderer_contract.package_release_lod,
-  'payload-only-until-G4',
-  'graph payload should keep package and release tiers payload-only until G4'
+  'g4-dive-and-bloom',
+  'graph payload should declare G4 package/release dive-and-bloom behavior'
+);
+assert.deepEqual(
+  supplyChainGraphPayload.renderer_contract.bloom_tiers,
+  ['organization', 'package', 'release'],
+  'graph payload should declare G4 bloom tiers'
+);
+assert.equal(
+  supplyChainGraphPayload.renderer_contract.seeded_by_edges,
+  'causal-solid-temporal-dashed',
+  'graph payload should declare SEEDED_BY rendering treatment'
 );
 assert.ok(
   supplyChainGraphPayload.nodes.some((node) => node.type === 'package') &&
     supplyChainGraphPayload.nodes.some((node) => node.type === 'release'),
-  'graph payload should preserve package and release nodes for later LOD slices'
+  'graph payload should preserve package and release nodes for G4 bloom rendering'
 );
 assert.ok(
   supplyChainGraphPayload.nodes.some((node) => node.type === 'actor') &&
@@ -376,14 +386,24 @@ assert.ok(
   'graph payload should include actor, campaign, and technique graph edges'
 );
 assert.ok(
+  supplyChainGraphPayload.edges.some(
+    (edge) => edge.type === 'SEEDED_BY' && edge.propagation_tier === 'causal' && edge.evidence_refs.length > 0
+  ) &&
+    supplyChainGraphPayload.edges.some(
+      (edge) => edge.type === 'SEEDED_BY' && edge.propagation_tier === 'temporal' && edge.evidence_refs.length > 0
+    ),
+  'graph payload should preserve evidence-tiered SEEDED_BY propagation edges for G4'
+);
+assert.ok(
   supplyChainGraphSource.includes("getContext('webgl2'") &&
     supplyChainGraphSource.includes("getContext('webgl'") &&
     supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
-    supplyChainGraphSource.includes('function isG2DrawableNode') &&
-    supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique'])") &&
-    supplyChainGraphSource.includes('const layoutNodes = Array.from(nodeById.values())') &&
-    supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'incident')") &&
-    supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'technique')") &&
+    supplyChainGraphSource.includes('function isBaseDrawableNode') &&
+    supplyChainGraphSource.includes("const BASE_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique'])") &&
+    supplyChainGraphSource.includes("const BLOOM_TIERS = new Set(['organization', 'package', 'release'])") &&
+    supplyChainGraphSource.includes('const baseNodes = allNodes.filter(isBaseDrawableNode)') &&
+    supplyChainGraphSource.includes("baseNodes.filter((node) => node.tier === 'incident')") &&
+    supplyChainGraphSource.includes("baseNodes.filter((node) => node.tier === 'technique')") &&
     supplyChainGraphSource.includes('selectEntityContext') &&
     supplyChainGraphSource.includes('source_incident_ids') &&
     supplyChainGraphSource.includes('connected incident') &&
@@ -393,7 +413,41 @@ assert.ok(
     supplyChainGraphSource.includes('this.lastLabelKey') &&
     supplyChainGraphSource.includes('this.payload.nodes.length') &&
     supplyChainGraphSource.includes('corpus nodes and'),
-  'graph client should use WebGL, quadtree picking, G2/G3 LOD culling, clone-backed layout, clamped camera targets, cached labels, and ready status'
+  'graph client should use WebGL, quadtree picking, G2/G3 base LOD culling, clone-backed layout, clamped camera targets, cached labels, and ready status'
+);
+assert.ok(
+  supplyChainGraphSource.includes('BLOOM_Z_THRESHOLD') &&
+    supplyChainGraphSource.includes('buildBloomContext') &&
+    supplyChainGraphSource.includes('buildBloomLayout') &&
+    supplyChainGraphSource.includes('visibleGraph()') &&
+    supplyChainGraphSource.includes('BLOOM_NODE_BUDGET') &&
+    supplyChainGraphSource.includes('activeBloomIncidentId') &&
+    supplyChainGraphSource.includes('ensureSemanticBloom') &&
+    supplyChainGraphSource.includes('createBloomLayoutWorker') &&
+    supplyChainGraphSource.includes('new Worker') &&
+    supplyChainGraphSource.includes('worker_settled') &&
+    supplyChainGraphSource.includes('!BASE_DRAWABLE_TIERS.has(node.tier) && !BLOOM_TIERS.has(node.tier)'),
+  'graph client should include G4 semantic zoom, worker-settled bloom layout, LOD culling, and aggregation paths'
+);
+assert.ok(
+  !supplyChainGraphSource.includes('return this.ensureBloomLayout(this.lastBloomIncidentId)'),
+  'graph client should not keep cached bloom visible after semantic zoom or incident selection ends'
+);
+assert.ok(
+  supplyChainGraphSource.includes('if (this.selection) return null;') &&
+    supplyChainGraphSource.includes("if (node.tier !== 'incident' && !BLOOM_TIERS.has(node.tier)) this.lastBloomIncidentId = null;"),
+  'graph client should prevent actor/campaign/entity selections from implicitly reactivating semantic bloom'
+);
+assert.ok(
+  supplyChainGraphSource.includes('if (visibleChildren.length === 0)') &&
+    supplyChainGraphSource.includes('return { incidentId: incident.id, nodes: [], edges: [], hiddenCount: 0, bounds: boundsForNodes([incident]) };'),
+  'graph client should not fabricate virtual bloom nodes for incidents without payload children'
+);
+assert.ok(
+  supplyChainGraphSource.includes("edge.type === 'SEEDED_BY'") &&
+    supplyChainGraphSource.includes("edge.propagation_tier === 'temporal'") &&
+    supplyChainGraphSource.includes("edge.propagation_tier === 'causal'"),
+  'graph client should render causal and temporal SEEDED_BY edges distinctly'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.focusReflow') &&

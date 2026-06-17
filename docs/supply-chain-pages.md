@@ -55,9 +55,17 @@ adds cross-cutting technique/exploit nodes derived from incident vectors, tags,
 and impact categories. Selecting a technique highlights its incidents across
 actor lanes and pulls the camera back to a stable wide shot. The optional
 `Focus reflow` control clusters those incidents around the selected technique
-node and can be toggled back to the wide shot. Package and release nodes are
-preserved in the payload for later level-of-detail slices, but they remain
-payload-only until the dive-and-bloom work lands.
+node and can be toggled back to the wide shot.
+
+G4 adds incident-scoped dive-and-bloom behavior. Package, release, and
+organization tiers stay culled from the GPU in the far/default view. Selecting
+an incident, selecting a package or organization page, or zooming close enough
+to an incident activates a bounded bloom from the compiled graph payload. The
+bloom includes affected organizations, packages, releases, package-release
+edges, and evidence-tiered `SEEDED_BY` propagation edges. Causal propagation
+edges render as solid lines; temporal precedence edges render as dim segmented
+lines. Large blooms are capped by a node budget and represented with an
+aggregation node instead of rendering every child at once.
 
 ## Local Build
 
