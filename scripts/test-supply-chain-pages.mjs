@@ -123,6 +123,11 @@ assert.ok(
   'Base layout should clear stale scroll locks after Astro page transitions'
 );
 assert.ok(
+  baseLayoutSource.includes("const menuIsOpen = panel?.classList.contains('open');") &&
+    baseLayoutSource.includes("document.body.style.overflow = menuIsOpen ? 'hidden' : '';"),
+  'Base layout should preserve scroll lock when duplicate page-load initialization sees an already-open search menu'
+);
+assert.ok(
   baseLayoutSource.includes('searchInput.dataset.threatpediaAutoSearchFor !== autoSearchKey'),
   'Base layout should not repeat URL auto-search on duplicate initializer calls for the same page'
 );
