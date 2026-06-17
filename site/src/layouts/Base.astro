@@ -281,6 +281,13 @@ try {
         document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';
       }
 
+      function closeMenu() {
+        document.getElementById('menu-panel')?.classList.remove('open');
+        document.getElementById('menu-overlay')?.classList.remove('open');
+        document.getElementById('hamburger-btn')?.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
       function initializeThreatpediaLayout() {
       document.body.style.overflow = '';
       scopeAstroTransitionsToSupplyChain();
@@ -300,14 +307,6 @@ try {
         if (isOpen && searchInput) searchInput.focus();
       }
 
-      function closeMenu() {
-        if (!btn || !overlay || !panel) return;
-        panel.classList.remove('open');
-        overlay.classList.remove('open');
-        btn.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-
       if (btn && !btn.dataset.threatpediaBound) {
         btn.addEventListener('click', toggleMenu);
         btn.dataset.threatpediaBound = 'true';
@@ -319,10 +318,7 @@ try {
       if (!escapeKeyBound) {
         document.addEventListener('keydown', (e) => {
           if (e.key !== 'Escape') return;
-          document.getElementById('menu-panel')?.classList.remove('open');
-          document.getElementById('menu-overlay')?.classList.remove('open');
-          document.getElementById('hamburger-btn')?.classList.remove('open');
-          document.body.style.overflow = '';
+          closeMenu();
         });
         escapeKeyBound = true;
       }

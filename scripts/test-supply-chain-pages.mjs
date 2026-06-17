@@ -78,6 +78,10 @@ assert.ok(
   'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
+  baseLayoutSource.includes('function closeMenu()') && baseLayoutSource.includes("if (e.key !== 'Escape') return;\n          closeMenu();"),
+  'Base layout should use the shared closeMenu helper for Escape key handling'
+);
+assert.ok(
   baseLayoutSource.includes('function initializeThreatpediaLayout()'),
   'Base layout should expose a reusable initializer for first load and Astro transitions'
 );
