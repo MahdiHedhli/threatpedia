@@ -530,8 +530,30 @@ function editorialSectionsFor(incident) {
     .filter(Boolean);
 }
 
+const graphHeroModelCache = new WeakMap();
+
+function buildEmptyGraphHeroModel() {
+  return {
+    title: 'Supply Chain',
+    eyebrow: 'Corpus Graph',
+    summary:
+      'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
+    status: 'Corpus graph preview',
+    nodeCount: 0,
+    relationshipCount: 0,
+    latestIncident: null,
+  };
+}
+
 function buildGraphHeroModel(data) {
-  const incidents = Array.isArray(data?.incidents) ? data.incidents.filter(Boolean) : [];
+  if (!data || typeof data !== 'object' || !Array.isArray(data.incidents)) {
+    return buildEmptyGraphHeroModel();
+  }
+  if (graphHeroModelCache.has(data)) {
+    return graphHeroModelCache.get(data);
+  }
+
+  const incidents = data.incidents.filter(Boolean);
   const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
   const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
   const nodeCount =
@@ -541,7 +563,7 @@ function buildGraphHeroModel(data) {
     incidents.length > 0
       ? incidents.map((incident) => incidentLinkRow(incident)).sort(compareDateDesc)[0] || null
       : null;
-  return {
+  const graphHeroModel = {
     title: 'Supply Chain',
     eyebrow: 'Corpus Graph',
     summary:
@@ -551,6 +573,8 @@ function buildGraphHeroModel(data) {
     relationshipCount: relationships.length,
     latestIncident,
   };
+  graphHeroModelCache.set(data, graphHeroModel);
+  return graphHeroModel;
 }
 
 function buildAttackVectorBars(data) {
@@ -773,6 +797,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     kind: 'incident',
     title: incident.title,
     incident,
+    graphHero: buildGraphHeroModel(data),
     editorialSections: editorialSectionsFor(incident),
     connectedEntities: incidentConnectedEntities(data, id),
     seo: {
@@ -834,6 +859,7 @@ export function getSupplyChainEntityPage(collectionKey, id, data = loadSupplyCha
     title: entity.name,
     entity: { ...entity, entityCollection: collectionKey },
     entityType: type.label,
+    graphHero: buildGraphHeroModel(data),
     relatedIncidents,
     connectedIncidents: relatedIncidents,
     connectedEntities: entityConnectionsFor(data, id),

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   SUPPLY_CHAIN_FEATURED_INCIDENT_IDS,
   getSupplyChainEntityPage,
@@ -11,6 +12,8 @@ import {
 } from '../site/src/lib/supplyChainPages.mjs';
 
 const data = loadSupplyChainData();
+const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
+const supplyChainRouteSource = readFileSync(new URL('../site/src/pages/supply-chain/[...slug].astro', import.meta.url), 'utf-8');
 
 function routeUrl(route) {
   return route.slug ? `/supply-chain/${route.slug}/` : '/supply-chain/';
@@ -42,6 +45,124 @@ assert.ok(routeUrls.has('/supply-chain/packages/pkg-golang-github-com-boltdb-go-
 assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-codecov-bash/'), 'repository route should be generated');
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');
+assert.ok(
+  supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
+  'route should persist graph hero across Supply Chain navigation'
+);
+assert.ok(
+  !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
+  'route should not persist page-specific hero copy or selection data'
+);
+assert.ok(
+  baseLayoutSource.includes("document.addEventListener('astro:before-preparation'"),
+  'Base layout should use Astro before-preparation to scope client transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('isSupplyChainPath(fromPath) && isSupplyChainPath(toPath)'),
+  'Base layout should keep client transitions only between Supply Chain routes'
+);
+assert.ok(
+  baseLayoutSource.includes('ev.preventDefault();') && baseLayoutSource.includes('window.location.href = to.href;'),
+  'Base layout should force normal navigation outside Supply Chain routes'
+);
+assert.ok(
+  baseLayoutSource.includes('const to = ev.to;') &&
+    baseLayoutSource.includes('if (to)') &&
+    baseLayoutSource.includes('to.pathname !== fromPath || to.search !== window.location.search') &&
+    baseLayoutSource.includes('ev.preventDefault();') &&
+    baseLayoutSource.includes('window.location.href = to.href;'),
+  'Base layout transition fallback should guard optional destination data and preserve same-page hash navigation'
+);
+assert.ok(
+  !baseLayoutSource.includes('function scopeAstroTransitionsToSupplyChain()'),
+  'Base layout should not mutate anchor data-astro-reload attributes after Astro morphs'
+);
+assert.ok(
+  !baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
+  'Base layout should not rely on per-anchor reload markers'
+);
+assert.ok(
+  baseLayoutSource.includes('function syncBodyScrollLock') &&
+    baseLayoutSource.includes("document.body.style.overflow = panel?.classList.contains('open') ? 'hidden' : '';") &&
+    baseLayoutSource.includes('syncBodyScrollLock(panel);'),
+  'Base layout should prevent background scrolling while the hamburger menu is open'
+);
+assert.ok(
+  baseLayoutSource.includes('function toggleMenu()') &&
+    baseLayoutSource.includes("document.getElementById('hamburger-btn')") &&
+    baseLayoutSource.includes('document.documentElement.dataset.threatpediaMenuBound'),
+  'Base layout should use delegated hamburger menu handling against the current DOM'
+);
+assert.ok(
+  baseLayoutSource.includes('function closeMenu()') && baseLayoutSource.includes("if (e.key !== 'Escape') return;\n          closeMenu();"),
+  'Base layout should use the shared closeMenu helper for delegated Escape key handling'
+);
+assert.ok(
+  baseLayoutSource.includes('function initializeThreatpediaLayout()'),
+  'Base layout should expose a reusable initializer for first load and Astro transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('initializeThreatpediaLayout();'),
+  'Base layout should bind menu/search/content enhancement immediately on first server-rendered load'
+);
+assert.ok(
+  baseLayoutSource.includes("document.addEventListener('astro:page-load', initializeThreatpediaLayout)"),
+  'Base layout should rerun bindings after Astro page transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('syncBodyScrollLock();'),
+  'Base layout should clear stale scroll locks after Astro page transitions'
+);
+assert.ok(
+  baseLayoutSource.includes('syncBodyScrollLock(panel);') &&
+    baseLayoutSource.indexOf('syncBodyScrollLock(panel);') !== baseLayoutSource.lastIndexOf('syncBodyScrollLock(panel);'),
+  'Base layout should preserve scroll lock when duplicate page-load initialization sees an already-open search menu'
+);
+assert.ok(
+  baseLayoutSource.includes('searchInput.dataset.threatpediaAutoSearchFor !== autoSearchKey'),
+  'Base layout should not repeat URL auto-search on duplicate initializer calls for the same page'
+);
+assert.ok(
+  baseLayoutSource.includes('function handleSearchInput(searchInput)') &&
+    baseLayoutSource.includes('if (searchInput.value.trim() === q)'),
+  'Base layout search should not render stale async query results'
+);
+assert.ok(
+  baseLayoutSource.includes('function handleSearchKeydown(e)') && baseLayoutSource.includes('e.stopPropagation();'),
+  'Base layout search Escape handling should not close the full menu when dismissing visible results'
+);
+assert.ok(
+  baseLayoutSource.includes('document.documentElement.dataset.threatpediaSearchBound') &&
+    baseLayoutSource.includes("document.addEventListener('input',") &&
+    baseLayoutSource.includes("document.addEventListener('keydown', (e) =>") &&
+    baseLayoutSource.includes('}, { capture: true });'),
+  'Base layout should use delegated search listeners with capture-phase Escape handling'
+);
+assert.ok(
+  baseLayoutSource.includes('document.documentElement.dataset.threatpediaTooltipBound') &&
+    baseLayoutSource.includes("document.addEventListener('mouseover',") &&
+    baseLayoutSource.includes("document.addEventListener('focusin',") &&
+    baseLayoutSource.includes("target?.closest('.tp-tooltip')") &&
+    baseLayoutSource.includes('clearTimeout(tooltipHideTimeout);') &&
+    !baseLayoutSource.includes("span.addEventListener('mouseenter'"),
+  'Base layout should use delegated tooltip listeners that survive Astro cache restores and keep tooltip links focusable'
+);
+assert.ok(
+  baseLayoutSource.includes('let glossaryPromise = null;') &&
+    baseLayoutSource.includes('let crossRefPromise = null;') &&
+    baseLayoutSource.includes("glossaryPromise = tryFetch('/glossary-data.json', '/src/data/glossary-index.json')") &&
+    baseLayoutSource.includes("crossRefPromise = tryFetch('/cross-ref-index.json')") &&
+    baseLayoutSource.includes('glossaryPromise,\n              crossRefPromise,'),
+  'Base layout should cache glossary and cross-reference fetch promises across Astro transitions'
+);
+assert.ok(
+  !/function initializeThreatpediaLayout\(\) \{[\s\S]*?if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
+  'Base layout page-load handler should not return early when menu elements are absent'
+);
+assert.ok(
+  !baseLayoutSource.includes('btn.dataset.threatpediaBound') && !baseLayoutSource.includes('searchInput.dataset.threatpediaBound'),
+  'Base layout should not store listener guards on morphable menu or search elements'
+);
 
 const expectedRouteCount =
   1 +
@@ -195,6 +316,8 @@ assert.ok(index.seo.ogDescription, 'index should include Open Graph description'
 assert.ok(index.seo.jsonLd, 'index should include JSON-LD');
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
+assert.ok(codecov.graphHero, 'incident pages should expose graph hero data');
+assert.equal(codecov.graphHero.nodeCount, index.graphHero.nodeCount, 'incident graph hero should use shared corpus node count');
 assert.ok(codecov.incident.summary, 'incident page should include summary');
 assert.equal(codecov.incident.confidence, 'high', 'incident page should include confidence');
 assert.equal(codecov.incident.evidence_level, 'vendor', 'incident page should include evidence level');
@@ -315,6 +438,12 @@ assert.ok(
 );
 
 const eventStreamPackage = getSupplyChainEntityPage('packages', 'pkg-npm-event-stream', data);
+assert.ok(eventStreamPackage.graphHero, 'entity pages should expose graph hero data');
+assert.equal(
+  eventStreamPackage.graphHero.relationshipCount,
+  index.graphHero.relationshipCount,
+  'entity graph hero should use shared corpus relationship count'
+);
 assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should include related incidents');
 eventStreamPackage.relatedIncidents.forEach((incident) => {
   assert.ok(routeUrls.has(incident.href), `related incident route should resolve: ${incident.href}`);

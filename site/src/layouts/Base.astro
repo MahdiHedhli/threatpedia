@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -139,6 +140,7 @@ try {
       </>
     )}
     {serializedJsonLd && <script type="application/ld+json" set:html={serializedJsonLd} />}
+    <ClientRouter />
     <title>{title} — Threatpedia</title>
   </head>
   <body>
@@ -222,52 +224,73 @@ try {
     </footer>
 
     <script>
-      // ── Hamburger menu ──────────────────────────────────────────────────
-      const btn = document.getElementById('hamburger-btn');
-      const overlay = document.getElementById('menu-overlay');
-      const panel = document.getElementById('menu-panel');
-      const searchInput = document.getElementById('menu-search');
+      let searchIndex = null;
+      let searchTimeout;
+      let glossaryPromise = null;
+      let crossRefPromise = null;
 
-      function toggleMenu() {
-        const isOpen = panel.classList.toggle('open');
-        overlay.classList.toggle('open');
-        btn.classList.toggle('open');
-        if (isOpen && searchInput) searchInput.focus();
+      function isSupplyChainPath(pathname) {
+        return pathname === '/supply-chain' || pathname === '/supply-chain/' || pathname.startsWith('/supply-chain/');
+      }
+
+      if (!document.documentElement.dataset.threatpediaTransitionScopeBound) {
+        document.addEventListener('astro:before-preparation', (ev) => {
+          const fromPath = ev.from?.pathname || window.location.pathname;
+          const to = ev.to;
+          const toPath = to?.pathname || '';
+          if (!(isSupplyChainPath(fromPath) && isSupplyChainPath(toPath))) {
+            if (to) {
+              if (to.pathname !== fromPath || to.search !== window.location.search) {
+                ev.preventDefault();
+                window.location.href = to.href;
+              }
+            }
+          }
+        });
+        document.documentElement.dataset.threatpediaTransitionScopeBound = 'true';
       }
 
       function closeMenu() {
-        panel.classList.remove('open');
-        overlay.classList.remove('open');
-        btn.classList.remove('open');
-        document.body.style.overflow = '';
+        document.getElementById('menu-panel')?.classList.remove('open');
+        document.getElementById('menu-overlay')?.classList.remove('open');
+        document.getElementById('hamburger-btn')?.classList.remove('open');
+        syncBodyScrollLock();
       }
 
-      btn.addEventListener('click', toggleMenu);
-      overlay.addEventListener('click', closeMenu);
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+      function syncBodyScrollLock(panel = document.getElementById('menu-panel')) {
+        document.body.style.overflow = panel?.classList.contains('open') ? 'hidden' : '';
+      }
 
-      // ── Ticker scroll speed ─────────────────────────────────────────────
-      const tickerTrack = document.querySelector('.ticker-track');
-      if (tickerTrack) {
-        requestAnimationFrame(() => {
-          const halfWidth = tickerTrack.scrollWidth / 2;
-          const duration = halfWidth / 40; // 40px/sec
-          tickerTrack.style.setProperty('--ticker-duration', duration + 's');
+      function toggleMenu() {
+        const btn = document.getElementById('hamburger-btn');
+        const overlay = document.getElementById('menu-overlay');
+        const panel = document.getElementById('menu-panel');
+        const searchInput = document.getElementById('menu-search');
+        if (!btn || !overlay || !panel) return;
+        const isOpen = panel.classList.toggle('open');
+        overlay.classList.toggle('open');
+        btn.classList.toggle('open');
+        syncBodyScrollLock(panel);
+        if (isOpen && searchInput) searchInput.focus();
+      }
+
+      if (!document.documentElement.dataset.threatpediaMenuBound) {
+        document.addEventListener('click', (e) => {
+          const target = e.target instanceof Element ? e.target : null;
+          if (target?.closest('#hamburger-btn')) {
+            toggleMenu();
+            return;
+          }
+          if (target?.closest('#menu-overlay')) {
+            closeMenu();
+          }
         });
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          closeMenu();
+        });
+        document.documentElement.dataset.threatpediaMenuBound = 'true';
       }
-
-      // ── Highlight active nav link ───────────────────────────────────────
-      document.querySelectorAll('.menu-links a').forEach((a) => {
-        if (window.location.pathname === a.getAttribute('href') ||
-            (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
-          a.classList.add('active');
-        }
-      });
-
-      // ── Sitewide search ─────────────────────────────────────────────────
-      let searchIndex = null;
-      const resultsEl = document.getElementById('search-results');
-      let searchTimeout;
 
       async function loadSearchIndex() {
         if (searchIndex) return searchIndex;
@@ -285,6 +308,8 @@ try {
       }
 
       function doSearch(query) {
+        const resultsEl = document.getElementById('search-results');
+        if (!resultsEl) return;
         if (!searchIndex || !query) { resultsEl.style.display = 'none'; return; }
         const q = query.toLowerCase();
         const matches = searchIndex
@@ -340,668 +365,770 @@ try {
         resultsEl.style.display = 'block';
       }
 
-      searchInput.addEventListener('input', () => {
+      function handleSearchInput(searchInput) {
+        const resultsEl = document.getElementById('search-results');
         clearTimeout(searchTimeout);
         const q = searchInput.value.trim();
-        if (!q) { resultsEl.style.display = 'none'; return; }
+        if (!q) {
+          if (resultsEl) resultsEl.style.display = 'none';
+          return;
+        }
         searchTimeout = setTimeout(async () => {
           await loadSearchIndex();
-          doSearch(q);
+          if (searchInput.value.trim() === q) {
+            doSearch(q);
+          }
         }, 150);
-      });
-
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') { resultsEl.style.display = 'none'; }
-      });
-
-      // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
-      const urlQ = new URLSearchParams(window.location.search).get('q');
-      if (urlQ) {
-        // Open hamburger menu, populate search, run query
-        if (!panel.classList.contains('open')) {
-          panel.classList.add('open');
-          overlay.classList.add('open');
-          btn.classList.add('open');
-          document.body.style.overflow = 'hidden';
-        }
-        searchInput.value = urlQ.replace(/-/g, ' ');
-        (async () => {
-          await loadSearchIndex();
-          doSearch(searchInput.value);
-          searchInput.focus();
-        })();
       }
 
-      // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
-      (function enhanceContent() {
-        const content = document.querySelector('.content');
-        if (!content) return;
+      function handleSearchKeydown(e) {
+        const resultsEl = document.getElementById('search-results');
+        if (e.key === 'Escape' && resultsEl && resultsEl.style.display === 'block') {
+          resultsEl.style.display = 'none';
+          e.stopPropagation();
+        }
+      }
 
-        // ── Step 0: Promote section-like paragraphs to h2 BEFORE parsing ──
-        const h2Promotions = [
-          /^Sources?\s*[&+]\s*References?$/i,
-          /^MITRE\s+ATT&CK[\w\s]*$/i,
-          /^Attack\s+Chain$/i,
-          /^Attack\s+Methodology$/i,
-          /^Campaign\s+Timeline$/i,
-          /^Attack\s+Timeline$/i,
-          /^Indicators?\s+of\s+Compromise$/i,
-          /^Attack\s+Stages$/i,
-        ];
-        content.querySelectorAll('p').forEach(p => {
-          const t = p.textContent?.trim() || '';
-          // Exact match — entire paragraph is the section title
-          if (h2Promotions.some(re => re.test(t))) {
-            const h2 = document.createElement('h2');
-            h2.textContent = t;
-            p.replaceWith(h2);
+      if (!document.documentElement.dataset.threatpediaSearchBound) {
+        document.addEventListener('input', (e) => {
+          if (e.target instanceof HTMLInputElement && e.target.id === 'menu-search') {
+            handleSearchInput(e.target);
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.target instanceof HTMLInputElement && e.target.id === 'menu-search') {
+            handleSearchKeydown(e);
+          }
+        }, { capture: true });
+        document.documentElement.dataset.threatpediaSearchBound = 'true';
+      }
+
+      let tooltipEl = null;
+      let tooltipHideTimeout;
+
+      function getTooltipElement() {
+        if (tooltipEl && document.body.contains(tooltipEl)) return tooltipEl;
+        tooltipEl = document.createElement('div');
+        tooltipEl.className = 'tp-tooltip';
+        tooltipEl.setAttribute('role', 'tooltip');
+        tooltipEl.style.display = 'none';
+        document.body.appendChild(tooltipEl);
+        return tooltipEl;
+      }
+
+      function showTooltip(anchor) {
+        clearTimeout(tooltipHideTimeout);
+        const html = anchor.getAttribute('data-tp-tooltip');
+        if (!html) return;
+        const tooltip = getTooltipElement();
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+
+        const rect = anchor.getBoundingClientRect();
+        const ttRect = tooltip.getBoundingClientRect();
+        let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+        let top = rect.bottom + 8;
+
+        if (left < 8) left = 8;
+        if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
+        if (top + ttRect.height > window.innerHeight - 8) {
+          top = rect.top - ttRect.height - 8;
+        }
+
+        tooltip.style.left = left + window.scrollX + 'px';
+        tooltip.style.top = top + window.scrollY + 'px';
+      }
+
+      function hideTooltip() {
+        tooltipHideTimeout = setTimeout(() => {
+          const tooltip = getTooltipElement();
+          tooltip.style.display = 'none';
+        }, 200);
+      }
+
+      if (!document.documentElement.dataset.threatpediaTooltipBound) {
+        document.addEventListener('mouseover', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          const term = target?.closest('.tp-linked-term');
+          if (term) {
+            showTooltip(term);
             return;
           }
-          // Paragraph starts with "MITRE ATT&CK..." (with or without technique lines)
-          if (/^MITRE\s+ATT&CK/i.test(t) && !h2Promotions.some(re => re.test(t)) && /\n/.test(t)) {
-            const lines = t.split('\n').map(l => l.trim()).filter(Boolean);
-            const h2 = document.createElement('h2');
-            h2.textContent = lines[0];
-            const techP = document.createElement('p');
-            techP.textContent = lines.slice(1).join('\n');
-            p.replaceWith(h2, techP);
+          if (target?.closest('.tp-tooltip')) {
+            clearTimeout(tooltipHideTimeout);
+          }
+        });
+        document.addEventListener('mouseout', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          if (target?.closest('.tp-linked-term, .tp-tooltip')) {
+            hideTooltip();
+          }
+        });
+        document.addEventListener('focusin', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target : null;
+          const term = target?.closest('.tp-linked-term');
+          if (term) {
+            showTooltip(term);
+          } else if (target?.closest('.tp-tooltip')) {
+            clearTimeout(tooltipHideTimeout);
+          }
+        });
+        document.addEventListener('focusout', (e) => {
+          const target = e.target instanceof HTMLElement ? e.target.closest('.tp-linked-term') : null;
+          if (target) hideTooltip();
+        });
+        document.documentElement.dataset.threatpediaTooltipBound = 'true';
+      }
+
+      function initializeThreatpediaLayout() {
+        // ── Hamburger menu ──────────────────────────────────────────────────
+        const btn = document.getElementById('hamburger-btn');
+        const overlay = document.getElementById('menu-overlay');
+        const panel = document.getElementById('menu-panel');
+        const searchInput = document.getElementById('menu-search');
+        syncBodyScrollLock(panel);
+
+        // ── Ticker scroll speed ─────────────────────────────────────────────
+        const tickerTrack = document.querySelector('.ticker-track');
+        if (tickerTrack) {
+          requestAnimationFrame(() => {
+            const halfWidth = tickerTrack.scrollWidth / 2;
+            const duration = halfWidth / 40; // 40px/sec
+            tickerTrack.style.setProperty('--ticker-duration', duration + 's');
+          });
+        }
+
+        // ── Highlight active nav link ───────────────────────────────────────
+        document.querySelectorAll('.menu-links a.active').forEach((a) => a.classList.remove('active'));
+        document.querySelectorAll('.menu-links a').forEach((a) => {
+          if (window.location.pathname === a.getAttribute('href') ||
+              (a.getAttribute('href') !== '/' && window.location.pathname.startsWith(a.getAttribute('href')))) {
+            a.classList.add('active');
           }
         });
 
-        // Find all h2 elements (including newly promoted ones)
-        const h2s = content.querySelectorAll('h2');
+        // ── Sitewide search ─────────────────────────────────────────────────
 
-        h2s.forEach(h2 => {
-          const title = h2.textContent?.trim() || '';
-
-          // ── Attack Chain / Exploit Chain / Attack Methodology / Attack Stages section ──
-          if (/(?:attack|exploit)\s*(chain|methodology|stages)/i.test(title)) {
-            const siblings = [];
-            let el = h2.nextElementSibling;
-            while (el && el.tagName !== 'H2') {
-              siblings.push(el);
-              el = el.nextElementSibling;
-            }
-
-            // Find stage patterns in multiple formats:
-            // "Stage N: Title" / "Stage N — Title" / "Stage N\nTitle" (merged <p>)
-            const stages = [];
-            let currentStage = null;
-            for (const sib of siblings) {
-              const text = sib.textContent?.trim() || '';
-              // Format 1: "Stage N: Title" or "Stage N — Title"
-              const stageMatch = text.match(/^Stage\s+(\d+)\s*[:—–-]\s*(.+)/i);
-              if (stageMatch) {
-                if (currentStage) stages.push(currentStage);
-                currentStage = { num: stageMatch[1], title: stageMatch[2].trim(), content: [] };
-                continue;
-              }
-              // Format 2: "Stage N\nTitle\n..." (newline-separated in single <p>)
-              const stageNL = text.match(/^Stage\s+(\d+)\s*\n(.+)/i);
-              if (stageNL) {
-                if (currentStage) stages.push(currentStage);
-                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-                currentStage = { num: stageNL[1], title: lines[1] || '', content: lines.slice(2).length ? [lines.slice(2).join(' ')] : [] };
-                continue;
-              }
-              // Format 3: Just "Stage N" alone
-              const stageAlone = text.match(/^Stage\s+(\d+)$/i);
-              if (stageAlone) {
-                if (currentStage) stages.push(currentStage);
-                currentStage = { num: stageAlone[1], title: '', content: [] };
-                continue;
-              }
-              // Content or title for current stage
-              if (currentStage) {
-                if (!currentStage.title && text.length < 80) {
-                  currentStage.title = text;
-                } else if (text) {
-                  currentStage.content.push(sib.innerHTML || text);
-                }
-              }
-            }
-            if (currentStage) stages.push(currentStage);
-
-            if (stages.length > 0) {
-              // Remove original elements
-              siblings.forEach(s => s.remove());
-
-              // Build attack flow
-              const flow = document.createElement('div');
-              flow.className = 'attack-flow';
-              stages.forEach(s => {
-                const stage = document.createElement('div');
-                stage.className = 'attack-stage';
-                stage.innerHTML = `<div class="attack-stage-title">STAGE ${s.num}: ${s.title}</div><div class="attack-stage-content">${s.content.map(c => `<p>${c}</p>`).join('')}</div>`;
-                flow.appendChild(stage);
-              });
-              h2.after(flow);
-            }
+        // ── Auto-search from URL ?q= parameter (tag click-through) ──────────
+        const urlQ = new URLSearchParams(window.location.search).get('q');
+        const autoSearchKey = `${window.location.pathname}${window.location.search}`;
+        if (urlQ && searchInput && searchInput.dataset.threatpediaAutoSearchFor !== autoSearchKey) {
+          searchInput.dataset.threatpediaAutoSearchFor = autoSearchKey;
+          // Open hamburger menu, populate search, run query
+          if (btn && overlay && panel && !panel.classList.contains('open')) {
+            panel.classList.add('open');
+            overlay.classList.add('open');
+            btn.classList.add('open');
+            document.body.style.overflow = 'hidden';
           }
+          searchInput.value = urlQ.replace(/-/g, ' ');
+          (async () => {
+            await loadSearchIndex();
+            doSearch(searchInput.value);
+            searchInput.focus();
+          })();
+        }
+        syncBodyScrollLock(panel);
 
-          // ── MITRE ATT&CK Mapping section ──
-          if (/mitre\s*att/i.test(title)) {
-            const siblings = [];
-            let el = h2.nextElementSibling;
-            while (el && el.tagName !== 'H2') {
-              siblings.push(el);
-              el = el.nextElementSibling;
+        // ── Content Enhancement: Attack Chain, MITRE, Timeline ──────────────
+        (function enhanceContent() {
+          const content = document.querySelector('.content');
+          if (!content) return;
+          if (content.dataset.threatpediaEnhanced === 'true') return;
+          content.dataset.threatpediaEnhanced = 'true';
+
+          // ── Step 0: Promote section-like paragraphs to h2 BEFORE parsing ──
+          const h2Promotions = [
+            /^Sources?\s*[&+]\s*References?$/i,
+            /^MITRE\s+ATT&CK[\w\s]*$/i,
+            /^Attack\s+Chain$/i,
+            /^Attack\s+Methodology$/i,
+            /^Campaign\s+Timeline$/i,
+            /^Attack\s+Timeline$/i,
+            /^Indicators?\s+of\s+Compromise$/i,
+            /^Attack\s+Stages$/i,
+          ];
+          content.querySelectorAll('p').forEach(p => {
+            const t = p.textContent?.trim() || '';
+            // Exact match — entire paragraph is the section title
+            if (h2Promotions.some(re => re.test(t))) {
+              const h2 = document.createElement('h2');
+              h2.textContent = t;
+              p.replaceWith(h2);
+              return;
             }
-
-            const techniques = [];
-            let frameworkLabel = '';
-            // Collect all text lines from siblings
-            const allLines = [];
-            for (const sib of siblings) {
-              const text = sib.textContent?.trim() || '';
-              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-              allLines.push(...lines);
-            }
-            // Try format 1: "T1234 — Description" or "T1234 - Description" or "T1234: Description"
-            for (const line of allLines) {
-              const techMatch = line.match(/^(T\d{4}(?:\.\d{3})?)\s*[—–\-:]\s*(.+)/);
-              if (techMatch) {
-                techniques.push({ id: techMatch[1], name: techMatch[2].trim() });
-              } else if (line && !frameworkLabel && /framework|enterprise|mobile/i.test(line)) {
-                frameworkLabel = line;
-              }
-            }
-            // Try format 2: Table-style (Tactic / T1234 / Name / Description on consecutive lines)
-            if (techniques.length === 0) {
-              for (let li = 0; li < allLines.length; li++) {
-                const idMatch = allLines[li].match(/^(T\d{4}(?:\.\d{3})?)$/);
-                if (idMatch && li + 1 < allLines.length) {
-                  const name = allLines[li + 1];
-                  const desc = (li + 2 < allLines.length && !/^T\d{4}/.test(allLines[li + 2]) && !/^(Initial|Credential|Defense|Lateral|Collection|Exfil|Persistence|Privilege|Discovery|Execution|Impact|Command|Resource|Reconnaissance)/.test(allLines[li + 2]))
-                    ? allLines[li + 2] : '';
-                  techniques.push({ id: idMatch[1], name: desc ? `${name} — ${desc}` : name });
-                }
-              }
-            }
-
-            if (techniques.length > 0) {
-              siblings.forEach(s => s.remove());
-
-              let html = '';
-              if (frameworkLabel) {
-                html += `<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">${frameworkLabel}</p>`;
-              }
-              html += '<div class="mitre-grid">';
-              techniques.forEach(t => {
-                const attackUrl = `https://attack.mitre.org/techniques/${t.id.replace('.', '/')}/`;
-                html += `<a class="mitre-technique" href="${attackUrl}" target="_blank" rel="noopener"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></a>`;
-              });
-              html += '</div>';
-
-              const wrapper = document.createElement('div');
-              wrapper.innerHTML = html;
-              while (wrapper.firstChild) h2.after(wrapper.lastChild);
-            }
-          }
-
-          // ── Timeline section (Campaign Timeline, Attack Timeline, Timeline) ──
-          if (/^(campaign\s+|attack\s+)?timeline$/i.test(title)) {
-            const siblings = [];
-            let el = h2.nextElementSibling;
-            while (el && el.tagName !== 'H2') {
-              siblings.push(el);
-              el = el.nextElementSibling;
-            }
-
-            // Each <p> may contain "Date\nTitle\nDescription" merged by markdown
-            const entries = [];
-            for (const sib of siblings) {
-              const text = sib.textContent?.trim() || '';
-              const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-              if (lines.length >= 2) {
-                entries.push({
-                  date: lines[0],
-                  title: lines[1],
-                  desc: lines.slice(2).join(' ')
-                });
-              }
-            }
-
-            if (entries.length > 0) {
-              siblings.forEach(s => s.remove());
-
-              const timeline = document.createElement('div');
-              timeline.className = 'timeline-flow';
-              entries.forEach(e => {
-                const entry = document.createElement('div');
-                entry.className = 'timeline-entry';
-                entry.innerHTML = `<div class="timeline-date">${e.date}</div><div class="timeline-title">${e.title}</div>${e.desc ? `<div class="timeline-desc">${e.desc}</div>` : ''}`;
-                timeline.appendChild(entry);
-              });
-              h2.after(timeline);
-            }
-          }
-        });
-
-        // ── Promote sub-section labels to h3 ──
-        // Short paragraphs that end with ":" or are known sub-header patterns
-        const subHeaderPatterns = [
-          /^IOC Sources$/i,
-          /^Key Detection Signatures$/i,
-          /^Immediate Actions/i,
-          /^Enterprise.*Recommendations:?$/i,
-          /^Detection and Hunting:?$/i,
-          /^Post-Incident Actions:?$/i,
-          /^Post-Compromise/i,
-          /^Key Takeaways$/i,
-          /^Threat Actor Profile$/i,
-          /^Affected Hardware$/i,
-          /^Related Campaigns$/i,
-          /^Takedown Participants$/i,
-          /^Attack Class:?$/i,
-          /^Primary Vulnerability:?$/i,
-        ];
-        content.querySelectorAll('p').forEach(p => {
-          const t = p.textContent?.trim() || '';
-          if (t.length < 60 && subHeaderPatterns.some(re => re.test(t))) {
-            const h3 = document.createElement('h3');
-            h3.textContent = t.replace(/:$/, '');
-            p.replaceWith(h3);
-          }
-        });
-
-        // ── Style IOC sub-sections as cards ──
-        // Handles both "IOC Sources" and "Key Detection Signatures" h3s
-        content.querySelectorAll('h3').forEach(h3 => {
-          const isIOCSources = /ioc sources/i.test(h3.textContent || '');
-          const isDetection = /key detection/i.test(h3.textContent || '');
-          if (!isIOCSources && !isDetection) return;
-
-          const siblings = [];
-          let el = h3.nextElementSibling;
-          while (el && el.tagName !== 'H2' && el.tagName !== 'H3') {
-            siblings.push(el);
-            el = el.nextElementSibling;
-          }
-          // If a single <p> with newline-separated items
-          if (siblings.length === 1 && siblings[0].tagName === 'P') {
-            const lines = (siblings[0].textContent?.trim() || '').split('\n').map(l => l.trim()).filter(Boolean);
-            if (lines.length > 1) {
-              const grid = document.createElement('div');
-              grid.className = isDetection ? 'ioc-signatures' : 'ioc-sources';
-              lines.forEach(line => {
-                const item = document.createElement('div');
-                item.className = isDetection ? 'ioc-sig-item' : 'ioc-source-item';
-                // For IOC sources, split on em-dash to get source name + description
-                if (isIOCSources) {
-                  const parts = line.split(/\s*[—–]\s*/);
-                  if (parts.length >= 2) {
-                    item.innerHTML = `<span class="ioc-source-name">${parts[0]}</span><span class="ioc-source-desc">${parts.slice(1).join(' — ')}</span>`;
-                  } else {
-                    item.textContent = line;
-                  }
-                } else {
-                  item.textContent = line;
-                }
-                grid.appendChild(item);
-              });
-              siblings[0].replaceWith(grid);
-            }
-          }
-        });
-
-        // ── Style numbered sources/references ──
-        content.querySelectorAll('h2').forEach(h2 => {
-          if (!/sources?\s*[&+]\s*references?/i.test(h2.textContent || '')) return;
-          const siblings = [];
-          let el = h2.nextElementSibling;
-          while (el && el.tagName !== 'H2') {
-            siblings.push(el);
-            el = el.nextElementSibling;
-          }
-
-          // Pattern: <ol> (empty numbered item) then <p> (title + link), alternating
-          // Stop when we hit a <p> that doesn't follow an <ol> (non-reference content)
-          const refs = [];
-          let refNum = 0;
-          let expectingRef = true;
-          for (let i = 0; i < siblings.length; i++) {
-            const sib = siblings[i];
-            // Skip empty <ol> elements (markdown renders "1." as empty list)
-            if (sib.tagName === 'OL' && sib.textContent?.trim() === '') {
-              expectingRef = true;
-              continue;
-            }
-            // <p> immediately after <ol> is a reference; otherwise stop
-            if (sib.tagName === 'P' && expectingRef) {
-              refNum++;
-              const link = sib.querySelector('a');
-              const text = sib.textContent?.trim() || '';
-              const url = link ? link.href : '';
-              const title = url ? text.replace(new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$'), '').trim() : text;
-              refs.push({ num: refNum, title: title || text, url });
-              expectingRef = false;
-            } else if (sib.tagName === 'P' && !expectingRef) {
-              // Non-reference content — stop parsing sources
-              break;
-            }
-          }
-
-          if (refs.length > 0) {
-            siblings.forEach(s => s.remove());
-            const list = document.createElement('div');
-            list.className = 'sources-list';
-            refs.forEach(r => {
-              const item = document.createElement('div');
-              item.className = 'source-item';
-              let html = `<span class="source-num">${r.num}.</span><div class="source-content"><div class="source-title">${r.title}</div>`;
-              if (r.url) html += `<a href="${r.url}" class="source-url" target="_blank" rel="noopener">${new URL(r.url).hostname}${new URL(r.url).pathname.substring(0, 50)}${new URL(r.url).pathname.length > 50 ? '...' : ''}</a>`;
-              html += '</div>';
-              item.innerHTML = html;
-              list.appendChild(item);
-            });
-            h2.after(list);
-          }
-        });
-
-        // ══════════════════════════════════════════════════════════════════════
-        // SMART LINKING — Glossary Tooltips + Cross-Collection References
-        // ══════════════════════════════════════════════════════════════════════
-        (async () => {
-          // Skip on non-article pages (homepage, glossary, search)
-          if (!content || content.querySelectorAll('h2').length < 2) return;
-
-          // ── Load data sources in parallel ────────────────────────────────
-          const tryFetch = async (...urls) => {
-            for (const url of urls) {
-              try { const r = await fetch(url); if (r.ok) return r.json(); } catch {}
-            }
-            return null;
-          };
-          const [glossaryRes, crossRefRes] = await Promise.allSettled([
-            tryFetch('/glossary-data.json', '/src/data/glossary-index.json'),
-            tryFetch('/cross-ref-index.json'),
-          ]);
-
-          const glossary = glossaryRes.status === 'fulfilled' ? glossaryRes.value : [];
-          const crossRef = crossRefRes.status === 'fulfilled' ? crossRefRes.value : {};
-
-          // ── Build term lookup maps ───────────────────────────────────────
-          // Track which terms we've already linked (first-occurrence only)
-          const linked = new Set();
-
-          // Excluded zones: don't link inside these elements
-          const EXCLUDED_TAGS = new Set(['A', 'CODE', 'PRE', 'H1', 'H2', 'H3', 'SCRIPT', 'STYLE', 'BUTTON', 'INPUT']);
-          const EXCLUDED_CLASSES = ['attack-stage-title', 'mitre-tid', 'mitre-name', 'source-item', 'meta-value', 'meta-label', 'timeline-date', 'badge'];
-
-          function isExcluded(node) {
-            let el = node.nodeType === 3 ? node.parentElement : node;
-            while (el && el !== content) {
-              if (EXCLUDED_TAGS.has(el.tagName)) return true;
-              if (el.className && EXCLUDED_CLASSES.some(c => el.className.includes?.(c))) return true;
-              el = el.parentElement;
-            }
-            return false;
-          }
-
-          // ── Tier 1 & 2: Cross-reference patterns ────────────────────────
-          // Build patterns sorted by length (longest first to avoid partial matches)
-          const crossRefTerms = Object.keys(crossRef).sort((a, b) => b.length - a.length);
-
-          // CVE pattern: CVE-YYYY-NNNNN
-          const CVE_RE = /\bCVE-\d{4}-\d{4,7}\b/g;
-          // MITRE technique pattern: T followed by 4 digits, optional .NNN
-          const MITRE_RE = /\bT\d{4}(?:\.\d{3})?\b/g;
-
-          // ── Tier 3: Glossary — build regex from terms ────────────────────
-          // Filter: multi-word terms OR single words 8+ chars to avoid generic noise
-          // Stop list: common words that appear in glossary but are too generic
-          const GLOSSARY_STOP = new Set([
-            'threat', 'attack', 'incident', 'exploit', 'access', 'agent',
-            'asset', 'audit', 'breach', 'chain', 'cloud', 'control',
-            'data', 'event', 'hash', 'host', 'impact', 'integrity',
-            'network', 'patch', 'policy', 'port', 'risk', 'scan',
-            'script', 'server', 'session', 'shell', 'signal', 'system',
-            'token', 'trust', 'user', 'virus', 'worm', 'alert',
-            'block', 'proxy', 'relay', 'scope', 'state', 'vector',
-            'beacon', 'bridge', 'cipher', 'client', 'cookie', 'domain',
-            'driver', 'filter', 'header', 'kernel', 'module', 'object',
-            'packet', 'record', 'report', 'router', 'schema', 'socket',
-            'source', 'stream', 'switch', 'target', 'thread', 'tunnel',
-            'vendor', 'volume', 'backup', 'botnet', 'daemon', 'deploy',
-            'device', 'encode', 'entity', 'fabric', 'handle', 'hijack',
-            'inject', 'launch', 'malice', 'mirror', 'offset', 'parser',
-            'phishing', 'playbook', 'payload', 'sandbox', 'scanner',
-            'sniffer', 'spyware', 'stealth', 'surface', 'tactics',
-            'toolkit', 'tracker', 'trigger', 'variant',
-            'signature', 'indicator', 'credential', 'perimeter', 'protocol',
-          ]);
-          const glossaryMap = new Map();
-          for (const g of glossary) {
-            const term = g.t?.toLowerCase();
-            if (!term) continue;
-            // Include: multi-word terms (2+ words, 8+ chars total) OR single words 10+ chars
-            const wordCount = term.split(/\s+/).length;
-            const include = (wordCount >= 2 && term.length >= 8) || (wordCount === 1 && term.length >= 10);
-            if (include && !GLOSSARY_STOP.has(term)) glossaryMap.set(term, g);
-            // Aliases/acronyms: only if 4+ chars and multi-char (skip "AUP", "CIA" etc.)
-            if (g.a && g.a.length >= 5 && !GLOSSARY_STOP.has(g.a.toLowerCase())) glossaryMap.set(g.a.toLowerCase(), g);
-          }
-
-          // ── Tooltip HTML builder ─────────────────────────────────────────
-          function buildTooltipHTML(termKey, termData) {
-            const parts = [];
-            const entry = crossRef[termKey.toLowerCase()];
-
-            if (entry) {
-              // Tier 1 or 2: cross-reference tooltip
-              parts.push(`<div class="tp-tooltip-label">${entry.label}</div>`);
-
-              if (entry.external) {
-                const domain = new URL(entry.external).hostname.replace('www.', '');
-                parts.push(`<a href="${entry.external}" target="_blank" rel="noopener" class="tp-tooltip-link tp-tooltip-external">${domain} ↗</a>`);
-              }
-
-              if (entry.primary) {
-                parts.push(`<a href="${entry.primary}" class="tp-tooltip-link tp-tooltip-primary">View article →</a>`);
-              }
-
-              const articles = entry.articles.slice(0, 3);
-              if (articles.length > 0) {
-                parts.push(`<div class="tp-tooltip-divider"></div>`);
-                parts.push(`<div class="tp-tooltip-section">Referenced in:</div>`);
-                for (const a of articles) {
-                  const badge = a.type.replace('-', ' ');
-                  parts.push(`<a href="${a.url}" class="tp-tooltip-link tp-tooltip-ref"><span class="tp-tooltip-badge">${badge}</span>${a.title.length > 50 ? a.title.substring(0, 47) + '...' : a.title}</a>`);
-                }
-                if (entry.articles.length > 3) {
-                  parts.push(`<a href="/glossary.html?q=${encodeURIComponent(entry.label)}" class="tp-tooltip-link tp-tooltip-more">Search all ${entry.articles.length} references →</a>`);
-                }
-              }
-            }
-
-            if (termData) {
-              // Tier 3: glossary tooltip
-              if (parts.length > 0) parts.push(`<div class="tp-tooltip-divider"></div>`);
-              parts.push(`<div class="tp-tooltip-def">${termData.d.length > 160 ? termData.d.substring(0, 157) + '...' : termData.d}</div>`);
-              parts.push(`<a href="/glossary/#${termData.s}" class="tp-tooltip-link tp-tooltip-glossary">View in glossary →</a>`);
-            }
-
-            return parts.join('');
-          }
-
-          // ── Create tooltip element (singleton) ───────────────────────────
-          const tooltip = document.createElement('div');
-          tooltip.className = 'tp-tooltip';
-          tooltip.setAttribute('role', 'tooltip');
-          tooltip.style.display = 'none';
-          document.body.appendChild(tooltip);
-
-          let hideTimeout;
-          function showTooltip(anchor) {
-            clearTimeout(hideTimeout);
-            const html = anchor.getAttribute('data-tp-tooltip');
-            if (!html) return;
-            tooltip.innerHTML = html;
-            tooltip.style.display = 'block';
-
-            // Position below the anchor
-            const rect = anchor.getBoundingClientRect();
-            const ttRect = tooltip.getBoundingClientRect();
-            let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
-            let top = rect.bottom + 8;
-
-            // Keep within viewport
-            if (left < 8) left = 8;
-            if (left + ttRect.width > window.innerWidth - 8) left = window.innerWidth - ttRect.width - 8;
-            if (top + ttRect.height > window.innerHeight - 8) {
-              top = rect.top - ttRect.height - 8; // flip above
-            }
-
-            tooltip.style.left = left + window.scrollX + 'px';
-            tooltip.style.top = top + window.scrollY + 'px';
-          }
-
-          function hideTooltip() {
-            hideTimeout = setTimeout(() => { tooltip.style.display = 'none'; }, 200);
-          }
-
-          tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-          tooltip.addEventListener('mouseleave', hideTooltip);
-
-          // ── Walk text nodes and apply linking ────────────────────────────
-          const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
-            acceptNode(node) {
-              if (isExcluded(node)) return NodeFilter.FILTER_REJECT;
-              if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
-              return NodeFilter.FILTER_ACCEPT;
+            // Paragraph starts with "MITRE ATT&CK..." (with or without technique lines)
+            if (/^MITRE\s+ATT&CK/i.test(t) && !h2Promotions.some(re => re.test(t)) && /\n/.test(t)) {
+              const lines = t.split('\n').map(l => l.trim()).filter(Boolean);
+              const h2 = document.createElement('h2');
+              h2.textContent = lines[0];
+              const techP = document.createElement('p');
+              techP.textContent = lines.slice(1).join('\n');
+              p.replaceWith(h2, techP);
             }
           });
 
-          const textNodes = [];
-          while (walker.nextNode()) textNodes.push(walker.currentNode);
+          // Find all h2 elements (including newly promoted ones)
+          const h2s = content.querySelectorAll('h2');
 
-          for (const textNode of textNodes) {
-            const text = textNode.textContent;
-            if (!text || text.length < 3) continue;
+          h2s.forEach(h2 => {
+            const title = h2.textContent?.trim() || '';
 
-            // Find all matches in this text node
-            const replacements = [];
-
-            // Check CVE patterns (Tier 1)
-            for (const match of text.matchAll(CVE_RE)) {
-              const key = match[0].toLowerCase();
-              if (linked.has(key)) continue;
-              if (!crossRef[key]) continue;
-              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
-            }
-
-            // Check MITRE patterns (Tier 1)
-            for (const match of text.matchAll(MITRE_RE)) {
-              const key = match[0].toLowerCase();
-              if (linked.has(key)) continue;
-              // If not in cross-ref, create a synthetic entry with ATT&CK link
-              if (!crossRef[key]) {
-                const tid = match[0];
-                const attackUrl = `https://attack.mitre.org/techniques/${tid.replace('.', '/')}/`;
-                crossRef[key] = { tier: 1, type: 'mitre', label: tid, external: attackUrl, articles: [] };
+            // ── Attack Chain / Exploit Chain / Attack Methodology / Attack Stages section ──
+            if (/(?:attack|exploit)\s*(chain|methodology|stages)/i.test(title)) {
+              const siblings = [];
+              let el = h2.nextElementSibling;
+              while (el && el.tagName !== 'H2') {
+                siblings.push(el);
+                el = el.nextElementSibling;
               }
-              replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
-            }
 
-            // Check cross-ref entity names (Tier 2) — only terms 4+ chars
-            for (const crTerm of crossRefTerms) {
-              if (crTerm.length < 4) continue;
-              if (linked.has(crTerm)) continue;
-              const entry = crossRef[crTerm];
-              if (!entry || entry.tier !== 2) continue;
-
-              // Case-insensitive word-boundary search
-              const escaped = entry.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-              const re = new RegExp(`\\b${escaped}\\b`, 'i');
-              const m = text.match(re);
-              if (m) {
-                // Check no overlap with existing replacements
-                const start = m.index;
-                const end = start + m[0].length;
-                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
-                if (!overlaps) {
-                  replacements.push({ start, end, term: m[0], key: crTerm });
+              // Find stage patterns in multiple formats:
+              // "Stage N: Title" / "Stage N — Title" / "Stage N\nTitle" (merged <p>)
+              const stages = [];
+              let currentStage = null;
+              for (const sib of siblings) {
+                const text = sib.textContent?.trim() || '';
+                // Format 1: "Stage N: Title" or "Stage N — Title"
+                const stageMatch = text.match(/^Stage\s+(\d+)\s*[:—–-]\s*(.+)/i);
+                if (stageMatch) {
+                  if (currentStage) stages.push(currentStage);
+                  currentStage = { num: stageMatch[1], title: stageMatch[2].trim(), content: [] };
+                  continue;
+                }
+                // Format 2: "Stage N\nTitle\n..." (newline-separated in single <p>)
+                const stageNL = text.match(/^Stage\s+(\d+)\s*\n(.+)/i);
+                if (stageNL) {
+                  if (currentStage) stages.push(currentStage);
+                  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                  currentStage = { num: stageNL[1], title: lines[1] || '', content: lines.slice(2).length ? [lines.slice(2).join(' ')] : [] };
+                  continue;
+                }
+                // Format 3: Just "Stage N" alone
+                const stageAlone = text.match(/^Stage\s+(\d+)$/i);
+                if (stageAlone) {
+                  if (currentStage) stages.push(currentStage);
+                  currentStage = { num: stageAlone[1], title: '', content: [] };
+                  continue;
+                }
+                // Content or title for current stage
+                if (currentStage) {
+                  if (!currentStage.title && text.length < 80) {
+                    currentStage.title = text;
+                  } else if (text) {
+                    currentStage.content.push(sib.innerHTML || text);
+                  }
                 }
               }
+              if (currentStage) stages.push(currentStage);
+
+              if (stages.length > 0) {
+                // Remove original elements
+                siblings.forEach(s => s.remove());
+
+                // Build attack flow
+                const flow = document.createElement('div');
+                flow.className = 'attack-flow';
+                stages.forEach(s => {
+                  const stage = document.createElement('div');
+                  stage.className = 'attack-stage';
+                  stage.innerHTML = `<div class="attack-stage-title">STAGE ${s.num}: ${s.title}</div><div class="attack-stage-content">${s.content.map(c => `<p>${c}</p>`).join('')}</div>`;
+                  flow.appendChild(stage);
+                });
+                h2.after(flow);
+              }
             }
 
-            // Check glossary terms (Tier 3) — first occurrence only
-            for (const [gKey, gData] of glossaryMap) {
-              if (linked.has('g:' + gKey)) continue;
-              if (gKey.length < 4) continue;
+            // ── MITRE ATT&CK Mapping section ──
+            if (/mitre\s*att/i.test(title)) {
+              const siblings = [];
+              let el = h2.nextElementSibling;
+              while (el && el.tagName !== 'H2') {
+                siblings.push(el);
+                el = el.nextElementSibling;
+              }
 
-              const escaped = gKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-              const re = new RegExp(`\\b${escaped}\\b`, 'i');
-              const m = text.match(re);
-              if (m) {
-                const start = m.index;
-                const end = start + m[0].length;
-                const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
-                if (!overlaps) {
-                  replacements.push({ start, end, term: m[0], key: 'g:' + gKey, glossary: gData });
+              const techniques = [];
+              let frameworkLabel = '';
+              // Collect all text lines from siblings
+              const allLines = [];
+              for (const sib of siblings) {
+                const text = sib.textContent?.trim() || '';
+                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                allLines.push(...lines);
+              }
+              // Try format 1: "T1234 — Description" or "T1234 - Description" or "T1234: Description"
+              for (const line of allLines) {
+                const techMatch = line.match(/^(T\d{4}(?:\.\d{3})?)\s*[—–\-:]\s*(.+)/);
+                if (techMatch) {
+                  techniques.push({ id: techMatch[1], name: techMatch[2].trim() });
+                } else if (line && !frameworkLabel && /framework|enterprise|mobile/i.test(line)) {
+                  frameworkLabel = line;
                 }
               }
-            }
-
-            if (replacements.length === 0) continue;
-
-            // Sort by position (left to right)
-            replacements.sort((a, b) => a.start - b.start);
-
-            // Build replacement fragment
-            const frag = document.createDocumentFragment();
-            let lastIdx = 0;
-
-            for (const rep of replacements) {
-              // Text before this match
-              if (rep.start > lastIdx) {
-                frag.appendChild(document.createTextNode(text.substring(lastIdx, rep.start)));
+              // Try format 2: Table-style (Tactic / T1234 / Name / Description on consecutive lines)
+              if (techniques.length === 0) {
+                for (let li = 0; li < allLines.length; li++) {
+                  const idMatch = allLines[li].match(/^(T\d{4}(?:\.\d{3})?)$/);
+                  if (idMatch && li + 1 < allLines.length) {
+                    const name = allLines[li + 1];
+                    const desc = (li + 2 < allLines.length && !/^T\d{4}/.test(allLines[li + 2]) && !/^(Initial|Credential|Defense|Lateral|Collection|Exfil|Persistence|Privilege|Discovery|Execution|Impact|Command|Resource|Reconnaissance)/.test(allLines[li + 2]))
+                      ? allLines[li + 2] : '';
+                    techniques.push({ id: idMatch[1], name: desc ? `${name} — ${desc}` : name });
+                  }
+                }
               }
 
-              // Create linked span
-              const span = document.createElement('span');
-              span.className = 'tp-linked-term';
-              span.textContent = rep.term;
+              if (techniques.length > 0) {
+                siblings.forEach(s => s.remove());
 
-              // Determine tooltip content
-              const crEntry = rep.key.startsWith('g:') ? null : crossRef[rep.key];
-              const gEntry = rep.glossary || (rep.key.startsWith('g:') ? null : glossaryMap.get(rep.key));
-              const tooltipHTML = buildTooltipHTML(rep.key.replace(/^g:/, ''), gEntry);
+                let html = '';
+                if (frameworkLabel) {
+                  html += `<p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;">${frameworkLabel}</p>`;
+                }
+                html += '<div class="mitre-grid">';
+                techniques.forEach(t => {
+                  const attackUrl = `https://attack.mitre.org/techniques/${t.id.replace('.', '/')}/`;
+                  html += `<a class="mitre-technique" href="${attackUrl}" target="_blank" rel="noopener"><span class="mitre-tid">${t.id}</span><span class="mitre-name">${t.name}</span></a>`;
+                });
+                html += '</div>';
 
-              if (tooltipHTML) {
-                span.setAttribute('data-tp-tooltip', tooltipHTML);
-                span.setAttribute('tabindex', '0');
-                span.addEventListener('mouseenter', () => showTooltip(span));
-                span.addEventListener('mouseleave', hideTooltip);
-                span.addEventListener('focus', () => showTooltip(span));
-                span.addEventListener('blur', hideTooltip);
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = html;
+                while (wrapper.firstChild) h2.after(wrapper.lastChild);
+              }
+            }
 
-                // Add tier-specific styling class
-                if (crEntry?.tier === 1) span.classList.add('tp-tier1');
-                else if (crEntry?.tier === 2) span.classList.add('tp-tier2');
-                else span.classList.add('tp-tier3');
+            // ── Timeline section (Campaign Timeline, Attack Timeline, Timeline) ──
+            if (/^(campaign\s+|attack\s+)?timeline$/i.test(title)) {
+              const siblings = [];
+              let el = h2.nextElementSibling;
+              while (el && el.tagName !== 'H2') {
+                siblings.push(el);
+                el = el.nextElementSibling;
               }
 
-              frag.appendChild(span);
-              lastIdx = rep.end;
+              // Each <p> may contain "Date\nTitle\nDescription" merged by markdown
+              const entries = [];
+              for (const sib of siblings) {
+                const text = sib.textContent?.trim() || '';
+                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                if (lines.length >= 2) {
+                  entries.push({
+                    date: lines[0],
+                    title: lines[1],
+                    desc: lines.slice(2).join(' ')
+                  });
+                }
+              }
 
-              // Mark as linked (first occurrence only)
-              linked.add(rep.key);
-              if (!rep.key.startsWith('g:')) linked.add(rep.key);
-              else linked.add(rep.key);
+              if (entries.length > 0) {
+                siblings.forEach(s => s.remove());
+
+                const timeline = document.createElement('div');
+                timeline.className = 'timeline-flow';
+                entries.forEach(e => {
+                  const entry = document.createElement('div');
+                  entry.className = 'timeline-entry';
+                  entry.innerHTML = `<div class="timeline-date">${e.date}</div><div class="timeline-title">${e.title}</div>${e.desc ? `<div class="timeline-desc">${e.desc}</div>` : ''}`;
+                  timeline.appendChild(entry);
+                });
+                h2.after(timeline);
+              }
+            }
+          });
+
+          // ── Promote sub-section labels to h3 ──
+          // Short paragraphs that end with ":" or are known sub-header patterns
+          const subHeaderPatterns = [
+            /^IOC Sources$/i,
+            /^Key Detection Signatures$/i,
+            /^Immediate Actions/i,
+            /^Enterprise.*Recommendations:?$/i,
+            /^Detection and Hunting:?$/i,
+            /^Post-Incident Actions:?$/i,
+            /^Post-Compromise/i,
+            /^Key Takeaways$/i,
+            /^Threat Actor Profile$/i,
+            /^Affected Hardware$/i,
+            /^Related Campaigns$/i,
+            /^Takedown Participants$/i,
+            /^Attack Class:?$/i,
+            /^Primary Vulnerability:?$/i,
+          ];
+          content.querySelectorAll('p').forEach(p => {
+            const t = p.textContent?.trim() || '';
+            if (t.length < 60 && subHeaderPatterns.some(re => re.test(t))) {
+              const h3 = document.createElement('h3');
+              h3.textContent = t.replace(/:$/, '');
+              p.replaceWith(h3);
+            }
+          });
+
+          // ── Style IOC sub-sections as cards ──
+          // Handles both "IOC Sources" and "Key Detection Signatures" h3s
+          content.querySelectorAll('h3').forEach(h3 => {
+            const isIOCSources = /ioc sources/i.test(h3.textContent || '');
+            const isDetection = /key detection/i.test(h3.textContent || '');
+            if (!isIOCSources && !isDetection) return;
+
+            const siblings = [];
+            let el = h3.nextElementSibling;
+            while (el && el.tagName !== 'H2' && el.tagName !== 'H3') {
+              siblings.push(el);
+              el = el.nextElementSibling;
+            }
+            // If a single <p> with newline-separated items
+            if (siblings.length === 1 && siblings[0].tagName === 'P') {
+              const lines = (siblings[0].textContent?.trim() || '').split('\n').map(l => l.trim()).filter(Boolean);
+              if (lines.length > 1) {
+                const grid = document.createElement('div');
+                grid.className = isDetection ? 'ioc-signatures' : 'ioc-sources';
+                lines.forEach(line => {
+                  const item = document.createElement('div');
+                  item.className = isDetection ? 'ioc-sig-item' : 'ioc-source-item';
+                  // For IOC sources, split on em-dash to get source name + description
+                  if (isIOCSources) {
+                    const parts = line.split(/\s*[—–]\s*/);
+                    if (parts.length >= 2) {
+                      item.innerHTML = `<span class="ioc-source-name">${parts[0]}</span><span class="ioc-source-desc">${parts.slice(1).join(' — ')}</span>`;
+                    } else {
+                      item.textContent = line;
+                    }
+                  } else {
+                    item.textContent = line;
+                  }
+                  grid.appendChild(item);
+                });
+                siblings[0].replaceWith(grid);
+              }
+            }
+          });
+
+          // ── Style numbered sources/references ──
+          content.querySelectorAll('h2').forEach(h2 => {
+            if (!/sources?\s*[&+]\s*references?/i.test(h2.textContent || '')) return;
+            const siblings = [];
+            let el = h2.nextElementSibling;
+            while (el && el.tagName !== 'H2') {
+              siblings.push(el);
+              el = el.nextElementSibling;
             }
 
-            // Remaining text after last match
-            if (lastIdx < text.length) {
-              frag.appendChild(document.createTextNode(text.substring(lastIdx)));
+            // Pattern: <ol> (empty numbered item) then <p> (title + link), alternating
+            // Stop when we hit a <p> that doesn't follow an <ol> (non-reference content)
+            const refs = [];
+            let refNum = 0;
+            let expectingRef = true;
+            for (let i = 0; i < siblings.length; i++) {
+              const sib = siblings[i];
+              // Skip empty <ol> elements (markdown renders "1." as empty list)
+              if (sib.tagName === 'OL' && sib.textContent?.trim() === '') {
+                expectingRef = true;
+                continue;
+              }
+              // <p> immediately after <ol> is a reference; otherwise stop
+              if (sib.tagName === 'P' && expectingRef) {
+                refNum++;
+                const link = sib.querySelector('a');
+                const text = sib.textContent?.trim() || '';
+                const url = link ? link.href : '';
+                const title = url ? text.replace(new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$'), '').trim() : text;
+                refs.push({ num: refNum, title: title || text, url });
+                expectingRef = false;
+              } else if (sib.tagName === 'P' && !expectingRef) {
+                // Non-reference content — stop parsing sources
+                break;
+              }
             }
 
-            textNode.parentNode.replaceChild(frag, textNode);
-          }
+            if (refs.length > 0) {
+              siblings.forEach(s => s.remove());
+              const list = document.createElement('div');
+              list.className = 'sources-list';
+              refs.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'source-item';
+                let html = `<span class="source-num">${r.num}.</span><div class="source-content"><div class="source-title">${r.title}</div>`;
+                if (r.url) html += `<a href="${r.url}" class="source-url" target="_blank" rel="noopener">${new URL(r.url).hostname}${new URL(r.url).pathname.substring(0, 50)}${new URL(r.url).pathname.length > 50 ? '...' : ''}</a>`;
+                html += '</div>';
+                item.innerHTML = html;
+                list.appendChild(item);
+              });
+              h2.after(list);
+            }
+          });
+
+          // ══════════════════════════════════════════════════════════════════════
+          // SMART LINKING — Glossary Tooltips + Cross-Collection References
+          // ══════════════════════════════════════════════════════════════════════
+          (async () => {
+            // Skip on non-article pages (homepage, glossary, search)
+            if (!content || content.querySelectorAll('h2').length < 2) return;
+
+            // ── Load data sources in parallel ────────────────────────────────
+            const tryFetch = async (...urls) => {
+              for (const url of urls) {
+                try { const r = await fetch(url); if (r.ok) return r.json(); } catch {}
+              }
+              return null;
+            };
+            if (!glossaryPromise) {
+              glossaryPromise = tryFetch('/glossary-data.json', '/src/data/glossary-index.json');
+            }
+            if (!crossRefPromise) {
+              crossRefPromise = tryFetch('/cross-ref-index.json');
+            }
+            const [glossaryRes, crossRefRes] = await Promise.allSettled([
+              glossaryPromise,
+              crossRefPromise,
+            ]);
+
+            const glossary = glossaryRes.status === 'fulfilled' ? glossaryRes.value : [];
+            const crossRef = crossRefRes.status === 'fulfilled' ? crossRefRes.value : {};
+
+            // ── Build term lookup maps ───────────────────────────────────────
+            // Track which terms we've already linked (first-occurrence only)
+            const linked = new Set();
+
+            // Excluded zones: don't link inside these elements
+            const EXCLUDED_TAGS = new Set(['A', 'CODE', 'PRE', 'H1', 'H2', 'H3', 'SCRIPT', 'STYLE', 'BUTTON', 'INPUT']);
+            const EXCLUDED_CLASSES = ['attack-stage-title', 'mitre-tid', 'mitre-name', 'source-item', 'meta-value', 'meta-label', 'timeline-date', 'badge'];
+
+            function isExcluded(node) {
+              let el = node.nodeType === 3 ? node.parentElement : node;
+              while (el && el !== content) {
+                if (EXCLUDED_TAGS.has(el.tagName)) return true;
+                if (el.className && EXCLUDED_CLASSES.some(c => el.className.includes?.(c))) return true;
+                el = el.parentElement;
+              }
+              return false;
+            }
+
+            // ── Tier 1 & 2: Cross-reference patterns ────────────────────────
+            // Build patterns sorted by length (longest first to avoid partial matches)
+            const crossRefTerms = Object.keys(crossRef).sort((a, b) => b.length - a.length);
+
+            // CVE pattern: CVE-YYYY-NNNNN
+            const CVE_RE = /\bCVE-\d{4}-\d{4,7}\b/g;
+            // MITRE technique pattern: T followed by 4 digits, optional .NNN
+            const MITRE_RE = /\bT\d{4}(?:\.\d{3})?\b/g;
+
+            // ── Tier 3: Glossary — build regex from terms ────────────────────
+            // Filter: multi-word terms OR single words 8+ chars to avoid generic noise
+            // Stop list: common words that appear in glossary but are too generic
+            const GLOSSARY_STOP = new Set([
+              'threat', 'attack', 'incident', 'exploit', 'access', 'agent',
+              'asset', 'audit', 'breach', 'chain', 'cloud', 'control',
+              'data', 'event', 'hash', 'host', 'impact', 'integrity',
+              'network', 'patch', 'policy', 'port', 'risk', 'scan',
+              'script', 'server', 'session', 'shell', 'signal', 'system',
+              'token', 'trust', 'user', 'virus', 'worm', 'alert',
+              'block', 'proxy', 'relay', 'scope', 'state', 'vector',
+              'beacon', 'bridge', 'cipher', 'client', 'cookie', 'domain',
+              'driver', 'filter', 'header', 'kernel', 'module', 'object',
+              'packet', 'record', 'report', 'router', 'schema', 'socket',
+              'source', 'stream', 'switch', 'target', 'thread', 'tunnel',
+              'vendor', 'volume', 'backup', 'botnet', 'daemon', 'deploy',
+              'device', 'encode', 'entity', 'fabric', 'handle', 'hijack',
+              'inject', 'launch', 'malice', 'mirror', 'offset', 'parser',
+              'phishing', 'playbook', 'payload', 'sandbox', 'scanner',
+              'sniffer', 'spyware', 'stealth', 'surface', 'tactics',
+              'toolkit', 'tracker', 'trigger', 'variant',
+              'signature', 'indicator', 'credential', 'perimeter', 'protocol',
+            ]);
+            const glossaryMap = new Map();
+            for (const g of glossary) {
+              const term = g.t?.toLowerCase();
+              if (!term) continue;
+              // Include: multi-word terms (2+ words, 8+ chars total) OR single words 10+ chars
+              const wordCount = term.split(/\s+/).length;
+              const include = (wordCount >= 2 && term.length >= 8) || (wordCount === 1 && term.length >= 10);
+              if (include && !GLOSSARY_STOP.has(term)) glossaryMap.set(term, g);
+              // Aliases/acronyms: only if 4+ chars and multi-char (skip "AUP", "CIA" etc.)
+              if (g.a && g.a.length >= 5 && !GLOSSARY_STOP.has(g.a.toLowerCase())) glossaryMap.set(g.a.toLowerCase(), g);
+            }
+
+            // ── Tooltip HTML builder ─────────────────────────────────────────
+            function buildTooltipHTML(termKey, termData) {
+              const parts = [];
+              const entry = crossRef[termKey.toLowerCase()];
+
+              if (entry) {
+                // Tier 1 or 2: cross-reference tooltip
+                parts.push(`<div class="tp-tooltip-label">${entry.label}</div>`);
+
+                if (entry.external) {
+                  const domain = new URL(entry.external).hostname.replace('www.', '');
+                  parts.push(`<a href="${entry.external}" target="_blank" rel="noopener" class="tp-tooltip-link tp-tooltip-external">${domain} ↗</a>`);
+                }
+
+                if (entry.primary) {
+                  parts.push(`<a href="${entry.primary}" class="tp-tooltip-link tp-tooltip-primary">View article →</a>`);
+                }
+
+                const articles = entry.articles.slice(0, 3);
+                if (articles.length > 0) {
+                  parts.push(`<div class="tp-tooltip-divider"></div>`);
+                  parts.push(`<div class="tp-tooltip-section">Referenced in:</div>`);
+                  for (const a of articles) {
+                    const badge = a.type.replace('-', ' ');
+                    parts.push(`<a href="${a.url}" class="tp-tooltip-link tp-tooltip-ref"><span class="tp-tooltip-badge">${badge}</span>${a.title.length > 50 ? a.title.substring(0, 47) + '...' : a.title}</a>`);
+                  }
+                  if (entry.articles.length > 3) {
+                    parts.push(`<a href="/glossary.html?q=${encodeURIComponent(entry.label)}" class="tp-tooltip-link tp-tooltip-more">Search all ${entry.articles.length} references →</a>`);
+                  }
+                }
+              }
+
+              if (termData) {
+                // Tier 3: glossary tooltip
+                if (parts.length > 0) parts.push(`<div class="tp-tooltip-divider"></div>`);
+                parts.push(`<div class="tp-tooltip-def">${termData.d.length > 160 ? termData.d.substring(0, 157) + '...' : termData.d}</div>`);
+                parts.push(`<a href="/glossary/#${termData.s}" class="tp-tooltip-link tp-tooltip-glossary">View in glossary →</a>`);
+              }
+
+              return parts.join('');
+            }
+
+            // ── Walk text nodes and apply linking ────────────────────────────
+            const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+              acceptNode(node) {
+                if (isExcluded(node)) return NodeFilter.FILTER_REJECT;
+                if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT;
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            });
+
+            const textNodes = [];
+            while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+            for (const textNode of textNodes) {
+              const text = textNode.textContent;
+              if (!text || text.length < 3) continue;
+
+              // Find all matches in this text node
+              const replacements = [];
+
+              // Check CVE patterns (Tier 1)
+              for (const match of text.matchAll(CVE_RE)) {
+                const key = match[0].toLowerCase();
+                if (linked.has(key)) continue;
+                if (!crossRef[key]) continue;
+                replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+              }
+
+              // Check MITRE patterns (Tier 1)
+              for (const match of text.matchAll(MITRE_RE)) {
+                const key = match[0].toLowerCase();
+                if (linked.has(key)) continue;
+                // If not in cross-ref, create a synthetic entry with ATT&CK link
+                if (!crossRef[key]) {
+                  const tid = match[0];
+                  const attackUrl = `https://attack.mitre.org/techniques/${tid.replace('.', '/')}/`;
+                  crossRef[key] = { tier: 1, type: 'mitre', label: tid, external: attackUrl, articles: [] };
+                }
+                replacements.push({ start: match.index, end: match.index + match[0].length, term: match[0], key });
+              }
+
+              // Check cross-ref entity names (Tier 2) — only terms 4+ chars
+              for (const crTerm of crossRefTerms) {
+                if (crTerm.length < 4) continue;
+                if (linked.has(crTerm)) continue;
+                const entry = crossRef[crTerm];
+                if (!entry || entry.tier !== 2) continue;
+
+                // Case-insensitive word-boundary search
+                const escaped = entry.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const re = new RegExp(`\\b${escaped}\\b`, 'i');
+                const m = text.match(re);
+                if (m) {
+                  // Check no overlap with existing replacements
+                  const start = m.index;
+                  const end = start + m[0].length;
+                  const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                  if (!overlaps) {
+                    replacements.push({ start, end, term: m[0], key: crTerm });
+                  }
+                }
+              }
+
+              // Check glossary terms (Tier 3) — first occurrence only
+              for (const [gKey, gData] of glossaryMap) {
+                if (linked.has('g:' + gKey)) continue;
+                if (gKey.length < 4) continue;
+
+                const escaped = gKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const re = new RegExp(`\\b${escaped}\\b`, 'i');
+                const m = text.match(re);
+                if (m) {
+                  const start = m.index;
+                  const end = start + m[0].length;
+                  const overlaps = replacements.some(r => !(end <= r.start || start >= r.end));
+                  if (!overlaps) {
+                    replacements.push({ start, end, term: m[0], key: 'g:' + gKey, glossary: gData });
+                  }
+                }
+              }
+
+              if (replacements.length === 0) continue;
+
+              // Sort by position (left to right)
+              replacements.sort((a, b) => a.start - b.start);
+
+              // Build replacement fragment
+              const frag = document.createDocumentFragment();
+              let lastIdx = 0;
+
+              for (const rep of replacements) {
+                // Text before this match
+                if (rep.start > lastIdx) {
+                  frag.appendChild(document.createTextNode(text.substring(lastIdx, rep.start)));
+                }
+
+                // Create linked span
+                const span = document.createElement('span');
+                span.className = 'tp-linked-term';
+                span.textContent = rep.term;
+
+                // Determine tooltip content
+                const crEntry = rep.key.startsWith('g:') ? null : crossRef[rep.key];
+                const gEntry = rep.glossary || (rep.key.startsWith('g:') ? null : glossaryMap.get(rep.key));
+                const tooltipHTML = buildTooltipHTML(rep.key.replace(/^g:/, ''), gEntry);
+
+                if (tooltipHTML) {
+                  span.setAttribute('data-tp-tooltip', tooltipHTML);
+                  span.setAttribute('tabindex', '0');
+
+                  // Add tier-specific styling class
+                  if (crEntry?.tier === 1) span.classList.add('tp-tier1');
+                  else if (crEntry?.tier === 2) span.classList.add('tp-tier2');
+                  else span.classList.add('tp-tier3');
+                }
+
+                frag.appendChild(span);
+                lastIdx = rep.end;
+
+                // Mark as linked (first occurrence only)
+                linked.add(rep.key);
+                if (!rep.key.startsWith('g:')) linked.add(rep.key);
+                else linked.add(rep.key);
+              }
+
+              // Remaining text after last match
+              if (lastIdx < text.length) {
+                frag.appendChild(document.createTextNode(text.substring(lastIdx)));
+              }
+
+              textNode.parentNode.replaceChild(frag, textNode);
+            }
+          })();
+
         })();
+      }
 
-      })();
+      initializeThreatpediaLayout();
+      document.addEventListener('astro:page-load', initializeThreatpediaLayout);
     </script>
   </body>
 </html>
