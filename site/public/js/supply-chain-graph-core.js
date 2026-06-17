@@ -444,6 +444,15 @@ class SupplyChainGraph {
   pick(clientX, clientY) {
     const world = this.screenToWorld(clientX, clientY);
     const radius = 24 / this.camera.z;
+    if (this.focusReflow && this.selection?.type === 'technique') {
+      const nearest = this.layout.nodes.reduce((best, node) => {
+        const displayNode = this.displayNode(node);
+        const distance = Math.hypot(displayNode.x - world.x, displayNode.y - world.y);
+        if (distance > radius || (best && best.distance <= distance)) return best;
+        return { point: node, distance };
+      }, null);
+      return nearest?.point || null;
+    }
     const nearest = this.layout.quadtree.nearest(world.x, world.y, radius);
     return nearest?.point || null;
   }
@@ -514,7 +523,12 @@ class SupplyChainGraph {
         if (edge.source === node.id && edge.type === 'INCIDENT_TECHNIQUE') {
           clusterIds.add(edge.target);
           this.layout.edges.forEach((contextEdge) => {
-            if (contextEdge.target === edge.target) clusterIds.add(contextEdge.source);
+            if (
+              contextEdge.target === edge.target &&
+              (contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN')
+            ) {
+              clusterIds.add(contextEdge.source);
+            }
           });
         }
       });
@@ -649,7 +663,11 @@ class SupplyChainGraph {
 
   drawLabels() {
     const labelNodes = this.layout.nodes.filter(
-      (node) => node.tier === 'actor' || node.tier === 'technique' || node.tier === 'campaign' || this.selection?.nodes?.has(node.id)
+      (node) =>
+        node.tier === 'actor' ||
+        node.tier === 'campaign' ||
+        (node.tier === 'technique' && this.selection?.value === node.id) ||
+        this.selection?.nodes?.has(node.id)
     );
     const labels = labelNodes.slice(0, 24).map((node) => {
       const position = this.worldToScreen(this.displayNode(node));

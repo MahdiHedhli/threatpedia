@@ -386,8 +386,12 @@ assert.ok(
     supplyChainGraphSource.includes('Focus reflow') &&
     supplyChainGraphSource.includes("edge.type === 'INCIDENT_TECHNIQUE'") &&
     supplyChainGraphSource.includes("this.selection?.type === 'technique'") &&
-    supplyChainGraphSource.includes('z: Math.min(fit.z, 0.82)'),
-  'graph client should implement technique selection through explicit focus-reflow state'
+    supplyChainGraphSource.includes('z: Math.min(fit.z, 0.82)') &&
+    supplyChainGraphSource.includes("contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN'") &&
+    supplyChainGraphSource.includes("this.focusReflow && this.selection?.type === 'technique'") &&
+    supplyChainGraphSource.includes("node.tier === 'campaign'") &&
+    supplyChainGraphSource.includes("node.tier === 'technique' && this.selection?.value === node.id"),
+  'graph client should implement bounded technique focus, reflow hit testing, and campaign-preserving labels'
 );
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
