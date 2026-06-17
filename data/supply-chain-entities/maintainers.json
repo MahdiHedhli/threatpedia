@@ -1,54 +1,82 @@
 [
   {
+    "account_ids": [],
     "aliases": [
       "Dominic Tarr",
       "dominictarr"
     ],
+    "first_publish_date": null,
     "id": "maintainer-dominictarr",
     "name": "Dominic Tarr",
+    "onboarding_date": null,
+    "repositories": [
+      "repo-github-com-dominictarr-event-stream"
+    ],
     "source_incident_ids": [
       "SC-2018-NPM-EVENT-STREAM"
     ]
   },
   {
+    "account_ids": [],
     "aliases": [
       "Jia Tan",
       "JiaT75"
     ],
+    "first_publish_date": null,
     "id": "maintainer-jia-tan",
     "name": "Jia Tan",
+    "onboarding_date": null,
+    "repositories": [
+      "repo-github-com-tukaani-project-xz"
+    ],
     "source_incident_ids": [
       "SC-2024-XZ-UTILS"
     ]
   },
   {
+    "account_ids": [],
     "aliases": [
       "Marak",
       "Marak Squires"
     ],
+    "first_publish_date": null,
     "id": "maintainer-marak-squires",
     "name": "Marak Squires",
+    "onboarding_date": null,
+    "repositories": [
+      "repo-github-com-marak-colors-js"
+    ],
     "source_incident_ids": [
       "SC-2022-COLORS-FAKER"
     ]
   },
   {
+    "account_ids": [],
     "aliases": [
       "Brandon Nozaki Miller",
       "RIAEvangelist"
     ],
+    "first_publish_date": null,
     "id": "maintainer-riaevangelist",
     "name": "RIAEvangelist",
+    "onboarding_date": null,
+    "repositories": [
+      "repo-github-com-riaevangelist-node-ipc"
+    ],
     "source_incident_ids": [
       "SC-2022-NODE-IPC"
     ]
   },
   {
+    "account_ids": [],
     "aliases": [
       "right9ctrl"
     ],
+    "first_publish_date": "2018-09-09",
     "id": "maintainer-right9ctrl",
     "name": "right9ctrl",
+    "onboarding_date": null,
+    "repositories": [],
     "source_incident_ids": [
       "SC-2018-NPM-EVENT-STREAM"
     ]

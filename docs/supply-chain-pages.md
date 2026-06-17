@@ -107,8 +107,13 @@ The index page shows counts for:
 - relationships
 
 Incident pages show corpus fields: summary, confidence, evidence level, attack
-stage, source-artifact divergence, affected entities, structured supply-chain
-primitives, compromised accounts, connected entities, and references. When
+stage, source-artifact divergence, affected packages, affected releases,
+structured supply-chain primitives, compromised accounts, connected entities,
+and references. Release rows are generated from `releases.json` and show the
+versioned PURL plus publish date when modeled. When
+maintainer date anchors and release publish dates are both present, incident
+pages derive a tenure-at-malicious-release row. The corpus stores the dated
+anchors only; it does not store a stale tenure field or score. When
 Phase 2B actor or campaign links are present, incident pages also show threat
 actor links, campaign links, attribution confidence, and the local evidence
 basis for those edges. These links are corpus-driven convergence edges; they do
@@ -128,6 +133,10 @@ editorial sections.
 
 Entity pages show the entity name, entity type, connected incidents, and
 connected entities when relationships support those links.
+
+Release entities are graph-addressable but are not public-routed entity pages
+in Phase 2C. They appear through incident pages and package connected-entity
+sections.
 
 ## SEO Metadata
 

@@ -34,9 +34,33 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         corpus = load_json(CORPUS_PATH)
         schema = load_json(SCHEMA_PATH)
 
-        self.assertGreaterEqual(len(corpus), 25)
+        self.assertGreaterEqual(len(corpus), 27)
         self.assertEqual(validator.validate_schema_file(schema), [])
         self.assertEqual(validator.validate_corpus(corpus), [])
+
+    def test_phase_2e_mandatory_incidents_are_modeled_end_to_end(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        by_id = {incident["id"]: incident for incident in corpus}
+
+        shai_hulud = by_id["SC-2025-NPM-SHAI-HULUD"]
+        shai_actors = shai_hulud.get("threat_actors") or []
+        shai_components = shai_hulud.get("affected_components") or []
+        shai_releases = shai_hulud.get("releases") or []
+        self.assertEqual(shai_hulud["first_public_warning_at"], "2025-09-15")
+        self.assertEqual(shai_hulud["first_observed_at"], "2025-09-14")
+        self.assertTrue(any(component.get("name") == "@ctrl/tinycolor" for component in shai_components))
+        self.assertTrue(any(release.get("malicious_range") == "4.1.1" for release in shai_releases))
+        self.assertTrue(any(actor.get("actor_type") == "provisional" for actor in shai_actors))
+
+        boltdb = by_id["SC-2025-GO-BOLTDB-TYPOSQUAT"]
+        boltdb_releases = boltdb.get("releases") or []
+        self.assertEqual(boltdb["first_public_warning_at"], "2025-02-04")
+        boltdb_components = boltdb.get("affected_components") or []
+        self.assertTrue(any(component.get("name") == "github.com/boltdb-go/bolt" for component in boltdb_components))
+        self.assertTrue(any(release.get("malicious_range") == "v1.3.1" for release in boltdb_releases))
+        self.assertEqual(boltdb["supply_chain_vectors"], ["dependency_confusion", "malicious_dependency"])
+        self.assertEqual(boltdb["compromised_accounts"], [])
+        self.assertTrue(boltdb["source_artifact_divergence"])
 
     def test_duplicate_ids_fail_validation(self) -> None:
         corpus = load_json(CORPUS_PATH)
@@ -147,6 +171,58 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
         self.assertTrue(any(".affected_components[0].purl_justification" in error for error in errors))
 
+    def test_upstream_seed_component_role_is_explicit_and_package_only(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2023-THREE-CX-DESKTOP"))
+        upstream_seed = next(component for component in incident["affected_components"] if component["name"] == "X_TRADER")
+        self.assertEqual(upstream_seed.get("component_role"), "upstream_seed")
+
+        upstream_seed["component_type"] = "software"
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".affected_components" in error and "upstream_seed requires package component_type" in error for error in errors))
+
+    def test_release_records_require_versioned_canonical_purls_and_references(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
+        incident["releases"][0]["purl"] = "pkg:npm/ua-parser-js"
+        incident["releases"][1]["references"] = ["ref-does-not-exist"]
+        incident["releases"][2]["package_name"] = "not-affected"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].purl: expected versioned package URL" in error for error in errors))
+        self.assertTrue(any(".releases[1].references[0]: unknown reference ID" in error for error in errors))
+        self.assertTrue(any(".releases[2]: release package must match an affected package component" in error for error in errors))
+
+    def test_release_records_reject_generic_purls(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-DEPENDENCY-CONFUSION"))
+        incident["releases"] = [
+            {
+                "package_name": "internal dependency names",
+                "ecosystem": "multiple",
+                "purl": "pkg:generic/internal-dependency-names@1.0.0",
+                "version": "1.0.0",
+                "published_at": "2021-02-09",
+                "malicious_range": "1.0.0",
+                "references": ["ref-does-not-exist"],
+                "disclosed_at": "2021-02-09",
+            }
+        ]
+        incident["references"][0]["id"] = "ref-does-not-exist"
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].purl: generic release PURLs are not joinable" in error for error in errors))
+
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2021-UA-PARSER-JS"))
+        incident["releases"][0]["package_name"] = None
+        incident["releases"][0]["ecosystem"] = None
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".releases[0].package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".releases[0].ecosystem: expected non-empty string" in error for error in errors))
+
     def test_malformed_url_is_rejected_without_crashing(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
         incident["references"][0]["url"] = "https://example.com:bad-port"
@@ -173,15 +249,36 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
 
     def test_structured_depth_fields_are_enforced(self) -> None:
         incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["maintainers"]))
+        if len(incident["maintainers"]) < 2:
+            incident["maintainers"].append(
+                {
+                    "name": "Temporary maintainer",
+                    "id_slug": "temporary-maintainer",
+                    "aliases": [],
+                    "onboarding_date": None,
+                    "first_publish_date": None,
+                    "repositories": [],
+                    "account_ids": [],
+                }
+            )
         incident["distribution_channels"][0]["name"] = ""
         incident["source_artifact_divergence"] = "yes"
         del incident["maintainers"][0]["id_slug"]
+        incident["maintainers"][1]["first_publish_date"] = "2018-99-99"
+        incident["maintainers"][1]["repositories"] = ["pkg-not-a-repository"]
+        incident["maintainers"][1]["account_ids"] = ["repo-not-an-account"]
 
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".distribution_channels[0].name: expected non-empty string" in error for error in errors))
         self.assertTrue(any(".source_artifact_divergence: expected boolean or null" in error for error in errors))
-        self.assertTrue(any(".maintainers[0].id_slug: expected non-empty string" in error for error in errors))
+        self.assertEqual(
+            [error for error in errors if ".maintainers[0].id_slug" in error],
+            [f"{incident['id']}.maintainers[0].id_slug: missing required field"],
+        )
+        self.assertTrue(any(".maintainers[1].first_publish_date: expected YYYY-MM-DD date or null" in error for error in errors))
+        self.assertTrue(any(".maintainers[1].repositories[0]: expected repo-* entity id" in error for error in errors))
+        self.assertTrue(any(".maintainers[1].account_ids[0]: expected account-* entity id" in error for error in errors))
 
     def test_unhashable_enum_items_do_not_crash_validation(self) -> None:
         incident = copy.deepcopy(load_json(CORPUS_PATH)[0])
@@ -348,6 +445,26 @@ class SupplyChainIncidentValidationTests(unittest.TestCase):
         errors = validator.validate_incident(incident)
 
         self.assertTrue(any(".first_public_warning_at: expected YYYY-MM-DD date or null" in error for error in errors))
+
+    def test_propagation_edges_require_evidence_and_valid_tier(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["source"] = "incident-SC-2025-NPM-SHAI-HULUD"
+        incident["propagation_edges"][0]["propagation_tier"] = "guessed"
+        incident["propagation_edges"][0]["evidence_refs"] = ["ref-missing"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0].source: expected pkg-* or release-* entity id" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].propagation_tier: invalid value 'guessed'" in error for error in errors))
+        self.assertTrue(any(".propagation_edges[0].evidence_refs[0]: unknown reference ID 'ref-missing'" in error for error in errors))
+
+    def test_propagation_edges_reject_self_loops(self) -> None:
+        incident = copy.deepcopy(next(item for item in load_json(CORPUS_PATH) if item["id"] == "SC-2025-NPM-SHAI-HULUD"))
+        incident["propagation_edges"][0]["target"] = incident["propagation_edges"][0]["source"]
+
+        errors = validator.validate_incident(incident)
+
+        self.assertTrue(any(".propagation_edges[0]: source and target cannot be the same" in error for error in errors))
 
 
 if __name__ == "__main__":

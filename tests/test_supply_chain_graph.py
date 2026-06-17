@@ -30,6 +30,17 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def find_entity(entities: list[dict], entity_id: str) -> dict:
+    if not isinstance(entities, list):
+        raise ValueError("entities must be a list")
+    for entity in entities:
+        if not isinstance(entity, dict):
+            continue
+        if entity.get("id") == entity_id:
+            return entity
+    raise ValueError(f"entity not found: {entity_id}")
+
+
 class SupplyChainGraphTests(unittest.TestCase):
     def test_generated_graph_validates(self) -> None:
         corpus = load_json(CORPUS_PATH)
@@ -50,10 +61,18 @@ class SupplyChainGraphTests(unittest.TestCase):
         account_ids = {entity["id"] for entity in graph["accounts"]}
         actor_ids = {entity["id"] for entity in graph["actors"]}
         campaign_ids = {entity["id"] for entity in graph["campaigns"]}
+        release_ids = {entity["id"] for entity in graph["releases"]}
 
         self.assertGreaterEqual(len(graph["relationships"]), 100)
         self.assertIn("pkg-npm-event-stream", package_ids)
         self.assertIn("pkg-npm-flatmap-stream", package_ids)
+        self.assertIn("pkg-npm-ctrl-tinycolor", package_ids)
+        self.assertIn("pkg-golang-github-com-boltdb-go-bolt", package_ids)
+        self.assertIn("pkg-generic-x-trader", package_ids)
+        self.assertIn("release-npm-flatmap-stream-0-1-1", release_ids)
+        self.assertIn("release-npm-ua-parser-js-0-7-29", release_ids)
+        self.assertIn("release-npm-ctrl-tinycolor-4-1-1", release_ids)
+        self.assertIn("release-golang-github-com-boltdb-go-bolt-v1-3-1", release_ids)
         self.assertIn("maintainer-jia-tan", maintainer_ids)
         self.assertIn("maintainer-dominictarr", maintainer_ids)
         self.assertIn("org-codecov", organization_ids)
@@ -64,7 +83,155 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("account-npm-eslint-scope-npm-maintainer-account", account_ids)
         self.assertIn("actor-unc-xz-utils-operator", actor_ids)
         self.assertIn("actor-lazarus-group", actor_ids)
+        self.assertIn("actor-shai-hulud-operator", actor_ids)
+        self.assertIn("actor-boltdb-go-operator", actor_ids)
         self.assertIn("campaign-tp-camp-2023-0002", campaign_ids)
+        self.assertIn(
+            {
+                "source": "maintainer-dominictarr",
+                "target": "repo-github-com-dominictarr-event-stream",
+                "type": "MAINTAINS_REPOSITORY",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "pkg-generic-x-trader",
+                "type": "AFFECTED_PACKAGE",
+            },
+            graph["relationships"],
+        )
+        self.assertNotIn(
+            {
+                "source": "incident-SC-2023-THREE-CX-DESKTOP",
+                "target": "org-trading-technologies",
+                "type": "AFFECTED_ORGANIZATION",
+            },
+            graph["relationships"],
+        )
+
+    def test_builder_preserves_exact_release_versions_when_normalized_slugs_collide(self) -> None:
+        corpus = [
+            {
+                "schema_version": "supply-chain-incident/1",
+                "id": "SC-TEST-RELEASE-COLLISION",
+                "title": "release collision fixture",
+                "affected_components": [
+                    {
+                        "component_type": "package",
+                        "ecosystem": "npm",
+                        "name": "example-pkg",
+                        "vendor": "example",
+                        "package_url": "pkg:npm/example-pkg",
+                    }
+                ],
+                "releases": [
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha.1",
+                        "version": "1.0.0-alpha.1",
+                        "published_at": "2026-01-01",
+                        "malicious_range": "1.0.0-alpha.1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-02",
+                    },
+                    {
+                        "package_name": "example-pkg",
+                        "ecosystem": "npm",
+                        "purl": "pkg:npm/example-pkg@1.0.0-alpha-1",
+                        "version": "1.0.0-alpha-1",
+                        "published_at": "2026-01-03",
+                        "malicious_range": "1.0.0-alpha-1",
+                        "references": ["ref-example"],
+                        "disclosed_at": "2026-01-04",
+                    },
+                ],
+                "references": [{"id": "ref-example", "title": "Example", "url": "https://example.com"}],
+                "source_artifact_divergence": False,
+            }
+        ]
+
+        graph = builder.build_graph(corpus)
+        reversed_corpus = copy.deepcopy(corpus)
+        reversed_corpus[0]["releases"] = list(reversed(reversed_corpus[0]["releases"]))
+        reversed_graph = builder.build_graph(reversed_corpus)
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
+        release_ids = {entity["id"] for entity in graph["releases"]}
+        reversed_release_ids = {entity["id"] for entity in reversed_graph["releases"]}
+        release_versions = {entity["version"] for entity in graph["releases"]}
+        base_id = "release-npm-example-pkg-1-0-0-alpha-1"
+
+        self.assertEqual(len(graph["releases"]), 2)
+        self.assertEqual(release_versions, {"1.0.0-alpha.1", "1.0.0-alpha-1"})
+        self.assertNotIn(base_id, release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha.1')}", release_ids)
+        self.assertIn(f"{base_id}-v{builder.exact_version_suffix('1.0.0-alpha-1')}", release_ids)
+        self.assertEqual(release_ids, reversed_release_ids)
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, graph["relationships"]), [])
+
+    def test_builder_preserves_seeded_by_context_for_duplicate_endpoint_pairs(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        shai_hulud = next(incident for incident in corpus if incident["id"] == "SC-2025-NPM-SHAI-HULUD")
+        duplicate = copy.deepcopy(shai_hulud)
+        duplicate["id"] = "SC-2099-NPM-SHAI-HULUD-DUPLICATE"
+        duplicate["title"] = "Fixture duplicate Shai-Hulud propagation incident"
+        edge = shai_hulud["propagation_edges"][0]
+
+        graph = builder.build_graph([*corpus, duplicate])
+        entities_by_type = {entity_type: graph[entity_type] for entity_type in validator.ENTITY_FILES}
+        matching = [
+            relationship
+            for relationship in graph["relationships"]
+            if relationship["type"] == "SEEDED_BY"
+            and relationship["source"] == edge["source"]
+            and relationship["target"] == edge["target"]
+        ]
+
+        self.assertEqual(
+            {relationship["source_incident_id"] for relationship in matching},
+            {"SC-2025-NPM-SHAI-HULUD", "SC-2099-NPM-SHAI-HULUD-DUPLICATE"},
+        )
+        self.assertEqual(validator.validate_graph([*corpus, duplicate], entities_by_type, graph["relationships"]), [])
+
+    def test_builder_rejects_conflicting_duplicate_release_metadata(self) -> None:
+        first = {
+            "schema_version": "supply-chain-incident/1",
+            "id": "SC-TEST-DUPLICATE-RELEASE-A",
+            "title": "duplicate release fixture A",
+            "affected_components": [
+                {
+                    "component_type": "package",
+                    "ecosystem": "npm",
+                    "name": "example-pkg",
+                    "vendor": "example",
+                    "package_url": "pkg:npm/example-pkg",
+                }
+            ],
+            "releases": [
+                {
+                    "package_name": "example-pkg",
+                    "ecosystem": "npm",
+                    "purl": "pkg:npm/example-pkg@1.0.0",
+                    "version": "1.0.0",
+                    "published_at": "2026-01-01",
+                    "malicious_range": "1.0.0",
+                    "references": ["ref-example-a"],
+                    "disclosed_at": "2026-01-02",
+                }
+            ],
+            "source_artifact_divergence": False,
+        }
+        second = copy.deepcopy(first)
+        second["id"] = "SC-TEST-DUPLICATE-RELEASE-B"
+        second["releases"][0]["published_at"] = "2026-01-03"
+        second["releases"][0]["references"] = ["ref-example-b"]
+
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([first, second])
+        with self.assertRaisesRegex(ValueError, "conflicting release metadata"):
+            builder.build_graph([second, first])
 
     def test_builder_uses_highest_actor_confidence_across_incidents(self) -> None:
         corpus = copy.deepcopy(load_json(CORPUS_PATH))
@@ -73,7 +240,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         second["id"] = "SC-2024-XZ-UTILS-SIBLING"
         second["threat_actors"][0]["confidence"] = "confirmed"
         graph = builder.build_graph([first, second])
-        actor = next(entity for entity in graph["actors"] if entity["id"] == "actor-unc-xz-utils-operator")
+        actor = find_entity(graph["actors"], "actor-unc-xz-utils-operator")
 
         self.assertEqual(actor["attribution_confidence"], "confirmed")
 
@@ -152,8 +319,12 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["aliases"].append(entities_by_type["packages"][1]["aliases"][0])
-        entities_by_type["packages"][0]["ecosystem"] = entities_by_type["packages"][1]["ecosystem"]
+        event_stream = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        flatmap_stream = find_entity(entities_by_type["packages"], "pkg-npm-flatmap-stream")
+        flatmap_aliases = flatmap_stream.get("aliases") or []
+        self.assertGreater(len(flatmap_aliases), 0)
+        event_stream["aliases"].append(flatmap_aliases[0])
+        event_stream["ecosystem"] = flatmap_stream["ecosystem"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -164,7 +335,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        first = entities_by_type["packages"][0]
+        first = find_entity(entities_by_type["packages"], "pkg-multiple-internal-dependency-names")
         sibling = copy.deepcopy(first)
         sibling["id"] = "pkg-pypi-internal-dependency-names"
         sibling["ecosystem"] = "pypi"
@@ -188,7 +359,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["source_incident_ids"] = ["SC-DOES-NOT-EXIST"]
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -199,7 +370,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["package_url"] = None
+        find_entity(entities_by_type["packages"], "pkg-npm-event-stream")["package_url"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -210,8 +381,9 @@ class SupplyChainGraphTests(unittest.TestCase):
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
         entities_by_type["packages"] = copy.deepcopy(entities_by_type["packages"])
-        entities_by_type["packages"][0]["name"] = None
-        entities_by_type["packages"][0]["ecosystem"] = None
+        package = find_entity(entities_by_type["packages"], "pkg-npm-event-stream")
+        package["name"] = None
+        package["ecosystem"] = None
 
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
@@ -229,6 +401,228 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_graph(corpus, entities_by_type, relationships)
 
         self.assertTrue(any(".purl_justification: expected non-empty generic PURL justification" in error for error in errors))
+
+    def test_release_entities_require_versioned_canonical_purls(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        flatmap_release = find_entity(entities_by_type["releases"], "release-npm-flatmap-stream-0-1-1")
+        ua_parser_release = find_entity(entities_by_type["releases"], "release-npm-ua-parser-js-0-7-29")
+        tinycolor_release = find_entity(entities_by_type["releases"], "release-npm-ctrl-tinycolor-4-1-1")
+        flatmap_release["purl"] = "pkg:npm/flatmap-stream"
+        ua_parser_release["published_at"] = "2021-99-99"
+        tinycolor_release.pop("disclosed_at", None)
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".purl: expected versioned package URL" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".disclosed_at: missing required field" in error for error in errors))
+
+    def test_release_entity_references_must_exist_in_source_incidents(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["references"] = ["ref-does-not-exist"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".references[0]: unknown source reference id 'ref-does-not-exist'" in error for error in errors))
+
+    def test_release_purl_validation_does_not_crash_on_malformed_identity_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        entities_by_type["releases"] = copy.deepcopy(entities_by_type["releases"])
+        entities_by_type["releases"][0]["package_name"] = None
+        entities_by_type["releases"][0]["ecosystem"] = None
+        entities_by_type["releases"][0]["published_at"] = "2021-99-99"
+        entities_by_type["releases"][0]["malicious_range"] = ""
+        entities_by_type["releases"][0]["references"] = []
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".package_name: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".ecosystem: expected non-empty string" in error for error in errors))
+        self.assertTrue(any(".published_at: expected YYYY-MM-DD date" in error for error in errors))
+        self.assertTrue(any(".malicious_range: expected non-empty string or null" in error for error in errors))
+        self.assertTrue(any(".references: expected non-empty list" in error for error in errors))
+
+    def test_release_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "PACKAGE_RELEASE",
+            }
+        )
+        relationships.append(
+            {
+                "source": "pkg-npm-flatmap-stream",
+                "target": "release-npm-flatmap-stream-0-1-1",
+                "type": "INCIDENT_AFFECTED_RELEASE",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("PACKAGE_RELEASE must start from a package node" in error for error in errors))
+        self.assertTrue(any("INCIDENT_AFFECTED_RELEASE must start from an incident node" in error for error in errors))
+
+    def test_seeded_by_edges_are_evidence_tiered_and_acyclic(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = load_json(RELATIONSHIP_PATH)
+        seeded_by = [item for item in relationships if item["type"] == "SEEDED_BY"]
+
+        self.assertEqual(len(seeded_by), 3)
+        self.assertTrue(all(item["source"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["target"].startswith(("pkg-", "release-")) for item in seeded_by))
+        self.assertTrue(all(item["propagation_tier"] in {"causal", "temporal"} for item in seeded_by))
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+
+    def test_seeded_by_relationship_failures_are_reported(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2025-NPM-SHAI-HULUD",
+                "target": "pkg-npm-ctrl-tinycolor",
+                "type": "SEEDED_BY",
+                "propagation_tier": "inferred",
+                "evidence_refs": [],
+                "summary": "short",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY must start from a package or release node" in error for error in errors))
+        self.assertTrue(any(".propagation_tier: expected 'causal' or 'temporal'" in error for error in errors))
+        self.assertTrue(any(".evidence_refs: expected non-empty list" in error for error in errors))
+        self.assertTrue(any(".summary: expected evidence summary" in error for error in errors))
+        self.assertTrue(any(".source_incident_id: expected string" in error for error in errors))
+
+    def test_seeded_by_relationship_refs_must_resolve(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-does-not-exist"],
+                "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+                "summary": "Fixture creates an invalid propagation edge for validator coverage.",
+            }
+        )
+        relationships.append(
+            {
+                "source": "pkg-npm-rxnt-authentication",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "source_incident_id": "SC-2099-NOT-REAL",
+                "summary": "Fixture creates an unknown incident reference for validator coverage.",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("unknown reference 'ref-does-not-exist'" in error for error in errors))
+        self.assertTrue(any(".source_incident_id: unknown incident 'SC-2099-NOT-REAL'" in error for error in errors))
+
+    def test_seeded_by_relationship_must_preserve_source_incident_context(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        seeded_by = next(item for item in relationships if item["type"] == "SEEDED_BY")
+        seeded_by["source_incident_id"] = "SC-2018-NPM-EVENT-STREAM"
+        seeded_by["evidence_refs"] = ["ref-github-event-stream-116"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("missing SEEDED_BY relationship" in error and "source_incident_id" in error for error in errors))
+
+    def test_seeded_by_cycle_fails(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "release-npm-ctrl-tinycolor-4-1-2",
+                "target": "release-npm-ctrl-tinycolor-4-1-1",
+                "type": "SEEDED_BY",
+                "propagation_tier": "temporal",
+                "evidence_refs": ["ref-wiz-shai-hulud"],
+                "summary": "Fixture creates a propagation cycle for validator coverage.",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("SEEDED_BY cycle detected" in error for error in errors))
+
+    def test_maintainer_relationship_sources_are_bounded(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "repo-github-com-dominictarr-event-stream",
+                "type": "MAINTAINS_REPOSITORY",
+            }
+        )
+        relationships.append(
+            {
+                "source": "incident-SC-2018-NPM-EVENT-STREAM",
+                "target": "account-npm-eslint-scope-npm-maintainer-account",
+                "type": "USES_ACCOUNT",
+            }
+        )
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("MAINTAINS_REPOSITORY must start from a maintainer node" in error for error in errors))
+        self.assertTrue(any("USES_ACCOUNT must start from a maintainer node" in error for error in errors))
+
+    def test_maintainer_entities_require_anchor_fields_and_implied_edges(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        entities_by_type["maintainers"] = copy.deepcopy(entities_by_type["maintainers"])
+        maintainer = find_entity(entities_by_type["maintainers"], "maintainer-dominictarr")
+        maintainer.pop("onboarding_date", None)
+        maintainer["first_publish_date"] = "2018-99-99"
+        maintainer["repositories"] = ["pkg-not-a-repository"]
+        maintainer["account_ids"] = ["repo-not-an-account"]
+        relationships = [
+            relationship
+            for relationship in relationships
+            if not (
+                relationship["source"] == "maintainer-dominictarr"
+                and relationship["target"] == "repo-github-com-dominictarr-event-stream"
+                and relationship["type"] == "MAINTAINS_REPOSITORY"
+            )
+        ]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any(".onboarding_date: missing required field" in error for error in errors))
+        self.assertTrue(any(".first_publish_date: expected YYYY-MM-DD date or null" in error for error in errors))
+        self.assertTrue(any(".repositories[0]: expected repo-* entity id" in error for error in errors))
+        self.assertTrue(any(".account_ids[0]: expected account-* entity id" in error for error in errors))
+        self.assertTrue(any("missing MAINTAINS_REPOSITORY relationship" in error for error in errors))
 
     def test_relationship_type_must_target_expected_entity_class(self) -> None:
         corpus = load_json(CORPUS_PATH)

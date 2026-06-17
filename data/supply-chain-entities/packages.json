@@ -1,6 +1,44 @@
 [
   {
     "aliases": [
+      "3CX DesktopApp"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-3cx-desktopapp",
+    "name": "3CX DesktopApp",
+    "package_url": "pkg:generic/3cx-desktopapp",
+    "purl_justification": "3CX DesktopApp is vendor desktop software, not a public package-registry artifact joinable to OSV or deps.dev.",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
+      "X_TRADER"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-x-trader",
+    "name": "X_TRADER",
+    "package_url": "pkg:generic/x-trader",
+    "purl_justification": "X_TRADER is vendor desktop trading software, not a public package-registry artifact joinable to OSV or deps.dev.",
+    "source_incident_ids": [
+      "SC-2023-THREE-CX-DESKTOP"
+    ]
+  },
+  {
+    "aliases": [
+      "github.com/boltdb-go/bolt"
+    ],
+    "ecosystem": "golang",
+    "id": "pkg-golang-github-com-boltdb-go-bolt",
+    "name": "github.com/boltdb-go/bolt",
+    "package_url": "pkg:golang/github.com/boltdb-go/bolt",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
       "internal dependency names"
     ],
     "ecosystem": "multiple",
@@ -22,6 +60,18 @@
     "package_url": "pkg:npm/colors",
     "source_incident_ids": [
       "SC-2022-COLORS-FAKER"
+    ]
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-ctrl-tinycolor",
+    "name": "@ctrl/tinycolor",
+    "package_url": "pkg:npm/%40ctrl/tinycolor",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {
@@ -142,6 +192,18 @@
     "package_url": "pkg:npm/rc",
     "source_incident_ids": [
       "SC-2021-NPM-RC"
+    ]
+  },
+  {
+    "aliases": [
+      "rxnt-authentication"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-rxnt-authentication",
+    "name": "rxnt-authentication",
+    "package_url": "pkg:npm/rxnt-authentication",
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
     ]
   },
   {

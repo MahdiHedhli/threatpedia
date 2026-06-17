@@ -1,0 +1,116 @@
+{
+  "task_id": "TASK-2026-0373",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "complete",
+  "created": "2026-06-15T20:49:54.655Z",
+  "updated": "2026-06-16T16:18:47.241Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "LiteSpeed cPanel Plugin UNIX Symbolic Link (Symlink) Following Vulnerability (CVE-2026-54420)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-54420",
+      "https://blog.litespeedtech.com/2026/06/01/security-update-for-litespeed-cpanel-plugin-2/"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-54420",
+      "cves": [
+        "CVE-2026-54420"
+      ],
+      "exploitId": "TP-EXP-2026-0322",
+      "type": "Unclassified",
+      "platform": "LiteSpeed cPanel Plugin",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-06-15",
+      "cwes": [
+        "CWE-61"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-06-15. Required action by 2026-06-18. CVSS 3.1: 8.5 (HIGH). Discovery score: 98/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/litespeed-cpanel-plugin-cve-2026-54420.md",
+    "branch": "pipeline/TASK-2026-0373",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 98,
+    "auto_certify": true,
+    "cvss": {
+      "score": 8.5,
+      "severity": "HIGH",
+      "vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-06-15T20:49:54.655Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-15T20:49:54.655Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 98)"
+    },
+    {
+      "timestamp": "2026-06-15T21:59:24.925Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1159"
+    },
+    {
+      "timestamp": "2026-06-16T16:08:14.948Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-16T16:10:21.801Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1174"
+    },
+    {
+      "timestamp": "2026-06-16T16:18:47.241Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1174 merged (618f765)."
+    }
+  ],
+  "pr_number": 1174,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1174",
+  "merged_at": "2026-06-16T16:18:47.241Z"
+}

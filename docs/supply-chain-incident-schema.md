@@ -44,7 +44,12 @@ The core fields are:
 - `affected_ecosystems`: ecosystem labels such as `npm`, `pypi`, `windows`,
   `github-actions`, or `vendor-update`
 - `affected_components`: structured impacted packages, projects, services, or
-  update channels
+  update channels. Components default to `component_role: "affected"` when the
+  role is omitted. Use `component_role: "upstream_seed"` only for a package
+  entity that must exist as the source of an evidence-gated propagation edge but
+  must not be listed as an affected component of the downstream incident.
+- `releases`: optional version-addressable package releases with canonical
+  versioned PURLs, publish dates, malicious range notes, and local reference IDs
 - `supply_chain_vectors`: normalized vector labels
 - `impact_categories`: normalized impact labels
 - `references`: public documentation for the incident
@@ -56,7 +61,9 @@ The core fields are:
   entered or propagated
 - `source_artifact_divergence`: `true`, `false`, or `null` when unknown
 - `maintainers`: named maintainers or maintainership handles when directly
-  supported
+  supported. Maintainer records include aliases, dated anchors
+  (`onboarding_date`, `first_publish_date`), and explicit repository/account
+  entity IDs where public evidence supports those links.
 - `repositories`: source repositories tied to the incident
 - `build_systems`: build or CI/CD systems tied to the incident
 - `distribution_channels`: registries, update channels, CDN scripts, source
@@ -67,6 +74,11 @@ The core fields are:
 - `campaigns`: optional evidence-backed campaign links
 - `attribution_confidence`: optional incident-level attribution confidence
 - `attribution_evidence`: local evidence records for each actor/campaign edge
+
+Maintainer records deliberately store dated anchors, not a mutable `tenure`
+field. Page generation derives tenure-at-malicious-release from
+`onboarding_date` or `first_publish_date` and the affected release
+`published_at` value when both are known.
 
 Featured incident pages may also carry editorial fields:
 
@@ -87,6 +99,27 @@ software, services, websites, and update channels should use `null`. See
 `docs/supply-chain-purl-model.md` for the canonical PURL grammar and validation
 contract. `pkg:generic/...` is allowed only for reviewed cross-ecosystem
 placeholders and requires `purl_justification`.
+
+Release records are optional in Phase 2C and are used only when public evidence
+supports a precise package version and publish date. They use this shape:
+
+```json
+{
+  "package_name": "flatmap-stream",
+  "ecosystem": "npm",
+  "purl": "pkg:npm/flatmap-stream@0.1.1",
+  "version": "0.1.1",
+  "published_at": "YYYY-MM-DD",
+  "malicious_range": "0.1.1 or null",
+  "references": ["ref-example"],
+  "disclosed_at": "YYYY-MM-DD or null"
+}
+```
+
+Every release must match an affected package component in the same incident.
+The `purl` must be canonical, versioned, and backed by local reference IDs.
+Generic release PURLs are not accepted because they cannot join cleanly to the
+release-event spine.
 
 ## Attack Stages
 

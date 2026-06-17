@@ -37,6 +37,8 @@ const routeUrls = new Set(routes.map(routeUrl));
 assert.ok(routeUrls.has('/supply-chain/'), 'index route should be generated');
 assert.ok(routeUrls.has('/supply-chain/incidents/SC-2021-CODECOV-BASH-UPLOADER/'), 'incident route should be generated');
 assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-event-stream/'), 'package route should be generated');
+assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-ctrl-tinycolor/'), 'Shai-Hulud package route should be generated');
+assert.ok(routeUrls.has('/supply-chain/packages/pkg-golang-github-com-boltdb-go-bolt/'), 'Go typosquat package route should be generated');
 assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-codecov-bash/'), 'repository route should be generated');
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');
@@ -53,10 +55,116 @@ assert.equal(routes.length, expectedRouteCount, 'enabled route count should matc
 const index = getSupplyChainIndexModel(data);
 assert.equal(index.counts.incidents, data.incidents.length, 'index should expose incident count');
 assert.equal(index.counts.relationships, data.relationships.length, 'index should expose relationship count');
+assert.equal(index.counts.releases, data.entities.releases.length, 'index should expose release count');
 assert.equal(index.counts.buildSystems, data.entities.build_systems.length, 'index should expose build system count');
 assert.equal(index.counts.distributionChannels, data.entities.distribution_channels.length, 'index should expose distribution channel count');
 assert.ok(/supply chain/i.test(index.lede), 'index should include polished public copy');
 assert.ok(!JSON.stringify(index).includes('Canary'), 'public page model should not expose the internal codename');
+assert.equal(index.graphHero.status, 'Corpus graph preview', 'index should expose the G1 graph placeholder state');
+assert.ok(index.graphHero.nodeCount > data.incidents.length, 'graph hero should expose corpus node count');
+assert.equal(index.graphHero.relationshipCount, data.relationships.length, 'graph hero should expose relationship count');
+assert.equal(index.incidents.length, data.incidents.length, 'index should expose every incident row');
+assert.ok(index.incidents.every((incident) => incident.summary), 'index incident rows should preserve summaries');
+index.incidents.forEach((incident) => {
+  assert.ok(routeUrls.has(incident.href), `index incident route should resolve: ${incident.href}`);
+});
+assert.ok(index.attackVectorBars.length > 0, 'index should include attack vector controls');
+assert.ok(
+  index.attackVectorBars.some((row) => row.stage === 'ci_cd_compromise' && row.label === 'CI/CD Compromise'),
+  'attack vector labels should preserve CI/CD capitalization'
+);
+assert.equal(
+  index.attackVectorBars.reduce((total, row) => total + row.count, 0),
+  data.incidents.length,
+  'attack vector bars should cover all incidents'
+);
+index.attackVectorBars.forEach((row) => {
+  assert.equal(row.command.type, 'filter-stage', `attack vector should include graph filter command: ${row.stage}`);
+  assert.ok(row.percent >= 8 && row.percent <= 100, `attack vector width should be bounded: ${row.stage}`);
+  assert.ok(row.incidents.length === row.count, `attack vector incident list should match count: ${row.stage}`);
+});
+assert.ok(index.attributionRows.length > 0, 'index should include attribution rows');
+index.attributionRows.forEach((row) => {
+  assert.equal(row.command.type, 'select-actor', `attribution row should include graph select command: ${row.id}`);
+  assert.ok(row.incidentCount > 0, `attribution row should be backed by incidents: ${row.id}`);
+});
+const malformedAttributionData = {
+  ...data,
+  incidentByNodeId: undefined,
+  incidents: [null, ...data.incidents],
+  relationships: [null, ...data.relationships],
+  entities: {
+    ...data.entities,
+    actors: [null, { ...data.entities.actors[0], name: null, source_incident_ids: 'not-an-array' }],
+    campaigns: [
+      null,
+      { ...data.entities.campaigns[0], source_incident_ids: 'not-an-array' },
+      {
+        ...data.entities.campaigns[0],
+        id: 'campaign-missing-name',
+        name: null,
+        source_incident_ids: [data.entities.actors[0].source_incident_ids[0]],
+      },
+      {
+        ...data.entities.campaigns[0],
+        id: 'campaign-unresolved-incident',
+        name: 'Unresolved Incident Campaign',
+        source_incident_ids: ['SC-DOES-NOT-EXIST'],
+      },
+    ],
+  },
+};
+const malformedAttributionIndex = getSupplyChainIndexModel(malformedAttributionData);
+assert.ok(
+  malformedAttributionIndex.attributionRows.length > 0,
+  'attribution rows should resolve incident relationships without incidentByNodeId'
+);
+assert.ok(
+  malformedAttributionIndex.attributionRows.some((row) =>
+    row.campaigns.some((campaign) => campaign.id === 'campaign-missing-name' && campaign.label === 'campaign-missing-name')
+  ),
+  'attribution rows should fall back to campaign ID when a campaign name is missing'
+);
+assert.ok(
+  malformedAttributionIndex.attributionRows.some(
+    (row) => row.id === data.entities.actors[0].id && row.label === data.entities.actors[0].id
+  ),
+  'attribution rows should fall back to actor ID when an actor name is missing'
+);
+assert.ok(
+  malformedAttributionIndex.attributionRows.every((row) =>
+    row.campaigns.every((campaign) => campaign.id !== 'campaign-unresolved-incident')
+  ),
+  'attribution rows should not attach campaigns through unresolved incident IDs'
+);
+assert.ok(index.dwellTimeline.length > 0, 'index should include dwell timeline rows');
+index.dwellTimeline.forEach((row) => {
+  assert.equal(row.command.type, 'select-incident', `dwell row should include graph select command: ${row.id}`);
+  assert.ok(row.dwellDays >= 0, `dwell row should expose non-negative dwell days: ${row.id}`);
+  assert.ok(row.barPercent >= 6 && row.barPercent <= 100, `dwell bar width should be bounded: ${row.id}`);
+  assert.ok(row.warningPercent >= 0 && row.warningPercent <= 100, `warning marker should be bounded: ${row.id}`);
+  assert.ok(row.warningPercent <= row.barPercent, `warning marker should not exceed visible dwell bar: ${row.id}`);
+  assert.ok(row.disclosedPercent >= 0 && row.disclosedPercent <= 100, `disclosure marker should be bounded: ${row.id}`);
+  assert.equal(row.disclosedPercent, row.barPercent, `disclosure marker should align with visible dwell bar: ${row.id}`);
+  if (row.warningDays === row.dwellDays) {
+    assert.equal(row.warningPercent, row.barPercent, `same-day warning marker should align with dwell bar: ${row.id}`);
+  }
+  assert.ok(routeUrls.has(row.href), `dwell incident route should resolve: ${row.href}`);
+});
+const isoDwellIncidentId = index.dwellTimeline[0].id;
+const isoDwellData = {
+  ...data,
+  incidents: data.incidents.map((incident) =>
+    incident.id === isoDwellIncidentId
+      ? {
+          ...incident,
+          first_observed_at: `${incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at}T00:00:00Z`,
+        }
+      : incident
+  ),
+};
+const isoDwellRow = getSupplyChainIndexModel(isoDwellData).dwellTimeline.find((row) => row.id === isoDwellIncidentId);
+assert.ok(isoDwellRow && isoDwellRow.dwellDays >= 0, 'dwell timeline should parse ISO timestamp date anchors');
 assert.equal(index.explanatorySections.length, 4, 'index should include explanatory sections');
 assert.equal(index.featuredIncidents.length, 5, 'index should include five featured incidents');
 assert.deepEqual(
@@ -174,6 +282,28 @@ assert.ok(
   'incident connected entities should fall back to corpus threat_actors when generated incident attribution edges are stale'
 );
 
+const uaParser = getSupplyChainIncidentPage('SC-2021-UA-PARSER-JS', data);
+assert.equal(uaParser.sections.releases.length, 3, 'ua-parser-js page should include three affected releases');
+assert.ok(
+  uaParser.sections.releases.some((release) => release.id === 'release-npm-ua-parser-js-0-7-29'),
+  'ua-parser-js page should include release entity details'
+);
+assert.ok(
+  uaParser.sections.releases.every((release) => release.context.includes('pkg:npm/ua-parser-js@')),
+  'release rows should expose versioned PURL context'
+);
+
+const eventStream = getSupplyChainIncidentPage('SC-2018-NPM-EVENT-STREAM', data);
+assert.ok(
+  eventStream.sections.maintainerTenureAtMaliciousRelease.some(
+    (row) =>
+      row.maintainer.id === 'maintainer-right9ctrl' &&
+      row.release.id === 'release-npm-flatmap-stream-0-1-1' &&
+      row.days === 0
+  ),
+  'event-stream page should derive maintainer tenure at malicious release from stored anchors'
+);
+
 const threeCx = getSupplyChainIncidentPage('SC-2023-THREE-CX-DESKTOP', data);
 assert.ok(
   threeCx.sections.actors.some((actor) => actor.href === '/threat-actors/lazarus-group/'),
@@ -189,6 +319,19 @@ assert.ok(eventStreamPackage.relatedIncidents.length > 0, 'entity page should in
 eventStreamPackage.relatedIncidents.forEach((incident) => {
   assert.ok(routeUrls.has(incident.href), `related incident route should resolve: ${incident.href}`);
 });
+const xTraderPackage = getSupplyChainEntityPage('packages', 'pkg-generic-x-trader', data);
+assert.ok(
+  xTraderPackage.relatedIncidents.some(
+    (incident) => incident.id === 'SC-2023-THREE-CX-DESKTOP' && incident.type === 'SEEDED_BY'
+  ),
+  'SEEDED_BY package endpoints should preserve source incident context'
+);
+const threeCxPackage = getSupplyChainEntityPage('packages', 'pkg-generic-3cx-desktopapp', data);
+assert.equal(
+  threeCxPackage.relatedIncidents.filter((incident) => incident.id === 'SC-2023-THREE-CX-DESKTOP').length,
+  1,
+  'related incident lists should dedupe direct and SEEDED_BY context by incident id'
+);
 assert.ok(eventStreamPackage.connectedEntities.length > 0, 'entity page should include connected entities');
 eventStreamPackage.connectedEntities.forEach((entity) => {
   assert.ok(
@@ -215,6 +358,10 @@ assert.ok(eventStreamPackage.seo.ogTitle, 'entity page should include Open Graph
 assert.ok(eventStreamPackage.seo.jsonLd, 'entity page should include JSON-LD');
 
 const jiaTanMaintainer = getSupplyChainEntityPage('maintainers', 'maintainer-jia-tan', data);
+assert.ok(
+  jiaTanMaintainer.connectedEntities.some((entity) => entity.id === 'repo-github-com-tukaani-project-xz'),
+  'maintainer page should surface maintained repository connections'
+);
 assert.ok(
   jiaTanMaintainer.connectedEntities.some(
     (entity) => entity.id === 'actor-unc-xz-utils-operator' && entity.entityType === 'Threat Actor' && entity.href === null

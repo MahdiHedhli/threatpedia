@@ -1,0 +1,151 @@
+[
+  {
+    "aliases": [
+      "github.com/boltdb-go/bolt@v1.3.1",
+      "pkg:golang/github.com/boltdb-go/bolt@v1.3.1"
+    ],
+    "disclosed_at": "2025-02-04",
+    "ecosystem": "golang",
+    "id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "malicious_range": "v1.3.1",
+    "name": "github.com/boltdb-go/bolt@v1.3.1",
+    "package_name": "github.com/boltdb-go/bolt",
+    "published_at": "2021-11-01",
+    "purl": "pkg:golang/github.com/boltdb-go/bolt@v1.3.1",
+    "references": [
+      "ref-socket-boltdb-go"
+    ],
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ],
+    "version": "v1.3.1"
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor@4.1.1",
+      "pkg:npm/%40ctrl/tinycolor@4.1.1"
+    ],
+    "disclosed_at": "2025-09-16",
+    "ecosystem": "npm",
+    "id": "release-npm-ctrl-tinycolor-4-1-1",
+    "malicious_range": "4.1.1",
+    "name": "@ctrl/tinycolor@4.1.1",
+    "package_name": "@ctrl/tinycolor",
+    "published_at": "2025-09-15",
+    "purl": "pkg:npm/%40ctrl/tinycolor@4.1.1",
+    "references": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ],
+    "version": "4.1.1"
+  },
+  {
+    "aliases": [
+      "@ctrl/tinycolor@4.1.2",
+      "pkg:npm/%40ctrl/tinycolor@4.1.2"
+    ],
+    "disclosed_at": "2025-09-16",
+    "ecosystem": "npm",
+    "id": "release-npm-ctrl-tinycolor-4-1-2",
+    "malicious_range": "4.1.2",
+    "name": "@ctrl/tinycolor@4.1.2",
+    "package_name": "@ctrl/tinycolor",
+    "published_at": "2025-09-15",
+    "purl": "pkg:npm/%40ctrl/tinycolor@4.1.2",
+    "references": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "source_incident_ids": [
+      "SC-2025-NPM-SHAI-HULUD"
+    ],
+    "version": "4.1.2"
+  },
+  {
+    "aliases": [
+      "flatmap-stream@0.1.1",
+      "pkg:npm/flatmap-stream@0.1.1"
+    ],
+    "disclosed_at": "2018-11-26",
+    "ecosystem": "npm",
+    "id": "release-npm-flatmap-stream-0-1-1",
+    "malicious_range": "0.1.1",
+    "name": "flatmap-stream@0.1.1",
+    "package_name": "flatmap-stream",
+    "published_at": "2018-09-09",
+    "purl": "pkg:npm/flatmap-stream@0.1.1",
+    "references": [
+      "ref-github-event-stream-116"
+    ],
+    "source_incident_ids": [
+      "SC-2018-NPM-EVENT-STREAM"
+    ],
+    "version": "0.1.1"
+  },
+  {
+    "aliases": [
+      "pkg:npm/ua-parser-js@0.7.29",
+      "ua-parser-js@0.7.29"
+    ],
+    "disclosed_at": "2021-10-22",
+    "ecosystem": "npm",
+    "id": "release-npm-ua-parser-js-0-7-29",
+    "malicious_range": "0.7.29",
+    "name": "ua-parser-js@0.7.29",
+    "package_name": "ua-parser-js",
+    "published_at": "2021-10-22",
+    "purl": "pkg:npm/ua-parser-js@0.7.29",
+    "references": [
+      "ref-github-advisory-ua-parser-js"
+    ],
+    "source_incident_ids": [
+      "SC-2021-UA-PARSER-JS"
+    ],
+    "version": "0.7.29"
+  },
+  {
+    "aliases": [
+      "pkg:npm/ua-parser-js@0.8.0",
+      "ua-parser-js@0.8.0"
+    ],
+    "disclosed_at": "2021-10-22",
+    "ecosystem": "npm",
+    "id": "release-npm-ua-parser-js-0-8-0",
+    "malicious_range": "0.8.0",
+    "name": "ua-parser-js@0.8.0",
+    "package_name": "ua-parser-js",
+    "published_at": "2021-10-22",
+    "purl": "pkg:npm/ua-parser-js@0.8.0",
+    "references": [
+      "ref-github-advisory-ua-parser-js"
+    ],
+    "source_incident_ids": [
+      "SC-2021-UA-PARSER-JS"
+    ],
+    "version": "0.8.0"
+  },
+  {
+    "aliases": [
+      "pkg:npm/ua-parser-js@1.0.0",
+      "ua-parser-js@1.0.0"
+    ],
+    "disclosed_at": "2021-10-22",
+    "ecosystem": "npm",
+    "id": "release-npm-ua-parser-js-1-0-0",
+    "malicious_range": "1.0.0",
+    "name": "ua-parser-js@1.0.0",
+    "package_name": "ua-parser-js",
+    "published_at": "2021-10-22",
+    "purl": "pkg:npm/ua-parser-js@1.0.0",
+    "references": [
+      "ref-github-advisory-ua-parser-js"
+    ],
+    "source_incident_ids": [
+      "SC-2021-UA-PARSER-JS"
+    ],
+    "version": "1.0.0"
+  }
+]

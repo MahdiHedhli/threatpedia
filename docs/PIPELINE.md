@@ -329,6 +329,7 @@ same queue/validation path as discovery-generated tasks.
 | Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 100 pending · stay paused until queue < 80 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
+| Ready-Issue stall alert | `pipeline-dispatcher.yml` | Warn after 60 minutes; alert after 180 minutes, or 60 minutes for P0 | `config.yml` (`ready_issue.*`) |
 | Circuit breaker | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 3 failures in 120min → Issue + halt; 60min cooldown | `config.yml` (`circuit_breaker.*`) |
 | Dependency blocking | `pipeline-dispatcher.yml` | Per-task `depends_on[]` | Task file |
 | Validation gates | `pipeline-run-task.mjs --validate` | See `config.yml` `validation.*` | `config.yml` |
@@ -390,6 +391,18 @@ falls below the resume threshold.
 The dispatcher task dispatch ceiling is configurable through
 `queues.dispatcher.tasks_per_run` in `.github/pipeline/config.yml`. Keep this
 below review backpressure thresholds; the default is 12 per dispatcher cycle.
+
+**Ready-Issue supervision:** a valid `pipeline/ready` Issue is a handoff to an
+agent or human worker, not proof that the work is moving. On every dispatcher
+tick, the dispatcher reconciles ready Issues against live task and PR state:
+it closes orphaned issues, closes issues covered by an open task PR, closes
+issues for tasks no longer in `pending`/`draft`, and deduplicates duplicate
+ready Issues. If the remaining valid ready Issue has no assignee, no covering
+PR, and no recent activity, the dispatcher opens or refreshes a
+`pipeline/alert` + `pipeline/stalled-ready-issue` Issue. Assigned ready Issues
+emit a warning but are treated as actively owned. This is a detective control:
+it makes a silent worker-consumption stall visible, but it does not draft
+content, auto-assign workers, or bypass review policy.
 
 ---
 

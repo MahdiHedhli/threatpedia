@@ -89,6 +89,7 @@ const allEntityFiles = {
   maintainers: 'maintainers.json',
   organizations: 'organizations.json',
   packages: 'packages.json',
+  releases: 'releases.json',
   repositories: 'repositories.json',
 };
 
@@ -144,6 +145,7 @@ const ENTITY_COLLECTION_LABELS = {
   repositories: 'Repository',
   organizations: 'Organization',
   maintainers: 'Maintainer',
+  releases: 'Release',
   build_systems: 'Build System',
   distribution_channels: 'Distribution Channel',
   accounts: 'Compromised Account',
@@ -248,15 +250,94 @@ function compareTitle(a, b) {
   return (a.title || '').localeCompare(b.title || '');
 }
 
+function compareDateDesc(a, b) {
+  return (b.sortDate || '').localeCompare(a.sortDate || '') || compareTitle(a, b);
+}
+
+function normalizeEntitySlug(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function daysBetween(startDate, endDate) {
+  if (!startDate || !endDate) return null;
+  const normalize = (value) => {
+    if (value instanceof Date) return value.toISOString().split('T')[0];
+    return String(value).split('T')[0];
+  };
+  const start = Date.parse(`${normalize(startDate)}T00:00:00Z`);
+  const end = Date.parse(`${normalize(endDate)}T00:00:00Z`);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end < start) return null;
+  return Math.round((end - start) / 86400000);
+}
+
+function displayLabel(value) {
+  if (value === 'ci_cd_compromise') return 'CI/CD Compromise';
+  return String(value || 'unknown')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function severityForAttackStage(stage) {
+  const stageSeverity = {
+    build_compromise: 'critical',
+    ci_cd_compromise: 'critical',
+    source_compromise: 'high',
+    account_compromise: 'high',
+    dependency_resolution: 'high',
+    package_publish: 'medium',
+    distribution_compromise: 'medium',
+  };
+  return stageSeverity[stage] || 'medium';
+}
+
+function incidentSortDate(incident) {
+  return incident.disclosed_at || incident.first_public_warning_at || incident.first_observed_at || '';
+}
+
+function incidentLinkRow(incident) {
+  return {
+    id: incident.id,
+    title: incident.title,
+    href: `/supply-chain/incidents/${incident.id}/`,
+    attackStage: incident.attack_stage,
+    evidenceLevel: incident.evidence_level,
+    confidence: incident.confidence,
+    sortDate: incidentSortDate(incident),
+  };
+}
+
 function incidentLinksFor(data, entityId) {
-  return relationshipRows(data, entityId)
+  const direct = relationshipRows(data, entityId)
     .filter((row) => row.incident)
     .map((row) => ({
       href: `/supply-chain/incidents/${row.incident.id}/`,
       label: row.incident.title,
       id: row.incident.id,
       type: row.type,
-    }))
+    }));
+  const seededByContext = data.relationships
+    .filter((relationship) => relationship.type === 'SEEDED_BY')
+    .filter((relationship) => relationship.source === entityId || relationship.target === entityId)
+    .map((relationship) => data.incidentByNodeId.get(`incident-${relationship.source_incident_id}`))
+    .filter(Boolean)
+    .map((incident) => ({
+      href: `/supply-chain/incidents/${incident.id}/`,
+      label: incident.title,
+      id: incident.id,
+      type: 'SEEDED_BY',
+    }));
+  const seen = new Set();
+  return [...direct, ...seededByContext]
+    .filter((row) => {
+      const key = row.id;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
     .sort(compareLabel);
 }
 
@@ -335,6 +416,69 @@ function incidentEntityLinks(data, incidentId, relationshipType) {
     .sort(compareLabel);
 }
 
+function incidentReleaseLinks(data, incidentId) {
+  const nodeId = `incident-${incidentId}`;
+  return data.relationships
+    .filter((relationship) => relationship.source === nodeId && relationship.type === 'INCIDENT_AFFECTED_RELEASE')
+    .map((relationship) => {
+      const release = data.entityById.get(relationship.target);
+      if (!release) return null;
+      return {
+        href: null,
+        label: release.name,
+        id: release.id,
+        type: relationship.type,
+        entityType: entityTypeLabel(release),
+        context: [release.purl, release.published_at ? `published ${release.published_at}` : null]
+          .filter(Boolean)
+          .join(' · '),
+      };
+    })
+    .filter(Boolean)
+    .sort(compareLabel);
+}
+
+function incidentReleaseEntities(data, incidentId) {
+  const nodeId = `incident-${incidentId}`;
+  return data.relationships
+    .filter((relationship) => relationship.source === nodeId && relationship.type === 'INCIDENT_AFFECTED_RELEASE')
+    .map((relationship) => data.entityById.get(relationship.target))
+    .filter(Boolean)
+    .sort((a, b) => (a.published_at || '').localeCompare(b.published_at || '') || (a.name || '').localeCompare(b.name || ''));
+}
+
+function maintainerTenureAtMaliciousRelease(data, incidentId) {
+  const incident = data.incidents.find((item) => item.id === incidentId);
+  if (!incident) return [];
+  const releases = incidentReleaseEntities(data, incidentId);
+  if (releases.length === 0) return [];
+  return (incident.maintainers || []).flatMap((maintainer) => {
+    const anchorDate = maintainer.onboarding_date || maintainer.first_publish_date;
+    if (!anchorDate) return [];
+    const anchorLabel = maintainer.onboarding_date ? 'onboarding' : 'first publish';
+    const maintainerId = `maintainer-${normalizeEntitySlug(maintainer.id_slug)}`;
+    const maintainerLink = entityLink(data, maintainerId) || { href: null, label: maintainer.name, id: maintainerId };
+    return releases
+      .map((release) => {
+        const days = daysBetween(anchorDate, release.published_at);
+        if (days === null) return null;
+        return {
+          maintainer: maintainerLink,
+          anchorDate,
+          anchorLabel,
+          release: {
+            label: release.name,
+            id: release.id,
+            purl: release.purl,
+            publishedAt: release.published_at,
+          },
+          days,
+        };
+      })
+      .filter(Boolean);
+  });
+}
+
 function incidentAttributionLinks(data, incidentId, relationshipType, collectionKey) {
   const relationshipLinks = incidentEntityLinks(data, incidentId, relationshipType);
   const incident = data.incidents.find((item) => item.id === incidentId);
@@ -386,9 +530,179 @@ function editorialSectionsFor(incident) {
     .filter(Boolean);
 }
 
+function buildGraphHeroModel(data) {
+  const incidents = Array.isArray(data?.incidents) ? data.incidents.filter(Boolean) : [];
+  const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
+  const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
+  const nodeCount =
+    incidents.length +
+    Object.values(entities).reduce((total, collection) => total + (Array.isArray(collection) ? collection.length : 0), 0);
+  const latestIncident =
+    incidents.length > 0
+      ? incidents.map((incident) => incidentLinkRow(incident)).sort(compareDateDesc)[0] || null
+      : null;
+  return {
+    title: 'Supply Chain',
+    eyebrow: 'Corpus Graph',
+    summary:
+      'A graph-first view of curated supply chain incidents and the packages, repositories, organizations, maintainers, actors, campaigns, releases, and accounts connected by evidence.',
+    status: 'Corpus graph preview',
+    nodeCount,
+    relationshipCount: relationships.length,
+    latestIncident,
+  };
+}
+
+function buildAttackVectorBars(data) {
+  if (!Array.isArray(data?.incidents)) return [];
+  const byStage = new Map();
+  data.incidents.filter(Boolean).forEach((incident) => {
+    const stage = incident.attack_stage || 'unknown';
+    const existing = byStage.get(stage) || {
+      stage,
+      label: displayLabel(stage),
+      count: 0,
+      incidents: [],
+      severity: severityForAttackStage(stage),
+    };
+    existing.count += 1;
+    existing.incidents.push(incidentLinkRow(incident));
+    byStage.set(stage, existing);
+  });
+  const maxCount = Math.max(...Array.from(byStage.values()).map((row) => row.count), 1);
+  return Array.from(byStage.values())
+    .map((row) => ({
+      ...row,
+      incidents: row.incidents.sort(compareDateDesc),
+      percent: Math.max(8, Math.round((row.count / maxCount) * 100)),
+      command: { type: 'filter-stage', value: row.stage },
+    }))
+    .sort((a, b) => b.count - a.count || compareLabel(a, b));
+}
+
+function buildAttributionRows(data) {
+  if (
+    !data ||
+    !Array.isArray(data.relationships) ||
+    !Array.isArray(data.incidents) ||
+    !data.entities ||
+    !Array.isArray(data.entities.actors) ||
+    !Array.isArray(data.entities.campaigns)
+  ) {
+    return [];
+  }
+
+  const incidents = data.incidents.filter(Boolean);
+  const incidentById = new Map(incidents.map((incident) => [incident.id, incident]));
+  const attributedRelationshipsByActor = new Map();
+  data.relationships.filter(Boolean).forEach((relationship) => {
+    if (relationship.type !== 'ATTRIBUTED_TO_ACTOR') return;
+    const actorRelationships = attributedRelationshipsByActor.get(relationship.target) || [];
+    actorRelationships.push(relationship);
+    attributedRelationshipsByActor.set(relationship.target, actorRelationships);
+  });
+  const campaignsByIncidentId = new Map();
+  data.entities.campaigns.filter(Boolean).forEach((campaign) => {
+    const campaignIncidentIds = Array.isArray(campaign.source_incident_ids) ? campaign.source_incident_ids : [];
+    campaignIncidentIds.forEach((incidentId) => {
+      const campaigns = campaignsByIncidentId.get(incidentId) || [];
+      campaigns.push(campaign);
+      campaignsByIncidentId.set(incidentId, campaigns);
+    });
+  });
+
+  return data.entities.actors
+    .filter(Boolean)
+    .map((actor) => {
+      const incidentIds = new Set(Array.isArray(actor.source_incident_ids) ? actor.source_incident_ids : []);
+      (attributedRelationshipsByActor.get(actor.id) || []).forEach((relationship) => {
+        const incident =
+          data.incidentByNodeId?.get(relationship.source) ||
+          (typeof relationship.source === 'string' && relationship.source.startsWith('incident-')
+            ? incidentById.get(relationship.source.slice('incident-'.length))
+            : null);
+        if (incident) incidentIds.add(incident.id);
+      });
+      const actorIncidents = Array.from(incidentIds)
+        .map((id) => incidentById.get(id))
+        .filter(Boolean)
+        .map((incident) => incidentLinkRow(incident))
+        .sort(compareDateDesc);
+      const campaignSet = new Set();
+      actorIncidents.forEach((incident) => {
+        (campaignsByIncidentId.get(incident.id) || []).forEach((campaign) => {
+          campaignSet.add(campaign);
+        });
+      });
+      const campaigns = Array.from(campaignSet)
+        .map((campaign) => ({
+          id: campaign.id,
+          label: campaign.name || campaign.id,
+          href: campaign.href || (campaign.slug ? `/campaigns/${campaign.slug}/` : null),
+        }))
+        .sort(compareLabel);
+      return {
+        id: actor.id,
+        label: actor.name || actor.id,
+        href: actor.href || null,
+        confidence: actor.attribution_confidence || 'unknown',
+        actorType: actor.actor_type || 'unknown',
+        incidentCount: actorIncidents.length,
+        incidents: actorIncidents,
+        campaigns,
+        command: { type: 'select-actor', value: actor.id },
+      };
+    })
+    .filter((row) => row.incidentCount > 0)
+    .sort((a, b) => b.incidentCount - a.incidentCount || compareLabel(a, b));
+}
+
+function buildDwellTimeline(data) {
+  if (!Array.isArray(data?.incidents)) return [];
+  const rows = data.incidents
+    .filter(Boolean)
+    .map((incident) => {
+      const startDate = incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at;
+      const warningDate = incident.first_public_warning_at || incident.disclosed_at;
+      const disclosedDate = incident.disclosed_at;
+      const dwellDays = daysBetween(startDate, disclosedDate);
+      if (!startDate || !disclosedDate || dwellDays === null) return null;
+      const warningDays = daysBetween(startDate, warningDate);
+      return {
+        ...incidentLinkRow(incident),
+        startDate,
+        warningDate,
+        disclosedDate,
+        dwellDays,
+        warningDays: warningDays ?? dwellDays,
+        severity: severityForAttackStage(incident.attack_stage),
+        command: { type: 'select-incident', value: incident.id },
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.dwellDays - a.dwellDays || compareDateDesc(a, b))
+    .slice(0, 12);
+  const maxDays = Math.max(...rows.map((row) => row.dwellDays), 1);
+  return rows.map((row) => {
+    const rawDwellPercent = Math.min(100, Math.max(0, Math.round((row.dwellDays / maxDays) * 100)));
+    const rawWarningPercent = Math.min(100, Math.max(0, Math.round((row.warningDays / maxDays) * 100)));
+    const barPercent = Math.max(6, rawDwellPercent);
+    const warningPercent = row.warningDays === row.dwellDays ? barPercent : Math.min(barPercent, rawWarningPercent);
+    return {
+      ...row,
+      barPercent,
+      warningPercent,
+      disclosedPercent: barPercent,
+    };
+  });
+}
+
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
+  const incidents = Array.isArray(data?.incidents) ? data.incidents.filter(Boolean) : [];
+  const entities = data?.entities && typeof data.entities === 'object' ? data.entities : {};
+  const relationships = Array.isArray(data?.relationships) ? data.relationships : [];
   const featuredIncidents = SUPPLY_CHAIN_FEATURED_INCIDENT_IDS.map((id) => {
-    const incident = data.incidents.find((item) => item.id === id);
+    const incident = incidents.find((item) => item.id === id);
     if (!incident) throw new Error(`Featured Supply Chain incident not found: ${id}`);
     return {
       id: incident.id,
@@ -400,16 +714,26 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       confidence: incident.confidence,
     };
   });
+  const incidentRows = incidents
+    .map((incident) => ({
+      ...incidentLinkRow(incident),
+      summary: incident.summary,
+    }))
+    .sort(compareTitle);
 
   return {
     kind: 'index',
     title: 'Supply Chain',
+    graphHero: buildGraphHeroModel(data),
     lede: SUPPLY_CHAIN_INDEX_COPY.lede,
     explanatorySections: SUPPLY_CHAIN_INDEX_COPY.sections,
+    attackVectorBars: buildAttackVectorBars(data),
+    attributionRows: buildAttributionRows(data),
+    dwellTimeline: buildDwellTimeline(data),
     featuredIncidents,
     entitySummaries: entitySummaryDefinitions.map((summary) => ({
       ...summary,
-      count: data.entities[summary.key]?.length || 0,
+      count: Array.isArray(entities[summary.key]) ? entities[summary.key].length : 0,
     })),
     seo: {
       title: 'Supply Chain',
@@ -426,26 +750,18 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       },
     },
     counts: {
-      incidents: data.incidents.length,
-      packages: data.entities.packages.length,
-      repositories: data.entities.repositories.length,
-      organizations: data.entities.organizations.length,
-      maintainers: data.entities.maintainers.length,
-      buildSystems: data.entities.build_systems.length,
-      distributionChannels: data.entities.distribution_channels.length,
-      compromisedAccounts: data.entities.accounts.length,
-      relationships: data.relationships.length,
+      incidents: incidents.length,
+      packages: Array.isArray(entities.packages) ? entities.packages.length : 0,
+      releases: Array.isArray(entities.releases) ? entities.releases.length : 0,
+      repositories: Array.isArray(entities.repositories) ? entities.repositories.length : 0,
+      organizations: Array.isArray(entities.organizations) ? entities.organizations.length : 0,
+      maintainers: Array.isArray(entities.maintainers) ? entities.maintainers.length : 0,
+      buildSystems: Array.isArray(entities.build_systems) ? entities.build_systems.length : 0,
+      distributionChannels: Array.isArray(entities.distribution_channels) ? entities.distribution_channels.length : 0,
+      compromisedAccounts: Array.isArray(entities.accounts) ? entities.accounts.length : 0,
+      relationships: relationships.length,
     },
-    incidents: data.incidents
-      .map((incident) => ({
-        id: incident.id,
-        title: incident.title,
-        summary: incident.summary,
-        href: `/supply-chain/incidents/${incident.id}/`,
-        attackStage: incident.attack_stage,
-        evidenceLevel: incident.evidence_level,
-      }))
-      .sort(compareTitle),
+    incidents: incidentRows,
   };
 }
 
@@ -490,6 +806,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     },
     sections: {
       packages: incidentEntityLinks(data, id, 'AFFECTED_PACKAGE'),
+      releases: incidentReleaseLinks(data, id),
       repositories: incidentEntityLinks(data, id, 'AFFECTED_REPOSITORY'),
       organizations: incidentEntityLinks(data, id, 'AFFECTED_ORGANIZATION'),
       maintainers: incidentEntityLinks(data, id, 'AFFECTED_MAINTAINER'),
@@ -499,6 +816,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
       distributionChannels: incidentEntities(data, id, 'distribution_channels', 'USED_DISTRIBUTION_CHANNEL'),
       compromisedAccounts: incidentEntities(data, id, 'compromised_accounts', 'COMPROMISED_ACCOUNT'),
       attributionEvidence: attributionEvidenceFor(incident),
+      maintainerTenureAtMaliciousRelease: maintainerTenureAtMaliciousRelease(data, id),
     },
   };
 }

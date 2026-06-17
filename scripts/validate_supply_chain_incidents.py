@@ -60,9 +60,20 @@ REQUIRED_REPOSITORY_FIELDS = ["name", "host", "owner", "url"]
 REQUIRED_BUILD_SYSTEM_FIELDS = ["name", "provider", "category"]
 REQUIRED_DISTRIBUTION_CHANNEL_FIELDS = ["name", "channel_type", "ecosystem"]
 REQUIRED_COMPROMISED_ACCOUNT_FIELDS = ["name", "provider", "account_type", "role"]
+REQUIRED_RELEASE_FIELDS = [
+    "package_name",
+    "ecosystem",
+    "purl",
+    "version",
+    "published_at",
+    "malicious_range",
+    "references",
+    "disclosed_at",
+]
 REQUIRED_THREAT_ACTOR_FIELDS = ["id", "name", "actor_type", "confidence", "source_refs"]
 REQUIRED_CAMPAIGN_FIELDS = ["id", "campaign_id", "name", "slug", "confidence", "source_refs"]
 REQUIRED_ATTRIBUTION_EVIDENCE_FIELDS = ["target", "relationship_type", "source_refs", "summary"]
+REQUIRED_PROPAGATION_EDGE_FIELDS = ["source", "target", "propagation_tier", "evidence_refs", "summary"]
 FEATURED_INCIDENT_IDS = {
     "SC-2018-NPM-EVENT-STREAM",
     "SC-2020-SOLARWINDS-ORION",
@@ -102,6 +113,7 @@ VALID_ATTACK_STAGES = {
     "ci_cd_compromise",
 }
 VALID_COMPONENT_TYPES = {"package", "project", "software", "service", "update_channel", "website"}
+VALID_COMPONENT_ROLES = {"affected", "upstream_seed"}
 VALID_VECTORS = {
     "build_system_compromise",
     "cdn_script_compromise",
@@ -132,6 +144,7 @@ VALID_IMPACTS = {
 VALID_ATTRIBUTION_CONFIDENCE = {"confirmed", "likely", "suspected", "disputed", "unknown"}
 VALID_ACTOR_TYPES = {"public", "provisional"}
 VALID_ATTRIBUTION_RELATIONSHIPS = {"ATTRIBUTED_TO_ACTOR", "RELATED_CAMPAIGN"}
+VALID_PROPAGATION_TIERS = {"causal", "temporal"}
 
 
 def load_json(path: Path) -> Any:
@@ -213,6 +226,11 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
         require_string(errors, f"{path}.vendor", component.get("vendor"))
     if component.get("component_type") not in VALID_COMPONENT_TYPES:
         errors.append(f"{path}.component_type: invalid value {component.get('component_type')!r}")
+    component_role = component.get("component_role", "affected")
+    if component_role not in VALID_COMPONENT_ROLES:
+        errors.append(f"{path}.component_role: invalid value {component_role!r}")
+    if component_role == "upstream_seed" and component.get("component_type") != "package":
+        errors.append(f"{path}.component_role: upstream_seed requires package component_type")
     package_url = component.get("package_url")
     if component.get("component_type") == "package" and package_url is None:
         errors.append(f"{path}.package_url: expected canonical package URL for package component")
@@ -229,6 +247,61 @@ def validate_component(errors: list[str], incident_id: str, index: int, componen
                 errors.append(f"{path}.package_url: expected canonical package URL {canonical!r}")
             if parse_purl(canonical).type == "generic":
                 require_string(errors, f"{path}.purl_justification", component.get("purl_justification"), min_length=20)
+
+
+def validate_release(
+    errors: list[str],
+    incident_id: str,
+    index: int,
+    release: Any,
+    valid_reference_ids: set[str],
+    package_components: set[tuple[str, str]],
+) -> None:
+    path = f"{incident_id}.releases[{index}]"
+    if not isinstance(release, dict):
+        errors.append(f"{path}: expected object")
+        return
+    for field in REQUIRED_RELEASE_FIELDS:
+        if field not in release:
+            errors.append(f"{path}.{field}: missing required field")
+
+    for field in ["package_name", "ecosystem", "purl", "version"]:
+        if field in release:
+            require_string(errors, f"{path}.{field}", release.get(field))
+
+    if "published_at" in release and parse_date(release.get("published_at")) is None:
+        errors.append(f"{path}.published_at: expected YYYY-MM-DD date")
+    if "disclosed_at" in release and release.get("disclosed_at") is not None and parse_date(release.get("disclosed_at")) is None:
+        errors.append(f"{path}.disclosed_at: expected YYYY-MM-DD date or null")
+    if "malicious_range" in release and release.get("malicious_range") is not None:
+        require_string(errors, f"{path}.malicious_range", release.get("malicious_range"))
+
+    if "references" in release:
+        validate_reference_id_list(errors, incident_id, f"{path}.references", release.get("references"), valid_reference_ids)
+
+    package_name = release.get("package_name")
+    ecosystem = release.get("ecosystem")
+    purl = release.get("purl")
+    version = release.get("version")
+    release_identity_fields_are_strings = isinstance(package_name, str) and isinstance(ecosystem, str)
+    if release_identity_fields_are_strings:
+        if (ecosystem, package_name) not in package_components:
+            errors.append(f"{path}: release package must match an affected package component")
+    if isinstance(purl, str) and release_identity_fields_are_strings:
+        try:
+            canonical = canonicalize_purl(purl, ecosystem=ecosystem, package_name=package_name)
+        except PurlError as exc:
+            errors.append(f"{path}.purl: invalid canonical release PURL: {exc}")
+        else:
+            parsed = parse_purl(canonical)
+            if purl != canonical:
+                errors.append(f"{path}.purl: expected canonical release PURL {canonical!r}")
+            if not parsed.version:
+                errors.append(f"{path}.purl: expected versioned package URL")
+            elif isinstance(version, str) and parsed.version != version:
+                errors.append(f"{path}.version: does not match PURL version {parsed.version!r}")
+            if parsed.type == "generic":
+                errors.append(f"{path}.purl: generic release PURLs are not joinable")
 
 
 def validate_reference(errors: list[str], incident_id: str, index: int, reference: Any) -> None:
@@ -376,15 +449,46 @@ def validate_maintainer(errors: list[str], incident_id: str, index: int, maintai
     if not isinstance(maintainer, dict):
         errors.append(f"{path}: expected object")
         return
-    require_string(errors, f"{path}.name", maintainer.get("name"))
-    require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
-    aliases = maintainer.get("aliases")
-    if not isinstance(aliases, list):
-        errors.append(f"{path}.aliases: expected list")
-        return
-    for alias_index, alias in enumerate(aliases):
-        if not isinstance(alias, str) or not alias.strip():
-            errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
+    required_fields = [
+        "name",
+        "aliases",
+        "id_slug",
+        "onboarding_date",
+        "first_publish_date",
+        "repositories",
+        "account_ids",
+    ]
+    for field in required_fields:
+        if field not in maintainer:
+            errors.append(f"{path}.{field}: missing required field")
+    if "name" in maintainer:
+        require_string(errors, f"{path}.name", maintainer.get("name"))
+    if "id_slug" in maintainer:
+        require_string(errors, f"{path}.id_slug", maintainer.get("id_slug"))
+    if "aliases" in maintainer:
+        aliases = maintainer.get("aliases")
+        if not isinstance(aliases, list):
+            errors.append(f"{path}.aliases: expected list")
+        else:
+            for alias_index, alias in enumerate(aliases):
+                if not isinstance(alias, str) or not alias.strip():
+                    errors.append(f"{path}.aliases[{alias_index}]: expected non-empty string")
+    for field in ["onboarding_date", "first_publish_date"]:
+        if field in maintainer and maintainer.get(field) is not None and parse_date(maintainer.get(field)) is None:
+            errors.append(f"{path}.{field}: expected YYYY-MM-DD date or null")
+    if "repositories" in maintainer:
+        require_string_list(errors, f"{path}.repositories", maintainer.get("repositories"), allow_empty=True)
+        if isinstance(maintainer.get("repositories"), list):
+            for repo_index, repo_id in enumerate(maintainer["repositories"]):
+                if isinstance(repo_id, str) and not repo_id.startswith("repo-"):
+                    errors.append(f"{path}.repositories[{repo_index}]: expected repo-* entity id")
+    if "account_ids" in maintainer:
+        require_string_list(errors, f"{path}.account_ids", maintainer.get("account_ids"), allow_empty=True)
+        if isinstance(maintainer.get("account_ids"), list):
+            for account_index, account_id in enumerate(maintainer["account_ids"]):
+                if isinstance(account_id, str) and not account_id.startswith("account-"):
+                    errors.append(f"{path}.account_ids[{account_index}]: expected account-* entity id")
+
 
 def validate_repository(errors: list[str], incident_id: str, index: int, repository: Any) -> None:
     path = f"{incident_id}.repositories[{index}]"
@@ -536,6 +640,36 @@ def validate_attribution_fields(errors: list[str], incident: dict[str, Any]) -> 
         errors.append(f"{incident_id}.attribution_evidence: unexpected {relationship_type} evidence for {target} without matching link")
 
 
+def validate_propagation_edges(errors: list[str], incident: dict[str, Any]) -> None:
+    incident_id = incident.get("id") if isinstance(incident.get("id"), str) else "<missing-id>"
+    valid_reference_ids = reference_ids_for(incident)
+    records = incident.get("propagation_edges", [])
+    if not isinstance(records, list):
+        errors.append(f"{incident_id}.propagation_edges: expected list")
+        return
+    for index, record in enumerate(records):
+        path = f"{incident_id}.propagation_edges[{index}]"
+        if not isinstance(record, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        for field in REQUIRED_PROPAGATION_EDGE_FIELDS:
+            if field not in record:
+                errors.append(f"{path}.{field}: missing required field")
+        for field in ["source", "target"]:
+            if field in record:
+                require_string(errors, f"{path}.{field}", record.get(field))
+                if isinstance(record.get(field), str) and not record[field].startswith(("pkg-", "release-")):
+                    errors.append(f"{path}.{field}: expected pkg-* or release-* entity id")
+        if isinstance(record.get("source"), str) and isinstance(record.get("target"), str) and record["source"] == record["target"]:
+            errors.append(f"{path}: source and target cannot be the same")
+        if "propagation_tier" in record and record.get("propagation_tier") not in VALID_PROPAGATION_TIERS:
+            errors.append(f"{path}.propagation_tier: invalid value {record.get('propagation_tier')!r}")
+        if "evidence_refs" in record:
+            validate_reference_id_list(errors, incident_id, f"{path}.evidence_refs", record.get("evidence_refs"), valid_reference_ids)
+        if "summary" in record:
+            require_string(errors, f"{path}.summary", record.get("summary"), min_length=20)
+
+
 def validate_incident(incident: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(incident, dict):
@@ -605,6 +739,19 @@ def validate_incident(incident: Any) -> list[str]:
     else:
         for index, reference in enumerate(references):
             validate_reference(errors, incident_id, index, reference)
+    valid_reference_ids = reference_ids_for(incident)
+
+    releases = incident.get("releases", [])
+    package_components = {
+        (component.get("ecosystem"), component.get("name"))
+        for component in (components if isinstance(components, list) else [])
+        if isinstance(component, dict) and component.get("component_type") == "package"
+    }
+    if not isinstance(releases, list):
+        errors.append(f"{incident_id}.releases: expected list")
+    else:
+        for index, release in enumerate(releases):
+            validate_release(errors, incident_id, index, release, valid_reference_ids, package_components)
 
     maintainers = incident.get("maintainers")
     if not isinstance(maintainers, list):
@@ -636,6 +783,7 @@ def validate_incident(incident: Any) -> list[str]:
         incident.get("compromised_accounts"),
     )
     validate_attribution_fields(errors, incident)
+    validate_propagation_edges(errors, incident)
     validate_editorial_fields(errors, incident)
 
     return errors

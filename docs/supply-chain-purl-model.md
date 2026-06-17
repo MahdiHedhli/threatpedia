@@ -1,6 +1,6 @@
 # Supply Chain PURL Model
 
-Threatpedia uses Package URL (PURL) strings as the canonical join key for supply-chain package and release records. The PURL model is intentionally narrow in Phase 2A: it covers package identity, validates existing package entities, and prepares the release layer for Phase 2C.
+Threatpedia uses Package URL (PURL) strings as the canonical join key for supply-chain package and release records. The PURL model is intentionally narrow: it covers package identity, validates package entities, and validates versioned release entities.
 
 ## Canonical Helper
 
@@ -68,6 +68,12 @@ The incident validator requires every `affected_components` item with `component
 
 The graph validator requires every package entity in `data/supply-chain-entities/packages.json` to carry a canonical `package_url`.
 
+The graph validator requires every release entity in `data/supply-chain-entities/releases.json` to carry a canonical versioned `purl`, a matching `version`, and a `published_at` date. Release PURLs must include a version suffix:
+
+```text
+pkg:npm/ua-parser-js@0.7.29
+```
+
 Both validators fail if a package PURL:
 
 - is missing
@@ -77,6 +83,11 @@ Both validators fail if a package PURL:
 - uses non-canonical spelling or encoding
 - uses the `generic` PURL type without an explicit `purl_justification`
 
+Release entities additionally fail if the PURL is unversioned, the PURL version
+does not match the `version` field, or the release uses `pkg:generic/...`.
+Generic releases are blocked because they cannot join to OSV, deps.dev,
+OpenSSF Scorecard, or the Phase 0 release feed.
+
 Non-package components, such as software, services, websites, and update channels, are not package records and do not require PURLs in Phase 2A.
 
 ## Relationship Integrity
@@ -84,7 +95,5 @@ Non-package components, such as software, services, websites, and update channel
 The graph validator also performs the foundation dangling-reference check. Every relationship endpoint must resolve to an incident node or an existing entity node. Missing relationship targets remain hard failures.
 
 ## Deferred Work
-
-Release PURL validation is wired through the same helper but becomes mandatory when Phase 2C adds `releases.json`.
 
 The full PURL and edge audit report is intentionally deferred to Phase 2F, after corpus expansion, so the closing audit covers the complete expanded corpus.

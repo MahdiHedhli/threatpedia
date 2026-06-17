@@ -29,12 +29,15 @@ mitreMappings:
     tactic: "Initial Access"
     notes: "RansomHouse operations frequently leverage compromised credentials and access-brokered footholds."
   - techniqueId: "T1021.004"
-    techniqueName: "Remote Services: SSH"
+    techniqueName: "SSH"
     tactic: "Lateral Movement"
     notes: "Recent RansomHouse tooling has targeted VMware ESXi environments over SSH for post-compromise operations."
-  - techniqueId: "T1562.004"
-    techniqueName: "Impair Defenses: Disable or Modify System Firewall"
-    tactic: "Defense Evasion"
+  - techniqueId: "T1686"
+    techniqueName: "Disable or Modify System Firewall"
+    tactic: "Defense Impairment"
+    attack-version: "v19.0"
+    confidence: "confirmed"
+    evidence: "MrAgent capability descriptions include ESXi firewall manipulation to ease ransomware deployment."
     notes: "MrAgent capability descriptions include ESXi firewall manipulation to ease ransomware deployment."
   - techniqueId: "T1567"
     techniqueName: "Exfiltration Over Web Service"
@@ -103,7 +106,7 @@ Recent reporting ties RansomHouse activity to a combination of data-extortion tr
 
 RansomHouse does not appear to rely on a single stable initial-access method across all cases. Instead, reporting and victim patterns are more consistent with an affiliate or access-broker model in which footholds are obtained through compromised credentials, vulnerable public-facing services, phishing, or third-party access. That ambiguity is why the group is best understood as an extortion operation with a recognizable post-compromise toolkit, rather than as a cluster defined by one exploit chain.
 
-## Historical Context
+## Attribution
 
 RansomHouse publicly styled itself as a group exposing weak security, but the operational pattern is extortion, not benevolent disclosure. The operation’s history shows an evolution from leak-site coercion toward broader ransomware enablement while preserving the same core pressure model: steal data, disrupt recovery, and use controlled disclosure to force negotiations.
 
@@ -115,12 +118,14 @@ Public attribution remains moderate rather than confirmed at the individual-oper
 
 **Lateral Movement**: Remote Services: SSH (T1021.004), especially against virtualization infrastructure.
 
+**Defense Impairment**: Disable or Modify System Firewall (T1686) covers firewall manipulation used to ease ransomware deployment.
+
 **Exfiltration**: Exfiltration Over Web Service (T1567) before extortion.
 
-**Impact**: Data Encrypted for Impact (T1486) and disable-or-modify defensive controls such as firewalls (T1562.004).
+**Impact**: Data Encrypted for Impact (T1486).
 
 ## Sources & References
 
-- [Palo Alto Unit 42: From Linear to Complex -- An Upgrade in RansomHouse Encryption](https://unit42.paloaltonetworks.com/ransomhouse-encryption-upgrade/) -- Palo Alto Unit 42, 2025-12-17
-- [BleepingComputer: RansomHouse upgrades encryption with multi-layered data processing](https://www.bleepingcomputer.com/news/security/ransomhouse-upgrades-encryption-with-multi-layered-data-processing/) -- BleepingComputer, 2025-12-20
-- [TechRadar: Top museums hit by apparent cyberattack on Vivaticket](https://www.techradar.com/pro/security/top-museums-hit-by-apparent-cyberattack-on-vivaticket-louvre-and-other-institutions-affected) -- TechRadar, 2026-04-06
+- [Palo Alto Unit 42: From Linear to Complex — An Upgrade in RansomHouse Encryption](https://unit42.paloaltonetworks.com/ransomhouse-encryption-upgrade/) — Palo Alto Unit 42, 2025-12-17
+- [BleepingComputer: RansomHouse upgrades encryption with multi-layered data processing](https://www.bleepingcomputer.com/news/security/ransomhouse-upgrades-encryption-with-multi-layered-data-processing/) — BleepingComputer, 2025-12-20
+- [TechRadar: Top museums hit by apparent cyberattack on Vivaticket](https://www.techradar.com/pro/security/top-museums-hit-by-apparent-cyberattack-on-vivaticket-louvre-and-other-institutions-affected) — TechRadar, 2026-04-06

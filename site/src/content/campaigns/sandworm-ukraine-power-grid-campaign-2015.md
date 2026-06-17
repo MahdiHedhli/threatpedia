@@ -30,7 +30,7 @@ tags:
   - "sabotage"
 sources:
   - url: "https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure"
-    publisher: "CISA"
+    publisher: "Cybersecurity and Infrastructure Security Agency"
     publisherType: government
     reliability: R1
     publicationDate: "2016-02-25"
@@ -58,22 +58,14 @@ sources:
     accessDate: "2026-04-17"
     archived: false
 mitreMappings:
-  - techniqueId: "T0822"
+  - techniqueId: "T1133"
     techniqueName: "External Remote Services"
-    tactic: "Lateral Movement"
+    tactic: "Initial Access"
     notes: "Sandworm used stolen VPN and remote access paths to reach power utility control environments."
-  - techniqueId: "T0823"
-    techniqueName: "Graphical User Interface"
-    tactic: "Execution"
-    notes: "Operators used SCADA HMIs to interact directly with breaker controls during the 2015 outage."
-  - techniqueId: "T0831"
-    techniqueName: "Manipulation of Control"
+  - techniqueId: "T1485"
+    techniqueName: "Data Destruction"
     tactic: "Impact"
-    notes: "The campaign opened breakers and disrupted electrical service through direct control actions."
-  - techniqueId: "T0814"
-    techniqueName: "Denial of Service"
-    tactic: "Impact"
-    notes: "Telephone denial-of-service activity interfered with outage reporting during the 2015 attack."
+    notes: "KillDisk damaged Windows systems and complicated restoration during the 2015 attack."
 ---
 
 ## Executive Summary
@@ -114,19 +106,9 @@ KillDisk, device tampering, and phone-line disruption were used to slow recovery
 
 ## MITRE ATT&CK Mapping
 
-### Lateral Movement
+T1133 - External Remote Services: Sandworm used stolen remote-access pathways to reach control systems from compromised enterprise environments.
 
-T0822 - External Remote Services: Sandworm used stolen remote-access pathways to reach control systems from compromised enterprise environments.
-
-### Execution
-
-T0823 - Graphical User Interface: The 2015 phase depended on direct operator use of SCADA HMIs to manipulate live infrastructure.
-
-### Impact
-
-T0831 - Manipulation of Control: The campaign's core effect came from opening breakers and disrupting electric service.
-
-T0814 - Denial of Service: Call-center disruption compounded the operational impact and hindered outage reporting.
+T1485 - Data Destruction: KillDisk damaged Windows systems and complicated restoration during the 2015 attack.
 
 ## Timeline
 
@@ -158,7 +140,7 @@ The 2015 and 2016 cases also show why defenders should prepare for multi-layered
 
 ## Sources & References
 
-1. [CISA: Cyber Attack Against Ukrainian Critical Infrastructure](https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure) - CISA, 2016-02-25
-2. [U.S. Department of Justice: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware and Other Disruptive Actions in Cyberspace](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) - U.S. Department of Justice, 2020-10-19
-3. [ESET: Industroyer - The Biggest Threat to Industrial Control Systems Since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) - ESET, 2017-06-12
-4. [MITRE ATT&CK: 2015 Ukraine Electric Power Attack (C0028)](https://attack.mitre.org/campaigns/C0028/) - MITRE ATT&CK, 2025-04-16
+- [Cybersecurity and Infrastructure Security Agency: Cyber Attack Against Ukrainian Critical Infrastructure](https://www.cisa.gov/news-events/alerts/2016/02/25/cyber-attack-against-ukrainian-critical-infrastructure) — Cybersecurity and Infrastructure Security Agency, 2016-02-25
+- [U.S. Department of Justice: Six Russian GRU Officers Charged in Connection with Worldwide Deployment of Destructive Malware and Other Disruptive Actions in Cyberspace](https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and-other) — U.S. Department of Justice, 2020-10-19
+- [ESET: Industroyer - The Biggest Threat to Industrial Control Systems Since Stuxnet](https://www.welivesecurity.com/2017/06/12/industroyer-biggest-threat-industrial-control-systems-since-stuxnet/) — ESET, 2017-06-12
+- [MITRE ATT&CK: 2015 Ukraine Electric Power Attack (C0028)](https://attack.mitre.org/campaigns/C0028/) — MITRE ATT&CK, 2025-04-16

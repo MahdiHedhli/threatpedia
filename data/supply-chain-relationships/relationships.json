@@ -101,6 +101,11 @@
   },
   {
     "source": "incident-SC-2018-NPM-EVENT-STREAM",
+    "target": "release-npm-flatmap-stream-0-1-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2018-NPM-EVENT-STREAM",
     "target": "channel-npm-package-registry-npm-registry",
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
@@ -246,6 +251,21 @@
   },
   {
     "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-0-7-29",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-0-8-0",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
+    "target": "release-npm-ua-parser-js-1-0-0",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2021-UA-PARSER-JS",
     "target": "channel-npm-package-registry-npm-registry",
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
@@ -366,6 +386,11 @@
   },
   {
     "source": "incident-SC-2023-THREE-CX-DESKTOP",
+    "target": "pkg-generic-3cx-desktopapp",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2023-THREE-CX-DESKTOP",
     "target": "actor-lazarus-group",
     "type": "ATTRIBUTED_TO_ACTOR"
   },
@@ -475,6 +500,106 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "pkg-golang-github-com-boltdb-go-bolt",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "repo-github-com-boltdb-go-bolt",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "actor-boltdb-go-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-github-source-repository-github-repository",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-golang-package-registry-go-module-proxy",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-github-source-repository-github-repository",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "target": "channel-golang-package-registry-go-module-proxy",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "org-ctrl",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "org-rxnt",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "pkg-npm-ctrl-tinycolor",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "pkg-npm-rxnt-authentication",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "actor-shai-hulud-operator",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "account-github-victim-github-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "account-npm-compromised-npm-maintainer-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-NPM-SHAI-HULUD",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
     "target": "org-tj-actions",
     "type": "AFFECTED_ORGANIZATION"
@@ -500,8 +625,98 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "maintainer-dominictarr",
+    "target": "repo-github-com-dominictarr-event-stream",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
     "source": "maintainer-jia-tan",
     "target": "actor-unc-xz-utils-operator",
     "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "maintainer-jia-tan",
+    "target": "repo-github-com-tukaani-project-xz",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-marak-squires",
+    "target": "repo-github-com-marak-colors-js",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-riaevangelist",
+    "target": "repo-github-com-riaevangelist-node-ipc",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "evidence_refs": [
+      "ref-mandiant-3cx"
+    ],
+    "propagation_tier": "causal",
+    "source": "pkg-generic-x-trader",
+    "source_incident_id": "SC-2023-THREE-CX-DESKTOP",
+    "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps.",
+    "target": "pkg-generic-3cx-desktopapp",
+    "type": "SEEDED_BY"
+  },
+  {
+    "source": "pkg-golang-github-com-boltdb-go-bolt",
+    "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ctrl-tinycolor",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ctrl-tinycolor",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-flatmap-stream",
+    "target": "release-npm-flatmap-stream-0-1-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "evidence_refs": [
+      "ref-stepsecurity-shai-hulud",
+      "ref-wiz-shai-hulud"
+    ],
+    "propagation_tier": "temporal",
+    "source": "pkg-npm-rxnt-authentication",
+    "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+    "summary": "Public reporting places rxnt-authentication activity before the @ctrl/tinycolor wave and describes token reuse, but this edge is temporal precedence rather than asserted package-to-package causation.",
+    "target": "release-npm-ctrl-tinycolor-4-1-1",
+    "type": "SEEDED_BY"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-0-7-29",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-0-8-0",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-ua-parser-js",
+    "target": "release-npm-ua-parser-js-1-0-0",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "evidence_refs": [
+      "ref-npm-tinycolor-registry",
+      "ref-wiz-shai-hulud"
+    ],
+    "propagation_tier": "temporal",
+    "source": "release-npm-ctrl-tinycolor-4-1-1",
+    "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
+    "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation.",
+    "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "SEEDED_BY"
   }
 ]

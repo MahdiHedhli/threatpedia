@@ -1,0 +1,104 @@
+{
+  "task_id": "TASK-2026-0375",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P1",
+  "status": "complete",
+  "created": "2026-06-16T20:43:46.357Z",
+  "updated": "2026-06-16T21:23:23.440Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Widget Factory Joomla Content Editor Improper Access Control Vulnerability (CVE-2026-48907)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-48907",
+      "https://www.joomlacontenteditor.net/news/jce-security-update-and-a-free-patch-for-older-sites",
+      "https://www.joomlacontenteditor.net/support/changelog/editor"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-48907",
+      "cves": [
+        "CVE-2026-48907"
+      ],
+      "exploitId": "TP-EXP-2026-0324",
+      "type": "Unclassified",
+      "platform": "Widget Factory Joomla Content Editor ",
+      "severity": "high",
+      "cisaKev": true,
+      "disclosedDate": "2026-06-16",
+      "cwes": [
+        "CWE-284"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-06-16. Required action by 2026-06-19. Discovery score: 65/100."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/widget-factory-joomla-content-editor-cve-2026-48907.md",
+    "branch": "pipeline/TASK-2026-0375",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 65,
+    "auto_certify": false,
+    "cvss": null,
+    "discovered_at": "2026-06-16T20:43:46.357Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-16T20:43:46.357Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 65)"
+    },
+    {
+      "timestamp": "2026-06-16T21:16:53.071Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "dangermouse-bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-16T21:18:57.009Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "dangermouse-bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1178"
+    },
+    {
+      "timestamp": "2026-06-16T21:23:23.440Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1178 merged (abf7926)."
+    }
+  ],
+  "pr_number": 1178,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1178",
+  "merged_at": "2026-06-16T21:23:23.440Z"
+}

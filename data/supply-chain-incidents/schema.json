@@ -77,6 +77,12 @@
         "$ref": "#/$defs/affected_component"
       }
     },
+    "releases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/release"
+      }
+    },
     "supply_chain_vectors": {
       "type": "array",
       "minItems": 1,
@@ -216,6 +222,12 @@
         "$ref": "#/$defs/attribution_evidence"
       }
     },
+    "propagation_edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/propagation_edge"
+      }
+    },
     "executive_summary": {
       "type": "array",
       "items": {
@@ -279,6 +291,12 @@
             "website"
           ]
         },
+        "component_role": {
+          "enum": [
+            "affected",
+            "upstream_seed"
+          ]
+        },
         "ecosystem": {
           "type": "string"
         },
@@ -339,6 +357,57 @@
         },
         "published_at": {
           "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "package_name",
+        "ecosystem",
+        "purl",
+        "version",
+        "published_at",
+        "malicious_range",
+        "references",
+        "disclosed_at"
+      ],
+      "properties": {
+        "package_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ecosystem": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purl": {
+          "type": "string",
+          "pattern": "^pkg:[a-z0-9.+-]+/[^\\s]+@[A-Za-z0-9][^\\s]*$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "malicious_range": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "references": {
+          "$ref": "#/$defs/reference_id_list"
+        },
+        "disclosed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date"
         }
       }
@@ -419,7 +488,11 @@
       "required": [
         "name",
         "aliases",
-        "id_slug"
+        "id_slug",
+        "onboarding_date",
+        "first_publish_date",
+        "repositories",
+        "account_ids"
       ],
       "properties": {
         "name": {
@@ -433,6 +506,34 @@
         },
         "id_slug": {
           "type": "string"
+        },
+        "onboarding_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "first_publish_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "repositories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^repo-[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "account_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^account-[a-z0-9][a-z0-9-]*$"
+          }
         }
       }
     },
@@ -648,6 +749,40 @@
           "minLength": 20
         }
       }
+    },
+    "propagation_edge": {
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "propagation_tier",
+        "evidence_refs",
+        "summary"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^(pkg|release)-[a-z0-9][a-z0-9-]*$"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^(pkg|release)-[a-z0-9][a-z0-9-]*$"
+        },
+        "propagation_tier": {
+          "enum": [
+            "causal",
+            "temporal"
+          ]
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/reference_id_list"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20
+        }
+      },
+      "additionalProperties": false
     }
   }
 }

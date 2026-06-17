@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -30,6 +32,7 @@ ENTITY_FILES = {
     "distribution_channels": "distribution_channels.json",
     "maintainers": "maintainers.json",
     "packages": "packages.json",
+    "releases": "releases.json",
     "repositories": "repositories.json",
     "organizations": "organizations.json",
 }
@@ -45,8 +48,13 @@ VALID_RELATIONSHIP_TYPES = {
     "SOURCE_ARTIFACT_DIVERGENCE",
     "USED_BUILD_SYSTEM",
     "USED_DISTRIBUTION_CHANNEL",
+    "PACKAGE_RELEASE",
+    "INCIDENT_AFFECTED_RELEASE",
+    "MAINTAINS_REPOSITORY",
+    "SEEDED_BY",
+    "USES_ACCOUNT",
 }
-ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|repo|org)-[a-z0-9][a-z0-9-]*$")
+ENTITY_ID_PATTERN = re.compile(r"^(account|actor|build|campaign|channel|maintainer|pkg|release|repo|org)-[a-z0-9][a-z0-9-]*$")
 RELATIONSHIP_TARGET_PREFIXES = {
     "AFFECTED_PACKAGE": "pkg-",
     "AFFECTED_MAINTAINER": "maintainer-",
@@ -59,6 +67,11 @@ RELATIONSHIP_TARGET_PREFIXES = {
     "SOURCE_ARTIFACT_DIVERGENCE": ("repo-", "channel-"),
     "USED_BUILD_SYSTEM": "build-",
     "USED_DISTRIBUTION_CHANNEL": "channel-",
+    "PACKAGE_RELEASE": "release-",
+    "INCIDENT_AFFECTED_RELEASE": "release-",
+    "MAINTAINS_REPOSITORY": "repo-",
+    "SEEDED_BY": ("pkg-", "release-"),
+    "USES_ACCOUNT": "account-",
 }
 ENTITY_TYPE_REQUIRED_FIELDS = {
     "accounts": ["provider", "account_type", "role"],
@@ -69,8 +82,10 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "maintainers": [],
     "organizations": [],
     "packages": ["ecosystem", "package_url"],
+    "releases": ["purl", "package_name", "version", "published_at", "ecosystem"],
     "repositories": ["host", "url", "owner"],
 }
+DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def load_json(path: Path) -> Any:
@@ -80,6 +95,49 @@ def load_json(path: Path) -> Any:
 
 def normalize_alias(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.strip().lower()).strip("-")
+
+
+def stable_id(prefix: str, *parts: str) -> str:
+    slug = "-".join(filter(None, (normalize_alias(part) for part in parts)))
+    return f"{prefix}-{slug}"
+
+
+def exact_version_suffix(version: str) -> str:
+    return hashlib.sha256(version.encode("utf-8")).hexdigest()[:12]
+
+
+def release_entity_id(collision_base_ids: set[str], ecosystem: str, package_name: str, version: str) -> str:
+    base_id = stable_id("release", ecosystem, package_name, version)
+    if base_id not in collision_base_ids:
+        return base_id
+
+    return f"{base_id}-v{exact_version_suffix(version)}"
+
+
+def release_collision_base_ids(corpus: list[dict[str, Any]]) -> set[str]:
+    identities_by_base_id: dict[str, set[tuple[str, str, str]]] = {}
+    for incident in corpus:
+        if not isinstance(incident, dict):
+            continue
+        for release in incident.get("releases") or []:
+            if not isinstance(release, dict):
+                continue
+            ecosystem = release.get("ecosystem")
+            package_name = release.get("package_name")
+            version = release.get("version")
+            if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
+                base_id = stable_id("release", ecosystem, package_name, version)
+                identities_by_base_id.setdefault(base_id, set()).add((ecosystem, package_name, version))
+    return {base_id for base_id, identities in identities_by_base_id.items() if len(identities) > 1}
+
+
+def parse_date(value: Any) -> date | None:
+    if not isinstance(value, str) or not DATE_PATTERN.fullmatch(value):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
 
 
 def incident_node_id(incident_id: str) -> str:
@@ -96,6 +154,20 @@ def collect_raw_incident_ids(corpus: list[dict[str, Any]]) -> set[str]:
 
 def collect_incident_ids(corpus: list[dict[str, Any]]) -> set[str]:
     return {incident_node_id(incident["id"]) for incident in corpus if isinstance(incident, dict) and isinstance(incident.get("id"), str)}
+
+
+def collect_reference_ids_by_incident(corpus: list[dict[str, Any]]) -> dict[str, set[str]]:
+    references_by_incident: dict[str, set[str]] = {}
+    for incident in corpus:
+        if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
+            continue
+        reference_ids = {
+            reference["id"]
+            for reference in incident.get("references") or []
+            if isinstance(reference, dict) and isinstance(reference.get("id"), str)
+        }
+        references_by_incident[incident["id"]] = reference_ids
+    return references_by_incident
 
 
 def validate_entity_file(errors: list[str], entity_type: str, entities: Any, incident_ids: set[str]) -> set[str]:
@@ -136,6 +208,66 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 if parse_purl(canonical).type == "generic":
                     if not isinstance(entity.get("purl_justification"), str) or len(entity["purl_justification"].strip()) < 20:
                         errors.append(f"{entity_id}.purl_justification: expected non-empty generic PURL justification")
+        if entity_type == "releases":
+            purl = entity.get("purl")
+            ecosystem = entity.get("ecosystem")
+            package_name = entity.get("package_name")
+            if isinstance(purl, str) and isinstance(ecosystem, str) and isinstance(package_name, str):
+                try:
+                    canonical = canonicalize_purl(
+                        purl,
+                        ecosystem=ecosystem,
+                        package_name=package_name,
+                    )
+                except PurlError as exc:
+                    errors.append(f"{entity_id}.purl: invalid canonical release PURL: {exc}")
+                else:
+                    parsed = parse_purl(canonical)
+                    if purl != canonical:
+                        errors.append(f"{entity_id}.purl: expected canonical release PURL {canonical!r}")
+                    if not parsed.version:
+                        errors.append(f"{entity_id}.purl: expected versioned package URL")
+                    elif parsed.version != entity.get("version"):
+                        errors.append(f"{entity_id}.version: does not match PURL version {parsed.version!r}")
+                    if parsed.type == "generic":
+                        errors.append(f"{entity_id}.purl: generic release PURLs are not joinable")
+            if parse_date(entity.get("published_at")) is None:
+                errors.append(f"{entity_id}.published_at: expected YYYY-MM-DD date")
+            if "disclosed_at" not in entity:
+                errors.append(f"{entity_id}.disclosed_at: missing required field")
+            elif entity.get("disclosed_at") is not None and parse_date(entity.get("disclosed_at")) is None:
+                errors.append(f"{entity_id}.disclosed_at: expected YYYY-MM-DD date or null")
+            if "malicious_range" not in entity:
+                errors.append(f"{entity_id}.malicious_range: missing required field")
+            elif entity.get("malicious_range") is not None and (
+                not isinstance(entity.get("malicious_range"), str) or not entity["malicious_range"].strip()
+            ):
+                errors.append(f"{entity_id}.malicious_range: expected non-empty string or null")
+            references = entity.get("references")
+            if not isinstance(references, list) or not references:
+                errors.append(f"{entity_id}.references: expected non-empty list")
+            elif not all(isinstance(ref, str) and ref.strip() for ref in references):
+                errors.append(f"{entity_id}.references: expected non-empty string references")
+        if entity_type == "maintainers":
+            for field in ["onboarding_date", "first_publish_date"]:
+                if field not in entity:
+                    errors.append(f"{entity_id}.{field}: missing required field")
+                elif entity.get(field) is not None and parse_date(entity.get(field)) is None:
+                    errors.append(f"{entity_id}.{field}: expected YYYY-MM-DD date or null")
+            repositories = entity.get("repositories")
+            if not isinstance(repositories, list):
+                errors.append(f"{entity_id}.repositories: expected list")
+                repositories = []
+            for repo_index, repo_id in enumerate(repositories):
+                if not isinstance(repo_id, str) or not repo_id.startswith("repo-"):
+                    errors.append(f"{entity_id}.repositories[{repo_index}]: expected repo-* entity id")
+            account_ids = entity.get("account_ids")
+            if not isinstance(account_ids, list):
+                errors.append(f"{entity_id}.account_ids: expected list")
+                account_ids = []
+            for account_index, account_id in enumerate(account_ids):
+                if not isinstance(account_id, str) or not account_id.startswith("account-"):
+                    errors.append(f"{entity_id}.account_ids[{account_index}]: expected account-* entity id")
         source_incident_ids = entity.get("source_incident_ids")
         if not isinstance(source_incident_ids, list) or not source_incident_ids:
             errors.append(f"{entity_id}.source_incident_ids: expected non-empty list")
@@ -154,7 +286,17 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
                 errors.append(f"{entity_id}.aliases: expected non-empty string aliases")
                 continue
             normalized = normalize_alias(alias)
-            alias_key = f"{entity.get('ecosystem', '')}:{normalized}" if entity_type == "packages" else normalized
+            if entity_type == "packages":
+                alias_key = f"{entity.get('ecosystem', '')}:{normalized}"
+            elif entity_type == "releases":
+                alias_key = (
+                    f"{entity.get('ecosystem', '')}:"
+                    f"{entity.get('package_name', '')}:"
+                    f"{entity.get('version', '')}:"
+                    f"{normalized}"
+                )
+            else:
+                alias_key = normalized
             owner = alias_owners.get(alias_key)
             if owner and owner != entity_id:
                 errors.append(f"{entity_type}: normalized alias {normalized!r} belongs to both {owner} and {entity_id}")
@@ -162,19 +304,45 @@ def validate_entity_file(errors: list[str], entity_type: str, entities: Any, inc
     return ids
 
 
+def validate_release_references(
+    errors: list[str],
+    releases: Any,
+    references_by_incident: dict[str, set[str]],
+) -> None:
+    if not isinstance(releases, list):
+        return
+    for index, release in enumerate(releases):
+        if not isinstance(release, dict):
+            continue
+        entity_id = release.get("id", f"releases[{index}]")
+        source_incident_ids = release.get("source_incident_ids")
+        references = release.get("references")
+        if not isinstance(source_incident_ids, list) or not isinstance(references, list):
+            continue
+        allowed_references: set[str] = set()
+        for source_id in source_incident_ids:
+            if isinstance(source_id, str):
+                allowed_references.update(references_by_incident.get(source_id, set()))
+        for reference_index, reference in enumerate(references):
+            if isinstance(reference, str) and reference not in allowed_references:
+                errors.append(f"{entity_id}.references[{reference_index}]: unknown source reference id {reference!r}")
+
+
 def validate_relationships(
     relationships: Any,
     *,
     entity_ids: set[str],
     incident_ids: set[str],
+    references_by_incident: dict[str, set[str]],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(relationships, list):
         return ["relationships: expected list"]
 
     valid_nodes = entity_ids | incident_ids
-    seen_relationships: set[tuple[str, str, str]] = set()
+    seen_relationships: set[tuple[Any, Any, Any, Any]] = set()
     connected_entities: set[str] = set()
+    seeded_by_edges: list[tuple[str, str, str]] = []
     for index, rel in enumerate(relationships):
         path = f"relationships[{index}]"
         if not isinstance(rel, dict):
@@ -197,11 +365,47 @@ def validate_relationships(
                 errors.append(f"{path}.source: RELATED_INCIDENT must start from an incident node")
             if rel_type == "RELATED_CAMPAIGN" and not source.startswith("incident-"):
                 errors.append(f"{path}.source: RELATED_CAMPAIGN must start from an incident node")
+            if rel_type == "PACKAGE_RELEASE" and not source.startswith("pkg-"):
+                errors.append(f"{path}.source: PACKAGE_RELEASE must start from a package node")
+            if rel_type == "INCIDENT_AFFECTED_RELEASE" and not source.startswith("incident-"):
+                errors.append(f"{path}.source: INCIDENT_AFFECTED_RELEASE must start from an incident node")
+            if rel_type == "MAINTAINS_REPOSITORY" and not source.startswith("maintainer-"):
+                errors.append(f"{path}.source: MAINTAINS_REPOSITORY must start from a maintainer node")
+            if rel_type == "USES_ACCOUNT" and not source.startswith("maintainer-"):
+                errors.append(f"{path}.source: USES_ACCOUNT must start from a maintainer node")
+            if rel_type == "SEEDED_BY":
+                if not source.startswith(("pkg-", "release-")):
+                    errors.append(f"{path}.source: SEEDED_BY must start from a package or release node")
+                if source == target:
+                    errors.append(f"{path}: source and target cannot be the same")
+                tier = rel.get("propagation_tier")
+                if tier not in {"causal", "temporal"}:
+                    errors.append(f"{path}.propagation_tier: expected 'causal' or 'temporal'")
+                evidence_refs = rel.get("evidence_refs")
+                if not isinstance(evidence_refs, list) or not evidence_refs:
+                    errors.append(f"{path}.evidence_refs: expected non-empty list")
+                elif not all(isinstance(ref, str) and ref.strip() for ref in evidence_refs):
+                    errors.append(f"{path}.evidence_refs: expected non-empty string references")
+                summary = rel.get("summary")
+                if not isinstance(summary, str) or len(summary.strip()) < 20:
+                    errors.append(f"{path}.summary: expected evidence summary")
+                source_incident_id = rel.get("source_incident_id")
+                if not isinstance(source_incident_id, str):
+                    errors.append(f"{path}.source_incident_id: expected string")
+                elif source_incident_id not in references_by_incident:
+                    errors.append(f"{path}.source_incident_id: unknown incident {source_incident_id!r}")
+                elif isinstance(evidence_refs, list):
+                    valid_refs = references_by_incident[source_incident_id]
+                    for ref in evidence_refs:
+                        if isinstance(ref, str) and ref not in valid_refs:
+                            errors.append(f"{path}.evidence_refs: unknown reference {ref!r} for {source_incident_id}")
+                seeded_by_edges.append((source, target, path))
         if source not in valid_nodes:
             errors.append(f"{path}.source: unknown source {source!r}")
         if target not in valid_nodes:
             errors.append(f"{path}.target: unknown target {target!r}")
-        key = (source, target, rel_type)
+        source_incident_context = rel.get("source_incident_id") if rel_type == "SEEDED_BY" else ""
+        key = (source, target, rel_type, source_incident_context or "")
         if key in seen_relationships:
             errors.append(f"{path}: duplicate relationship {key!r}")
         seen_relationships.add(key)
@@ -213,6 +417,37 @@ def validate_relationships(
     orphan_entities = sorted(entity_ids - connected_entities)
     for entity_id in orphan_entities:
         errors.append(f"{entity_id}: orphan entity with no relationships")
+    errors.extend(validate_seeded_by_acyclic(seeded_by_edges))
+    return errors
+
+
+def validate_seeded_by_acyclic(edges: list[tuple[str, str, str]]) -> list[str]:
+    graph: dict[str, list[tuple[str, str]]] = {}
+    for source, target, path in edges:
+        graph.setdefault(source, []).append((target, path))
+
+    errors: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            cycle = " -> ".join(stack[stack.index(node) :] + [node]) if node in stack else node
+            errors.append(f"SEEDED_BY cycle detected: {cycle}")
+            return
+        visiting.add(node)
+        stack.append(node)
+        for target, _path in graph.get(node, []):
+            visit(target)
+        stack.pop()
+        visiting.remove(node)
+        visited.add(node)
+
+    for source in graph:
+        visit(source)
     return errors
 
 
@@ -230,6 +465,12 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    seeded_by_relationships = [
+        relationship
+        for relationship in relationships
+        if isinstance(relationship, dict) and relationship.get("type") == "SEEDED_BY"
+    ]
+    collision_base_ids = release_collision_base_ids(corpus)
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
             continue
@@ -251,6 +492,59 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
                 key = (source, campaign["id"], "RELATED_CAMPAIGN")
                 if key not in relationship_keys:
                     errors.append(f"{source}: missing RELATED_CAMPAIGN relationship for {campaign['id']}")
+        for maintainer in incident.get("maintainers") or []:
+            if not isinstance(maintainer, dict) or not isinstance(maintainer.get("id_slug"), str):
+                continue
+            maintainer_id = f"maintainer-{normalize_alias(maintainer['id_slug'])}"
+            for repo_id in maintainer.get("repositories") or []:
+                if isinstance(repo_id, str) and (maintainer_id, repo_id, "MAINTAINS_REPOSITORY") not in relationship_keys:
+                    errors.append(f"{source}: missing MAINTAINS_REPOSITORY relationship from {maintainer_id} to {repo_id}")
+            for account_id in maintainer.get("account_ids") or []:
+                if isinstance(account_id, str) and (maintainer_id, account_id, "USES_ACCOUNT") not in relationship_keys:
+                    errors.append(f"{source}: missing USES_ACCOUNT relationship from {maintainer_id} to {account_id}")
+        for release in incident.get("releases") or []:
+            if not isinstance(release, dict):
+                continue
+            ecosystem = release.get("ecosystem")
+            package_name = release.get("package_name")
+            version = release.get("version")
+            if all(isinstance(value, str) for value in (ecosystem, package_name, version)):
+                package_id = stable_id("pkg", ecosystem, package_name)
+                release_id = release_entity_id(collision_base_ids, ecosystem, package_name, version)
+                if (package_id, release_id, "PACKAGE_RELEASE") not in relationship_keys:
+                    errors.append(f"{source}: missing PACKAGE_RELEASE relationship for {release_id}")
+                if (source, release_id, "INCIDENT_AFFECTED_RELEASE") not in relationship_keys:
+                    errors.append(f"{source}: missing INCIDENT_AFFECTED_RELEASE relationship for {release_id}")
+        for propagation_edge in incident.get("propagation_edges") or []:
+            if not isinstance(propagation_edge, dict):
+                continue
+            edge_source = propagation_edge.get("source")
+            edge_target = propagation_edge.get("target")
+            if isinstance(edge_source, str) and isinstance(edge_target, str):
+                matches = [
+                    relationship
+                    for relationship in seeded_by_relationships
+                    if relationship.get("source") == edge_source
+                    and relationship.get("target") == edge_target
+                    and relationship.get("source_incident_id") == incident["id"]
+                ]
+                if not matches:
+                    errors.append(
+                        f"{source}: missing SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        f"for source_incident_id {incident['id']}"
+                    )
+                    continue
+                expected_tier = propagation_edge.get("propagation_tier")
+                expected_refs = set(propagation_edge.get("evidence_refs") or [])
+                if not any(
+                    relationship.get("propagation_tier") == expected_tier
+                    and set(relationship.get("evidence_refs") or []) == expected_refs
+                    for relationship in matches
+                ):
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        "does not preserve propagation_tier/evidence_refs"
+                    )
     return errors
 
 
@@ -261,6 +555,7 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
         corpus = []
 
     raw_incident_ids = collect_raw_incident_ids(corpus)
+    references_by_incident = collect_reference_ids_by_incident(corpus)
     incident_ids = collect_incident_ids(corpus)
     all_entity_ids: set[str] = set()
     for entity_type, entities in entities_by_type.items():
@@ -270,11 +565,13 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
             errors.append(f"{entity_id}: duplicate id across entity files")
         all_entity_ids |= entity_ids
 
+    validate_release_references(errors, entities_by_type.get("releases"), references_by_incident)
     errors.extend(
         validate_relationships(
             relationships,
             entity_ids=all_entity_ids,
             incident_ids=incident_ids,
+            references_by_incident=references_by_incident,
         )
     )
     errors.extend(validate_corpus_implied_relationships(corpus, relationships))

@@ -39,6 +39,13 @@ circuit_breaker:
   cooldown_minutes: 60           # How long to wait before retrying after trip
   alert_channel: "issues"        # Where to alert (GitHub Issues)
 
+# ── Ready-Issue Supervision ─────────────────────────────────────────────────
+ready_issue:
+  warn_minutes: 60               # Warn when a ready Issue has no PR after this many minutes of inactivity
+  stall_minutes: 180             # Open a pipeline/stalled-ready-issue alert after this many minutes
+  stall_minutes_by_priority:
+    P0: 60                       # P0 ready Issues page faster than the general stale handoff threshold
+
 # ── Validation Gates ─────────────────────────────────────────────────────────
 validation:
   min_sources: 3

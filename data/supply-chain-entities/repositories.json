@@ -1,6 +1,19 @@
 [
   {
     "aliases": [
+      "boltdb-go/bolt"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-boltdb-go-bolt",
+    "name": "boltdb-go/bolt",
+    "owner": "boltdb-go",
+    "source_incident_ids": [
+      "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ],
+    "url": "https://github.com/boltdb-go/bolt"
+  },
+  {
+    "aliases": [
       "codecov/codecov-bash"
     ],
     "host": "github.com",
