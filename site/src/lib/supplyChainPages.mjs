@@ -512,6 +512,62 @@ function attributionEvidenceFor(incident) {
   }));
 }
 
+function propagationNode(data, nodeId) {
+  const incident = data.incidentByNodeId.get(nodeId);
+  if (incident) {
+    return {
+      id: incident.id,
+      label: incident.title,
+      entityType: 'Supply Chain Incident',
+      href: `/supply-chain/incidents/${incident.id}/`,
+      publishedAt: incident.first_observed_at || incident.first_public_warning_at || incident.disclosed_at || null,
+      purl: null,
+    };
+  }
+  const entity = data.entityById.get(nodeId);
+  if (!entity) {
+    return {
+      id: nodeId,
+      label: nodeId,
+      entityType: 'Unknown',
+      href: null,
+      publishedAt: null,
+      purl: null,
+    };
+  }
+  return {
+    id: entity.id,
+    label: entity.name || entity.id,
+    entityType: entityTypeLabel(entity),
+    href: linkForEntity(entity),
+    publishedAt: entity.published_at || null,
+    purl: entity.purl || null,
+  };
+}
+
+function incidentPropagationTimeline(data, incidentId) {
+  const incident = data.incidents.find((item) => item.id === incidentId);
+  if (!incident) return [];
+  const referenceById = referenceMapFor(incident);
+  return data.relationships
+    .filter((relationship) => relationship.type === 'SEEDED_BY' && relationship.source_incident_id === incidentId)
+    .map((relationship, index) => {
+      const source = propagationNode(data, relationship.source);
+      const target = propagationNode(data, relationship.target);
+      const sortDate = source.publishedAt || target.publishedAt || incidentSortDate(incident);
+      return {
+        id: `propagation-${incidentId}-${index + 1}`,
+        source,
+        target,
+        tier: relationship.propagation_tier,
+        summary: relationship.summary,
+        sortDate,
+        references: (relationship.evidence_refs || []).map((referenceId) => referenceById.get(referenceId)).filter(Boolean),
+      };
+    })
+    .sort((a, b) => (a.sortDate || '').localeCompare(b.sortDate || '') || a.source.label.localeCompare(b.source.label));
+}
+
 function editorialSectionsFor(incident) {
   const referenceById = referenceMapFor(incident);
   return editorialSectionDefinitions
@@ -812,6 +868,7 @@ export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
     incident,
     graphHero: buildGraphHeroModel(data),
     editorialSections: editorialSectionsFor(incident),
+    propagationTimeline: incidentPropagationTimeline(data, id),
     connectedEntities: incidentConnectedEntities(data, id),
     seo: {
       title: `Supply Chain: ${incident.title}`,
