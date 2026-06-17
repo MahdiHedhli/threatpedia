@@ -65,6 +65,10 @@ assert.ok(
   'route should mount the persisted keyboard-accessible WebGL graph island'
 );
 assert.ok(
+  supplyChainRouteSource.includes('Supply Chain graph is loading. Keyboard controls become available after graph initialization.'),
+  'route should not announce keyboard graph controls before initialization succeeds'
+);
+assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
   'route should not persist page-specific hero copy or selection data'
 );
@@ -453,12 +457,14 @@ assert.ok(
   'graph client should render causal and temporal SEEDED_BY edges distinctly'
 );
 assert.ok(
-  supplyChainGraphSource.includes('handleKeydown') &&
+    supplyChainGraphSource.includes('handleKeydown') &&
     supplyChainGraphSource.includes('keyboardNodes()') &&
+    supplyChainGraphSource.includes("closest?.('a, button, input, select, textarea, summary, [contenteditable=\"true\"]')") &&
     supplyChainGraphSource.includes("event.key === 'Escape'") &&
     supplyChainGraphSource.includes('this.root.addEventListener') &&
-    supplyChainGraphSource.includes('this.description.textContent'),
-  'graph client should provide keyboard traversal and ARIA selected-node text'
+    supplyChainGraphSource.includes('this.description.textContent') &&
+    supplyChainGraphSource.includes('Keyboard graph controls are not active.'),
+  'graph client should provide keyboard traversal and truthful ARIA selected-node/failure text'
 );
 assert.ok(
   supplyChainGraphSource.includes('labelPriority') &&
