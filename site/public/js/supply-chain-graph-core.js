@@ -427,13 +427,13 @@ class SupplyChainGraph {
     const hero = document.querySelector('[data-graph-selection-type][data-graph-selection-value]');
     const type = hero?.dataset.graphSelectionType;
     const value = hero?.dataset.graphSelectionValue;
-    if (type === 'incident') this.selectByEntityId('incident', value);
-    else if (type && type !== 'overview') this.selectByEntityId(type.replace(/\s+/g, '_'), value);
-    else if (!this.selection) {
-      this.updateCaption(
-        'Supply Chain Graph',
-        `${this.payload.nodes.length} corpus nodes and ${this.payload.edges.length} typed edges loaded.`
-      );
+    if (type === 'incident') {
+      if (!this.selectByEntityId('incident', value)) this.showOverview();
+    } else if (type && type !== 'overview') {
+      const normalizedType = type.replace(/\s+/g, '_');
+      if (!this.selectByEntityId(normalizedType, value)) this.selectEntityContext(normalizedType, value);
+    } else {
+      this.showOverview();
     }
   }
 
@@ -442,7 +442,40 @@ class SupplyChainGraph {
     const node = this.layout.nodes.find(
       (item) => item.type === normalizedType && (item.id === value || item.entity_id === value)
     );
-    if (node) this.selectNode(node);
+    if (!node) return false;
+    this.selectNode(node);
+    return true;
+  }
+
+  selectEntityContext(type, value) {
+    const entity = this.payload.nodes.find((node) => node.type === type && (node.id === value || node.entity_id === value));
+    const incidentIds = new Set(
+      (Array.isArray(entity?.source_incident_ids) ? entity.source_incident_ids : []).map((id) => `incident-${id}`)
+    );
+    this.payload.edges.forEach((edge) => {
+      if (edge.source === value && edge.target?.startsWith('incident-')) incidentIds.add(edge.target);
+      if (edge.target === value && edge.source?.startsWith('incident-')) incidentIds.add(edge.source);
+    });
+    const incidentNodes = this.layout.nodes.filter((node) => node.tier === 'incident' && incidentIds.has(node.id));
+    if (!incidentNodes.length) {
+      this.showOverview();
+      return;
+    }
+    this.selection = { type, value, nodes: new Set(incidentNodes.map((node) => node.id)) };
+    this.setCameraTarget(fitBounds(incidentNodes, this.viewport, 180));
+    this.updateCaption(
+      entity?.label || value,
+      `${incidentNodes.length} connected incident${incidentNodes.length === 1 ? '' : 's'} framed for this entity.`
+    );
+  }
+
+  showOverview() {
+    this.selection = null;
+    this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport));
+    this.updateCaption(
+      'Supply Chain Graph',
+      `${this.payload.nodes.length} corpus nodes and ${this.payload.edges.length} typed edges loaded.`
+    );
   }
 
   filterStage(stage) {
