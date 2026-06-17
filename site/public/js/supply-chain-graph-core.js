@@ -146,9 +146,10 @@ function fitBounds(nodes, viewport, padding = 120) {
 function buildLayout(payload) {
   const drawableNodes = payload.nodes.filter(isG2DrawableNode);
   const nodeById = new Map(drawableNodes.map((node) => [node.id, { ...node }]));
-  const incidentNodes = drawableNodes.filter((node) => node.tier === 'incident');
-  const actorNodes = drawableNodes.filter((node) => node.tier === 'actor');
-  const campaignNodes = drawableNodes.filter((node) => node.tier === 'campaign');
+  const layoutNodes = Array.from(nodeById.values());
+  const incidentNodes = layoutNodes.filter((node) => node.tier === 'incident');
+  const actorNodes = layoutNodes.filter((node) => node.tier === 'actor');
+  const campaignNodes = layoutNodes.filter((node) => node.tier === 'campaign');
   const actorIds = new Set(actorNodes.map((node) => node.id));
   const campaignIds = new Set(campaignNodes.map((node) => node.id));
   const incidentActor = new Map();

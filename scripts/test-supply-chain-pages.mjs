@@ -366,12 +366,14 @@ assert.ok(
     supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
     supplyChainGraphSource.includes('function isG2DrawableNode') &&
     supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident'])") &&
+    supplyChainGraphSource.includes('const layoutNodes = Array.from(nodeById.values())') &&
+    supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'incident')") &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&
     supplyChainGraphSource.includes('this.payload.nodes.length') &&
     supplyChainGraphSource.includes('corpus nodes and'),
-  'graph client should use WebGL, quadtree picking, G2 LOD culling, clamped camera targets, cached labels, and ready status'
+  'graph client should use WebGL, quadtree picking, G2 LOD culling, clone-backed layout, clamped camera targets, cached labels, and ready status'
 );
 
 const codecov = getSupplyChainIncidentPage('SC-2021-CODECOV-BASH-UPLOADER', data);
