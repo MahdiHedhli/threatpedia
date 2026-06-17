@@ -62,11 +62,13 @@ assert.ok(
   'Base layout should keep client transitions only between Supply Chain routes'
 );
 assert.ok(
-  baseLayoutSource.includes('ev.preventDefault();') && baseLayoutSource.includes('window.location.href = ev.to.href;'),
+  baseLayoutSource.includes('ev.preventDefault();') && baseLayoutSource.includes('window.location.href = to.href;'),
   'Base layout should force normal navigation outside Supply Chain routes'
 );
 assert.ok(
-  baseLayoutSource.includes('if (ev.to)') && baseLayoutSource.includes('window.location.href = ev.to.href;'),
+  baseLayoutSource.includes('const to = ev.to;') &&
+    baseLayoutSource.includes('if (to)') &&
+    baseLayoutSource.includes('window.location.href = to.href;'),
   'Base layout transition fallback should guard optional Astro destination data'
 );
 assert.ok(
