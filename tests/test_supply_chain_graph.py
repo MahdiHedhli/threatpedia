@@ -517,6 +517,18 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertTrue(any("unknown reference 'ref-does-not-exist'" in error for error in errors))
         self.assertTrue(any(".source_incident_id: unknown incident 'SC-2099-NOT-REAL'" in error for error in errors))
 
+    def test_seeded_by_relationship_must_preserve_source_incident_context(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        relationships = copy.deepcopy(load_json(RELATIONSHIP_PATH))
+        seeded_by = next(item for item in relationships if item["type"] == "SEEDED_BY")
+        seeded_by["source_incident_id"] = "SC-2018-NPM-EVENT-STREAM"
+        seeded_by["evidence_refs"] = ["ref-github-event-stream-116"]
+
+        errors = validator.validate_graph(corpus, entities_by_type, relationships)
+
+        self.assertTrue(any("missing SEEDED_BY relationship" in error and "source_incident_id" in error for error in errors))
+
     def test_seeded_by_cycle_fails(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

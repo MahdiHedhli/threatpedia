@@ -464,6 +464,11 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
         for relationship in relationships
         if isinstance(relationship, dict)
     }
+    seeded_by_relationships = [
+        relationship
+        for relationship in relationships
+        if isinstance(relationship, dict) and relationship.get("type") == "SEEDED_BY"
+    ]
     collision_base_ids = release_collision_base_ids(corpus)
     for incident in corpus:
         if not isinstance(incident, dict) or not isinstance(incident.get("id"), str):
@@ -515,9 +520,30 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
             edge_source = propagation_edge.get("source")
             edge_target = propagation_edge.get("target")
             if isinstance(edge_source, str) and isinstance(edge_target, str):
-                key = (edge_source, edge_target, "SEEDED_BY")
-                if key not in relationship_keys:
-                    errors.append(f"{source}: missing SEEDED_BY relationship {edge_source} -> {edge_target}")
+                matches = [
+                    relationship
+                    for relationship in seeded_by_relationships
+                    if relationship.get("source") == edge_source
+                    and relationship.get("target") == edge_target
+                    and relationship.get("source_incident_id") == incident["id"]
+                ]
+                if not matches:
+                    errors.append(
+                        f"{source}: missing SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        f"for source_incident_id {incident['id']}"
+                    )
+                    continue
+                expected_tier = propagation_edge.get("propagation_tier")
+                expected_refs = set(propagation_edge.get("evidence_refs") or [])
+                if not any(
+                    relationship.get("propagation_tier") == expected_tier
+                    and set(relationship.get("evidence_refs") or []) == expected_refs
+                    for relationship in matches
+                ):
+                    errors.append(
+                        f"{source}: SEEDED_BY relationship {edge_source} -> {edge_target} "
+                        "does not preserve propagation_tier/evidence_refs"
+                    )
     return errors
 
 

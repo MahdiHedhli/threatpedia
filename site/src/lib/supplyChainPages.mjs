@@ -333,7 +333,7 @@ function incidentLinksFor(data, entityId) {
   const seen = new Set();
   return [...direct, ...seededByContext]
     .filter((row) => {
-      const key = `${row.id}:${row.type}`;
+      const key = row.id;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;

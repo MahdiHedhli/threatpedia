@@ -326,6 +326,12 @@ assert.ok(
   ),
   'SEEDED_BY package endpoints should preserve source incident context'
 );
+const threeCxPackage = getSupplyChainEntityPage('packages', 'pkg-generic-3cx-desktopapp', data);
+assert.equal(
+  threeCxPackage.relatedIncidents.filter((incident) => incident.id === 'SC-2023-THREE-CX-DESKTOP').length,
+  1,
+  'related incident lists should dedupe direct and SEEDED_BY context by incident id'
+);
 assert.ok(eventStreamPackage.connectedEntities.length > 0, 'entity page should include connected entities');
 eventStreamPackage.connectedEntities.forEach((entity) => {
   assert.ok(
