@@ -102,6 +102,14 @@ assert.ok(
   'Base layout should not repeat URL auto-search on duplicate initializer calls for the same page'
 );
 assert.ok(
+  baseLayoutSource.includes('if (searchInput.value.trim() === q)'),
+  'Base layout search should not render stale async query results'
+);
+assert.ok(
+  baseLayoutSource.includes('e.stopPropagation();'),
+  'Base layout search Escape handling should not close the full menu when dismissing visible results'
+);
+assert.ok(
   !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),
   'Base layout page-load handler should not return early when menu elements are absent'
 );
