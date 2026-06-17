@@ -86,6 +86,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       data-graph-status="loading"
       role="application"
       aria-label="Persistent preview of the Supply Chain corpus graph"
+      aria-describedby="supply-chain-graph-description"
+      tabindex="0"
     >
       <div class="graph-status">
         <span data-sc-graph-status>{graphHero.status}</span>
@@ -121,6 +123,9 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         <strong data-sc-graph-caption-title>Supply Chain Graph</strong>
         <span data-sc-graph-caption-body>Pan, zoom, and select actor, campaign, and incident tiers.</span>
       </div>
+      <p id="supply-chain-graph-description" class="sr-only" data-sc-graph-description>
+        Supply Chain graph loaded. Use arrow keys while focused to move through visible graph nodes.
+      </p>
     </div>
     <div class="hero-copy">
       <p class="eyebrow">{graphHero.eyebrow}</p>
@@ -555,6 +560,11 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     background-size: 42px 42px, 42px 42px, auto, auto, auto;
   }
 
+  .graph-placeholder:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
   .sc-graph-canvas {
     position: absolute;
     inset: 0;
@@ -591,6 +601,17 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     padding: 5px 7px;
     text-transform: uppercase;
     white-space: nowrap;
+  }
+
+  .sc-graph-label-selected {
+    border-color: rgba(232, 160, 32, 0.82);
+    box-shadow: 0 0 0 1px rgba(232, 160, 32, 0.2), 0 10px 26px rgba(0, 0, 0, 0.36);
+    color: var(--white);
+  }
+
+  .sc-graph-label-keyboard {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
   }
 
   .sc-graph-label-actor {
