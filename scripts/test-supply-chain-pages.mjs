@@ -58,12 +58,24 @@ assert.ok(
   'Base layout should scope Astro client transitions to Supply Chain routes only'
 );
 assert.ok(
+  baseLayoutSource.includes('function isInternalNavigationLink(anchor)'),
+  'Base layout should only scope same-origin internal navigation links'
+);
+assert.ok(
   baseLayoutSource.includes("anchor.setAttribute('data-astro-reload', '')"),
   'Base layout should force normal reloads for non-Supply-Chain internal navigation'
 );
 assert.ok(
+  baseLayoutSource.includes('if (!isInternalNavigationLink(anchor)) return;'),
+  'Base layout should not force reloads onto hashes, external links, mailto, or tel links'
+);
+assert.ok(
   baseLayoutSource.includes("document.addEventListener('click', scopeAstroTransitionForClick, { capture: true })"),
   'Base layout should scope dynamically inserted links before Astro handles clicks'
+);
+assert.ok(
+  baseLayoutSource.includes("document.body.style.overflow = isOpen ? 'hidden' : '';"),
+  'Base layout should prevent background scrolling while the hamburger menu is open'
 );
 assert.ok(
   !/const searchInput = document\.getElementById\('menu-search'\);\s*if \(!btn \|\| !overlay \|\| !panel\) return;/.test(baseLayoutSource),

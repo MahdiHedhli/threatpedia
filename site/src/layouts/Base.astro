@@ -231,22 +231,33 @@ try {
         return pathname === '/supply-chain' || pathname === '/supply-chain/' || pathname.startsWith('/supply-chain/');
       }
 
-      function shouldUseClientTransition(anchor) {
-        if (!anchor || anchor.target || anchor.hasAttribute('download')) return false;
+      function isInternalNavigationLink(anchor) {
+        if (!anchor || (anchor.target && anchor.target !== '_self') || anchor.hasAttribute('download')) return false;
         const href = anchor.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
-        let targetUrl;
+        if (
+          !href ||
+          href.startsWith('#') ||
+          href.startsWith('mailto:') ||
+          href.startsWith('tel:') ||
+          href.startsWith('javascript:')
+        ) return false;
         try {
-          targetUrl = new URL(href, window.location.href);
+          const targetUrl = new URL(href, window.location.href);
+          return targetUrl.origin === window.location.origin;
         } catch {
           return false;
         }
-        if (targetUrl.origin !== window.location.origin) return false;
+      }
+
+      function shouldUseClientTransition(anchor) {
+        if (!isInternalNavigationLink(anchor)) return false;
+        const targetUrl = new URL(anchor.getAttribute('href'), window.location.href);
         return isSupplyChainPath(window.location.pathname) && isSupplyChainPath(targetUrl.pathname);
       }
 
       function scopeAstroTransitionsToSupplyChain() {
         document.querySelectorAll('a[href]').forEach((anchor) => {
+          if (!isInternalNavigationLink(anchor)) return;
           if (shouldUseClientTransition(anchor)) {
             anchor.removeAttribute('data-astro-reload');
           } else {
@@ -257,7 +268,7 @@ try {
 
       function scopeAstroTransitionForClick(event) {
         const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
-        if (!anchor) return;
+        if (!isInternalNavigationLink(anchor)) return;
         if (shouldUseClientTransition(anchor)) {
           anchor.removeAttribute('data-astro-reload');
         } else {
@@ -284,6 +295,7 @@ try {
         const isOpen = panel.classList.toggle('open');
         overlay.classList.toggle('open');
         btn.classList.toggle('open');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
         if (isOpen && searchInput) searchInput.focus();
       }
 
