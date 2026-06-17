@@ -374,12 +374,15 @@ assert.ok(
     supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
     supplyChainGraphSource.includes('function isG2DrawableNode') &&
     supplyChainGraphSource.includes("const DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique'])") &&
+    supplyChainGraphSource.includes('const layoutNodes = Array.from(nodeById.values())') &&
+    supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'incident')") &&
+    supplyChainGraphSource.includes("layoutNodes.filter((node) => node.tier === 'technique')") &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&
     supplyChainGraphSource.includes('this.payload.nodes.length') &&
     supplyChainGraphSource.includes('corpus nodes and'),
-  'graph client should use WebGL, quadtree picking, G2/G3 LOD culling, clamped camera targets, cached labels, and ready status'
+  'graph client should use WebGL, quadtree picking, G2/G3 LOD culling, clone-backed layout, clamped camera targets, cached labels, and ready status'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.focusReflow') &&
