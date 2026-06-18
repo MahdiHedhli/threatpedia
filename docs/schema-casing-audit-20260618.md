@@ -298,10 +298,11 @@ or module-level API to use camelCase as written. Serialization into
 `.github/pipeline/tasks/*.json` should remain compatible with the current task
 schema unless Kernel K explicitly approves a task-data migration.
 
-**Evidence:** The public task schema defines `acceptance.review_status`; current
-task JSON files also preserve the older `acceptance_criteria.review_status`
-shape. Across 318 task files, 314 use `acceptance_criteria.review_status` and 4
-use `acceptance.review_status`. No current task JSON file contains the v1.2
+**Evidence:** Public pipeline docs and `scripts/validate-pipeline-tasks.mjs`
+make `acceptance_criteria.review_status` the canonical serialized task shape for
+new task writers; `acceptance.review_status` is a tolerated legacy alias. Across
+318 task files, 314 use `acceptance_criteria.review_status` and 4 use
+`acceptance.review_status`. No current task JSON file contains the v1.2
 camelCase operational fields `workIntent`, `manualOverride`, `kevStatus`, or
 `activeStatus`. Existing pipeline scripts read snake_case review-status
 contracts while content frontmatter uses `reviewStatus`. The layer boundary
@@ -313,8 +314,8 @@ already exists and should be made explicit rather than blurred.
 
 | Layer | Existing convention | Evidence | Proposed implementation recommendation |
 |---|---|---|---|
-| Content frontmatter (`site/src/content/**`) | camelCase | `content.config.ts`, threat actor files, validator/generator prompts use `reviewStatus`, `attributionConfidence`, `targetSectors`. | Preserve camelCase in PR2. Translate v0.5 concepts to live camelCase names. |
-| Operational/task data (`.github/pipeline/**`, task JSON, task schema) | snake_case in acceptance/task contracts | `.github/pipeline/schema/task-schema.json` defines `acceptance.review_status`; current task files use `acceptance_criteria.review_status` in 314/318 and `acceptance.review_status` in 4/318. | Preserve snake_case task serialization unless Kernel K approves a task-data migration. |
+| Content frontmatter (`site/src/content/**`) | Mostly camelCase for the v0.5 threat-actor fields under review, with existing named exceptions | `content.config.ts`, threat actor files, validator/generator prompts use `reviewStatus`, `attributionConfidence`, `targetSectors`; all collections also define the existing hyphenated `framework-mappings` field. | Preserve camelCase for the v0.5 threat-actor fields in PR2, while preserving existing non-camel fields such as `framework-mappings`. Translate v0.5 concepts to live field names rather than applying a blanket casing rewrite. |
+| Operational/task data (`.github/pipeline/**`, task JSON, task schema) | snake_case in acceptance/task contracts | `docs/PIPELINE.md` and `scripts/validate-pipeline-tasks.mjs` define `acceptance_criteria.review_status` as canonical for new task writers; `acceptance.review_status` is tolerated legacy/schema drift. Current task files use `acceptance_criteria.review_status` in 314/318 and `acceptance.review_status` in 4/318. | Preserve canonical `acceptance_criteria.review_status` task serialization unless Kernel K approves a task-data migration. |
 | New intake classifier records | v1.2 spec is camelCase; public task-layer destination is snake_case | No current public task JSON contains v1.2 camelCase operational fields. | Adapter boundary recommended for PR4: camelCase internal classifier shape, explicit snake_case serialization into task state. |
 
 ---
@@ -324,7 +325,7 @@ already exists and should be made explicit rather than blurred.
 | Claude/DangerMouse public finding | Verified by Codex? | Public/private delta | Action before PR2 |
 |---|---:|---|---|
 | content frontmatter is camelCase | Yes | Private operational notes and live public schema align on current public `content.config.ts`; older standards prose is snake_case. | Implement v0.5 concepts in camelCase unless a migration alias is approved. |
-| lifecycle field is `reviewStatus` | Yes | Private/task acceptance uses snake_case `review_status`; content remains `reviewStatus`. | Keep content lifecycle as `reviewStatus`; PR4 must separately reconcile task schema and legacy `acceptance_criteria` task records. |
+| lifecycle field is `reviewStatus` | Yes | Private/task acceptance uses snake_case `review_status`; content remains `reviewStatus`. | Keep content lifecycle as `reviewStatus`; PR4 must serialize new task records through canonical `acceptance_criteria.review_status`. |
 | lifecycle enum matches locked values | Yes | No conflicting active private lifecycle enum found. | Preserve values exactly. |
 | sources use `reliability` R1-R4, not `source_rating` | Yes | Older standards/manifest prose says `source_rating`; live schema and tasks use `reliability`. | Map source-rating concept to live `reliability`; do not rename live sources in PR2. |
 | `revisions[]` absent | Yes | Private editorial docs mention revision workflow concepts, not a live public content frontmatter `revisions[]`. | Treat as net-new if PR2 proposes it; do not assume legacy records have it. |
