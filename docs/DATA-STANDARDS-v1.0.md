@@ -13,6 +13,30 @@ Version 1.0 is the **operating schema** for the freeze-and-sweep normalization p
 
 When the Founding Board is seated, v1.0 becomes the working draft they review. Their first act is to publish v1.1 with any changes they require. The empty-board period ratifies via Colonel K (project lead), DangerMouse (Claude), and Penfold (Gemini).
 
+### Current Actor Identity Amendment
+
+ADR 0007 (`docs/ADR-0007-entity-id-format.md`) supersedes the portions of this
+pre-migration standard that require APT/threat-actor content records to use
+`apt_id: TP-APT-NNNN` as their primary identity or to carry mandatory
+`nation_state` / snake_case `attribution_confidence` fields.
+
+The live Astro threat-actor collection is canonical for public actor content:
+
+```text
+site/src/content/threat-actors/**
+```
+
+Threat actor records remain slug-addressed for site/content identity. Optional
+`TP-APT-*` / `aptId` values, if introduced later, are compatibility/export
+identifiers only and must be populated through an approved migration or
+enrichment plan. Existing legacy records must not hard-fail solely because they
+lack `aptId`, `TP-APT-*`, `nation_state`, or snake_case
+`attribution_confidence`.
+
+Structured attribution moves toward sourced `attributionClaims[]` in the
+adversary-profile compatibility layer. Existing `attributionConfidence` remains
+an accepted legacy/display field during the phased deprecation period.
+
 ---
 
 ## What Changed From v0.1
@@ -345,7 +369,15 @@ Do not put ATLAS `AML.*` identifiers in `mitreMappings`; ATT&CK and ATLAS mappin
 
 ## 5. APT Registry — Field Specification
 
-### 5.1 Required Fields
+> **Actor identity amendment:** This pre-migration APT registry table is not the
+> live public threat-actor content contract. For the live Astro collection,
+> `site/src/content/threat-actors/**` and `site/src/content.config.ts` govern.
+> Actor records are slug-addressed; `aptId` / `TP-APT-*` identifiers are
+> optional compatibility/export anchors, not mandatory primary content IDs.
+> `nation_state` and snake_case `attribution_confidence` must not be
+> reintroduced as mandatory public actor fields by migration agents.
+
+### 5.1 Pre-Migration Required Fields (Superseded For Live Threat-Actor Content)
 
 | Field | Type | Notes |
 |---|---|---|
@@ -440,7 +472,9 @@ The 77-to-11 reduction is the single biggest structural cleanup in v1.0. It also
 
 Every article header renders these 7 fields. No more, no fewer. Empty values render as "Unknown" or "TBD" — they do not get omitted.
 
-1. **Incident ID** (`event_id` for incidents, `apt_id` for entity profiles, `campaign_id` for campaigns)
+1. **Incident ID** (`event_id` for incidents, slug for live threat-actor
+   content, `campaign_id` for campaigns; optional `aptId` only as a future
+   compatibility/export anchor)
 2. **Title**
 3. **Severity** (color-coded by `impact_severity`)
 4. **Review Status badge** (with confidence grade in v1.1+)
@@ -719,18 +753,28 @@ Plus the JSON-LD block from §13.
 
 ## 16. ID Conventions
 
+> **Actor identity amendment:** Threat actor public content uses slug identity
+> under `site/src/content/threat-actors/**`. `TP-APT-*` / `aptId` may be added
+> later as optional compatibility/export identifiers only. Do not mint or
+> require them silently during PR3 migration/rewrite work.
+
 | Entity | Pattern | Example |
 |---|---|---|
 | Incident | `TP-YYYY-NNNN` | `TP-2026-0035` |
 | Campaign | `TP-CAMP-NNNN` | `TP-CAMP-0001` |
-| APT | `TP-APT-NNNN` | `TP-APT-0001` |
+| APT / threat actor content | Slug under `site/src/content/threat-actors/**`; optional `TP-APT-*` / `aptId` export anchor only | `sandworm`; optional `TP-APT-0001` |
 | Malware | `TP-MAL-NNNN` | `TP-MAL-0001` |
 | Zero-Day | `TP-0DAY-NNNN` | `TP-0DAY-0001` |
 | Disclosure Credit | `DC-NNNN` | `DC-0001` |
 | Source | `SRC-NNNN` | `SRC-0001` |
 | Sighting | UUID | `550e8400-...` |
 
-The previous `TP-TA-NNNN` pattern (used for ShinyHunters) is deprecated. Threat actor profiles use `TP-APT-NNNN`. The audit found ShinyHunters filed as `TP-TA-0008` inside the `incidents` collection — this is a category error and gets corrected during normalization.
+The previous `TP-TA-NNNN` pattern (used for ShinyHunters) is deprecated. Live
+threat actor content now uses slug identity under
+`site/src/content/threat-actors/**`; `TP-APT-*` / `aptId` values are optional
+compatibility/export anchors only. The audit found ShinyHunters filed as
+`TP-TA-0008` inside the `incidents` collection — this is a historical category
+error and must not be used as precedent for new actor-ID minting.
 
 ---
 
