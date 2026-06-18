@@ -197,11 +197,11 @@ PR2 should preserve the existing public source shape:
 
 ```yaml
 sources:
-  - title: ...
-    url: ...
+  - url: ...
     publisher: ...
-    date: ...
+    publisherType: research
     reliability: R1
+    publicationDate: "YYYY-MM-DD"
 ```
 
 Do not rename `reliability` to `source_rating`.
@@ -314,7 +314,8 @@ For existing threat-actor records:
 - Invalid enum values.
 - Invalid claim confidence.
 - Invalid relationship unresolved/target rules.
-- ATT&CK technique without ATT&CK version.
+- ATT&CK technique without ATT&CK version in new structured v0.5 claim
+  fields; do not hard-fail legacy `mitreMappings` before an approved migration.
 - External reference actor/target misuse.
 - Non-object structured claim entries.
 - `importedSourceConfidence` outside 0-100.
