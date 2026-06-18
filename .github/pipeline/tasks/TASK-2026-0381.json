@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-2026-0381",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-18T16:52:49.160Z",
+  "updated": "2026-06-18T16:52:49.160Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "US and European authorities disrupt non-consensual deepfake service",
+    "sources": [
+      "https://www.justice.gov/opa/pr/united-states-seizes-domain-names-publishing-nude-digital-forgeries-famous-women",
+      "https://www.tribunal-de-paris.justice.fr/sites/default/files/2026-06/2026-06-12%20-%20CP%20Cfake%20plateforme%20de%20deepfakes.pdf"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Online Abuse; Cybercrime Infrastructure",
+      "geography": "United States; France; Italy",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-15. DOJ announced seizure of domains used to publish non-consensual nude digital forgeries, and the Paris prosecutor's office announced related action against the platform. Treat as a cyber-enabled abuse/platform disruption incident, not a broad policy article. Keep claims about victims, hosted content volume, administrator arrest, and Take It Down Act significance tied to official sources. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0381",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-18T16:52:49.160Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1227"
+    }
+  ]
+}
