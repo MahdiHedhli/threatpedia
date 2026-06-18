@@ -103,20 +103,38 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
           class="graph-icon-button"
           href="/supply-chain/"
           data-sc-explore-exit
-          aria-label="Exit full-screen explore"
-          title="Exit full-screen explore"
+          aria-label="Exit full screen"
+          title="Exit full screen"
         >
-          <span aria-hidden="true">x</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M8 3v5H3"></path>
+            <path d="M3 8l6-6"></path>
+            <path d="M16 3v5h5"></path>
+            <path d="M21 8l-6-6"></path>
+            <path d="M8 21v-5H3"></path>
+            <path d="M3 16l6 6"></path>
+            <path d="M16 21v-5h5"></path>
+            <path d="M21 16l-6 6"></path>
+          </svg>
         </a>
       ) : (
         <a
           class="graph-icon-button"
           href="/supply-chain/explore/"
           data-sc-explore-enter
-          aria-label="Open full-screen explore"
-          title="Open full-screen explore"
+          aria-label="Toggle full screen"
+          title="Full screen"
         >
-          <span aria-hidden="true">[]</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M3 9V3h6"></path>
+            <path d="M3 3l7 7"></path>
+            <path d="M21 9V3h-6"></path>
+            <path d="M21 3l-7 7"></path>
+            <path d="M3 15v6h6"></path>
+            <path d="M3 21l7-7"></path>
+            <path d="M21 15v6h-6"></path>
+            <path d="M21 21l-7-7"></path>
+          </svg>
         </a>
       )}
     </div>
@@ -756,14 +774,35 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   .graph-hero-explore {
     position: fixed;
     inset: 0;
-    z-index: 120;
+    z-index: 1000;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
     grid-template-rows: 1fr;
     gap: 0;
     max-width: none;
     margin: 0;
-    background: rgba(3, 5, 9, 0.96);
+    background: var(--bg);
+  }
+
+  :global(body.sc-explore-active) {
+    overflow: hidden;
+  }
+
+  :global(body.sc-explore-active) :global(main) {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  :global(body.sc-explore-active) .graph-hero-explore {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--bg);
   }
 
   .graph-hero-explore .graph-placeholder {
@@ -788,6 +827,10 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     z-index: 5;
     display: flex;
     gap: 8px;
+  }
+
+  .graph-hero-explore .graph-chrome-actions {
+    right: 376px;
   }
 
   .graph-icon-button {
@@ -833,6 +876,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.5;
+  }
+
+  .graph-icon-button svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.65;
   }
 
   .graph-search-label {
@@ -1913,6 +1966,10 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
     .graph-hero-explore .graph-placeholder {
       min-height: 100svh;
+    }
+
+    .graph-hero-explore .graph-chrome-actions {
+      right: 16px;
     }
 
     .graph-hero-explore .graph-caption {

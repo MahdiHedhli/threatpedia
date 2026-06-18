@@ -736,6 +736,7 @@ class SupplyChainGraph {
     this.initWebGL();
     this.bind();
     this.resize();
+    this.syncExploreMode();
     this.selectFromRoute();
     this.animationFrame = requestAnimationFrame(() => this.frame());
   }
@@ -871,6 +872,7 @@ class SupplyChainGraph {
       }
       const exploreLink = event.target.closest('[data-sc-explore-enter], [data-sc-explore-exit]');
       if (exploreLink) {
+        this.prepareExploreNavigation(exploreLink);
         this.syncExploreLink(exploreLink);
         return;
       }
@@ -894,6 +896,7 @@ class SupplyChainGraph {
         this.destroy();
         return;
       }
+      this.syncExploreMode();
       this.selectFromRoute();
       this.syncPageSelection();
     };
@@ -929,6 +932,45 @@ class SupplyChainGraph {
     link.href = `${target.pathname}${target.search}${target.hash}`;
   }
 
+  prepareExploreNavigation(link) {
+    if (link.matches('[data-sc-explore-enter]') && !this.isExploreRoute()) {
+      sessionStorage.setItem('sc-explore-scroll-y', String(window.scrollY || 0));
+    }
+    if (link.matches('[data-sc-explore-exit]')) {
+      sessionStorage.setItem('sc-explore-restore-scroll', 'true');
+    }
+  }
+
+  syncExploreMode() {
+    const active = this.isExploreRoute();
+    const wasActive = document.body.classList.contains('sc-explore-active');
+    document.body.classList.toggle('sc-explore-active', active);
+    if (!active) this.restoreExploreScroll();
+    if (active !== wasActive) this.queueExploreResize();
+  }
+
+  queueExploreResize() {
+    const resize = () => {
+      if (this.destroyed || !document.body.contains(this.root)) return;
+      this.resize();
+      window.dispatchEvent(new Event('resize'));
+    };
+    requestAnimationFrame(() => {
+      resize();
+      requestAnimationFrame(resize);
+    });
+  }
+
+  restoreExploreScroll() {
+    if (sessionStorage.getItem('sc-explore-restore-scroll') !== 'true') return;
+    const scrollY = Number(sessionStorage.getItem('sc-explore-scroll-y') || 0);
+    sessionStorage.removeItem('sc-explore-restore-scroll');
+    sessionStorage.removeItem('sc-explore-scroll-y');
+    requestAnimationFrame(() => {
+      window.scrollTo(0, Number.isFinite(scrollY) ? scrollY : 0);
+    });
+  }
+
   updateGraphUrl() {
     if (this.suppressUrlSync) return;
     const url = new URL(window.location.href);
@@ -943,9 +985,17 @@ class SupplyChainGraph {
   }
 
   exitExploreRoute() {
+    const exitLink = document.querySelector('[data-sc-explore-exit]');
+    if (exitLink instanceof HTMLAnchorElement) {
+      this.prepareExploreNavigation(exitLink);
+      this.syncExploreLink(exitLink);
+      exitLink.click();
+      return;
+    }
     const url = new URL('/supply-chain/', window.location.href);
     const state = this.currentGraphStateParam();
     if (state) url.searchParams.set('graph', state);
+    sessionStorage.setItem('sc-explore-restore-scroll', 'true');
     window.location.href = `${url.pathname}${url.search}`;
   }
 
