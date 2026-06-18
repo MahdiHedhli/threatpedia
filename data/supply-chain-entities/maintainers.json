@@ -17,6 +17,25 @@
     ]
   },
   {
+    "account_ids": [
+      "account-npm-axios-maintainer-npm-account"
+    ],
+    "aliases": [
+      "Jason Saayman",
+      "jasonsaayman"
+    ],
+    "first_publish_date": null,
+    "id": "maintainer-jasonsaayman",
+    "name": "Jason Saayman",
+    "onboarding_date": null,
+    "repositories": [
+      "repo-github-com-axios-axios"
+    ],
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ]
+  },
+  {
     "account_ids": [],
     "aliases": [
       "Jia Tan",

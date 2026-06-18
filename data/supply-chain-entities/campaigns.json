@@ -40,5 +40,38 @@
     "source_incident_ids": [
       "SC-2023-THREE-CX-DESKTOP"
     ]
+  },
+  {
+    "aliases": [
+      "TP-CAMP-2026-0003",
+      "TeamPCP Multi-Ecosystem Supply Chain Campaign"
+    ],
+    "campaign_id": "TP-CAMP-2026-0003",
+    "href": "/campaigns/teampcp-supply-chain-campaign-2026/",
+    "id": "campaign-tp-camp-2026-0003",
+    "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+    "slug": "teampcp-supply-chain-campaign-2026",
+    "source_incident_ids": [
+      "SC-2025-SHAI-HULUD-2",
+      "SC-2026-CHECKMARX-JENKINS",
+      "SC-2026-LITELLM",
+      "SC-2026-MINI-SHAI-HULUD",
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "aliases": [
+      "Megalodon",
+      "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
+      "TP-CAMP-2026-0010"
+    ],
+    "campaign_id": "TP-CAMP-2026-0010",
+    "href": "/campaigns/megalodon-mass-github-repo-backdooring-campaign-2026/",
+    "id": "campaign-tp-camp-2026-0010",
+    "name": "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
+    "slug": "megalodon-mass-github-repo-backdooring-campaign-2026",
+    "source_incident_ids": [
+      "SC-2026-MEGALODON"
+    ]
   }
 ]

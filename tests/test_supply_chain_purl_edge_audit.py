@@ -283,7 +283,7 @@ class SupplyChainPurlEdgeAuditTests(unittest.TestCase):
         report = audit.build_audit(ENTITY_DIR, RELATIONSHIP_PATH)
 
         self.assertEqual(report["status"], "PASS")
-        self.assertEqual(report["seeded_by_edge_count"], 3)
+        self.assertEqual(report["seeded_by_edge_count"], 8)
         self.assertEqual(report["invalid_seeded_by_edges"], [])
 
     def test_seeded_by_edge_requires_tier_and_evidence(self) -> None:

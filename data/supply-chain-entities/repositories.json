@@ -1,6 +1,45 @@
 [
   {
     "aliases": [
+      "aquasecurity/trivy"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-aquasecurity-trivy",
+    "name": "aquasecurity/trivy",
+    "owner": "aquasecurity",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ],
+    "url": "https://github.com/aquasecurity/trivy"
+  },
+  {
+    "aliases": [
+      "axios/axios"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-axios-axios",
+    "name": "axios/axios",
+    "owner": "axios",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ],
+    "url": "https://github.com/axios/axios"
+  },
+  {
+    "aliases": [
+      "BerriAI/litellm"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-berriai-litellm",
+    "name": "BerriAI/litellm",
+    "owner": "BerriAI",
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ],
+    "url": "https://github.com/BerriAI/litellm"
+  },
+  {
+    "aliases": [
       "boltdb-go/bolt"
     ],
     "host": "github.com",
@@ -53,6 +92,19 @@
   },
   {
     "aliases": [
+      "jenkinsci/checkmarx-ast-scanner-plugin"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+    "name": "jenkinsci/checkmarx-ast-scanner-plugin",
+    "owner": "jenkinsci",
+    "source_incident_ids": [
+      "SC-2026-CHECKMARX-JENKINS"
+    ],
+    "url": "https://github.com/jenkinsci/checkmarx-ast-scanner-plugin"
+  },
+  {
+    "aliases": [
       "Marak/colors.js"
     ],
     "host": "github.com",
@@ -63,6 +115,19 @@
       "SC-2022-COLORS-FAKER"
     ],
     "url": "https://github.com/Marak/colors.js"
+  },
+  {
+    "aliases": [
+      "nrwl/nx-console"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-nrwl-nx-console",
+    "name": "nrwl/nx-console",
+    "owner": "nrwl",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
+    ],
+    "url": "https://github.com/nrwl/nx-console"
   },
   {
     "aliases": [
@@ -102,6 +167,19 @@
       "SC-2022-NODE-IPC"
     ],
     "url": "https://github.com/RIAEvangelist/node-ipc"
+  },
+  {
+    "aliases": [
+      "TanStack/router"
+    ],
+    "host": "github.com",
+    "id": "repo-github-com-tanstack-router",
+    "name": "TanStack/router",
+    "owner": "TanStack",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ],
+    "url": "https://github.com/TanStack/router"
   },
   {
     "aliases": [

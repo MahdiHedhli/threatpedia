@@ -22,6 +22,50 @@
   },
   {
     "aliases": [
+      "axios@0.30.4",
+      "pkg:npm/axios@0.30.4"
+    ],
+    "disclosed_at": "2026-03-31",
+    "ecosystem": "npm",
+    "id": "release-npm-axios-0-30-4",
+    "malicious_range": "0.30.4",
+    "name": "axios@0.30.4",
+    "package_name": "axios",
+    "published_at": "2026-03-31",
+    "purl": "pkg:npm/axios@0.30.4",
+    "references": [
+      "ref-axios-postmortem",
+      "ref-google-axios"
+    ],
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ],
+    "version": "0.30.4"
+  },
+  {
+    "aliases": [
+      "axios@1.14.1",
+      "pkg:npm/axios@1.14.1"
+    ],
+    "disclosed_at": "2026-03-31",
+    "ecosystem": "npm",
+    "id": "release-npm-axios-1-14-1",
+    "malicious_range": "1.14.1",
+    "name": "axios@1.14.1",
+    "package_name": "axios",
+    "published_at": "2026-03-31",
+    "purl": "pkg:npm/axios@1.14.1",
+    "references": [
+      "ref-axios-postmortem",
+      "ref-google-axios"
+    ],
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ],
+    "version": "1.14.1"
+  },
+  {
+    "aliases": [
       "@ctrl/tinycolor@4.1.1",
       "pkg:npm/%40ctrl/tinycolor@4.1.1"
     ],
@@ -87,6 +131,28 @@
   },
   {
     "aliases": [
+      "pkg:npm/plain-crypto-js@4.2.1",
+      "plain-crypto-js@4.2.1"
+    ],
+    "disclosed_at": "2026-03-31",
+    "ecosystem": "npm",
+    "id": "release-npm-plain-crypto-js-4-2-1",
+    "malicious_range": "4.2.1",
+    "name": "plain-crypto-js@4.2.1",
+    "package_name": "plain-crypto-js",
+    "published_at": "2026-03-31",
+    "purl": "pkg:npm/plain-crypto-js@4.2.1",
+    "references": [
+      "ref-datadog-axios",
+      "ref-google-axios"
+    ],
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ],
+    "version": "4.2.1"
+  },
+  {
+    "aliases": [
       "pkg:npm/ua-parser-js@0.7.29",
       "ua-parser-js@0.7.29"
     ],
@@ -147,5 +213,49 @@
       "SC-2021-UA-PARSER-JS"
     ],
     "version": "1.0.0"
+  },
+  {
+    "aliases": [
+      "litellm@1.82.7",
+      "pkg:pypi/litellm@1.82.7"
+    ],
+    "disclosed_at": "2026-03-24",
+    "ecosystem": "pypi",
+    "id": "release-pypi-litellm-1-82-7",
+    "malicious_range": "1.82.7",
+    "name": "litellm@1.82.7",
+    "package_name": "litellm",
+    "published_at": "2026-03-24",
+    "purl": "pkg:pypi/litellm@1.82.7",
+    "references": [
+      "ref-litellm-security-update",
+      "ref-snyk-litellm"
+    ],
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ],
+    "version": "1.82.7"
+  },
+  {
+    "aliases": [
+      "litellm@1.82.8",
+      "pkg:pypi/litellm@1.82.8"
+    ],
+    "disclosed_at": "2026-03-24",
+    "ecosystem": "pypi",
+    "id": "release-pypi-litellm-1-82-8",
+    "malicious_range": "1.82.8",
+    "name": "litellm@1.82.8",
+    "package_name": "litellm",
+    "published_at": "2026-03-24",
+    "purl": "pkg:pypi/litellm@1.82.8",
+    "references": [
+      "ref-litellm-security-update",
+      "ref-snyk-litellm"
+    ],
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ],
+    "version": "1.82.8"
   }
 ]
