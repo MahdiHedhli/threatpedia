@@ -10,6 +10,30 @@ This document defines the data standards governing how Threatpedia collects, str
 
 All items marked `[ ]` are open for Founding Board input.
 
+## Current Actor Identity Amendment
+
+ADR 0007 (`docs/ADR-0007-entity-id-format.md`) supersedes the actor-identity
+portions of this draft that require APT/threat-actor content records to use
+`apt_id: TP-APT-NNNN` as their primary identity or to carry mandatory
+`nation_state` / snake_case `attribution_confidence` fields.
+
+The live Astro threat-actor collection is canonical for public actor content:
+
+```text
+site/src/content/threat-actors/**
+```
+
+Threat actor records remain slug-addressed for site/content identity. Optional
+`TP-APT-*` / `aptId` values, if introduced later, are compatibility/export
+identifiers only and must be populated through an approved migration or
+enrichment plan. Existing legacy records must not hard-fail solely because they
+lack `aptId`, `TP-APT-*`, `nation_state`, or snake_case
+`attribution_confidence`.
+
+Structured attribution moves toward sourced `attributionClaims[]`; existing
+`attributionConfidence` remains an accepted legacy/display field during the
+phased deprecation period.
+
 ---
 
 ## Entity Types & Relationships
@@ -122,7 +146,7 @@ Non-Profit & NGO
 
 ## Incident Record — Field Specification
 
-### Required Fields
+### Pre-Migration Required Fields (Superseded For Live Threat-Actor Content)
 
 | Field | Type | Format | Validation |
 |---|---|---|---|
@@ -250,6 +274,14 @@ framework-mappings:
 ---
 
 ## APT Registry — Field Specification
+
+> **Actor identity amendment:** This draft APT registry table is not the live
+> public threat-actor content contract. For the live Astro collection,
+> `site/src/content/threat-actors/**` and `site/src/content.config.ts` govern.
+> Actor records are slug-addressed; `aptId` / `TP-APT-*` identifiers are
+> optional compatibility/export anchors, not mandatory primary content IDs.
+> `nation_state` and snake_case `attribution_confidence` must not be
+> reintroduced as mandatory public actor fields by migration agents.
 
 ### Required Fields
 
