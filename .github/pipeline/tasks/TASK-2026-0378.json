@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-18T16:50:30.383Z",
-  "updated": "2026-06-18T20:42:24.334Z",
+  "updated": "2026-06-18T19:02:08.931Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -22,7 +22,7 @@
       "geography": "Australia",
       "threat_actor": "Unknown"
     },
-    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Mackay Sugar disclosed a cyber security incident and paused cane haulage/milling at two North Queensland mills at the start of the crushing season; ABC provides independent reporting and operational context. Avoid attribution, ransomware claims, data-theft claims, or recovery timelines beyond source language. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Mackay Sugar disclosed a cyber security incident and paused cane haulage/milling at two North Queensland mills at the start of the crushing season; ABC provides independent reporting and operational context. Treat as a discrete operational-disruption incident. Avoid attribution, ransomware claims, data-theft claims, or recovery timelines beyond source language. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
@@ -65,12 +65,21 @@
       "note": "Dispatched as Issue #1230"
     },
     {
-      "timestamp": "2026-06-18T20:42:24.334Z",
-      "action": "dispatch_skipped",
+      "timestamp": "2026-06-18T18:55:40.421Z",
       "from": "pending",
-      "to": "pending",
-      "agent": "dispatcher",
-      "note": "Dispatch skipped because open PR #1250 already covers this task."
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-18T19:02:08.930Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1250"
     }
-  ]
+  ],
+  "pr_number": 1250,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1250"
 }
