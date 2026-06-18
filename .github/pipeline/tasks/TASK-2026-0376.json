@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-18T08:03:47.166Z",
-  "updated": "2026-06-18T09:50:29.006Z",
+  "updated": "2026-06-18T15:25:03.992Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -81,6 +81,23 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1209"
+    },
+    {
+      "timestamp": "2026-06-18T15:15:07.567Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-18T15:25:03.990Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1217"
     }
-  ]
+  ],
+  "pr_number": 1217,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1217"
 }
