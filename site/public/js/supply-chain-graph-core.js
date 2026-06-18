@@ -906,6 +906,7 @@ class SupplyChainGraph {
 
   destroy() {
     if (this.destroyed) return;
+    this.clearExploreMode();
     this.destroyed = true;
     if (this.onDocumentClick) document.removeEventListener('click', this.onDocumentClick);
     if (this.onDocumentKeydown) document.removeEventListener('keydown', this.onDocumentKeydown, { capture: true });
@@ -947,6 +948,14 @@ class SupplyChainGraph {
     document.body.classList.toggle('sc-explore-active', active);
     if (!active) this.restoreExploreScroll();
     if (active !== wasActive) this.queueExploreResize();
+  }
+
+  clearExploreMode() {
+    const wasActive = document.body.classList.contains('sc-explore-active');
+    document.body.classList.remove('sc-explore-active');
+    if (wasActive) this.restoreExploreScroll();
+    sessionStorage.removeItem('sc-explore-restore-scroll');
+    sessionStorage.removeItem('sc-explore-scroll-y');
   }
 
   queueExploreResize() {

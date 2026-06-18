@@ -660,6 +660,8 @@ assert.ok(
     supplyChainGraphSource.includes('queueExploreResize()') &&
     supplyChainGraphSource.includes("window.dispatchEvent(new Event('resize'))") &&
     supplyChainGraphSource.includes('restoreExploreScroll()') &&
+    supplyChainGraphSource.includes('clearExploreMode()') &&
+    supplyChainGraphSource.includes("document.body.classList.remove('sc-explore-active')") &&
     supplyChainGraphSource.includes("sessionStorage.setItem('sc-explore-scroll-y'") &&
     supplyChainGraphSource.includes('exitLink.click()'),
   'graph client should toggle explore body state, resize the canvas, preserve scroll, and exit without forcing a reload'
