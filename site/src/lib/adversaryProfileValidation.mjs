@@ -118,6 +118,10 @@ function hasTwoIndependentAliases(aliasRecords = []) {
 }
 
 function hasV05IdentityFields(data) {
+  if (asArray(data.operatingModels).length > 0) {
+    return true;
+  }
+
   return [
     'aptId',
     'entityKind',
