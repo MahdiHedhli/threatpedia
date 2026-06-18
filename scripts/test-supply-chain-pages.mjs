@@ -68,8 +68,29 @@ assert.ok(
     supplyChainRouteSource.includes('data-sc-explore-enter') &&
     supplyChainRouteSource.includes('data-sc-explore-exit') &&
     supplyChainRouteSource.includes('class="sc-explore-rail"') &&
-    supplyChainRouteSource.includes('class="graph-icon-button"'),
+    supplyChainRouteSource.includes('class="graph-search-pill"') &&
+    supplyChainRouteSource.includes('aria-label="Search graph"'),
   'route should expose full-screen explore controls on the persisted graph island'
+);
+assert.ok(
+  supplyChainRouteSource.includes('<circle cx="11" cy="11" r="6.25"></circle>') &&
+    supplyChainRouteSource.includes('<path d="m16 16 4.2 4.2"></path>') &&
+    supplyChainRouteSource.includes('class="graph-search-label"') &&
+    supplyChainRouteSource.includes('>Search</span>') &&
+    supplyChainRouteSource.includes('class="graph-search-shortcut"') &&
+    supplyChainRouteSource.includes('⌘K / /') &&
+    supplyChainRouteSource.includes('.graph-search-pill svg') &&
+    supplyChainRouteSource.includes('stroke-width: 1.5') &&
+    supplyChainRouteSource.includes('stroke: currentColor'),
+  'graph search trigger should render as a magnifier search pill with shortcut hints'
+);
+assert.ok(
+  supplyChainRouteSource.includes(':global(.sc-search-backdrop)') &&
+    supplyChainRouteSource.includes(':global(.sc-search-palette)') &&
+    supplyChainRouteSource.includes(':global(.sc-search-input)') &&
+    supplyChainRouteSource.includes(':global(.sc-search-result[aria-selected=') &&
+    !supplyChainRouteSource.includes('\n  .sc-search-backdrop {'),
+  'dynamically-created graph search palette styles should be global, not Astro-scoped'
 );
 assert.ok(
   supplyChainRouteSource.includes('data-graph-target-type="stage"') &&
@@ -125,15 +146,29 @@ assert.ok(
 );
 assert.ok(
   supplyChainGraphSource.includes("const SEARCH_INDEX_URL = '/supply-chain-search-index.json'") &&
-    supplyChainGraphSource.includes('openSearchPalette()') &&
+    supplyChainGraphSource.includes('openSearchPalette(trigger = null)') &&
     supplyChainGraphSource.includes('scoreSearchEntry(entry, query)') &&
-    supplyChainGraphSource.includes("event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)") &&
+    supplyChainGraphSource.includes("event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey) && !interactiveTarget") &&
     supplyChainGraphSource.includes("event.key === '/'") &&
     supplyChainGraphSource.includes('selectSearchResult(entry)') &&
     supplyChainGraphSource.includes('parseGraphStateParam') &&
     supplyChainGraphSource.includes('updateGraphUrl()') &&
     supplyChainGraphSource.includes('exitExploreRoute()'),
   'graph runtime should provide jump-to search, keyboard shortcuts, URL selection sync, and Esc explore exit'
+);
+assert.ok(
+  supplyChainGraphSource.includes("this.openSearchPalette(searchTarget)") &&
+    supplyChainGraphSource.includes('this.openSearchPalette()') &&
+    supplyChainGraphSource.includes('trigger instanceof Element') &&
+    supplyChainGraphSource.includes('document.activeElement instanceof Element') &&
+    supplyChainGraphSource.includes('document.activeElement !== this.root') &&
+    supplyChainGraphSource.includes("document.querySelector('[data-sc-search-open]') || this.root") &&
+    supplyChainGraphSource.includes("document.getElementById('menu-search')?.blur()") &&
+    supplyChainGraphSource.includes("backdrop.dataset.scSearchBackdrop = 'true'") &&
+    supplyChainGraphSource.includes("this.searchInput?.focus({ preventScroll: true })") &&
+    supplyChainGraphSource.includes('const returnTarget = this.searchReturnFocus?.isConnected ? this.searchReturnFocus : this.root') &&
+    supplyChainGraphSource.includes("if (event.target === backdrop) this.closeSearchPalette()"),
+  'graph search shortcuts should open the centered graph palette, avoid the global menu search, and restore trigger focus on close'
 );
 assert.ok(
   supplyChainGraphSource.includes('function shortNodeLabel') &&

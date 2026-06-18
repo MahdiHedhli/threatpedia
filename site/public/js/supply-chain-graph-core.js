@@ -865,7 +865,8 @@ class SupplyChainGraph {
       const searchTarget = event.target.closest('[data-sc-search-open]');
       if (searchTarget) {
         event.preventDefault();
-        this.openSearchPalette();
+        event.stopPropagation();
+        this.openSearchPalette(searchTarget);
         return;
       }
       const exploreLink = event.target.closest('[data-sc-explore-enter], [data-sc-explore-exit]');
@@ -952,6 +953,7 @@ class SupplyChainGraph {
     const target = event.target instanceof Element ? event.target : null;
     const interactiveTarget = target?.closest('input, textarea, select, [contenteditable="true"]');
     const paletteOpen = Boolean(this.searchPalette?.isConnected);
+    const isSupplyChainPath = window.location.pathname === '/supply-chain' || window.location.pathname.startsWith('/supply-chain/');
 
     if (paletteOpen) {
       this.handleSearchKeydown(event);
@@ -967,8 +969,9 @@ class SupplyChainGraph {
     }
 
     const opensWithSlash = event.key === '/' && !interactiveTarget;
-    const opensWithCommand = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);
+    const opensWithCommand = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey) && !interactiveTarget;
     if (!opensWithSlash && !opensWithCommand) return;
+    if (!isSupplyChainPath || !document.body.contains(this.root)) return;
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
@@ -983,15 +986,24 @@ class SupplyChainGraph {
     return this.searchIndex;
   }
 
-  openSearchPalette() {
+  openSearchPalette(trigger = null) {
+    if (trigger instanceof Element) this.searchReturnFocus = trigger;
+    else if (document.activeElement instanceof Element && document.activeElement !== document.body && document.activeElement !== this.root) {
+      this.searchReturnFocus = document.activeElement;
+    } else {
+      this.searchReturnFocus = document.querySelector('[data-sc-search-open]') || this.root;
+    }
+    document.getElementById('menu-search')?.blur();
+
     if (this.searchPalette?.isConnected) {
-      this.searchInput?.focus();
+      this.searchInput?.focus({ preventScroll: true });
       this.searchInput?.select();
       return;
     }
 
     const backdrop = document.createElement('div');
     backdrop.className = 'sc-search-backdrop';
+    backdrop.dataset.scSearchBackdrop = 'true';
     backdrop.setAttribute('role', 'presentation');
     backdrop.innerHTML = `
       <div class="sc-search-palette" role="dialog" aria-modal="true" aria-label="Search Supply Chain graph">
@@ -1021,7 +1033,10 @@ class SupplyChainGraph {
         this.searchResults = [];
         this.renderSearchResults('Search index unavailable.');
       });
-    requestAnimationFrame(() => this.searchInput?.focus());
+    requestAnimationFrame(() => {
+      this.searchInput?.focus({ preventScroll: true });
+      this.searchInput?.select();
+    });
   }
 
   closeSearchPalette() {
@@ -1030,7 +1045,9 @@ class SupplyChainGraph {
     this.searchPalette = null;
     this.searchInput = null;
     this.searchResultsEl = null;
-    this.root.focus({ preventScroll: true });
+    const returnTarget = this.searchReturnFocus?.isConnected ? this.searchReturnFocus : this.root;
+    this.searchReturnFocus = null;
+    returnTarget?.focus?.({ preventScroll: true });
   }
 
   handleSearchKeydown(event) {
