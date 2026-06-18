@@ -1,131 +1,130 @@
 # Supply Chain Stack Status
 
-Status recorded from the rebuilt Phase 1G readiness branch on 2026-06-13.
+Status recorded from current `main` on 2026-06-18.
 
-Result: PASS for the current post-squash stack. Supply Chain remains disabled
-by default unless `ENABLE_SUPPLY_CHAIN_PAGES=true` is set by an operator.
+Result: the Supply Chain corpus, graph primitives, public pages, and 1.0 graph
+surface are merged. Production deployment is enabled through the explicit
+`ENABLE_SUPPLY_CHAIN_PAGES=true` GitHub Pages build flag.
 
-## PR Chain Order
+## Current Production State
 
-| Order | Phase | PR | Branch | Head reviewed | Base | Status |
-|---:|---|---|---|---|---|---|
-| 1 | Phase 1A incident corpus | [#1130](https://github.com/MahdiHedhli/threatpedia/pull/1130) | `codex/supply-chain-phase1a` | merged before this rebuild | `main` | merged to `main` |
-| 2 | Phase 1B graph primitives | [#1131](https://github.com/MahdiHedhli/threatpedia/pull/1131) | `codex/supply-chain-phase1b` | `dca5adc2f127fa788460292b6de7938f0db82405` | `main` | merged to `main` |
-| 3 | Phase 1C corpus depth pass | [#1133](https://github.com/MahdiHedhli/threatpedia/pull/1133) | `codex/supply-chain-phase1c` | `52ba1f9fa28591bb5ae44abeba8b133375265b1e` | `main` | merged to `main` |
-| 4 | Phase 1D feature-flagged pages | [#1134](https://github.com/MahdiHedhli/threatpedia/pull/1134) | `codex/supply-chain-phase1d` | `a7dbf64842d54cad68ed2e20c01102060d4a4e16` | `main` | merged to `main` |
-| 5 | Phase 1E public polish | [#1135](https://github.com/MahdiHedhli/threatpedia/pull/1135) | `codex/supply-chain-phase1e` | folded into #1134 after stacked squash merge | `codex/supply-chain-phase1d` | no separate `main` merge needed |
-| 6 | Phase 1F featured editorial pages | [#1139](https://github.com/MahdiHedhli/threatpedia/pull/1139) | `codex/supply-chain-phase1f` | `c6f7f03de6737f4c5666357b4881c6c6e9654ecb` | `main` | merged to `main`; replaces closed #1136 |
-| 7 | Phase 1G public readiness gate | [#1138](https://github.com/MahdiHedhli/threatpedia/pull/1138) | `codex/supply-chain-phase1g` | rebuilt on current `main` | `main` | ready after current-head recheck |
+- `/supply-chain/` is generated in production builds when the deployment flag is
+  enabled.
+- The section is still static and corpus-driven: checked-in JSON is compiled at
+  build time; the browser consumes `site/public/supply-chain-graph.json`.
+- Current graph payload check: 187 nodes, 285 edges, 129 search records.
+- Current page test route count: 85 enabled Supply Chain routes.
+- Current corpus count: 27 incidents.
+- Current relationship-store count: 140 relationships.
 
-## Merge Notes
+## Merged Phase Chain
 
-The original stack was squash-merged in phases. Because squash merges changed
-the ancestry of the lower branches, later stacked PRs were rebuilt onto current
-`main` before merge rather than merged from stale stacked bases.
+| Phase | Purpose | Current state |
+|---|---|---|
+| Phase 0 | Release-event ingestion spine | Merged |
+| Phase 1A | Curated incident corpus | Merged |
+| Phase 1B | Entity and relationship primitives | Merged |
+| Phase 1C | Corpus depth pass | Merged |
+| Phase 1D | Feature-flagged static pages | Merged |
+| Phase 1E | Public polish | Merged |
+| Phase 1F | Featured editorial incident pages | Merged as replacement PR #1139 after #1136 could not be preserved |
+| Phase 1G | Public readiness gate | Merged |
+| Phase 1H | Preview deploy enablement | Merged |
+| Phase 1I | Production public enablement | Merged |
+| Phase 1J | Post-launch smoke and rollback gate | Merged |
+| Phase 2A | PURL foundation | Merged |
+| Phase 2B | Actor/campaign convergence | Merged |
+| Phase 2C | Release entity layer | Merged |
+| Phase 2D | Maintainer intelligence expansion | Merged |
+| Phase 2E | Connectivity-driven corpus expansion | Merged |
+| Phase 2F | PURL and edge audit | Merged |
+| Phase 2G | Backtest foundation | Merged |
+| Phase 2H | Release-spine integrity | Merged |
+| S0 | Evidence-gated `SEEDED_BY` propagation edges | Merged |
+| G1 | Persistent graph shell and landing-page theme | Merged |
+| G2 | Graph core and compiled graph payload | Merged |
+| G3 | Technique focus and reflow | Merged |
+| G4 | Dive-and-bloom with package/org/release tiers | Merged |
+| G5 | Labels and accessibility | Merged |
+| G6 | Page-to-graph binding | Merged |
+| G7 | Incident propagation page | Merged |
+| Post-G7 | Visual hierarchy restoration and graph search/explore mode | Merged |
 
-- #1135 was already merged into the stacked Phase 1D branch before #1134 was
-  rebuilt; its public polish changes are included in the #1134 merge.
-- #1136 could not be reopened because its deleted stacked base blocked GitHub
-  retargeting. It was rebuilt as #1139 and merged to `main`.
-- #1138 is the remaining readiness gate branch. It should be reread against
-  live GitHub state before merge and merged only with a current head SHA guard.
+## Current Validation Snapshot
 
-## Validation Commands And Results
-
-Run from the rebuilt Phase 1G branch based on `main` after #1139 merged.
+Run from current `main` on 2026-06-18:
 
 ```bash
 python3 scripts/validate_supply_chain_incidents.py
 ```
 
-Result: PASS. Validated 25 supply-chain incidents.
+Result: PASS. Validated 27 supply-chain incidents.
 
 ```bash
 python3 scripts/validate_supply_chain_graph.py
 ```
 
-Result: PASS. Validated graph primitives: 73 entities and 93 relationships.
+Result: PASS.
+
+```bash
+node scripts/build-supply-chain-graph.mjs --check
+```
+
+Result: PASS. Checked 187 graph nodes, 285 graph edges, and 129 search records.
 
 ```bash
 node scripts/test-supply-chain-pages.mjs
 ```
 
-Result: PASS. Supply Chain page tests passed with 74 routes.
+Result: PASS. Supply Chain page tests passed with 85 routes.
 
-```bash
-node --check scripts/check_supply_chain_public_readiness.mjs
-```
+## Current Graph Density
 
-Result: PASS.
+Current generated entity counts:
 
-```bash
-node scripts/check_supply_chain_public_readiness.mjs
-```
+| Entity type | Count |
+|---|---:|
+| Incidents | 27 |
+| Packages | 21 |
+| Releases | 7 |
+| Repositories | 11 |
+| Organizations | 19 |
+| Maintainers | 5 |
+| Build systems | 6 |
+| Distribution channels | 14 |
+| Compromised accounts | 10 |
+| Actors | 6 |
+| Campaigns | 3 |
+| Relationships | 140 |
+| `SEEDED_BY` propagation edges | 3 |
 
-Result: PASS. The readiness report was written to
-`.worker-state/supply-chain-public-readiness.json`.
+## Reality Notes
 
-```bash
-git diff --check
-```
+- The original stacked PR chain was squash-merged in phases. Later branches had
+  to be rebuilt onto current `main`; this is why replacement PRs exist for parts
+  of the stack.
+- The old Phase 1F PR #1136 was closed because its deleted stacked base blocked
+  clean preservation. The work was rebuilt and merged through #1139.
+- The G5/G6/G7 tail of the 1.0 visualization stack was also rebuilt onto
+  current `main` after squash-merge ancestry made the original stacked branches
+  misleading.
+- Campaign validator warnings may still appear in full Astro builds for
+  unrelated campaign records with fewer than the target two related incidents.
+  Those warnings are not Supply Chain readiness failures unless the build exits
+  non-zero.
 
-Result: PASS.
+## Remaining Boundaries
 
-## Readiness Report Summary
+The merged Supply Chain surface still does not implement:
 
-Latest report timestamp: `2026-06-13T17:12:08.137Z`.
+- scoring or risk ranking
+- soak/canary windows
+- live package-feed ingestion into public pages
+- graph databases
+- automated actor attribution
+- generated conclusions or policy recommendations
 
-```json
-{
-  "status": "pass",
-  "counts": {
-    "incidents": 25,
-    "packages": 16,
-    "repositories": 10,
-    "organizations": 17,
-    "maintainers": 5,
-    "build_systems": 6,
-    "distribution_channels": 11,
-    "compromised_accounts": 8,
-    "relationships": 93,
-    "expected_routes": 74,
-    "enabled_generated_routes": 74
-  },
-  "checks": [
-    "incident validation: pass",
-    "graph validation: pass",
-    "page model test: pass",
-    "site dependency install: pass",
-    "disabled build smoke: pass",
-    "enabled build smoke: pass"
-  ],
-  "failures": []
-}
-```
-
-Checked featured incident routes:
-
-- `/supply-chain/incidents/SC-2024-XZ-UTILS/`
-- `/supply-chain/incidents/SC-2023-THREE-CX-DESKTOP/`
-- `/supply-chain/incidents/SC-2020-SOLARWINDS-ORION/`
-- `/supply-chain/incidents/SC-2018-NPM-EVENT-STREAM/`
-- `/supply-chain/incidents/SC-2021-UA-PARSER-JS/`
-
-## Known Unrelated Warnings
-
-The full Astro builds emit existing campaign validator warnings for campaign
-records that have fewer than the target two related incidents. The validator
-still exits successfully and reports that campaign validation passed. These
-warnings are unrelated to the Supply Chain stack and did not block the disabled
-build, enabled build, or readiness gate.
-
-## Merge Plan
-
-1. Reread live state for #1138 after pushing the rebuilt Phase 1G branch.
-2. Confirm the PR base is `main`, the head SHA matches the rebuilt branch, and
-   changed files are limited to the readiness gate and operator docs.
-3. If review requirements remain the only blocker, use the recorded owner
-   authorization to admin squash merge with a current head SHA guard.
-4. Do not enable `ENABLE_SUPPLY_CHAIN_PAGES=true` by default as part of this
-   stack. Public enablement remains an operator/deployment configuration step
-   after the readiness gate is merged and passing.
+The next work should either deepen the corpus/relationships or add carefully
+bounded user-facing drill-downs over already-modeled data. It should not add a
+score before the release spine, evidence timestamps, actor/campaign links, and
+propagation edges are demonstrably dense enough to support one.

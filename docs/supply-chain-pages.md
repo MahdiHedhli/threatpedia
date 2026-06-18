@@ -3,6 +3,23 @@
 Threatpedia Supply Chain pages render the curated supply-chain incident corpus
 and graph primitives as static pages. The public label is **Supply Chain**.
 
+## Current Status
+
+The Supply Chain section is live in production behind the explicit
+`ENABLE_SUPPLY_CHAIN_PAGES=true` deployment flag. As of 2026-06-18, current
+`main` contains:
+
+- 27 curated supply-chain incidents
+- 85 generated Supply Chain routes when enabled
+- 187 compiled graph nodes, 285 graph edges, and 129 graph-search records
+- 140 validated graph relationships in the source relationship store
+- a persistent graph hero, technique focus, dive-and-bloom, panel binding,
+  accessibility/label handling, incident propagation timeline, and graph
+  search/explore mode
+
+The section remains corpus-driven. It still does not implement scoring, live
+ingestion, automated attribution, graph databases, or AI-generated conclusions.
+
 ## Feature Flag
 
 Pages are disabled by default.
@@ -21,6 +38,7 @@ When enabled, the static site generates:
 
 ```text
 /supply-chain/
+/supply-chain/explore/
 /supply-chain/incidents/[id]/
 /supply-chain/packages/[id]/
 /supply-chain/repositories/[id]/
@@ -72,6 +90,12 @@ evidence-gated `SEEDED_BY` relationships. The section is corpus-driven and
 renders only modeled edges for that incident. Causal edges are labeled as
 causal; temporal edges are labeled as temporal precedence and styled separately
 so the page does not imply causation where the corpus only records ordering.
+
+The post-G7 graph surface also includes a graph search/explore control backed
+by the compiled payload's `search` records. Search is a navigation aid over the
+already-modeled corpus; it does not query live feeds or infer new entities.
+The `/supply-chain/explore/` route provides a public graph-first exploration
+entry point over the same compiled payload.
 
 ## Local Build
 
