@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-06-18T16:51:03.233Z",
-  "updated": "2026-06-18T18:15:43.594Z",
+  "updated": "2026-06-18T18:23:00.000Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "Danger Mouse Bot",
-  "locked_at": "2026-06-18T18:15:43.592Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "DOJ and FBI disable Chinese intelligence recruitment websites",
     "sources": [
@@ -70,6 +70,16 @@
       "to": "locked",
       "agent": "Danger Mouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-18T18:23:00.000Z",
+      "action": "pr_opened",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "codex",
+      "note": "PR #1244 opened; article path corrected into Astro site content.",
+      "pr_number": 1244,
+      "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1244"
     }
   ]
 }
