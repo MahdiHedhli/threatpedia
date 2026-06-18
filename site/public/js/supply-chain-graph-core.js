@@ -686,11 +686,11 @@ class SupplyChainGraph {
           vec2 center = gl_PointCoord - vec2(0.5);
           float d = length(center);
           if (d > 0.5) discard;
-          float core = smoothstep(0.5, 0.02, d);
+          float core = 1.0 - smoothstep(0.02, 0.5, d);
           float rim = smoothstep(0.28, 0.5, d);
           vec3 lit = mix(v_color.rgb, vec3(1.0, 0.86, 0.52), core * 0.38);
           vec3 shaded = mix(lit, v_color.rgb * 0.42, rim);
-          float alpha = v_color.a * smoothstep(0.5, 0.44, d);
+          float alpha = v_color.a * (1.0 - smoothstep(0.44, 0.5, d));
           gl_FragColor = vec4(shaded, alpha);
         }
       `
@@ -1093,7 +1093,8 @@ class SupplyChainGraph {
 
   activeBloomIncidentId() {
     if (this.selection?.type === 'incident') return this.selection.value;
-    if (this.selection && BLOOM_TIERS.has(this.selection.type)) {
+    const selectedNode = this.selection ? this.layout.nodeById.get(this.selection.value) : null;
+    if (this.selection && (BLOOM_TIERS.has(this.selection.type) || BLOOM_TIERS.has(selectedNode?.tier))) {
       const incidentId = this.incidentIdForBloomNode(this.selection.value);
       if (incidentId) return incidentId;
     }
