@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-2026-0379",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-18T16:51:03.233Z",
+  "updated": "2026-06-18T16:51:03.233Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "DOJ and FBI disable Chinese intelligence recruitment websites",
+    "sources": [
+      "https://www.justice.gov/opa/pr/justice-department-fbi-disable-13-websites-backed-suspected-chinese-agents-sought-sensitive",
+      "https://www.mi5.gov.uk/five-eyes-joint-bulletin-safeguarding-our-secrets"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Government; National Security",
+      "geography": "United States; Five Eyes",
+      "threat_actor": "Suspected Chinese state-backed operators"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. DOJ says the Justice Department and FBI disabled 13 websites allegedly backed by suspected Chinese agents to recruit people with access to sensitive or classified information. The Five Eyes bulletin provides related official context on PRC intelligence collection tactics. Treat as a law-enforcement disruption/intelligence-collection infrastructure incident; avoid expanding into broad PRC actor coverage unless sources directly support the narrower scope. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0379",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-18T16:51:03.233Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1223"
+    }
+  ]
+}
