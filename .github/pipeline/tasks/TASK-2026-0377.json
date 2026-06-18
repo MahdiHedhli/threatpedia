@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-18T16:14:38.690Z",
-  "updated": "2026-06-18T16:14:38.690Z",
+  "updated": "2026-06-18T17:47:50.089Z",
   "source": "manual_submission",
   "submitted_by": "dangermouse-bot",
   "locked_by": null,
@@ -55,6 +55,23 @@
       "to": "pending",
       "agent": "dangermouse-bot",
       "note": "Manual submission from Issue #1219"
+    },
+    {
+      "timestamp": "2026-06-18T17:43:45.391Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "DangerMouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-18T17:47:50.087Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "DangerMouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1237"
     }
-  ]
+  ],
+  "pr_number": 1237,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1237"
 }
