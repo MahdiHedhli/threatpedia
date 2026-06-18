@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-18T16:52:03.305Z",
-  "updated": "2026-06-18T17:28:53.867Z",
+  "updated": "2026-06-18T18:10:17.586Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Danger Mouse Bot",
+  "locked_at": "2026-06-18T18:10:17.585Z",
   "input": {
     "topic": "Coupang fined over breach affecting millions of South Korean users",
     "sources": [
@@ -63,6 +63,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1232"
+    },
+    {
+      "timestamp": "2026-06-18T18:10:17.586Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
