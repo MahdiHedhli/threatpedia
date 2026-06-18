@@ -90,7 +90,7 @@ Private control-plane input, summarized only:
 
 The older public `docs/DATA-STANDARDS-v1.0.md` prose is snake_case
 (`apt_id`, `review_status`, `attribution_confidence`, `vendor_names`,
-`nation_state`, `sub_org_affiliation`). That document is drifted from the live
+`nation_state`, `sub_org_affiliation`). That document has drifted from the live
 Astro schema.
 
 ### Q2. Is lifecycle field `review_status` or `reviewStatus`?
@@ -249,7 +249,7 @@ Affected file count: 63/63 files in `site/src/content/threat-actors/`.
 file, MISP registry, or Malpedia registry data file was found. However, the
 private control-plane does contain an active MITRE ATT&CK/STIX identifier model
 absent from public content. That ingestion model maps STIX `intrusion-set`
-objects to actor `ThreatpediaRecord` records and preserves
+objects to `ThreatpediaRecord` objects and preserves
 MITRE ATT&CK group IDs plus STIX object IDs in normalized scraper output.
 
 **Evidence:**
