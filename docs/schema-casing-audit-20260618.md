@@ -2,8 +2,7 @@
 
 **Branch:** `codex/schema-intake-pr1-audit`
 **Head SHA audited before this report update:** `70590de1e85b37fd06893217a402a2e2f8d1b568` (`origin/main`)
-**Repository / checkout:** public `threatpedia` audit worktree plus read-only private `threatpedia-working` control-plane inspection
-**Private control-plane revision inspected:** `3e03d7fb615c02a7eaf4a256f037358b35d51f8b` (`origin/main`)
+**Repository / checkout:** public `threatpedia` audit worktree plus read-only non-sensitive private control-plane summary inspection
 **Audited by:** Codex / Kernel K
 **Date:** 2026-06-18
 **Input package:** `codex-handoff-threatpedia-schema-intake-foundation-v3`
@@ -34,7 +33,7 @@
 | Repo / checkout | Branch | Commit SHA | Notes |
 |---|---|---|---|
 | `threatpedia` public | `origin/main` via `codex/schema-intake-pr1-audit` | `70590de1e85b37fd06893217a402a2e2f8d1b568` | Current public source of truth for Astro schema, corpus, task schema, validators, and docs. |
-| `threatpedia-working` private | `origin/main` read-only | `3e03d7fb615c02a7eaf4a256f037358b35d51f8b` | Control-plane/spec/ADR inspection only. No private files were copied into this report beyond path-level evidence and non-sensitive summaries. |
+| private control-plane summaries | omitted from public report | omitted from public report | Control-plane/spec/ADR inspection only. No private branches, commits, checkout paths, or file paths are published here. |
 
 ---
 
@@ -67,12 +66,10 @@ Public pipeline / validators / docs:
   scripts/validate-content-corpus.mjs
   scripts/validate-pipeline-tasks.mjs
 
-Private control-plane input:
-  working/decisions/0007-entity-id-format.md
-  working/specs/MANIFEST-SPEC.md
-  working/specs/SOURCE-SPEC.md
-  working/specs/COORDINATION-SPEC.md
-  working/pipeline/pipeline/scrapers/mitre_attack.py
+Private control-plane input, summarized only:
+  entity-ID and source/manifest guidance summaries
+  coordination/spec guidance summaries
+  MITRE ATT&CK/STIX ingestion model summary
   targeted private grep for TP-APT, external anchors, STIX, MISP, Malpedia, and related casing terms
 ```
 
@@ -246,25 +243,25 @@ Affected file count: 63/63 files in `site/src/content/threat-actors/`.
    freshness/reverify fields are operational/task state, not content
    frontmatter.
 
-### Q11. Does `threatpedia-working` contain a TP-APT registry, external anchor registry, STIX intrusion-set ID layer, or private data model absent from public main?
+### Q11. Do private control-plane summaries indicate a TP-APT registry, external anchor registry, STIX intrusion-set ID layer, or private data model absent from public main?
 
 **Answer:** No active private TP-APT registry, external anchor registry data
 file, MISP registry, or Malpedia registry data file was found. However, the
-private repo does contain an active MITRE ATT&CK/STIX identifier model absent
-from public content: `working/pipeline/pipeline/scrapers/mitre_attack.py` maps
-STIX `intrusion-set` objects to actor `ThreatpediaRecord` records and preserves
+private control-plane does contain an active MITRE ATT&CK/STIX identifier model
+absent from public content. That ingestion model maps STIX `intrusion-set`
+objects to actor `ThreatpediaRecord` records and preserves
 MITRE ATT&CK group IDs plus STIX object IDs in normalized scraper output.
 
 **Evidence:**
 
-- `working/pipeline/pipeline/scrapers/mitre_attack.py` defines
+- The inspected private MITRE ATT&CK ingestion model defines
   `STIX_TYPE_MAP["intrusion-set"] = "actor"`, extracts ATT&CK IDs from
   `external_references[source_name=mitre-attack].external_id`, emits
   `record_id=f"mitre-{attack_id}"`, and stores `raw_data.stix_id` plus
   `raw_data.attack_id`.
-- `working/decisions/0007-entity-id-format.md` says threat actors use slug as
-  primary key and have no numeric ID.
-- `working/specs/MANIFEST-SPEC.md` describes a future or historical
+- Inspected private entity-ID guidance says threat actors use slug as primary
+  key and have no numeric ID.
+- Inspected private manifest guidance describes a future or historical
   `TP-APT-NNNN` entity manifest concept, but no active manifest file was found
   in the inspected private state.
 - Targeted private grep did not find an active TP-APT, MISP, Malpedia, or
@@ -272,8 +269,8 @@ MITRE ATT&CK group IDs plus STIX object IDs in normalized scraper output.
 
 This means `aptId` remains greenfield for public content unless Kernel K
 supplies a registry before PR2. `externalIds` is additive too, but MITRE/STIX
-subfields must account for the existing private scraper model instead of being
-treated as entirely greenfield.
+subfields must account for the existing private ingestion model instead of
+being treated as entirely greenfield.
 
 ### Q12. If public and private schemas differ, which is authoritative for PR2?
 
@@ -284,12 +281,13 @@ ratifies a private model before PR2.
 
 **Rationale:** The current public Astro build validates against
 `site/src/content.config.ts`; the public corpus lives at
-`site/src/content/threat-actors/`; private ADR 0007 says no numeric actor IDs
-and no private entity IDs; no active private TP-APT registry exists. Therefore,
-if no private registry is supplied before PR2, `aptId` remains greenfield and
-must be warning-mode/compatibility-mode for legacy public records until PR3
-dry-run and approved migration. `externalIds` is additive too, but MITRE/STIX
-subfields must account for the existing private MITRE scraper model.
+`site/src/content/threat-actors/`; inspected private entity-ID guidance says no
+numeric actor IDs and no private entity IDs; no active private TP-APT registry
+exists. Therefore, if no private registry is supplied before PR2, `aptId`
+remains greenfield and must be warning-mode/compatibility-mode for legacy public
+records until PR3 dry-run and approved migration. `externalIds` is additive too,
+but MITRE/STIX subfields must account for the existing private MITRE ingestion
+model.
 
 ### Q13. What casing convention should PR4 use for new intake/task data?
 
@@ -330,7 +328,7 @@ should be made explicit rather than blurred.
 | `revisions[]` absent | Yes | Private editorial docs mention revision workflow concepts, not a live public content frontmatter `revisions[]`. | Treat as net-new if PR2 proposes it; do not assume legacy records have it. |
 | `aliases` present; `vendor_names`/`nation_state`/`sub_org_affiliation` absent or docs-only | Yes | Private specs mention TP-APT/nation-state concepts; public live content uses `aliases`, `country`, `affiliation`. | Preserve current fields and add target fields in warning-mode if approved. |
 | `attributionConfidence` present/populated | Yes | Private v1.0 prose says `attribution_confidence`; active public records use `attributionConfidence`. | Phase-1 warn + migrate; do not hard-remove. |
-| externalIds / TP-APT anchor layer absent in public corpus | Yes | No active TP-APT registry found; private MITRE/STIX scraper does preserve ATT&CK/STIX identifiers for intrusion-set actors. | Treat `aptId` as greenfield unless registry supplied; reconcile `externalIds` MITRE/STIX subfields with the scraper model. |
+| externalIds / TP-APT anchor layer absent in public corpus | Yes | No active TP-APT registry found; private MITRE/STIX ingestion preserves ATT&CK/STIX identifiers for intrusion-set actors. | Treat `aptId` as greenfield unless registry supplied; reconcile `externalIds` MITRE/STIX subfields with the ingestion model. |
 | all existing public records need migration or warning-mode compatibility | Yes | Private has no alternate migrated public corpus. | PR2 must not hard-fail all legacy records. |
 | two live casing conventions: content camelCase, operational/task data snake_case in places | Yes | Current task schema validates snake_case `acceptance.review_status`. | Record layer boundary; do not silently convert both layers in PR2. |
 | intake vocabulary greenfield; casing decision unresolved | Yes | v1.2 fields are not present in current public task JSON. | Kernel K should approve adapter-boundary recommendation before PR4. |
@@ -394,7 +392,7 @@ hard-remove or confuse this field with claim-level A-F confidence.
 **Recommendation:** No active private TP-APT registry was found. Default to
 `aptId` as greenfield additive unless Kernel K supplies a registry before PR2.
 `externalIds` is also additive for the public corpus, but MITRE/STIX subfields
-should align with the private MITRE scraper's `record_id=mitre-{attack_id}`,
+should align with the private MITRE ingestion model's `record_id=mitre-{attack_id}`,
 `raw_data.attack_id`, and `raw_data.stix_id` conventions.
 
 ### Required-Field Enforcement Mode For Existing Records
@@ -484,9 +482,9 @@ All 63 public threat-actor files would fail as written. Reason categories:
 
 1. Approve or correct the camelCase implementation map for v0.5 content fields.
 2. Confirm that `site/src/content/threat-actors/` remains the public collection/path for PR2.
-3. Resolve the private spec conflict: older standards/manifest prose says `TP-APT-NNNN`, while private ADR 0007 and public live schema currently use slug-only threat actors.
+3. Resolve the private spec conflict: older standards/manifest prose says `TP-APT-NNNN`, while inspected private entity-ID guidance and public live schema currently use slug-only threat actors.
 4. Confirm whether `aptId` is greenfield additive unless a private registry is supplied before PR2.
-5. Confirm how `externalIds` MITRE/STIX fields should map to the private MITRE scraper's `record_id=mitre-{attack_id}`, `raw_data.attack_id`, and `raw_data.stix_id`.
+5. Confirm how `externalIds` MITRE/STIX fields should map to the private MITRE ingestion model's `record_id=mitre-{attack_id}`, `raw_data.attack_id`, and `raw_data.stix_id`.
 6. Approve warning-mode compatibility for all existing legacy threat-actor records until PR3 migration dry-run and explicit rewrite approval.
 7. Confirm source schema mapping: v0.5 `source_rating` language maps to live `sources[].reliability`; no PR2 source-field rename.
 8. Confirm `attributionConfidence` Phase-1 warning + migration disposition and ensure claim-level A-F confidence remains separate.
@@ -501,7 +499,7 @@ All 63 public threat-actor files would fail as written. Reason categories:
 - No active private TP-APT/external anchor registry was found; if one exists
   outside the audited inputs, it must be supplied before PR2 changes the field
   enforcement plan.
-- The private MITRE/STIX scraper is an active identifier model and should be
+- The private MITRE/STIX ingestion model is an active identifier model and should be
   reconciled before any `externalIds` MITRE/STIX design is implemented.
 
 ---
@@ -523,7 +521,7 @@ Checks run:
   git rev-parse HEAD
   targeted rg inspections over public schema, content, pipeline, task data, and docs
   ruby YAML frontmatter count over site/src/content/threat-actors/*.{md,mdx}
-  private read-only grep/show inspections over selected control-plane ADR/spec/scraper files
+  private read-only control-plane summary inspections
   git diff --check
 
 Reviewers requested/tagged:
