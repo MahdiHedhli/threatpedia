@@ -1,0 +1,78 @@
+{
+  "task_id": "TASK-2026-0376",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-18T08:03:47.166Z",
+  "updated": "2026-06-18T08:03:47.166Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "From package to postinstall payload: Inside the Mastra npm supply chain compromise",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise"
+    ],
+    "candidate_data": {
+      "discovery_type": "incident",
+      "candidate_key": "incident:microsoft_security_blog:https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise",
+      "source_feed": "microsoft_security_blog",
+      "source_label": "Microsoft Security Blog",
+      "published_at": "2026-06-18T03:43:04.000Z",
+      "discovered_signals": [
+        "compromise",
+        "supply chain"
+      ],
+      "boundary_signals": [
+        "targets/against"
+      ],
+      "feed_categories": [
+        "Malware",
+        "npm"
+      ]
+    },
+    "notes": "Auto-discovered from Microsoft Security Blog on 2026-06-18. Source summary: A poisoned npm package infected 140+ projects with a hidden payload. This report highlights how to detect, hunt, and defend against supply chain attacks using Microsoft Defender and actionable threat intelligence. The post From package to postinstall payload: Inside the Mastra npm supply chain compromise appeared first… Incident signals: compromise, supply chain. Boundary signals: targets/against. Treat this as incident intake first: keep the article grounded in the concrete event described by the sources, and only elevate to a campaign or actor follow-on if the evidence supports it. Discovery score: 78/100."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/from-package-to-postinstall-payload-inside-the-mastra-npm-supply-chain-c-2026.md",
+    "branch": "pipeline/TASK-2026-0376",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "microsoft_security_blog",
+    "score": 78,
+    "auto_certify": false,
+    "discovered_at": "2026-06-18T08:03:47.166Z",
+    "published_at": "2026-06-18T03:43:04.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-18T08:03:47.166Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered incident candidate from Microsoft Security Blog (score: 78)"
+    }
+  ]
+}
