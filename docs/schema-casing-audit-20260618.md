@@ -239,7 +239,7 @@ Affected file count: 63/63 files in `site/src/content/threat-actors/`.
    task acceptance uses snake_case keys such as `review_status` in
    `.github/pipeline/tasks/*.json` and `.github/pipeline/schema/task-schema.json`.
    Intake PR4 must reconcile with the task schema then, not in PR1.
-7. `manualOverride`, `kevStatus`, active-status validity, and
+7. `manualOverride`, `kevStatus`, `activeStatus` validity, and
    freshness/reverify fields are operational/task state, not content
    frontmatter.
 
