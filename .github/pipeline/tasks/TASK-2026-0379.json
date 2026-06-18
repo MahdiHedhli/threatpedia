@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-18T16:51:03.233Z",
-  "updated": "2026-06-18T17:28:53.867Z",
+  "updated": "2026-06-18T18:15:43.594Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Danger Mouse Bot",
+  "locked_at": "2026-06-18T18:15:43.592Z",
   "input": {
     "topic": "DOJ and FBI disable Chinese intelligence recruitment websites",
     "sources": [
@@ -63,6 +63,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1231"
+    },
+    {
+      "timestamp": "2026-06-18T18:15:43.594Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
