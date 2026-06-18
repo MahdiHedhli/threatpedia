@@ -85,13 +85,18 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   >
     <div class="graph-chrome-actions" aria-label="Graph actions">
       <button
-        class="graph-icon-button"
+        class="graph-search-pill"
         type="button"
         data-sc-search-open
         aria-label="Search graph"
         title="Search graph"
       >
-        <span aria-hidden="true">K</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="6.25"></circle>
+          <path d="m16 16 4.2 4.2"></path>
+        </svg>
+        <span class="graph-search-label" aria-hidden="true">Search</span>
+        <span class="graph-search-shortcut" aria-hidden="true">⌘K / /</span>
       </button>
       {isExplore ? (
         <a
@@ -802,10 +807,51 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     text-decoration: none;
   }
 
+  .graph-search-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    height: 36px;
+    border: 1px solid rgba(232, 160, 32, 0.68);
+    border-radius: 4px;
+    background: rgba(8, 11, 16, 0.88);
+    color: var(--white);
+    cursor: pointer;
+    font: 700 0.72rem/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    padding: 0 10px;
+    text-transform: uppercase;
+  }
+
+  .graph-search-pill svg {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  .graph-search-label {
+    color: var(--text);
+  }
+
+  .graph-search-shortcut {
+    color: var(--muted);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+
   .graph-icon-button:hover,
-  .graph-icon-button:focus-visible {
+  .graph-icon-button:focus-visible,
+  .graph-search-pill:hover,
+  .graph-search-pill:focus-visible {
     border-color: var(--amber);
     box-shadow: 0 0 0 1px rgba(232, 160, 32, 0.18), 0 10px 24px rgba(0, 0, 0, 0.32);
+    outline: none;
     text-decoration: none;
   }
 
@@ -975,7 +1021,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     padding: 10px;
   }
 
-  .sc-search-backdrop {
+  :global(.sc-search-backdrop) {
     position: fixed;
     inset: 0;
     z-index: 200;
@@ -985,7 +1031,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     background: rgba(3, 5, 9, 0.62);
   }
 
-  .sc-search-palette {
+  :global(.sc-search-palette) {
     width: min(720px, 100%);
     border: 1px solid rgba(232, 160, 32, 0.45);
     border-radius: 6px;
@@ -993,7 +1039,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.54);
   }
 
-  .sc-search-input {
+  :global(.sc-search-input) {
     width: 100%;
     border: 0;
     border-bottom: 1px solid var(--border);
@@ -1004,14 +1050,14 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     padding: 16px;
   }
 
-  .sc-search-results {
+  :global(.sc-search-results) {
     display: grid;
     max-height: min(56vh, 520px);
     overflow: auto;
     padding: 8px;
   }
 
-  .sc-search-result {
+  :global(.sc-search-result) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 6px 12px;
@@ -1024,15 +1070,15 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     text-align: left;
   }
 
-  .sc-search-result[aria-selected='true'],
-  .sc-search-result:hover,
-  .sc-search-result:focus-visible {
+  :global(.sc-search-result[aria-selected='true']),
+  :global(.sc-search-result:hover),
+  :global(.sc-search-result:focus-visible) {
     border-color: rgba(232, 160, 32, 0.58);
     background: rgba(232, 160, 32, 0.08);
     outline: none;
   }
 
-  .sc-search-title {
+  :global(.sc-search-title) {
     overflow: hidden;
     color: var(--white);
     font-weight: 600;
@@ -1041,9 +1087,9 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     white-space: nowrap;
   }
 
-  .sc-search-type,
-  .sc-search-context,
-  .sc-search-empty {
+  :global(.sc-search-type),
+  :global(.sc-search-context),
+  :global(.sc-search-empty) {
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 0.66rem;
@@ -1051,14 +1097,14 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     text-transform: uppercase;
   }
 
-  .sc-search-context {
+  :global(.sc-search-context) {
     grid-column: 1 / -1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .sc-search-empty {
+  :global(.sc-search-empty) {
     padding: 18px 10px;
   }
 
@@ -1898,6 +1944,21 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
     .graph-caption {
       display: block;
+    }
+
+    .graph-search-pill {
+      gap: 7px;
+      padding: 0 9px;
+    }
+
+    .graph-search-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     .graph-caption span {
