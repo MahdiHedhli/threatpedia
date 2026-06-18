@@ -67,7 +67,7 @@ framework-mappings: []
 
 On June 12, 2026, the U.S. Department of Justice and Homeland Security seized the domains CFAKE.com and SOCFAKE.com, which were being used to publish non-consensual nude digital forgeries of women. The DOJ said the sites hosted thousands of forged images and videos and were being taken offline under the TAKE IT DOWN Act.
 
-The Paris prosecutor's office separately reported that it had deferred a man suspected of administering the CFake site. French prosecutors said the platform had existed since 2007, had published more than 300,000 images and 7,000 videos, and had drawn roughly 4 million views per month from 200,000 user accounts. The communiqué said investigators identified the administrator as Cyrille B, arrested him on June 10, 2026, and seized his computer equipment and 34.7 ether.
+The Paris prosecutor's office separately reported that a man suspected of administering the CFake site was presented to prosecutors on June 12, 2026, with pretrial detention requested and a July 7, 2026 trial date set. French prosecutors said the platform had existed since 2007, had published more than 300,000 images and 7,000 videos, and had drawn roughly 4 million views per month from 200,000 user accounts. The communiqué said investigators identified the administrator as Cyrille B, arrested him on June 10, 2026, and seized his computer equipment and 34.7 ether.
 
 This incident is best understood as a cyber-enabled abuse and platform-disruption case. The public record supports the seizure of the service's infrastructure and the arrest of an identified operator, but it does not establish a broader criminal group or campaign name.
 
