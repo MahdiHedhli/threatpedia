@@ -11,12 +11,52 @@
   },
   {
     "aliases": [
+      "Aqua Security"
+    ],
+    "id": "org-aqua-security",
+    "name": "Aqua Security",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "aliases": [
       "ASUS"
     ],
     "id": "org-asus",
     "name": "ASUS",
     "source_incident_ids": [
       "SC-2019-ASUS-SHADOWHAMMER"
+    ]
+  },
+  {
+    "aliases": [
+      "Axios"
+    ],
+    "id": "org-axios",
+    "name": "Axios",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ]
+  },
+  {
+    "aliases": [
+      "BerriAI"
+    ],
+    "id": "org-berriai",
+    "name": "BerriAI",
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ]
+  },
+  {
+    "aliases": [
+      "Checkmarx"
+    ],
+    "id": "org-checkmarx",
+    "name": "Checkmarx",
+    "source_incident_ids": [
+      "SC-2026-CHECKMARX-JENKINS"
     ]
   },
   {
@@ -47,6 +87,16 @@
     "name": "ESLint",
     "source_incident_ids": [
       "SC-2018-ESLINT-SCOPE"
+    ]
+  },
+  {
+    "aliases": [
+      "Guardrails AI"
+    ],
+    "id": "org-guardrails-ai",
+    "name": "Guardrails AI",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
     ]
   },
   {
@@ -97,6 +147,46 @@
     "name": "LottieFiles",
     "source_incident_ids": [
       "SC-2024-LOTTIE-PLAYER"
+    ]
+  },
+  {
+    "aliases": [
+      "Mistral AI"
+    ],
+    "id": "org-mistral-ai",
+    "name": "Mistral AI",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
+      "multiple npm maintainers"
+    ],
+    "id": "org-multiple-npm-maintainers",
+    "name": "multiple npm maintainers",
+    "source_incident_ids": [
+      "SC-2025-SHAI-HULUD-2"
+    ]
+  },
+  {
+    "aliases": [
+      "multiple repository owners"
+    ],
+    "id": "org-multiple-repository-owners",
+    "name": "multiple repository owners",
+    "source_incident_ids": [
+      "SC-2026-MEGALODON"
+    ]
+  },
+  {
+    "aliases": [
+      "Nrwl"
+    ],
+    "id": "org-nrwl",
+    "name": "Nrwl",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
     ]
   },
   {
@@ -157,6 +247,16 @@
     "name": "SolarWinds",
     "source_incident_ids": [
       "SC-2020-SOLARWINDS-ORION"
+    ]
+  },
+  {
+    "aliases": [
+      "TanStack"
+    ],
+    "id": "org-tanstack",
+    "name": "TanStack",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
     ]
   },
   {

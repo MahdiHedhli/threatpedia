@@ -29,18 +29,18 @@
     "layout": "time-anchored-actor-lanes"
   },
   "counts": {
-    "incident": 27,
-    "technique": 58,
-    "account": 10,
-    "actor": 6,
-    "build_system": 6,
-    "campaign": 3,
-    "distribution_channel": 14,
-    "maintainer": 5,
-    "organization": 19,
-    "package": 21,
-    "release": 7,
-    "repository": 11
+    "incident": 35,
+    "technique": 77,
+    "account": 18,
+    "actor": 8,
+    "build_system": 7,
+    "campaign": 5,
+    "distribution_channel": 19,
+    "maintainer": 6,
+    "organization": 29,
+    "package": 31,
+    "release": 12,
+    "repository": 17
   },
   "attack_stages": [
     {
@@ -73,6 +73,90 @@
     }
   ],
   "nodes": [
+    {
+      "id": "account-github-aqua-security-release-credentials",
+      "entity_id": "account-github-aqua-security-release-credentials",
+      "type": "account",
+      "label": "Aqua Security release credentials",
+      "short_label": "Aqua Security rel credentials",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Aqua Security release credentials"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "account-github-checkmarx-github-repository-access",
+      "entity_id": "account-github-checkmarx-github-repository-access",
+      "type": "account",
+      "label": "Checkmarx GitHub repository access",
+      "short_label": "Checkmarx GitHub repository access",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Checkmarx GitHub repository access"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
+      "id": "account-github-github-actions-oidc-publishing-identity",
+      "entity_id": "account-github-github-actions-oidc-publishing-identity",
+      "type": "account",
+      "label": "GitHub Actions OIDC publishing identity",
+      "short_label": "GitHub Actions OIDC publishing...",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "GitHub Actions OIDC publishing identity"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "account-github-repository-automation-commit-identities",
+      "entity_id": "account-github-repository-automation-commit-identities",
+      "type": "account",
+      "label": "repository automation commit identities",
+      "short_label": "repository automation commit id...",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "repository automation commit identities"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MEGALODON"
+      ]
+    },
     {
       "id": "account-github-tj-actions-github-action-release-path",
       "entity_id": "account-github-tj-actions-github-action-release-path",
@@ -112,7 +196,50 @@
         "victim GitHub tokens"
       ],
       "source_incident_ids": [
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2"
+      ]
+    },
+    {
+      "id": "account-multiple-stolen-npm-and-github-credentials",
+      "entity_id": "account-multiple-stolen-npm-and-github-credentials",
+      "type": "account",
+      "label": "stolen npm and GitHub credentials",
+      "short_label": "stolen npm and GitHub credentials",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "stolen npm and GitHub credentials"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "account-npm-axios-maintainer-npm-account",
+      "entity_id": "account-npm-axios-maintainer-npm-account",
+      "type": "account",
+      "label": "axios maintainer npm account",
+      "short_label": "axios maintainer npm account",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "axios maintainer npm account"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -133,7 +260,8 @@
         "compromised npm maintainer tokens"
       ],
       "source_incident_ids": [
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2"
       ]
     },
     {
@@ -263,6 +391,27 @@
       ]
     },
     {
+      "id": "account-pypi-litellm-pypi-publishing-credentials",
+      "entity_id": "account-pypi-litellm-pypi-publishing-credentials",
+      "type": "account",
+      "label": "LiteLLM PyPI publishing credentials",
+      "short_label": "LiteLLM PyPI publishing credent...",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "LiteLLM PyPI publishing credentials"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
       "id": "account-pypi-ultralytics-pypi-publishing-token",
       "entity_id": "account-pypi-ultralytics-pypi-publishing-token",
       "type": "account",
@@ -281,6 +430,27 @@
       ],
       "source_incident_ids": [
         "SC-2024-ULTRALYTICS-PYPI"
+      ]
+    },
+    {
+      "id": "account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+      "entity_id": "account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+      "type": "account",
+      "label": "Nx Console extension publishing identity",
+      "short_label": "Nx Console extension publishing...",
+      "tier": "account",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Nx Console extension publishing identity"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -394,6 +564,35 @@
       ]
     },
     {
+      "id": "actor-teampcp",
+      "entity_id": "actor-teampcp",
+      "type": "actor",
+      "label": "TeamPCP",
+      "short_label": "TeamPCP",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/threat-actors/teampcp/",
+      "ecosystem": null,
+      "aliases": [
+        "Team PCP",
+        "TeamPCP",
+        "UNC6780"
+      ],
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-AXIOS",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-MEGALODON",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
       "id": "actor-unc-xz-utils-operator",
       "entity_id": "actor-unc-xz-utils-operator",
       "type": "actor",
@@ -413,6 +612,28 @@
       ],
       "source_incident_ids": [
         "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "actor-unc1069",
+      "entity_id": "actor-unc1069",
+      "type": "actor",
+      "label": "UNC1069",
+      "short_label": "UNC1069",
+      "tier": "actor",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "North Korea-nexus actor",
+        "UNC1069"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -477,7 +698,33 @@
       "source_incident_ids": [
         "SC-2024-ULTRALYTICS-PYPI",
         "SC-2025-NPM-SHAI-HULUD",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-LITELLM",
+        "SC-2026-MEGALODON",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "build-jenkins-jenkins",
+      "entity_id": "build-jenkins-jenkins",
+      "type": "build_system",
+      "label": "Jenkins",
+      "short_label": "Jenkins",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": null,
+      "aliases": [
+        "Jenkins"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
       ]
     },
     {
@@ -610,6 +857,55 @@
       ]
     },
     {
+      "id": "campaign-tp-camp-2026-0003",
+      "entity_id": "campaign-tp-camp-2026-0003",
+      "type": "campaign",
+      "label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+      "short_label": "TeamPCP Multi-Ecosystem SC Camp...",
+      "tier": "campaign",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/campaigns/teampcp-supply-chain-campaign-2026/",
+      "ecosystem": null,
+      "aliases": [
+        "TP-CAMP-2026-0003",
+        "TeamPCP Multi-Ecosystem Supply Chain Campaign"
+      ],
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "campaign-tp-camp-2026-0010",
+      "entity_id": "campaign-tp-camp-2026-0010",
+      "type": "campaign",
+      "label": "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
+      "short_label": "Megalodon SC Intrusion Campaign...",
+      "tier": "campaign",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/campaigns/megalodon-mass-github-repo-backdooring-campaign-2026/",
+      "ecosystem": null,
+      "aliases": [
+        "Megalodon",
+        "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
+        "TP-CAMP-2026-0010"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MEGALODON"
+      ]
+    },
+    {
       "id": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
       "entity_id": "channel-ci-cd-script-download-codecov-bash-uploader-download-path",
       "type": "distribution_channel",
@@ -631,6 +927,27 @@
       ]
     },
     {
+      "id": "channel-docker-package-registry-docker-hub",
+      "entity_id": "channel-docker-package-registry-docker-hub",
+      "type": "distribution_channel",
+      "label": "Docker Hub",
+      "short_label": "Docker Hub",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "docker",
+      "aliases": [
+        "Docker Hub"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
       "id": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
       "entity_id": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
       "type": "distribution_channel",
@@ -648,7 +965,8 @@
         "GitHub Actions Marketplace"
       ],
       "source_incident_ids": [
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -669,7 +987,30 @@
         "GitHub Actions workflow"
       ],
       "source_incident_ids": [
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "channel-github-source-repository-github-repositories",
+      "entity_id": "channel-github-source-repository-github-repositories",
+      "type": "distribution_channel",
+      "label": "GitHub repositories",
+      "short_label": "GitHub repositories",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "github",
+      "aliases": [
+        "GitHub repositories"
+      ],
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-MEGALODON"
       ]
     },
     {
@@ -712,6 +1053,27 @@
       ],
       "source_incident_ids": [
         "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+      "entity_id": "channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+      "type": "distribution_channel",
+      "label": "Jenkins Marketplace",
+      "short_label": "Jenkins Marketplace",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "jenkins",
+      "aliases": [
+        "Jenkins Marketplace"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
       ]
     },
     {
@@ -783,7 +1145,31 @@
         "SC-2022-NODE-IPC",
         "SC-2023-LEDGER-CONNECT-KIT",
         "SC-2024-LOTTIE-PLAYER",
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-AXIOS",
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "channel-openvsx-package-registry-open-vsx-registry",
+      "entity_id": "channel-openvsx-package-registry-open-vsx-registry",
+      "type": "distribution_channel",
+      "label": "Open VSX Registry",
+      "short_label": "Open VSX Registry",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "openvsx",
+      "aliases": [
+        "Open VSX Registry"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -807,7 +1193,9 @@
         "SC-2021-DEPENDENCY-CONFUSION",
         "SC-2022-PYPI-CTX",
         "SC-2022-PYTORCH-NIGHTLY",
-        "SC-2024-ULTRALYTICS-PYPI"
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -897,6 +1285,27 @@
       "source_incident_ids": [
         "SC-2017-NOTPETYA-MEDOC",
         "SC-2021-KASEYA-VSA"
+      ]
+    },
+    {
+      "id": "channel-vscode-package-registry-visual-studio-marketplace",
+      "entity_id": "channel-vscode-package-registry-visual-studio-marketplace",
+      "type": "distribution_channel",
+      "label": "Visual Studio Marketplace",
+      "short_label": "Visual Studio Marketplace",
+      "tier": "supporting",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": null,
+      "ecosystem": "vscode",
+      "aliases": [
+        "Visual Studio Marketplace"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -1562,6 +1971,36 @@
       "summary": "The Shai-Hulud campaign compromised npm packages with credential-harvesting malware that used stolen npm tokens to publish malicious versions of additional packages."
     },
     {
+      "id": "incident-SC-2025-SHAI-HULUD-2",
+      "entity_id": "SC-2025-SHAI-HULUD-2",
+      "type": "incident",
+      "label": "Shai-Hulud 2.0 npm supply-chain worm wave",
+      "short_label": "Shai-Hulud 2.0 npm SC worm wave",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2025-12-09",
+      "parent": "campaign-tp-camp-2026-0003",
+      "techniques": [
+        "maintainer_account_compromise",
+        "package_repository_compromise",
+        "ci_cd_action_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "downstream_customer_compromise",
+        "npm",
+        "shai-hulud",
+        "self-propagating",
+        "github-actions",
+        "credential-theft"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2025-SHAI-HULUD-2/",
+      "attack_stage": "package_publish",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "A second Shai-Hulud wave compromised hundreds of npm packages through install-time malware, GitHub token theft, and public repositories containing exfiltrated secrets."
+    },
+    {
       "id": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "entity_id": "SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "type": "incident",
@@ -1586,6 +2025,212 @@
       "summary": "The tj-actions/changed-files GitHub Action was compromised, exposing secrets from affected workflow runs through malicious action behavior."
     },
     {
+      "id": "incident-SC-2026-AXIOS",
+      "entity_id": "SC-2026-AXIOS",
+      "type": "incident",
+      "label": "Axios npm maintainer account compromise",
+      "short_label": "Axios npm maintainer account",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2026-03-31",
+      "parent": "actor-teampcp",
+      "techniques": [
+        "maintainer_account_compromise",
+        "malicious_dependency",
+        "malware_distribution",
+        "backdoor",
+        "credential_theft",
+        "npm",
+        "axios",
+        "plain-crypto-js",
+        "account-compromise",
+        "disputed-attribution"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-AXIOS/",
+      "attack_stage": "account_compromise",
+      "evidence_level": "primary",
+      "confidence": "high",
+      "summary": "A compromised Axios maintainer account published malicious npm releases that added plain-crypto-js as an install-time dependency delivering a cross-platform remote access trojan."
+    },
+    {
+      "id": "incident-SC-2026-CHECKMARX-JENKINS",
+      "entity_id": "SC-2026-CHECKMARX-JENKINS",
+      "type": "incident",
+      "label": "Checkmarx Jenkins AST plugin supply-chain compromise",
+      "short_label": "Checkmarx Jenkins AST plugin SC",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2026-05-11",
+      "parent": "campaign-tp-camp-2026-0003",
+      "techniques": [
+        "ci_cd_action_compromise",
+        "vendor_update_compromise",
+        "credential_theft",
+        "downstream_customer_compromise",
+        "malware_distribution",
+        "checkmarx",
+        "jenkins",
+        "trivy",
+        "teampcp",
+        "ci-cd"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-CHECKMARX-JENKINS/",
+      "attack_stage": "ci_cd_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Checkmarx reported that attackers used access traced to the Trivy supply-chain attack to publish malicious developer-tooling artifacts, including a modified Jenkins AST plugin."
+    },
+    {
+      "id": "incident-SC-2026-LITELLM",
+      "entity_id": "SC-2026-LITELLM",
+      "type": "incident",
+      "label": "LiteLLM PyPI package compromise through stolen CI/CD credentials",
+      "short_label": "LiteLLM PyPI pkg through stolen...",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2026-03-24",
+      "parent": "campaign-tp-camp-2026-0003",
+      "techniques": [
+        "ci_cd_action_compromise",
+        "malicious_dependency",
+        "package_repository_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "downstream_customer_compromise",
+        "pypi",
+        "litellm",
+        "teampcp",
+        "trivy",
+        "credential-theft"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-LITELLM/",
+      "attack_stage": "package_publish",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Malicious LiteLLM versions 1.82.7 and 1.82.8 were published to PyPI with code not present in the upstream repository, exposing Python users and AI pipelines to credential theft."
+    },
+    {
+      "id": "incident-SC-2026-MEGALODON",
+      "entity_id": "SC-2026-MEGALODON",
+      "type": "incident",
+      "label": "Megalodon GitHub Actions repository workflow poisoning campaign",
+      "short_label": "Megalodon GitHub Actions reposi...",
+      "tier": "incident",
+      "sev": "high",
+      "time": "2026-05-28",
+      "parent": "campaign-tp-camp-2026-0010",
+      "techniques": [
+        "source_repository_compromise",
+        "ci_cd_action_compromise",
+        "credential_theft",
+        "data_exfiltration",
+        "downstream_customer_compromise",
+        "megalodon",
+        "github-actions",
+        "workflow-poisoning",
+        "ci-cd",
+        "credential-theft"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-MEGALODON/",
+      "attack_stage": "source_compromise",
+      "evidence_level": "researcher",
+      "confidence": "high",
+      "summary": "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity."
+    },
+    {
+      "id": "incident-SC-2026-MINI-SHAI-HULUD",
+      "entity_id": "SC-2026-MINI-SHAI-HULUD",
+      "type": "incident",
+      "label": "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave",
+      "short_label": "Mini Shai-Hulud TanStack npm an...",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2026-05-13",
+      "parent": "campaign-tp-camp-2026-0003",
+      "techniques": [
+        "ci_cd_action_compromise",
+        "package_repository_compromise",
+        "malicious_dependency",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "downstream_customer_compromise",
+        "npm",
+        "pypi",
+        "tanstack",
+        "mini-shai-hulud",
+        "trusted-publishing",
+        "oidc"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-MINI-SHAI-HULUD/",
+      "attack_stage": "package_publish",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Mini Shai-Hulud compromised TanStack release automation and spread across npm and PyPI packages through trusted publishing, cache poisoning, and credential theft from CI/CD environments."
+    },
+    {
+      "id": "incident-SC-2026-NX-CONSOLE",
+      "entity_id": "SC-2026-NX-CONSOLE",
+      "type": "incident",
+      "label": "Nx Console VS Code extension compromise",
+      "short_label": "Nx Console VS Code extension",
+      "tier": "incident",
+      "sev": "medium",
+      "time": "2026-05-28",
+      "parent": null,
+      "techniques": [
+        "signed_update_compromise",
+        "source_repository_compromise",
+        "credential_theft",
+        "developer_workstation_compromise",
+        "data_exfiltration",
+        "nx-console",
+        "vscode-extension",
+        "openvsx",
+        "github",
+        "credential-theft"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-NX-CONSOLE/",
+      "attack_stage": "distribution_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "A malicious Nx Console 18.95.0 extension release was briefly distributed through VS Code and OpenVSX marketplaces, compromising developer systems and exposing credentials."
+    },
+    {
+      "id": "incident-SC-2026-TRIVY-CI",
+      "entity_id": "SC-2026-TRIVY-CI",
+      "type": "incident",
+      "label": "Aqua Trivy CI/CD supply-chain compromise",
+      "short_label": "Aqua Trivy CI/CD SC",
+      "tier": "incident",
+      "sev": "critical",
+      "time": "2026-03-24",
+      "parent": "campaign-tp-camp-2026-0003",
+      "techniques": [
+        "ci_cd_action_compromise",
+        "signed_update_compromise",
+        "build_system_compromise",
+        "credential_theft",
+        "downstream_customer_compromise",
+        "trivy",
+        "github-actions",
+        "ci-cd",
+        "cve-2026-33634",
+        "credential-theft"
+      ],
+      "purl": null,
+      "href": "/supply-chain/incidents/SC-2026-TRIVY-CI/",
+      "attack_stage": "ci_cd_compromise",
+      "evidence_level": "vendor",
+      "confidence": "high",
+      "summary": "Attackers compromised Trivy release and GitHub Action distribution paths, causing affected CI/CD environments to run credential-stealing code through trusted scanner workflows."
+    },
+    {
       "id": "maintainer-dominictarr",
       "entity_id": "maintainer-dominictarr",
       "type": "maintainer",
@@ -1605,6 +2250,28 @@
       ],
       "source_incident_ids": [
         "SC-2018-NPM-EVENT-STREAM"
+      ]
+    },
+    {
+      "id": "maintainer-jasonsaayman",
+      "entity_id": "maintainer-jasonsaayman",
+      "type": "maintainer",
+      "label": "Jason Saayman",
+      "short_label": "Jason Saayman",
+      "tier": "maintainer",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/maintainers/maintainer-jasonsaayman/",
+      "ecosystem": null,
+      "aliases": [
+        "Jason Saayman",
+        "jasonsaayman"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -1716,6 +2383,27 @@
       ]
     },
     {
+      "id": "org-aqua-security",
+      "entity_id": "org-aqua-security",
+      "type": "organization",
+      "label": "Aqua Security",
+      "short_label": "Aqua Security",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-aqua-security/",
+      "ecosystem": null,
+      "aliases": [
+        "Aqua Security"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
       "id": "org-asus",
       "entity_id": "org-asus",
       "type": "organization",
@@ -1734,6 +2422,69 @@
       ],
       "source_incident_ids": [
         "SC-2019-ASUS-SHADOWHAMMER"
+      ]
+    },
+    {
+      "id": "org-axios",
+      "entity_id": "org-axios",
+      "type": "organization",
+      "label": "Axios",
+      "short_label": "Axios",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-axios/",
+      "ecosystem": null,
+      "aliases": [
+        "Axios"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
+      ]
+    },
+    {
+      "id": "org-berriai",
+      "entity_id": "org-berriai",
+      "type": "organization",
+      "label": "BerriAI",
+      "short_label": "BerriAI",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-berriai/",
+      "ecosystem": null,
+      "aliases": [
+        "BerriAI"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
+      "id": "org-checkmarx",
+      "entity_id": "org-checkmarx",
+      "type": "organization",
+      "label": "Checkmarx",
+      "short_label": "Checkmarx",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-checkmarx/",
+      "ecosystem": null,
+      "aliases": [
+        "Checkmarx"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
       ]
     },
     {
@@ -1797,6 +2548,27 @@
       ],
       "source_incident_ids": [
         "SC-2018-ESLINT-SCOPE"
+      ]
+    },
+    {
+      "id": "org-guardrails-ai",
+      "entity_id": "org-guardrails-ai",
+      "type": "organization",
+      "label": "Guardrails AI",
+      "short_label": "Guardrails AI",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-guardrails-ai/",
+      "ecosystem": null,
+      "aliases": [
+        "Guardrails AI"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -1902,6 +2674,90 @@
       ],
       "source_incident_ids": [
         "SC-2024-LOTTIE-PLAYER"
+      ]
+    },
+    {
+      "id": "org-mistral-ai",
+      "entity_id": "org-mistral-ai",
+      "type": "organization",
+      "label": "Mistral AI",
+      "short_label": "Mistral AI",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-mistral-ai/",
+      "ecosystem": null,
+      "aliases": [
+        "Mistral AI"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "org-multiple-npm-maintainers",
+      "entity_id": "org-multiple-npm-maintainers",
+      "type": "organization",
+      "label": "multiple npm maintainers",
+      "short_label": "multiple npm maintainers",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-multiple-npm-maintainers/",
+      "ecosystem": null,
+      "aliases": [
+        "multiple npm maintainers"
+      ],
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2"
+      ]
+    },
+    {
+      "id": "org-multiple-repository-owners",
+      "entity_id": "org-multiple-repository-owners",
+      "type": "organization",
+      "label": "multiple repository owners",
+      "short_label": "multiple repository owners",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-multiple-repository-owners/",
+      "ecosystem": null,
+      "aliases": [
+        "multiple repository owners"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MEGALODON"
+      ]
+    },
+    {
+      "id": "org-nrwl",
+      "entity_id": "org-nrwl",
+      "type": "organization",
+      "label": "Nrwl",
+      "short_label": "Nrwl",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-nrwl/",
+      "ecosystem": null,
+      "aliases": [
+        "Nrwl"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -2031,6 +2887,27 @@
       ]
     },
     {
+      "id": "org-tanstack",
+      "entity_id": "org-tanstack",
+      "type": "organization",
+      "label": "TanStack",
+      "short_label": "TanStack",
+      "tier": "organization",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/organizations/org-tanstack/",
+      "ecosystem": null,
+      "aliases": [
+        "TanStack"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
       "id": "org-tj-actions",
       "entity_id": "org-tj-actions",
       "type": "organization",
@@ -2115,6 +2992,90 @@
       ]
     },
     {
+      "id": "pkg-generic-aquasecurity-setup-trivy",
+      "entity_id": "pkg-generic-aquasecurity-setup-trivy",
+      "type": "package",
+      "label": "aquasecurity/setup-trivy",
+      "short_label": "aquasecurity/setup-trivy",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/aquasecurity-setup-trivy",
+      "href": "/supply-chain/packages/pkg-generic-aquasecurity-setup-trivy/",
+      "ecosystem": "generic",
+      "aliases": [
+        "aquasecurity/setup-trivy"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "pkg-generic-aquasecurity-trivy-action",
+      "entity_id": "pkg-generic-aquasecurity-trivy-action",
+      "type": "package",
+      "label": "aquasecurity/trivy-action",
+      "short_label": "aquasecurity/trivy-action",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/aquasecurity-trivy-action",
+      "href": "/supply-chain/packages/pkg-generic-aquasecurity-trivy-action/",
+      "ecosystem": "generic",
+      "aliases": [
+        "aquasecurity/trivy-action"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "pkg-generic-checkmarx-ast-scanner",
+      "entity_id": "pkg-generic-checkmarx-ast-scanner",
+      "type": "package",
+      "label": "checkmarx-ast-scanner",
+      "short_label": "checkmarx-ast-scanner",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/checkmarx-ast-scanner",
+      "href": "/supply-chain/packages/pkg-generic-checkmarx-ast-scanner/",
+      "ecosystem": "generic",
+      "aliases": [
+        "checkmarx-ast-scanner"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
+      "id": "pkg-generic-nx-console-vs-code-extension",
+      "entity_id": "pkg-generic-nx-console-vs-code-extension",
+      "type": "package",
+      "label": "Nx Console VS Code extension",
+      "short_label": "Nx Console VS Code extension",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:generic/nx-console-vs-code-extension",
+      "href": "/supply-chain/packages/pkg-generic-nx-console-vs-code-extension/",
+      "ecosystem": "generic",
+      "aliases": [
+        "Nx Console VS Code extension"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
+      ]
+    },
+    {
       "id": "pkg-generic-x-trader",
       "entity_id": "pkg-generic-x-trader",
       "type": "package",
@@ -2175,6 +3136,27 @@
       ],
       "source_incident_ids": [
         "SC-2021-DEPENDENCY-CONFUSION"
+      ]
+    },
+    {
+      "id": "pkg-npm-axios",
+      "entity_id": "pkg-npm-axios",
+      "type": "package",
+      "label": "axios",
+      "short_label": "axios",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/axios",
+      "href": "/supply-chain/packages/pkg-npm-axios/",
+      "ecosystem": "npm",
+      "aliases": [
+        "axios"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -2409,6 +3391,27 @@
       ]
     },
     {
+      "id": "pkg-npm-plain-crypto-js",
+      "entity_id": "pkg-npm-plain-crypto-js",
+      "type": "package",
+      "label": "plain-crypto-js",
+      "short_label": "plain-crypto-js",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/plain-crypto-js",
+      "href": "/supply-chain/packages/pkg-npm-plain-crypto-js/",
+      "ecosystem": "npm",
+      "aliases": [
+        "plain-crypto-js"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
+      ]
+    },
+    {
       "id": "pkg-npm-rc",
       "entity_id": "pkg-npm-rc",
       "type": "package",
@@ -2451,6 +3454,27 @@
       ]
     },
     {
+      "id": "pkg-npm-tanstack-react-router",
+      "entity_id": "pkg-npm-tanstack-react-router",
+      "type": "package",
+      "label": "@tanstack/react-router",
+      "short_label": "@tanstack/react-router",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/%40tanstack/react-router",
+      "href": "/supply-chain/packages/pkg-npm-tanstack-react-router/",
+      "ecosystem": "npm",
+      "aliases": [
+        "@tanstack/react-router"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
       "id": "pkg-npm-ua-parser-js",
       "entity_id": "pkg-npm-ua-parser-js",
       "type": "package",
@@ -2490,6 +3514,69 @@
       ],
       "source_incident_ids": [
         "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "pkg-pypi-guardrails-ai",
+      "entity_id": "pkg-pypi-guardrails-ai",
+      "type": "package",
+      "label": "guardrails-ai",
+      "short_label": "guardrails-ai",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/guardrails-ai",
+      "href": "/supply-chain/packages/pkg-pypi-guardrails-ai/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "guardrails-ai"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "pkg-pypi-litellm",
+      "entity_id": "pkg-pypi-litellm",
+      "type": "package",
+      "label": "litellm",
+      "short_label": "litellm",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/litellm",
+      "href": "/supply-chain/packages/pkg-pypi-litellm/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "litellm"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
+      "id": "pkg-pypi-mistralai",
+      "entity_id": "pkg-pypi-mistralai",
+      "type": "package",
+      "label": "mistralai",
+      "short_label": "mistralai",
+      "tier": "package",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/mistralai",
+      "href": "/supply-chain/packages/pkg-pypi-mistralai/",
+      "ecosystem": "pypi",
+      "aliases": [
+        "mistralai"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -2554,6 +3641,50 @@
       ],
       "source_incident_ids": [
         "SC-2025-GO-BOLTDB-TYPOSQUAT"
+      ]
+    },
+    {
+      "id": "release-npm-axios-0-30-4",
+      "entity_id": "release-npm-axios-0-30-4",
+      "type": "release",
+      "label": "axios@0.30.4",
+      "short_label": "axios@0.30.4",
+      "tier": "release",
+      "sev": null,
+      "time": "2026-03-31",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/axios@0.30.4",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "axios@0.30.4",
+        "pkg:npm/axios@0.30.4"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
+      ]
+    },
+    {
+      "id": "release-npm-axios-1-14-1",
+      "entity_id": "release-npm-axios-1-14-1",
+      "type": "release",
+      "label": "axios@1.14.1",
+      "short_label": "axios@1.14.1",
+      "tier": "release",
+      "sev": null,
+      "time": "2026-03-31",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/axios@1.14.1",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "axios@1.14.1",
+        "pkg:npm/axios@1.14.1"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -2623,6 +3754,28 @@
       ]
     },
     {
+      "id": "release-npm-plain-crypto-js-4-2-1",
+      "entity_id": "release-npm-plain-crypto-js-4-2-1",
+      "type": "release",
+      "label": "plain-crypto-js@4.2.1",
+      "short_label": "plain-crypto-js@4.2.1",
+      "tier": "release",
+      "sev": null,
+      "time": "2026-03-31",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:npm/plain-crypto-js@4.2.1",
+      "href": null,
+      "ecosystem": "npm",
+      "aliases": [
+        "pkg:npm/plain-crypto-js@4.2.1",
+        "plain-crypto-js@4.2.1"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
+      ]
+    },
+    {
       "id": "release-npm-ua-parser-js-0-7-29",
       "entity_id": "release-npm-ua-parser-js-0-7-29",
       "type": "release",
@@ -2686,6 +3839,113 @@
       ],
       "source_incident_ids": [
         "SC-2021-UA-PARSER-JS"
+      ]
+    },
+    {
+      "id": "release-pypi-litellm-1-82-7",
+      "entity_id": "release-pypi-litellm-1-82-7",
+      "type": "release",
+      "label": "litellm@1.82.7",
+      "short_label": "litellm@1.82.7",
+      "tier": "release",
+      "sev": null,
+      "time": "2026-03-24",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/litellm@1.82.7",
+      "href": null,
+      "ecosystem": "pypi",
+      "aliases": [
+        "litellm@1.82.7",
+        "pkg:pypi/litellm@1.82.7"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
+      "id": "release-pypi-litellm-1-82-8",
+      "entity_id": "release-pypi-litellm-1-82-8",
+      "type": "release",
+      "label": "litellm@1.82.8",
+      "short_label": "litellm@1.82.8",
+      "tier": "release",
+      "sev": null,
+      "time": "2026-03-24",
+      "parent": null,
+      "techniques": [],
+      "purl": "pkg:pypi/litellm@1.82.8",
+      "href": null,
+      "ecosystem": "pypi",
+      "aliases": [
+        "litellm@1.82.8",
+        "pkg:pypi/litellm@1.82.8"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
+      "id": "repo-github-com-aquasecurity-trivy",
+      "entity_id": "repo-github-com-aquasecurity-trivy",
+      "type": "repository",
+      "label": "aquasecurity/trivy",
+      "short_label": "aquasecurity/trivy",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-aquasecurity-trivy/",
+      "ecosystem": null,
+      "aliases": [
+        "aquasecurity/trivy"
+      ],
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "repo-github-com-axios-axios",
+      "entity_id": "repo-github-com-axios-axios",
+      "type": "repository",
+      "label": "axios/axios",
+      "short_label": "axios/axios",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-axios-axios/",
+      "ecosystem": null,
+      "aliases": [
+        "axios/axios"
+      ],
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
+      ]
+    },
+    {
+      "id": "repo-github-com-berriai-litellm",
+      "entity_id": "repo-github-com-berriai-litellm",
+      "type": "repository",
+      "label": "BerriAI/litellm",
+      "short_label": "BerriAI/litellm",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-berriai-litellm/",
+      "ecosystem": null,
+      "aliases": [
+        "BerriAI/litellm"
+      ],
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
       ]
     },
     {
@@ -2773,6 +4033,27 @@
       ]
     },
     {
+      "id": "repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+      "entity_id": "repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+      "type": "repository",
+      "label": "jenkinsci/checkmarx-ast-scanner-plugin",
+      "short_label": "jenkinsci/checkmarx-ast-scanner...",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin/",
+      "ecosystem": null,
+      "aliases": [
+        "jenkinsci/checkmarx-ast-scanner-plugin"
+      ],
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
       "id": "repo-github-com-marak-colors-js",
       "entity_id": "repo-github-com-marak-colors-js",
       "type": "repository",
@@ -2791,6 +4072,27 @@
       ],
       "source_incident_ids": [
         "SC-2022-COLORS-FAKER"
+      ]
+    },
+    {
+      "id": "repo-github-com-nrwl-nx-console",
+      "entity_id": "repo-github-com-nrwl-nx-console",
+      "type": "repository",
+      "label": "nrwl/nx-console",
+      "short_label": "nrwl/nx-console",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-nrwl-nx-console/",
+      "ecosystem": null,
+      "aliases": [
+        "nrwl/nx-console"
+      ],
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -2854,6 +4156,27 @@
       ],
       "source_incident_ids": [
         "SC-2022-NODE-IPC"
+      ]
+    },
+    {
+      "id": "repo-github-com-tanstack-router",
+      "entity_id": "repo-github-com-tanstack-router",
+      "type": "repository",
+      "label": "TanStack/router",
+      "short_label": "TanStack/router",
+      "tier": "repository",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/repositories/repo-github-com-tanstack-router/",
+      "ecosystem": null,
+      "aliases": [
+        "TanStack/router"
+      ],
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -2935,7 +4258,8 @@
       "purl": null,
       "href": null,
       "source_incident_ids": [
-        "SC-2021-UA-PARSER-JS"
+        "SC-2021-UA-PARSER-JS",
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -2955,6 +4279,25 @@
       "href": null,
       "source_incident_ids": [
         "SC-2022-PYPI-CTX"
+      ]
+    },
+    {
+      "id": "technique-axios",
+      "entity_id": "axios",
+      "type": "technique",
+      "label": "Axios",
+      "short_label": "Axios",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "axios"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -2980,7 +4323,8 @@
         "SC-2021-PHP-GIT-SERVER",
         "SC-2023-THREE-CX-DESKTOP",
         "SC-2024-XZ-UTILS",
-        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+        "SC-2025-GO-BOLTDB-TYPOSQUAT",
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -3022,7 +4366,8 @@
         "SC-2020-SOLARWINDS-ORION",
         "SC-2021-CODECOV-BASH-UPLOADER",
         "SC-2023-THREE-CX-DESKTOP",
-        "SC-2024-ULTRALYTICS-PYPI"
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3064,6 +4409,25 @@
       ]
     },
     {
+      "id": "technique-checkmarx",
+      "entity_id": "checkmarx",
+      "type": "technique",
+      "label": "Checkmarx",
+      "short_label": "Checkmarx",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "checkmarx"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
       "id": "technique-ci-cd",
       "entity_id": "ci-cd",
       "type": "technique",
@@ -3080,7 +4444,10 @@
       "href": null,
       "source_incident_ids": [
         "SC-2021-CODECOV-BASH-UPLOADER",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-MEGALODON",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3100,7 +4467,13 @@
       "href": null,
       "source_incident_ids": [
         "SC-2025-NPM-SHAI-HULUD",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-MEGALODON",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3126,7 +4499,15 @@
         "SC-2022-PYPI-CTX",
         "SC-2022-PYTORCH-NIGHTLY",
         "SC-2025-NPM-SHAI-HULUD",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-AXIOS",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-MEGALODON",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-NX-CONSOLE",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3190,6 +4571,25 @@
       ]
     },
     {
+      "id": "technique-cve-2026-33634",
+      "entity_id": "cve-2026-33634",
+      "type": "technique",
+      "label": "Cve 2026 33634",
+      "short_label": "Cve 2026 33634",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "cve-2026-33634"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
       "id": "technique-data-exfiltration",
       "entity_id": "data_exfiltration",
       "type": "technique",
@@ -3207,7 +4607,9 @@
       "source_incident_ids": [
         "SC-2021-CODECOV-BASH-UPLOADER",
         "SC-2021-DEPENDENCY-CONFUSION",
-        "SC-2022-PYPI-CTX"
+        "SC-2022-PYPI-CTX",
+        "SC-2026-MEGALODON",
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -3313,7 +4715,30 @@
         "SC-2024-ULTRALYTICS-PYPI",
         "SC-2025-GO-BOLTDB-TYPOSQUAT",
         "SC-2025-NPM-SHAI-HULUD",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-NX-CONSOLE"
+      ]
+    },
+    {
+      "id": "technique-disputed-attribution",
+      "entity_id": "disputed-attribution",
+      "type": "technique",
+      "label": "Disputed Attribution",
+      "short_label": "Disputed Attribution",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "disputed-attribution"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -3377,7 +4802,13 @@
         "SC-2023-THREE-CX-DESKTOP",
         "SC-2024-LOTTIE-PLAYER",
         "SC-2024-POLYFILL-IO",
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-MEGALODON",
+        "SC-2026-MINI-SHAI-HULUD",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3396,7 +4827,8 @@
       "purl": null,
       "href": null,
       "source_incident_ids": [
-        "SC-2020-OCTOPUS-SCANNER"
+        "SC-2020-OCTOPUS-SCANNER",
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -3417,7 +4849,10 @@
       "source_incident_ids": [
         "SC-2024-ULTRALYTICS-PYPI",
         "SC-2025-NPM-SHAI-HULUD",
-        "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+        "SC-2026-MEGALODON",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3497,6 +4932,25 @@
       ]
     },
     {
+      "id": "technique-jenkins",
+      "entity_id": "jenkins",
+      "type": "technique",
+      "label": "Jenkins",
+      "short_label": "Jenkins",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "jenkins"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
       "id": "technique-linux",
       "entity_id": "linux",
       "type": "technique",
@@ -3513,6 +4967,25 @@
       "href": null,
       "source_incident_ids": [
         "SC-2024-XZ-UTILS"
+      ]
+    },
+    {
+      "id": "technique-litellm",
+      "entity_id": "litellm",
+      "type": "technique",
+      "label": "Litellm",
+      "short_label": "Litellm",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "litellm"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-LITELLM"
       ]
     },
     {
@@ -3555,7 +5028,9 @@
         "SC-2022-PYPI-CTX",
         "SC-2023-LEDGER-CONNECT-KIT",
         "SC-2024-LOTTIE-PLAYER",
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -3576,7 +5051,10 @@
       "source_incident_ids": [
         "SC-2018-NPM-EVENT-STREAM",
         "SC-2024-XZ-UTILS",
-        "SC-2025-GO-BOLTDB-TYPOSQUAT"
+        "SC-2025-GO-BOLTDB-TYPOSQUAT",
+        "SC-2026-AXIOS",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -3620,7 +5098,47 @@
         "SC-2020-OCTOPUS-SCANNER",
         "SC-2021-NPM-RC",
         "SC-2023-THREE-CX-DESKTOP",
-        "SC-2024-POLYFILL-IO"
+        "SC-2024-POLYFILL-IO",
+        "SC-2026-AXIOS",
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
+      "id": "technique-megalodon",
+      "entity_id": "megalodon",
+      "type": "technique",
+      "label": "Megalodon",
+      "short_label": "Megalodon",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "megalodon"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MEGALODON"
+      ]
+    },
+    {
+      "id": "technique-mini-shai-hulud",
+      "entity_id": "mini-shai-hulud",
+      "type": "technique",
+      "label": "Mini Shai Hulud",
+      "short_label": "Mini Shai Hulud",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "mini-shai-hulud"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -3704,7 +5222,67 @@
         "SC-2022-NODE-IPC",
         "SC-2023-LEDGER-CONNECT-KIT",
         "SC-2024-LOTTIE-PLAYER",
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-AXIOS",
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-nx-console",
+      "entity_id": "nx-console",
+      "type": "technique",
+      "label": "Nx Console",
+      "short_label": "Nx Console",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "nx-console"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
+      ]
+    },
+    {
+      "id": "technique-oidc",
+      "entity_id": "oidc",
+      "type": "technique",
+      "label": "Oidc",
+      "short_label": "Oidc",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "oidc"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "technique-openvsx",
+      "entity_id": "openvsx",
+      "type": "technique",
+      "label": "Openvsx",
+      "short_label": "Openvsx",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "openvsx"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -3730,7 +5308,10 @@
         "SC-2023-LEDGER-CONNECT-KIT",
         "SC-2024-LOTTIE-PLAYER",
         "SC-2024-ULTRALYTICS-PYPI",
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -3750,6 +5331,25 @@
       "href": null,
       "source_incident_ids": [
         "SC-2021-PHP-GIT-SERVER"
+      ]
+    },
+    {
+      "id": "technique-plain-crypto-js",
+      "entity_id": "plain-crypto-js",
+      "type": "technique",
+      "label": "Plain Crypto Js",
+      "short_label": "Plain Crypto Js",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "plain-crypto-js"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-AXIOS"
       ]
     },
     {
@@ -3810,7 +5410,9 @@
       "source_incident_ids": [
         "SC-2022-PYPI-CTX",
         "SC-2022-PYTORCH-NIGHTLY",
-        "SC-2024-ULTRALYTICS-PYPI"
+        "SC-2024-ULTRALYTICS-PYPI",
+        "SC-2026-LITELLM",
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -3887,7 +5489,27 @@
       "purl": null,
       "href": null,
       "source_incident_ids": [
-        "SC-2025-NPM-SHAI-HULUD"
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2"
+      ]
+    },
+    {
+      "id": "technique-shai-hulud",
+      "entity_id": "shai-hulud",
+      "type": "technique",
+      "label": "Shai Hulud",
+      "short_label": "Shai Hulud",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "shai-hulud"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2"
       ]
     },
     {
@@ -3930,7 +5552,9 @@
         "SC-2017-CCLEANER",
         "SC-2019-ASUS-SHADOWHAMMER",
         "SC-2020-SOLARWINDS-ORION",
-        "SC-2023-THREE-CX-DESKTOP"
+        "SC-2023-THREE-CX-DESKTOP",
+        "SC-2026-NX-CONSOLE",
+        "SC-2026-TRIVY-CI"
       ]
     },
     {
@@ -3989,7 +5613,9 @@
       "source_incident_ids": [
         "SC-2020-OCTOPUS-SCANNER",
         "SC-2021-PHP-GIT-SERVER",
-        "SC-2024-XZ-UTILS"
+        "SC-2024-XZ-UTILS",
+        "SC-2026-MEGALODON",
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -4012,6 +5638,25 @@
       ]
     },
     {
+      "id": "technique-tanstack",
+      "entity_id": "tanstack",
+      "type": "technique",
+      "label": "Tanstack",
+      "short_label": "Tanstack",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "tanstack"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
       "id": "technique-targeted",
       "entity_id": "targeted",
       "type": "technique",
@@ -4028,6 +5673,66 @@
       "href": null,
       "source_incident_ids": [
         "SC-2019-ASUS-SHADOWHAMMER"
+      ]
+    },
+    {
+      "id": "technique-teampcp",
+      "entity_id": "teampcp",
+      "type": "technique",
+      "label": "Teampcp",
+      "short_label": "Teampcp",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "teampcp"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM"
+      ]
+    },
+    {
+      "id": "technique-trivy",
+      "entity_id": "trivy",
+      "type": "technique",
+      "label": "Trivy",
+      "short_label": "Trivy",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "trivy"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-CHECKMARX-JENKINS",
+        "SC-2026-LITELLM",
+        "SC-2026-TRIVY-CI"
+      ]
+    },
+    {
+      "id": "technique-trusted-publishing",
+      "entity_id": "trusted-publishing",
+      "type": "technique",
+      "label": "Trusted Publishing",
+      "short_label": "Trusted Publishing",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "trusted-publishing"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
       ]
     },
     {
@@ -4066,7 +5771,27 @@
       "href": null,
       "source_incident_ids": [
         "SC-2017-NOTPETYA-MEDOC",
-        "SC-2021-KASEYA-VSA"
+        "SC-2021-KASEYA-VSA",
+        "SC-2026-CHECKMARX-JENKINS"
+      ]
+    },
+    {
+      "id": "technique-vscode-extension",
+      "entity_id": "vscode-extension",
+      "type": "technique",
+      "label": "Vscode Extension",
+      "short_label": "Vscode Extension",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "vscode-extension"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-NX-CONSOLE"
       ]
     },
     {
@@ -4107,6 +5832,25 @@
       "source_incident_ids": [
         "SC-2017-CCLEANER"
       ]
+    },
+    {
+      "id": "technique-workflow-poisoning",
+      "entity_id": "workflow-poisoning",
+      "type": "technique",
+      "label": "Workflow Poisoning",
+      "short_label": "Workflow Poisoning",
+      "tier": "technique",
+      "sev": null,
+      "time": null,
+      "parent": null,
+      "techniques": [
+        "workflow-poisoning"
+      ],
+      "purl": null,
+      "href": null,
+      "source_incident_ids": [
+        "SC-2026-MEGALODON"
+      ]
     }
   ],
   "edges": [
@@ -4146,6 +5890,14 @@
       "id": "AFFECTED_MAINTAINER:incident-SC-2024-XZ-UTILS->maintainer-jia-tan",
       "source": "incident-SC-2024-XZ-UTILS",
       "target": "maintainer-jia-tan",
+      "type": "AFFECTED_MAINTAINER",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_MAINTAINER:incident-SC-2026-AXIOS->maintainer-jasonsaayman",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "maintainer-jasonsaayman",
       "type": "AFFECTED_MAINTAINER",
       "evidence_tier": null,
       "source_refs": []
@@ -4295,9 +6047,89 @@
       "source_refs": []
     },
     {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2025-SHAI-HULUD-2->org-multiple-npm-maintainers",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "org-multiple-npm-maintainers",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "AFFECTED_ORGANIZATION:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->org-tj-actions",
       "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "target": "org-tj-actions",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-AXIOS->org-axios",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "org-axios",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-CHECKMARX-JENKINS->org-checkmarx",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "org-checkmarx",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-LITELLM->org-berriai",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "org-berriai",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-MEGALODON->org-multiple-repository-owners",
+      "source": "incident-SC-2026-MEGALODON",
+      "target": "org-multiple-repository-owners",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-MINI-SHAI-HULUD->org-guardrails-ai",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "org-guardrails-ai",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-MINI-SHAI-HULUD->org-mistral-ai",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "org-mistral-ai",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-MINI-SHAI-HULUD->org-tanstack",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "org-tanstack",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-NX-CONSOLE->org-nrwl",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "org-nrwl",
+      "type": "AFFECTED_ORGANIZATION",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-TRIVY-CI->org-aqua-security",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "org-aqua-security",
       "type": "AFFECTED_ORGANIZATION",
       "evidence_tier": null,
       "source_refs": []
@@ -4463,6 +6295,86 @@
       "source_refs": []
     },
     {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-AXIOS->pkg-npm-axios",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "pkg-npm-axios",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-AXIOS->pkg-npm-plain-crypto-js",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "pkg-npm-plain-crypto-js",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-CHECKMARX-JENKINS->pkg-generic-checkmarx-ast-scanner",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "pkg-generic-checkmarx-ast-scanner",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-LITELLM->pkg-pypi-litellm",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "pkg-pypi-litellm",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-MINI-SHAI-HULUD->pkg-npm-tanstack-react-router",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "pkg-npm-tanstack-react-router",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-MINI-SHAI-HULUD->pkg-pypi-guardrails-ai",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "pkg-pypi-guardrails-ai",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-MINI-SHAI-HULUD->pkg-pypi-mistralai",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "pkg-pypi-mistralai",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-NX-CONSOLE->pkg-generic-nx-console-vs-code-extension",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "pkg-generic-nx-console-vs-code-extension",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-TRIVY-CI->pkg-generic-aquasecurity-setup-trivy",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "pkg-generic-aquasecurity-setup-trivy",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_PACKAGE:incident-SC-2026-TRIVY-CI->pkg-generic-aquasecurity-trivy-action",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "pkg-generic-aquasecurity-trivy-action",
+      "type": "AFFECTED_PACKAGE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "AFFECTED_REPOSITORY:incident-SC-2018-ESLINT-SCOPE->repo-github-com-eslint-eslint-scope",
       "source": "incident-SC-2018-ESLINT-SCOPE",
       "target": "repo-github-com-eslint-eslint-scope",
@@ -4551,6 +6463,54 @@
       "source_refs": []
     },
     {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-AXIOS->repo-github-com-axios-axios",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "repo-github-com-axios-axios",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-CHECKMARX-JENKINS->repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-LITELLM->repo-github-com-berriai-litellm",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "repo-github-com-berriai-litellm",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-MINI-SHAI-HULUD->repo-github-com-tanstack-router",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "repo-github-com-tanstack-router",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-NX-CONSOLE->repo-github-com-nrwl-nx-console",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "repo-github-com-nrwl-nx-console",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "AFFECTED_REPOSITORY:incident-SC-2026-TRIVY-CI->repo-github-com-aquasecurity-trivy",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "repo-github-com-aquasecurity-trivy",
+      "type": "AFFECTED_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "ATTRIBUTED_TO_ACTOR:actor-apt29->incident-SC-2020-SOLARWINDS-ORION",
       "source": "actor-apt29",
       "target": "incident-SC-2020-SOLARWINDS-ORION",
@@ -4591,6 +6551,62 @@
       "source_refs": []
     },
     {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2025-SHAI-HULUD-2",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-AXIOS",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-LITELLM",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-MEGALODON",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-teampcp->incident-SC-2026-TRIVY-CI",
+      "source": "actor-teampcp",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "ATTRIBUTED_TO_ACTOR:actor-unc-xz-utils-operator->incident-SC-2024-XZ-UTILS",
       "source": "actor-unc-xz-utils-operator",
       "target": "incident-SC-2024-XZ-UTILS",
@@ -4602,6 +6618,14 @@
       "id": "ATTRIBUTED_TO_ACTOR:actor-unc-xz-utils-operator->maintainer-jia-tan",
       "source": "actor-unc-xz-utils-operator",
       "target": "maintainer-jia-tan",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "ATTRIBUTED_TO_ACTOR:actor-unc1069->incident-SC-2026-AXIOS",
+      "source": "actor-unc1069",
+      "target": "incident-SC-2026-AXIOS",
       "type": "ATTRIBUTED_TO_ACTOR",
       "evidence_tier": null,
       "source_refs": []
@@ -4679,9 +6703,89 @@
       "source_refs": []
     },
     {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2025-SHAI-HULUD-2->account-github-victim-github-tokens",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "account-github-victim-github-tokens",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2025-SHAI-HULUD-2->account-npm-compromised-npm-maintainer-tokens",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "account-npm-compromised-npm-maintainer-tokens",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "COMPROMISED_ACCOUNT:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->account-github-tj-actions-github-action-release-path",
       "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "target": "account-github-tj-actions-github-action-release-path",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-AXIOS->account-npm-axios-maintainer-npm-account",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "account-npm-axios-maintainer-npm-account",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-CHECKMARX-JENKINS->account-github-checkmarx-github-repository-access",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "account-github-checkmarx-github-repository-access",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-LITELLM->account-pypi-litellm-pypi-publishing-credentials",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "account-pypi-litellm-pypi-publishing-credentials",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-MEGALODON->account-github-repository-automation-commit-identities",
+      "source": "incident-SC-2026-MEGALODON",
+      "target": "account-github-repository-automation-commit-identities",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-MINI-SHAI-HULUD->account-github-github-actions-oidc-publishing-identity",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "account-github-github-actions-oidc-publishing-identity",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-MINI-SHAI-HULUD->account-multiple-stolen-npm-and-github-credentials",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "account-multiple-stolen-npm-and-github-credentials",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-NX-CONSOLE->account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+      "type": "COMPROMISED_ACCOUNT",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "COMPROMISED_ACCOUNT:incident-SC-2026-TRIVY-CI->account-github-aqua-security-release-credentials",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "account-github-aqua-security-release-credentials",
       "type": "COMPROMISED_ACCOUNT",
       "evidence_tier": null,
       "source_refs": []
@@ -4743,6 +6847,46 @@
       "source_refs": []
     },
     {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2026-AXIOS->release-npm-axios-0-30-4",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "release-npm-axios-0-30-4",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2026-AXIOS->release-npm-axios-1-14-1",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "release-npm-axios-1-14-1",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2026-AXIOS->release-npm-plain-crypto-js-4-2-1",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "release-npm-plain-crypto-js-4-2-1",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2026-LITELLM->release-pypi-litellm-1-82-7",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "release-pypi-litellm-1-82-7",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2026-LITELLM->release-pypi-litellm-1-82-8",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "release-pypi-litellm-1-82-8",
+      "type": "INCIDENT_AFFECTED_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-account-compromise->incident-SC-2021-UA-PARSER-JS",
       "source": "technique-account-compromise",
       "target": "incident-SC-2021-UA-PARSER-JS",
@@ -4750,9 +6894,23 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-account-compromise->incident-SC-2026-AXIOS",
+      "source": "technique-account-compromise",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-account-takeover->incident-SC-2022-PYPI-CTX",
       "source": "technique-account-takeover",
       "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-axios->incident-SC-2026-AXIOS",
+      "source": "technique-axios",
+      "target": "incident-SC-2026-AXIOS",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -4813,6 +6971,13 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-backdoor->incident-SC-2026-AXIOS",
+      "source": "technique-backdoor",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-build-system->incident-SC-2020-SOLARWINDS-ORION",
       "source": "technique-build-system",
       "target": "incident-SC-2020-SOLARWINDS-ORION",
@@ -4855,6 +7020,13 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-build-system-compromise->incident-SC-2026-TRIVY-CI",
+      "source": "technique-build-system-compromise",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-cdn->incident-SC-2024-POLYFILL-IO",
       "source": "technique-cdn",
       "target": "incident-SC-2024-POLYFILL-IO",
@@ -4865,6 +7037,13 @@
       "id": "INCIDENT_TECHNIQUE:technique-cdn-script-compromise->incident-SC-2024-POLYFILL-IO",
       "source": "technique-cdn-script-compromise",
       "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-checkmarx->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-checkmarx",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -4883,6 +7062,27 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-ci-cd",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd->incident-SC-2026-MEGALODON",
+      "source": "technique-ci-cd",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd->incident-SC-2026-TRIVY-CI",
+      "source": "technique-ci-cd",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2025-NPM-SHAI-HULUD",
       "source": "technique-ci-cd-action-compromise",
       "target": "incident-SC-2025-NPM-SHAI-HULUD",
@@ -4890,9 +7090,51 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "source": "technique-ci-cd-action-compromise",
       "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2026-LITELLM",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2026-MEGALODON",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-ci-cd-action-compromise->incident-SC-2026-TRIVY-CI",
+      "source": "technique-ci-cd-action-compromise",
+      "target": "incident-SC-2026-TRIVY-CI",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -4946,9 +7188,65 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "source": "technique-credential-theft",
       "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-AXIOS",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-LITELLM",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-MEGALODON",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-credential-theft->incident-SC-2026-TRIVY-CI",
+      "source": "technique-credential-theft",
+      "target": "incident-SC-2026-TRIVY-CI",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -4995,6 +7293,13 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-cve-2026-33634->incident-SC-2026-TRIVY-CI",
+      "source": "technique-cve-2026-33634",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2021-CODECOV-BASH-UPLOADER",
       "source": "technique-data-exfiltration",
       "target": "incident-SC-2021-CODECOV-BASH-UPLOADER",
@@ -5012,6 +7317,20 @@
       "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2022-PYPI-CTX",
       "source": "technique-data-exfiltration",
       "target": "incident-SC-2022-PYPI-CTX",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2026-MEGALODON",
+      "source": "technique-data-exfiltration",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-data-exfiltration->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-data-exfiltration",
+      "target": "incident-SC-2026-NX-CONSOLE",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5121,9 +7440,44 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "source": "technique-developer-workstation-compromise",
       "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2026-LITELLM",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-developer-workstation-compromise->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-developer-workstation-compromise",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-disputed-attribution->incident-SC-2026-AXIOS",
+      "source": "technique-disputed-attribution",
+      "target": "incident-SC-2026-AXIOS",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5198,9 +7552,58 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2026-LITELLM",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2026-MEGALODON",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-downstream-customer-compromise->incident-SC-2026-TRIVY-CI",
+      "source": "technique-downstream-customer-compromise",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-github->incident-SC-2020-OCTOPUS-SCANNER",
       "source": "technique-github",
       "target": "incident-SC-2020-OCTOPUS-SCANNER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-github",
+      "target": "incident-SC-2026-NX-CONSOLE",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5219,9 +7622,30 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "source": "technique-github-actions",
       "target": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2026-MEGALODON",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-github-actions->incident-SC-2026-TRIVY-CI",
+      "source": "technique-github-actions",
+      "target": "incident-SC-2026-TRIVY-CI",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5254,9 +7678,23 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-jenkins->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-jenkins",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-linux->incident-SC-2024-XZ-UTILS",
       "source": "technique-linux",
       "target": "incident-SC-2024-XZ-UTILS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-litellm->incident-SC-2026-LITELLM",
+      "source": "technique-litellm",
+      "target": "incident-SC-2026-LITELLM",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5310,6 +7748,20 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-maintainer-account-compromise->incident-SC-2026-AXIOS",
+      "source": "technique-maintainer-account-compromise",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2018-NPM-EVENT-STREAM",
       "source": "technique-malicious-dependency",
       "target": "incident-SC-2018-NPM-EVENT-STREAM",
@@ -5327,6 +7779,27 @@
       "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
       "source": "technique-malicious-dependency",
       "target": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2026-AXIOS",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2026-LITELLM",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malicious-dependency->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-malicious-dependency",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5383,6 +7856,34 @@
       "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2024-POLYFILL-IO",
       "source": "technique-malware-distribution",
       "target": "incident-SC-2024-POLYFILL-IO",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2026-AXIOS",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-malware-distribution->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-malware-distribution",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-megalodon->incident-SC-2026-MEGALODON",
+      "source": "technique-megalodon",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-mini-shai-hulud->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-mini-shai-hulud",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5471,6 +7972,48 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-npm",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2026-AXIOS",
+      "source": "technique-npm",
+      "target": "incident-SC-2026-AXIOS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-npm->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-npm",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-nx-console->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-nx-console",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-oidc->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-oidc",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-openvsx->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-openvsx",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2018-ESLINT-SCOPE",
       "source": "technique-package-repository-compromise",
       "target": "incident-SC-2018-ESLINT-SCOPE",
@@ -5527,9 +8070,37 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2026-LITELLM",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-package-repository-compromise->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-package-repository-compromise",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-php->incident-SC-2021-PHP-GIT-SERVER",
       "source": "technique-php",
       "target": "incident-SC-2021-PHP-GIT-SERVER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-plain-crypto-js->incident-SC-2026-AXIOS",
+      "source": "technique-plain-crypto-js",
+      "target": "incident-SC-2026-AXIOS",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5583,6 +8154,20 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-pypi->incident-SC-2026-LITELLM",
+      "source": "technique-pypi",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-pypi->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-pypi",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-ransomware->incident-SC-2021-KASEYA-VSA",
       "source": "technique-ransomware",
       "target": "incident-SC-2021-KASEYA-VSA",
@@ -5614,6 +8199,20 @@
       "id": "INCIDENT_TECHNIQUE:technique-self-propagating->incident-SC-2025-NPM-SHAI-HULUD",
       "source": "technique-self-propagating",
       "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-self-propagating->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-self-propagating",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-shai-hulud->incident-SC-2025-SHAI-HULUD-2",
+      "source": "technique-shai-hulud",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5667,6 +8266,20 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-signed-update-compromise->incident-SC-2026-TRIVY-CI",
+      "source": "technique-signed-update-compromise",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-software-update->incident-SC-2017-NOTPETYA-MEDOC",
       "source": "technique-software-update",
       "target": "incident-SC-2017-NOTPETYA-MEDOC",
@@ -5702,6 +8315,20 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-source-repository-compromise->incident-SC-2026-MEGALODON",
+      "source": "technique-source-repository-compromise",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-source-repository-compromise->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-source-repository-compromise",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-sunburst->incident-SC-2020-SOLARWINDS-ORION",
       "source": "technique-sunburst",
       "target": "incident-SC-2020-SOLARWINDS-ORION",
@@ -5709,9 +8336,58 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-tanstack->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-tanstack",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-targeted->incident-SC-2019-ASUS-SHADOWHAMMER",
       "source": "technique-targeted",
       "target": "incident-SC-2019-ASUS-SHADOWHAMMER",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-teampcp->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-teampcp",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-teampcp->incident-SC-2026-LITELLM",
+      "source": "technique-teampcp",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-trivy->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-trivy",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-trivy->incident-SC-2026-LITELLM",
+      "source": "technique-trivy",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-trivy->incident-SC-2026-TRIVY-CI",
+      "source": "technique-trivy",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-trusted-publishing->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "technique-trusted-publishing",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
       "type": "INCIDENT_TECHNIQUE",
       "derived": true
     },
@@ -5737,6 +8413,20 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-vendor-update-compromise->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "technique-vendor-update-compromise",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
+      "id": "INCIDENT_TECHNIQUE:technique-vscode-extension->incident-SC-2026-NX-CONSOLE",
+      "source": "technique-vscode-extension",
+      "target": "incident-SC-2026-NX-CONSOLE",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "INCIDENT_TECHNIQUE:technique-web3->incident-SC-2023-LEDGER-CONNECT-KIT",
       "source": "technique-web3",
       "target": "incident-SC-2023-LEDGER-CONNECT-KIT",
@@ -5758,9 +8448,24 @@
       "derived": true
     },
     {
+      "id": "INCIDENT_TECHNIQUE:technique-workflow-poisoning->incident-SC-2026-MEGALODON",
+      "source": "technique-workflow-poisoning",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "INCIDENT_TECHNIQUE",
+      "derived": true
+    },
+    {
       "id": "MAINTAINS_REPOSITORY:maintainer-dominictarr->repo-github-com-dominictarr-event-stream",
       "source": "maintainer-dominictarr",
       "target": "repo-github-com-dominictarr-event-stream",
+      "type": "MAINTAINS_REPOSITORY",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "MAINTAINS_REPOSITORY:maintainer-jasonsaayman->repo-github-com-axios-axios",
+      "source": "maintainer-jasonsaayman",
+      "target": "repo-github-com-axios-axios",
       "type": "MAINTAINS_REPOSITORY",
       "evidence_tier": null,
       "source_refs": []
@@ -5798,6 +8503,22 @@
       "source_refs": []
     },
     {
+      "id": "PACKAGE_RELEASE:pkg-npm-axios->release-npm-axios-0-30-4",
+      "source": "pkg-npm-axios",
+      "target": "release-npm-axios-0-30-4",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-axios->release-npm-axios-1-14-1",
+      "source": "pkg-npm-axios",
+      "target": "release-npm-axios-1-14-1",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "PACKAGE_RELEASE:pkg-npm-ctrl-tinycolor->release-npm-ctrl-tinycolor-4-1-1",
       "source": "pkg-npm-ctrl-tinycolor",
       "target": "release-npm-ctrl-tinycolor-4-1-1",
@@ -5817,6 +8538,14 @@
       "id": "PACKAGE_RELEASE:pkg-npm-flatmap-stream->release-npm-flatmap-stream-0-1-1",
       "source": "pkg-npm-flatmap-stream",
       "target": "release-npm-flatmap-stream-0-1-1",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-npm-plain-crypto-js->release-npm-plain-crypto-js-4-2-1",
+      "source": "pkg-npm-plain-crypto-js",
+      "target": "release-npm-plain-crypto-js-4-2-1",
       "type": "PACKAGE_RELEASE",
       "evidence_tier": null,
       "source_refs": []
@@ -5846,6 +8575,22 @@
       "source_refs": []
     },
     {
+      "id": "PACKAGE_RELEASE:pkg-pypi-litellm->release-pypi-litellm-1-82-7",
+      "source": "pkg-pypi-litellm",
+      "target": "release-pypi-litellm-1-82-7",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "PACKAGE_RELEASE:pkg-pypi-litellm->release-pypi-litellm-1-82-8",
+      "source": "pkg-pypi-litellm",
+      "target": "release-pypi-litellm-1-82-8",
+      "type": "PACKAGE_RELEASE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "RELATED_CAMPAIGN:campaign-tp-camp-2017-0002->incident-SC-2017-NOTPETYA-MEDOC",
       "source": "campaign-tp-camp-2017-0002",
       "target": "incident-SC-2017-NOTPETYA-MEDOC",
@@ -5868,6 +8613,82 @@
       "type": "RELATED_CAMPAIGN",
       "evidence_tier": null,
       "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0003->incident-SC-2025-SHAI-HULUD-2",
+      "source": "campaign-tp-camp-2026-0003",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0003->incident-SC-2026-CHECKMARX-JENKINS",
+      "source": "campaign-tp-camp-2026-0003",
+      "target": "incident-SC-2026-CHECKMARX-JENKINS",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0003->incident-SC-2026-LITELLM",
+      "source": "campaign-tp-camp-2026-0003",
+      "target": "incident-SC-2026-LITELLM",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0003->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "campaign-tp-camp-2026-0003",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0003->incident-SC-2026-TRIVY-CI",
+      "source": "campaign-tp-camp-2026-0003",
+      "target": "incident-SC-2026-TRIVY-CI",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "RELATED_CAMPAIGN:campaign-tp-camp-2026-0010->incident-SC-2026-MEGALODON",
+      "source": "campaign-tp-camp-2026-0010",
+      "target": "incident-SC-2026-MEGALODON",
+      "type": "RELATED_CAMPAIGN",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SEEDED_BY:pkg-generic-aquasecurity-trivy-action->pkg-generic-checkmarx-ast-scanner",
+      "source": "pkg-generic-aquasecurity-trivy-action",
+      "target": "pkg-generic-checkmarx-ast-scanner",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-checkmarx-update"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2026-CHECKMARX-JENKINS",
+      "summary": "Checkmarx states that unauthorized GitHub access occurred due to the Trivy supply-chain attack, enabling malicious artifacts including the Jenkins plugin."
+    },
+    {
+      "id": "SEEDED_BY:pkg-generic-aquasecurity-trivy-action->release-pypi-litellm-1-82-7",
+      "source": "pkg-generic-aquasecurity-trivy-action",
+      "target": "release-pypi-litellm-1-82-7",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-snyk-litellm"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2026-LITELLM",
+      "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
     },
     {
       "id": "SEEDED_BY:pkg-generic-x-trader->pkg-generic-3cx-desktopapp",
@@ -5914,6 +8735,36 @@
       "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation."
     },
     {
+      "id": "SEEDED_BY:release-npm-plain-crypto-js-4-2-1->release-npm-axios-0-30-4",
+      "source": "release-npm-plain-crypto-js-4-2-1",
+      "target": "release-npm-axios-0-30-4",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-axios-postmortem",
+        "ref-google-axios"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2026-AXIOS",
+      "summary": "The same malicious plain-crypto-js dependency was introduced into both compromised Axios release lines."
+    },
+    {
+      "id": "SEEDED_BY:release-npm-plain-crypto-js-4-2-1->release-npm-axios-1-14-1",
+      "source": "release-npm-plain-crypto-js-4-2-1",
+      "target": "release-npm-axios-1-14-1",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-axios-postmortem",
+        "ref-google-axios"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2026-AXIOS",
+      "summary": "The Axios postmortem and Google analysis describe malicious Axios releases depending on plain-crypto-js 4.2.1 as the install-time payload carrier."
+    },
+    {
       "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2016-LINUX-MINT-ISO->channel-linux-website-download-linux-mint-download-site",
       "source": "incident-SC-2016-LINUX-MINT-ISO",
       "target": "channel-linux-website-download-linux-mint-download-site",
@@ -5949,6 +8800,22 @@
       "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2025-GO-BOLTDB-TYPOSQUAT->channel-golang-package-registry-go-module-proxy",
       "source": "incident-SC-2025-GO-BOLTDB-TYPOSQUAT",
       "target": "channel-golang-package-registry-go-module-proxy",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2026-AXIOS->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "SOURCE_ARTIFACT_DIVERGENCE",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "SOURCE_ARTIFACT_DIVERGENCE:incident-SC-2026-LITELLM->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "channel-pypi-package-registry-pypi",
       "type": "SOURCE_ARTIFACT_DIVERGENCE",
       "evidence_tier": null,
       "source_refs": []
@@ -6010,8 +8877,56 @@
       "source_refs": []
     },
     {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2025-SHAI-HULUD-2->build-github-github-actions",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "USED_BUILD_SYSTEM:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->build-github-github-actions",
       "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2026-CHECKMARX-JENKINS->build-jenkins-jenkins",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "build-jenkins-jenkins",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2026-LITELLM->build-github-github-actions",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2026-MEGALODON->build-github-github-actions",
+      "source": "incident-SC-2026-MEGALODON",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2026-MINI-SHAI-HULUD->build-github-github-actions",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "build-github-github-actions",
+      "type": "USED_BUILD_SYSTEM",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_BUILD_SYSTEM:incident-SC-2026-TRIVY-CI->build-github-github-actions",
+      "source": "incident-SC-2026-TRIVY-CI",
       "target": "build-github-github-actions",
       "type": "USED_BUILD_SYSTEM",
       "evidence_tier": null,
@@ -6258,10 +9173,122 @@
       "source_refs": []
     },
     {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-SHAI-HULUD-2->channel-github-source-repository-github-repositories",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "channel-github-source-repository-github-repositories",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-SHAI-HULUD-2->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2025-SHAI-HULUD-2",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
       "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
       "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
       "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-AXIOS->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2026-AXIOS",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-CHECKMARX-JENKINS->channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+      "source": "incident-SC-2026-CHECKMARX-JENKINS",
+      "target": "channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-LITELLM->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2026-LITELLM",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-MEGALODON->channel-github-source-repository-github-repositories",
+      "source": "incident-SC-2026-MEGALODON",
+      "target": "channel-github-source-repository-github-repositories",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-MINI-SHAI-HULUD->channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-MINI-SHAI-HULUD->channel-npm-package-registry-npm-registry",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "channel-npm-package-registry-npm-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-MINI-SHAI-HULUD->channel-pypi-package-registry-pypi",
+      "source": "incident-SC-2026-MINI-SHAI-HULUD",
+      "target": "channel-pypi-package-registry-pypi",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-NX-CONSOLE->channel-openvsx-package-registry-open-vsx-registry",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "channel-openvsx-package-registry-open-vsx-registry",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-NX-CONSOLE->channel-vscode-package-registry-visual-studio-marketplace",
+      "source": "incident-SC-2026-NX-CONSOLE",
+      "target": "channel-vscode-package-registry-visual-studio-marketplace",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-TRIVY-CI->channel-docker-package-registry-docker-hub",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "channel-docker-package-registry-docker-hub",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USED_DISTRIBUTION_CHANNEL:incident-SC-2026-TRIVY-CI->channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "source": "incident-SC-2026-TRIVY-CI",
+      "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+      "type": "USED_DISTRIBUTION_CHANNEL",
+      "evidence_tier": null,
+      "source_refs": []
+    },
+    {
+      "id": "USES_ACCOUNT:maintainer-jasonsaayman->account-npm-axios-maintainer-npm-account",
+      "source": "maintainer-jasonsaayman",
+      "target": "account-npm-axios-maintainer-npm-account",
+      "type": "USES_ACCOUNT",
       "evidence_tier": null,
       "source_refs": []
     }

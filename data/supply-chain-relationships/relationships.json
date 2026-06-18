@@ -600,6 +600,46 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "org-multiple-npm-maintainers",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "account-github-victim-github-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "account-npm-compromised-npm-maintainer-tokens",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "campaign-tp-camp-2026-0003",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "channel-github-source-repository-github-repositories",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2025-SHAI-HULUD-2",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
     "target": "org-tj-actions",
     "type": "AFFECTED_ORGANIZATION"
@@ -625,9 +665,364 @@
     "type": "USED_DISTRIBUTION_CHANNEL"
   },
   {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "maintainer-jasonsaayman",
+    "type": "AFFECTED_MAINTAINER"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "org-axios",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "pkg-npm-axios",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "pkg-npm-plain-crypto-js",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "repo-github-com-axios-axios",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "actor-unc1069",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "account-npm-axios-maintainer-npm-account",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "release-npm-axios-0-30-4",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "release-npm-axios-1-14-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "release-npm-plain-crypto-js-4-2-1",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2026-AXIOS",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "org-checkmarx",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "pkg-generic-checkmarx-ast-scanner",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "repo-github-com-jenkinsci-checkmarx-ast-scanner-plugin",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "account-github-checkmarx-github-repository-access",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "campaign-tp-camp-2026-0003",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "build-jenkins-jenkins",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2026-CHECKMARX-JENKINS",
+    "target": "channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "org-berriai",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "pkg-pypi-litellm",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "repo-github-com-berriai-litellm",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "account-pypi-litellm-pypi-publishing-credentials",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "release-pypi-litellm-1-82-7",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "release-pypi-litellm-1-82-8",
+    "type": "INCIDENT_AFFECTED_RELEASE"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "campaign-tp-camp-2026-0003",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "SOURCE_ARTIFACT_DIVERGENCE"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2026-LITELLM",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "org-multiple-repository-owners",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "account-github-repository-automation-commit-identities",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "campaign-tp-camp-2026-0010",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2026-MEGALODON",
+    "target": "channel-github-source-repository-github-repositories",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "org-guardrails-ai",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "org-mistral-ai",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "org-tanstack",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "pkg-npm-tanstack-react-router",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "pkg-pypi-guardrails-ai",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "pkg-pypi-mistralai",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "repo-github-com-tanstack-router",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "account-github-github-actions-oidc-publishing-identity",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "account-multiple-stolen-npm-and-github-credentials",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "campaign-tp-camp-2026-0003",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "channel-npm-package-registry-npm-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-MINI-SHAI-HULUD",
+    "target": "channel-pypi-package-registry-pypi",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "org-nrwl",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "pkg-generic-nx-console-vs-code-extension",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "repo-github-com-nrwl-nx-console",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "channel-openvsx-package-registry-open-vsx-registry",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-NX-CONSOLE",
+    "target": "channel-vscode-package-registry-visual-studio-marketplace",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "org-aqua-security",
+    "type": "AFFECTED_ORGANIZATION"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "pkg-generic-aquasecurity-setup-trivy",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "pkg-generic-aquasecurity-trivy-action",
+    "type": "AFFECTED_PACKAGE"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "repo-github-com-aquasecurity-trivy",
+    "type": "AFFECTED_REPOSITORY"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "actor-teampcp",
+    "type": "ATTRIBUTED_TO_ACTOR"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "account-github-aqua-security-release-credentials",
+    "type": "COMPROMISED_ACCOUNT"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "campaign-tp-camp-2026-0003",
+    "type": "RELATED_CAMPAIGN"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "build-github-github-actions",
+    "type": "USED_BUILD_SYSTEM"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "channel-docker-package-registry-docker-hub",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
+    "source": "incident-SC-2026-TRIVY-CI",
+    "target": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
+    "type": "USED_DISTRIBUTION_CHANNEL"
+  },
+  {
     "source": "maintainer-dominictarr",
     "target": "repo-github-com-dominictarr-event-stream",
     "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-jasonsaayman",
+    "target": "repo-github-com-axios-axios",
+    "type": "MAINTAINS_REPOSITORY"
+  },
+  {
+    "source": "maintainer-jasonsaayman",
+    "target": "account-npm-axios-maintainer-npm-account",
+    "type": "USES_ACCOUNT"
   },
   {
     "source": "maintainer-jia-tan",
@@ -651,6 +1046,28 @@
   },
   {
     "evidence_refs": [
+      "ref-checkmarx-update"
+    ],
+    "propagation_tier": "causal",
+    "source": "pkg-generic-aquasecurity-trivy-action",
+    "source_incident_id": "SC-2026-CHECKMARX-JENKINS",
+    "summary": "Checkmarx states that unauthorized GitHub access occurred due to the Trivy supply-chain attack, enabling malicious artifacts including the Jenkins plugin.",
+    "target": "pkg-generic-checkmarx-ast-scanner",
+    "type": "SEEDED_BY"
+  },
+  {
+    "evidence_refs": [
+      "ref-snyk-litellm"
+    ],
+    "propagation_tier": "causal",
+    "source": "pkg-generic-aquasecurity-trivy-action",
+    "source_incident_id": "SC-2026-LITELLM",
+    "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise.",
+    "target": "release-pypi-litellm-1-82-7",
+    "type": "SEEDED_BY"
+  },
+  {
+    "evidence_refs": [
       "ref-mandiant-3cx"
     ],
     "propagation_tier": "causal",
@@ -666,6 +1083,16 @@
     "type": "PACKAGE_RELEASE"
   },
   {
+    "source": "pkg-npm-axios",
+    "target": "release-npm-axios-0-30-4",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-axios",
+    "target": "release-npm-axios-1-14-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
     "source": "pkg-npm-ctrl-tinycolor",
     "target": "release-npm-ctrl-tinycolor-4-1-1",
     "type": "PACKAGE_RELEASE"
@@ -678,6 +1105,11 @@
   {
     "source": "pkg-npm-flatmap-stream",
     "target": "release-npm-flatmap-stream-0-1-1",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-npm-plain-crypto-js",
+    "target": "release-npm-plain-crypto-js-4-2-1",
     "type": "PACKAGE_RELEASE"
   },
   {
@@ -708,6 +1140,16 @@
     "type": "PACKAGE_RELEASE"
   },
   {
+    "source": "pkg-pypi-litellm",
+    "target": "release-pypi-litellm-1-82-7",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
+    "source": "pkg-pypi-litellm",
+    "target": "release-pypi-litellm-1-82-8",
+    "type": "PACKAGE_RELEASE"
+  },
+  {
     "evidence_refs": [
       "ref-npm-tinycolor-registry",
       "ref-wiz-shai-hulud"
@@ -717,6 +1159,30 @@
     "source_incident_id": "SC-2025-NPM-SHAI-HULUD",
     "summary": "The npm registry metadata records adjacent malicious @ctrl/tinycolor releases on the same date; this edge preserves ordered wave structure without asserting causation.",
     "target": "release-npm-ctrl-tinycolor-4-1-2",
+    "type": "SEEDED_BY"
+  },
+  {
+    "evidence_refs": [
+      "ref-axios-postmortem",
+      "ref-google-axios"
+    ],
+    "propagation_tier": "causal",
+    "source": "release-npm-plain-crypto-js-4-2-1",
+    "source_incident_id": "SC-2026-AXIOS",
+    "summary": "The same malicious plain-crypto-js dependency was introduced into both compromised Axios release lines.",
+    "target": "release-npm-axios-0-30-4",
+    "type": "SEEDED_BY"
+  },
+  {
+    "evidence_refs": [
+      "ref-axios-postmortem",
+      "ref-google-axios"
+    ],
+    "propagation_tier": "causal",
+    "source": "release-npm-plain-crypto-js-4-2-1",
+    "source_incident_id": "SC-2026-AXIOS",
+    "summary": "The Axios postmortem and Google analysis describe malicious Axios releases depending on plain-crypto-js 4.2.1 as the install-time payload carrier.",
+    "target": "release-npm-axios-1-14-1",
     "type": "SEEDED_BY"
   }
 ]

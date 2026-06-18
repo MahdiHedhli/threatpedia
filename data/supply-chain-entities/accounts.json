@@ -2,6 +2,58 @@
   {
     "account_type": "source_control_account",
     "aliases": [
+      "Aqua Security release credentials"
+    ],
+    "id": "account-github-aqua-security-release-credentials",
+    "name": "Aqua Security release credentials",
+    "provider": "GitHub",
+    "role": "action_release",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "Checkmarx GitHub repository access"
+    ],
+    "id": "account-github-checkmarx-github-repository-access",
+    "name": "Checkmarx GitHub repository access",
+    "provider": "GitHub",
+    "role": "plugin_release",
+    "source_incident_ids": [
+      "SC-2026-CHECKMARX-JENKINS"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "GitHub Actions OIDC publishing identity"
+    ],
+    "id": "account-github-github-actions-oidc-publishing-identity",
+    "name": "GitHub Actions OIDC publishing identity",
+    "provider": "GitHub",
+    "role": "trusted_publisher",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
+      "repository automation commit identities"
+    ],
+    "id": "account-github-repository-automation-commit-identities",
+    "name": "repository automation commit identities",
+    "provider": "GitHub",
+    "role": "workflow_commit",
+    "source_incident_ids": [
+      "SC-2026-MEGALODON"
+    ]
+  },
+  {
+    "account_type": "source_control_account",
+    "aliases": [
       "tj-actions GitHub Action release path"
     ],
     "id": "account-github-tj-actions-github-action-release-path",
@@ -22,7 +74,34 @@
     "provider": "GitHub",
     "role": "workflow_secret_access",
     "source_incident_ids": [
-      "SC-2025-NPM-SHAI-HULUD"
+      "SC-2025-NPM-SHAI-HULUD",
+      "SC-2025-SHAI-HULUD-2"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "stolen npm and GitHub credentials"
+    ],
+    "id": "account-multiple-stolen-npm-and-github-credentials",
+    "name": "stolen npm and GitHub credentials",
+    "provider": "multiple",
+    "role": "worm_propagation",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "axios maintainer npm account"
+    ],
+    "id": "account-npm-axios-maintainer-npm-account",
+    "name": "axios maintainer npm account",
+    "provider": "npm",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
     ]
   },
   {
@@ -35,7 +114,8 @@
     "provider": "npm",
     "role": "maintainer_publish",
     "source_incident_ids": [
-      "SC-2025-NPM-SHAI-HULUD"
+      "SC-2025-NPM-SHAI-HULUD",
+      "SC-2025-SHAI-HULUD-2"
     ]
   },
   {
@@ -117,6 +197,19 @@
     ]
   },
   {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "LiteLLM PyPI publishing credentials"
+    ],
+    "id": "account-pypi-litellm-pypi-publishing-credentials",
+    "name": "LiteLLM PyPI publishing credentials",
+    "provider": "PyPI",
+    "role": "maintainer_publish",
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ]
+  },
+  {
     "account_type": "package_registry_token",
     "aliases": [
       "Ultralytics PyPI publishing token"
@@ -127,6 +220,19 @@
     "role": "package_publish",
     "source_incident_ids": [
       "SC-2024-ULTRALYTICS-PYPI"
+    ]
+  },
+  {
+    "account_type": "package_registry_account",
+    "aliases": [
+      "Nx Console extension publishing identity"
+    ],
+    "id": "account-visual-studio-marketplace-nx-console-extension-publishing-identity",
+    "name": "Nx Console extension publishing identity",
+    "provider": "Visual Studio Marketplace",
+    "role": "extension_publish",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
     ]
   }
 ]

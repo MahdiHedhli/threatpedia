@@ -14,6 +14,58 @@
   },
   {
     "aliases": [
+      "aquasecurity/setup-trivy"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-aquasecurity-setup-trivy",
+    "name": "aquasecurity/setup-trivy",
+    "package_url": "pkg:generic/aquasecurity-setup-trivy",
+    "purl_justification": "GitHub Actions are CI marketplace artifacts without a registry-specific PURL type supported by this corpus.",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "aliases": [
+      "aquasecurity/trivy-action"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-aquasecurity-trivy-action",
+    "name": "aquasecurity/trivy-action",
+    "package_url": "pkg:generic/aquasecurity-trivy-action",
+    "purl_justification": "GitHub Actions are CI marketplace artifacts without a registry-specific PURL type supported by this corpus.",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "aliases": [
+      "checkmarx-ast-scanner"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-checkmarx-ast-scanner",
+    "name": "checkmarx-ast-scanner",
+    "package_url": "pkg:generic/checkmarx-ast-scanner",
+    "purl_justification": "Jenkins marketplace plugins do not have a registry-specific PURL type supported by this corpus.",
+    "source_incident_ids": [
+      "SC-2026-CHECKMARX-JENKINS"
+    ]
+  },
+  {
+    "aliases": [
+      "Nx Console VS Code extension"
+    ],
+    "ecosystem": "generic",
+    "id": "pkg-generic-nx-console-vs-code-extension",
+    "name": "Nx Console VS Code extension",
+    "package_url": "pkg:generic/nx-console-vs-code-extension",
+    "purl_justification": "VS Code extensions do not have a registry-specific PURL type supported by this corpus.",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
+    ]
+  },
+  {
+    "aliases": [
       "X_TRADER"
     ],
     "ecosystem": "generic",
@@ -48,6 +100,18 @@
     "purl_justification": "Dependency-confusion internal names are cross-ecosystem private identifiers with no public registry package home.",
     "source_incident_ids": [
       "SC-2021-DEPENDENCY-CONFUSION"
+    ]
+  },
+  {
+    "aliases": [
+      "axios"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-axios",
+    "name": "axios",
+    "package_url": "pkg:npm/axios",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
     ]
   },
   {
@@ -184,6 +248,18 @@
   },
   {
     "aliases": [
+      "plain-crypto-js"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-plain-crypto-js",
+    "name": "plain-crypto-js",
+    "package_url": "pkg:npm/plain-crypto-js",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
+    ]
+  },
+  {
+    "aliases": [
       "rc"
     ],
     "ecosystem": "npm",
@@ -208,6 +284,18 @@
   },
   {
     "aliases": [
+      "@tanstack/react-router"
+    ],
+    "ecosystem": "npm",
+    "id": "pkg-npm-tanstack-react-router",
+    "name": "@tanstack/react-router",
+    "package_url": "pkg:npm/%40tanstack/react-router",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
       "ua-parser-js"
     ],
     "ecosystem": "npm",
@@ -228,6 +316,42 @@
     "package_url": "pkg:pypi/ctx",
     "source_incident_ids": [
       "SC-2022-PYPI-CTX"
+    ]
+  },
+  {
+    "aliases": [
+      "guardrails-ai"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-guardrails-ai",
+    "name": "guardrails-ai",
+    "package_url": "pkg:pypi/guardrails-ai",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
+      "litellm"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-litellm",
+    "name": "litellm",
+    "package_url": "pkg:pypi/litellm",
+    "source_incident_ids": [
+      "SC-2026-LITELLM"
+    ]
+  },
+  {
+    "aliases": [
+      "mistralai"
+    ],
+    "ecosystem": "pypi",
+    "id": "pkg-pypi-mistralai",
+    "name": "mistralai",
+    "package_url": "pkg:pypi/mistralai",
+    "source_incident_ids": [
+      "SC-2026-MINI-SHAI-HULUD"
     ]
   },
   {
