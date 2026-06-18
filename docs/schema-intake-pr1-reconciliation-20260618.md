@@ -353,16 +353,19 @@ PR2 can proceed if Kernel K accepts these conditions:
 7. External anchors and TP-APT IDs are optional/additive for PR2.
 8. No corpus-wide hard requirement lands before a reviewed PR3 dry-run.
 9. Anchor backfill is owned as separate sourced enrichment work.
+10. MITRE/STIX external ID handling is reconciled with the existing private
+    ingestion model before PR2 implements any `externalIds` MITRE/STIX design.
 
 ---
 
 ## 11. Exact Blockers Before PR2
 
 No technical blockers were found that should prevent PR2 from being drafted if
-Kernel K accepts the conditions above.
+Kernel K accepts the conditions above, except that MITRE/STIX external ID
+handling must be reconciled before PR2 implements those specific fields.
 
 PR2 is blocked only on explicit Kernel K acceptance of the reconciliation
-decisions in this memo.
+decisions in this memo and the MITRE/STIX external ID handling condition.
 
 ---
 
@@ -427,8 +430,8 @@ was used to make the reconciliation decision but is not published here.
 | Public threat actors with `attributionConfidence` | 63 |
 | Public threat actors with `revisions` | 0 |
 | Public threat actors with populated external anchor families checked here | 0 |
-| Public task JSON files inspected | 323 |
-| Public task JSON files using `acceptance_criteria.review_status` | 319 |
+| Public task JSON files inspected | 324 |
+| Public task JSON files using `acceptance_criteria.review_status` | 320 |
 | Public task JSON files using tolerated legacy `acceptance.review_status` | 4 |
 | Public task JSON files with checked v1.2 camelCase intake fields | 0 |
 
