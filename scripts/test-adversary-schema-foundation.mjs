@@ -52,6 +52,7 @@ const sparseDraft = {
   isAnalyticConstruct: true,
   sources: [
     {
+      id: 'src-1',
       url: 'https://example.com/report',
       publisher: 'Example Research',
       publisherType: 'research',
@@ -61,6 +62,42 @@ const sparseDraft = {
   ],
 };
 assertNoErrors(sparseDraft, 'sparse draft_ai v0.5-shaped record is valid');
+
+assertNoErrors({
+  ...sparseDraft,
+  attributionClaims: [
+    {
+      claimType: 'located_in',
+      value: 'Unknown',
+      confidence: 'D',
+      sources: [sourceRef()],
+    },
+  ],
+  relationshipClaims: [
+    {
+      predicate: 'associated_with',
+      targetType: 'identity',
+      targetId: 'TP-APT-0001',
+      confidence: 'D',
+      sources: [sourceRef()],
+    },
+  ],
+}, 'claim sourceId references resolve against sources[].id');
+
+{
+  const result = issues({
+    ...sparseDraft,
+    attributionClaims: [
+      {
+        claimType: 'located_in',
+        value: 'Unknown',
+        confidence: 'D',
+        sources: [sourceRef('missing-source')],
+      },
+    ],
+  });
+  assert.ok(messages(result.errors).some((message) => /sourceId must reference an existing sources\[\]\.id/.test(message)), 'dangling attribution sourceId is rejected');
+}
 
 const certifiedWithHardAnchor = {
   ...sparseDraft,

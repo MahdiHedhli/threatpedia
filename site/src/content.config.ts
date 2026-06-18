@@ -93,6 +93,7 @@ const mappingConfidence = z.enum(['confirmed', 'probable', 'possible']);
 
 /** Source citation schema per SOURCE-SPEC v1.0 */
 const sourceSchema = z.object({
+  id: z.string().min(1).optional(),
   url: z.string().url(),
   publisher: z.string(),
   publisherType: z.enum(['government', 'vendor', 'media', 'research', 'community']),

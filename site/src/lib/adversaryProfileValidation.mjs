@@ -105,6 +105,10 @@ function sourceCount(claim) {
   return asArray(claim?.sources).length;
 }
 
+function collectSourceIds(sources = []) {
+  return asArray(sources).map((source) => source?.id).filter(present).map((id) => String(id).trim());
+}
+
 function hasNonVendorAnchor(externalIds = {}) {
   return SOFT_ANCHOR_KEYS.concat(HARD_ANCHOR_KEYS).some((key) => present(externalIds[key]));
 }
@@ -148,6 +152,8 @@ export function getAdversaryProfileValidationIssues(record) {
   const attributionClaims = asArray(data.attributionClaims);
   const relationshipClaims = asArray(data.relationshipClaims);
   const revisions = asArray(data.revisions);
+  const sourceIds = collectSourceIds(data.sources);
+  const knownSourceIds = new Set(sourceIds);
 
   for (const field of ['entityKind', 'isAnalyticConstruct', 'externalIds', 'aliasRecords', 'attributionClaims', 'relationshipClaims', 'revisions']) {
     if (data[field] === undefined) {
@@ -207,6 +213,12 @@ export function getAdversaryProfileValidationIssues(record) {
     }
   }
 
+  for (const [index, source] of asArray(data.sources).entries()) {
+    if (present(source?.id) && sourceIds.filter((id) => id === String(source.id).trim()).length > 1) {
+      errors.push(issue(['sources', index, 'id'], 'sources[].id values must be unique when present.'));
+    }
+  }
+
   for (const [index, alias] of aliasRecords.entries()) {
     if (!ALIAS_STATUSES.includes(alias?.status)) {
       errors.push(issue(['aliasRecords', index, 'status'], 'aliasRecords[].status must be current, deprecated, or disputed.'));
@@ -236,6 +248,13 @@ export function getAdversaryProfileValidationIssues(record) {
     }
     if (sourceCount(claim) === 0) {
       errors.push(issue(['attributionClaims', index, 'sources'], 'attributionClaims[] entries require at least one source reference.'));
+    }
+    for (const [sourceIndex, sourceRef] of asArray(claim?.sources).entries()) {
+      if (!present(sourceRef?.sourceId)) {
+        errors.push(issue(['attributionClaims', index, 'sources', sourceIndex, 'sourceId'], 'attributionClaims[].sources[].sourceId is required.'));
+      } else if (!knownSourceIds.has(String(sourceRef.sourceId).trim())) {
+        errors.push(issue(['attributionClaims', index, 'sources', sourceIndex, 'sourceId'], 'attributionClaims[].sources[].sourceId must reference an existing sources[].id.'));
+      }
     }
     if (claim?.importedSourceConfidence !== undefined) {
       if (!Number.isInteger(claim.importedSourceConfidence) || claim.importedSourceConfidence < 0 || claim.importedSourceConfidence > 100) {
@@ -275,6 +294,13 @@ export function getAdversaryProfileValidationIssues(record) {
     }
     if (sourceCount(claim) === 0) {
       errors.push(issue(['relationshipClaims', index, 'sources'], 'relationshipClaims[] entries require at least one source reference.'));
+    }
+    for (const [sourceIndex, sourceRef] of asArray(claim?.sources).entries()) {
+      if (!present(sourceRef?.sourceId)) {
+        errors.push(issue(['relationshipClaims', index, 'sources', sourceIndex, 'sourceId'], 'relationshipClaims[].sources[].sourceId is required.'));
+      } else if (!knownSourceIds.has(String(sourceRef.sourceId).trim())) {
+        errors.push(issue(['relationshipClaims', index, 'sources', sourceIndex, 'sourceId'], 'relationshipClaims[].sources[].sourceId must reference an existing sources[].id.'));
+      }
     }
     const refs = claim?.externalRefs && typeof claim.externalRefs === 'object' ? claim.externalRefs : {};
     for (const key of Object.keys(refs)) {
