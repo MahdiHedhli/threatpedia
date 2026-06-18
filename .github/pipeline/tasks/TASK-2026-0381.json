@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-18T16:52:49.160Z",
-  "updated": "2026-06-18T16:52:49.160Z",
+  "updated": "2026-06-18T17:43:37.043Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "Danger Mouse Bot",
+  "locked_at": "2026-06-18T17:43:37.042Z",
   "input": {
     "topic": "US and European authorities disrupt non-consensual deepfake service",
     "sources": [
@@ -55,6 +55,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #1227"
+    },
+    {
+      "timestamp": "2026-06-18T17:43:37.043Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
     }
   ]
 }
