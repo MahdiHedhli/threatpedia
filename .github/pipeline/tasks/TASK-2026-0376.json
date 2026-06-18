@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-06-18T08:03:47.166Z",
-  "updated": "2026-06-18T15:15:07.567Z",
+  "updated": "2026-06-18T15:25:03.992Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "Danger Mouse Bot",
-  "locked_at": "2026-06-18T15:15:07.566Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "From package to postinstall payload: Inside the Mastra npm supply chain compromise",
     "sources": [
@@ -88,6 +88,16 @@
       "to": "locked",
       "agent": "Danger Mouse Bot",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-18T15:25:03.990Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1217"
     }
-  ]
+  ],
+  "pr_number": 1217,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1217"
 }
