@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import glossaryData from '../data/glossary-index.json';
+import { loadSupplyChainData } from '../lib/supplyChainPages.mjs';
 
 // Sourced at build time from the Astro content collections so the roadmap
 // never drifts from the corpus. Glossary count comes from the static data
@@ -13,6 +14,7 @@ const [incidents, campaigns, actors, zeroDays] = await Promise.all([
   getCollection('threat-actors'),
   getCollection('zero-days'),
 ]);
+const supplyChain = loadSupplyChainData();
 
 const counts = {
   incidents: incidents.length,
@@ -20,6 +22,8 @@ const counts = {
   actors: actors.length,
   zeroDays: zeroDays.length,
   glossaryTerms: Array.isArray(glossaryData) ? glossaryData.length : Object.keys(glossaryData).length,
+  supplyChainIncidents: supplyChain.incidents.length,
+  supplyChainRelationships: supplyChain.relationships.length,
 };
 
 // Format for rendering (commas in large numbers)
@@ -98,10 +102,10 @@ const fmt = (n: number) => n.toLocaleString('en-US');
     <div class="progress-bar-wrap">
       <div class="progress-label">
         <span>Overall Progress</span>
-        <span>Phase 2 &mdash; 48%</span>
+        <span>Phase 2 &mdash; 64%</span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" style="width: 48%"></div>
+        <div class="progress-fill" style="width: 64%"></div>
       </div>
     </div>
 
@@ -207,9 +211,9 @@ const fmt = (n: number) => n.toLocaleString('en-US');
         <div class="item-status done">&#10003;</div>
         <div class="item-body">
           <div class="item-title">Astro Static Site</div>
-          <div class="item-desc">Migrated from vanilla HTML to Astro 5 with content collections, Zod schema validation, and GitHub Pages deployment. Unified layout and component system.</div>
+          <div class="item-desc">Migrated from vanilla HTML to Astro 6 with content collections, Zod schema validation, and GitHub Pages deployment. Unified layout and component system.</div>
           <div class="item-meta">
-            <span class="item-tag">Astro 5</span>
+            <span class="item-tag">Astro 6</span>
             <span class="item-tag">content collections</span>
           </div>
         </div>
@@ -240,12 +244,26 @@ const fmt = (n: number) => n.toLocaleString('en-US');
         <div class="item-status wip">&#9673;</div>
         <div class="item-body">
           <div class="item-title">Automated Discovery Pipeline</div>
-          <div class="item-desc">High-trust feed ingestion (CISA KEV, NVD/CVE, CISA Advisories, NCSC UK, vendor PSIRTs) with a confidence-scored triage layer. Above-threshold events auto-draft articles; below-threshold flagged for human review.</div>
+          <div class="item-desc">High-trust feed ingestion and task creation across CISA KEV, NVD/CVE, CISA advisories, NCSC UK, vendor PSIRTs, and VulnCheck KEV prefills. Source packets and review gates remain the publication boundary; VulnCheck is first-class evidence but not official CISA KEV truth or a standalone drafting authority.</div>
           <div class="item-meta">
             <span class="item-tag">CISA KEV</span>
             <span class="item-tag">NVD</span>
             <span class="item-tag">NCSC UK</span>
-            <span class="item-tag">confidence-scored</span>
+            <span class="item-tag">VulnCheck prefills</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-status done">&#10003;</div>
+        <div class="item-body">
+          <div class="item-title">Supply Chain Graph Surface</div>
+          <div class="item-desc">Static, corpus-driven Supply Chain section with {counts.supplyChainIncidents} curated incidents, {counts.supplyChainRelationships} validated relationships, a persistent graph hero, technique focus, dive-and-bloom, page-to-graph binding, incident propagation timelines, and graph search.</div>
+          <div class="item-meta">
+            <span class="item-tag">Supply Chain</span>
+            <span class="item-tag">graph payload</span>
+            <span class="item-tag">no scoring</span>
+            <span class="item-tag">live</span>
           </div>
         </div>
       </div>
@@ -481,7 +499,7 @@ const fmt = (n: number) => n.toLocaleString('en-US');
     </div>
 
     <div class="last-updated">
-      Last updated: April 16, 2026 &mdash; This roadmap is a living document and subject to change.
+      Last updated: June 18, 2026 &mdash; This roadmap is a living document and subject to change.
     </div>
   </div>
 </Base>
