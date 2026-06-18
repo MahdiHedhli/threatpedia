@@ -1,9 +1,9 @@
 # PR1 Schema/Casing Audit Report - Threatpedia Schema/Intake Foundation
 
-**Branch:** `codex/schema-intake-pr1-audit-20260618`  
+**Branch:** `codex/schema-intake-pr1-audit-20260618`
 **Head SHA audited before this report:** `5cad0a3e454ed7a558c34e5e747b547712901156` (`origin/main`)
 **Repository / checkout:** public `threatpedia` audit clone plus non-sensitive summaries from read-only private control-plane inspection
-**Audited by:** Codex / Kernel K Dev2  
+**Audited by:** Codex / Kernel K Dev2
 **Date:** 2026-06-18
 
 > PR1 is audit-only. This report is the only intended PR1 artifact. No schemas, validators, corpus content, workflows, package files, pipeline behavior, or task data were changed.
