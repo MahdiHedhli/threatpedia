@@ -83,6 +83,38 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     data-graph-selection-value={graphSelectionValue}
     data-supply-chain-explore={isExplore ? 'true' : 'false'}
   >
+    <div class="graph-chrome-actions" aria-label="Graph actions">
+      <button
+        class="graph-icon-button"
+        type="button"
+        data-sc-search-open
+        aria-label="Search graph"
+        title="Search graph"
+      >
+        <span aria-hidden="true">K</span>
+      </button>
+      {isExplore ? (
+        <a
+          class="graph-icon-button"
+          href="/supply-chain/"
+          data-sc-explore-exit
+          aria-label="Exit full-screen explore"
+          title="Exit full-screen explore"
+        >
+          <span aria-hidden="true">x</span>
+        </a>
+      ) : (
+        <a
+          class="graph-icon-button"
+          href="/supply-chain/explore/"
+          data-sc-explore-enter
+          aria-label="Open full-screen explore"
+          title="Open full-screen explore"
+        >
+          <span aria-hidden="true">[]</span>
+        </a>
+      )}
+    </div>
     <div
       class="graph-placeholder sc-graph-root"
       transition:persist="supply-chain-graph-hero"
@@ -96,38 +128,6 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       <div class="graph-status">
         <span data-sc-graph-status>{graphHero.status}</span>
         <span>Actor to Incident</span>
-      </div>
-      <div class="graph-chrome-actions" aria-label="Graph actions">
-        <button
-          class="graph-icon-button"
-          type="button"
-          data-sc-search-open
-          aria-label="Search graph"
-          title="Search graph"
-        >
-          <span aria-hidden="true">K</span>
-        </button>
-        {isExplore ? (
-          <a
-            class="graph-icon-button"
-            href="/supply-chain/"
-            data-sc-explore-exit
-            aria-label="Exit full-screen explore"
-            title="Exit full-screen explore"
-          >
-            <span aria-hidden="true">x</span>
-          </a>
-        ) : (
-          <a
-            class="graph-icon-button"
-            href="/supply-chain/explore/"
-            data-sc-explore-enter
-            aria-label="Open full-screen explore"
-            title="Open full-screen explore"
-          >
-            <span aria-hidden="true">[]</span>
-          </a>
-        )}
       </div>
       <button
         class="graph-focus-reflow"
@@ -664,6 +664,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .graph-hero {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0;
