@@ -14,7 +14,7 @@ generatedBy: dangermouse-bot
 generatedDate: 2026-06-18
 cves: []
 relatedSlugs: []
-tags: [supply-chain, npm, mastra, easy-day-js, postinstall, typosquat, malware]
+tags: [supply-chain, npm, mastra, easy-day-js, postinstall, malware]
 generation:
   provider: anthropic
   model: claude-opus-4-8
