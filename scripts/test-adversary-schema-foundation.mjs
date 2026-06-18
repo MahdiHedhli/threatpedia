@@ -122,6 +122,30 @@ const certifiedWithAliases = {
 };
 assertNoErrors(certifiedWithAliases, 'certified path (b) accepts two independent aliases plus namingRationale');
 
+{
+  const certifiedLegacy = issues({
+    name: 'Legacy Certified',
+    aliases: [],
+    reviewStatus: 'certified',
+    operatingModels: [],
+    sources: sparseDraft.sources,
+  });
+  assert.equal(certifiedLegacy.errors.length, 0, 'empty default operatingModels does not trigger v0.5 certification gate');
+}
+
+{
+  const result = issues({
+    name: 'Operating Model Only',
+    aliases: [],
+    reviewStatus: 'certified',
+    operatingModels: ['ransomware_operation'],
+    sources: sparseDraft.sources,
+  });
+  assert.ok(messages(result.errors).some((message) => /canonicalNameSource/.test(message)), 'non-empty operatingModels triggers certified canonicalNameSource requirement');
+  assert.ok(messages(result.errors).some((message) => /namingRationale/.test(message)), 'non-empty operatingModels triggers certified namingRationale requirement');
+  assert.ok(messages(result.errors).some((message) => /non-vendor anchor/.test(message)), 'non-empty operatingModels triggers certified anchor or sourced-alias requirement');
+}
+
 const lockBitStyle = {
   ...sparseDraft,
   name: 'LockBit',
