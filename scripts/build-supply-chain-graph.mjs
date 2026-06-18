@@ -7,6 +7,7 @@ const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(moduleDir, '..');
 const dataRoot = path.join(repoRoot, 'data');
 const outputPath = path.join(repoRoot, 'site/public/supply-chain-graph.json');
+const searchIndexOutputPath = path.join(repoRoot, 'site/public/supply-chain-search-index.json');
 
 const entityFiles = {
   accounts: 'accounts.json',
@@ -93,6 +94,79 @@ function slugify(value) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function uniqueStrings(values) {
+  const seen = new Set();
+  return stringsFromValue(values)
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .filter((value) => {
+      const key = value.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function stringsFromValue(value, results = []) {
+  if (value === null || value === undefined) return results;
+  if (typeof value === 'string' || typeof value === 'number') {
+    results.push(String(value));
+    return results;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item) => stringsFromValue(item, results));
+    return results;
+  }
+  if (typeof value === 'object') {
+    Object.values(value).forEach((item) => stringsFromValue(item, results));
+  }
+  return results;
+}
+
+function identifiersFromValue(value) {
+  const text = stringsFromValue(value).join('\n');
+  return uniqueStrings([
+    text.match(/\bCVE-\d{4}-\d{4,7}\b/gi) || [],
+    text.match(/\bpkg:[^\s"'<>),;]+/gi) || [],
+  ]);
+}
+
+function decodedPurlAliases(purl) {
+  if (!purl) return [];
+  const aliases = [purl];
+  try {
+    const decoded = decodeURIComponent(purl);
+    if (decoded !== purl) aliases.push(decoded);
+  } catch {
+    // Keep the raw PURL if it is not URI-decodable.
+  }
+  return aliases;
+}
+
+function scopedPackageAliases(name) {
+  if (!name || !String(name).startsWith('@')) return [];
+  const unscoped = String(name).split('/').pop();
+  return unscoped ? [unscoped] : [];
+}
+
+function entityBaseAliases(entity) {
+  return uniqueStrings([
+    entity.id,
+    entity.entity_id,
+    entity.name,
+    entity.label,
+    entity.title,
+    entity.package_name,
+    entity.version,
+    entity.purl,
+    entity.package_url,
+    Array.isArray(entity.aliases) ? entity.aliases : [],
+    decodedPurlAliases(entity.purl || entity.package_url),
+    scopedPackageAliases(entity.name || entity.package_name),
+    identifiersFromValue(entity),
+  ]);
 }
 
 function nodeHref(type, id, entity = {}) {
@@ -358,13 +432,119 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
   };
 }
 
+export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
+  const { incidents, relationships, entities } = corpus;
+  const entriesById = new Map();
+  const incidentById = new Map(incidents.map((incident) => [incident.id, incident]));
+  const entityById = new Map();
+
+  Object.values(entities).forEach((collectionItems) => {
+    if (!Array.isArray(collectionItems)) return;
+    collectionItems.forEach((entity) => entityById.set(entity.id, entity));
+  });
+
+  const connectedAliasesByIncidentId = new Map();
+  const addIncidentAlias = (incidentId, values) => {
+    if (!incidentId) return;
+    const current = connectedAliasesByIncidentId.get(incidentId) || [];
+    current.push(...uniqueStrings(values));
+    connectedAliasesByIncidentId.set(incidentId, current);
+  };
+
+  incidents.forEach((incident) => {
+    const componentAliases = (incident.affected_components || []).flatMap((component) => [
+      component?.name,
+      component?.vendor,
+      component?.package_url,
+      decodedPurlAliases(component?.package_url),
+      scopedPackageAliases(component?.name),
+    ]);
+    addIncidentAlias(incident.id, [
+      incident.id,
+      incident.title,
+      incident.summary,
+      incident.tags || [],
+      incident.affected_ecosystems || [],
+      incident.supply_chain_vectors || [],
+      incident.impact_categories || [],
+      componentAliases,
+      identifiersFromValue(incident),
+    ]);
+  });
+
+  Object.values(entities).forEach((collectionItems) => {
+    if (!Array.isArray(collectionItems)) return;
+    collectionItems.forEach((entity) => {
+      (entity.source_incident_ids || []).forEach((incidentId) => {
+        addIncidentAlias(incidentId, entityBaseAliases(entity));
+      });
+    });
+  });
+
+  relationships.forEach((relationship) => {
+    const sourceIncidentId = relationship.source?.startsWith('incident-') ? relationship.source.slice('incident-'.length) : relationship.source_incident_id;
+    const targetIncidentId = relationship.target?.startsWith('incident-') ? relationship.target.slice('incident-'.length) : relationship.source_incident_id;
+    const sourceEntity = entityById.get(relationship.source);
+    const targetEntity = entityById.get(relationship.target);
+    if (sourceEntity) addIncidentAlias(targetIncidentId, entityBaseAliases(sourceEntity));
+    if (targetEntity) addIncidentAlias(sourceIncidentId, entityBaseAliases(targetEntity));
+  });
+
+  const addEntry = ({ id, type, displayName, aliases }) => {
+    if (!id || !type || !displayName) return;
+    entriesById.set(id, {
+      id,
+      type,
+      displayName,
+      aliases: uniqueStrings(aliases).filter((alias) => alias.toLowerCase() !== String(displayName).toLowerCase()),
+    });
+  };
+
+  incidents.forEach((incident) => {
+    addEntry({
+      id: `incident-${incident.id}`,
+      type: 'incident',
+      displayName: incident.title,
+      aliases: [
+        incident.id,
+        connectedAliasesByIncidentId.get(incident.id) || [],
+        identifiersFromValue(incident),
+      ],
+    });
+  });
+
+  Object.entries(entities).forEach(([collection, collectionItems]) => {
+    const type = entityTypeByCollection[collection];
+    if (!type || !Array.isArray(collectionItems)) return;
+    collectionItems.forEach((entity) => {
+      const sourceIncidentAliases = (entity.source_incident_ids || []).flatMap((incidentId) => {
+        const incident = incidentById.get(incidentId);
+        return [incident?.id, incident?.title, connectedAliasesByIncidentId.get(incidentId) || []];
+      });
+      addEntry({
+        id: entity.id,
+        type,
+        displayName: entity.name || entity.id,
+        aliases: [
+          entityBaseAliases(entity),
+          sourceIncidentAliases,
+        ],
+      });
+    });
+  });
+
+  return Array.from(entriesById.values()).sort((a, b) => a.type.localeCompare(b.type) || a.displayName.localeCompare(b.displayName) || a.id.localeCompare(b.id));
+}
+
 function stableStringify(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
 export function writeSupplyChainGraphData(options = {}) {
   const graph = buildSupplyChainGraphData();
+  const searchIndex = buildSupplyChainSearchIndex();
   const current = existsSync(outputPath) ? readFileSync(outputPath, 'utf8') : '';
+  const currentSearchIndex = existsSync(searchIndexOutputPath) ? readFileSync(searchIndexOutputPath, 'utf8') : '';
   if (current) {
     try {
       const currentGraph = JSON.parse(current);
@@ -374,21 +554,26 @@ export function writeSupplyChainGraphData(options = {}) {
     }
   }
   const serialized = stableStringify(graph);
+  const serializedSearchIndex = stableStringify(searchIndex);
   if (options.check) {
     if (current !== serialized) {
       throw new Error(`${path.relative(repoRoot, outputPath)} is out of date; run node scripts/build-supply-chain-graph.mjs`);
     }
-    return { graph, outputPath, changed: false };
+    if (currentSearchIndex !== serializedSearchIndex) {
+      throw new Error(`${path.relative(repoRoot, searchIndexOutputPath)} is out of date; run node scripts/build-supply-chain-graph.mjs`);
+    }
+    return { graph, searchIndex, outputPath, searchIndexOutputPath, changed: false };
   }
   mkdirSync(path.dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, serialized);
-  return { graph, outputPath, changed: true };
+  writeFileSync(searchIndexOutputPath, serializedSearchIndex);
+  return { graph, searchIndex, outputPath, searchIndexOutputPath, changed: true };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes('--check');
-  const { graph } = writeSupplyChainGraphData({ check });
+  const { graph, searchIndex } = writeSupplyChainGraphData({ check });
   console.log(
-    `Supply Chain graph ${check ? 'checked' : 'written'}: nodes=${graph.nodes.length} edges=${graph.edges.length}`
+    `Supply Chain graph ${check ? 'checked' : 'written'}: nodes=${graph.nodes.length} edges=${graph.edges.length} search=${searchIndex.length}`
   );
 }

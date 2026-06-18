@@ -1,4 +1,5 @@
 const GRAPH_DATA_URL = '/supply-chain-graph.json';
+const SEARCH_INDEX_URL = '/supply-chain-search-index.json';
 const BASE_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique']);
 const REST_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident']);
 const BLOOM_TIERS = new Set(['organization', 'package', 'release', 'repository', 'maintainer', 'account', 'supporting']);
@@ -46,6 +47,79 @@ function dateNumber(value) {
 
 function shortNodeLabel(node) {
   return node?.short_label || node?.shortLabel || node?.name || node?.label || node?.id || 'Unknown';
+}
+
+function searchLabel(value) {
+  return String(value || '')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9@:/._-]+/g, ' ').trim();
+}
+
+function compactSearchType(type) {
+  const labels = {
+    account: 'Account',
+    actor: 'Actor',
+    build_system: 'Build System',
+    campaign: 'Campaign',
+    distribution_channel: 'Distribution',
+    incident: 'Incident',
+    maintainer: 'Maintainer',
+    organization: 'Organization',
+    package: 'Package',
+    release: 'Release',
+    repository: 'Repository',
+  };
+  return labels[type] || searchLabel(type);
+}
+
+function scoreSearchEntry(entry, query) {
+  const q = normalizeSearchText(query);
+  if (!q) return 0;
+  const displayName = normalizeSearchText(entry.displayName);
+  const aliases = Array.isArray(entry.aliases) ? entry.aliases.map(normalizeSearchText) : [];
+  let score = 0;
+  if (displayName === q) score += 220;
+  else if (displayName.startsWith(q)) score += 160;
+  else if (displayName.includes(q)) score += 90;
+  let aliasScore = 0;
+  aliases.forEach((alias) => {
+    if (alias === q) aliasScore = Math.max(aliasScore, 120);
+    else if (alias.startsWith(q)) aliasScore = Math.max(aliasScore, 76);
+    else if (alias.includes(q)) aliasScore = Math.max(aliasScore, 48);
+  });
+  score += aliasScore;
+  const initials = displayName.split(/[\s/_-]+/).map((part) => part[0]).join('');
+  if (initials && initials.startsWith(q)) score += 32;
+  const typeBoost = {
+    package: 24,
+    release: 16,
+    incident: 34,
+    actor: 86,
+    campaign: 48,
+    organization: 12,
+    repository: 10,
+    maintainer: 8,
+  };
+  score += typeBoost[entry.type] || 0;
+  return score;
+}
+
+function graphStateParam(selection) {
+  if (!selection?.type || !selection?.value || selection.type === 'overview') return null;
+  return `${selection.type}:${selection.value}`;
+}
+
+function parseGraphStateParam(value) {
+  if (!value) return null;
+  const separator = value.indexOf(':');
+  if (separator <= 0) return null;
+  const type = value.slice(0, separator);
+  const selectedValue = value.slice(separator + 1);
+  return type && selectedValue ? { type, value: selectedValue } : null;
 }
 
 function recentThreshold(incidentNodes) {
@@ -647,6 +721,12 @@ class SupplyChainGraph {
     this.camera = { cx: 0, cy: 0, z: 1 };
     this.targetCamera = { cx: 0, cy: 0, z: 1 };
     this.selection = null;
+    this.pageSelection = { type: 'overview', value: 'recent' };
+    this.searchIndex = null;
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.searchActiveIndex = 0;
+    this.searchDebounce = null;
     this.focusReflow = false;
     this.keyboardNodeId = null;
     this.drag = null;
@@ -782,6 +862,17 @@ class SupplyChainGraph {
       this.reflowButton.textContent = this.focusReflow ? 'Restore wide shot' : 'Focus reflow';
     });
     this.onDocumentClick = (event) => {
+      const searchTarget = event.target.closest('[data-sc-search-open]');
+      if (searchTarget) {
+        event.preventDefault();
+        this.openSearchPalette();
+        return;
+      }
+      const exploreLink = event.target.closest('[data-sc-explore-enter], [data-sc-explore-exit]');
+      if (exploreLink) {
+        this.syncExploreLink(exploreLink);
+        return;
+      }
       const commandTarget = event.target.closest('[data-graph-command][data-graph-value]');
       if (!commandTarget) return;
       const command = commandTarget.dataset.graphCommand;
@@ -795,6 +886,8 @@ class SupplyChainGraph {
       if (command === 'filter-stage') this.filterStage(value);
     };
     document.addEventListener('click', this.onDocumentClick);
+    this.onDocumentKeydown = (event) => this.handleDocumentKeydown(event);
+    document.addEventListener('keydown', this.onDocumentKeydown, { capture: true });
     this.onPageLoad = () => {
       if (!document.body.contains(this.root)) {
         this.destroy();
@@ -811,10 +904,233 @@ class SupplyChainGraph {
     if (this.destroyed) return;
     this.destroyed = true;
     if (this.onDocumentClick) document.removeEventListener('click', this.onDocumentClick);
+    if (this.onDocumentKeydown) document.removeEventListener('keydown', this.onDocumentKeydown, { capture: true });
     if (this.onPageLoad) document.removeEventListener('astro:page-load', this.onPageLoad);
     this.resizeObserver?.disconnect();
     this.bloomWorker?.terminate();
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+  }
+
+  isExploreRoute() {
+    return window.location.pathname === '/supply-chain/explore' || window.location.pathname === '/supply-chain/explore/';
+  }
+
+  currentGraphStateParam() {
+    const fromUrl = new URLSearchParams(window.location.search).get('graph');
+    return fromUrl || graphStateParam(this.pageSelection);
+  }
+
+  syncExploreLink(link) {
+    const target = new URL(link.getAttribute('href') || link.href, window.location.href);
+    const graph = this.currentGraphStateParam();
+    if (graph) target.searchParams.set('graph', graph);
+    else target.searchParams.delete('graph');
+    link.href = `${target.pathname}${target.search}${target.hash}`;
+  }
+
+  updateGraphUrl() {
+    if (this.suppressUrlSync) return;
+    const url = new URL(window.location.href);
+    const state = graphStateParam(this.pageSelection);
+    if (state) url.searchParams.set('graph', state);
+    else url.searchParams.delete('graph');
+    const next = `${url.pathname}${url.search}${url.hash}`;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (next !== current) {
+      window.history.replaceState({ ...(window.history.state || {}), supplyChainGraph: state }, '', next);
+    }
+  }
+
+  exitExploreRoute() {
+    const url = new URL('/supply-chain/', window.location.href);
+    const state = this.currentGraphStateParam();
+    if (state) url.searchParams.set('graph', state);
+    window.location.href = `${url.pathname}${url.search}`;
+  }
+
+  handleDocumentKeydown(event) {
+    const target = event.target instanceof Element ? event.target : null;
+    const interactiveTarget = target?.closest('input, textarea, select, [contenteditable="true"]');
+    const paletteOpen = Boolean(this.searchPalette?.isConnected);
+
+    if (paletteOpen) {
+      this.handleSearchKeydown(event);
+      return;
+    }
+
+    if (event.key === 'Escape' && this.isExploreRoute()) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      this.exitExploreRoute();
+      return;
+    }
+
+    const opensWithSlash = event.key === '/' && !interactiveTarget;
+    const opensWithCommand = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);
+    if (!opensWithSlash && !opensWithCommand) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.openSearchPalette();
+  }
+
+  async loadSearchIndex() {
+    if (this.searchIndex) return this.searchIndex;
+    const response = await fetch(SEARCH_INDEX_URL, { credentials: 'same-origin' });
+    if (!response.ok) throw new Error(`Search index fetch failed: ${response.status}`);
+    this.searchIndex = await response.json();
+    return this.searchIndex;
+  }
+
+  openSearchPalette() {
+    if (this.searchPalette?.isConnected) {
+      this.searchInput?.focus();
+      this.searchInput?.select();
+      return;
+    }
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sc-search-backdrop';
+    backdrop.setAttribute('role', 'presentation');
+    backdrop.innerHTML = `
+      <div class="sc-search-palette" role="dialog" aria-modal="true" aria-label="Search Supply Chain graph">
+        <input class="sc-search-input" type="text" placeholder="Jump to entity..." aria-label="Search Supply Chain graph" autocomplete="off" />
+        <div class="sc-search-results" role="listbox" aria-label="Supply Chain graph search results"></div>
+      </div>
+    `;
+    document.body.appendChild(backdrop);
+    this.searchPalette = backdrop;
+    this.searchInput = backdrop.querySelector('.sc-search-input');
+    this.searchResultsEl = backdrop.querySelector('.sc-search-results');
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.searchActiveIndex = 0;
+    backdrop.addEventListener('mousedown', (event) => {
+      if (event.target === backdrop) this.closeSearchPalette();
+    });
+    this.searchInput.addEventListener('input', () => {
+      clearTimeout(this.searchDebounce);
+      this.searchQuery = this.searchInput.value;
+      this.searchDebounce = setTimeout(() => this.updateSearchResults(), 90);
+    });
+    this.renderSearchResults();
+    this.loadSearchIndex()
+      .then(() => this.updateSearchResults())
+      .catch(() => {
+        this.searchResults = [];
+        this.renderSearchResults('Search index unavailable.');
+      });
+    requestAnimationFrame(() => this.searchInput?.focus());
+  }
+
+  closeSearchPalette() {
+    clearTimeout(this.searchDebounce);
+    this.searchPalette?.remove();
+    this.searchPalette = null;
+    this.searchInput = null;
+    this.searchResultsEl = null;
+    this.root.focus({ preventScroll: true });
+  }
+
+  handleSearchKeydown(event) {
+    if (!this.searchPalette?.isConnected) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      this.closeSearchPalette();
+      return;
+    }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const direction = event.key === 'ArrowDown' ? 1 : -1;
+      this.searchActiveIndex = (this.searchActiveIndex + direction + Math.max(1, this.searchResults.length)) % Math.max(1, this.searchResults.length);
+      this.renderSearchResults();
+      return;
+    }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const result = this.searchResults[this.searchActiveIndex];
+      if (result) this.selectSearchResult(result);
+    }
+  }
+
+  updateSearchResults() {
+    const query = this.searchQuery.trim();
+    if (!query || !Array.isArray(this.searchIndex)) {
+      this.searchResults = [];
+      this.searchActiveIndex = 0;
+      this.renderSearchResults();
+      return;
+    }
+    this.searchResults = this.searchIndex
+      .map((entry) => ({ entry, score: scoreSearchEntry(entry, query) }))
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score || a.entry.type.localeCompare(b.entry.type) || a.entry.displayName.localeCompare(b.entry.displayName))
+      .slice(0, 10)
+      .map((item) => item.entry);
+    this.searchActiveIndex = Math.min(this.searchActiveIndex, Math.max(0, this.searchResults.length - 1));
+    this.renderSearchResults();
+  }
+
+  searchContextFor(entry) {
+    const node = this.layout.nodeById.get(entry.id) || this.layout.allNodes.find((item) => item.id === entry.id || item.entity_id === entry.id);
+    if (!node) return `${compactSearchType(entry.type)} entity`;
+    if (node.type === 'incident') return node.summary || `${searchLabel(node.attack_stage)} incident`;
+    const incidentIds = Array.isArray(node.source_incident_ids) ? node.source_incident_ids : [];
+    if (incidentIds.length > 0) {
+      const titles = incidentIds
+        .map((id) => this.layout.nodeById.get(`incident-${id}`)?.label || this.payload.nodes.find((item) => item.id === `incident-${id}`)?.label)
+        .filter(Boolean)
+        .slice(0, 2);
+      if (titles.length > 0) return `Connected to ${titles.join(', ')}`;
+    }
+    if (node.purl) return node.purl;
+    return `${compactSearchType(entry.type)} node`;
+  }
+
+  renderSearchResults(message = '') {
+    if (!this.searchResultsEl) return;
+    if (message) {
+      this.searchResultsEl.innerHTML = `<div class="sc-search-empty">${message}</div>`;
+      return;
+    }
+    if (!this.searchQuery.trim()) {
+      this.searchResultsEl.innerHTML = '<div class="sc-search-empty">Type an entity, package, PURL, CVE, actor, or incident.</div>';
+      return;
+    }
+    if (this.searchResults.length === 0) {
+      this.searchResultsEl.innerHTML = '<div class="sc-search-empty">No graph matches.</div>';
+      return;
+    }
+    this.searchResultsEl.replaceChildren(
+      ...this.searchResults.map((entry, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'sc-search-result';
+        button.setAttribute('role', 'option');
+        button.setAttribute('aria-selected', String(index === this.searchActiveIndex));
+        button.innerHTML = `
+          <span class="sc-search-title"></span>
+          <span class="sc-search-type"></span>
+          <span class="sc-search-context"></span>
+        `;
+        button.querySelector('.sc-search-title').textContent = entry.displayName;
+        button.querySelector('.sc-search-type').textContent = compactSearchType(entry.type);
+        button.querySelector('.sc-search-context').textContent = this.searchContextFor(entry);
+        button.addEventListener('click', () => this.selectSearchResult(entry));
+        return button;
+      })
+    );
+  }
+
+  selectSearchResult(entry) {
+    this.closeSearchPalette();
+    if (!this.selectByEntityId(entry.type, entry.id)) {
+      this.selectEntityContext(entry.type, entry.id);
+    }
+    this.root.focus({ preventScroll: true });
   }
 
   resize() {
@@ -938,17 +1254,42 @@ class SupplyChainGraph {
   }
 
   selectFromRoute() {
-    const hero = document.querySelector('[data-graph-selection-type][data-graph-selection-value]');
-    const type = hero?.dataset.graphSelectionType;
-    const value = hero?.dataset.graphSelectionValue;
-    if (type === 'incident') {
-      if (!this.selectByEntityId('incident', value)) this.showOverview();
-    } else if (type && type !== 'overview') {
-      const normalizedType = type.replace(/\s+/g, '_');
-      if (!this.selectByEntityId(normalizedType, value)) this.selectEntityContext(normalizedType, value);
-    } else {
-      this.showOverview();
+    this.suppressUrlSync = true;
+    try {
+      const urlState = parseGraphStateParam(new URLSearchParams(window.location.search).get('graph'));
+      if (urlState && this.applySelectionState(urlState)) return;
+
+      const hero = document.querySelector('[data-graph-selection-type][data-graph-selection-value]');
+      const type = hero?.dataset.graphSelectionType;
+      const value = hero?.dataset.graphSelectionValue;
+      if (type === 'preserve') {
+        if (!this.selection) this.showOverview();
+      } else if (type === 'incident') {
+        if (!this.selectByEntityId('incident', value)) this.showOverview();
+      } else if (type && type !== 'overview') {
+        const normalizedType = type.replace(/\s+/g, '_');
+        if (!this.selectByEntityId(normalizedType, value)) this.selectEntityContext(normalizedType, value);
+      } else {
+        this.showOverview();
+      }
+    } finally {
+      this.suppressUrlSync = false;
     }
+  }
+
+  applySelectionState(state) {
+    if (!state?.type || !state?.value) return false;
+    if (state.type === 'overview') {
+      this.showOverview();
+      return true;
+    }
+    if (state.type === 'stage') {
+      this.filterStage(state.value);
+      return true;
+    }
+    if (this.selectByEntityId(state.type, state.value)) return true;
+    this.selectEntityContext(state.type, state.value);
+    return Boolean(this.selection && this.selection.type === state.type && this.selection.value === state.value);
   }
 
   selectByEntityId(type, value) {
@@ -1059,6 +1400,10 @@ class SupplyChainGraph {
     if (!forwardKeys.has(event.key) && !backwardKeys.has(event.key) && event.key !== 'Enter' && event.key !== 'Escape') return;
     event.preventDefault();
     if (event.key === 'Escape') {
+      if (this.isExploreRoute()) {
+        this.exitExploreRoute();
+        return;
+      }
       this.showOverview();
       return;
     }
@@ -1253,6 +1598,8 @@ class SupplyChainGraph {
       if (isActive) target.setAttribute('aria-current', 'true');
       else target.removeAttribute('aria-current');
     });
+    document.querySelectorAll('[data-sc-explore-enter], [data-sc-explore-exit]').forEach((link) => this.syncExploreLink(link));
+    this.updateGraphUrl();
   }
 
   colorForNode(node) {
