@@ -488,7 +488,7 @@ All 63 public threat-actor files would fail as written. Reason categories:
 2. Confirm that `site/src/content/threat-actors/` remains the public collection/path for PR2.
 3. Resolve the private spec conflict: older standards/manifest prose says `TP-APT-NNNN`, while inspected private entity-ID guidance and public live schema currently use slug-only threat actors.
 4. Confirm whether `aptId` is greenfield additive unless a private registry is supplied before PR2.
-5. Confirm how `externalIds` MITRE/STIX fields should map to the private MITRE ingestion model's `record_id=mitre-{attack_id}`, `raw_data.attack_id`, and `raw_data.stix_id`.
+5. Confirm how `externalIds` MITRE/STIX fields should map to the private MITRE ingestion model's `record_id=f"mitre-{attack_id}"`, `raw_data.attack_id`, and `raw_data.stix_id`.
 6. Approve warning-mode compatibility for all existing legacy threat-actor records until PR3 migration dry-run and explicit rewrite approval.
 7. Confirm source schema mapping: v0.5 `source_rating` language maps to live `sources[].reliability`; no PR2 source-field rename.
 8. Confirm `attributionConfidence` Phase-1 warning + migration disposition and ensure claim-level A-F confidence remains separate.
