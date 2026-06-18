@@ -338,7 +338,7 @@ already exists and should be made explicit rather than blurred.
 
 ---
 
-## 6. Proposed Reconciliation Recommendations - Not Authorization For PR2
+## 6. Proposed Reconciliation Recommendations - Not Authoritative For PR2
 
 These are recommendations only. They do not authorize schema, validator, corpus,
 migration, pipeline, or task-data changes.
@@ -395,7 +395,7 @@ hard-remove or confuse this field with claim-level A-F confidence.
 **Recommendation:** No active private TP-APT registry was found. Default to
 `aptId` as greenfield additive unless Kernel K supplies a registry before PR2.
 `externalIds` is also additive for the public corpus, but MITRE/STIX subfields
-should align with the private MITRE ingestion model's `record_id=mitre-{attack_id}`,
+should align with the private MITRE ingestion model's `record_id=f"mitre-{attack_id}"`,
 `raw_data.attack_id`, and `raw_data.stix_id` conventions.
 
 ### Required-Field Enforcement Mode For Existing Records
