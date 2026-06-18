@@ -4,13 +4,14 @@ import { readFileSync } from 'node:fs';
 import {
   SUPPLY_CHAIN_FEATURED_INCIDENT_IDS,
   getSupplyChainEntityPage,
+  getSupplyChainExploreModel,
   getSupplyChainIncidentPage,
   getSupplyChainIndexModel,
   getSupplyChainRoutes,
   loadSupplyChainData,
   validateSupplyChainPageData,
 } from '../site/src/lib/supplyChainPages.mjs';
-import { buildSupplyChainGraphData } from './build-supply-chain-graph.mjs';
+import { buildSupplyChainGraphData, buildSupplyChainSearchIndex } from './build-supply-chain-graph.mjs';
 
 const data = loadSupplyChainData();
 const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
@@ -20,6 +21,9 @@ const supplyChainEntityListSource = readFileSync(new URL('../site/src/components
 const supplyChainGraphSource = readFileSync(new URL('../site/public/js/supply-chain-graph-core.js', import.meta.url), 'utf-8');
 const supplyChainGraphPayload = JSON.parse(
   readFileSync(new URL('../site/public/supply-chain-graph.json', import.meta.url), 'utf-8')
+);
+const supplyChainSearchIndexPayload = JSON.parse(
+  readFileSync(new URL('../site/public/supply-chain-search-index.json', import.meta.url), 'utf-8')
 );
 
 function routeUrl(route) {
@@ -45,6 +49,7 @@ assert.equal(disabledRoutes.length, 0, 'feature flag disabled should generate no
 const routes = getSupplyChainRoutes({ enabled: true, data });
 const routeUrls = new Set(routes.map(routeUrl));
 assert.ok(routeUrls.has('/supply-chain/'), 'index route should be generated');
+assert.ok(routeUrls.has('/supply-chain/explore/'), 'explore route should be generated');
 assert.ok(routeUrls.has('/supply-chain/incidents/SC-2021-CODECOV-BASH-UPLOADER/'), 'incident route should be generated');
 assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-event-stream/'), 'package route should be generated');
 assert.ok(routeUrls.has('/supply-chain/packages/pkg-npm-ctrl-tinycolor/'), 'Shai-Hulud package route should be generated');
@@ -55,6 +60,16 @@ assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maint
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
+);
+assert.equal(getSupplyChainExploreModel(data).kind, 'explore', 'explore model should use a dedicated kind');
+assert.ok(
+  supplyChainRouteSource.includes("page.kind === 'explore' ? 'preserve'") &&
+    supplyChainRouteSource.includes('data-supply-chain-explore={isExplore ?') &&
+    supplyChainRouteSource.includes('data-sc-explore-enter') &&
+    supplyChainRouteSource.includes('data-sc-explore-exit') &&
+    supplyChainRouteSource.includes('class="sc-explore-rail"') &&
+    supplyChainRouteSource.includes('class="graph-icon-button"'),
+  'route should expose full-screen explore controls on the persisted graph island'
 );
 assert.ok(
   supplyChainRouteSource.includes('data-graph-target-type="stage"') &&
@@ -107,6 +122,18 @@ assert.ok(
     supplyChainGraphSource.includes('restVisibleIds()') &&
     supplyChainGraphSource.includes('visibleBaseNodes(options = {})'),
   'graph runtime should cull the resting view to actors plus recent-window incidents and campaigns'
+);
+assert.ok(
+  supplyChainGraphSource.includes("const SEARCH_INDEX_URL = '/supply-chain-search-index.json'") &&
+    supplyChainGraphSource.includes('openSearchPalette()') &&
+    supplyChainGraphSource.includes('scoreSearchEntry(entry, query)') &&
+    supplyChainGraphSource.includes("event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)") &&
+    supplyChainGraphSource.includes("event.key === '/'") &&
+    supplyChainGraphSource.includes('selectSearchResult(entry)') &&
+    supplyChainGraphSource.includes('parseGraphStateParam') &&
+    supplyChainGraphSource.includes('updateGraphUrl()') &&
+    supplyChainGraphSource.includes('exitExploreRoute()'),
+  'graph runtime should provide jump-to search, keyboard shortcuts, URL selection sync, and Esc explore exit'
 );
 assert.ok(
   supplyChainGraphSource.includes('function shortNodeLabel') &&
@@ -240,7 +267,7 @@ assert.ok(
 );
 
 const expectedRouteCount =
-  1 +
+  2 +
   data.incidents.length +
   data.entities.packages.length +
   data.entities.repositories.length +
@@ -456,6 +483,41 @@ assert.ok(
       (edge) => edge.type === 'SEEDED_BY' && edge.propagation_tier === 'temporal' && edge.evidence_refs.length > 0
     ),
   'graph payload should preserve evidence-tiered SEEDED_BY propagation edges for G4'
+);
+const builtSearchIndex = buildSupplyChainSearchIndex(data);
+assert.deepEqual(builtSearchIndex, supplyChainSearchIndexPayload, 'checked search index payload should match the builder');
+assert.ok(
+  builtSearchIndex.every((entry) => entry.id && entry.type && entry.displayName && Array.isArray(entry.aliases)),
+  'search index entries should use the flat entity shape'
+);
+assert.ok(
+  builtSearchIndex.some((entry) => entry.id === 'incident-SC-2025-NPM-SHAI-HULUD' && entry.type === 'incident'),
+  'search index should include incidents'
+);
+assert.ok(
+  builtSearchIndex.some(
+    (entry) => entry.id === 'actor-shai-hulud-operator' && entry.type === 'actor' && entry.aliases.includes('@ctrl/tinycolor')
+  ),
+  'search index should let a package query recall the connected actor'
+);
+assert.ok(
+  builtSearchIndex.some(
+    (entry) =>
+      entry.id === 'pkg-npm-ctrl-tinycolor' &&
+      entry.type === 'package' &&
+      entry.aliases.includes('tinycolor') &&
+      entry.aliases.includes('pkg:npm/@ctrl/tinycolor')
+  ),
+  'search index should include scoped/unscoped package and decoded PURL aliases'
+);
+assert.ok(
+  builtSearchIndex.some(
+    (entry) =>
+      entry.id === 'release-npm-ctrl-tinycolor-4-1-1' &&
+      entry.type === 'release' &&
+      entry.aliases.includes('pkg:npm/@ctrl/tinycolor@4.1.1')
+  ),
+  'search index should include searchable release PURLs'
 );
 assert.ok(
   supplyChainGraphSource.includes("getContext('webgl2'") &&

@@ -858,6 +858,36 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
   };
 }
 
+export function getSupplyChainExploreModel(data = loadSupplyChainData()) {
+  const indexModel = getSupplyChainIndexModel(data);
+  const description =
+    'Full-screen explorer for the Threatpedia Supply Chain graph, with search, docked panels, and persistent graph selection.';
+  return {
+    ...indexModel,
+    kind: 'explore',
+    title: 'Supply Chain Explore',
+    graphHero: {
+      ...indexModel.graphHero,
+      eyebrow: 'Corpus Explorer',
+      status: 'Full-screen graph',
+    },
+    seo: {
+      title: 'Supply Chain Explore',
+      description,
+      canonicalPath: '/supply-chain/explore/',
+      ogTitle: 'Threatpedia Supply Chain Explore',
+      ogDescription: description,
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Threatpedia Supply Chain Explore',
+        description,
+        url: 'https://threatpedia.wiki/supply-chain/explore/',
+      },
+    },
+  };
+}
+
 export function getSupplyChainIncidentPage(id, data = loadSupplyChainData()) {
   const incident = data.incidents.find((item) => item.id === id);
   if (!incident) return null;
@@ -960,7 +990,10 @@ export function getSupplyChainRoutes(options = {}) {
     throw new Error(`Supply Chain page data is invalid:\n${errors.join('\n')}`);
   }
 
-  const routes = [{ slug: undefined, page: getSupplyChainIndexModel(data) }];
+  const routes = [
+    { slug: undefined, page: getSupplyChainIndexModel(data) },
+    { slug: 'explore', page: getSupplyChainExploreModel(data) },
+  ];
   data.incidents.forEach((incident) => {
     routes.push({ slug: `incidents/${incident.id}`, page: getSupplyChainIncidentPage(incident.id, data) });
   });
@@ -978,6 +1011,7 @@ export function getSupplyChainRoutes(options = {}) {
 export function pageFromSlug(slug, data = loadSupplyChainData()) {
   if (!slug) return getSupplyChainIndexModel(data);
   const [segment, id] = slug.split('/');
+  if (segment === 'explore') return getSupplyChainExploreModel(data);
   if (segment === 'incidents') return getSupplyChainIncidentPage(id, data);
   const entityType = routeEntityBySegment[segment];
   if (!entityType) return null;
