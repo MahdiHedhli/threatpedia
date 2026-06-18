@@ -32,7 +32,7 @@
 
 | Repo / checkout | Branch | Commit SHA | Notes |
 |---|---|---|---|
-| `threatpedia` public | `origin/main` via `codex/schema-intake-pr1-audit` | `c3d52fc71e4ac7a1dbc4343ac26722c2f9819778` | Current public source of truth for Astro schema, corpus, task schema, validators, and docs. |
+| `threatpedia` public | `origin/main` via `codex/schema-intake-pr1-audit` | `c3d52fc71e4ac7a1dbc4343ac26722c2f9819778` | Pinned public audit snapshot for Astro schema, corpus, task schema, validators, and docs; the PR branch was later rebased onto newer `main` commits without broadening PR1 scope. |
 | private control-plane summaries | omitted from public report | omitted from public report | Control-plane/spec/ADR inspection only. No private branches, commits, checkout paths, or file paths are published here. |
 
 ---
