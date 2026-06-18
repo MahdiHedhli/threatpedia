@@ -57,6 +57,14 @@
       "note": "Manual submission from Issue #1219"
     },
     {
+      "timestamp": "2026-06-18T17:28:53.867Z",
+      "action": "dispatched",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatched as Issue #1229"
+    },
+    {
       "timestamp": "2026-06-18T17:43:45.391Z",
       "from": "pending",
       "to": "locked",
