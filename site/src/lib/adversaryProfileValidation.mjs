@@ -310,7 +310,7 @@ export function classifyAnchorCollision(left, right) {
     (key) => present(leftExternalIds[key]) && present(rightExternalIds[key]) && leftExternalIds[key] !== rightExternalIds[key],
   );
 
-  if (sharedHardAnchors.length > 0 && conflictingHardAnchors.length > 0) {
+  if (conflictingHardAnchors.length > 0) {
     return {
       classification: 'hard_anchor_conflict',
       action: 'ep_disambiguation',

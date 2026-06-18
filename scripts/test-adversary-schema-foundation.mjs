@@ -148,6 +148,17 @@ assertNoErrors(lockBitStyle, 'LockBit-style criminalOperation with operatingMode
 
 {
   const result = classifyAnchorCollision(
+    { externalIds: { mitreAttackGroup: 'G0045', vendorRefs: [] } },
+    { externalIds: { mitreAttackGroup: 'G0050', vendorRefs: [] } },
+  );
+  assert.equal(result.classification, 'hard_anchor_conflict');
+  assert.equal(result.action, 'ep_disambiguation');
+  assert.deepEqual(result.conflicts, ['mitreAttackGroup']);
+  assert.equal(result.autoMerge, false);
+}
+
+{
+  const result = classifyAnchorCollision(
     { externalIds: { malpediaActor: 'apt10', vendorRefs: [] } },
     { externalIds: { malpediaActor: 'apt10', vendorRefs: [] } },
   );
