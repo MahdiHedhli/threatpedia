@@ -56,8 +56,10 @@ RELATIONSHIP_TYPES = {
 }
 GENERIC_VENDOR_NAMES = {
     "malicious publisher",
+    "multiple npm maintainers",
     "multiple open source maintainers",
     "multiple organizations",
+    "multiple repository owners",
     "open source maintainer",
     "open source maintainers",
     "riaevangelist",

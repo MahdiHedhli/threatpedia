@@ -13,6 +13,18 @@
   },
   {
     "aliases": [
+      "Docker Hub"
+    ],
+    "channel_type": "package_registry",
+    "ecosystem": "docker",
+    "id": "channel-docker-package-registry-docker-hub",
+    "name": "Docker Hub",
+    "source_incident_ids": [
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
+    "aliases": [
       "GitHub Actions Marketplace"
     ],
     "channel_type": "ci_cd_marketplace",
@@ -20,7 +32,8 @@
     "id": "channel-github-actions-ci-cd-marketplace-github-actions-marketplace",
     "name": "GitHub Actions Marketplace",
     "source_incident_ids": [
-      "SC-2025-TJ-ACTIONS-CHANGED-FILES"
+      "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "SC-2026-TRIVY-CI"
     ]
   },
   {
@@ -32,7 +45,21 @@
     "id": "channel-github-actions-ci-cd-workflow-github-actions-workflow",
     "name": "GitHub Actions workflow",
     "source_incident_ids": [
-      "SC-2025-NPM-SHAI-HULUD"
+      "SC-2025-NPM-SHAI-HULUD",
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
+      "GitHub repositories"
+    ],
+    "channel_type": "source_repository",
+    "ecosystem": "github",
+    "id": "channel-github-source-repository-github-repositories",
+    "name": "GitHub repositories",
+    "source_incident_ids": [
+      "SC-2025-SHAI-HULUD-2",
+      "SC-2026-MEGALODON"
     ]
   },
   {
@@ -57,6 +84,18 @@
     "name": "Go Module Proxy",
     "source_incident_ids": [
       "SC-2025-GO-BOLTDB-TYPOSQUAT"
+    ]
+  },
+  {
+    "aliases": [
+      "Jenkins Marketplace"
+    ],
+    "channel_type": "ci_cd_marketplace",
+    "ecosystem": "jenkins",
+    "id": "channel-jenkins-ci-cd-marketplace-jenkins-marketplace",
+    "name": "Jenkins Marketplace",
+    "source_incident_ids": [
+      "SC-2026-CHECKMARX-JENKINS"
     ]
   },
   {
@@ -101,7 +140,22 @@
       "SC-2022-NODE-IPC",
       "SC-2023-LEDGER-CONNECT-KIT",
       "SC-2024-LOTTIE-PLAYER",
-      "SC-2025-NPM-SHAI-HULUD"
+      "SC-2025-NPM-SHAI-HULUD",
+      "SC-2025-SHAI-HULUD-2",
+      "SC-2026-AXIOS",
+      "SC-2026-MINI-SHAI-HULUD"
+    ]
+  },
+  {
+    "aliases": [
+      "Open VSX Registry"
+    ],
+    "channel_type": "package_registry",
+    "ecosystem": "openvsx",
+    "id": "channel-openvsx-package-registry-open-vsx-registry",
+    "name": "Open VSX Registry",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
     ]
   },
   {
@@ -116,7 +170,9 @@
       "SC-2021-DEPENDENCY-CONFUSION",
       "SC-2022-PYPI-CTX",
       "SC-2022-PYTORCH-NIGHTLY",
-      "SC-2024-ULTRALYTICS-PYPI"
+      "SC-2024-ULTRALYTICS-PYPI",
+      "SC-2026-LITELLM",
+      "SC-2026-MINI-SHAI-HULUD"
     ]
   },
   {
@@ -170,6 +226,18 @@
     "source_incident_ids": [
       "SC-2017-NOTPETYA-MEDOC",
       "SC-2021-KASEYA-VSA"
+    ]
+  },
+  {
+    "aliases": [
+      "Visual Studio Marketplace"
+    ],
+    "channel_type": "package_registry",
+    "ecosystem": "vscode",
+    "id": "channel-vscode-package-registry-visual-studio-marketplace",
+    "name": "Visual Studio Marketplace",
+    "source_incident_ids": [
+      "SC-2026-NX-CONSOLE"
     ]
   },
   {

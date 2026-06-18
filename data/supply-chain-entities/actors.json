@@ -70,6 +70,27 @@
     ]
   },
   {
+    "actor_type": "public",
+    "aliases": [
+      "Team PCP",
+      "TeamPCP",
+      "UNC6780"
+    ],
+    "attribution_confidence": "likely",
+    "href": "/threat-actors/teampcp/",
+    "id": "actor-teampcp",
+    "name": "TeamPCP",
+    "source_incident_ids": [
+      "SC-2025-SHAI-HULUD-2",
+      "SC-2026-AXIOS",
+      "SC-2026-CHECKMARX-JENKINS",
+      "SC-2026-LITELLM",
+      "SC-2026-MEGALODON",
+      "SC-2026-MINI-SHAI-HULUD",
+      "SC-2026-TRIVY-CI"
+    ]
+  },
+  {
     "actor_type": "provisional",
     "aliases": [
       "Jia Tan operator cluster",
@@ -81,6 +102,19 @@
     "notes": "Provisional supply-chain operator node for the coherent Jia Tan maintainer identity and XZ Utils backdoor activity; no nation-state label is asserted.",
     "source_incident_ids": [
       "SC-2024-XZ-UTILS"
+    ]
+  },
+  {
+    "actor_type": "public",
+    "aliases": [
+      "North Korea-nexus actor",
+      "UNC1069"
+    ],
+    "attribution_confidence": "likely",
+    "id": "actor-unc1069",
+    "name": "UNC1069",
+    "source_incident_ids": [
+      "SC-2026-AXIOS"
     ]
   }
 ]

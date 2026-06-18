@@ -353,111 +353,111 @@
       "credential_theft",
       "crypto_theft"
     ],
-  "references": [
-    {
-      "id": "ref-github-event-stream-116",
-      "title": "I don't have time to maintain this package",
-      "publisher": "GitHub",
-      "url": "https://github.com/dominictarr/event-stream/issues/116",
-      "published_at": "2018-11-26"
-    }
-  ],
-  "executive_summary": [
-    {
-      "text": "The event-stream incident turned a maintainer-transfer path into a malicious dependency insertion path for an npm package with downstream cryptocurrency-wallet exposure.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    },
-    {
-      "text": "Threatpedia models this case as package publishing through the npm ecosystem, with event-stream and flatmap-stream preserved as separate package entities.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "timeline": [
-    {
-      "date": "2018-09-09/2018-11-26",
-      "title": "Dependency path changes before disclosure",
-      "text": "The corpus records first observed activity before public disclosure, reflecting the period in which the malicious dependency path existed before community triage.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    },
-    {
-      "date": "2018-11-26",
-      "title": "Public issue documents the compromise",
-      "text": "The public GitHub issue became the primary reference for the package-maintenance transfer and malicious dependency discussion.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "attack_chain": [
-    {
-      "stage": "Maintainer transfer",
-      "text": "The incident began with a maintainer-transfer path that changed who could influence the package dependency tree.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    },
-    {
-      "stage": "Malicious dependency insertion",
-      "text": "The malicious package flatmap-stream entered the event-stream dependency path and became the payload-bearing component in the corpus model.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    },
-    {
-      "stage": "Downstream targeting",
-      "text": "The corpus records credential and cryptocurrency-theft impact categories because the dependency path was tied to downstream wallet exposure.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "affected_ecosystem": [
-    {
-      "text": "The affected ecosystem is npm, with event-stream as the trusted upstream package and flatmap-stream as the malicious dependency component.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "defensive_lessons": [
-    {
-      "text": "High-impact package transfers should be treated as supply-chain events because maintainer authority can change dependency risk without changing the package name.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    },
-    {
-      "text": "Dependency review should include newly introduced transitive packages, especially when a previously trusted package changes maintainership or dependency structure.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "detection_notes": [
-    {
-      "text": "Useful detection pivots include the event-stream and flatmap-stream package names, npm registry publication paths, and dependency tree changes around the disclosure window.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "open_questions": [
-    {
-      "text": "The corpus preserves the package and maintainer entities but does not expand this record into actor attribution.",
-      "reference_ids": [
-        "ref-github-event-stream-116"
-      ]
-    }
-  ],
-  "tags": [
-    "npm",
-    "dependency"
+    "references": [
+      {
+        "id": "ref-github-event-stream-116",
+        "title": "I don't have time to maintain this package",
+        "publisher": "GitHub",
+        "url": "https://github.com/dominictarr/event-stream/issues/116",
+        "published_at": "2018-11-26"
+      }
+    ],
+    "executive_summary": [
+      {
+        "text": "The event-stream incident turned a maintainer-transfer path into a malicious dependency insertion path for an npm package with downstream cryptocurrency-wallet exposure.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      },
+      {
+        "text": "Threatpedia models this case as package publishing through the npm ecosystem, with event-stream and flatmap-stream preserved as separate package entities.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2018-09-09/2018-11-26",
+        "title": "Dependency path changes before disclosure",
+        "text": "The corpus records first observed activity before public disclosure, reflecting the period in which the malicious dependency path existed before community triage.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      },
+      {
+        "date": "2018-11-26",
+        "title": "Public issue documents the compromise",
+        "text": "The public GitHub issue became the primary reference for the package-maintenance transfer and malicious dependency discussion.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "attack_chain": [
+      {
+        "stage": "Maintainer transfer",
+        "text": "The incident began with a maintainer-transfer path that changed who could influence the package dependency tree.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      },
+      {
+        "stage": "Malicious dependency insertion",
+        "text": "The malicious package flatmap-stream entered the event-stream dependency path and became the payload-bearing component in the corpus model.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      },
+      {
+        "stage": "Downstream targeting",
+        "text": "The corpus records credential and cryptocurrency-theft impact categories because the dependency path was tied to downstream wallet exposure.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "affected_ecosystem": [
+      {
+        "text": "The affected ecosystem is npm, with event-stream as the trusted upstream package and flatmap-stream as the malicious dependency component.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "defensive_lessons": [
+      {
+        "text": "High-impact package transfers should be treated as supply-chain events because maintainer authority can change dependency risk without changing the package name.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      },
+      {
+        "text": "Dependency review should include newly introduced transitive packages, especially when a previously trusted package changes maintainership or dependency structure.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "detection_notes": [
+      {
+        "text": "Useful detection pivots include the event-stream and flatmap-stream package names, npm registry publication paths, and dependency tree changes around the disclosure window.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "text": "The corpus preserves the package and maintainer entities but does not expand this record into actor attribution.",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ]
+      }
+    ],
+    "tags": [
+      "npm",
+      "dependency"
     ],
     "confidence": "high",
     "evidence_level": "primary",
@@ -657,173 +657,173 @@
       "backdoor",
       "downstream_customer_compromise"
     ],
-  "references": [
-    {
-      "id": "ref-cisa-ed-21-01",
-      "title": "Emergency Directive 21-01: Mitigate SolarWinds Orion Code Compromise",
-      "publisher": "Cybersecurity and Infrastructure Security Agency",
-      "url": "https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise",
-      "published_at": "2020-12-13"
-    },
-    {
-      "id": "ref-cisa-aa20-352a",
-      "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
-      "publisher": "Cybersecurity and Infrastructure Security Agency",
-      "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
-      "published_at": "2020-12-17"
-    },
-    {
-      "id": "ref-whitehouse-solarwinds-svr",
-      "title": "Fact Sheet: Imposing Costs for Harmful Foreign Activities by the Russian Government",
-      "publisher": "The White House",
-      "url": "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/",
-      "published_at": "2021-04-15"
-    }
-  ],
-  "executive_summary": [
-    {
-      "text": "The SolarWinds Orion incident is modeled as a vendor build-system compromise that placed the SUNBURST backdoor into signed Orion software updates.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    },
-    {
-      "text": "Threatpedia keeps this case centered on the build and signed-update channel rather than using it as a scoring or attribution primitive.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "timeline": [
-    {
-      "date": "2020-03-01/2020-12-13",
-      "title": "Compromised Orion builds precede disclosure",
-      "text": "The corpus records activity beginning months before public disclosure and models the abuse through the SolarWinds Orion build and update channel.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    },
-    {
-      "date": "2020-12-17",
-      "title": "CISA advisory documents the campaign",
-      "text": "CISA published an advisory describing compromise of government agencies, critical infrastructure, and private-sector organizations.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "attack_chain": [
-    {
-      "stage": "Build-system compromise",
-      "text": "The attacker-controlled change occurred in the Orion build path, making the vendor build system the core supply-chain primitive.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    },
-    {
-      "stage": "Signed update distribution",
-      "text": "Trojanized Orion artifacts reached customers through the signed software installer and update channel recorded in the corpus.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    },
-    {
-      "stage": "Downstream customer compromise",
-      "text": "The impact model includes downstream customer compromise because the trusted vendor update path carried the backdoor to customer environments.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "affected_ecosystem": [
-    {
-      "text": "The affected ecosystem spans Windows software and vendor-update distribution, with SolarWinds Orion as the named software component.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "defensive_lessons": [
-    {
-      "text": "Signed updates are not sufficient evidence of safety when the compromise occurs before signing inside the vendor build path.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    },
-    {
-      "text": "Supply-chain monitoring should preserve build-system and update-channel entities separately so later analysis can distinguish where trust failed.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "detection_notes": [
-    {
-      "text": "Detection pivots in this corpus record include SolarWinds Orion, SUNBURST, the vendor build system, and the signed update channel.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "open_questions": [
-    {
-      "text": "The corpus records source-artifact divergence as unknown because this Phase 1F record does not independently model source-to-build artifact comparison.",
-      "reference_ids": [
-        "ref-cisa-aa20-352a"
-      ]
-    }
-  ],
-  "threat_actors": [
-    {
-      "id": "actor-apt29",
-      "name": "APT29",
-      "actor_type": "public",
-      "confidence": "confirmed",
-      "aliases": [
-        "APT29",
-        "Cozy Bear",
-        "SVR"
-      ],
-      "href": "/threat-actors/apt29/",
-      "source_refs": [
-        "ref-whitehouse-solarwinds-svr"
-      ]
-    }
-  ],
-  "campaigns": [
-    {
-      "id": "campaign-tp-camp-2020-0001",
-      "campaign_id": "TP-CAMP-2020-0001",
-      "name": "SolarWinds Supply Chain Espionage Campaign",
-      "slug": "solarwinds-supply-chain-campaign",
-      "confidence": "confirmed",
-      "source_refs": [
-        "ref-whitehouse-solarwinds-svr"
-      ]
-    }
-  ],
-  "attribution_confidence": "confirmed",
-  "attribution_evidence": [
-    {
-      "target": "actor-apt29",
-      "relationship_type": "ATTRIBUTED_TO_ACTOR",
-      "source_refs": [
-        "ref-whitehouse-solarwinds-svr"
-      ],
-      "summary": "The White House attribution statement supports the APT29/SVR actor edge for the SolarWinds supply-chain compromise."
-    },
-    {
-      "target": "campaign-tp-camp-2020-0001",
-      "relationship_type": "RELATED_CAMPAIGN",
-      "source_refs": [
-        "ref-whitehouse-solarwinds-svr"
-      ],
-      "summary": "The SolarWinds supply-chain campaign node captures the same SVR-attributed operation represented by this incident."
-    }
-  ],
-  "tags": [
-    "build-system",
-    "sunburst"
+    "references": [
+      {
+        "id": "ref-cisa-ed-21-01",
+        "title": "Emergency Directive 21-01: Mitigate SolarWinds Orion Code Compromise",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "url": "https://www.cisa.gov/news-events/directives/ed-21-01-mitigate-solarwinds-orion-code-compromise",
+        "published_at": "2020-12-13"
+      },
+      {
+        "id": "ref-cisa-aa20-352a",
+        "title": "Advanced Persistent Threat Compromise of Government Agencies, Critical Infrastructure, and Private Sector Organizations",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-352a",
+        "published_at": "2020-12-17"
+      },
+      {
+        "id": "ref-whitehouse-solarwinds-svr",
+        "title": "Fact Sheet: Imposing Costs for Harmful Foreign Activities by the Russian Government",
+        "publisher": "The White House",
+        "url": "https://www.whitehouse.gov/briefing-room/statements-releases/2021/04/15/fact-sheet-imposing-costs-for-harmful-foreign-activities-by-the-russian-government/",
+        "published_at": "2021-04-15"
+      }
+    ],
+    "executive_summary": [
+      {
+        "text": "The SolarWinds Orion incident is modeled as a vendor build-system compromise that placed the SUNBURST backdoor into signed Orion software updates.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      },
+      {
+        "text": "Threatpedia keeps this case centered on the build and signed-update channel rather than using it as a scoring or attribution primitive.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2020-03-01/2020-12-13",
+        "title": "Compromised Orion builds precede disclosure",
+        "text": "The corpus records activity beginning months before public disclosure and models the abuse through the SolarWinds Orion build and update channel.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      },
+      {
+        "date": "2020-12-17",
+        "title": "CISA advisory documents the campaign",
+        "text": "CISA published an advisory describing compromise of government agencies, critical infrastructure, and private-sector organizations.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "attack_chain": [
+      {
+        "stage": "Build-system compromise",
+        "text": "The attacker-controlled change occurred in the Orion build path, making the vendor build system the core supply-chain primitive.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      },
+      {
+        "stage": "Signed update distribution",
+        "text": "Trojanized Orion artifacts reached customers through the signed software installer and update channel recorded in the corpus.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      },
+      {
+        "stage": "Downstream customer compromise",
+        "text": "The impact model includes downstream customer compromise because the trusted vendor update path carried the backdoor to customer environments.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "affected_ecosystem": [
+      {
+        "text": "The affected ecosystem spans Windows software and vendor-update distribution, with SolarWinds Orion as the named software component.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "defensive_lessons": [
+      {
+        "text": "Signed updates are not sufficient evidence of safety when the compromise occurs before signing inside the vendor build path.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      },
+      {
+        "text": "Supply-chain monitoring should preserve build-system and update-channel entities separately so later analysis can distinguish where trust failed.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "detection_notes": [
+      {
+        "text": "Detection pivots in this corpus record include SolarWinds Orion, SUNBURST, the vendor build system, and the signed update channel.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "text": "The corpus records source-artifact divergence as unknown because this Phase 1F record does not independently model source-to-build artifact comparison.",
+        "reference_ids": [
+          "ref-cisa-aa20-352a"
+        ]
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-apt29",
+        "name": "APT29",
+        "actor_type": "public",
+        "confidence": "confirmed",
+        "aliases": [
+          "APT29",
+          "Cozy Bear",
+          "SVR"
+        ],
+        "href": "/threat-actors/apt29/",
+        "source_refs": [
+          "ref-whitehouse-solarwinds-svr"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2020-0001",
+        "campaign_id": "TP-CAMP-2020-0001",
+        "name": "SolarWinds Supply Chain Espionage Campaign",
+        "slug": "solarwinds-supply-chain-campaign",
+        "confidence": "confirmed",
+        "source_refs": [
+          "ref-whitehouse-solarwinds-svr"
+        ]
+      }
+    ],
+    "attribution_confidence": "confirmed",
+    "attribution_evidence": [
+      {
+        "target": "actor-apt29",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-whitehouse-solarwinds-svr"
+        ],
+        "summary": "The White House attribution statement supports the APT29/SVR actor edge for the SolarWinds supply-chain compromise."
+      },
+      {
+        "target": "campaign-tp-camp-2020-0001",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-whitehouse-solarwinds-svr"
+        ],
+        "summary": "The SolarWinds supply-chain campaign node captures the same SVR-attributed operation represented by this incident."
+      }
+    ],
+    "tags": [
+      "build-system",
+      "sunburst"
     ],
     "confidence": "high",
     "evidence_level": "vendor",
@@ -1179,103 +1179,103 @@
       "credential_theft",
       "cryptomining"
     ],
-  "references": [
-    {
-      "id": "ref-github-advisory-ua-parser-js",
-      "title": "Malware in ua-parser-js",
-      "publisher": "GitHub Advisory Database",
-      "url": "https://github.com/advisories/GHSA-pjwm-rvh2-c87w",
-      "published_at": "2021-10-22"
-    }
-  ],
-  "executive_summary": [
-    {
-      "text": "The ua-parser-js incident is modeled as an npm maintainer-account compromise that allowed malicious package versions to be published.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    },
-    {
-      "text": "The corpus records both credential theft and cryptomining impact categories because the malicious versions delivered those payload classes.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "timeline": [
-    {
-      "date": "2021-10-22",
-      "title": "Malicious versions disclosed",
-      "text": "The incident was publicly documented on the same date recorded for first observation and disclosure in the corpus.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "attack_chain": [
-    {
-      "stage": "Maintainer account compromise",
-      "text": "The compromise path is represented as account compromise because a package-registry maintainer account enabled malicious publication.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    },
-    {
-      "stage": "Malicious npm publication",
-      "text": "The malicious versions were distributed through the npm registry under the ua-parser-js package name.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    },
-    {
-      "stage": "Payload execution risk",
-      "text": "The recorded payload categories are credential theft and cryptomining, matching the incident's package-level impact model.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "affected_ecosystem": [
-    {
-      "text": "The affected ecosystem is npm, with ua-parser-js preserved as the package entity and npm as the distribution channel.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "defensive_lessons": [
-    {
-      "text": "Registry account compromise should be treated as a direct package-publication risk, even when source repositories are not the primary compromise point.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    },
-    {
-      "text": "Consumers should be able to identify and quarantine known malicious package versions quickly when a package registry account is abused.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "detection_notes": [
-    {
-      "text": "Useful pivots include the ua-parser-js package name, npm registry publication activity, and references to credential-stealing or cryptomining payload behavior.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "open_questions": [
-    {
-      "text": "The corpus records the compromised npm maintainer account path but does not identify a named attacker or broader intrusion cluster.",
-      "reference_ids": [
-        "ref-github-advisory-ua-parser-js"
-      ]
-    }
-  ],
-  "tags": [
-    "npm",
-    "account-compromise"
+    "references": [
+      {
+        "id": "ref-github-advisory-ua-parser-js",
+        "title": "Malware in ua-parser-js",
+        "publisher": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-pjwm-rvh2-c87w",
+        "published_at": "2021-10-22"
+      }
+    ],
+    "executive_summary": [
+      {
+        "text": "The ua-parser-js incident is modeled as an npm maintainer-account compromise that allowed malicious package versions to be published.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      },
+      {
+        "text": "The corpus records both credential theft and cryptomining impact categories because the malicious versions delivered those payload classes.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2021-10-22",
+        "title": "Malicious versions disclosed",
+        "text": "The incident was publicly documented on the same date recorded for first observation and disclosure in the corpus.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "attack_chain": [
+      {
+        "stage": "Maintainer account compromise",
+        "text": "The compromise path is represented as account compromise because a package-registry maintainer account enabled malicious publication.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      },
+      {
+        "stage": "Malicious npm publication",
+        "text": "The malicious versions were distributed through the npm registry under the ua-parser-js package name.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      },
+      {
+        "stage": "Payload execution risk",
+        "text": "The recorded payload categories are credential theft and cryptomining, matching the incident's package-level impact model.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "affected_ecosystem": [
+      {
+        "text": "The affected ecosystem is npm, with ua-parser-js preserved as the package entity and npm as the distribution channel.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "defensive_lessons": [
+      {
+        "text": "Registry account compromise should be treated as a direct package-publication risk, even when source repositories are not the primary compromise point.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      },
+      {
+        "text": "Consumers should be able to identify and quarantine known malicious package versions quickly when a package registry account is abused.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "detection_notes": [
+      {
+        "text": "Useful pivots include the ua-parser-js package name, npm registry publication activity, and references to credential-stealing or cryptomining payload behavior.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "text": "The corpus records the compromised npm maintainer account path but does not identify a named attacker or broader intrusion cluster.",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ]
+      }
+    ],
+    "tags": [
+      "npm",
+      "account-compromise"
     ],
     "confidence": "high",
     "evidence_level": "vendor",
@@ -1714,176 +1714,176 @@
       "backdoor",
       "downstream_customer_compromise"
     ],
-  "references": [
-    {
-      "id": "ref-sentinelone-3cx",
-      "title": "SmoothOperator: Ongoing Campaign Trojanizes 3CX Software",
-      "publisher": "SentinelOne",
-      "url": "https://www.sentinelone.com/blog/smoothoperator-ongoing-campaign-trojanized-3cx-software",
-      "published_at": "2023-03-29"
-    },
-    {
-      "id": "ref-mandiant-3cx",
-      "title": "3CX Software Supply Chain Compromise",
-      "publisher": "Mandiant",
-      "url": "https://cloud.google.com/blog/topics/threat-intelligence/3cx-software-supply-chain-compromise",
-      "published_at": "2023-04-20"
-    }
-  ],
-  "executive_summary": [
-    {
-      "text": "The 3CX incident is modeled as a vendor build compromise that produced trojanized desktop application installers and updates for downstream customers.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    },
-    {
-      "text": "Threatpedia keeps the affected desktop application, build pipeline, and signed update channel as separate primitives so the supply-chain path remains inspectable.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "timeline": [
-    {
-      "date": "2023-03-22/2023-03-29",
-      "title": "Trojanized desktop application activity precedes disclosure",
-      "text": "The corpus records first observed activity before the public disclosure date and models the distribution through signed desktop application channels.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    },
-    {
-      "date": "2023-04-20",
-      "title": "Mandiant publishes detailed supply-chain analysis",
-      "text": "Mandiant's report is the researcher reference used for the structured build-compromise and signed-update modeling in this record.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "attack_chain": [
-    {
-      "stage": "Vendor build compromise",
-      "text": "The compromise is represented at the 3CX DesktopApp build pipeline rather than as a package-registry event.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    },
-    {
-      "stage": "Signed desktop application distribution",
-      "text": "Trojanized artifacts reached users through signed software installer and update paths recorded in the distribution-channel field.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    },
-    {
-      "stage": "Downstream customer exposure",
-      "text": "The impact categories include malware distribution, backdoor behavior, and downstream customer compromise through trusted application delivery.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "affected_ecosystem": [
-    {
-      "text": "The affected ecosystem spans Windows, macOS, and vendor-update distribution for the 3CX DesktopApp software component.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "defensive_lessons": [
-    {
-      "text": "Endpoint software delivered by a trusted vendor still needs behavioral monitoring because the compromise can occur before distribution and signing.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    },
-    {
-      "text": "Build pipeline, signed installer, and update-channel evidence should be retained separately to support later investigation without collapsing them into one field.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "detection_notes": [
-    {
-      "text": "Useful pivots include 3CX DesktopApp, the vendor build pipeline, signed installer or update activity, and the March-to-April 2023 disclosure window.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "open_questions": [
-    {
-      "text": "The corpus records source-artifact divergence as unknown because this record does not independently compare source state to the distributed desktop artifacts.",
-      "reference_ids": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "threat_actors": [
-    {
-      "id": "actor-lazarus-group",
-      "name": "Lazarus Group",
-      "actor_type": "public",
-      "confidence": "likely",
-      "aliases": [
-        "Lazarus Group",
-        "UNC4736"
-      ],
-      "href": "/threat-actors/lazarus-group/",
-      "source_refs": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "campaigns": [
-    {
-      "id": "campaign-tp-camp-2023-0002",
-      "campaign_id": "TP-CAMP-2023-0002",
-      "name": "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
-      "slug": "lazarus-3cx-supply-chain-compromise-2023",
-      "confidence": "likely",
-      "source_refs": [
-        "ref-mandiant-3cx"
-      ]
-    }
-  ],
-  "attribution_confidence": "likely",
-  "attribution_evidence": [
-    {
-      "target": "actor-lazarus-group",
-      "relationship_type": "ATTRIBUTED_TO_ACTOR",
-      "source_refs": [
-        "ref-mandiant-3cx"
-      ],
-      "summary": "Mandiant's 3CX report supports the Lazarus-associated actor edge through its UNC4736 attribution assessment."
-    },
-    {
-      "target": "campaign-tp-camp-2023-0002",
-      "relationship_type": "RELATED_CAMPAIGN",
-      "source_refs": [
-        "ref-mandiant-3cx"
-      ],
-      "summary": "The SmoothOperator campaign node covers the same 3CX software supply-chain compromise represented by this incident."
+    "references": [
+      {
+        "id": "ref-sentinelone-3cx",
+        "title": "SmoothOperator: Ongoing Campaign Trojanizes 3CX Software",
+        "publisher": "SentinelOne",
+        "url": "https://www.sentinelone.com/blog/smoothoperator-ongoing-campaign-trojanized-3cx-software",
+        "published_at": "2023-03-29"
+      },
+      {
+        "id": "ref-mandiant-3cx",
+        "title": "3CX Software Supply Chain Compromise",
+        "publisher": "Mandiant",
+        "url": "https://cloud.google.com/blog/topics/threat-intelligence/3cx-software-supply-chain-compromise",
+        "published_at": "2023-04-20"
       }
-  ],
-  "propagation_edges": [
-    {
-      "source": "pkg-generic-x-trader",
-      "target": "pkg-generic-3cx-desktopapp",
-      "propagation_tier": "causal",
-      "evidence_refs": [
-        "ref-mandiant-3cx"
-      ],
-      "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps."
-    }
-  ],
-  "tags": [
-    "desktop",
-    "signed-update"
+    ],
+    "executive_summary": [
+      {
+        "text": "The 3CX incident is modeled as a vendor build compromise that produced trojanized desktop application installers and updates for downstream customers.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      },
+      {
+        "text": "Threatpedia keeps the affected desktop application, build pipeline, and signed update channel as separate primitives so the supply-chain path remains inspectable.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2023-03-22/2023-03-29",
+        "title": "Trojanized desktop application activity precedes disclosure",
+        "text": "The corpus records first observed activity before the public disclosure date and models the distribution through signed desktop application channels.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      },
+      {
+        "date": "2023-04-20",
+        "title": "Mandiant publishes detailed supply-chain analysis",
+        "text": "Mandiant's report is the researcher reference used for the structured build-compromise and signed-update modeling in this record.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "attack_chain": [
+      {
+        "stage": "Vendor build compromise",
+        "text": "The compromise is represented at the 3CX DesktopApp build pipeline rather than as a package-registry event.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      },
+      {
+        "stage": "Signed desktop application distribution",
+        "text": "Trojanized artifacts reached users through signed software installer and update paths recorded in the distribution-channel field.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      },
+      {
+        "stage": "Downstream customer exposure",
+        "text": "The impact categories include malware distribution, backdoor behavior, and downstream customer compromise through trusted application delivery.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "affected_ecosystem": [
+      {
+        "text": "The affected ecosystem spans Windows, macOS, and vendor-update distribution for the 3CX DesktopApp software component.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "defensive_lessons": [
+      {
+        "text": "Endpoint software delivered by a trusted vendor still needs behavioral monitoring because the compromise can occur before distribution and signing.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      },
+      {
+        "text": "Build pipeline, signed installer, and update-channel evidence should be retained separately to support later investigation without collapsing them into one field.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "detection_notes": [
+      {
+        "text": "Useful pivots include 3CX DesktopApp, the vendor build pipeline, signed installer or update activity, and the March-to-April 2023 disclosure window.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "text": "The corpus records source-artifact divergence as unknown because this record does not independently compare source state to the distributed desktop artifacts.",
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-lazarus-group",
+        "name": "Lazarus Group",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "Lazarus Group",
+          "UNC4736"
+        ],
+        "href": "/threat-actors/lazarus-group/",
+        "source_refs": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2023-0002",
+        "campaign_id": "TP-CAMP-2023-0002",
+        "name": "Lazarus Group Operation SmoothOperator - 3CX Software Supply Chain Compromise",
+        "slug": "lazarus-3cx-supply-chain-compromise-2023",
+        "confidence": "likely",
+        "source_refs": [
+          "ref-mandiant-3cx"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-lazarus-group",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-mandiant-3cx"
+        ],
+        "summary": "Mandiant's 3CX report supports the Lazarus-associated actor edge through its UNC4736 attribution assessment."
+      },
+      {
+        "target": "campaign-tp-camp-2023-0002",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-mandiant-3cx"
+        ],
+        "summary": "The SmoothOperator campaign node covers the same 3CX software supply-chain compromise represented by this incident."
+      }
+    ],
+    "propagation_edges": [
+      {
+        "source": "pkg-generic-x-trader",
+        "target": "pkg-generic-3cx-desktopapp",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-mandiant-3cx"
+        ],
+        "summary": "Mandiant documented the 3CX compromise as a cascade from a prior X_TRADER software supply-chain compromise; this edge records that public causal relationship without inferring additional downstream steps."
+      }
+    ],
+    "tags": [
+      "desktop",
+      "signed-update"
     ],
     "confidence": "high",
     "evidence_level": "researcher",
@@ -2002,141 +2002,141 @@
     "impact_categories": [
       "backdoor"
     ],
-  "references": [
-    {
-      "id": "ref-openwall-xz",
-      "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
-      "publisher": "Openwall oss-security",
-      "url": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
-      "published_at": "2024-03-29"
-    }
-  ],
-  "executive_summary": [
-    {
-      "text": "The XZ Utils incident is modeled as an upstream source-release compromise where the backdoor was present in release tarballs and affected downstream Linux packaging.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    },
-    {
-      "text": "Threatpedia preserves source-artifact divergence as a first-class field because this case depends on the difference between trusted source expectations and release artifacts.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "timeline": [
-    {
-      "date": "2024-02-24/2024-03-29",
-      "title": "Backdoored release artifacts precede public disclosure",
-      "text": "The corpus records first observed activity before the Openwall disclosure and models the affected path as upstream source release distribution.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    },
-    {
-      "date": "2024-03-29",
-      "title": "Openwall disclosure documents the backdoor",
-      "text": "The Openwall oss-security post is the primary reference for the xz/liblzma backdoor record.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "attack_chain": [
-    {
-      "stage": "Upstream project influence",
-      "text": "The corpus records Jia Tan as a maintainer entity connected to the upstream xz project and this incident.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    },
-    {
-      "stage": "Source release artifact compromise",
-      "text": "The compromised path is modeled through upstream source release tarballs, not a live package feed or graph database.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    },
-    {
-      "stage": "Downstream Linux packaging exposure",
-      "text": "The affected ecosystems include Linux and source-release distribution because downstream packaging consumed the upstream release artifacts.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "affected_ecosystem": [
-    {
-      "text": "The affected ecosystem is Linux source-release distribution, with xz-utils and the tukaani-project/xz repository represented as structured entities.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "defensive_lessons": [
-    {
-      "text": "Release artifact verification matters because source-release compromise can hide in tarballs consumed by downstream packaging processes.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    },
-    {
-      "text": "Maintainer, repository, and distribution-channel entities should remain linked so reviewers can see how project authority and release artifacts interacted.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "detection_notes": [
-    {
-      "text": "Useful pivots include xz-utils, xz/liblzma, Jia Tan, the tukaani-project/xz repository, upstream release tarballs, and SSH-server compromise language from the disclosure.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "open_questions": [
-    {
-      "text": "The corpus records the maintainer and release-artifact path but does not turn the case into automated actor attribution.",
-      "reference_ids": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "threat_actors": [
-    {
-      "id": "actor-unc-xz-utils-operator",
-      "name": "UNC-XZ-UTILS",
-      "actor_type": "provisional",
-      "confidence": "suspected",
-      "aliases": [
-        "UNC-XZ-UTILS",
-        "Jia Tan operator cluster"
-      ],
-      "notes": "Provisional supply-chain operator node for the coherent Jia Tan maintainer identity and XZ Utils backdoor activity; no nation-state label is asserted.",
-      "entity_refs": [
-        "maintainer-jia-tan"
-      ],
-      "source_refs": [
-        "ref-openwall-xz"
-      ]
-    }
-  ],
-  "attribution_confidence": "suspected",
-  "attribution_evidence": [
-    {
-      "target": "actor-unc-xz-utils-operator",
-      "relationship_type": "ATTRIBUTED_TO_ACTOR",
-      "source_refs": [
-        "ref-openwall-xz"
-      ],
-      "summary": "The Openwall disclosure supports a provisional operator edge for the Jia Tan maintainer identity without assigning a named APT or state sponsor."
-    }
-  ],
-  "tags": [
-    "linux",
-    "backdoor"
+    "references": [
+      {
+        "id": "ref-openwall-xz",
+        "title": "Backdoor in upstream xz/liblzma leading to SSH server compromise",
+        "publisher": "Openwall oss-security",
+        "url": "https://www.openwall.com/lists/oss-security/2024/03/29/4",
+        "published_at": "2024-03-29"
+      }
+    ],
+    "executive_summary": [
+      {
+        "text": "The XZ Utils incident is modeled as an upstream source-release compromise where the backdoor was present in release tarballs and affected downstream Linux packaging.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      },
+      {
+        "text": "Threatpedia preserves source-artifact divergence as a first-class field because this case depends on the difference between trusted source expectations and release artifacts.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "date": "2024-02-24/2024-03-29",
+        "title": "Backdoored release artifacts precede public disclosure",
+        "text": "The corpus records first observed activity before the Openwall disclosure and models the affected path as upstream source release distribution.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      },
+      {
+        "date": "2024-03-29",
+        "title": "Openwall disclosure documents the backdoor",
+        "text": "The Openwall oss-security post is the primary reference for the xz/liblzma backdoor record.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "attack_chain": [
+      {
+        "stage": "Upstream project influence",
+        "text": "The corpus records Jia Tan as a maintainer entity connected to the upstream xz project and this incident.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      },
+      {
+        "stage": "Source release artifact compromise",
+        "text": "The compromised path is modeled through upstream source release tarballs, not a live package feed or graph database.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      },
+      {
+        "stage": "Downstream Linux packaging exposure",
+        "text": "The affected ecosystems include Linux and source-release distribution because downstream packaging consumed the upstream release artifacts.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "affected_ecosystem": [
+      {
+        "text": "The affected ecosystem is Linux source-release distribution, with xz-utils and the tukaani-project/xz repository represented as structured entities.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "defensive_lessons": [
+      {
+        "text": "Release artifact verification matters because source-release compromise can hide in tarballs consumed by downstream packaging processes.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      },
+      {
+        "text": "Maintainer, repository, and distribution-channel entities should remain linked so reviewers can see how project authority and release artifacts interacted.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "detection_notes": [
+      {
+        "text": "Useful pivots include xz-utils, xz/liblzma, Jia Tan, the tukaani-project/xz repository, upstream release tarballs, and SSH-server compromise language from the disclosure.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "text": "The corpus records the maintainer and release-artifact path but does not turn the case into automated actor attribution.",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-unc-xz-utils-operator",
+        "name": "UNC-XZ-UTILS",
+        "actor_type": "provisional",
+        "confidence": "suspected",
+        "aliases": [
+          "UNC-XZ-UTILS",
+          "Jia Tan operator cluster"
+        ],
+        "notes": "Provisional supply-chain operator node for the coherent Jia Tan maintainer identity and XZ Utils backdoor activity; no nation-state label is asserted.",
+        "entity_refs": [
+          "maintainer-jia-tan"
+        ],
+        "source_refs": [
+          "ref-openwall-xz"
+        ]
+      }
+    ],
+    "attribution_confidence": "suspected",
+    "attribution_evidence": [
+      {
+        "target": "actor-unc-xz-utils-operator",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-openwall-xz"
+        ],
+        "summary": "The Openwall disclosure supports a provisional operator edge for the Jia Tan maintainer identity without assigning a named APT or state sponsor."
+      }
+    ],
+    "tags": [
+      "linux",
+      "backdoor"
     ],
     "confidence": "high",
     "evidence_level": "primary",
@@ -2760,6 +2760,1424 @@
           "ref-socket-boltdb-go"
         ],
         "summary": "Socket identifies the boltdb-go GitHub alias as the distribution identity for the typosquat; Threatpedia models it as a provisional operator without broader attribution."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2025-SHAI-HULUD-2",
+    "title": "Shai-Hulud 2.0 npm supply-chain worm wave",
+    "summary": "A second Shai-Hulud wave compromised hundreds of npm packages through install-time malware, GitHub token theft, and public repositories containing exfiltrated secrets.",
+    "status": "confirmed",
+    "first_observed_at": "2025-11-24",
+    "first_public_warning_at": "2025-11-24",
+    "disclosed_at": "2025-12-09",
+    "affected_ecosystems": [
+      "npm",
+      "github-actions",
+      "github"
+    ],
+    "affected_components": [
+      {
+        "component_type": "project",
+        "ecosystem": "npm",
+        "name": "Shai-Hulud 2.0 affected npm package set",
+        "vendor": "multiple npm maintainers",
+        "package_url": null
+      }
+    ],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "package_repository_compromise",
+      "ci_cd_action_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-microsoft-shai-hulud-2",
+        "title": "Shai-Hulud 2.0: Guidance for detecting, investigating, and defending against the supply chain attack",
+        "publisher": "Microsoft Security Blog",
+        "url": "https://www.microsoft.com/en-us/security/blog/2025/12/09/shai-hulud-2-0-guidance-for-detecting-investigating-and-defending-against-the-supply-chain-attack/",
+        "published_at": "2025-12-09"
+      },
+      {
+        "id": "ref-wiz-shai-hulud-2",
+        "title": "Shai-Hulud 2.0 Supply Chain Attack: 25K+ Repos Exposed",
+        "publisher": "Wiz",
+        "url": "https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack",
+        "published_at": "2025-12-09"
+      },
+      {
+        "id": "ref-esentire-shai-hulud-2",
+        "title": "New npm Supply Chain Attack Identified: Second Wave of Shai Hulud",
+        "publisher": "eSentire",
+        "url": "https://www.esentire.com/security-advisories/new-npm-supply-chain-attack-identified-second-wave-of-shai-hulud",
+        "published_at": "2025-11-24"
+      }
+    ],
+    "tags": [
+      "npm",
+      "shai-hulud",
+      "self-propagating",
+      "github-actions",
+      "credential-theft"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "Modeled as a second Shai-Hulud wave using public package-count and behavior reporting; individual package releases are intentionally not enumerated without a complete registry-backed affected-version list.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "GitHub repositories",
+        "channel_type": "source_repository",
+        "ecosystem": "github"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "compromised npm maintainer tokens",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      },
+      {
+        "name": "victim GitHub tokens",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "workflow_secret_access"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-microsoft-shai-hulud-2",
+          "ref-wiz-shai-hulud-2"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0003",
+        "campaign_id": "TP-CAMP-2026-0003",
+        "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+        "slug": "teampcp-supply-chain-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "TP-CAMP-2026-0003"
+        ],
+        "source_refs": [
+          "ref-microsoft-shai-hulud-2",
+          "ref-wiz-shai-hulud-2"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-microsoft-shai-hulud-2",
+          "ref-wiz-shai-hulud-2"
+        ],
+        "summary": "Microsoft and Wiz describe the second Shai-Hulud wave as part of the same coherent supply-chain worm activity tracked in the broader TeamPCP/Shai-Hulud cluster."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0003",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-microsoft-shai-hulud-2"
+        ],
+        "summary": "The campaign edge keeps the second Shai-Hulud wave attached to the 2026 multi-ecosystem supply-chain activity rather than creating a standalone actor."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-MINI-SHAI-HULUD",
+    "title": "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave",
+    "summary": "Mini Shai-Hulud compromised TanStack release automation and spread across npm and PyPI packages through trusted publishing, cache poisoning, and credential theft from CI/CD environments.",
+    "status": "confirmed",
+    "first_observed_at": "2026-05-11",
+    "first_public_warning_at": "2026-05-11",
+    "disclosed_at": "2026-05-13",
+    "affected_ecosystems": [
+      "npm",
+      "pypi",
+      "github-actions"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "@tanstack/react-router",
+        "vendor": "TanStack",
+        "package_url": "pkg:npm/%40tanstack/react-router"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "pypi",
+        "name": "mistralai",
+        "vendor": "Mistral AI",
+        "package_url": "pkg:pypi/mistralai"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "pypi",
+        "name": "guardrails-ai",
+        "vendor": "Guardrails AI",
+        "package_url": "pkg:pypi/guardrails-ai"
+      }
+    ],
+    "supply_chain_vectors": [
+      "ci_cd_action_compromise",
+      "package_repository_compromise",
+      "malicious_dependency"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-socket-tanstack-mini-shai",
+        "title": "TanStack npm Packages Compromised in Ongoing Mini Shai-Hulud Supply-Chain Attack",
+        "publisher": "Socket Research Team",
+        "url": "https://socket.dev/blog/tanstack-npm-packages-compromised-mini-shai-hulud-supply-chain-attack",
+        "published_at": "2026-05-11"
+      },
+      {
+        "id": "ref-tanstack-postmortem",
+        "title": "TanStack npm supply chain compromise postmortem",
+        "publisher": "TanStack",
+        "url": "https://tanstack.com/blog/npm-supply-chain-compromise-postmortem",
+        "published_at": "2026-05-11"
+      },
+      {
+        "id": "ref-stepsecurity-mini-shai",
+        "title": "Mini Shai-Hulud is back: A self-spreading supply chain attack hits the npm ecosystem",
+        "publisher": "StepSecurity",
+        "url": "https://www.stepsecurity.io/blog/mini-shai-hulud-is-back-a-self-spreading-supply-chain-attack-hits-the-npm-ecosystem",
+        "published_at": "2026-05-11"
+      },
+      {
+        "id": "ref-openai-tanstack-response",
+        "title": "Our response to the TanStack npm supply chain attack",
+        "publisher": "OpenAI",
+        "url": "https://openai.com/index/our-response-to-the-tanstack-npm-supply-chain-attack/",
+        "published_at": "2026-05-13"
+      },
+      {
+        "id": "ref-snyk-tanstack-mini-shai",
+        "title": "TanStack npm packages hit by Mini Shai-Hulud",
+        "publisher": "Snyk",
+        "url": "https://snyk.io/blog/tanstack-npm-packages-compromised/",
+        "published_at": "2026-05-12"
+      }
+    ],
+    "tags": [
+      "npm",
+      "pypi",
+      "tanstack",
+      "mini-shai-hulud",
+      "trusted-publishing",
+      "oidc"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": false,
+    "notes": "TanStack and Socket/StepSecurity support the trusted-publisher compromise; OpenAI is retained only for downstream exposure and certificate-rotation context.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "TanStack/router",
+        "host": "github.com",
+        "owner": "TanStack",
+        "url": "https://github.com/TanStack/router"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      },
+      {
+        "name": "GitHub Actions workflow",
+        "channel_type": "ci_cd_workflow",
+        "ecosystem": "github-actions"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "GitHub Actions OIDC publishing identity",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "trusted_publisher"
+      },
+      {
+        "name": "stolen npm and GitHub credentials",
+        "provider": "multiple",
+        "account_type": "package_registry_account",
+        "role": "worm_propagation"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-stepsecurity-mini-shai",
+          "ref-socket-tanstack-mini-shai"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0003",
+        "campaign_id": "TP-CAMP-2026-0003",
+        "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+        "slug": "teampcp-supply-chain-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "TP-CAMP-2026-0003"
+        ],
+        "source_refs": [
+          "ref-stepsecurity-mini-shai",
+          "ref-socket-tanstack-mini-shai"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-stepsecurity-mini-shai",
+          "ref-socket-tanstack-mini-shai"
+        ],
+        "summary": "Socket and StepSecurity connect the Mini Shai-Hulud activity to TeamPCP-style worm behavior and infrastructure; Threatpedia preserves the vendor-assessed attribution level."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0003",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-stepsecurity-mini-shai"
+        ],
+        "summary": "The Mini Shai-Hulud TanStack event is modeled as part of the broader TeamPCP multi-ecosystem supply-chain campaign."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-TRIVY-CI",
+    "title": "Aqua Trivy CI/CD supply-chain compromise",
+    "summary": "Attackers compromised Trivy release and GitHub Action distribution paths, causing affected CI/CD environments to run credential-stealing code through trusted scanner workflows.",
+    "status": "confirmed",
+    "first_observed_at": "2026-03-19",
+    "first_public_warning_at": "2026-03-20",
+    "disclosed_at": "2026-03-24",
+    "affected_ecosystems": [
+      "github-actions",
+      "docker",
+      "ci-cd"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "generic",
+        "name": "aquasecurity/trivy-action",
+        "vendor": "Aqua Security",
+        "package_url": "pkg:generic/aquasecurity-trivy-action",
+        "purl_justification": "GitHub Actions are CI marketplace artifacts without a registry-specific PURL type supported by this corpus."
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "generic",
+        "name": "aquasecurity/setup-trivy",
+        "vendor": "Aqua Security",
+        "package_url": "pkg:generic/aquasecurity-setup-trivy",
+        "purl_justification": "GitHub Actions are CI marketplace artifacts without a registry-specific PURL type supported by this corpus."
+      },
+      {
+        "component_type": "software",
+        "ecosystem": "docker",
+        "name": "aquasec/trivy container images",
+        "vendor": "Aqua Security",
+        "package_url": null
+      }
+    ],
+    "supply_chain_vectors": [
+      "ci_cd_action_compromise",
+      "signed_update_compromise",
+      "build_system_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-aqua-trivy-discussion",
+        "title": "Trivy Security incident 2026-03-19",
+        "publisher": "Aqua Security",
+        "url": "https://github.com/aquasecurity/trivy/discussions/10425",
+        "published_at": "2026-03-20"
+      },
+      {
+        "id": "ref-github-trivy-advisory",
+        "title": "Trivy ecosystem supply chain temporarily compromised",
+        "publisher": "GitHub Advisory Database",
+        "url": "https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23",
+        "published_at": "2026-03-21"
+      },
+      {
+        "id": "ref-microsoft-trivy",
+        "title": "Guidance for detecting, investigating, and defending against the Trivy supply chain compromise",
+        "publisher": "Microsoft Security Blog",
+        "url": "https://www.microsoft.com/en-us/security/blog/2026/03/24/detecting-investigating-defending-against-trivy-supply-chain-compromise/",
+        "published_at": "2026-03-24"
+      },
+      {
+        "id": "ref-cve-trivy-33634",
+        "title": "CVE-2026-33634 Record",
+        "publisher": "CVE.org",
+        "url": "https://www.cve.org/CVERecord?id=CVE-2026-33634",
+        "published_at": "2026-03-24"
+      }
+    ],
+    "tags": [
+      "trivy",
+      "github-actions",
+      "ci-cd",
+      "cve-2026-33634",
+      "credential-theft"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "ci_cd_compromise",
+    "source_artifact_divergence": false,
+    "notes": "This is the modeled cascade root for downstream TeamPCP incidents. SEEDED_BY edges are added only from downstream records with source evidence for credential reuse.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "aquasecurity/trivy",
+        "host": "github.com",
+        "owner": "aquasecurity",
+        "url": "https://github.com/aquasecurity/trivy"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "GitHub Actions Marketplace",
+        "channel_type": "ci_cd_marketplace",
+        "ecosystem": "github-actions"
+      },
+      {
+        "name": "Docker Hub",
+        "channel_type": "package_registry",
+        "ecosystem": "docker"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "Aqua Security release credentials",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "action_release"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-microsoft-trivy"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0003",
+        "campaign_id": "TP-CAMP-2026-0003",
+        "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+        "slug": "teampcp-supply-chain-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "TP-CAMP-2026-0003"
+        ],
+        "source_refs": [
+          "ref-microsoft-trivy"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-microsoft-trivy"
+        ],
+        "summary": "Microsoft describes the Trivy campaign as activity attributed to the threat actor identifying as TeamPCP."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0003",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-microsoft-trivy"
+        ],
+        "summary": "The Trivy compromise is the first modeled node in the TeamPCP 2026 multi-ecosystem supply-chain campaign."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-LITELLM",
+    "title": "LiteLLM PyPI package compromise through stolen CI/CD credentials",
+    "summary": "Malicious LiteLLM versions 1.82.7 and 1.82.8 were published to PyPI with code not present in the upstream repository, exposing Python users and AI pipelines to credential theft.",
+    "status": "confirmed",
+    "first_observed_at": "2026-03-24",
+    "first_public_warning_at": "2026-03-24",
+    "disclosed_at": "2026-03-24",
+    "affected_ecosystems": [
+      "pypi",
+      "python",
+      "ci-cd"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "pypi",
+        "name": "litellm",
+        "vendor": "BerriAI",
+        "package_url": "pkg:pypi/litellm"
+      }
+    ],
+    "releases": [
+      {
+        "package_name": "litellm",
+        "ecosystem": "pypi",
+        "purl": "pkg:pypi/litellm@1.82.7",
+        "version": "1.82.7",
+        "published_at": "2026-03-24",
+        "malicious_range": "1.82.7",
+        "references": [
+          "ref-litellm-security-update",
+          "ref-snyk-litellm"
+        ],
+        "disclosed_at": "2026-03-24"
+      },
+      {
+        "package_name": "litellm",
+        "ecosystem": "pypi",
+        "purl": "pkg:pypi/litellm@1.82.8",
+        "version": "1.82.8",
+        "published_at": "2026-03-24",
+        "malicious_range": "1.82.8",
+        "references": [
+          "ref-litellm-security-update",
+          "ref-snyk-litellm"
+        ],
+        "disclosed_at": "2026-03-24"
+      }
+    ],
+    "supply_chain_vectors": [
+      "ci_cd_action_compromise",
+      "malicious_dependency",
+      "package_repository_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-litellm-security-update",
+        "title": "Security Update: Suspected Supply Chain Incident",
+        "publisher": "LiteLLM",
+        "url": "https://docs.litellm.ai/blog/security-update-march-2026",
+        "published_at": "2026-03-24"
+      },
+      {
+        "id": "ref-snyk-litellm",
+        "title": "How a poisoned security scanner became the key to backdooring LiteLLM",
+        "publisher": "Snyk",
+        "url": "https://snyk.io/blog/poisoned-security-scanner-backdooring-litellm/",
+        "published_at": "2026-03-25"
+      },
+      {
+        "id": "ref-endor-litellm",
+        "title": "TeamPCP Isn't Done: Threat Actor Behind Trivy and KICS Compromises LiteLLM",
+        "publisher": "Endor Labs",
+        "url": "https://www.endorlabs.com/learn/teampcp-isnt-done",
+        "published_at": "2026-03-24"
+      },
+      {
+        "id": "ref-trendmicro-litellm",
+        "title": "Your AI Gateway Was a Backdoor: Inside the LiteLLM Supply Chain Compromise",
+        "publisher": "Trend Micro",
+        "url": "https://www.trendmicro.com/en_us/research/26/c/inside-litellm-supply-chain-compromise.html",
+        "published_at": "2026-03-25"
+      }
+    ],
+    "tags": [
+      "pypi",
+      "litellm",
+      "teampcp",
+      "trivy",
+      "credential-theft"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "package_publish",
+    "source_artifact_divergence": true,
+    "notes": "LiteLLM and multiple researchers report malicious PyPI artifacts that diverged from upstream source; this record preserves the PyPI package and exact malicious versions.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "BerriAI/litellm",
+        "host": "github.com",
+        "owner": "BerriAI",
+        "url": "https://github.com/BerriAI/litellm"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "PyPI",
+        "channel_type": "package_registry",
+        "ecosystem": "pypi"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "LiteLLM PyPI publishing credentials",
+        "provider": "PyPI",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-snyk-litellm",
+          "ref-trendmicro-litellm"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0003",
+        "campaign_id": "TP-CAMP-2026-0003",
+        "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+        "slug": "teampcp-supply-chain-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "TP-CAMP-2026-0003"
+        ],
+        "source_refs": [
+          "ref-snyk-litellm",
+          "ref-trendmicro-litellm"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-snyk-litellm",
+          "ref-trendmicro-litellm"
+        ],
+        "summary": "Snyk and Trend Micro report LiteLLM as part of the TeamPCP campaign and tie it to credentials obtained through the Trivy compromise."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0003",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-trendmicro-litellm"
+        ],
+        "summary": "LiteLLM is modeled as a downstream node in the TeamPCP multi-ecosystem supply-chain campaign."
+      }
+    ],
+    "propagation_edges": [
+      {
+        "source": "pkg-generic-aquasecurity-trivy-action",
+        "target": "release-pypi-litellm-1-82-7",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-snyk-litellm"
+        ],
+        "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
+      },
+      {
+        "source": "pkg-generic-aquasecurity-trivy-action",
+        "target": "release-pypi-litellm-1-82-8",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-snyk-litellm"
+        ],
+        "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-AXIOS",
+    "title": "Axios npm maintainer account compromise",
+    "summary": "A compromised Axios maintainer account published malicious npm releases that added plain-crypto-js as an install-time dependency delivering a cross-platform remote access trojan.",
+    "status": "confirmed",
+    "first_observed_at": "2026-03-31",
+    "first_public_warning_at": "2026-03-31",
+    "disclosed_at": "2026-03-31",
+    "affected_ecosystems": [
+      "npm"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "axios",
+        "vendor": "Axios",
+        "package_url": "pkg:npm/axios"
+      },
+      {
+        "component_type": "package",
+        "ecosystem": "npm",
+        "name": "plain-crypto-js",
+        "vendor": "malicious publisher",
+        "package_url": "pkg:npm/plain-crypto-js"
+      }
+    ],
+    "releases": [
+      {
+        "package_name": "axios",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/axios@1.14.1",
+        "version": "1.14.1",
+        "published_at": "2026-03-31",
+        "malicious_range": "1.14.1",
+        "references": [
+          "ref-axios-postmortem",
+          "ref-google-axios"
+        ],
+        "disclosed_at": "2026-03-31"
+      },
+      {
+        "package_name": "axios",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/axios@0.30.4",
+        "version": "0.30.4",
+        "published_at": "2026-03-31",
+        "malicious_range": "0.30.4",
+        "references": [
+          "ref-axios-postmortem",
+          "ref-google-axios"
+        ],
+        "disclosed_at": "2026-03-31"
+      },
+      {
+        "package_name": "plain-crypto-js",
+        "ecosystem": "npm",
+        "purl": "pkg:npm/plain-crypto-js@4.2.1",
+        "version": "4.2.1",
+        "published_at": "2026-03-31",
+        "malicious_range": "4.2.1",
+        "references": [
+          "ref-google-axios",
+          "ref-datadog-axios"
+        ],
+        "disclosed_at": "2026-03-31"
+      }
+    ],
+    "supply_chain_vectors": [
+      "maintainer_account_compromise",
+      "malicious_dependency"
+    ],
+    "impact_categories": [
+      "malware_distribution",
+      "backdoor",
+      "credential_theft"
+    ],
+    "references": [
+      {
+        "id": "ref-axios-postmortem",
+        "title": "Post Mortem: axios npm supply chain compromise #10636",
+        "publisher": "Axios Maintainers",
+        "url": "https://github.com/axios/axios/issues/10636",
+        "published_at": "2026-03-31"
+      },
+      {
+        "id": "ref-google-axios",
+        "title": "North Korea-Nexus Threat Actor Compromises Widely Used Axios NPM Package",
+        "publisher": "Google Threat Intelligence Group",
+        "url": "https://cloud.google.com/blog/topics/threat-intelligence/north-korea-threat-actor-targets-axios-npm-package",
+        "published_at": "2026-04-02"
+      },
+      {
+        "id": "ref-cisa-axios",
+        "title": "Supply Chain Compromise Impacts Axios Node Package Manager",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "url": "https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager",
+        "published_at": "2026-04-20"
+      },
+      {
+        "id": "ref-trendmicro-axios",
+        "title": "Axios NPM Package Compromised: Supply Chain Attack Hits JavaScript HTTP Client with 100M+ Weekly Downloads",
+        "publisher": "Trend Micro",
+        "url": "https://www.trendmicro.com/en_us/research/26/c/axios-npm-package-compromised.html",
+        "published_at": "2026-03-31"
+      },
+      {
+        "id": "ref-datadog-axios",
+        "title": "Compromised axios npm package delivers cross-platform RAT",
+        "publisher": "Datadog Security Labs",
+        "url": "https://securitylabs.datadoghq.com/articles/axios-npm-supply-chain-compromise/",
+        "published_at": "2026-04-01"
+      }
+    ],
+    "tags": [
+      "npm",
+      "axios",
+      "plain-crypto-js",
+      "account-compromise",
+      "disputed-attribution"
+    ],
+    "confidence": "high",
+    "evidence_level": "primary",
+    "attack_stage": "account_compromise",
+    "source_artifact_divergence": true,
+    "notes": "Attribution is intentionally disputed: Google tracks the activity as North Korea-nexus UNC1069 while Datadog reports the TTPs do not match TeamPCP. The corpus does not collapse those claims.",
+    "maintainers": [
+      {
+        "name": "Jason Saayman",
+        "aliases": [
+          "jasonsaayman"
+        ],
+        "id_slug": "jasonsaayman",
+        "onboarding_date": null,
+        "first_publish_date": null,
+        "repositories": [
+          "repo-github-com-axios-axios"
+        ],
+        "account_ids": [
+          "account-npm-axios-maintainer-npm-account"
+        ]
+      }
+    ],
+    "repositories": [
+      {
+        "name": "axios/axios",
+        "host": "github.com",
+        "owner": "axios",
+        "url": "https://github.com/axios/axios"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "npm registry",
+        "channel_type": "package_registry",
+        "ecosystem": "npm"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "axios maintainer npm account",
+        "provider": "npm",
+        "account_type": "package_registry_account",
+        "role": "maintainer_publish"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-unc1069",
+        "name": "UNC1069",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "UNC1069",
+          "North Korea-nexus actor"
+        ],
+        "source_refs": [
+          "ref-google-axios"
+        ]
+      },
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "disputed",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-datadog-axios",
+          "ref-trendmicro-axios"
+        ]
+      }
+    ],
+    "attribution_confidence": "disputed",
+    "attribution_evidence": [
+      {
+        "target": "actor-unc1069",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-google-axios"
+        ],
+        "summary": "Google Threat Intelligence Group attributes the Axios npm compromise to a North Korea-nexus actor tracked as UNC1069."
+      },
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-datadog-axios",
+          "ref-trendmicro-axios"
+        ],
+        "summary": "Trend Micro covered the Axios compromise in the same active supply-chain period, while Datadog explicitly reports the TTPs do not match TeamPCP; this edge remains disputed rather than asserted."
+      }
+    ],
+    "propagation_edges": [
+      {
+        "source": "release-npm-plain-crypto-js-4-2-1",
+        "target": "release-npm-axios-1-14-1",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-axios-postmortem",
+          "ref-google-axios"
+        ],
+        "summary": "The Axios postmortem and Google analysis describe malicious Axios releases depending on plain-crypto-js 4.2.1 as the install-time payload carrier."
+      },
+      {
+        "source": "release-npm-plain-crypto-js-4-2-1",
+        "target": "release-npm-axios-0-30-4",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-axios-postmortem",
+          "ref-google-axios"
+        ],
+        "summary": "The same malicious plain-crypto-js dependency was introduced into both compromised Axios release lines."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-CHECKMARX-JENKINS",
+    "title": "Checkmarx Jenkins AST plugin supply-chain compromise",
+    "summary": "Checkmarx reported that attackers used access traced to the Trivy supply-chain attack to publish malicious developer-tooling artifacts, including a modified Jenkins AST plugin.",
+    "status": "confirmed",
+    "first_observed_at": "2026-05-09",
+    "first_public_warning_at": "2026-05-11",
+    "disclosed_at": "2026-05-11",
+    "affected_ecosystems": [
+      "jenkins",
+      "github-actions",
+      "ci-cd"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "generic",
+        "name": "checkmarx-ast-scanner",
+        "vendor": "Checkmarx",
+        "package_url": "pkg:generic/checkmarx-ast-scanner",
+        "purl_justification": "Jenkins marketplace plugins do not have a registry-specific PURL type supported by this corpus."
+      }
+    ],
+    "supply_chain_vectors": [
+      "ci_cd_action_compromise",
+      "vendor_update_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "downstream_customer_compromise",
+      "malware_distribution"
+    ],
+    "references": [
+      {
+        "id": "ref-checkmarx-update",
+        "title": "Update: Ongoing Checkmarx Supply Chain Security Incident",
+        "publisher": "Checkmarx",
+        "url": "https://checkmarx.com/blog/ongoing-security-updates/",
+        "published_at": "2026-06-01"
+      },
+      {
+        "id": "ref-thn-checkmarx-jenkins",
+        "title": "TeamPCP Compromises Checkmarx Jenkins AST Plugin Weeks After KICS Supply Chain Attack",
+        "publisher": "The Hacker News",
+        "url": "https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html",
+        "published_at": "2026-05-11"
+      },
+      {
+        "id": "ref-sysdig-checkmarx",
+        "title": "TeamPCP expands: Supply chain compromise spreads from Trivy to Checkmarx GitHub Actions",
+        "publisher": "Sysdig Threat Research Team",
+        "url": "https://www.sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions",
+        "published_at": "2026-03-27"
+      }
+    ],
+    "tags": [
+      "checkmarx",
+      "jenkins",
+      "trivy",
+      "teampcp",
+      "ci-cd"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "ci_cd_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Checkmarx ties unauthorized repository access to the Trivy supply-chain attack; the Jenkins plugin publication is therefore modeled as causal propagation from the Trivy root.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "jenkinsci/checkmarx-ast-scanner-plugin",
+        "host": "github.com",
+        "owner": "jenkinsci",
+        "url": "https://github.com/jenkinsci/checkmarx-ast-scanner-plugin"
+      }
+    ],
+    "build_systems": [
+      {
+        "name": "Jenkins",
+        "provider": "Jenkins",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "Jenkins Marketplace",
+        "channel_type": "ci_cd_marketplace",
+        "ecosystem": "jenkins"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "Checkmarx GitHub repository access",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "plugin_release"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-thn-checkmarx-jenkins",
+          "ref-sysdig-checkmarx"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0003",
+        "campaign_id": "TP-CAMP-2026-0003",
+        "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+        "slug": "teampcp-supply-chain-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "TP-CAMP-2026-0003"
+        ],
+        "source_refs": [
+          "ref-thn-checkmarx-jenkins",
+          "ref-sysdig-checkmarx"
+        ]
+      }
+    ],
+    "attribution_confidence": "likely",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-thn-checkmarx-jenkins",
+          "ref-sysdig-checkmarx"
+        ],
+        "summary": "The Hacker News and Sysdig report the Checkmarx developer-tooling compromise as part of TeamPCP supply-chain activity."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0003",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-sysdig-checkmarx"
+        ],
+        "summary": "The Checkmarx Jenkins plugin compromise is modeled in the TeamPCP multi-ecosystem campaign because public reporting links it to the Trivy-to-Checkmarx chain."
+      }
+    ],
+    "propagation_edges": [
+      {
+        "source": "pkg-generic-aquasecurity-trivy-action",
+        "target": "pkg-generic-checkmarx-ast-scanner",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-checkmarx-update"
+        ],
+        "summary": "Checkmarx states that unauthorized GitHub access occurred due to the Trivy supply-chain attack, enabling malicious artifacts including the Jenkins plugin."
+      }
+    ]
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-NX-CONSOLE",
+    "title": "Nx Console VS Code extension compromise",
+    "summary": "A malicious Nx Console 18.95.0 extension release was briefly distributed through VS Code and OpenVSX marketplaces, compromising developer systems and exposing credentials.",
+    "status": "confirmed",
+    "first_observed_at": "2026-05-18",
+    "first_public_warning_at": "2026-05-18",
+    "disclosed_at": "2026-05-28",
+    "affected_ecosystems": [
+      "vscode",
+      "openvsx",
+      "github"
+    ],
+    "affected_components": [
+      {
+        "component_type": "package",
+        "ecosystem": "generic",
+        "name": "Nx Console VS Code extension",
+        "vendor": "Nrwl",
+        "package_url": "pkg:generic/nx-console-vs-code-extension",
+        "purl_justification": "VS Code extensions do not have a registry-specific PURL type supported by this corpus."
+      }
+    ],
+    "supply_chain_vectors": [
+      "signed_update_compromise",
+      "source_repository_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "developer_workstation_compromise",
+      "data_exfiltration"
+    ],
+    "references": [
+      {
+        "id": "ref-nx-console-advisory",
+        "title": "Compromised Nx Console version 18.95.0",
+        "publisher": "Nx / GitHub Security Advisory",
+        "url": "https://github.com/nrwl/nx-console/security/advisories/GHSA-c9j4-9m59-847w",
+        "published_at": "2026-05-18"
+      },
+      {
+        "id": "ref-nx-console-postmortem",
+        "title": "Postmortem: Nx Console v18.95.0 supply-chain compromise",
+        "publisher": "Nx",
+        "url": "https://nx.dev/blog/nx-console-v18-95-0-postmortem",
+        "published_at": "2026-05-20"
+      },
+      {
+        "id": "ref-stepsecurity-nx-console",
+        "title": "Nx Console VS Code Extension Compromised",
+        "publisher": "StepSecurity",
+        "url": "https://www.stepsecurity.io/blog/nx-console-vs-code-extension-compromised",
+        "published_at": "2026-05-18"
+      },
+      {
+        "id": "ref-cisa-nx-github",
+        "title": "Supply Chain Compromises Impact Nx Console and GitHub Repositories",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "url": "https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories",
+        "published_at": "2026-05-28"
+      }
+    ],
+    "tags": [
+      "nx-console",
+      "vscode-extension",
+      "openvsx",
+      "github",
+      "credential-theft"
+    ],
+    "confidence": "high",
+    "evidence_level": "vendor",
+    "attack_stage": "distribution_compromise",
+    "source_artifact_divergence": false,
+    "notes": "The incident is modeled as extension-distribution compromise; CISA connects it to GitHub repository impact but does not by itself establish named actor attribution.",
+    "maintainers": [],
+    "repositories": [
+      {
+        "name": "nrwl/nx-console",
+        "host": "github.com",
+        "owner": "nrwl",
+        "url": "https://github.com/nrwl/nx-console"
+      }
+    ],
+    "build_systems": [],
+    "distribution_channels": [
+      {
+        "name": "Visual Studio Marketplace",
+        "channel_type": "package_registry",
+        "ecosystem": "vscode"
+      },
+      {
+        "name": "Open VSX Registry",
+        "channel_type": "package_registry",
+        "ecosystem": "openvsx"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "Nx Console extension publishing identity",
+        "provider": "Visual Studio Marketplace",
+        "account_type": "package_registry_account",
+        "role": "extension_publish"
+      }
+    ],
+    "threat_actors": [],
+    "attribution_confidence": "unknown",
+    "attribution_evidence": []
+  },
+  {
+    "schema_version": "supply-chain-incident/1",
+    "id": "SC-2026-MEGALODON",
+    "title": "Megalodon GitHub Actions repository workflow poisoning campaign",
+    "summary": "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
+    "status": "confirmed",
+    "first_observed_at": "2026-05-18",
+    "first_public_warning_at": "2026-05-22",
+    "disclosed_at": "2026-05-28",
+    "affected_ecosystems": [
+      "github-actions",
+      "github",
+      "ci-cd"
+    ],
+    "affected_components": [
+      {
+        "component_type": "service",
+        "ecosystem": "github-actions",
+        "name": "GitHub Actions workflows in public repositories",
+        "vendor": "multiple repository owners",
+        "package_url": null
+      }
+    ],
+    "supply_chain_vectors": [
+      "source_repository_compromise",
+      "ci_cd_action_compromise"
+    ],
+    "impact_categories": [
+      "credential_theft",
+      "data_exfiltration",
+      "downstream_customer_compromise"
+    ],
+    "references": [
+      {
+        "id": "ref-stepsecurity-megalodon",
+        "title": "Megalodon: Mass GitHub Actions Secret Exfiltration Across 5,500+ Public Repositories",
+        "publisher": "StepSecurity",
+        "url": "https://www.stepsecurity.io/blog/megalodon-mass-github-actions-secret-exfiltration-across-5-500-public-repositories",
+        "published_at": "2026-05-22"
+      },
+      {
+        "id": "ref-cisa-megalodon",
+        "title": "Supply Chain Compromises Impact Nx Console and GitHub Repositories",
+        "publisher": "Cybersecurity and Infrastructure Security Agency",
+        "url": "https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories",
+        "published_at": "2026-05-28"
+      },
+      {
+        "id": "ref-csa-megalodon",
+        "title": "Megalodon: Mass CI/CD Pipeline Poisoning via GitHub Actions",
+        "publisher": "Cloud Security Alliance",
+        "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-megalodon-github-actions-cicd-supply-chain/",
+        "published_at": "2026-05-24"
+      },
+      {
+        "id": "ref-securityweek-megalodon",
+        "title": "Over 5,500 GitHub Repositories Infected in 'Megalodon' Supply Chain Attack",
+        "publisher": "SecurityWeek",
+        "url": "https://www.securityweek.com/over-5500-github-repositories-infected-in-megalodon-supply-chain-attack/",
+        "published_at": "2026-05-25"
+      }
+    ],
+    "tags": [
+      "megalodon",
+      "github-actions",
+      "workflow-poisoning",
+      "ci-cd",
+      "credential-theft"
+    ],
+    "confidence": "high",
+    "evidence_level": "researcher",
+    "attack_stage": "source_compromise",
+    "source_artifact_divergence": false,
+    "notes": "Modeled as workflow/source compromise rather than a registry package incident. Repository counts follow StepSecurity/SecurityWeek reporting and CISA acknowledgment.",
+    "maintainers": [],
+    "repositories": [],
+    "build_systems": [
+      {
+        "name": "GitHub Actions",
+        "provider": "GitHub",
+        "category": "ci-cd"
+      }
+    ],
+    "distribution_channels": [
+      {
+        "name": "GitHub repositories",
+        "channel_type": "source_repository",
+        "ecosystem": "github"
+      }
+    ],
+    "compromised_accounts": [
+      {
+        "name": "repository automation commit identities",
+        "provider": "GitHub",
+        "account_type": "source_control_account",
+        "role": "workflow_commit"
+      }
+    ],
+    "threat_actors": [
+      {
+        "id": "actor-teampcp",
+        "name": "TeamPCP",
+        "actor_type": "public",
+        "confidence": "suspected",
+        "aliases": [
+          "TeamPCP",
+          "Team PCP",
+          "UNC6780"
+        ],
+        "href": "/threat-actors/teampcp/",
+        "source_refs": [
+          "ref-csa-megalodon"
+        ]
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign-tp-camp-2026-0010",
+        "campaign_id": "TP-CAMP-2026-0010",
+        "name": "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
+        "slug": "megalodon-mass-github-repo-backdooring-campaign-2026",
+        "confidence": "likely",
+        "aliases": [
+          "Megalodon",
+          "TP-CAMP-2026-0010"
+        ],
+        "source_refs": [
+          "ref-stepsecurity-megalodon",
+          "ref-cisa-megalodon"
+        ]
+      }
+    ],
+    "attribution_confidence": "suspected",
+    "attribution_evidence": [
+      {
+        "target": "actor-teampcp",
+        "relationship_type": "ATTRIBUTED_TO_ACTOR",
+        "source_refs": [
+          "ref-csa-megalodon"
+        ],
+        "summary": "Cloud Security Alliance frames Megalodon as part of TeamPCP-linked May 2026 supply-chain activity; Threatpedia records this as suspected, not confirmed."
+      },
+      {
+        "target": "campaign-tp-camp-2026-0010",
+        "relationship_type": "RELATED_CAMPAIGN",
+        "source_refs": [
+          "ref-stepsecurity-megalodon",
+          "ref-cisa-megalodon"
+        ],
+        "summary": "The Megalodon campaign node groups the large-scale GitHub Actions workflow poisoning activity acknowledged by StepSecurity and CISA."
       }
     ]
   }

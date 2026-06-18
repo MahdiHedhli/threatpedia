@@ -480,7 +480,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         relationships = load_json(RELATIONSHIP_PATH)
         seeded_by = [item for item in relationships if item["type"] == "SEEDED_BY"]
 
-        self.assertEqual(len(seeded_by), 3)
+        self.assertEqual(len(seeded_by), 8)
         self.assertTrue(all(item["source"].startswith(("pkg-", "release-")) for item in seeded_by))
         self.assertTrue(all(item["target"].startswith(("pkg-", "release-")) for item in seeded_by))
         self.assertTrue(all(item["propagation_tier"] in {"causal", "temporal"} for item in seeded_by))
