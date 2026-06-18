@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-2026-0378",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-18T16:50:30.383Z",
+  "updated": "2026-06-18T16:50:30.383Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Mackay Sugar mills halted by cyberattack during crushing season",
+    "sources": [
+      "https://www.abc.net.au/news/2026-06-10/cyber-attack-shuts-down-north-queensland-sugar-mills/106780304",
+      "https://www.mkysugar.com.au/news-updates-circulars/mackay-sugar-cyber-security-incident"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Agriculture; Food Production; Manufacturing",
+      "geography": "Australia",
+      "threat_actor": "Unknown"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Mackay Sugar disclosed a cyber security incident and paused cane haulage/milling at two North Queensland mills at the start of the crushing season; ABC provides independent reporting and operational context. Treat as a discrete operational-disruption incident. Avoid attribution, ransomware claims, data-theft claims, or recovery timelines beyond source language. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0378",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-18T16:50:30.383Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1221"
+    }
+  ]
+}
