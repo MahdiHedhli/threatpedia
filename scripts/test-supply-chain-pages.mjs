@@ -69,8 +69,26 @@ assert.ok(
     supplyChainRouteSource.includes('data-sc-explore-exit') &&
     supplyChainRouteSource.includes('class="sc-explore-rail"') &&
     supplyChainRouteSource.includes('class="graph-search-pill"') &&
-    supplyChainRouteSource.includes('aria-label="Search graph"'),
+    supplyChainRouteSource.includes('aria-label="Search graph"') &&
+    supplyChainRouteSource.includes('title="Full screen"') &&
+    supplyChainRouteSource.includes('aria-label="Toggle full screen"') &&
+    supplyChainRouteSource.includes('title="Exit full screen"'),
   'route should expose full-screen explore controls on the persisted graph island'
+);
+assert.ok(
+  supplyChainRouteSource.includes(':global(body.sc-explore-active)') &&
+    supplyChainRouteSource.includes('overflow: hidden') &&
+    supplyChainRouteSource.includes(':global(body.sc-explore-active) :global(main)') &&
+    supplyChainRouteSource.includes('position: fixed') &&
+    supplyChainRouteSource.includes('max-width: none') &&
+    supplyChainRouteSource.includes(':global(body.sc-explore-active) .graph-hero-explore') &&
+    supplyChainRouteSource.includes('.graph-hero-explore .graph-chrome-actions') &&
+    supplyChainRouteSource.includes('right: 376px') &&
+    supplyChainRouteSource.includes('z-index: 1000') &&
+    supplyChainRouteSource.includes('background: var(--bg)') &&
+    supplyChainRouteSource.includes('.graph-icon-button svg') &&
+    supplyChainRouteSource.includes('stroke: currentColor'),
+  'full-screen explore should lock background scroll, cover the viewport, and render an SVG icon control'
 );
 assert.ok(
   supplyChainRouteSource.includes('<circle cx="11" cy="11" r="6.25"></circle>') &&
@@ -635,6 +653,18 @@ assert.ok(
     supplyChainGraphSource.includes('this.pageSelection = { type, value }') &&
     supplyChainRouteSource.includes('.graph-linked-active'),
   'graph client should implement G6 page-to-graph commands and reverse active-state binding'
+);
+assert.ok(
+  supplyChainGraphSource.includes('syncExploreMode()') &&
+    supplyChainGraphSource.includes("document.body.classList.toggle('sc-explore-active', active)") &&
+    supplyChainGraphSource.includes('queueExploreResize()') &&
+    supplyChainGraphSource.includes("window.dispatchEvent(new Event('resize'))") &&
+    supplyChainGraphSource.includes('restoreExploreScroll()') &&
+    supplyChainGraphSource.includes('clearExploreMode()') &&
+    supplyChainGraphSource.includes("document.body.classList.remove('sc-explore-active')") &&
+    supplyChainGraphSource.includes("sessionStorage.setItem('sc-explore-scroll-y'") &&
+    supplyChainGraphSource.includes('exitLink.click()'),
+  'graph client should toggle explore body state, resize the canvas, preserve scroll, and exit without forcing a reload'
 );
 assert.ok(
   supplyChainGraphSource.includes('this.onPageLoad = () =>') &&
