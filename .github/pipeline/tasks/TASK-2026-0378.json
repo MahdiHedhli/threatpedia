@@ -22,7 +22,7 @@
       "geography": "Australia",
       "threat_actor": "Unknown"
     },
-    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Mackay Sugar disclosed a cyber security incident and paused cane haulage/milling at two North Queensland mills at the start of the crushing season; ABC provides independent reporting and operational context. Treat as a discrete operational-disruption incident. Avoid attribution, ransomware claims, data-theft claims, or recovery timelines beyond source language. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Mackay Sugar disclosed a cyber security incident and paused cane haulage/milling at two North Queensland mills at the start of the crushing season; ABC provides independent reporting and operational context. Avoid attribution, ransomware claims, data-theft claims, or recovery timelines beyond source language. Dedupe checks found no matching public corpus, task, issue, or PR at intake time."
   },
   "specs": [
     "DATA-STANDARDS-v1.0.md",
