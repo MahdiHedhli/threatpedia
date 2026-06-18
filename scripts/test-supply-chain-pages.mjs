@@ -98,6 +98,33 @@ assert.ok(
   'route should not announce keyboard graph controls before initialization succeeds'
 );
 assert.ok(
+  supplyChainGraphPayload.nodes.some((node) => node.tier === 'incident' && node.short_label && node.short_label !== node.label),
+  'graph payload should include short incident labels for the visual label layer'
+);
+assert.ok(
+  supplyChainGraphSource.includes('REST_NODE_BUDGET = 40') &&
+    supplyChainGraphSource.includes('RECENT_WINDOW_DAYS = 183') &&
+    supplyChainGraphSource.includes('restVisibleIds()') &&
+    supplyChainGraphSource.includes('visibleBaseNodes(options = {})'),
+  'graph runtime should cull the resting view to actors plus recent-window incidents and campaigns'
+);
+assert.ok(
+  supplyChainGraphSource.includes('function shortNodeLabel') &&
+    supplyChainGraphSource.includes('shouldLabelNode(node)') &&
+    supplyChainGraphSource.includes('this.camera.z >= CAMPAIGN_LABEL_Z') &&
+    supplyChainGraphSource.includes('this.camera.z >= INCIDENT_LABEL_Z') &&
+    supplyChainGraphSource.includes('labelFits(candidate, occupied)') &&
+    supplyChainGraphSource.includes('shortNodeLabel(item.node)'),
+  'graph labels should use short labels, projected node positions, LOD thresholds, and collision rejection'
+);
+assert.ok(
+  supplyChainGraphSource.includes('const pushCurve =') &&
+    supplyChainGraphSource.includes('return 0.11;') &&
+    supplyChainGraphSource.includes('return 0.035;') &&
+    supplyChainGraphSource.includes('selection.nodes?.has(edge.source) && this.selection.nodes?.has(edge.target)'),
+  'graph edges should render as subdued curves and brighten only for selected subgraphs'
+);
+assert.ok(
   !supplyChainRouteSource.includes('class="graph-hero graph-hero-persistent"\n    transition:persist='),
   'route should not persist page-specific hero copy or selection data'
 );
@@ -436,14 +463,16 @@ assert.ok(
     supplyChainGraphSource.includes('class SupplyChainQuadtree') &&
     supplyChainGraphSource.includes('function isBaseDrawableNode') &&
     supplyChainGraphSource.includes("const BASE_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique'])") &&
-    supplyChainGraphSource.includes("const BLOOM_TIERS = new Set(['organization', 'package', 'release'])") &&
+    supplyChainGraphSource.includes("const REST_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident'])") &&
+    supplyChainGraphSource.includes("const BLOOM_TIERS = new Set(['organization', 'package', 'release', 'repository', 'maintainer', 'account', 'supporting'])") &&
     supplyChainGraphSource.includes('const baseNodes = allNodes.filter(isBaseDrawableNode)') &&
     supplyChainGraphSource.includes("baseNodes.filter((node) => node.tier === 'incident')") &&
     supplyChainGraphSource.includes("baseNodes.filter((node) => node.tier === 'technique')") &&
     supplyChainGraphSource.includes('selectEntityContext') &&
     supplyChainGraphSource.includes('source_incident_ids') &&
     supplyChainGraphSource.includes('connected incident') &&
-    supplyChainGraphSource.includes("laneIndex.get(actorId) ?? laneIndex.get('actor-unattributed') ?? 0") &&
+    supplyChainGraphSource.includes('const actorPosition = new Map()') &&
+    supplyChainGraphSource.includes('incidentsByActor.forEach') &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&
@@ -540,7 +569,7 @@ assert.ok(
     supplyChainGraphSource.includes("contextEdge.type === 'ATTRIBUTED_TO_ACTOR' || contextEdge.type === 'RELATED_CAMPAIGN'") &&
     supplyChainGraphSource.includes("this.focusReflow && this.selection?.type === 'technique'") &&
     supplyChainGraphSource.includes("node.tier === 'campaign'") &&
-    supplyChainGraphSource.includes("node.tier === 'technique' && this.selection?.value === node.id"),
+    supplyChainGraphSource.includes("if (node.tier === 'technique') return this.selection?.value === node.id;"),
   'graph client should implement bounded technique focus, reflow hit testing, and campaign-preserving labels'
 );
 

@@ -70,6 +70,23 @@ function displayLabel(value) {
     .replace('Ci/Cd', 'CI/CD');
 }
 
+function shortDisplayLabel(value, maxLength = 34) {
+  const compact = String(value || 'unknown')
+    .replace(/\bsoftware supply[- ]chain\b/gi, 'supply chain')
+    .replace(/\bsupply[- ]chain\b/gi, 'SC')
+    .replace(/\bself[- ]propagating\b/gi, 'propagating')
+    .replace(/\bcredential[- ]stealing\b/gi, 'credential theft')
+    .replace(/\bcompromise\b/gi, '')
+    .replace(/\bmalicious\b/gi, '')
+    .replace(/\bpackage\b/gi, 'pkg')
+    .replace(/\bapplication\b/gi, 'app')
+    .replace(/\brelease\b/gi, 'rel')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (compact.length <= maxLength) return compact;
+  return `${compact.slice(0, Math.max(8, maxLength - 3)).trim()}...`;
+}
+
 function slugify(value) {
   return String(value || 'unknown')
     .trim()
@@ -204,6 +221,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       entity_id: incident.id,
       type: 'incident',
       label: incident.title,
+      short_label: incident.shortLabel || incident.short_label || shortDisplayLabel(incident.title),
       tier: 'incident',
       sev: severityByAttackStage[incident.attack_stage] || 'medium',
       time,
@@ -228,6 +246,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
           entity_id: technique,
           type: 'technique',
           label: displayLabel(technique),
+          short_label: displayLabel(technique),
           tier: 'technique',
           sev: null,
           time: null,
@@ -255,6 +274,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
         entity_id: entity.id,
         type,
         label: entity.name || entity.id,
+        short_label: entity.shortLabel || entity.short_label || shortDisplayLabel(entity.name || entity.id),
         tier: tierByType[type] || type,
         sev: null,
         time: entity.published_at || null,
