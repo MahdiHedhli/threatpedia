@@ -1,0 +1,60 @@
+{
+  "task_id": "TASK-2026-0377",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-06-18T16:14:38.690Z",
+  "updated": "2026-06-18T16:14:38.690Z",
+  "source": "manual_submission",
+  "submitted_by": "dangermouse-bot",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "AudiA6 cryptocurrency laundering service seized in Europol operation",
+    "sources": [
+      "https://news.risky.biz/risky-bulletin-in-the-age-of-ai-cisa-changes-federal-patching-rules",
+      "https://www.europol.europa.eu/media-press/newsroom/news/ransomware-gangs-cut-eur-336-million-audia6-crypto-laundering-pipeline"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Financial Services; Cybercrime Infrastructure",
+      "geography": "Europe; Georgia",
+      "threat_actor": "Unknown; ransomware ecosystem"
+    },
+    "notes": "Manual lead intake from Risky Bulletin dated 2026-06-12. Europol says authorities disrupted the AudiA6 cryptocurrency laundering pipeline used by ransomware gangs, with more than EUR336 million suspected laundered between 2022 and 2025. Two administrators were arrested in Georgia, and authorities seized domains, suspended Telegram accounts, and seized money/property. Keep scope bounded to the law-enforcement disruption and laundering infrastructure; do not infer a specific ransomware operator unless sources support it. Danger Mouse dry-run dedupe passed with `node scripts/pipeline-submit-link.mjs` before this issue was opened."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/{slug}.md",
+    "branch": "pipeline/TASK-2026-0377",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-18T16:14:38.690Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "dangermouse-bot",
+      "note": "Manual submission from Issue #1219"
+    }
+  ]
+}
