@@ -601,11 +601,6 @@
   },
   {
     "source": "incident-SC-2025-SHAI-HULUD-2",
-    "target": "org-multiple-npm-maintainers",
-    "type": "AFFECTED_ORGANIZATION"
-  },
-  {
-    "source": "incident-SC-2025-SHAI-HULUD-2",
     "target": "actor-teampcp",
     "type": "ATTRIBUTED_TO_ACTOR"
   },
@@ -823,11 +818,6 @@
     "source": "incident-SC-2026-LITELLM",
     "target": "channel-pypi-package-registry-pypi",
     "type": "USED_DISTRIBUTION_CHANNEL"
-  },
-  {
-    "source": "incident-SC-2026-MEGALODON",
-    "target": "org-multiple-repository-owners",
-    "type": "AFFECTED_ORGANIZATION"
   },
   {
     "source": "incident-SC-2026-MEGALODON",
@@ -1064,6 +1054,17 @@
     "source_incident_id": "SC-2026-LITELLM",
     "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise.",
     "target": "release-pypi-litellm-1-82-7",
+    "type": "SEEDED_BY"
+  },
+  {
+    "evidence_refs": [
+      "ref-snyk-litellm"
+    ],
+    "propagation_tier": "causal",
+    "source": "pkg-generic-aquasecurity-trivy-action",
+    "source_incident_id": "SC-2026-LITELLM",
+    "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise.",
+    "target": "release-pypi-litellm-1-82-8",
     "type": "SEEDED_BY"
   },
   {

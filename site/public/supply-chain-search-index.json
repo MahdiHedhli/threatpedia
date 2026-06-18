@@ -262,8 +262,7 @@
       "TeamPCP Multi-Ecosystem Supply Chain Campaign",
       "TP-CAMP-2026-0003",
       "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "org-multiple-npm-maintainers"
+      "GitHub repositories"
     ]
   },
   {
@@ -513,8 +512,7 @@
       "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
       "TP-CAMP-2026-0010",
       "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "org-multiple-repository-owners"
+      "GitHub repositories"
     ]
   },
   {
@@ -729,8 +727,7 @@
       "TeamPCP Multi-Ecosystem Supply Chain Campaign",
       "TP-CAMP-2026-0003",
       "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "org-multiple-npm-maintainers"
+      "GitHub repositories"
     ]
   },
   {
@@ -959,7 +956,6 @@
       "GitHub repositories",
       "channel-npm-package-registry-npm-registry",
       "npm registry",
-      "org-multiple-npm-maintainers",
       "SC-2026-AXIOS",
       "Axios npm maintainer account compromise",
       "A compromised Axios maintainer account published malicious npm releases that added plain-crypto-js as an install-time dependency delivering a cross-platform remote access trojan.",
@@ -1057,7 +1053,6 @@
       "campaign-tp-camp-2026-0010",
       "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
       "TP-CAMP-2026-0010",
-      "org-multiple-repository-owners",
       "SC-2026-MINI-SHAI-HULUD",
       "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave",
       "Mini Shai-Hulud compromised TanStack release automation and spread across npm and PyPI packages through trusted publishing, cache poisoning, and credential theft from CI/CD environments.",
@@ -1338,7 +1333,6 @@
       "TP-CAMP-2026-0003",
       "channel-github-source-repository-github-repositories",
       "GitHub repositories",
-      "org-multiple-npm-maintainers",
       "SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "tj-actions changed-files GitHub Action compromise",
       "The tj-actions/changed-files GitHub Action was compromised, exposing secrets from affected workflow runs through malicious action behavior.",
@@ -1390,7 +1384,6 @@
       "campaign-tp-camp-2026-0010",
       "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
       "TP-CAMP-2026-0010",
-      "org-multiple-repository-owners",
       "SC-2026-MINI-SHAI-HULUD",
       "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave",
       "Mini Shai-Hulud compromised TanStack release automation and spread across npm and PyPI packages through trusted publishing, cache poisoning, and credential theft from CI/CD environments.",
@@ -1630,8 +1623,7 @@
       "build-github-github-actions",
       "GitHub Actions",
       "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "org-multiple-repository-owners"
+      "GitHub repositories"
     ]
   },
   {
@@ -1731,7 +1723,6 @@
       "GitHub repositories",
       "channel-npm-package-registry-npm-registry",
       "npm registry",
-      "org-multiple-npm-maintainers",
       "SC-2026-CHECKMARX-JENKINS",
       "Checkmarx Jenkins AST plugin supply-chain compromise",
       "Checkmarx reported that attackers used access traced to the Trivy supply-chain attack to publish malicious developer-tooling artifacts, including a modified Jenkins AST plugin.",
@@ -2091,7 +2082,6 @@
       "TP-CAMP-2026-0003",
       "channel-npm-package-registry-npm-registry",
       "npm registry",
-      "org-multiple-npm-maintainers",
       "SC-2026-MEGALODON",
       "Megalodon GitHub Actions repository workflow poisoning campaign",
       "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
@@ -2106,8 +2096,7 @@
       "repository automation commit identities",
       "campaign-tp-camp-2026-0010",
       "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
-      "TP-CAMP-2026-0010",
-      "org-multiple-repository-owners"
+      "TP-CAMP-2026-0010"
     ]
   },
   {
@@ -2456,7 +2445,6 @@
       "TP-CAMP-2026-0003",
       "channel-github-source-repository-github-repositories",
       "GitHub repositories",
-      "org-multiple-npm-maintainers",
       "SC-2026-AXIOS",
       "Axios npm maintainer account compromise",
       "A compromised Axios maintainer account published malicious npm releases that added plain-crypto-js as an install-time dependency delivering a cross-platform remote access trojan.",
@@ -3528,8 +3516,7 @@
       "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
       "TP-CAMP-2026-0010",
       "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "org-multiple-repository-owners"
+      "GitHub repositories"
     ]
   },
   {
@@ -3825,8 +3812,7 @@
       "channel-github-source-repository-github-repositories",
       "GitHub repositories",
       "channel-npm-package-registry-npm-registry",
-      "npm registry",
-      "org-multiple-npm-maintainers"
+      "npm registry"
     ]
   },
   {
@@ -4825,83 +4811,6 @@
       "pkg-pypi-mistralai",
       "repo-github-com-tanstack-router",
       "TanStack/router"
-    ]
-  },
-  {
-    "id": "org-multiple-npm-maintainers",
-    "type": "organization",
-    "displayName": "multiple npm maintainers",
-    "aliases": [
-      "org-multiple-npm-maintainers",
-      "SC-2025-SHAI-HULUD-2",
-      "Shai-Hulud 2.0 npm supply-chain worm wave",
-      "A second Shai-Hulud wave compromised hundreds of npm packages through install-time malware, GitHub token theft, and public repositories containing exfiltrated secrets.",
-      "npm",
-      "shai-hulud",
-      "self-propagating",
-      "github-actions",
-      "credential-theft",
-      "github",
-      "maintainer_account_compromise",
-      "package_repository_compromise",
-      "ci_cd_action_compromise",
-      "credential_theft",
-      "developer_workstation_compromise",
-      "downstream_customer_compromise",
-      "Shai-Hulud 2.0 affected npm package set",
-      "account-github-victim-github-tokens",
-      "victim GitHub tokens",
-      "account-npm-compromised-npm-maintainer-tokens",
-      "compromised npm maintainer tokens",
-      "actor-teampcp",
-      "TeamPCP",
-      "Team PCP",
-      "UNC6780",
-      "build-github-github-actions",
-      "GitHub Actions",
-      "campaign-tp-camp-2026-0003",
-      "TeamPCP Multi-Ecosystem Supply Chain Campaign",
-      "TP-CAMP-2026-0003",
-      "channel-github-source-repository-github-repositories",
-      "GitHub repositories",
-      "channel-npm-package-registry-npm-registry",
-      "npm registry"
-    ]
-  },
-  {
-    "id": "org-multiple-repository-owners",
-    "type": "organization",
-    "displayName": "multiple repository owners",
-    "aliases": [
-      "org-multiple-repository-owners",
-      "SC-2026-MEGALODON",
-      "Megalodon GitHub Actions repository workflow poisoning campaign",
-      "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
-      "megalodon",
-      "github-actions",
-      "workflow-poisoning",
-      "ci-cd",
-      "credential-theft",
-      "github",
-      "source_repository_compromise",
-      "ci_cd_action_compromise",
-      "credential_theft",
-      "data_exfiltration",
-      "downstream_customer_compromise",
-      "GitHub Actions workflows in public repositories",
-      "account-github-repository-automation-commit-identities",
-      "repository automation commit identities",
-      "actor-teampcp",
-      "TeamPCP",
-      "Team PCP",
-      "UNC6780",
-      "build-github-github-actions",
-      "GitHub Actions",
-      "campaign-tp-camp-2026-0010",
-      "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm",
-      "TP-CAMP-2026-0010",
-      "channel-github-source-repository-github-repositories",
-      "GitHub repositories"
     ]
   },
   {

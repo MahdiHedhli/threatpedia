@@ -161,26 +161,6 @@
   },
   {
     "aliases": [
-      "multiple npm maintainers"
-    ],
-    "id": "org-multiple-npm-maintainers",
-    "name": "multiple npm maintainers",
-    "source_incident_ids": [
-      "SC-2025-SHAI-HULUD-2"
-    ]
-  },
-  {
-    "aliases": [
-      "multiple repository owners"
-    ],
-    "id": "org-multiple-repository-owners",
-    "name": "multiple repository owners",
-    "source_incident_ids": [
-      "SC-2026-MEGALODON"
-    ]
-  },
-  {
-    "aliases": [
       "Nrwl"
     ],
     "id": "org-nrwl",

@@ -37,7 +37,7 @@
     "campaign": 5,
     "distribution_channel": 19,
     "maintainer": 6,
-    "organization": 29,
+    "organization": 27,
     "package": 31,
     "release": 12,
     "repository": 17
@@ -2695,48 +2695,6 @@
       ],
       "source_incident_ids": [
         "SC-2026-MINI-SHAI-HULUD"
-      ]
-    },
-    {
-      "id": "org-multiple-npm-maintainers",
-      "entity_id": "org-multiple-npm-maintainers",
-      "type": "organization",
-      "label": "multiple npm maintainers",
-      "short_label": "multiple npm maintainers",
-      "tier": "organization",
-      "sev": null,
-      "time": null,
-      "parent": null,
-      "techniques": [],
-      "purl": null,
-      "href": "/supply-chain/organizations/org-multiple-npm-maintainers/",
-      "ecosystem": null,
-      "aliases": [
-        "multiple npm maintainers"
-      ],
-      "source_incident_ids": [
-        "SC-2025-SHAI-HULUD-2"
-      ]
-    },
-    {
-      "id": "org-multiple-repository-owners",
-      "entity_id": "org-multiple-repository-owners",
-      "type": "organization",
-      "label": "multiple repository owners",
-      "short_label": "multiple repository owners",
-      "tier": "organization",
-      "sev": null,
-      "time": null,
-      "parent": null,
-      "techniques": [],
-      "purl": null,
-      "href": "/supply-chain/organizations/org-multiple-repository-owners/",
-      "ecosystem": null,
-      "aliases": [
-        "multiple repository owners"
-      ],
-      "source_incident_ids": [
-        "SC-2026-MEGALODON"
       ]
     },
     {
@@ -6047,14 +6005,6 @@
       "source_refs": []
     },
     {
-      "id": "AFFECTED_ORGANIZATION:incident-SC-2025-SHAI-HULUD-2->org-multiple-npm-maintainers",
-      "source": "incident-SC-2025-SHAI-HULUD-2",
-      "target": "org-multiple-npm-maintainers",
-      "type": "AFFECTED_ORGANIZATION",
-      "evidence_tier": null,
-      "source_refs": []
-    },
-    {
       "id": "AFFECTED_ORGANIZATION:incident-SC-2025-TJ-ACTIONS-CHANGED-FILES->org-tj-actions",
       "source": "incident-SC-2025-TJ-ACTIONS-CHANGED-FILES",
       "target": "org-tj-actions",
@@ -6082,14 +6032,6 @@
       "id": "AFFECTED_ORGANIZATION:incident-SC-2026-LITELLM->org-berriai",
       "source": "incident-SC-2026-LITELLM",
       "target": "org-berriai",
-      "type": "AFFECTED_ORGANIZATION",
-      "evidence_tier": null,
-      "source_refs": []
-    },
-    {
-      "id": "AFFECTED_ORGANIZATION:incident-SC-2026-MEGALODON->org-multiple-repository-owners",
-      "source": "incident-SC-2026-MEGALODON",
-      "target": "org-multiple-repository-owners",
       "type": "AFFECTED_ORGANIZATION",
       "evidence_tier": null,
       "source_refs": []
@@ -8680,6 +8622,20 @@
       "id": "SEEDED_BY:pkg-generic-aquasecurity-trivy-action->release-pypi-litellm-1-82-7",
       "source": "pkg-generic-aquasecurity-trivy-action",
       "target": "release-pypi-litellm-1-82-7",
+      "type": "SEEDED_BY",
+      "evidence_tier": null,
+      "source_refs": [],
+      "evidence_refs": [
+        "ref-snyk-litellm"
+      ],
+      "propagation_tier": "causal",
+      "source_incident_id": "SC-2026-LITELLM",
+      "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
+    },
+    {
+      "id": "SEEDED_BY:pkg-generic-aquasecurity-trivy-action->release-pypi-litellm-1-82-8",
+      "source": "pkg-generic-aquasecurity-trivy-action",
+      "target": "release-pypi-litellm-1-82-8",
       "type": "SEEDED_BY",
       "evidence_tier": null,
       "source_refs": [],

@@ -3499,6 +3499,15 @@
           "ref-snyk-litellm"
         ],
         "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
+      },
+      {
+        "source": "pkg-generic-aquasecurity-trivy-action",
+        "target": "release-pypi-litellm-1-82-8",
+        "propagation_tier": "causal",
+        "evidence_refs": [
+          "ref-snyk-litellm"
+        ],
+        "summary": "Snyk reports TeamPCP published the backdoored LiteLLM versions after obtaining maintainer PyPI credentials through the prior Trivy compromise."
       }
     ]
   },
