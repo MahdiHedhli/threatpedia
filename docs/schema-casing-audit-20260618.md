@@ -2,7 +2,7 @@
 
 **Branch:** `codex/schema-intake-pr1-audit-20260618`  
 **Head SHA audited before this report:** `5cad0a3e454ed7a558c34e5e747b547712901156` (`origin/main`)
-**Repository / checkout:** public `threatpedia` audit clone plus read-only `threatpedia-working` private checkout  
+**Repository / checkout:** public `threatpedia` audit clone plus non-sensitive summaries from read-only private control-plane inspection
 **Audited by:** Codex / Kernel K Dev2  
 **Date:** 2026-06-18
 
@@ -27,20 +27,8 @@
 
 | Repo / checkout | Branch | Commit SHA | Notes |
 |---|---|---|---|
-| `threatpedia` public | `origin/main` via `codex/schema-intake-pr1-audit-20260618` | `5cad0a3e454ed7a558c34e5e747b547712901156` | Fresh clone at `/tmp/threatpedia-pr1-schema-audit`; report added after audit. |
-| `threatpedia-working` private | `codex/ernest-review-lane-identity` | `74fb3bdf604a314349f4cdef4f4ad50e9a2873dc` | Read-only inspection. Checkout was dirty before PR1; no private files were modified. |
-
-Private working tree pre-existing dirty state:
-
-```text
- M working/agent-notes/codex-log.md
- M working/worker-rules/kernel-k-review-heartbeat.md
- M working/worker-rules/threatpedia-dispatcher.md
-?? pr1203-brief-short.md
-?? working/scratchpad/pr1203.diff
-?? working/worker-rules/dangermouse-heartbeat.md
-?? working/worker-rules/ernest-penfold-review-heartbeat.md
-```
+| `threatpedia` public | `origin/main` via `codex/schema-intake-pr1-audit-20260618` | `5cad0a3e454ed7a558c34e5e747b547712901156` | Fresh audit clone; report added after audit. |
+| private control-plane docs | omitted from public report | omitted from public report | Read-only reconciliation input only. Private branch, commit, checkout path, and dirty-state inventory are intentionally omitted from this public audit. No private files were modified. |
 
 ---
 
@@ -48,11 +36,11 @@ Private working tree pre-existing dirty state:
 
 ```text
 Attached handoff reference:
-  /tmp/threatpedia-pr1-handoff/codex-handoff-threatpedia-schema-intake-foundation-v2/SPEC-ENTITY-ADVERSARY-PROFILE.md
-  /tmp/threatpedia-pr1-handoff/codex-handoff-threatpedia-schema-intake-foundation-v2/SPEC-LEAD-INTAKE-CLASSIFICATION.md
-  /tmp/threatpedia-pr1-handoff/codex-handoff-threatpedia-schema-intake-foundation-v2/CLAUDE-DANGERMOUSE-PUBLIC-PR1-AUDIT-REFERENCE.md
-  /tmp/threatpedia-pr1-handoff/codex-handoff-threatpedia-schema-intake-foundation-v2/PR1-SCHEMA-CASING-AUDIT-TEMPLATE.md
-  /tmp/threatpedia-pr1-handoff/codex-handoff-threatpedia-schema-intake-foundation-v2/PR1-RECONCILIATION-GATE-BEFORE-PR2.md
+  PR1 entity/adversary profile specification
+  PR1 lead intake classification specification
+  PR1 public audit reference
+  PR1 schema/casing audit template
+  PR1 reconciliation gate notes
 
 Public schema / standards:
   site/src/content.config.ts
@@ -73,22 +61,12 @@ Public pipeline / validators / docs:
   .github/pipeline/schema/task-schema.json
   docs/PIPELINE.md
 
-Private working state:
-  working/decisions/0002-three-content-collections.md
-  working/decisions/0005-pipeline-reset-and-spec-first.md
-  working/decisions/0007-entity-id-format.md
-  working/specs/MANIFEST-SPEC.md
-  working/specs/INGESTION-SPEC.md
-  working/specs/SOURCE-SPEC.md
-  working/specs/EDITORIAL-WORKFLOW-SPEC.md
-  working/specs/COORDINATION-SPEC.md
-  working/specs/AGENT-TASK-SPEC.md
-  working/inbox/penfold/TASK-2026-0055-populate-missing-threat-actors.md
-  working/inbox/penfold/TASK-2026-0059-generate-threat-actor-article.md
-  working/inbox/dangermouse/TASK-2026-0071-threat-actor-promotion-path.md
-  working/supervisor/roadmap-backlog.md
-  working/supervisor/legacy-disposition-plan.md
-  .worker-state/threatpedia-dispatcher/automation-registry.json
+Private control-plane input, summarized only:
+  historical collection/pipeline/entity-ID ADRs
+  private manifest, ingestion, source, editorial, coordination, and agent-task specs
+  active threat-actor population task notes relevant to public schema selection
+  supervisor roadmap and legacy disposition notes
+  automation registry category check
 ```
 
 ---
@@ -291,17 +269,17 @@ site/src/content/threat-actors/wizard-spider.md
 
 **Evidence:**
 
-- Active private registry-like file search, excluding `.git` and `working/_archive`, found only `.worker-state/threatpedia-dispatcher/automation-registry.json`, which is an automation registry, not an entity-anchor registry.
-- `working/decisions/0007-entity-id-format.md` says: "Threat Actors | (no numeric ID)" and "Threat-actor IDs remain slug-only per ADR 0002. No numeric ID for actors." It also states "Private repo: N/A - the private repo carries no entity IDs directly (no corpus here)."
-- `working/specs/MANIFEST-SPEC.md` describes a future `entities/manifest.json` with `TP-APT-NNNN`, but this is a spec artifact and no corresponding active manifest file exists in private.
-- `working/decisions/0005-pipeline-reset-and-spec-first.md` says historical PoC manifests such as `threat-actor-index.json` become reference material, not authoritative live data.
-- Private inbox tasks for threat-actor population point workers at public `site/src/content.config.ts` and public `site/src/content/threat-actors/`, using the live camelCase schema.
+- Active private registry-like file search found only an automation registry category, not an entity-anchor registry.
+- The private entity-ID ADR says threat actors remain slug-only and do not carry a numeric private entity ID layer.
+- The private manifest spec describes a future entity manifest concept with `TP-APT-NNNN`, but this is a spec artifact and no corresponding active private manifest was found.
+- The private pipeline reset ADR says historical proof-of-concept manifests become reference material, not authoritative live data.
+- Private task notes for threat-actor population point workers at public `site/src/content.config.ts` and public `site/src/content/threat-actors/`, using the live camelCase schema.
 
 ### Q12. If public and private schemas differ, which is authoritative for PR2?
 
 **Answer:** For PR2 public implementation, `site/src/content.config.ts` and the current public collection path are authoritative. Private docs are reconciliation input, not implementation authority, unless Kernel K explicitly ratifies a private model before PR2.
 
-**Rationale:** The current public Astro build validates against `site/src/content.config.ts`; the public corpus lives at `site/src/content/threat-actors/`; private ADR 0007 says no numeric actor IDs and no private entity IDs; no active private registry exists. Therefore, if no private registry is supplied before PR2, `aptId` and `externalIds` are greenfield additive fields and must be warning-mode/compatibility-mode for legacy public records until PR3 dry-run and approved migration.
+**Rationale:** The current public Astro build validates against `site/src/content.config.ts`; the public corpus lives at `site/src/content/threat-actors/`; private control-plane guidance says no numeric actor IDs and no private entity IDs; no active private registry exists. Therefore, if no private registry is supplied before PR2, `aptId` and `externalIds` are greenfield additive fields and must be warning-mode/compatibility-mode for legacy public records until PR3 dry-run and approved migration.
 
 ---
 
@@ -309,7 +287,7 @@ site/src/content/threat-actors/wizard-spider.md
 
 | Claude/DangerMouse public finding | Verified by Codex? | Public/private delta | Action before PR2 |
 |---|---:|---|---|
-| public threat-actors appear camelCase | Yes | Private active tasks also point at camelCase public `content.config.ts`; older private specs contain snake_case concepts. | Implement v0.5 concepts in camelCase unless a migration alias is approved. |
+| public threat-actors appear camelCase | Yes | Private operational notes also point at camelCase public `content.config.ts`; older private specs contain snake_case concepts. | Implement v0.5 concepts in camelCase unless a migration alias is approved. |
 | lifecycle field appears `reviewStatus` | Yes | Private operational/task acceptance still uses snake_case `review_status`; content remains `reviewStatus`. | Keep content lifecycle as `reviewStatus`; PR4 must separately reconcile task schema. |
 | lifecycle enum matches locked values | Yes | No conflicting active private lifecycle enum found. | Preserve values exactly. |
 | sources use `reliability` R1-R4, not `source_rating` | Yes | Private DATA-STANDARDS/MANIFEST prose still says `source_rating`; live schema and tasks use `reliability`. | Map source-rating concept to live `reliability`; do not rename live sources in PR2. |
@@ -352,7 +330,7 @@ draft_ai | draft_human | under_review | certified | disputed | deprecated
 
 ### TP-APT / External Anchor Registry
 
-**Decision:** No active private registry exists in the audited private checkout. Default applies: `aptId` and `externalIds` are greenfield additive fields and must not be mandatory blockers for current public records in PR2.
+**Decision:** No active private registry was found in the audited private control-plane input. Default applies: `aptId` and `externalIds` are greenfield additive fields and must not be mandatory blockers for current public records in PR2.
 
 ### Required-Field Enforcement Mode For Existing Records
 
@@ -424,7 +402,7 @@ Reason categories:
 
 1. Approve the camelCase implementation map for v0.5 content fields.
 2. Confirm that `site/src/content/threat-actors/` remains the public collection/path for PR2.
-3. Resolve the private spec conflict: DATA-STANDARDS/MANIFEST prose says `TP-APT-NNNN`, but private ADR 0007 and public live schema currently use slug-only threat actors.
+3. Resolve the private spec conflict: DATA-STANDARDS/MANIFEST prose says `TP-APT-NNNN`, but private control-plane guidance and public live schema currently use slug-only threat actors.
 4. Confirm `aptId` / `externalIds` are greenfield additive fields unless a private registry is supplied before PR2.
 5. Approve warning-mode compatibility for all existing legacy threat-actor records until PR3 migration dry-run and explicit rewrite approval.
 6. Confirm source schema mapping: v0.5 `source_rating` language maps to live `sources[].reliability`; no PR2 source-field rename.
@@ -437,8 +415,8 @@ Reason categories:
 ## 9. Blockers / Unknowns
 
 - PR2 must not start until Kernel K reconciles the decisions in section 8.
-- No active private TP-APT/external anchor registry was found; if one exists outside the audited checkout, it must be supplied before PR2 changes the field enforcement plan.
-- Private repo was dirty before this audit; findings are read-only and should be treated as a point-in-time inspection of `74fb3bdf604a314349f4cdef4f4ad50e9a2873dc` plus uncommitted local state. No private writes were made.
+- No active private TP-APT/external anchor registry was found; if one exists outside the audited inputs, it must be supplied before PR2 changes the field enforcement plan.
+- Private branch, commit, checkout path, and dirty-state details are intentionally omitted from this public report. Findings are read-only and should be treated as a point-in-time non-sensitive summary of private control-plane input. No private writes were made.
 
 ---
 
@@ -458,7 +436,7 @@ Checks run:
   git status --short
   rg --files / targeted rg inspections
   ruby YAML frontmatter count over site/src/content/threat-actors/*.{md,mdx}
-  private read-only file and content searches
+  private read-only control-plane summary searches, with branch/SHA/path/dirty-state details omitted from this public report
 
 Reviewers requested/tagged:
   To be requested/tagged on PR: @MahdiHedhli, @dangermouse-bot, @ernestpenfold-bot
