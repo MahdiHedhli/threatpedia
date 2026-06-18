@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-06-18T16:52:49.160Z",
-  "updated": "2026-06-18T18:08:41.300Z",
+  "updated": "2026-06-18T18:13:10.569Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -79,8 +79,17 @@
       "to": "pr_open",
       "agent": "Kernel K",
       "note": "Recorded existing PR #1236 and cleared lock after current-head review feedback."
+    },
+    {
+      "timestamp": "2026-06-18T18:13:10.569Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1236 merged (5ffd673)."
     }
   ],
   "pr_number": 1236,
-  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1236"
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1236",
+  "merged_at": "2026-06-18T18:13:10.569Z"
 }
