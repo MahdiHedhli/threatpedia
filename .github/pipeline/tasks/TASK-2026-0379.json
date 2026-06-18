@@ -3,9 +3,9 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P1",
-  "status": "pr_open",
+  "status": "complete",
   "created": "2026-06-18T16:51:03.233Z",
-  "updated": "2026-06-18T18:23:00.000Z",
+  "updated": "2026-06-18T18:39:02.615Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
   "locked_by": null,
@@ -80,6 +80,16 @@
       "note": "PR #1244 opened; article path corrected into Astro site content.",
       "pr_number": 1244,
       "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1244"
+    },
+    {
+      "timestamp": "2026-06-18T18:39:02.615Z",
+      "action": "merged",
+      "from": "pr_open",
+      "to": "complete",
+      "agent": "pipeline-task-state",
+      "note": "PR #1244 merged (3a12d84)."
     }
-  ]
+  ],
+  "pr_number": 1244,
+  "merged_at": "2026-06-18T18:39:02.615Z"
 }
