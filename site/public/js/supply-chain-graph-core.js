@@ -1,18 +1,26 @@
 const GRAPH_DATA_URL = '/supply-chain-graph.json';
 const BASE_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident', 'technique']);
-const BLOOM_TIERS = new Set(['organization', 'package', 'release']);
+const REST_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident']);
+const BLOOM_TIERS = new Set(['organization', 'package', 'release', 'repository', 'maintainer', 'account', 'supporting']);
 const BLOOM_NODE_BUDGET = 28;
 const BLOOM_Z_THRESHOLD = 1.55;
+const CAMPAIGN_LABEL_Z = 1.18;
+const INCIDENT_LABEL_Z = 1.48;
+const DEEP_LABEL_Z = 1.95;
+const TECHNIQUE_Z_THRESHOLD = 1.45;
+const ALL_INCIDENT_Z_THRESHOLD = 1.72;
+const RECENT_WINDOW_DAYS = 183;
+const REST_NODE_BUDGET = 40;
 const SEVERITY_COLORS = {
   critical: [1.0, 0.267, 0.267, 1],
   high: [1.0, 0.647, 0.0, 1],
   medium: [0.91, 0.627, 0.125, 1],
   low: [0.318, 0.812, 0.4, 1],
-  actor: [1.0, 0.267, 0.267, 1],
+  actor: [1.0, 0.647, 0.0, 1],
   campaign: [0.91, 0.627, 0.125, 1],
   technique: [0.804, 0.835, 0.878, 1],
-  organization: [0.49, 0.69, 1.0, 1],
-  package: [0.318, 0.812, 0.4, 1],
+  organization: [0.91, 0.627, 0.125, 1],
+  package: [0.91, 0.627, 0.125, 1],
   release: [0.804, 0.835, 0.878, 1],
   propagation: [1.0, 0.647, 0.0, 1],
   default: [0.804, 0.835, 0.878, 1],
@@ -36,6 +44,21 @@ function dateNumber(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function shortNodeLabel(node) {
+  return node?.short_label || node?.shortLabel || node?.name || node?.label || node?.id || 'Unknown';
+}
+
+function recentThreshold(incidentNodes) {
+  const latest = Math.max(...incidentNodes.map((node) => dateNumber(node.time)).filter(Number.isFinite));
+  if (!Number.isFinite(latest)) return null;
+  return latest - RECENT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+}
+
+function isRecentIncident(node, threshold) {
+  const time = dateNumber(node?.time);
+  return Number.isFinite(time) && (threshold === null || time >= threshold);
+}
+
 function tierRank(tier) {
   if (tier === 'actor') return 0;
   if (tier === 'technique') return 1;
@@ -55,7 +78,25 @@ function bloomRank(node) {
   if (node.tier === 'organization') return 0;
   if (node.tier === 'package') return 1;
   if (node.tier === 'release') return 2;
-  return 3;
+  if (node.tier === 'repository') return 3;
+  if (node.tier === 'maintainer') return 4;
+  if (node.tier === 'account') return 5;
+  if (node.tier === 'supporting') return 6;
+  return 7;
+}
+
+function nodeRadius(node) {
+  if (node?.tier === 'actor') return 22;
+  if (node?.tier === 'campaign') return 15;
+  if (node?.tier === 'incident') return 11;
+  if (node?.tier === 'organization') return 12;
+  if (node?.tier === 'package') return 8;
+  if (node?.tier === 'release') return 6;
+  if (node?.tier === 'repository') return 8;
+  if (node?.tier === 'maintainer') return 7;
+  if (node?.tier === 'account') return 7;
+  if (node?.tier === 'supporting') return 7;
+  return 8;
 }
 
 class SupplyChainQuadtree {
@@ -204,7 +245,15 @@ function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 
   const centerX = incident.x + 280;
   const centerY = incident.y + 16;
   const visibleChildren = sortBloomNodes(
-    [...context.orgIds, ...context.packageIds, ...context.releaseIds]
+    [
+      ...context.orgIds,
+      ...context.packageIds,
+      ...context.releaseIds,
+      ...context.repositoryIds,
+      ...context.maintainerIds,
+      ...context.accountIds,
+      ...context.supportingIds,
+    ]
       .map((id) => sourceNodes.get(id))
       .filter(Boolean)
   );
@@ -245,6 +294,7 @@ function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 
     nodes.push(orgNode);
 
     const packagesForOrg = context.packageIds
+      .concat(context.repositoryIds, context.maintainerIds, context.accountIds, context.supportingIds)
       .map((id) => sourceNodes.get(id))
       .filter((node) => node && visibleIds.has(node.id))
       .filter((node, index) => {
@@ -258,7 +308,7 @@ function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 
         ...packageNode,
         x: orgNode.x + Math.cos(packageAngle) * packageRadius,
         y: orgNode.y + Math.sin(packageAngle) * packageRadius,
-        radius: 8,
+        radius: nodeRadius(packageNode),
         bloom_parent: incident.id,
       });
     });
@@ -301,7 +351,19 @@ function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 
   }
 
   const visibleSet = new Set(nodes.map((node) => node.id));
-  const edgeTypes = new Set(['AFFECTED_ORGANIZATION', 'AFFECTED_PACKAGE', 'PACKAGE_RELEASE', 'INCIDENT_AFFECTED_RELEASE', 'SEEDED_BY']);
+  const edgeTypes = new Set([
+    'AFFECTED_MAINTAINER',
+    'AFFECTED_ORGANIZATION',
+    'AFFECTED_PACKAGE',
+    'AFFECTED_REPOSITORY',
+    'COMPROMISED_ACCOUNT',
+    'INCIDENT_AFFECTED_RELEASE',
+    'PACKAGE_RELEASE',
+    'SEEDED_BY',
+    'SOURCE_ARTIFACT_DIVERGENCE',
+    'USED_BUILD_SYSTEM',
+    'USED_DISTRIBUTION_CHANNEL',
+  ]);
   const edges = sourceEdges
     .filter((edge) => edgeTypes.has(edge.type))
     .filter((edge) => {
@@ -320,7 +382,16 @@ function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 
 function buildBloomContext(incidentNodes, allNodes, edges) {
   const contextByIncident = new Map(incidentNodes.map((incident) => [
     incident.id,
-    { incidentId: incident.id, orgIds: [], packageIds: [], releaseIds: [] },
+    {
+      incidentId: incident.id,
+      orgIds: [],
+      packageIds: [],
+      releaseIds: [],
+      repositoryIds: [],
+      maintainerIds: [],
+      accountIds: [],
+      supportingIds: [],
+    },
   ]));
   const add = (incidentId, key, value) => {
     if (!incidentId || !value || !contextByIncident.has(incidentId)) return;
@@ -332,6 +403,12 @@ function buildBloomContext(incidentNodes, allNodes, edges) {
     if (edge.type === 'AFFECTED_ORGANIZATION') add(edge.source, 'orgIds', edge.target);
     if (edge.type === 'AFFECTED_PACKAGE') add(edge.source, 'packageIds', edge.target);
     if (edge.type === 'INCIDENT_AFFECTED_RELEASE') add(edge.source, 'releaseIds', edge.target);
+    if (edge.type === 'AFFECTED_REPOSITORY') add(edge.source, 'repositoryIds', edge.target);
+    if (edge.type === 'AFFECTED_MAINTAINER') add(edge.source, 'maintainerIds', edge.target);
+    if (edge.type === 'COMPROMISED_ACCOUNT') add(edge.source, 'accountIds', edge.target);
+    if (edge.type === 'USED_BUILD_SYSTEM' || edge.type === 'USED_DISTRIBUTION_CHANNEL' || edge.type === 'SOURCE_ARTIFACT_DIVERGENCE') {
+      add(edge.source, 'supportingIds', edge.target);
+    }
     if (edge.type === 'PACKAGE_RELEASE') {
       allNodes.forEach((node) => {
         if (Array.isArray(node.source_incident_ids) && node.id === edge.source) {
@@ -357,6 +434,10 @@ function buildBloomContext(incidentNodes, allNodes, edges) {
       if (node.tier === 'organization') add(incidentId, 'orgIds', node.id);
       if (node.tier === 'package') add(incidentId, 'packageIds', node.id);
       if (node.tier === 'release') add(incidentId, 'releaseIds', node.id);
+      if (node.tier === 'repository') add(incidentId, 'repositoryIds', node.id);
+      if (node.tier === 'maintainer') add(incidentId, 'maintainerIds', node.id);
+      if (node.tier === 'account') add(incidentId, 'accountIds', node.id);
+      if (node.tier === 'supporting') add(incidentId, 'supportingIds', node.id);
     });
   });
 
@@ -385,44 +466,58 @@ function buildLayout(payload) {
     }
   });
 
-  const laneIds = Array.from(new Set([...actorNodes.map((node) => node.id), 'actor-unattributed']));
-  const laneIndex = new Map(laneIds.map((id, index) => [id, index]));
-  const minTime = Math.min(...incidentNodes.map((node) => dateNumber(node.time)).filter(Number.isFinite));
-  const maxTime = Math.max(...incidentNodes.map((node) => dateNumber(node.time)).filter(Number.isFinite));
-  const timeSpan = Math.max(1, maxTime - minTime);
-  const xForTime = (value) => {
-    const parsed = dateNumber(value);
-    if (!Number.isFinite(parsed)) return 0;
-    return ((parsed - minTime) / timeSpan) * 1600 - 800;
-  };
-
-  actorNodes.forEach((node) => {
-    const lane = laneIndex.get(node.id) || 0;
-    node.x = -980;
-    node.y = lane * 190;
-    node.radius = 18;
+  const actorSlots = [...actorNodes, { id: 'actor-unattributed', virtual: true, label: 'Unattributed' }];
+  const actorPosition = new Map();
+  actorSlots.forEach((node, index) => {
+    const angle = (index / Math.max(1, actorSlots.length)) * Math.PI * 2 - Math.PI / 2;
+    const ringX = actorSlots.length <= 3 ? 360 : 500;
+    const ringY = actorSlots.length <= 3 ? 240 : 330;
+    actorPosition.set(node.id, { x: Math.cos(angle) * ringX, y: Math.sin(angle) * ringY });
+    if (!node.virtual) {
+      node.x = Math.cos(angle) * ringX;
+      node.y = Math.sin(angle) * ringY;
+      node.radius = nodeRadius(node);
+    }
   });
 
-  incidentNodes.forEach((node, index) => {
-    const actorId = incidentActor.get(node.id) || 'actor-unattributed';
-    const lane = laneIndex.get(actorId) ?? laneIndex.get('actor-unattributed') ?? 0;
-    node.x = xForTime(node.time);
-    node.y = lane * 190 + 72 + ((index % 3) - 1) * 18;
-    node.radius = 10;
+  const incidentsByActor = new Map(actorSlots.map((node) => [node.id, []]));
+  incidentNodes
+    .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
+    .forEach((node) => {
+      const actorId = incidentActor.get(node.id) || 'actor-unattributed';
+      const list = incidentsByActor.get(actorId) || incidentsByActor.get('actor-unattributed');
+      list.push(node);
+    });
+
+  incidentsByActor.forEach((items, actorId) => {
+    const center = actorPosition.get(actorId) || { x: 0, y: 0 };
+    items.forEach((node, index) => {
+      const ring = Math.floor(index / 7);
+      const angle = ((index % 7) / Math.min(7, Math.max(1, items.length - ring * 7))) * Math.PI * 2 - Math.PI / 2 + ring * 0.38;
+      const radius = 118 + ring * 78;
+      node.x = center.x + Math.cos(angle) * radius;
+      node.y = center.y + Math.sin(angle) * radius;
+      node.radius = nodeRadius(node);
+    });
   });
 
   campaignNodes.forEach((node, index) => {
     const incidentChildren = incidentNodes.filter((incident) => incidentCampaign.get(incident.id) === node.id);
     if (incidentChildren.length > 0) {
       const actorId = incidentActor.get(incidentChildren[0].id) || 'actor-unattributed';
-      const lane = laneIndex.get(actorId) || 0;
-      node.x = incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length;
-      node.y = lane * 190 + 34;
+      const center = actorPosition.get(actorId) || { x: 0, y: 0 };
+      const avg = {
+        x: incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length,
+        y: incidentChildren.reduce((sum, child) => sum + child.y, 0) / incidentChildren.length,
+      };
+      node.x = center.x * 0.62 + avg.x * 0.38;
+      node.y = center.y * 0.62 + avg.y * 0.38;
     } else {
-      node.x = -620 + index * 160;
-      node.y = -120;
+      const angle = (index / Math.max(1, campaignNodes.length)) * Math.PI * 2 - Math.PI / 2;
+      node.x = Math.cos(angle) * 260;
+      node.y = Math.sin(angle) * 180;
     }
-    node.radius = 13;
+    node.radius = nodeRadius(node);
   });
 
   techniqueNodes.forEach((node, index) => {
@@ -431,20 +526,25 @@ function buildLayout(payload) {
       .map((edge) => nodeById.get(edge.target))
       .filter(Boolean);
     if (incidentChildren.length > 0) {
-      node.x = incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length;
-      node.y = -150 - (index % 3) * 36;
+      const avg = {
+        x: incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length,
+        y: incidentChildren.reduce((sum, child) => sum + child.y, 0) / incidentChildren.length,
+      };
+      const angle = (index % 12) / 12 * Math.PI * 2;
+      node.x = avg.x + Math.cos(angle) * 76;
+      node.y = avg.y + Math.sin(angle) * 52;
     } else {
-      node.x = -760 + index * 120;
-      node.y = -180;
+      node.x = -240 + (index % 10) * 54;
+      node.y = 460 + Math.floor(index / 10) * 44;
     }
-    node.radius = 12;
+    node.radius = nodeRadius(node);
   });
 
   allNodes.forEach((node) => {
     if (node.x !== undefined && node.y !== undefined) return;
     node.x = 0;
     node.y = 0;
-    node.radius = node.tier === 'release' ? 6 : node.tier === 'package' ? 8 : node.tier === 'organization' ? 12 : 9;
+    node.radius = nodeRadius(node);
   });
 
   const laidOutNodes = baseNodes.sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
@@ -586,10 +686,12 @@ class SupplyChainGraph {
           vec2 center = gl_PointCoord - vec2(0.5);
           float d = length(center);
           if (d > 0.5) discard;
-          float ring = smoothstep(0.47, 0.5, d);
-          vec4 fill = vec4(v_color.rgb, v_color.a * 0.72);
-          vec4 edge = vec4(v_color.rgb, 1.0);
-          gl_FragColor = mix(fill, edge, ring);
+          float core = 1.0 - smoothstep(0.02, 0.5, d);
+          float rim = smoothstep(0.28, 0.5, d);
+          vec3 lit = mix(v_color.rgb, vec3(1.0, 0.86, 0.52), core * 0.38);
+          vec3 shaded = mix(lit, v_color.rgb * 0.42, rim);
+          float alpha = v_color.a * (1.0 - smoothstep(0.44, 0.5, d));
+          gl_FragColor = vec4(shaded, alpha);
         }
       `
     );
@@ -637,7 +739,15 @@ class SupplyChainGraph {
       };
     });
     this.canvas.addEventListener('pointermove', (event) => {
-      if (!this.drag) return;
+      if (!this.drag) {
+        const node = this.pick(event.clientX, event.clientY);
+        const nextHover = node?.id || null;
+        if (nextHover !== this.hoverNodeId) {
+          this.hoverNodeId = nextHover;
+          this.lastLabelKey = '';
+        }
+        return;
+      }
       const dx = event.clientX - this.drag.x;
       const dy = event.clientY - this.drag.y;
       if (Math.hypot(dx, dy) > 3) this.drag.moved = true;
@@ -646,6 +756,10 @@ class SupplyChainGraph {
         cx: this.drag.startCx - dx / this.targetCamera.z,
         cy: this.drag.startCy - dy / this.targetCamera.z,
       });
+    });
+    this.canvas.addEventListener('pointerleave', () => {
+      this.hoverNodeId = null;
+      this.lastLabelKey = '';
     });
     this.canvas.addEventListener('pointerup', (event) => {
       const drag = this.drag;
@@ -719,21 +833,63 @@ class SupplyChainGraph {
   }
 
   recentNodes() {
-    const incidents = this.layout.nodes
-      .filter((node) => node.tier === 'incident')
-      .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
-      .slice(0, 16);
-    const relatedIds = new Set(incidents.map((node) => node.id));
+    return this.visibleBaseNodes({ forceRest: true });
+  }
+
+  restVisibleIds() {
+    const incidentNodes = this.layout.nodes.filter((node) => node.tier === 'incident');
+    const threshold = recentThreshold(incidentNodes);
+    const incidents = incidentNodes
+      .filter((node) => isRecentIncident(node, threshold))
+      .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')));
+    const relatedIds = new Set(this.layout.nodes.filter((node) => node.tier === 'actor').map((node) => node.id));
+    incidents.forEach((node) => relatedIds.add(node.id));
     this.layout.edges.forEach((edge) => {
-      if (relatedIds.has(edge.target)) relatedIds.add(edge.source);
-      if (relatedIds.has(edge.source)) relatedIds.add(edge.target);
+      if (!relatedIds.has(edge.target) && !relatedIds.has(edge.source)) return;
+      const sourceTier = this.layout.nodeById.get(edge.source)?.tier;
+      const targetTier = this.layout.nodeById.get(edge.target)?.tier;
+      if (sourceTier === 'actor' || sourceTier === 'campaign' || sourceTier === 'incident') relatedIds.add(edge.source);
+      if (targetTier === 'actor' || targetTier === 'campaign' || targetTier === 'incident') relatedIds.add(edge.target);
     });
-    return this.layout.nodes.filter((node) => relatedIds.has(node.id));
+    const ordered = this.layout.nodes
+      .filter((node) => relatedIds.has(node.id) && REST_DRAWABLE_TIERS.has(node.tier))
+      .sort((a, b) => tierRank(a.tier) - tierRank(b.tier) || String(b.time || '').localeCompare(String(a.time || '')));
+    return new Set(ordered.slice(0, REST_NODE_BUDGET).map((node) => node.id));
+  }
+
+  selectedVisibleIds() {
+    if (!this.selection) return null;
+    const ids = new Set(this.selection.nodes || []);
+    if (this.selection.value) ids.add(this.selection.value);
+    this.layout.edges.forEach((edge) => {
+      if (ids.has(edge.source) || ids.has(edge.target)) {
+        const sourceTier = this.layout.nodeById.get(edge.source)?.tier;
+        const targetTier = this.layout.nodeById.get(edge.target)?.tier;
+        if (BASE_DRAWABLE_TIERS.has(sourceTier)) ids.add(edge.source);
+        if (BASE_DRAWABLE_TIERS.has(targetTier)) ids.add(edge.target);
+      }
+    });
+    return ids;
+  }
+
+  visibleBaseNodes(options = {}) {
+    const selectedIds = options.forceRest ? null : this.selectedVisibleIds();
+    const ids = selectedIds || (this.camera.z >= ALL_INCIDENT_Z_THRESHOLD && !options.forceRest
+      ? new Set(this.layout.nodes.filter((node) => REST_DRAWABLE_TIERS.has(node.tier)).map((node) => node.id))
+      : this.restVisibleIds());
+    if (this.camera.z >= TECHNIQUE_Z_THRESHOLD || selectedIds) {
+      this.layout.edges.forEach((edge) => {
+        if (edge.type !== 'INCIDENT_TECHNIQUE') return;
+        if (ids.has(edge.target)) ids.add(edge.source);
+      });
+    }
+    return this.layout.nodes.filter((node) => ids.has(node.id));
   }
 
   activeBounds() {
     const bloom = this.activeBloomLayout();
-    return bloom ? mergeBounds(this.layout.bounds, bloom.bounds) : this.layout.bounds;
+    const baseBounds = boundsForNodes(this.visibleBaseNodes());
+    return bloom ? mergeBounds(baseBounds, bloom.bounds) : baseBounds;
   }
 
   setCameraTarget(target, immediate = false) {
@@ -937,7 +1093,8 @@ class SupplyChainGraph {
 
   activeBloomIncidentId() {
     if (this.selection?.type === 'incident') return this.selection.value;
-    if (this.selection && BLOOM_TIERS.has(this.selection.type)) {
+    const selectedNode = this.selection ? this.layout.nodeById.get(this.selection.value) : null;
+    if (this.selection && (BLOOM_TIERS.has(this.selection.type) || BLOOM_TIERS.has(selectedNode?.tier))) {
       const incidentId = this.incidentIdForBloomNode(this.selection.value);
       if (incidentId) return incidentId;
     }
@@ -969,14 +1126,23 @@ class SupplyChainGraph {
       if (bloom.nodes.some((node) => node.id === nodeId)) return incidentId;
     }
     for (const [incidentId, context] of this.layout.bloomContext.entries()) {
-      if (context.orgIds.includes(nodeId) || context.packageIds.includes(nodeId) || context.releaseIds.includes(nodeId)) return incidentId;
+      if (
+        context.orgIds.includes(nodeId) ||
+        context.packageIds.includes(nodeId) ||
+        context.releaseIds.includes(nodeId) ||
+        context.repositoryIds.includes(nodeId) ||
+        context.maintainerIds.includes(nodeId) ||
+        context.accountIds.includes(nodeId) ||
+        context.supportingIds.includes(nodeId)
+      ) return incidentId;
     }
     return null;
   }
 
   visibleGraph(forcedBloom = null) {
     const bloom = forcedBloom || this.activeBloomLayout();
-    const nodes = bloom ? [...this.layout.nodes, ...bloom.nodes] : this.layout.nodes;
+    const baseNodes = this.visibleBaseNodes();
+    const nodes = bloom ? [...baseNodes, ...bloom.nodes] : baseNodes;
     const visibleById = new Map(nodes.map((node) => [node.id, node]));
     const edges = this.layout.edges
       .filter((edge) => visibleById.has(edge.source) && visibleById.has(edge.target))
@@ -987,7 +1153,7 @@ class SupplyChainGraph {
         return BASE_DRAWABLE_TIERS.has(edge.sourceNode?.tier) && BASE_DRAWABLE_TIERS.has(edge.targetNode?.tier);
       })
       .map((edge) => ({ ...edge, sourceNode: visibleById.get(edge.source), targetNode: visibleById.get(edge.target) }));
-    const bounds = bloom ? mergeBounds(this.layout.bounds, bloom.bounds) : this.layout.bounds;
+    const bounds = bloom ? mergeBounds(boundsForNodes(baseNodes), bloom.bounds) : boundsForNodes(baseNodes);
     const quadtree = new SupplyChainQuadtree(bounds);
     nodes.forEach((node) => quadtree.insert(node));
     return { nodes, nodeById: visibleById, edges, bounds, quadtree };
@@ -1090,9 +1256,11 @@ class SupplyChainGraph {
   }
 
   colorForNode(node) {
+    if (this.selection && !this.selection.nodes?.has(node.id) && node.id !== this.selection.value) return SEVERITY_COLORS.muted;
+    if (node.tier === 'incident') return SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default;
+    if (node.tier === 'package') return node.aggregate ? SEVERITY_COLORS.muted : SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.package;
     if (node.tier === 'technique') return SEVERITY_COLORS.technique;
     if (node.tier === 'organization') return SEVERITY_COLORS.organization;
-    if (node.tier === 'package') return node.aggregate ? SEVERITY_COLORS.muted : SEVERITY_COLORS.package;
     if (node.tier === 'release') return SEVERITY_COLORS.release;
     if (this.selection?.type === 'stage' && node.tier === 'incident') {
       return this.selection.nodes.has(node.id) ? SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default : SEVERITY_COLORS.muted;
@@ -1102,14 +1270,15 @@ class SupplyChainGraph {
     }
     if (node.tier === 'actor') return SEVERITY_COLORS.actor;
     if (node.tier === 'campaign') return SEVERITY_COLORS.campaign;
-    return SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default;
+    return SEVERITY_COLORS.default;
   }
 
   edgeAlpha(edge) {
-    if (!this.selection) return 0.28;
-    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? 0.78 : 0.42;
-    if (this.selection.nodes?.has(edge.source) || this.selection.nodes?.has(edge.target)) return 0.64;
-    return 0.1;
+    if (!this.selection) return 0.11;
+    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? 0.72 : 0.38;
+    if (this.selection.nodes?.has(edge.source) && this.selection.nodes?.has(edge.target)) return 0.68;
+    if (this.selection.nodes?.has(edge.source) || this.selection.nodes?.has(edge.target)) return 0.42;
+    return 0.035;
   }
 
   colorForEdge(edge) {
@@ -1135,7 +1304,8 @@ class SupplyChainGraph {
 
   labelCandidates(node) {
     const position = this.worldToScreen(this.displayNode(node));
-    const width = Math.min(220, Math.max(68, String(node.label || '').length * 7.4 + 16));
+    const text = shortNodeLabel(node);
+    const width = Math.min(190, Math.max(58, String(text || '').length * 7.1 + 18));
     const height = 24;
     const anchors = [
       { anchorIndex: 0, x: 12, y: -10 },
@@ -1157,6 +1327,17 @@ class SupplyChainGraph {
       width,
       height,
     }));
+  }
+
+  shouldLabelNode(node) {
+    if (node.aggregate) return true;
+    if (node.id === this.keyboardNodeId || node.id === this.hoverNodeId || this.selection?.nodes?.has(node.id)) return true;
+    if (node.tier === 'actor') return true;
+    if (node.tier === 'campaign') return this.camera.z >= CAMPAIGN_LABEL_Z || this.selection?.type === 'campaign';
+    if (node.tier === 'incident') return this.camera.z >= INCIDENT_LABEL_Z || this.selection?.type === 'incident';
+    if (node.tier === 'technique') return this.selection?.value === node.id;
+    if (BLOOM_TIERS.has(node.tier)) return this.camera.z >= DEEP_LABEL_Z && Boolean(node.bloom_parent);
+    return false;
   }
 
   labelFits(candidate, occupied) {
@@ -1194,26 +1375,37 @@ class SupplyChainGraph {
       values.push(sourceNode.x, sourceNode.y, color[0], color[1], color[2], alpha);
       values.push(targetNode.x, targetNode.y, color[0], color[1], color[2], alpha);
     };
+    const pushCurve = (sourceNode, targetNode, color, alpha, dashed = false) => {
+      const dx = targetNode.x - sourceNode.x;
+      const dy = targetNode.y - sourceNode.y;
+      const distance = Math.hypot(dx, dy) || 1;
+      const bend = clamp(distance * 0.11, 18, 82);
+      const normal = { x: -dy / distance, y: dx / distance };
+      const control = {
+        x: (sourceNode.x + targetNode.x) / 2 + normal.x * bend,
+        y: (sourceNode.y + targetNode.y) / 2 + normal.y * bend,
+      };
+      const segments = 12;
+      let previous = sourceNode;
+      for (let index = 1; index <= segments; index += 1) {
+        const t = index / segments;
+        const a = (1 - t) * (1 - t);
+        const b = 2 * (1 - t) * t;
+        const c = t * t;
+        const point = {
+          x: a * sourceNode.x + b * control.x + c * targetNode.x,
+          y: a * sourceNode.y + b * control.y + c * targetNode.y,
+        };
+        if (!dashed || index % 3 !== 0) pushSegment(previous, point, color, alpha);
+        previous = point;
+      }
+    };
     visible.edges.forEach((edge) => {
       const alpha = this.edgeAlpha(edge);
       const color = this.colorForEdge(edge);
       const sourceNode = this.displayNode(edge.sourceNode);
       const targetNode = this.displayNode(edge.targetNode);
-      if (edge.type === 'SEEDED_BY' && edge.propagation_tier === 'temporal') {
-        const segments = 10;
-        for (let index = 0; index < segments; index += 2) {
-          const a = index / segments;
-          const b = (index + 1) / segments;
-          pushSegment(
-            { x: lerp(sourceNode.x, targetNode.x, a), y: lerp(sourceNode.y, targetNode.y, a) },
-            { x: lerp(sourceNode.x, targetNode.x, b), y: lerp(sourceNode.y, targetNode.y, b) },
-            color,
-            alpha
-          );
-        }
-      } else {
-        pushSegment(sourceNode, targetNode, color, alpha);
-      }
+      pushCurve(sourceNode, targetNode, color, alpha, edge.type === 'SEEDED_BY' && edge.propagation_tier === 'temporal');
     });
     gl.useProgram(this.edgeProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.edgeBuffer);
@@ -1280,13 +1472,7 @@ class SupplyChainGraph {
     const occupied = [];
     const nextPlacements = new Map();
     const labelNodes = this.getVisibleGraph().nodes
-      .filter((node) => {
-        if (node.aggregate) return true;
-        if (node.tier === 'actor' || node.tier === 'campaign') return true;
-        if (node.tier === 'organization' && node.bloom_parent) return true;
-        if (node.tier === 'technique' && this.selection?.value === node.id) return true;
-        return this.selection?.nodes?.has(node.id) || node.id === this.keyboardNodeId;
-      })
+      .filter((node) => this.shouldLabelNode(node))
       .sort((a, b) => this.labelPriority(b) - this.labelPriority(a));
     const labels = [];
     for (const node of labelNodes) {
@@ -1298,7 +1484,15 @@ class SupplyChainGraph {
       if (labels.length >= 32) break;
     }
     this.labelPlacements = nextPlacements;
-    const labelKey = labels.map((item) => `${item.node.id}:${item.x}:${item.y}`).join('|');
+    const labelKey = labels.map((item) => [
+      item.node.id,
+      item.x,
+      item.y,
+      shortNodeLabel(item.node),
+      this.selection?.nodes?.has(item.node.id) ? 'selected' : '',
+      item.node.id === this.keyboardNodeId ? 'keyboard' : '',
+      item.node.id === this.hoverNodeId ? 'hover' : '',
+    ].join(':')).join('|');
     if (labelKey === this.lastLabelKey) return;
     this.lastLabelKey = labelKey;
     this.labelLayer.replaceChildren(
@@ -1310,7 +1504,7 @@ class SupplyChainGraph {
           this.selection?.nodes?.has(item.node.id) ? 'sc-graph-label-selected' : '',
           item.node.id === this.keyboardNodeId ? 'sc-graph-label-keyboard' : '',
         ].filter(Boolean).join(' ');
-        label.textContent = item.node.label;
+        label.textContent = shortNodeLabel(item.node);
         label.style.transform = `translate(${item.x}px, ${item.y}px)`;
         return label;
       })
