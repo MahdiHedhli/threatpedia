@@ -7,6 +7,17 @@
  */
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import {
+  ALIAS_STATUSES,
+  ATTRIBUTION_CLAIM_TYPES,
+  CANONICAL_NAME_SOURCES,
+  CLAIM_CONFIDENCE_VALUES,
+  ENTITY_KINDS,
+  OPERATING_MODELS,
+  RELATIONSHIP_PREDICATES,
+  RELATIONSHIP_TARGET_TYPES,
+  getAdversaryProfileValidationIssues,
+} from './lib/adversaryProfileValidation.mjs';
 
 /** Shared enums */
 const reviewStatus = z.enum([
@@ -25,6 +36,17 @@ const confidenceGrade = z.enum(['A', 'B', 'C', 'D', 'F']);
 const attributionConfidence = z.enum(['A1', 'A2', 'A3', 'A4', 'A5', 'A6']);
 
 const sourceReliability = z.enum(['R1', 'R2', 'R3', 'R4']);
+
+const adversaryEntityKind = z.enum(ENTITY_KINDS);
+
+const adversaryOperatingModel = z.union([
+  z.enum(OPERATING_MODELS),
+  z.string().regex(/^x-[A-Za-z0-9][A-Za-z0-9_-]*$/),
+]);
+
+const claimConfidence = z.enum(CLAIM_CONFIDENCE_VALUES);
+
+const canonicalNameSource = z.enum(CANONICAL_NAME_SOURCES);
 
 const generatedBy = z.enum([
   'ai_ingestion',
@@ -119,6 +141,74 @@ const frameworkMapping = z.object({
   evidence: z.string().min(1).optional(),
   notes: z.string().optional(),
 });
+
+const adversaryVendorRef = z.object({
+  vendor: z.string().min(1),
+  name: z.string().min(1).nullable().optional(),
+}).strict();
+
+const adversaryAptId = z.string().regex(/^TP-APT-\d{4,}$/);
+
+const adversaryExternalIds = z.object({
+  mitreAttackGroup: z.string().regex(/^G\d{4}$/).nullable().optional(),
+  mispGalaxyUuid: z.string().uuid().nullable().optional(),
+  malpediaActor: z.string().min(1).nullable().optional(),
+  etdaSlug: z.string().min(1).nullable().optional(),
+  vendorRefs: z.array(adversaryVendorRef).default([]),
+}).strict();
+
+const adversaryClaimSourceRef = z.object({
+  sourceId: z.string().min(1),
+}).strict();
+
+const adversaryAliasRecord = z.object({
+  value: z.string().min(1),
+  sourceOrg: z.string().min(1),
+  sourceRef: z.string().min(1).nullable().optional(),
+  status: z.enum(ALIAS_STATUSES),
+  confidence: claimConfidence,
+  notes: z.string().optional(),
+}).strict();
+
+const adversaryAttributionClaim = z.object({
+  claimType: z.enum(ATTRIBUTION_CLAIM_TYPES),
+  value: z.string().min(1),
+  subOrg: z.string().min(1).optional(),
+  confidence: claimConfidence,
+  basis: z.array(z.string().min(1)).default([]),
+  sources: z.array(adversaryClaimSourceRef).min(1),
+  importedSourceConfidence: z.number().int().min(0).max(100).optional(),
+}).strict();
+
+const adversaryRelationshipExternalRefs = z.object({
+  malpediaFamily: z.string().min(1).optional(),
+  mitreSoftware: z.string().regex(/^S\d{4}$/).optional(),
+}).catchall(z.string().min(1));
+
+const adversaryRelationshipClaim = z.object({
+  predicate: z.enum(RELATIONSHIP_PREDICATES),
+  targetType: z.enum(RELATIONSHIP_TARGET_TYPES),
+  targetId: z.string().min(1).nullable().optional(),
+  unresolved: z.boolean().default(false),
+  labelIfUnresolved: z.string().min(1).nullable().optional(),
+  firstSeen: z.union([z.string().min(1), z.number()]).optional(),
+  lastSeen: z.union([z.string().min(1), z.number()]).nullable().optional(),
+  asOf: z.string().min(1).optional(),
+  lastVerifiedAt: z.string().min(1).optional(),
+  externalRefs: adversaryRelationshipExternalRefs.optional(),
+  attackVersion: z.string().min(1).optional(),
+  confidence: claimConfidence,
+  sources: z.array(adversaryClaimSourceRef).min(1),
+}).strict();
+
+const adversaryRevision = z.object({
+  actor: z.string().min(1),
+  provider: z.string().min(1),
+  model: z.string().min(1),
+  action: z.string().min(1),
+  ref: z.string().min(1),
+  at: z.string().min(1),
+}).strict();
 
 /**
  * Incidents collection — bounded cybersecurity events.
@@ -267,6 +357,23 @@ const threatActors = defineCollection({
     atlasMappings: z.array(atlasMapping).default([]),
     'framework-mappings': z.array(frameworkMapping).default([]),
 
+    // Additive adversary-profile v0.5 fields. These stay optional for legacy
+    // records until a reviewed migration makes them corpus-wide requirements.
+    aptId: adversaryAptId.optional(),
+    entityKind: adversaryEntityKind.optional(),
+    isAnalyticConstruct: z.boolean().optional(),
+    operatingModels: z.array(adversaryOperatingModel).default([]),
+    externalIds: adversaryExternalIds.optional(),
+    aliasRecords: z.array(adversaryAliasRecord).optional(),
+    attributionClaims: z.array(adversaryAttributionClaim).optional(),
+    relationshipClaims: z.array(adversaryRelationshipClaim).optional(),
+    importedSourceConfidence: z.number().int().min(0).max(100).optional(),
+    notPubliclyEstablished: z.boolean().optional(),
+    canonicalNameSource: canonicalNameSource.optional(),
+    canonicalNameSourceDetail: z.string().min(1).optional(),
+    namingRationale: z.string().min(1).optional(),
+    revisions: z.array(adversaryRevision).optional(),
+
     // Quality
     attributionConfidence: attributionConfidence.optional(),
     attributionRationale: z.string().max(500).optional(),
@@ -279,6 +386,16 @@ const threatActors = defineCollection({
 
     // References
     sources: z.array(sourceSchema).default([]),
+  }).superRefine((data, ctx) => {
+    const { errors } = getAdversaryProfileValidationIssues(data);
+
+    for (const error of errors) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: error.path,
+        message: error.message,
+      });
+    }
   }),
 });
 
