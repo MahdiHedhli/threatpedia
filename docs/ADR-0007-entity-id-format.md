@@ -43,10 +43,11 @@ the record needs a durable Threatpedia exploit identifier:
 TP-EXP-YYYY-NNNN
 ```
 
-The `YYYY` component is the calendar year of first public disclosure or first
-corpus appearance, whichever is earlier and source-supported. The `NNNN`
-sequence is zero-padded and scoped to the exploit domain and year. Once
-assigned to a non-draft record, the ID is immutable and must not be reused.
+The `YYYY` component follows the pipeline allocation precedence: CVE year,
+then sourced disclosure year when no CVE year is available, then current year
+as a last-resort draft fallback. The `NNNN` sequence is zero-padded and scoped
+to the exploit domain and year. Once assigned to a non-draft record, the ID is
+immutable and must not be reused.
 
 This convention is enforced today by:
 
