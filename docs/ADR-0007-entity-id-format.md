@@ -6,8 +6,6 @@
 **Supersedes:** Actor-identity portions of `MANIFEST-SPEC.md` and
 `DATA-STANDARDS-v1.0.md` that require threat actor content records to use
 `entity_id: TP-APT-NNNN` / `apt_id: TP-APT-NNNN` as their primary identity.
-Also records the year-namespaced zero-day `exploitId` convention already
-enforced by the Astro schema and pipeline task runner.
 **Related:** `docs/schema-intake-pr1-reconciliation-20260618.md`,
 `docs/DATA-STANDARDS-v1.0.md`, `site/src/content.config.ts`
 
