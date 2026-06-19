@@ -6,6 +6,8 @@
 **Supersedes:** Actor-identity portions of `MANIFEST-SPEC.md` and
 `DATA-STANDARDS-v1.0.md` that require threat actor content records to use
 `entity_id: TP-APT-NNNN` / `apt_id: TP-APT-NNNN` as their primary identity.
+Also records the year-namespaced zero-day `exploitId` convention already
+enforced by the Astro schema and pipeline task runner.
 **Related:** `docs/schema-intake-pr1-reconciliation-20260618.md`,
 `docs/DATA-STANDARDS-v1.0.md`, `site/src/content.config.ts`
 
@@ -33,6 +35,31 @@ using mandatory `TP-APT-NNNN` identifiers and mandatory `nation_state` /
 content model or the additive adversary-profile v0.5 compatibility layer.
 
 ## Decision
+
+### Zero-day and exploit IDs
+
+Zero-day and exploit records use an optional year-namespaced `exploitId` when
+the record needs a durable Threatpedia exploit identifier:
+
+```text
+TP-EXP-YYYY-NNNN
+```
+
+The `YYYY` component is the calendar year of first public disclosure or first
+corpus appearance, whichever is earlier and source-supported. The `NNNN`
+sequence is zero-padded and scoped to the exploit domain and year. Once
+assigned to a non-draft record, the ID is immutable and must not be reused.
+
+This convention is enforced today by:
+
+- `site/src/content.config.ts`, which accepts `exploitId` values matching
+  `TP-EXP-YYYY-NNNN`.
+- `scripts/pipeline-run-task.mjs`, which validates zero-day task output against
+  the same year-namespaced pattern.
+- `docs/PIPELINE.md`, which describes discovery allocating year-namespaced
+  zero-day exploit IDs per ADR 0007.
+
+### Threat actor content identity
 
 Threat actor content records remain slug-addressed site records under
 `site/src/content/threat-actors/**`.
@@ -72,6 +99,8 @@ and must not be hard-removed until migration coverage gates are satisfied.
 
 ## Consequences
 
+- Zero-day workers that consult ADR 0007 get the same `TP-EXP-YYYY-NNNN`
+  convention that the live schema and task runner enforce.
 - PR3 migration/rewrite work must preserve slug-addressed actor identity unless
   Kernel K approves a separate actor-ID migration plan.
 - Schema and validator work may support optional `aptId` / `externalIds`

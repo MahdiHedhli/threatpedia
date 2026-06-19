@@ -146,7 +146,7 @@ Non-Profit & NGO
 
 ## Incident Record — Field Specification
 
-### Pre-Migration Required Fields (Superseded For Live Threat-Actor Content)
+### Required Fields
 
 | Field | Type | Format | Validation |
 |---|---|---|---|
@@ -283,7 +283,7 @@ framework-mappings:
 > `nation_state` and snake_case `attribution_confidence` must not be
 > reintroduced as mandatory public actor fields by migration agents.
 
-### Required Fields
+### Pre-Migration Required Fields (Superseded For Live Threat-Actor Content)
 
 | Field | Type | Format | Notes |
 |---|---|---|---|
