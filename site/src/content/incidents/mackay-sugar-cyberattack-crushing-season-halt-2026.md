@@ -75,19 +75,20 @@ framework-mappings: []
 
 On June 10, 2026, Mackay Sugar said it was responding to a cyber security incident affecting some of its operations, and ABC reported that milling and cane haulage at the Farleigh and Racecourse mills were shut down at the start of the crushing season. The disruption affected a core agricultural and industrial production cycle at one of Australia's largest sugar producers.
 
-Mackay Sugar's public statements consistently frame the event as an operational incident rather than a confirmed data-breach or wiper event. The company said it engaged specialist cyber security experts, coordinated with relevant authorities, and put interim processes in place to support critical business functions while it investigated and restored systems safely.
+Mackay Sugar's public statements consistently frame the event as an operational incident rather than a publicly detailed data-breach or wiper event. The company said it engaged specialist cyber security experts, coordinated with relevant authorities, and put interim processes in place to support critical business functions while it investigated and restored systems safely.
+On June 17, Mackay Sugar also noted it had identified evidence of unauthorized access in parts of its IT environment, but no public source described a full technical intrusion chain or confirmed theft path.
 
 By June 15, Mackay Sugar said it had completed a limited manual crushing operation at Farleigh Mill and had begun steam trials as part of a staged restoration. On June 17, Mackay Sugar published Update 4, indicating that the incident response was still active and that operational recovery remained in progress.
 
 ## Technical Analysis
 
-The public sources do not identify a named threat actor, a specific malware family, or a confirmed data-theft path. What they do show is that the cyber incident disrupted the operational systems that support cane supply, harvesting, and mill activity.
+The public sources do not identify a named threat actor, a specific malware family, or a confirmed theft path. They do report that the incident disrupted operational systems supporting cane supply, harvesting, and mill activity.
 
 Mackay Sugar's first public statement said the company had engaged specialist cyber security experts and was working with relevant authorities to investigate the incident and restore systems safely. The company also said it put interim processes in place to support critical business functions and minimize disruption.
 
 The June 15 update adds that the company had restored enough of the support systems to complete a limited manual crushing operation at Farleigh Mill. That suggests the incident affected not just office IT, but the operational control and coordination layers needed to move cane, schedule harvests, and run mills at normal speed.
 
-Because the company did not publicly describe a technical intrusion chain, the write-up avoids claims about initial access, malware payloads, or exfiltration. The confirmed facts are the operational shutdown, the ongoing restoration work, and the safety-first response posture.
+Because the company did not publicly describe full technical intrusion details, the write-up avoids claims about initial access techniques, malware payloads, or exfiltration. The confirmed facts are the operational shutdown, the ongoing restoration work, and the safety-first response posture.
 
 ## Attack Chain
 
@@ -131,7 +132,7 @@ Mackay Sugar says it is responding to a cyber security incident affecting operat
 
 ### 2026-06-12 — Company posts Update 2
 
-Mackay Sugar's latest news page lists a second update, showing that restoration work is continuing.
+Mackay Sugar posted a follow-up update noting restoration work was continuing.
 
 ### 2026-06-15 — Limited manual crushing resumes
 
@@ -139,7 +140,7 @@ Mackay Sugar reports a successful limited manual crushing operation at Farleigh 
 
 ### 2026-06-17 — Update 4 is published
 
-Mackay Sugar publishes Update 4, which says the company identified evidence of unauthorized access in parts of its IT environment while keeping operational recovery plans in place.
+Mackay Sugar publishes Update 4, which says the company identified evidence of unauthorized access in parts of its IT environment and that incident-response and recovery plans were still active.
 
 ## Remediation & Mitigation
 
