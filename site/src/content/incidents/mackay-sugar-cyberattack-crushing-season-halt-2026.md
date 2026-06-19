@@ -7,7 +7,7 @@ severity: high
 sector: Agriculture / Food Production / Manufacturing
 geography: Australia
 threatActor: Unknown
-attributionConfidence: A4
+attributionConfidence: A6
 reviewStatus: draft_ai
 confidenceGrade: B
 generatedBy: penfold-bot
@@ -64,8 +64,8 @@ mitreMappings:
     techniqueName: Service Stop
     tactic: Impact
     attack-version: v19.0
-    confidence: probable
-    evidence: Mackay Sugar said the cyber security incident affected operations, while ABC reported that milling and cane haulage at Farleigh and Racecourse mills were halted during the start of the crushing season.
+    confidence: possible
+    evidence: Public reporting described an operational shutdown of milling and cane-haulage activity, but did not publicly document the technical mechanics of any service-stopping action.
     notes: The mapping reflects the operational shutdown rather than any specific technical intrusion method.
 atlasMappings: []
 framework-mappings: []
