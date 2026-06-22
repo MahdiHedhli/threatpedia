@@ -224,6 +224,12 @@ assert.equal(
   'malware strain search targets should navigate to the family anchor'
 );
 assert.ok(
+  supplyChainSearchIndexPayload
+    .filter((entry) => entry.type === 'malware_family' || entry.type === 'malware_strain')
+    .every((entry) => entry.aliases.every((alias) => typeof alias === 'string')),
+  'malware-family search aliases should be flattened before indexing'
+);
+assert.ok(
   supplyChainGraphSource.includes('if (entry.href)') &&
     supplyChainGraphSource.includes('window.location.href = entry.href'),
   'graph search should navigate entries with explicit hrefs before graph-selection fallback'
@@ -239,6 +245,11 @@ assert.ok(
 assert.ok(
   malwareFamilyStixPayload.objects.every((object) => /^[a-z-]+--[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(object.id)),
   'malware-family STIX object identifiers should use deterministic UUIDv5 shape'
+);
+assert.deepEqual(
+  malwareFamilyStixPayload.objects.find((object) => object.type === 'malware' && object.name === 'Mini Shai-Hulud')?.malware_types,
+  ['worm'],
+  'malware-family STIX objects should derive malware type from the family/strain model'
 );
 const monthOnlyStixFixture = structuredClone(data);
 monthOnlyStixFixture.malwareFamilies[0].strains[0].first_seen = '2025-09';

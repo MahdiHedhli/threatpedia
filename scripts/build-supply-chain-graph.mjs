@@ -394,7 +394,7 @@ function malwareFamilyEdges(malwareFamilies = [], nodeIds) {
         relation_kind: edge.relation_kind || null,
         mutation_delta: Array.isArray(edge.mutation_delta) ? edge.mutation_delta : [],
         source_refs: Array.isArray(edge.external_refs)
-          ? edge.external_refs.map((ref) => ref.source_ref).filter(Boolean)
+          ? edge.external_refs.map((ref) => ref?.source_ref).filter(Boolean)
           : [],
         fork_event_id: edge.fork_event_id || null,
         summary: edge.summary || '',
@@ -713,7 +713,7 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
         family.aliases || [],
         family.summary,
         (family.strains || []).flatMap((strain) => [strain.id, strain.name, strain.aliases || []]),
-      ],
+      ].flat(Infinity),
     });
     (family.strains || []).forEach((strain) => {
       addEntry({
@@ -730,7 +730,7 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
           strain.incident_ids || [],
           family.name,
           family.aliases || [],
-        ],
+        ].flat(Infinity),
       });
     });
   });
@@ -767,12 +767,30 @@ function stixTimestamp(value) {
   return `${dateValue}T00:00:00.000Z`;
 }
 
+function stixMalwareTypes(family, strain) {
+  const explicitTypes = [strain.malware_types, family.malware_types].find((types) => Array.isArray(types) && types.length > 0);
+  if (explicitTypes) return uniqueStrings(explicitTypes);
+
+  const searchableText = stringsFromValue([
+    family.name,
+    family.aliases,
+    family.summary,
+    strain.name,
+    strain.aliases,
+    strain.key_mutation,
+    strain.mutation_summary,
+  ]).join(' ').toLowerCase();
+  if (/\bworm\b|self[- ]propagat/.test(searchableText)) return ['worm'];
+  return [];
+}
+
 export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
   const objects = [];
   (corpus.malwareFamilies || []).forEach((family) => {
     const malwareIds = new Map();
     (family.strains || []).forEach((strain) => {
       const malwareId = stixId('malware', `threatpedia:${strain.id}`);
+      const malwareTypes = stixMalwareTypes(family, strain);
       malwareIds.set(strain.id, malwareId);
       objects.push({
         type: 'malware',
@@ -782,7 +800,7 @@ export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
         modified: '2026-06-22T00:00:00.000Z',
         name: strain.name || strain.id,
         is_family: false,
-        malware_types: ['trojan'],
+        ...(malwareTypes.length > 0 ? { malware_types: malwareTypes } : {}),
         aliases: strain.aliases || [],
         first_seen: stixTimestamp(strain.first_seen),
         description: strain.mutation_summary || strain.key_mutation || family.summary,

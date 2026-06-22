@@ -879,10 +879,12 @@ function buildFamilyPhylogenyModel(data, family) {
   ]);
   const edgeInputs = (family.lineage_edges || []).map((edge) => ({
     ...edge,
-    external_refs: (edge.external_refs || []).map((ref) => ({
-      ...ref,
-      source: sourceById.get(ref.source_ref),
-    })),
+    external_refs: Array.isArray(edge.external_refs)
+      ? edge.external_refs.map((ref) => ({
+          ...ref,
+          source: sourceById.get(ref?.source_ref),
+        }))
+      : [],
   }));
   const edges = edgeInputs.map((edge) => lineageEdgePath(edge, nodeById, forkById)).filter(Boolean);
   const parentByChild = {};
