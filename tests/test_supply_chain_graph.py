@@ -141,7 +141,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("family-shai-hulud.sources[0].publisher: expected non-empty string", errors)
         self.assertIn("family-shai-hulud.sources[0].url: expected valid HTTP/HTTPS URL", errors)
         self.assertIn("family-shai-hulud.sources[0].published_at: expected YYYY-MM-DD or YYYY-MM", errors)
-        self.assertIn("family-shai-hulud.sources[4].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
+        self.assertIn("family-shai-hulud.sources[5].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
         self.assertIn(
             "family-shai-hulud.lineage_edges[2].external_refs[0]: expected object",
             errors,

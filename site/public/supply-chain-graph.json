@@ -4272,7 +4272,7 @@
         "Hades Shai-Hulud lineage strain"
       ],
       "family_id": "family-shai-hulud",
-      "lineage_confidence": "confirmed",
+      "lineage_confidence": "suspected",
       "source_incident_ids": []
     },
     {
@@ -6939,7 +6939,7 @@
         "broader propagation"
       ],
       "source_refs": [
-        "ref-stepsecurity-mini-shai"
+        "ref-stepsecurity-hades-campaign"
       ],
       "fork_event_id": null,
       "summary": "Hades is modeled as a suspected evolution of Miasma pending explicit code-overlap or researcher-attestation evidence."
