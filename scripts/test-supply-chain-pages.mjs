@@ -75,6 +75,10 @@ assert.deepEqual(
   data.malwareFamilies[0].timeline_ticks,
   'malware-family timeline ticks should come from the family object'
 );
+assert.ok(
+  !supplyChainPagesSource.includes("{ label: 'Sep 2025', x: 90 }"),
+  'malware-family page model should not fall back to Shai-Hulud-specific timeline ticks'
+);
 assert.deepEqual(
   shaiHuludFamily.phylogeny.parentByChild['strain-miasma'],
   ['strain-mini-shai-hulud'],

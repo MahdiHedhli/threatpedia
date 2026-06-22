@@ -593,18 +593,18 @@ def validate_malware_families(
             errors.append(f"{family_id}.sources: expected at least one source")
 
         timeline_ticks = family.get("timeline_ticks")
-        if timeline_ticks is not None:
-            if not isinstance(timeline_ticks, list):
-                errors.append(f"{family_id}.timeline_ticks: expected list")
-            else:
-                for tick_index, tick in enumerate(timeline_ticks):
-                    if not isinstance(tick, dict):
-                        errors.append(f"{family_id}.timeline_ticks[{tick_index}]: expected object")
-                        continue
-                    if not isinstance(tick.get("label"), str) or not tick["label"].strip():
-                        errors.append(f"{family_id}.timeline_ticks[{tick_index}].label: expected non-empty string")
-                    if not isinstance(tick.get("x"), (int, float)):
-                        errors.append(f"{family_id}.timeline_ticks[{tick_index}].x: expected number")
+        if not isinstance(timeline_ticks, list) or not timeline_ticks:
+            errors.append(f"{family_id}.timeline_ticks: expected non-empty list")
+            timeline_ticks = []
+        for tick_index, tick in enumerate(timeline_ticks):
+            if not isinstance(tick, dict):
+                errors.append(f"{family_id}.timeline_ticks[{tick_index}]: expected object")
+                continue
+            if not isinstance(tick.get("label"), str) or not tick["label"].strip():
+                errors.append(f"{family_id}.timeline_ticks[{tick_index}].label: expected non-empty string")
+            tick_x = tick.get("x")
+            if not isinstance(tick_x, (int, float)) or isinstance(tick_x, bool):
+                errors.append(f"{family_id}.timeline_ticks[{tick_index}].x: expected number")
 
         strain_ids: set[str] = set()
         strains = family.get("strains")

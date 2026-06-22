@@ -126,7 +126,7 @@ class SupplyChainGraphTests(unittest.TestCase):
             entity_ids=entity_ids,
         )
 
-        self.assertIn("family-shai-hulud.timeline_ticks: expected list", errors)
+        self.assertIn("family-shai-hulud.timeline_ticks: expected non-empty list", errors)
         self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
