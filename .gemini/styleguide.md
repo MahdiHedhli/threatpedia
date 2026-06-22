@@ -1,0 +1,1 @@
+Focus reviews on correctness, security, data and evidence integrity, and semantic consistency. Do not restate the pull request, flag cosmetic simplifications, or recommend defensive type checks in internal validators that process controlled data unless the issue can produce incorrect output, data loss, security exposure, or a misleading evidence grade.
