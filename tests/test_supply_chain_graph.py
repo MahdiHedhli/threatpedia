@@ -100,6 +100,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         raw_incident_ids = validator.collect_raw_incident_ids(corpus)
         malware_families = load_json(MALWARE_FAMILY_PATH)
         malformed = copy.deepcopy(malware_families)
+        malformed[0]["schema_version"] = ""
+        malformed[0]["summary"] = ""
+        malformed[0]["first_seen"] = "2025-99"
+        malformed[0]["aliases"].append(" ")
         malformed[0]["timeline_ticks"] = "not-a-list"
         malformed[0]["associated_actor_ids"] = "actor-teampcp"
         malformed[0]["sources"][0]["title"] = ""
@@ -107,6 +111,10 @@ class SupplyChainGraphTests(unittest.TestCase):
         malformed[0]["sources"][0]["url"] = "ftp://example.test/report"
         malformed[0]["sources"][0]["published_at"] = "2025-13"
         malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
+        malformed[0]["strains"][0]["aliases"].append("")
+        malformed[0]["strains"][0]["key_mutation"] = ""
+        malformed[0]["strains"][0]["provenance_abuse"] = ""
+        malformed[0]["strains"][0]["retained_features"].append(" ")
         malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
         malformed[0]["strains"][0]["layout"] = {"x": "left"}
         malformed[0]["strains"][0]["severity"] = "severe"
@@ -127,8 +135,16 @@ class SupplyChainGraphTests(unittest.TestCase):
         )
 
         self.assertIn("family-shai-hulud.timeline_ticks: expected non-empty list", errors)
+        self.assertIn("family-shai-hulud.schema_version: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.summary: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("family-shai-hulud.aliases[3]: expected non-empty string", errors)
         self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("strain-shai-hulud.aliases[1]: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.key_mutation: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.provenance_abuse: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.retained_features[0]: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.layout.x: expected number", errors)
         self.assertIn("strain-shai-hulud.layout.y: expected number", errors)

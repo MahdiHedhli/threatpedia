@@ -554,6 +554,21 @@ def validate_malware_families(
         family_ids.add(family_id)
         if not isinstance(family.get("name"), str) or not family["name"].strip():
             errors.append(f"{family_id}.name: expected non-empty string")
+        schema_version = family.get("schema_version")
+        if not isinstance(schema_version, str) or not schema_version.strip():
+            errors.append(f"{family_id}.schema_version: expected non-empty string")
+        if not isinstance(family.get("summary"), str) or not family["summary"].strip():
+            errors.append(f"{family_id}.summary: expected non-empty string")
+        if not is_date_or_month(family.get("first_seen")):
+            errors.append(f"{family_id}.first_seen: expected YYYY-MM-DD or YYYY-MM")
+        aliases = family.get("aliases")
+        if aliases is not None:
+            if not isinstance(aliases, list):
+                errors.append(f"{family_id}.aliases: expected list")
+            else:
+                for alias_index, alias in enumerate(aliases):
+                    if not isinstance(alias, str) or not alias.strip():
+                        errors.append(f"{family_id}.aliases[{alias_index}]: expected non-empty string")
         root_actor_id = family.get("root_actor_id")
         if root_actor_id is not None and root_actor_id not in entity_ids:
             errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
@@ -636,6 +651,26 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
             if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
                 errors.append(f"{strain_id}.ecosystems: expected non-empty list")
+            if not isinstance(strain.get("key_mutation"), str) or not strain["key_mutation"].strip():
+                errors.append(f"{strain_id}.key_mutation: expected non-empty string")
+            if not isinstance(strain.get("provenance_abuse"), str) or not strain["provenance_abuse"].strip():
+                errors.append(f"{strain_id}.provenance_abuse: expected non-empty string")
+            retained_features = strain.get("retained_features")
+            if retained_features is not None:
+                if not isinstance(retained_features, list):
+                    errors.append(f"{strain_id}.retained_features: expected list")
+                else:
+                    for feature_index, feature in enumerate(retained_features):
+                        if not isinstance(feature, str) or not feature.strip():
+                            errors.append(f"{strain_id}.retained_features[{feature_index}]: expected non-empty string")
+            strain_aliases = strain.get("aliases")
+            if strain_aliases is not None:
+                if not isinstance(strain_aliases, list):
+                    errors.append(f"{strain_id}.aliases: expected list")
+                else:
+                    for alias_index, alias in enumerate(strain_aliases):
+                        if not isinstance(alias, str) or not alias.strip():
+                            errors.append(f"{strain_id}.aliases[{alias_index}]: expected non-empty string")
             validate_layout(errors, strain_id, strain.get("layout"))
             attribution = strain.get("attribution")
             if not isinstance(attribution, dict):
