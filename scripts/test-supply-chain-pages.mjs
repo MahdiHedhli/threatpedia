@@ -7,11 +7,12 @@ import {
   getSupplyChainExploreModel,
   getSupplyChainIncidentPage,
   getSupplyChainIndexModel,
+  getSupplyChainMalwareFamilyPage,
   getSupplyChainRoutes,
   loadSupplyChainData,
   validateSupplyChainPageData,
 } from '../site/src/lib/supplyChainPages.mjs';
-import { buildSupplyChainGraphData, buildSupplyChainSearchIndex } from './build-supply-chain-graph.mjs';
+import { buildMalwareFamilyStixBundle, buildSupplyChainGraphData, buildSupplyChainSearchIndex } from './build-supply-chain-graph.mjs';
 
 const data = loadSupplyChainData();
 const baseLayoutSource = readFileSync(new URL('../site/src/layouts/Base.astro', import.meta.url), 'utf-8');
@@ -24,6 +25,9 @@ const supplyChainGraphPayload = JSON.parse(
 );
 const supplyChainSearchIndexPayload = JSON.parse(
   readFileSync(new URL('../site/public/supply-chain-search-index.json', import.meta.url), 'utf-8')
+);
+const malwareFamilyStixPayload = JSON.parse(
+  readFileSync(new URL('../site/public/supply-chain-malware-families-stix.json', import.meta.url), 'utf-8')
 );
 
 function routeUrl(route) {
@@ -57,6 +61,34 @@ assert.ok(routeUrls.has('/supply-chain/packages/pkg-golang-github-com-boltdb-go-
 assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-codecov-bash/'), 'repository route should be generated');
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');
+assert.ok(routeUrls.has('/supply-chain/malware-families/family-shai-hulud/'), 'malware-family lineage route should be generated');
+const shaiHuludFamily = getSupplyChainMalwareFamilyPage('family-shai-hulud', data);
+assert.equal(shaiHuludFamily.kind, 'malware-family', 'malware-family page model should use dedicated kind');
+assert.ok(
+  shaiHuludFamily.phylogeny.edges.some((edge) => edge.type === 'EVOLVED_FROM' && edge.confidence === 'confirmed') &&
+    shaiHuludFamily.phylogeny.edges.some((edge) => edge.type === 'VARIANT_OF' && edge.confidence === 'suspected') &&
+    shaiHuludFamily.phylogeny.forks.some((event) => event.id === 'fork-mini-shai-source-release'),
+  'malware-family page should model confirmed genealogy, suspected forks, and fork events'
+);
+assert.deepEqual(
+  shaiHuludFamily.phylogeny.ticks,
+  data.malwareFamilies[0].timeline_ticks,
+  'malware-family timeline ticks should come from the family object'
+);
+assert.ok(
+  !supplyChainPagesSource.includes("{ label: 'Sep 2025', x: 90 }"),
+  'malware-family page model should not fall back to Shai-Hulud-specific timeline ticks'
+);
+assert.deepEqual(
+  shaiHuludFamily.phylogeny.parentByChild['strain-miasma'],
+  ['strain-mini-shai-hulud'],
+  'malware-family parent map should retain parent arrays for DAG lineage'
+);
+assert.equal(
+  shaiHuludFamily.phylogeny.edges.find((edge) => edge.id === 'strain-ironworm->strain-mini-shai-hulud')?.labelY,
+  306,
+  'fork-linked lineage labels should align from the fork marker layout'
+);
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
@@ -138,6 +170,30 @@ assert.ok(
   'incident pages should render G7 propagation timelines from local SEEDED_BY edges only'
 );
 assert.ok(
+  supplyChainRouteSource.includes("page.kind === 'malware-family'") &&
+    supplyChainRouteSource.includes('data-lineage-stage') &&
+    supplyChainRouteSource.includes('lineage-edge lineage-${edge.confidence}') &&
+    supplyChainRouteSource.includes('Strain Comparison') &&
+    supplyChainRouteSource.includes('Family Changelog') &&
+    supplyChainRouteSource.includes('EVOLVED_FROM') &&
+    supplyChainRouteSource.includes('SEEDED_BY'),
+  'malware-family pages should render phylogeny, strain table, changelog, and genealogy/infection distinction'
+);
+assert.ok(
+  supplyChainRouteSource.includes('detail.replaceChildren') &&
+    supplyChainRouteSource.includes('textContent') &&
+    !supplyChainRouteSource.includes('detail.innerHTML'),
+  'lineage detail script should render dataset-backed content as text, not HTML'
+);
+assert.ok(
+  supplyChainRouteSource.includes('const stack = [id]') &&
+    supplyChainRouteSource.includes('Array.isArray(parents[child])') &&
+    supplyChainRouteSource.includes('activeEdges.add(`${child}->${parent}`)') &&
+    supplyChainRouteSource.includes('data-lineage-edge={`${edge.source}->${edge.target}`}') &&
+    supplyChainRouteSource.includes('data-lineage-edge-label={`${edge.source}->${edge.target}`}'),
+  'lineage detail script should trace all parent edges in a DAG lineage'
+);
+assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
     supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
@@ -154,6 +210,59 @@ assert.ok(
 assert.ok(
   supplyChainGraphPayload.nodes.some((node) => node.tier === 'incident' && node.short_label && node.short_label !== node.label),
   'graph payload should include short incident labels for the visual label layer'
+);
+assert.ok(
+  supplyChainGraphPayload.nodes.some((node) => node.id === 'family-shai-hulud' && node.type === 'malware_family') &&
+    supplyChainGraphPayload.nodes.some((node) => node.id === 'strain-mini-shai-hulud' && node.type === 'malware_strain') &&
+    supplyChainGraphPayload.nodes.some((node) => node.id === 'fork-mini-shai-source-release' && node.type === 'fork_event') &&
+    supplyChainGraphPayload.edges.some((edge) => edge.type === 'EVOLVED_FROM' && edge.mutation_delta?.includes('added PyPI')) &&
+    supplyChainGraphPayload.edges.some((edge) => edge.type === 'VARIANT_OF' && edge.confidence === 'suspected'),
+  'graph payload should include malware-family, strain, fork-event, and EVOLVED_FROM/VARIANT_OF primitives'
+);
+assert.ok(
+  supplyChainSearchIndexPayload.some((entry) => entry.id === 'family-shai-hulud' && entry.type === 'malware_family') &&
+    supplyChainSearchIndexPayload.some((entry) => entry.id === 'strain-ironworm' && entry.type === 'malware_strain'),
+  'search index should include malware-family and strain jump targets'
+);
+assert.equal(
+  supplyChainSearchIndexPayload.find((entry) => entry.id === 'strain-ironworm')?.href,
+  '/supply-chain/malware-families/family-shai-hulud/#strain-ironworm',
+  'malware strain search targets should navigate to the family anchor'
+);
+assert.ok(
+  supplyChainSearchIndexPayload
+    .filter((entry) => entry.type === 'malware_family' || entry.type === 'malware_strain')
+    .every((entry) => entry.aliases.every((alias) => typeof alias === 'string')),
+  'malware-family search aliases should be flattened before indexing'
+);
+assert.ok(
+  supplyChainGraphSource.includes('if (entry.href)') &&
+    supplyChainGraphSource.includes('window.location.href = entry.href'),
+  'graph search should navigate entries with explicit hrefs before graph-selection fallback'
+);
+const generatedStixBundle = buildMalwareFamilyStixBundle(data);
+assert.deepEqual(malwareFamilyStixPayload, generatedStixBundle, 'malware-family STIX bundle should be generated from the same data object');
+assert.equal(malwareFamilyStixPayload.type, 'bundle', 'malware-family STIX output should be a STIX bundle');
+assert.ok(
+  malwareFamilyStixPayload.objects.some((object) => object.type === 'malware' && object.name === 'Mini Shai-Hulud') &&
+    malwareFamilyStixPayload.objects.some((object) => object.type === 'relationship' && object.relationship_type === 'variant-of'),
+  'malware-family STIX bundle should include malware strain objects and variant relationships'
+);
+assert.ok(
+  malwareFamilyStixPayload.objects.every((object) => /^[a-z-]+--[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(object.id)),
+  'malware-family STIX object identifiers should use deterministic UUIDv5 shape'
+);
+assert.deepEqual(
+  malwareFamilyStixPayload.objects.find((object) => object.type === 'malware' && object.name === 'Mini Shai-Hulud')?.malware_types,
+  ['worm'],
+  'malware-family STIX objects should derive malware type from the family/strain model'
+);
+const monthOnlyStixFixture = structuredClone(data);
+monthOnlyStixFixture.malwareFamilies[0].strains[0].first_seen = '2025-09';
+assert.equal(
+  buildMalwareFamilyStixBundle(monthOnlyStixFixture).objects.find((object) => object.type === 'malware' && object.name === 'Shai-Hulud')?.first_seen,
+  '2025-09-01T00:00:00.000Z',
+  'month-only malware strain dates should emit valid full STIX timestamps'
 );
 assert.ok(
   supplyChainGraphSource.includes('REST_NODE_BUDGET = 40') &&
@@ -325,7 +434,8 @@ const expectedRouteCount =
   data.entities.packages.length +
   data.entities.repositories.length +
   data.entities.organizations.length +
-  data.entities.maintainers.length;
+  data.entities.maintainers.length +
+  data.malwareFamilies.length;
 assert.equal(routes.length, expectedRouteCount, 'enabled route count should match routed page types');
 
 const index = getSupplyChainIndexModel(data);

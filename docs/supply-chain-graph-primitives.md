@@ -10,6 +10,10 @@ precise public release evidence. Phase 2D strengthens maintainer entities with
 dated anchors and explicit repository/account links.
 The Supply Chain 1.0 S0 pass adds evidence-gated `SEEDED_BY` propagation
 edges for hand-modeled compromise chains.
+The 1.x lineage pass adds malware-family objects and evidence-gated
+`EVOLVED_FROM` / `VARIANT_OF` genealogy edges for strain evolution. These are
+kept separate from `SEEDED_BY`: genealogy says one strain descends from or
+resembles another; propagation says one compromise enabled another.
 
 This is a lightweight relationship layer, not a graph database.
 
@@ -17,6 +21,7 @@ This is a lightweight relationship layer, not a graph database.
 
 ```text
 data/supply-chain-incidents/incidents.json
+data/supply-chain-malware-families/families.json
 ```
 
 ## Generated Entity Files
@@ -177,6 +182,54 @@ create the package entity so the `SEEDED_BY` edge resolves, but it will not emit
 `AFFECTED_PACKAGE` or `AFFECTED_ORGANIZATION` edges for that upstream seed on
 the downstream incident.
 
+## Malware-Family Lineage
+
+```text
+data/supply-chain-malware-families/families.json
+```
+
+Malware-family objects model strain genealogy as a first-class supply-chain
+view. Each family carries:
+
+- `id`: stable `family-*` identifier
+- `name` and `aliases`: display and search names
+- `sources[]`: source records used by fork events and lineage edges
+- `strains[]`: `strain-*` nodes with first-seen date, ecosystems, mutation
+  summary, provenance-abuse summary, attribution label/confidence, and related
+  incident IDs
+- `fork_events[]`: `fork-*` markers such as a source release or leak that
+  changes how later similarity evidence should be graded
+- `lineage_edges[]`: directed child-to-parent edges
+
+Lineage edge types are:
+
+- `EVOLVED_FROM`: confirmed or suspected descent from an older strain
+- `VARIANT_OF`: non-linear fork, cosmetic clone, sibling fork, or playbook
+  adoption where direct descent is not asserted
+
+Every lineage edge carries:
+
+- `evidence_class` / `confidence`: `confirmed` or `suspected`; confirmed
+  requires code overlap or explicit researcher attestation
+- `relation_kind`: `descendant`, `evolution`, `cosmetic_clone`,
+  `playbook_adoption`, or `sibling_fork`
+- `mutation_delta[]`: concise labels for what changed
+- `external_refs[]`: family source refs supporting the edge
+- `suspected_reason`: required when confidence is `suspected`
+
+Validators require lineage endpoints to resolve to strains in the same family,
+source refs to resolve to family sources, suspected edges to explain the
+uncertainty, and the lineage graph to remain acyclic.
+
+The graph build emits malware-family, malware-strain, and fork-event nodes into
+`site/public/supply-chain-graph.json`, adds family and strain jump targets to
+`site/public/supply-chain-search-index.json`, and emits STIX 2.1 malware and
+relationship objects to:
+
+```text
+site/public/supply-chain-malware-families-stix.json
+```
+
 ## Current Graph Density
 
 The Phase 2E pass over 27 incidents currently emits:
@@ -195,6 +248,9 @@ The Phase 2E pass over 27 incidents currently emits:
 
 After S0, the graph also carries 3 `SEEDED_BY` propagation edges across the
 3CX/X_TRADER and Shai-Hulud modeled chains.
+After the lineage pass, the graph also carries the Shai-Hulud malware-family
+worked example with six strain nodes, one source-release fork event, and five
+`EVOLVED_FROM` / `VARIANT_OF` genealogy edges.
 
 ## Build and Validate
 
