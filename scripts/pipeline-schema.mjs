@@ -76,6 +76,9 @@ export const SCHEMA_ATTACK_VERSION_PATTERN = '^v\\d+(?:\\.\\d+)?$';
 export const SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN = '^AML\\.T\\d{4}(?:\\.\\d{3})?$';
 export const SCHEMA_ATLAS_VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
 export const SCHEMA_MITRE_TECHNIQUE_ID_PATTERN = '^T\\d{4}(?:\\.\\d{3})?$';
+export const SCHEMA_CVE_ID_PATTERN = '\\bCVE-\\d{4}-\\d{4,7}\\b';
+export const SCHEMA_GHSA_ID_PATTERN = '\\bGHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}\\b';
+export const SCHEMA_OSV_ID_PATTERN = '\\b(?:MAL|GHSA|PYSEC|GO|OSV|CVE)-[A-Z0-9][A-Z0-9.-]*\\b';
 
 /**
  * Canonical generatedBy identities currently recognized in the corpus.
@@ -186,6 +189,9 @@ export const SCHEMA = Object.freeze({
   atlasTechniqueIdPattern: SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
   atlasVersionPattern: SCHEMA_ATLAS_VERSION_PATTERN,
   mitreTechniqueIdPattern: SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
+  cveIdPattern: SCHEMA_CVE_ID_PATTERN,
+  ghsaIdPattern: SCHEMA_GHSA_ID_PATTERN,
+  osvIdPattern: SCHEMA_OSV_ID_PATTERN,
   generatedByValues: SCHEMA_GENERATED_BY_VALUES,
   generationMetadata: Object.freeze({
     requiredFields: SCHEMA_GENERATION_METADATA_REQUIRED_FIELDS,
@@ -224,7 +230,15 @@ function selfTest() {
       throw new Error(`SCHEMA_MAPPING_CONFIDENCE_VALUES element invalid: ${JSON.stringify(v)}`);
     }
   }
-  for (const pattern of [SCHEMA_ATTACK_VERSION_PATTERN, SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN, SCHEMA_ATLAS_VERSION_PATTERN, SCHEMA_MITRE_TECHNIQUE_ID_PATTERN]) {
+  for (const pattern of [
+    SCHEMA_ATTACK_VERSION_PATTERN,
+    SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN,
+    SCHEMA_ATLAS_VERSION_PATTERN,
+    SCHEMA_MITRE_TECHNIQUE_ID_PATTERN,
+    SCHEMA_CVE_ID_PATTERN,
+    SCHEMA_GHSA_ID_PATTERN,
+    SCHEMA_OSV_ID_PATTERN,
+  ]) {
     new RegExp(pattern);
   }
 

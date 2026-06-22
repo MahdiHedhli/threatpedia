@@ -12,6 +12,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { XMLParser } from 'fast-xml-parser';
 import { loadPipelineConfig } from './pipeline-config.mjs';
+import {
+  SCHEMA_CVE_ID_PATTERN,
+  SCHEMA_GHSA_ID_PATTERN,
+  SCHEMA_OSV_ID_PATTERN,
+} from './pipeline-schema.mjs';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(moduleDir, '..');
@@ -24,9 +29,10 @@ const DEFAULT_ACTIVE_EXPIRY_DAYS = 30;
 const DEFAULT_MAX_CANDIDATES = 40;
 const DEFAULT_MAX_PER_SOURCE = 25;
 const DEFAULT_SINCE_HOURS = 6;
-const CVE_RE = /\bCVE-\d{4}-\d{4,7}\b/gi;
-const GHSA_RE = /\bGHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}\b/gi;
-const OSV_ID_RE = /\b(?:MAL|GHSA|PYSEC|GO|OSV|CVE)-[A-Z0-9][A-Z0-9.-]*\b/gi;
+const FETCH_TIMEOUT_MS = 15000;
+const CVE_RE = new RegExp(SCHEMA_CVE_ID_PATTERN, 'gi');
+const GHSA_RE = new RegExp(SCHEMA_GHSA_ID_PATTERN, 'gi');
+const OSV_ID_RE = new RegExp(SCHEMA_OSV_ID_PATTERN, 'gi');
 const SUPPLY_CHAIN_TERMS = [
   /supply[- ]chain/i,
   /malicious package/i,
@@ -276,7 +282,7 @@ async function fetchText(url, headers = {}) {
       'User-Agent': 'threatpedia-supply-chain-discovery/1.0 (+https://threatpedia.wiki)',
       ...headers,
     },
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status} ${response.statusText}`);
   return response.text();
@@ -289,7 +295,7 @@ async function fetchJson(url, headers = {}) {
       'User-Agent': 'threatpedia-supply-chain-discovery/1.0 (+https://threatpedia.wiki)',
       ...headers,
     },
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status} ${response.statusText}`);
   return response.json();
@@ -522,8 +528,8 @@ async function collectPypiLeads(config, fixturesDir) {
         return null;
       }
     }
-    const info = projectJson.info || {};
-    const files = projectJson.releases?.[update.version] || [];
+    const info = projectJson?.info || {};
+    const files = projectJson?.releases?.[update.version] || [];
     const publishedAt = files.map((file) => iso(file.upload_time_iso_8601)).filter(Boolean).sort()[0] || update.publishedAt;
     if (!info.name || !update.version || !publishedAt) return null;
     return releaseLead({
@@ -612,6 +618,7 @@ async function collectOsvLeads(config, fixturesDir, asOfDate) {
         return null;
       }
     }
+    if (typeof record !== 'object' || record === null || Array.isArray(record)) return null;
     return vulnerabilityLead({
       source: 'osv',
       id: record.id,
@@ -714,7 +721,6 @@ export function loadCorpusIndex() {
     entities[file] = existsSync(path.resolve(repoRoot, filePath)) ? readJson(filePath) : [];
   }
 
-  const texts = [];
   const subjectIds = new Set();
   const packages = new Map();
   const actors = [];
@@ -722,7 +728,6 @@ export function loadCorpusIndex() {
 
   for (const incident of incidents) {
     const incidentText = JSON.stringify(incident);
-    texts.push(incidentText);
     subjectIds.add(`incident:${incident.id}`);
     for (const id of [...extractIds(incidentText).cves, ...extractIds(incidentText).ghsas, ...extractIds(incidentText).osvIds]) {
       subjectIds.add(id.toUpperCase());
