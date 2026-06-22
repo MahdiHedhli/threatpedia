@@ -16,9 +16,22 @@ The replay reads only stored corpus fields:
 
 The replay does not re-research incidents. If a timestamp is missing, the corpus must be updated through the normal evidence-backed incident workflow before the replay can use it.
 
-## Supported Initial Incidents
+## Backtest Modes
 
-Phase 2G supports three historical incidents:
+By default the replay covers every incident in `data/supply-chain-incidents/incidents.json`.
+It emits both:
+
+- timeline measurements for stored publish/warning/disclosure dates
+- prior-signal reconstruction against the stored graph relationships
+
+For compatibility with the initial Phase 2G foundation, the three original
+incidents can still be replayed with:
+
+```bash
+python3 scripts/supply_chain_backtest.py --legacy-required-incidents
+```
+
+Those original seed incidents are:
 
 - XZ Utils backdoor attempt: modeled as a source-release artifact case, so the replay uses stored `first_observed_at` as the publication/availability anchor.
 - event-stream malicious dependency insertion: modeled with the `flatmap-stream@0.1.1` release and its stored `published_at` value.
@@ -47,6 +60,30 @@ The command emits JSON with one timeline per incident:
 
 `discovery_latency_days` is the elapsed days from the publish/availability anchor to `first_public_warning_at` when present, otherwise to `disclosed_at`. This is a measurement only, not a score.
 
+## Prior-Signal Reconstruction
+
+For each incident with `disclosed_at`, the backtest reconstructs the graph as
+of the day before disclosure. It then checks whether the incident's linked graph
+already carried a public signal in stored data:
+
+- responsible actor already linked to a prior public incident
+- related campaign already linked to a prior public incident
+- maintainer or account already linked to a prior public incident
+- maintainer with a stored dated anchor before disclosure
+- package or release already linked to prior public incident data
+- `SEEDED_BY` source package or release already present before the current incident
+
+The prior-signal pass uses existing relationship files and entity
+`source_incident_ids`. Current-incident relationships are counted only when the
+relationship evidence references were public by the replay cutoff. Actor and
+campaign prior signals use the dates of the supporting entity `source_refs`
+where those references are modeled, instead of blindly inheriting the parent
+incident's warning date.
+
+The replay does not infer actors, guess missing relationships, or research
+outside sources. Negative rows are kept in the output because absence of prior
+signal is part of the result.
+
 ## Evidence Split
 
 The replay preserves the distinction between available-at-the-time evidence and later-discovered evidence.
@@ -55,9 +92,19 @@ References with `published_at` on or before the replay date are listed in `avail
 
 This split is the foundation for future backtesting. It prevents later knowledge from leaking into a historical replay.
 
+## Analysis Artifact
+
+The current full-corpus run is committed as:
+
+- `docs/supply-chain-backtest-results-20260622.md`
+- `docs/supply-chain-backtest-results-20260622.json`
+
+The Markdown artifact summarizes the aggregate and every incident row. The JSON
+artifact preserves the machine-readable timelines, signals, lead times, and
+evidence references.
+
 ## Current Limits
 
-- The replay only covers the three initial incidents listed above.
 - It reads stored dates and does not fill gaps.
 - It does not join live ingestion data yet.
 - It does not perform scoring, actor attribution, AI inference, or soak/canary logic.
