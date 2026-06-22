@@ -737,7 +737,7 @@ def validate_malware_families(
                     if source_ref not in source_ids:
                         errors.append(f"{edge_path}.external_refs[{ref_index}].source_ref: unknown family source ref {source_ref!r}")
             suspected_reason = edge.get("suspected_reason")
-            if edge.get("confidence") == "suspected" and (
+            if (edge.get("confidence") == "suspected" or edge.get("evidence_class") == "suspected") and (
                 not isinstance(suspected_reason, str) or not suspected_reason.strip()
             ):
                 errors.append(f"{edge_path}.suspected_reason: suspected edges must explain uncertainty")

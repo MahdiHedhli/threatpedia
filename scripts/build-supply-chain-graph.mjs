@@ -771,7 +771,7 @@ function stixMalwareTypes(family, strain) {
   const explicitTypes = [strain.malware_types, family.malware_types].find((types) => Array.isArray(types) && types.length > 0);
   if (explicitTypes) return uniqueStrings(explicitTypes);
 
-  const searchableText = stringsFromValue([
+  const searchableText = [
     family.name,
     family.aliases,
     family.summary,
@@ -779,7 +779,7 @@ function stixMalwareTypes(family, strain) {
     strain.aliases,
     strain.key_mutation,
     strain.mutation_summary,
-  ]).join(' ').toLowerCase();
+  ].flat(Infinity).filter((value) => typeof value === 'string').join(' ').toLowerCase();
   if (/\bworm\b|self[- ]propagat/.test(searchableText)) return ['worm'];
   return [];
 }

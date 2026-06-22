@@ -151,6 +151,20 @@ class SupplyChainGraphTests(unittest.TestCase):
             errors,
         )
 
+        suspected_evidence_only = copy.deepcopy(malware_families)
+        suspected_evidence_only[0]["lineage_edges"][0]["confidence"] = "confirmed"
+        suspected_evidence_only[0]["lineage_edges"][0]["evidence_class"] = "suspected"
+        suspected_evidence_only[0]["lineage_edges"][0]["suspected_reason"] = ""
+        evidence_errors = validator.validate_malware_families(
+            suspected_evidence_only,
+            raw_incident_ids=raw_incident_ids,
+            entity_ids=entity_ids,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].suspected_reason: suspected edges must explain uncertainty",
+            evidence_errors,
+        )
+
         malformed_event = copy.deepcopy(malware_families)
         malformed_event[0]["fork_events"][0]["name"] = ""
         malformed_event[0]["fork_events"][0]["layout"] = {"y": "middle"}
