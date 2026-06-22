@@ -272,7 +272,7 @@ function encodePurlName(ecosystem, name) {
   const normalized = normalizePackageName(eco, name);
   if (eco === 'npm' && normalized.startsWith('@') && normalized.includes('/')) {
     const [scope, pkg] = normalized.slice(1).split('/', 2);
-    return `${encodeURIComponent(`@${scope}`)}/${encodeURIComponent(pkg)}`;
+    return `${encodeURIComponent(scope)}/${encodeURIComponent(pkg)}`;
   }
   if (eco === 'go' || eco === 'golang') return normalized.split('/').map((part) => encodeURIComponent(part)).join('/');
   return encodeURIComponent(normalized);
@@ -568,7 +568,7 @@ async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
     : await fetchText(`${config.sources.go.indexUrl}?since=${encodeURIComponent(since)}`).then(parseGoIndexLines);
   const previousBoundary = new Set(previousQueue?.feed_cursors?.go?.boundary_keys || []);
   const leads = [];
-  const recentRows = rows.slice().reverse().slice(0, config.maxPerSource);
+  const recentRows = rows.slice(0, config.maxPerSource);
   for (const row of recentRows) {
     if (!row || !row.Path || !row.Version || !row.Timestamp) continue;
     const key = goBoundaryKey(row);
@@ -832,7 +832,9 @@ function escapeRegExp(value) {
 function textContainsAlias(text, alias) {
   const normalized = String(alias || '').trim();
   if (!normalized) return false;
-  return new RegExp(`\\b${escapeRegExp(normalized)}\\b`, 'i').test(text);
+  const startBoundary = /^\w/.test(normalized) ? '\\b' : '';
+  const endBoundary = /\w$/.test(normalized) ? '\\b' : '';
+  return new RegExp(`${startBoundary}${escapeRegExp(normalized)}${endBoundary}`, 'i').test(text);
 }
 
 function connectivityHints(lead, corpusIndex) {
@@ -906,7 +908,8 @@ function computeManualOverrideValidity(lead, now) {
     errors.push('manualOverride.expiresAt must be a valid date string or null');
   }
   const expires = override.expiresAt ? parseDate(override.expiresAt) : null;
-  return { valid: errors.length === 0 && expires && expires >= now && override.value === true, errors };
+  const isExpired = expires ? expires < now : false;
+  return { valid: errors.length === 0 && !isExpired && override.value === true, errors };
 }
 
 function daysBetween(now, earlier) {
@@ -1249,8 +1252,9 @@ export async function buildCandidateQueue(args = parseArgs()) {
 
 async function run() {
   const args = parseArgs();
+  const config = loadB1Config(args);
   if (args.check) {
-    const queuePath = args.queuePath || args.out || DEFAULT_QUEUE_PATH;
+    const queuePath = config.queuePath;
     const queue = readJson(queuePath);
     const errors = validateCandidateQueue(queue);
     if (errors.length > 0) {

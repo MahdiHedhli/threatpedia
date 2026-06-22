@@ -17,7 +17,7 @@ function testMixedCaseEcosystemPurlsAreCanonical() {
   assert.equal(buildPurl('Go', 'github.com/boltdb/bolt', 'v1.3.9'), 'pkg:golang/github.com/boltdb/bolt@v1.3.9');
   assert.equal(buildPurl('golang', 'github.com/boltdb/bolt', 'v1.3.9'), 'pkg:golang/github.com/boltdb/bolt@v1.3.9');
   assert.equal(buildPurl('PyPI', 'Demo_Package.Name', '1.0.0'), 'pkg:pypi/demo-package-name@1.0.0');
-  assert.equal(buildPurl('NPM', '@Scope/Package', '2.0.0'), 'pkg:npm/%40scope/package@2.0.0');
+  assert.equal(buildPurl('NPM', '@Scope/Package', '2.0.0'), 'pkg:npm/scope/package@2.0.0');
 }
 
 async function testFixtureDiscoveryBuildsSafeQueue() {
@@ -155,7 +155,7 @@ async function testOsvDescendingCsvCollectsRecentRows() {
   }
 }
 
-async function testGoIndexPrioritizesNewestRows() {
+async function testGoIndexAdvancesSequentiallyWithoutSkippingRows() {
   const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-go-newest-'));
   try {
     writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
@@ -183,10 +183,10 @@ async function testGoIndexPrioritizesNewestRows() {
     });
 
     assert.ok(
-      queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/new@v0.0.2'),
-      'Go index collection should inspect newest rows first even when release-only rows are rejected',
+      queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/old@v0.0.1'),
+      'Go index collection should inspect oldest rows first to prevent cursor gaps',
     );
-    assert.ok(!queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/old@v0.0.1'));
+    assert.ok(!queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/new@v0.0.2'));
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
@@ -639,7 +639,7 @@ testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();
-await testGoIndexPrioritizesNewestRows();
+await testGoIndexAdvancesSequentiallyWithoutSkippingRows();
 await testGoBoundaryKeysMergeWhenCursorUnchanged();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
