@@ -11,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
 ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+MALWARE_FAMILY_PATH = REPO_ROOT / "data" / "supply-chain-malware-families" / "families.json"
 
 
 def load_module(name: str, path: Path):
@@ -46,8 +47,229 @@ class SupplyChainGraphTests(unittest.TestCase):
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
 
-        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships, malware_families), [])
+
+    def test_malware_family_lineage_validates_and_rejects_cycles(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+
+        self.assertEqual(
+            validator.validate_malware_families(
+                malware_families,
+                raw_incident_ids=raw_incident_ids,
+                actor_ids=actor_ids,
+            ),
+            [],
+        )
+
+        cyclic = copy.deepcopy(malware_families)
+        cyclic[0]["lineage_edges"].append(
+            {
+                "source": "strain-shai-hulud",
+                "target": "strain-hades-shai-hulud",
+                "type": "EVOLVED_FROM",
+                "evidence_class": "confirmed",
+                "confidence": "confirmed",
+                "relation_kind": "evolution",
+                "mutation_delta": ["cycle fixture"],
+                "external_refs": [{"source_ref": "ref-wiz-shai-hulud"}],
+                "summary": "Fixture edge that creates a lineage cycle.",
+            }
+        )
+
+        self.assertTrue(
+            any(
+                "EVOLVED_FROM cycle detected" in error
+                for error in validator.validate_malware_families(
+                    cyclic,
+                    raw_incident_ids=raw_incident_ids,
+                    actor_ids=actor_ids,
+                )
+            )
+        )
+
+    def test_malware_family_validator_rejects_invalid_dates_and_non_list_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+        malformed = copy.deepcopy(malware_families)
+        malformed[0]["schema_version"] = ""
+        malformed[0]["summary"] = ""
+        malformed[0]["first_seen"] = "2025-99"
+        malformed[0]["aliases"].append(" ")
+        malformed[0]["timeline_ticks"] = "not-a-list"
+        malformed[0]["associated_actor_ids"] = "actor-teampcp"
+        malformed[0]["sources"][0]["title"] = ""
+        malformed[0]["sources"][0]["publisher"] = ""
+        malformed[0]["sources"][0]["url"] = "ftp://example.test/report"
+        malformed[0]["sources"][0]["published_at"] = "2025-13"
+        malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
+        malformed[0]["strains"][0]["ecosystems"].append(" ")
+        malformed[0]["strains"][0]["aliases"].append("")
+        malformed[0]["strains"][0]["key_mutation"] = ""
+        malformed[0]["strains"][0]["provenance_abuse"] = ""
+        malformed[0]["strains"][0]["retained_features"].append(" ")
+        malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
+        malformed[0]["strains"][0]["layout"] = {"x": "left"}
+        malformed[0]["strains"][0]["severity"] = "severe"
+        malformed[0]["strains"][0]["attribution"] = {
+            "actor_id": "actor-does-not-exist",
+            "label": "",
+            "confidence": "high",
+        }
+        malformed[0]["fork_events"] = {"id": "fork-not-a-list"}
+        malformed[0]["lineage_edges"][2]["suspected_reason"] = "   "
+        malformed[0]["lineage_edges"][2]["external_refs"][0] = "not-an-object"
+        malformed[0]["sources"].append(copy.deepcopy(malformed[0]["sources"][0]))
+
+        errors = validator.validate_malware_families(
+            malformed,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+
+        self.assertIn("family-shai-hulud.timeline_ticks: expected non-empty list", errors)
+        self.assertIn("family-shai-hulud.schema_version: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.summary: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("family-shai-hulud.aliases[3]: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
+        non_actor_family = copy.deepcopy(malware_families)
+        non_actor_family[0]["root_actor_id"] = "org-npm"
+        non_actor_family[0]["associated_actor_ids"] = ["org-npm"]
+        non_actor_family[0]["strains"][0]["attribution"]["actor_id"] = "org-npm"
+        non_actor_errors = validator.validate_malware_families(
+            non_actor_family,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+        self.assertIn("family-shai-hulud.root_actor_id: unknown actor id 'org-npm'", non_actor_errors)
+        self.assertIn("family-shai-hulud.associated_actor_ids[0]: unknown actor id 'org-npm'", non_actor_errors)
+        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor id 'org-npm'", non_actor_errors)
+        self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("strain-shai-hulud.ecosystems[1]: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.aliases[1]: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.key_mutation: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.provenance_abuse: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.retained_features[0]: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
+        self.assertIn("strain-shai-hulud.layout.x: expected number", errors)
+        self.assertIn("strain-shai-hulud.layout.y: expected number", errors)
+        self.assertIn("strain-shai-hulud.severity: expected low, medium, high, or critical", errors)
+        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor id 'actor-does-not-exist'", errors)
+        self.assertIn("strain-shai-hulud.attribution.label: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.attribution.confidence: expected unknown, suspected, likely, or confirmed", errors)
+        self.assertIn("family-shai-hulud.fork_events: expected list", errors)
+        self.assertIn("family-shai-hulud.sources[0].title: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.sources[0].publisher: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.sources[0].url: expected valid HTTP/HTTPS URL", errors)
+        self.assertIn("family-shai-hulud.sources[0].published_at: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("family-shai-hulud.sources[5].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[2].external_refs[0]: expected object",
+            errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[2].suspected_reason: suspected edges must explain uncertainty",
+            errors,
+        )
+
+        suspected_evidence_only = copy.deepcopy(malware_families)
+        suspected_evidence_only[0]["lineage_edges"][0]["confidence"] = "confirmed"
+        suspected_evidence_only[0]["lineage_edges"][0]["evidence_class"] = "suspected"
+        suspected_evidence_only[0]["lineage_edges"][0]["suspected_reason"] = ""
+        evidence_errors = validator.validate_malware_families(
+            suspected_evidence_only,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].suspected_reason: suspected edges must explain uncertainty",
+            evidence_errors,
+        )
+
+        malformed_event = copy.deepcopy(malware_families)
+        malformed_event[0]["fork_events"][0]["name"] = ""
+        malformed_event[0]["fork_events"][0]["layout"] = {"y": "middle"}
+        event_errors = validator.validate_malware_families(
+            malformed_event,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+
+        self.assertIn("fork-mini-shai-source-release.name: expected non-empty string", event_errors)
+        self.assertIn("fork-mini-shai-source-release.layout.x: expected number", event_errors)
+        self.assertIn("fork-mini-shai-source-release.layout.y: expected number", event_errors)
+
+        unhashable_refs = copy.deepcopy(malware_families)
+        unhashable_refs[0]["root_actor_id"] = ["actor-shai-hulud-operator"]
+        unhashable_refs[0]["strains"][0]["attribution"]["actor_id"] = {"id": "actor-teampcp"}
+        unhashable_refs[0]["fork_events"][0]["source_refs"] = [{"id": "ref-stepsecurity-mini-shai"}]
+        unhashable_refs[0]["lineage_edges"][0]["source"] = ["strain-shai-hulud-2"]
+        unhashable_refs[0]["lineage_edges"][0]["target"] = {"id": "strain-shai-hulud"}
+        unhashable_refs[0]["lineage_edges"][0]["external_refs"][0]["source_ref"] = ["ref-wiz-shai-hulud"]
+        unhashable_refs[0]["lineage_edges"][0]["fork_event_id"] = {"id": "fork-mini-shai-source-release"}
+        unhashable_errors = validator.validate_malware_families(
+            unhashable_refs,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+
+        self.assertIn(
+            "family-shai-hulud.root_actor_id: unknown actor id ['actor-shai-hulud-operator']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "strain-shai-hulud.attribution.actor_id: unknown actor id {'id': 'actor-teampcp'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "fork-mini-shai-source-release.source_refs[0]: unknown family source ref {'id': 'ref-stepsecurity-mini-shai'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].source: unknown strain id ['strain-shai-hulud-2']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].target: unknown strain id {'id': 'strain-shai-hulud'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].external_refs[0].source_ref: unknown family source ref ['ref-wiz-shai-hulud']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].fork_event_id: unknown fork event {'id': 'fork-mini-shai-source-release'}",
+            unhashable_errors,
+        )
+
+    def test_malware_family_validator_allows_single_strain_without_lineage_edges(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+        single_strain = copy.deepcopy(malware_families)
+        single_strain[0]["strains"] = single_strain[0]["strains"][:1]
+        single_strain[0]["fork_events"] = []
+        single_strain[0].pop("lineage_edges", None)
+
+        errors = validator.validate_malware_families(
+            single_strain,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+
+        self.assertNotIn("family-shai-hulud.lineage_edges: expected non-empty list", errors)
+        self.assertEqual(errors, [])
 
     def test_builder_extracts_expected_entities(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))

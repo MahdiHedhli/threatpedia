@@ -35,6 +35,7 @@ const incidentPath = path.join(repoRoot, 'data/supply-chain-incidents/incidents.
 const relationshipPath = path.join(repoRoot, 'data/supply-chain-relationships/relationships.json');
 const entityDir = path.join(repoRoot, 'data/supply-chain-entities');
 const candidateQueuePath = path.join(repoRoot, '.github/pipeline/supply-chain-candidates/latest.json');
+const malwareFamilyPath = path.join(repoRoot, 'data/supply-chain-malware-families/families.json');
 let cachedData = null;
 
 export const SUPPLY_CHAIN_ENTITY_TYPES = [
@@ -190,6 +191,7 @@ export function loadSupplyChainData() {
   if (cachedData) return cachedData;
   const incidents = readJson(incidentPath);
   const relationships = readJson(relationshipPath);
+  const malwareFamilies = readJson(malwareFamilyPath);
   const entities = Object.fromEntries(
     Object.entries(allEntityFiles).map(([key, filename]) => [key, readJson(path.join(entityDir, filename))])
   );
@@ -201,7 +203,7 @@ export function loadSupplyChainData() {
     });
   });
   const incidentByNodeId = new Map(incidents.map((incident) => [`incident-${incident.id}`, incident]));
-  cachedData = { incidents, relationships, entities, entityById, incidentByNodeId, candidateQueue };
+  cachedData = { incidents, relationships, malwareFamilies, entities, entityById, incidentByNodeId, candidateQueue };
   return cachedData;
 }
 
@@ -213,6 +215,9 @@ export function validateSupplyChainPageData(data = loadSupplyChainData()) {
     const targetExists = validIncidentNodes.has(relationship.target) || data.entityById.has(relationship.target);
     if (!sourceExists) errors.push(`relationships[${index}].source unknown: ${relationship.source}`);
     if (!targetExists) errors.push(`relationships[${index}].target unknown: ${relationship.target}`);
+  });
+  (data.malwareFamilies || []).forEach((family, index) => {
+    if (!family?.id || !family.id.startsWith('family-')) errors.push(`malwareFamilies[${index}].id invalid: ${family?.id}`);
   });
   return errors;
 }
@@ -629,6 +634,9 @@ function buildGraphHeroModel(data) {
   const graphCorpus = {
     incidents: incidents.filter((incident) => incident && typeof incident === 'object' && typeof incident.id === 'string'),
     relationships: relationships.filter((relationship) => relationship && typeof relationship === 'object'),
+    malwareFamilies: Array.isArray(data.malwareFamilies)
+      ? data.malwareFamilies.filter((family) => family && typeof family === 'object' && typeof family.id === 'string')
+      : [],
     entities: Object.fromEntries(
       Object.entries(entities).map(([key, collection]) => [
         key,
@@ -803,6 +811,94 @@ function buildDwellTimeline(data) {
       disclosedPercent: barPercent,
     };
   });
+}
+
+function sourceByIdForFamily(family) {
+  return new Map((family.sources || []).map((source) => [source.id, source]));
+}
+
+function familyIncidentLinks(data, incidentIds = []) {
+  return incidentIds
+    .map((id) => data.incidents.find((incident) => incident.id === id))
+    .filter(Boolean)
+    .map((incident) => ({
+      href: `/supply-chain/incidents/${incident.id}/`,
+      label: incident.title,
+      id: incident.id,
+      type: 'STRAIN_INCIDENT',
+      entityType: 'Supply Chain Incident',
+      context: incidentSortDate(incident),
+    }))
+    .sort(compareDateDesc);
+}
+
+function lineageEdgePath(edge, nodeById, forkById) {
+  const source = nodeById.get(edge.source);
+  const target = nodeById.get(edge.target);
+  if (!source || !target) return null;
+  const from = target;
+  const to = source;
+  const fork = edge.fork_event_id ? forkById.get(edge.fork_event_id) : null;
+  const startOffset = from.kind === 'fork' ? 14 : 86;
+  const endOffset = to.kind === 'fork' ? 14 : 86;
+  const x1 = Number(from.layout?.x ?? 0) + startOffset;
+  const y1 = Number(from.layout?.y ?? 0);
+  const x2 = Number(to.layout?.x ?? 0) - endOffset;
+  const y2 = Number(to.layout?.y ?? 0);
+  const mx = fork ? Number(fork.layout?.x ?? (x1 + x2) / 2) : (x1 + x2) / 2;
+  const labelY = fork ? Number(fork.layout?.y ?? 0) + 56 : (y1 + y2) / 2 - (Math.abs(y2 - y1) > 40 ? 0 : 14);
+  return {
+    ...edge,
+    id: `${edge.source}->${edge.target}`,
+    displaySource: target,
+    displayTarget: source,
+    path: `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`,
+    labelX: mx,
+    labelY,
+    label: (edge.mutation_delta || []).join(' · '),
+    references: (edge.external_refs || []).map((ref) => ref.source).filter(Boolean),
+  };
+}
+
+function buildFamilyPhylogenyModel(data, family) {
+  const sourceById = sourceByIdForFamily(family);
+  const strains = (family.strains || []).map((strain) => ({
+    ...strain,
+    kind: 'strain',
+    incidents: familyIncidentLinks(data, strain.incident_ids || []),
+  }));
+  const forks = (family.fork_events || []).map((event) => ({
+    ...event,
+    kind: 'fork',
+    references: (event.source_refs || []).map((sourceId) => sourceById.get(sourceId)).filter(Boolean),
+  }));
+  const forkById = new Map(forks.map((event) => [event.id, event]));
+  const nodeById = new Map([
+    ...strains.map((strain) => [strain.id, strain]),
+    ...forks.map((event) => [event.id, event]),
+  ]);
+  const edgeInputs = (family.lineage_edges || []).map((edge) => ({
+    ...edge,
+    external_refs: Array.isArray(edge.external_refs)
+      ? edge.external_refs.map((ref) => ({
+          ...ref,
+          source: sourceById.get(ref?.source_ref),
+        }))
+      : [],
+  }));
+  const edges = edgeInputs.map((edge) => lineageEdgePath(edge, nodeById, forkById)).filter(Boolean);
+  const parentByChild = {};
+  edgeInputs.forEach((edge) => {
+    if (!parentByChild[edge.source]) parentByChild[edge.source] = [];
+    parentByChild[edge.source].push(edge.target);
+  });
+  return {
+    strains,
+    forks,
+    edges,
+    parentByChild,
+    ticks: Array.isArray(family.timeline_ticks) ? family.timeline_ticks : [],
+  };
 }
 
 export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
@@ -996,6 +1092,60 @@ export function getSupplyChainEntityPage(collectionKey, id, data = loadSupplyCha
   };
 }
 
+export function getSupplyChainMalwareFamilyPage(id, data = loadSupplyChainData()) {
+  const family = (data.malwareFamilies || []).find((item) => item.id === id);
+  if (!family) return null;
+  const description = family.summary;
+  const phylogeny = buildFamilyPhylogenyModel(data, family);
+  const strainComparisonRows = phylogeny.strains.map((strain) => ({
+    id: strain.id,
+    generation: strain.name,
+    firstSeen: strain.first_seen,
+    ecosystems: (strain.ecosystems || []).join(' · '),
+    keyMutation: strain.key_mutation,
+    provenanceAbuse: strain.provenance_abuse,
+    attribution: strain.attribution?.label || 'Unknown',
+    confidence: strain.lineage_confidence,
+  }));
+  const changelogRows = phylogeny.strains.map((strain) => ({
+    id: strain.id,
+    title: strain.name,
+    when: [
+      strain.first_seen,
+      (strain.ecosystems || []).join(' + '),
+      strain.lineage_confidence,
+    ].filter(Boolean).join(' · '),
+    kept: strain.retained_features || [],
+    mutation: strain.mutation_summary,
+    confidence: strain.lineage_confidence,
+  }));
+  return {
+    kind: 'malware-family',
+    title: family.name,
+    family,
+    graphHero: buildGraphHeroModel(data),
+    phylogeny,
+    strainComparisonRows,
+    changelogRows,
+    relatedIncidents: familyIncidentLinks(data, Array.from(new Set(phylogeny.strains.flatMap((strain) => strain.incident_ids || [])))),
+    seo: {
+      title: `Supply Chain Malware Family: ${family.name}`,
+      description,
+      canonicalPath: `/supply-chain/malware-families/${family.id}/`,
+      ogTitle: `${family.name} lineage - Threatpedia Supply Chain`,
+      ogDescription: description,
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: `${family.name} malware-family lineage`,
+        description,
+        url: `https://threatpedia.wiki/supply-chain/malware-families/${family.id}/`,
+        about: phylogeny.strains.map((strain) => ({ '@type': 'Thing', name: strain.name })),
+      },
+    },
+  };
+}
+
 export function getSupplyChainRoutes(options = {}) {
   const enabled = options.enabled ?? isSupplyChainPagesEnabled(options.env);
   if (!enabled) return [];
@@ -1020,6 +1170,12 @@ export function getSupplyChainRoutes(options = {}) {
       });
     });
   });
+  (data.malwareFamilies || []).forEach((family) => {
+    routes.push({
+      slug: `malware-families/${family.id}`,
+      page: getSupplyChainMalwareFamilyPage(family.id, data),
+    });
+  });
   return routes;
 }
 
@@ -1028,6 +1184,7 @@ export function pageFromSlug(slug, data = loadSupplyChainData()) {
   const [segment, id] = slug.split('/');
   if (segment === 'explore') return getSupplyChainExploreModel(data);
   if (segment === 'incidents') return getSupplyChainIncidentPage(id, data);
+  if (segment === 'malware-families') return getSupplyChainMalwareFamilyPage(id, data);
   const entityType = routeEntityBySegment[segment];
   if (!entityType) return null;
   return getSupplyChainEntityPage(entityType.key, id, data);

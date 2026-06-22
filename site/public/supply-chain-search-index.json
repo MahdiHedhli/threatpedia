@@ -4217,6 +4217,138 @@
     ]
   },
   {
+    "id": "family-shai-hulud",
+    "type": "malware_family",
+    "displayName": "Shai-Hulud",
+    "aliases": [
+      "family-shai-hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud",
+      "A self-propagating supply-chain worm family spanning npm, PyPI, and RubyGems activity, modeled as genealogy rather than infection propagation.",
+      "strain-shai-hulud",
+      "strain-shai-hulud-2",
+      "Shai-Hulud 2.0",
+      "Shai Hulud 2.0",
+      "strain-mini-shai-hulud",
+      "Mini Shai Hulud",
+      "strain-miasma",
+      "Miasma",
+      "The Spreading Blight",
+      "strain-hades-shai-hulud",
+      "Hades",
+      "Hades Shai-Hulud lineage strain",
+      "strain-ironworm",
+      "IronWorm",
+      "Iron Worm"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/"
+  },
+  {
+    "id": "strain-hades-shai-hulud",
+    "type": "malware_strain",
+    "displayName": "Hades",
+    "aliases": [
+      "strain-hades-shai-hulud",
+      "Hades Shai-Hulud lineage strain",
+      "PyPI move with Artifactory-focused reconnaissance and broader propagation.",
+      "Carried Miasma behavior into PyPI and added Artifactory-focused reconnaissance.",
+      "PyPI",
+      "Shai-Hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-hades-shai-hulud"
+  },
+  {
+    "id": "strain-ironworm",
+    "type": "malware_strain",
+    "displayName": "IronWorm",
+    "aliases": [
+      "strain-ironworm",
+      "Iron Worm",
+      "Rust ELF payload delivered through a preinstall hook.",
+      "A suspected cosmetic clone over the released base, with a Rust ELF payload and preinstall execution.",
+      "npm",
+      "Shai-Hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-ironworm"
+  },
+  {
+    "id": "strain-miasma",
+    "type": "malware_strain",
+    "displayName": "Miasma",
+    "aliases": [
+      "strain-miasma",
+      "The Spreading Blight",
+      "binding.gyp install-time evasion, per-infection encryption, and prompt-injection targeting AI coding agents.",
+      "Added per-infection encryption, binding.gyp execution, and AI-assistant prompt-injection behavior while retaining the released Mini Shai-Hulud playbook.",
+      "npm",
+      "Shai-Hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-miasma"
+  },
+  {
+    "id": "strain-mini-shai-hulud",
+    "type": "malware_strain",
+    "displayName": "Mini Shai-Hulud",
+    "aliases": [
+      "strain-mini-shai-hulud",
+      "Mini Shai Hulud",
+      "Trusted publishing and OIDC token abuse across multiple package ecosystems.",
+      "Shifted the worm from static-token theft toward CI/CD trusted-publishing abuse, OIDC token extraction, and cross-ecosystem package propagation.",
+      "npm",
+      "PyPI",
+      "RubyGems",
+      "SC-2026-MINI-SHAI-HULUD",
+      "Shai-Hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-mini-shai-hulud"
+  },
+  {
+    "id": "strain-shai-hulud",
+    "type": "malware_strain",
+    "displayName": "Shai-Hulud",
+    "aliases": [
+      "strain-shai-hulud",
+      "Shai Hulud",
+      "Origin strain: self-replicating npm worm with token theft and auto-republish behavior.",
+      "Created the family template: developer token theft, public exfiltration repositories, and automated republishing into other npm packages.",
+      "npm",
+      "SC-2025-NPM-SHAI-HULUD",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud"
+  },
+  {
+    "id": "strain-shai-hulud-2",
+    "type": "malware_strain",
+    "displayName": "Shai-Hulud 2.0",
+    "aliases": [
+      "strain-shai-hulud-2",
+      "Shai Hulud 2.0",
+      "Second wave with broader package reach and faster propagation.",
+      "Expanded the original playbook into a larger wave while retaining token theft and automated republishing.",
+      "npm",
+      "SC-2025-SHAI-HULUD-2",
+      "Shai-Hulud",
+      "Shai Hulud",
+      "Shai-Hulud worm family",
+      "Mini Shai-Hulud"
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud-2"
+  },
+  {
     "id": "org-3cx",
     "type": "organization",
     "displayName": "3CX",

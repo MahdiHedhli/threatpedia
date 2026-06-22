@@ -51,6 +51,17 @@ const graphHero = page.kind === 'index'
   ? page.graphHero
   : page.kind === 'explore'
   ? page.graphHero
+  : page.kind === 'malware-family'
+  ? {
+      ...page.graphHero,
+      eyebrow: 'Malware Family Lineage',
+      title: page.family.name,
+      summary: page.family.summary,
+      status: 'Lineage view',
+      nodeCount: page.graphHero?.nodeCount,
+      relationshipCount: page.graphHero?.relationshipCount,
+      latestIncident: page.graphHero?.latestIncident,
+    }
   : {
       ...page.graphHero,
       eyebrow: page.kind === 'incident' ? 'Supply Chain Incident' : page.entityType,
@@ -63,8 +74,8 @@ const graphHero = page.kind === 'index'
       relationshipCount: page.graphHero?.relationshipCount,
       latestIncident: page.graphHero?.latestIncident,
     };
-const graphSelectionType = page.kind === 'incident' ? 'incident' : page.kind === 'entity' ? page.entityType.toLowerCase() : page.kind === 'explore' ? 'preserve' : 'overview';
-const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.kind === 'entity' ? page.entity.id : page.kind === 'explore' ? 'current' : 'recent';
+const graphSelectionType = page.kind === 'incident' ? 'incident' : page.kind === 'entity' ? page.entityType.toLowerCase() : page.kind === 'malware-family' ? 'malware_family' : page.kind === 'explore' ? 'preserve' : 'overview';
+const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.kind === 'entity' ? page.entity.id : page.kind === 'malware-family' ? page.family.id : page.kind === 'explore' ? 'current' : 'recent';
 ---
 
 <Base
@@ -196,10 +207,12 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         <p id="supply-chain-title" class="graph-context-title">Focused Graph View</p>
       )}
       <p class="lede">
-        {page.kind === 'index'
+      {page.kind === 'index'
           ? graphHero.summary
           : page.kind === 'explore'
           ? 'Search, pan, zoom, and cross-filter the persistent Supply Chain graph.'
+          : page.kind === 'malware-family'
+          ? 'Trace malware strain genealogy separately from infection propagation, with confidence and mutation deltas visible on each edge.'
           : `The persistent graph is framed to this ${page.kind === 'incident' ? 'incident' : page.entityType.toLowerCase()} while the canonical page heading and details continue below.`}
       </p>
       <div class="hero-meta" aria-label="Supply Chain graph summary">
@@ -675,9 +688,254 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       <EntityList title="Connected Entities" items={page.connectedEntities} />
     </article>
   )}
+
+  {page.kind === 'malware-family' && (
+    <article class="supply-chain-page malware-family-page">
+      <header class="sc-header">
+        <p class="eyebrow">Supply Chain / Malware Family</p>
+        <h1>{page.family.name}: a worm family, traced</h1>
+        <p class="lede">{page.family.summary}</p>
+      </header>
+
+      <section class="sc-section lineage-section" aria-labelledby="lineage-title">
+        <div class="section-heading">
+          <p class="eyebrow">Actor at root · time left to right · mutation on each edge</p>
+          <h2 id="lineage-title">Phylogeny</h2>
+        </div>
+        <div class="lineage-stage-wrap">
+          <div
+            class="lineage-stage"
+            data-lineage-stage
+            data-lineage-parents={JSON.stringify(page.phylogeny.parentByChild)}
+          >
+            <svg class="lineage-edges" viewBox="0 0 1180 560" preserveAspectRatio="none" aria-hidden="true">
+              {page.phylogeny.edges.map((edge) => (
+                <path
+                  d={edge.path}
+                  data-lineage-edge={`${edge.source}->${edge.target}`}
+                  class={`lineage-edge lineage-${edge.confidence}`}
+                />
+              ))}
+            </svg>
+            <div class="lineage-axis"></div>
+            {page.phylogeny.ticks.map((tick) => (
+              <div class="lineage-tick" style={`left:${tick.x}px`}>{tick.label}</div>
+            ))}
+            {page.phylogeny.edges.map((edge) => (
+              <div
+                class="lineage-edge-label"
+                data-lineage-edge-label={`${edge.source}->${edge.target}`}
+                style={`left:${edge.labelX}px;top:${edge.labelY}px`}
+              >
+                {edge.label}
+              </div>
+            ))}
+            {page.phylogeny.forks.map((event) => (
+              <div
+                id={event.id}
+                class="lineage-fork"
+                style={`left:${event.layout.x}px;top:${event.layout.y}px`}
+              >
+                <div class="lineage-fork-diamond"></div>
+                <strong>{event.name}</strong>
+                <span>{event.date}</span>
+              </div>
+            ))}
+            {page.phylogeny.strains.map((strain) => (
+              <button
+                id={strain.id}
+                type="button"
+                class={`lineage-node severity-${strain.severity || 'medium'} lineage-node-${strain.lineage_confidence}`}
+                style={`left:${strain.layout.x}px;top:${strain.layout.y}px`}
+                data-lineage-node={strain.id}
+                data-lineage-name={strain.name}
+                data-lineage-meta={`${strain.first_seen} · ${(strain.ecosystems || []).join(' · ')}`}
+                data-lineage-confidence={titleCase(strain.lineage_confidence)}
+                data-lineage-detail={strain.mutation_summary}
+              >
+                <strong>{strain.name}</strong>
+                <span>{strain.first_seen} · {(strain.ecosystems || []).join(' · ')}</span>
+                <em>{strain.key_mutation}</em>
+                <b>{titleCase(strain.lineage_confidence)}</b>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="lineage-legend" aria-label="Lineage legend">
+          <span><i class="legend-solid"></i> confirmed descent</span>
+          <span><i class="legend-dashed"></i> suspected / cosmetic fork</span>
+          <span><i class="legend-fork"></i> source-release fork event</span>
+          <span>EVOLVED_FROM is genealogy; SEEDED_BY remains infection path.</span>
+        </div>
+        <div class="lineage-detail" data-lineage-detail>
+          <strong>Hover a strain</strong>
+          <span>Targets and incidents live one layer down; this page traces family genealogy.</span>
+        </div>
+      </section>
+
+      <section class="sc-section">
+        <div class="section-heading">
+          <p class="eyebrow">Analyst consumable</p>
+          <h2>Strain Comparison</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Generation</th>
+                <th>First Seen</th>
+                <th>Ecosystems</th>
+                <th>Key Mutation / Novelty</th>
+                <th>Provenance Abuse</th>
+                <th>Attributed</th>
+                <th>Lineage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {page.strainComparisonRows.map((row) => (
+                <tr>
+                  <td><a href={`#${row.id}`}>{row.generation}</a></td>
+                  <td class="mono">{row.firstSeen}</td>
+                  <td>{row.ecosystems}</td>
+                  <td>{row.keyMutation}</td>
+                  <td>{row.provenanceAbuse}</td>
+                  <td class="mono">{row.attribution}</td>
+                  <td><span class={`lineage-pill lineage-pill-${row.confidence}`}>{titleCase(row.confidence)}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="sc-section">
+        <div class="section-heading">
+          <p class="eyebrow">What stayed, what mutated</p>
+          <h2>Family Changelog</h2>
+        </div>
+        <div class="lineage-changelog">
+          {page.changelogRows.map((row) => (
+            <article class={`lineage-change lineage-change-${row.confidence}`}>
+              <h3>{row.title}</h3>
+              <span>{row.when}</span>
+              {row.kept.length > 0 && <p><b>Kept:</b> {row.kept.join(', ')}.</p>}
+              <p><b>Mutated:</b> {row.mutation}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="sc-section lineage-discipline">
+        <div class="section-heading">
+          <p class="eyebrow">Why the grading matters</p>
+          <h2>Genealogy, Not Infection</h2>
+        </div>
+        <p>
+          Confirmed descent requires code overlap or explicit researcher attestation. Suspected and cosmetic forks stay dashed, and the source-release fork event remains visible because public code makes look-alikes harder to attribute.
+        </p>
+        <p>
+          This page separates <strong>EVOLVED_FROM</strong>, meaning strain genealogy, from <strong>SEEDED_BY</strong>, meaning one compromise enabled another.
+        </p>
+      </section>
+
+      <EntityList title="Related Incidents" items={page.relatedIncidents} />
+
+      <section class="sc-section">
+        <h2>Family Sources</h2>
+        <ul class="reference-list">
+          {page.family.sources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+              <span>{source.publisher} · {source.published_at}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </article>
+  )}
 </Base>
 
 <script type="module" src="/js/supply-chain-graph-core.js"></script>
+<script is:inline>
+  (() => {
+    const stage = document.querySelector('[data-lineage-stage]');
+    if (!stage) return;
+    const detail = document.querySelector('[data-lineage-detail]');
+    const parents = JSON.parse(stage.dataset.lineageParents || '{}');
+    const nodes = Array.from(stage.querySelectorAll('[data-lineage-node]'));
+    const edges = Array.from(stage.querySelectorAll('[data-lineage-edge]'));
+    const labels = Array.from(stage.querySelectorAll('[data-lineage-edge-label]'));
+    const renderDetail = (title, meta, body) => {
+      if (!detail) return;
+      const titleEl = document.createElement('strong');
+      titleEl.textContent = title;
+      const metaEl = document.createElement('span');
+      metaEl.textContent = meta;
+      if (body) {
+        const bodyEl = document.createElement('p');
+        bodyEl.textContent = body;
+        detail.replaceChildren(titleEl, metaEl, bodyEl);
+      } else {
+        detail.replaceChildren(titleEl, metaEl);
+      }
+    };
+
+    const ancestry = (id) => {
+      const chain = [];
+      const stack = [id];
+      const seen = new Set();
+      while (stack.length > 0) {
+        const current = stack.pop();
+        if (!current || seen.has(current)) continue;
+        seen.add(current);
+        chain.push(current);
+        const lineageParents = Array.isArray(parents[current]) ? parents[current] : [parents[current]].filter(Boolean);
+        stack.push(...lineageParents);
+      }
+      return chain;
+    };
+
+    const clear = () => {
+      nodes.forEach((node) => node.classList.remove('is-lit', 'is-dim'));
+      edges.forEach((edge) => edge.classList.remove('is-lit', 'is-dim'));
+      labels.forEach((label) => label.classList.remove('is-lit'));
+      renderDetail('Hover a strain', 'Targets and incidents live one layer down; this page traces family genealogy.');
+    };
+
+    const focusLineage = (button) => {
+      const chain = ancestry(button.dataset.lineageNode);
+      const activeNodes = new Set(chain);
+      const activeEdges = new Set();
+      chain.forEach((child) => {
+        const lineageParents = Array.isArray(parents[child]) ? parents[child] : [parents[child]].filter(Boolean);
+        lineageParents.forEach((parent) => activeEdges.add(`${child}->${parent}`));
+      });
+      nodes.forEach((node) => {
+        const active = activeNodes.has(node.dataset.lineageNode);
+        node.classList.toggle('is-lit', active);
+        node.classList.toggle('is-dim', !active);
+      });
+      edges.forEach((edge) => {
+        const active = activeEdges.has(edge.dataset.lineageEdge);
+        edge.classList.toggle('is-lit', active);
+        edge.classList.toggle('is-dim', !active);
+      });
+      labels.forEach((label) => label.classList.toggle('is-lit', activeEdges.has(label.dataset.lineageEdgeLabel)));
+      renderDetail(
+        button.dataset.lineageName || 'Unknown strain',
+        `${button.dataset.lineageMeta || 'unknown'} · ${button.dataset.lineageConfidence || 'unknown'}`,
+        button.dataset.lineageDetail || ''
+      );
+    };
+
+    nodes.forEach((node) => {
+      node.addEventListener('mouseenter', () => focusLineage(node));
+      node.addEventListener('focus', () => focusLineage(node));
+      node.addEventListener('click', () => focusLineage(node));
+    });
+    stage.addEventListener('mouseleave', clear);
+  })();
+</script>
 
 <style>
   .supply-chain-page {
@@ -1943,6 +2201,335 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     font-family: var(--font-mono);
     font-size: 0.72rem;
     font-style: normal;
+  }
+
+  .malware-family-page {
+    max-width: 1240px;
+  }
+
+  .lineage-stage-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: radial-gradient(130% 100% at 75% 0%, #0e141b, #070a0e);
+  }
+
+  .lineage-stage {
+    position: relative;
+    width: 1180px;
+    height: 560px;
+    margin: 0 auto;
+  }
+
+  .lineage-edges {
+    position: absolute;
+    inset: 0;
+    width: 1180px;
+    height: 560px;
+    pointer-events: none;
+  }
+
+  .lineage-edge {
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .lineage-confirmed {
+    stroke: #2f6a3a;
+  }
+
+  .lineage-suspected {
+    stroke: #7a5418;
+    stroke-dasharray: 5 4;
+  }
+
+  .lineage-edge.is-lit {
+    stroke: var(--amber);
+  }
+
+  .lineage-edge.is-dim {
+    opacity: 0.36;
+  }
+
+  .lineage-axis {
+    position: absolute;
+    right: 0;
+    bottom: 14px;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 8%, var(--border) 92%, transparent);
+  }
+
+  .lineage-tick {
+    position: absolute;
+    bottom: 18px;
+    transform: translateX(-50%);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+  }
+
+  .lineage-node {
+    position: absolute;
+    display: grid;
+    gap: 5px;
+    width: 172px;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--border);
+    border-left-width: 3px;
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    padding: 9px 11px 10px;
+    text-align: left;
+  }
+
+  .lineage-node:hover,
+  .lineage-node:focus-visible,
+  .lineage-node.is-lit {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 1px var(--amber), 0 0 22px rgba(232, 160, 32, 0.18);
+    outline: none;
+  }
+
+  .lineage-node.is-dim {
+    opacity: 0.32;
+  }
+
+  .lineage-node strong {
+    color: var(--white);
+    font-size: 0.86rem;
+    line-height: 1.15;
+  }
+
+  .lineage-node span {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.59rem;
+    letter-spacing: 0.04em;
+  }
+
+  .lineage-node em {
+    color: var(--text);
+    font-size: 0.7rem;
+    font-style: normal;
+    line-height: 1.25;
+  }
+
+  .lineage-node b,
+  .lineage-pill {
+    width: max-content;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 2px 6px;
+    text-transform: uppercase;
+  }
+
+  .lineage-node-origin b,
+  .lineage-pill-origin {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  .lineage-node-confirmed b,
+  .lineage-pill-confirmed {
+    border-color: #2f6a3a;
+    color: #7fd18c;
+  }
+
+  .lineage-node-suspected b,
+  .lineage-pill-suspected {
+    border-color: #7a5418;
+    color: var(--severity-high);
+  }
+
+  .lineage-fork {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .lineage-fork-diamond {
+    width: 22px;
+    height: 22px;
+    margin: 0 auto 10px;
+    transform: rotate(45deg);
+    border: 2px solid var(--amber);
+    background: var(--surface);
+    box-shadow: 0 0 16px rgba(232, 160, 32, 0.25);
+  }
+
+  .lineage-fork strong,
+  .lineage-fork span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .lineage-fork strong {
+    color: var(--amber);
+  }
+
+  .lineage-fork span {
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .lineage-edge-label {
+    position: absolute;
+    max-width: 150px;
+    transform: translate(-50%, -50%);
+    border-radius: 3px;
+    background: rgba(7, 10, 14, 0.82);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    line-height: 1.3;
+    padding: 2px 6px;
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .lineage-edge-label.is-lit {
+    color: var(--white);
+  }
+
+  .lineage-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-top: 12px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+  }
+
+  .lineage-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .legend-solid,
+  .legend-dashed {
+    display: inline-block;
+    width: 34px;
+    border-top: 2px solid #7fd18c;
+  }
+
+  .legend-dashed {
+    border-color: var(--severity-high);
+    border-top-style: dashed;
+  }
+
+  .legend-fork {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    border: 2px solid var(--amber);
+  }
+
+  .lineage-detail {
+    display: grid;
+    gap: 4px;
+    min-height: 58px;
+    margin-top: 14px;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--amber);
+    border-radius: 0 5px 5px 0;
+    background: var(--surface);
+    padding: 13px 15px;
+  }
+
+  .lineage-detail strong {
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: 1rem;
+  }
+
+  .lineage-detail span {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .lineage-detail p {
+    margin: 0;
+  }
+
+  .lineage-changelog {
+    border-left: 1px solid var(--border);
+    margin-left: 8px;
+  }
+
+  .lineage-change {
+    position: relative;
+    padding: 0 0 20px 26px;
+  }
+
+  .lineage-change::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: -5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+
+  .lineage-change-suspected::before {
+    background: var(--severity-high);
+  }
+
+  .lineage-change h3 {
+    margin: 0;
+    color: var(--white);
+    font-size: 0.95rem;
+  }
+
+  .lineage-change > span {
+    display: block;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.06em;
+    margin: 2px 0 7px;
+    text-transform: uppercase;
+  }
+
+  .lineage-change p,
+  .lineage-discipline p {
+    color: var(--text);
+    line-height: 1.55;
+    margin: 4px 0;
+  }
+
+  .lineage-change b {
+    color: var(--amber);
+  }
+
+  .lineage-discipline {
+    border: 1px solid rgba(160, 106, 16, 0.8);
+    border-radius: 6px;
+    background: rgba(232, 160, 32, 0.05);
+    padding: 16px;
   }
 
   @media (max-width: 820px) {
