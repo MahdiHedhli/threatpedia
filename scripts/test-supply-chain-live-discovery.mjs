@@ -268,6 +268,49 @@ function testComputedKevUsesEffectiveActiveStatus() {
   assert.equal(candidates[0].classification.leadClass, 'historical');
 }
 
+function testMixedCaseEcosystemMatchesExistingPackage() {
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const corpusIndex = {
+    subjectIds: new Set(),
+    packages: new Map([['pypi:demo-package', { id: 'pkg-pypi-demo-package', name: 'Demo_Package', ecosystem: 'PyPI' }]]),
+    actors: [],
+    campaigns: [],
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'mixed-case:test',
+      source: 'fixture',
+      kind: 'release',
+      ecosystem: 'PyPI',
+      packageName: 'Demo_Package',
+      version: '1.0.0',
+      purl: buildPurl('PyPI', 'Demo_Package', '1.0.0'),
+      title: 'Demo_Package 1.0.0',
+      summary: 'Package release candidate.',
+      publishedAt: '2026-06-21T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-21T00:00:00Z',
+      url: 'https://example.invalid/demo',
+    },
+  ], { config, corpusIndex, now });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].entityMatch, 'matched');
+  assert.deepEqual(candidates[0].matchedEntityHints.packages, [
+    { id: 'pkg-pypi-demo-package', name: 'Demo_Package', ecosystem: 'PyPI' },
+  ]);
+}
+
+function testQueueValidatorRejectsInvalidRootShapes() {
+  assert.deepEqual(validateCandidateQueue(null), ['Queue must be a valid object']);
+  assert.deepEqual(validateCandidateQueue([]), ['Queue must be a valid object']);
+}
+
 testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
@@ -275,4 +318,6 @@ await testOsvDescendingCsvCollectsRecentRows();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();
+testMixedCaseEcosystemMatchesExistingPackage();
+testQueueValidatorRejectsInvalidRootShapes();
 console.log('Supply Chain live discovery tests PASS');

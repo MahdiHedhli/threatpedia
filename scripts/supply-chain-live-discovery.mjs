@@ -257,6 +257,10 @@ function normalizePackageName(ecosystem, name) {
   return String(name || '').trim();
 }
 
+function corpusPackageKey(ecosystem, name) {
+  return `${String(ecosystem || '').toLowerCase()}:${normalizePackageName(ecosystem, name)}`;
+}
+
 function encodePurlName(ecosystem, name) {
   const eco = String(ecosystem || '').toLowerCase();
   const normalized = normalizePackageName(eco, name);
@@ -528,6 +532,7 @@ async function collectPypiLeads(config, fixturesDir) {
         return null;
       }
     }
+    if (!projectJson) return null;
     const info = projectJson?.info || {};
     const files = projectJson?.releases?.[update.version] || [];
     const publishedAt = files.map((file) => iso(file.upload_time_iso_8601)).filter(Boolean).sort()[0] || update.publishedAt;
@@ -618,7 +623,7 @@ async function collectOsvLeads(config, fixturesDir, asOfDate) {
         return null;
       }
     }
-    if (typeof record !== 'object' || record === null || Array.isArray(record)) return null;
+    if (!record || typeof record !== 'object' || Array.isArray(record)) return null;
     return vulnerabilityLead({
       source: 'osv',
       id: record.id,
@@ -739,7 +744,7 @@ export function loadCorpusIndex() {
 
   for (const pkg of entities.packages || []) {
     if (pkg.package_url) subjectIds.add(pkg.package_url);
-    if (pkg.name) packages.set(`${pkg.ecosystem || ''}:${normalizePackageName(pkg.ecosystem, pkg.name)}`, pkg);
+    if (pkg.name) packages.set(corpusPackageKey(pkg.ecosystem, pkg.name), pkg);
   }
   for (const release of entities.releases || []) {
     if (release.purl) subjectIds.add(release.purl);
@@ -789,7 +794,7 @@ function isSupplyChainRelevant(lead, corpusIndex) {
   const text = `${lead.title || ''}\n${lead.summary || ''}\n${lead.packageName || ''}\n${lead.purl || ''}`;
   if (SUPPLY_CHAIN_TERMS.some((regex) => regex.test(text))) return true;
   if (lead.affected?.some((item) => item.package?.ecosystem && ['npm', 'PyPI', 'pypi', 'Go', 'go'].includes(item.package.ecosystem))) return true;
-  if (lead.ecosystem && lead.packageName && corpusIndex.packages.has(`${lead.ecosystem}:${normalizePackageName(lead.ecosystem, lead.packageName)}`)) return true;
+  if (lead.ecosystem && lead.packageName && corpusIndex.packages.has(corpusPackageKey(lead.ecosystem, lead.packageName))) return true;
   return false;
 }
 
@@ -803,7 +808,7 @@ function connectivityHints(lead, corpusIndex) {
     .map((campaign) => ({ id: campaign.id, name: campaign.name }));
   const packages = [];
   if (lead.ecosystem && lead.packageName) {
-    const existing = corpusIndex.packages.get(`${lead.ecosystem}:${normalizePackageName(lead.ecosystem, lead.packageName)}`);
+    const existing = corpusIndex.packages.get(corpusPackageKey(lead.ecosystem, lead.packageName));
     if (existing) packages.push({ id: existing.id, name: existing.name, ecosystem: existing.ecosystem });
   }
   for (const affected of lead.affected || []) {
@@ -1036,6 +1041,10 @@ function candidateSort(a, b) {
 
 export function validateCandidateQueue(queue) {
   const errors = [];
+  if (!queue || typeof queue !== 'object' || Array.isArray(queue)) {
+    errors.push('Queue must be a valid object');
+    return errors;
+  }
   if (queue?.schema_version !== 'threatpedia-supply-chain-candidate-queue/1') errors.push('schema_version must be threatpedia-supply-chain-candidate-queue/1');
   if (queue?.drafting_enabled !== false) errors.push('drafting_enabled must be false');
   if (queue?.auto_drafting_allowed !== false) errors.push('auto_drafting_allowed must be false');
