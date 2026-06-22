@@ -845,7 +845,7 @@ function lineageEdgePath(edge, nodeById, forkById) {
   const y1 = Number(from.layout?.y || 0);
   const x2 = Number(to.layout?.x || 0) - endOffset;
   const y2 = Number(to.layout?.y || 0);
-  const mx = fork ? Number(fork.layout?.x || (x1 + x2) / 2) : (x1 + x2) / 2;
+  const mx = fork ? Number(fork.layout?.x ?? (x1 + x2) / 2) : (x1 + x2) / 2;
   const labelY = fork ? ((y1 + y2) / 2) + 56 : (y1 + y2) / 2 - (Math.abs(y2 - y1) > 40 ? 0 : 14);
   return {
     ...edge,
