@@ -276,6 +276,7 @@ async function fetchText(url, headers = {}) {
       'User-Agent': 'threatpedia-supply-chain-discovery/1.0 (+https://threatpedia.wiki)',
       ...headers,
     },
+    signal: AbortSignal.timeout(10000),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status} ${response.statusText}`);
   return response.text();
@@ -288,6 +289,7 @@ async function fetchJson(url, headers = {}) {
       'User-Agent': 'threatpedia-supply-chain-discovery/1.0 (+https://threatpedia.wiki)',
       ...headers,
     },
+    signal: AbortSignal.timeout(10000),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status} ${response.statusText}`);
   return response.json();
@@ -341,7 +343,7 @@ function loadB1Config(args) {
       },
       vulncheck: {
         enabled: pipelineConfig.discovery_sources?.vulncheck_kev?.enabled === true,
-        candidateIndexPath: pipelineConfig.discovery_sources?.vulncheck_kev?.candidate_index_path || '.github/pipeline/source-packets/vulncheck-kev/latest.json',
+        indexPath: pipelineConfig.discovery_sources?.vulncheck_kev?.candidate_index_path || '.github/pipeline/source-packets/vulncheck-kev/latest.json',
       },
     },
   };
@@ -1056,7 +1058,7 @@ async function collectRawLeads(config, args, previousQueue, asOfDate) {
     ['go', () => config.sources.go.enabled ? collectGoLeads(config, fixturesDir, previousQueue, asOfDate) : []],
     ['osv', () => config.sources.osv.enabled ? collectOsvLeads(config, fixturesDir, asOfDate) : []],
     ['ghsa', () => config.sources.ghsa.enabled ? collectGhsaLeads(config, fixturesDir) : []],
-    ['vulncheck-kev', () => config.sources.vulncheck.enabled ? collectVulncheckLeads(args.vulncheckIndex || config.sources.vulncheck.candidateIndexPath) : []],
+    ['vulncheck-kev', () => config.sources.vulncheck.enabled ? collectVulncheckLeads(args.vulncheckIndex || config.sources.vulncheck.indexPath) : []],
   ];
   for (const [name, collector] of collectors) {
     try {
