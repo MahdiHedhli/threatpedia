@@ -434,11 +434,17 @@ function parsePyPiRssItem(item) {
 }
 
 function parseGoIndexLines(text) {
-  return String(text || '')
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => JSON.parse(line));
+  const rows = [];
+  for (const line of String(text || '').split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      rows.push(JSON.parse(trimmed));
+    } catch {
+      continue;
+    }
+  }
+  return rows;
 }
 
 function goBoundaryKey(row) {
@@ -466,24 +472,23 @@ async function collectNpmLeads(config, fixturesDir) {
   const fixtureChanges = readFixtureJson(fixturesDir, 'npm_changes.json', null);
   const changes = fixtureChanges || await fetchJson(`${config.sources.npm.changesUrl}?descending=true&limit=${config.maxPerSource}`);
   const rows = Array.isArray(changes?.results) ? changes.results : [];
-  const leads = [];
-  for (const row of rows.slice(0, config.maxPerSource)) {
+  const leads = await Promise.all(rows.slice(0, config.maxPerSource).map(async (row) => {
     const packageName = row.id;
-    if (!packageName) continue;
+    if (!packageName) return null;
     const fixtureName = `npm-${slugPart(packageName)}.json`;
     let metadata = readFixtureJson(fixturesDir, fixtureName, null);
     if (!metadata) {
       try {
         metadata = await fetchJson(packageMetadataUrl(config.sources.npm.metadataBaseUrl, packageName));
       } catch {
-        continue;
+        return null;
       }
     }
     const version = latestNpmVersion(metadata);
     const versionData = version ? metadata?.versions?.[version] : null;
     const publishedAt = version ? metadata?.time?.[version] : null;
-    if (!version || !versionData || !publishedAt) continue;
-    leads.push(releaseLead({
+    if (!version || !versionData || !publishedAt) return null;
+    return releaseLead({
       source: 'npm-registry',
       ecosystem: 'npm',
       name: metadata.name || packageName,
@@ -493,30 +498,29 @@ async function collectNpmLeads(config, fixturesDir) {
       feedCursor: row.seq ? `seq:${row.seq}` : row.id,
       summary: versionData.description || metadata.description || '',
       raw: { change: row, version: versionData },
-    }));
-  }
-  return leads;
+    });
+  }));
+  return leads.filter(Boolean);
 }
 
 async function collectPypiLeads(config, fixturesDir) {
   const rssText = readFixture(fixturesDir, 'pypi_updates.xml', null) || await fetchText(config.sources.pypi.rssUrl);
   const updates = parseRssItems(rssText).map(parsePyPiRssItem).filter(Boolean).slice(0, config.maxPerSource);
-  const leads = [];
-  for (const update of updates) {
+  const leads = await Promise.all(updates.map(async (update) => {
     const fixtureName = `pypi-${slugPart(update.project)}.json`;
     let projectJson = readFixtureJson(fixturesDir, fixtureName, null);
     if (!projectJson) {
       try {
         projectJson = await fetchJson(pypiJsonUrl(config.sources.pypi.jsonBaseUrl, update.project));
       } catch {
-        continue;
+        return null;
       }
     }
     const info = projectJson.info || {};
     const files = projectJson.releases?.[update.version] || [];
     const publishedAt = files.map((file) => iso(file.upload_time_iso_8601)).filter(Boolean).sort()[0] || update.publishedAt;
-    if (!info.name || !update.version || !publishedAt) continue;
-    leads.push(releaseLead({
+    if (!info.name || !update.version || !publishedAt) return null;
+    return releaseLead({
       source: 'pypi-rss',
       ecosystem: 'pypi',
       name: info.name,
@@ -526,9 +530,9 @@ async function collectPypiLeads(config, fixturesDir) {
       feedCursor: update.cursor,
       summary: info.summary || '',
       raw: { update, files },
-    }));
-  }
-  return leads;
+    });
+  }));
+  return leads.filter(Boolean);
 }
 
 async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
@@ -559,9 +563,12 @@ async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
 }
 
 function parseOsvModifiedCsv(text, ecosystems, cutoff) {
+  if (!Array.isArray(ecosystems)) return [];
   const wanted = new Set(ecosystems.map((ecosystem) => ecosystem.toLowerCase()));
   const rows = [];
-  for (const line of String(text || '').split(/\r?\n/)) {
+  const lines = String(text || '').split(/\r?\n/);
+  for (let i = lines.length - 1; i >= 0; i -= 1) {
+    const line = lines[i];
     if (!line.trim()) continue;
     const [modifiedAt, recordPath] = line.split(',', 2);
     const modified = parseDate(modifiedAt);
@@ -577,18 +584,17 @@ async function collectOsvLeads(config, fixturesDir, asOfDate) {
   const cutoff = new Date(asOfDate.getTime() - config.sinceHours * 60 * 60 * 1000);
   const csvText = readFixture(fixturesDir, 'osv_modified_id.csv', null) || await fetchText(config.sources.osv.modifiedCsvUrl);
   const rows = parseOsvModifiedCsv(csvText, config.sources.osv.ecosystems, cutoff).slice(0, config.maxPerSource);
-  const leads = [];
-  for (const row of rows) {
+  const leads = await Promise.all(rows.map(async (row) => {
     const fixtureName = `osv-${slugPart(row.recordPath)}.json`;
     let record = readFixtureJson(fixturesDir, fixtureName, null);
     if (!record) {
       try {
         record = await fetchJson(`${config.sources.osv.recordBaseUrl.replace(/\/$/, '')}/${row.recordPath}.json`);
       } catch {
-        continue;
+        return null;
       }
     }
-    leads.push(vulnerabilityLead({
+    return vulnerabilityLead({
       source: 'osv',
       id: record.id,
       aliases: record.aliases || [],
@@ -600,9 +606,9 @@ async function collectOsvLeads(config, fixturesDir, asOfDate) {
       affected: record.affected || [],
       databaseSpecific: record.database_specific,
       raw: record,
-    }));
-  }
-  return leads;
+    });
+  }));
+  return leads.filter(Boolean);
 }
 
 function ghsaPackageEcosystem(ecosystem) {
@@ -616,12 +622,18 @@ async function collectGhsaLeads(config, fixturesDir) {
   if (fixture) {
     advisories.push(...fixture);
   } else {
-    for (const type of config.sources.ghsa.types) {
-      for (const ecosystem of config.sources.ghsa.ecosystems) {
+    const authHeaders = process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {};
+    const responses = await Promise.all(config.sources.ghsa.types.flatMap((type) => (
+      config.sources.ghsa.ecosystems.map(async (ecosystem) => {
         const url = `${config.sources.ghsa.url}?type=${encodeURIComponent(type)}&ecosystem=${encodeURIComponent(ecosystem)}&sort=updated&direction=desc&per_page=${config.maxPerSource}`;
-        advisories.push(...await fetchJson(url, { 'X-GitHub-Api-Version': '2022-11-28' }));
-      }
-    }
+        try {
+          return await fetchJson(url, { 'X-GitHub-Api-Version': '2022-11-28', ...authHeaders });
+        } catch {
+          return [];
+        }
+      })
+    )));
+    advisories.push(...responses.flat());
   }
   return advisories.slice(0, config.maxPerSource * 2).map((advisory) => {
     const affected = (advisory.vulnerabilities || []).map((vuln) => ({
@@ -753,7 +765,6 @@ function proposedArchetype(lead, subjectType) {
 function isSupplyChainRelevant(lead, corpusIndex) {
   const text = `${lead.title || ''}\n${lead.summary || ''}\n${lead.packageName || ''}\n${lead.purl || ''}`;
   if (SUPPLY_CHAIN_TERMS.some((regex) => regex.test(text))) return true;
-  if (lead.source === 'vulncheck-kev') return true;
   if (lead.affected?.some((item) => item.package?.ecosystem && ['npm', 'PyPI', 'pypi', 'Go', 'go'].includes(item.package.ecosystem))) return true;
   if (lead.ecosystem && lead.packageName && corpusIndex.packages.has(`${lead.ecosystem}:${normalizePackageName(lead.ecosystem, lead.packageName)}`)) return true;
   return false;
@@ -907,7 +918,16 @@ function chooseWorkIntent(entityMatch, leadClass) {
   return 'create_article';
 }
 
-export function classifyLeads(rawLeads, { config, corpusIndex, now }) {
+function previousCandidateBySubject(previousQueue) {
+  const bySubject = new Map();
+  for (const candidate of previousQueue?.candidates || []) {
+    if (candidate?.canonicalSubjectId) bySubject.set(candidate.canonicalSubjectId, candidate);
+  }
+  return bySubject;
+}
+
+export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueue = null }) {
+  const previousBySubject = previousCandidateBySubject(previousQueue);
   const grouped = new Map();
   for (const lead of rawLeads) {
     const canonicalSubjectId = canonicalSubjectForLead(lead);
@@ -928,12 +948,14 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now }) {
     const duplicate = corpusIndex.subjectIds.has(canonicalSubjectId);
     const hints = connectivityHints(primary, corpusIndex);
     const entityMatch = duplicate || hints.packages.length > 0 ? 'matched' : 'new';
-    const active = computeActiveStatus(primary, config, now);
-    const manual = computeManualOverrideValidity(primary, now);
-    const kevStatus = computeKevStatus(primary, active, config, now);
-    const freshness = classifyFreshness(primary, active, manual, kevStatus, config, now);
+    const previousManualOverride = previousBySubject.get(canonicalSubjectId)?.manualOverride || null;
+    const classifiedLead = previousManualOverride ? { ...primary, manualOverride: previousManualOverride } : primary;
+    const active = computeActiveStatus(classifiedLead, config, now);
+    const manual = computeManualOverrideValidity(classifiedLead, now);
+    const kevStatus = computeKevStatus(classifiedLead, active, config, now);
+    const freshness = classifyFreshness(classifiedLead, active, manual, kevStatus, config, now);
     const workIntent = chooseWorkIntent(entityMatch, freshness.leadClass);
-    const ranking = rankLead(primary, { ...freshness, ...active }, hints, duplicate);
+    const ranking = rankLead(classifiedLead, { ...freshness, ...active }, hints, duplicate);
 
     candidates.push({
       candidateId: `SC-CAND-${sha(canonicalSubjectId, 16)}`,
@@ -973,6 +995,7 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now }) {
       queueAction: 'candidate_review',
       draftingAllowed: false,
       autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; grounded drafting is not implemented in this sprint.',
+      ...(previousManualOverride ? { manualOverride: previousManualOverride } : {}),
     });
   }
 
@@ -1034,7 +1057,7 @@ function feedCursorsFromLeads(leads, previousQueue) {
   const goLeads = leads.filter((lead) => lead.source === 'go-index' && lead.feedCursor);
   const goCursor = goLeads.map((lead) => lead.feedCursor).sort().at(-1) || previousQueue?.feed_cursors?.go?.cursor || null;
   const maxGoCursor = goCursor ? parseDate(goCursor)?.getTime() : null;
-  const boundaryKeys = maxGoCursor
+  const boundaryKeys = maxGoCursor && goLeads.length > 0
     ? goLeads
         .filter((lead) => parseDate(lead.feedCursor)?.getTime() === maxGoCursor)
         .map((lead) => `${lead.packageName}\t${lead.version}\t${lead.feedCursor}`)
@@ -1051,7 +1074,7 @@ export async function buildCandidateQueue(args = parseArgs()) {
   const previousQueue = readPreviousQueue(config.queuePath);
   const corpusIndex = loadCorpusIndex();
   const { leads, errors } = await collectRawLeads(config, args, previousQueue, asOfDate);
-  const { candidates, rejected } = classifyLeads(leads, { config, corpusIndex, now: asOfDate });
+  const { candidates, rejected } = classifyLeads(leads, { config, corpusIndex, now: asOfDate, previousQueue });
   const emitted = candidates
     .filter((candidate) => candidate.rank >= config.minRank)
     .sort(candidateSort)

@@ -111,9 +111,15 @@ jobs:
           node scripts/supply-chain-live-discovery.mjs ${ARGS}
 
       - name: Validate candidate queue
+        env:
+          EXECUTE: ${{ inputs.execute || 'true' }}
         run: |
           set -euo pipefail
-          node scripts/supply-chain-live-discovery.mjs --check --queue-path "$QUEUE_PATH"
+          CHECK_PATH="$QUEUE_PATH"
+          if [ "${EXECUTE}" != "true" ]; then
+            CHECK_PATH="$RUNNER_TEMP/supply-chain-candidate-queue.json"
+          fi
+          node scripts/supply-chain-live-discovery.mjs --check --queue-path "$CHECK_PATH"
 
       - name: Commit candidate queue to branch
         id: commit

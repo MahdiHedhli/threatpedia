@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
@@ -53,6 +53,53 @@ async function testFixtureDiscoveryBuildsSafeQueue() {
   }
 }
 
+async function testOsvAscendingCsvAndMalformedGoLinesAreSafe() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-osv-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '{"Path":"example.com/ok","Version":"v0.0.1","Timestamp":"2026-06-20T00:00:00Z"}\n{"Path":');
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), [
+      '2020-01-01T00:00:00Z,npm/MAL-2020-OLD',
+      '2026-06-21T12:00:00Z,npm/MAL-2026-ASCENDING',
+      '',
+    ].join('\n'));
+    writeFileSync(path.join(tempDir, 'osv-npm-mal-2026-ascending.json'), JSON.stringify({
+      id: 'MAL-2026-ASCENDING',
+      modified: '2026-06-21T12:00:00Z',
+      published: '2026-06-21T12:00:00Z',
+      summary: 'Malicious package supply-chain fixture',
+      details: 'Malicious package supply-chain fixture for event-stream.',
+      affected: [{ package: { ecosystem: 'npm', name: 'event-stream' }, versions: ['9.9.9'] }],
+      database_specific: { malware_family: 'fixture' },
+    }));
+
+    const out = path.join(tempDir, 'queue.json');
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out,
+      queuePath: out,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex: null,
+      check: false,
+      includeLowSignal: false,
+    });
+
+    assert.equal(validateCandidateQueue(queue).length, 0);
+    assert.ok(
+      queue.candidates.some((candidate) => candidate.canonicalSubjectId === 'MAL-2026-ASCENDING'),
+      'ascending OSV modified_id.csv rows should still collect recent records',
+    );
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 function testManualOverrideIsKernelKOnly() {
   const corpusIndex = loadCorpusIndex();
   const now = new Date('2026-06-22T00:00:00Z');
@@ -87,6 +134,48 @@ function testManualOverrideIsKernelKOnly() {
   assert.equal(candidates.length, 1);
   assert.equal(candidates[0].classification.manualOverrideValid, false);
   assert.deepEqual(candidates[0].classification.manualOverrideErrors, ['manualOverride.by must be KernelK']);
+}
+
+function testManualOverrideCarriesForwardFromPreviousQueue() {
+  const corpusIndex = loadCorpusIndex();
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const previousQueue = {
+    candidates: [{
+      canonicalSubjectId: 'MAL-2026-MANUAL-CARRY',
+      manualOverride: {
+        value: true,
+        by: 'KernelK',
+        reason: 'Keep this candidate current during a bounded human review window.',
+        expiresAt: '2026-07-01T00:00:00Z',
+      },
+    }],
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'manual-carry:test',
+      source: 'fixture',
+      kind: 'advisory',
+      advisoryId: 'MAL-2026-MANUAL-CARRY',
+      title: 'Old malicious package supply-chain fixture',
+      summary: 'Manual override carry-forward fixture.',
+      publishedAt: '2025-01-01T00:00:00Z',
+      modifiedAt: '2025-01-01T00:00:00Z',
+      lastMaterialActivityAt: '2025-01-01T00:00:00Z',
+      url: 'https://example.invalid/manual-carry',
+      affected: [{ package: { ecosystem: 'npm', name: 'event-stream' } }],
+    },
+  ], { config, corpusIndex, now, previousQueue });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].classification.manualOverrideValid, true);
+  assert.equal(candidates[0].classification.leadClass, 'current');
+  assert.deepEqual(candidates[0].manualOverride, previousQueue.candidates[0].manualOverride);
 }
 
 function testComputedKevUsesEffectiveActiveStatus() {
@@ -126,6 +215,8 @@ function testComputedKevUsesEffectiveActiveStatus() {
 }
 
 await testFixtureDiscoveryBuildsSafeQueue();
+await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 testManualOverrideIsKernelKOnly();
+testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();
 console.log('Supply Chain live discovery tests PASS');
