@@ -268,6 +268,24 @@ discovery queues are open, validated, and stable.
      review on the current head SHA, no unresolved current AI review threads,
      and no later AI review-error comment without a successful replacement
      review.
+   - Automated bot reviews are advisory and severity-gated. They do not block
+     merge on their own. Blocking authority remains with independent
+     non-author lanes (`ernestpenfold-bot` / EP-Grok and `dangermouse-bot`) and
+     with any genuine bug, security issue, data-corruption risk,
+     evidence-grading defect, or semantic-consistency issue regardless of which
+     reviewer surfaced it.
+   - Treat `CRITICAL` and `HIGH` automated-review findings as current-cycle
+     blockers. Fix bugs, security defects, data-corruption risks,
+     evidence-grading issues, and semantic-consistency violations before merge.
+     Treat `MEDIUM` and `LOW` findings as hardening debt unless they reveal a
+     real blocker: collect defensive hardening on internal validators,
+     cosmetic simplifications, "consider..." suggestions, and PR restatements
+     into one final hardening pass or a follow-up issue.
+   - Record one disposition note per head, not one reply per automated-review
+     comment. Resolve advisory threads in batches after the disposition is
+     recorded. Do not retrigger `/gemini review` repeatedly; one automated pass
+     per meaningful head is enough. The blocking signal comes from EP/Grok, DM,
+     and confirmed current-head defects.
    - Worker status comments are treated as informational only. A comment that
      says `merge_ready` does not override current-head checks, review state,
      unresolved AI threads, or review errors.
@@ -338,7 +356,7 @@ same queue/validation path as discovery-generated tasks.
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
-| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, zero unresolved AI review threads; automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
+| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, and zero unresolved current AI review threads from configured reviewer logins. Automated review findings are triaged by severity for remediation priority, but any unresolved current AI review thread keeps the live gate red until fixed, answered, or resolved. Automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 100 pending · stay paused until queue < 80 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Ready-Issue stall alert | `pipeline-dispatcher.yml` | Warn after 60 minutes; alert after 180 minutes, or 60 minutes for P0 | `config.yml` (`ready_issue.*`) |
