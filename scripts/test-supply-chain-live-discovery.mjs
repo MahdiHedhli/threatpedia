@@ -192,6 +192,51 @@ async function testGoIndexPrioritizesNewestRows() {
   }
 }
 
+async function testGoBoundaryKeysMergeWhenCursorUnchanged() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-go-boundary-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), [
+      '{"Path":"example.com/old","Version":"v0.0.1","Timestamp":"2026-06-21T00:00:00.000Z"}',
+      '{"Path":"example.com/new","Version":"v0.0.2","Timestamp":"2026-06-21T00:00:00.000Z"}',
+    ].join('\n'));
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
+    const queuePath = path.join(tempDir, 'queue.json');
+    writeFileSync(queuePath, JSON.stringify({
+      feed_cursors: {
+        go: {
+          cursor: '2026-06-21T00:00:00.000Z',
+          boundary_keys: ['example.com/old\tv0.0.1\t2026-06-21T00:00:00.000Z'],
+        },
+      },
+      candidates: [],
+    }));
+
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out: queuePath,
+      queuePath,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex: path.join(tempDir, 'missing-vulncheck.json'),
+      check: false,
+      includeLowSignal: true,
+    });
+
+    assert.deepEqual(queue.feed_cursors.go.boundary_keys, [
+      'example.com/new\tv0.0.2\t2026-06-21T00:00:00.000Z',
+      'example.com/old\tv0.0.1\t2026-06-21T00:00:00.000Z',
+    ]);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 function testManualOverrideIsKernelKOnly() {
   const corpusIndex = loadCorpusIndex();
   const now = new Date('2026-06-22T00:00:00Z');
@@ -595,6 +640,7 @@ await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();
 await testGoIndexPrioritizesNewestRows();
+await testGoBoundaryKeysMergeWhenCursorUnchanged();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();

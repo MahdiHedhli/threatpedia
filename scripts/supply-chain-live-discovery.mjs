@@ -1161,11 +1161,17 @@ function feedCursorsFromLeads(leads, previousQueue) {
   const goLeads = leads.filter((lead) => lead.source === 'go-index' && lead.feedCursor);
   const goCursor = goLeads.map((lead) => lead.feedCursor).sort().at(-1) || previousQueue?.feed_cursors?.go?.cursor || null;
   const maxGoCursor = goCursor ? parseDate(goCursor)?.getTime() : null;
-  const boundaryKeys = maxGoCursor && goLeads.length > 0
+  const previousBoundary = previousQueue?.feed_cursors?.go?.boundary_keys || [];
+  const newBoundaryKeys = maxGoCursor && goLeads.length > 0
     ? goLeads
         .filter((lead) => parseDate(lead.feedCursor)?.getTime() === maxGoCursor)
         .map((lead) => `${lead.packageName}\t${lead.version}\t${lead.feedCursor}`)
-    : previousQueue?.feed_cursors?.go?.boundary_keys || [];
+    : [];
+  const boundaryKeys = goLeads.length > 0
+    ? (previousQueue?.feed_cursors?.go?.cursor === goCursor
+        ? [...previousBoundary.filter((key) => key.endsWith(`\t${goCursor}`)), ...newBoundaryKeys]
+        : newBoundaryKeys)
+    : previousBoundary;
   return {
     go: { cursor: goCursor, boundary_keys: uniqueStrings(boundaryKeys).sort() },
   };
