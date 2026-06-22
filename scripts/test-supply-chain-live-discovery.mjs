@@ -100,6 +100,53 @@ async function testOsvAscendingCsvAndMalformedGoLinesAreSafe() {
   }
 }
 
+async function testOsvDescendingCsvCollectsRecentRows() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-osv-desc-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '');
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), [
+      '2026-06-21T12:00:00Z,npm/MAL-2026-DESCENDING',
+      '2020-01-01T00:00:00Z,npm/MAL-2020-OLD',
+      '',
+    ].join('\n'));
+    writeFileSync(path.join(tempDir, 'osv-npm-mal-2026-descending.json'), JSON.stringify({
+      id: 'MAL-2026-DESCENDING',
+      modified: '2026-06-21T12:00:00Z',
+      published: '2026-06-21T12:00:00Z',
+      summary: 'Malicious package supply-chain fixture',
+      details: 'Malicious package supply-chain fixture for event-stream.',
+      affected: [{ package: { ecosystem: 'npm', name: 'event-stream' }, versions: ['9.9.8'] }],
+      database_specific: { malware_family: 'fixture' },
+    }));
+
+    const out = path.join(tempDir, 'queue.json');
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out,
+      queuePath: out,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex: null,
+      check: false,
+      includeLowSignal: false,
+    });
+
+    assert.equal(validateCandidateQueue(queue).length, 0);
+    assert.ok(
+      queue.candidates.some((candidate) => candidate.canonicalSubjectId === 'MAL-2026-DESCENDING'),
+      'newest-first OSV modified_id.csv rows should collect recent records',
+    );
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 function testManualOverrideIsKernelKOnly() {
   const corpusIndex = loadCorpusIndex();
   const now = new Date('2026-06-22T00:00:00Z');
@@ -216,6 +263,7 @@ function testComputedKevUsesEffectiveActiveStatus() {
 
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
+await testOsvDescendingCsvCollectsRecentRows();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();

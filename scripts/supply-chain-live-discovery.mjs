@@ -566,13 +566,25 @@ function parseOsvModifiedCsv(text, ecosystems, cutoff) {
   if (!Array.isArray(ecosystems)) return [];
   const wanted = new Set(ecosystems.map((ecosystem) => ecosystem.toLowerCase()));
   const rows = [];
-  const lines = String(text || '').split(/\r?\n/);
-  for (let i = lines.length - 1; i >= 0; i -= 1) {
-    const line = lines[i];
-    if (!line.trim()) continue;
-    const [modifiedAt, recordPath] = line.split(',', 2);
-    const modified = parseDate(modifiedAt);
-    if (!modified || modified < cutoff) break;
+  const lines = String(text || '').split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const datedRows = lines
+    .map((line) => {
+      const [modifiedAt, recordPath] = line.split(',', 2);
+      const modified = parseDate(modifiedAt);
+      return modified ? { line, modified } : null;
+    })
+    .filter(Boolean);
+  const first = datedRows[0]?.modified?.getTime() || 0;
+  const last = datedRows.at(-1)?.modified?.getTime() || 0;
+  const newestFirst = first >= last;
+  const start = newestFirst ? 0 : datedRows.length - 1;
+  const end = newestFirst ? datedRows.length : -1;
+  const step = newestFirst ? 1 : -1;
+
+  for (let i = start; i !== end; i += step) {
+    const { line, modified } = datedRows[i];
+    const [, recordPath] = line.split(',', 2);
+    if (modified < cutoff) break;
     const ecosystem = String(recordPath || '').split('/')[0];
     if (!wanted.has(ecosystem.toLowerCase())) continue;
     rows.push({ modifiedAt: modified.toISOString(), recordPath });
