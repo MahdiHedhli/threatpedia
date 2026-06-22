@@ -6930,8 +6930,8 @@
       "source": "strain-hades-shai-hulud",
       "target": "strain-miasma",
       "type": "EVOLVED_FROM",
-      "evidence_class": "confirmed",
-      "confidence": "confirmed",
+      "evidence_class": "suspected",
+      "confidence": "suspected",
       "relation_kind": "evolution",
       "mutation_delta": [
         "moved to PyPI",
@@ -6942,7 +6942,7 @@
         "ref-stepsecurity-mini-shai"
       ],
       "fork_event_id": null,
-      "summary": "Hades is modeled as an evolution of Miasma in the worked example."
+      "summary": "Hades is modeled as a suspected evolution of Miasma pending explicit code-overlap or researcher-attestation evidence."
     },
     {
       "id": "EVOLVED_FROM:strain-mini-shai-hulud->strain-shai-hulud-2",
