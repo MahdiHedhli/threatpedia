@@ -77,7 +77,7 @@ export const SCHEMA_ATLAS_TECHNIQUE_ID_PATTERN = '^AML\\.T\\d{4}(?:\\.\\d{3})?$'
 export const SCHEMA_ATLAS_VERSION_PATTERN = '^\\d+\\.\\d+\\.\\d+$';
 export const SCHEMA_MITRE_TECHNIQUE_ID_PATTERN = '^T\\d{4}(?:\\.\\d{3})?$';
 export const SCHEMA_CVE_ID_PATTERN = '\\bCVE-\\d{4}-\\d{4,7}\\b';
-export const SCHEMA_GHSA_ID_PATTERN = '\\bGHSA-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}\\b';
+export const SCHEMA_GHSA_ID_PATTERN = '\\bGHSA-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}\\b';
 export const SCHEMA_OSV_ID_PATTERN = '\\b(?:MAL|GHSA|PYSEC|GO|OSV|CVE)-[A-Z0-9][A-Z0-9.-]*\\b';
 
 /**

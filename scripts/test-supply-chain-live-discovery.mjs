@@ -15,6 +15,7 @@ const fixtureDir = 'tests/fixtures/supply_chain_live_discovery';
 
 function testMixedCaseEcosystemPurlsAreCanonical() {
   assert.equal(buildPurl('Go', 'github.com/boltdb/bolt', 'v1.3.9'), 'pkg:golang/github.com/boltdb/bolt@v1.3.9');
+  assert.equal(buildPurl('golang', 'github.com/boltdb/bolt', 'v1.3.9'), 'pkg:golang/github.com/boltdb/bolt@v1.3.9');
   assert.equal(buildPurl('PyPI', 'Demo_Package.Name', '1.0.0'), 'pkg:pypi/demo-package-name@1.0.0');
   assert.equal(buildPurl('NPM', '@Scope/Package', '2.0.0'), 'pkg:npm/%40scope/package@2.0.0');
 }
@@ -149,6 +150,43 @@ async function testOsvDescendingCsvCollectsRecentRows() {
       queue.candidates.some((candidate) => candidate.canonicalSubjectId === 'MAL-2026-DESCENDING'),
       'newest-first OSV modified_id.csv rows should collect recent records',
     );
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testGoIndexPrioritizesNewestRows() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-go-newest-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), [
+      '{"Path":"example.com/old","Version":"v0.0.1","Timestamp":"2026-06-20T00:00:00Z"}',
+      '{"Path":"example.com/new","Version":"v0.0.2","Timestamp":"2026-06-21T00:00:00Z"}',
+    ].join('\n'));
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
+
+    const out = path.join(tempDir, 'queue.json');
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out,
+      queuePath: out,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 1,
+      sinceHours: 72,
+      vulncheckIndex: path.join(tempDir, 'missing-vulncheck.json'),
+      check: false,
+      includeLowSignal: true,
+    });
+
+    assert.ok(
+      queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/new@v0.0.2'),
+      'Go index collection should inspect newest rows first even when release-only rows are rejected',
+    );
+    assert.ok(!queue.rejected.some((item) => item.canonicalSubjectId === 'pkg:golang/example.com/old@v0.0.1'));
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
@@ -304,6 +342,76 @@ function testMixedCaseEcosystemMatchesExistingPackage() {
   assert.deepEqual(candidates[0].matchedEntityHints.packages, [
     { id: 'pkg-pypi-demo-package', name: 'Demo_Package', ecosystem: 'PyPI' },
   ]);
+}
+
+function testGoEcosystemMatchesExistingPackage() {
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const corpusIndex = {
+    subjectIds: new Set(),
+    packages: new Map([['golang:github.com/boltdb/bolt', { id: 'pkg-go-bolt', name: 'github.com/boltdb/bolt', ecosystem: 'golang' }]]),
+    actors: [],
+    campaigns: [],
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'go-match:test',
+      source: 'fixture',
+      kind: 'release',
+      ecosystem: 'Go',
+      packageName: 'github.com/boltdb/bolt',
+      version: '1.3.9',
+      purl: buildPurl('Go', 'github.com/boltdb/bolt', '1.3.9'),
+      title: 'github.com/boltdb/bolt 1.3.9',
+      summary: 'Package release candidate.',
+      publishedAt: '2026-06-21T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-21T00:00:00Z',
+      url: 'https://example.invalid/demo',
+    },
+  ], { config, corpusIndex, now });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].entityMatch, 'matched');
+  assert.deepEqual(candidates[0].matchedEntityHints.packages, [
+    { id: 'pkg-go-bolt', name: 'github.com/boltdb/bolt', ecosystem: 'golang' },
+  ]);
+}
+
+function testKnownSubjectBypassesKeywordRelevance() {
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'known-subject:test',
+      source: 'fixture',
+      kind: 'advisory',
+      advisoryId: 'CVE-2026-77777',
+      title: 'Existing CVE update',
+      summary: 'Routine advisory wording without trigger keywords.',
+      cves: ['CVE-2026-77777'],
+      publishedAt: '2026-06-21T00:00:00Z',
+      modifiedAt: '2026-06-21T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-21T00:00:00Z',
+      url: 'https://example.invalid/known',
+    },
+  ], {
+    config,
+    corpusIndex: { subjectIds: new Set(['CVE-2026-77777']), packages: new Map(), actors: [], campaigns: [] },
+    now,
+  });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].entityMatch, 'matched');
 }
 
 function testQueueValidatorRejectsInvalidRootShapes() {
@@ -486,10 +594,13 @@ testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();
+await testGoIndexPrioritizesNewestRows();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();
 testMixedCaseEcosystemMatchesExistingPackage();
+testGoEcosystemMatchesExistingPackage();
+testKnownSubjectBypassesKeywordRelevance();
 testQueueValidatorRejectsInvalidRootShapes();
 await testVulncheckKevFeedsDerivedKevStatus();
 await testPendingCandidatesCarryForwardWhenNotRediscovered();

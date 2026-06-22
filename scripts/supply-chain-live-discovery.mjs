@@ -250,6 +250,11 @@ function normalizeNpmName(name) {
   return String(name || '').trim().toLowerCase();
 }
 
+function canonicalEcosystemType(ecosystem) {
+  const eco = String(ecosystem || '').toLowerCase();
+  return eco === 'go' || eco === 'golang' ? 'golang' : eco;
+}
+
 function normalizePackageName(ecosystem, name) {
   const eco = String(ecosystem || '').toLowerCase();
   if (eco === 'pypi') return normalizePypiName(name);
@@ -258,7 +263,8 @@ function normalizePackageName(ecosystem, name) {
 }
 
 function corpusPackageKey(ecosystem, name) {
-  return `${String(ecosystem || '').toLowerCase()}:${normalizePackageName(ecosystem, name)}`;
+  const type = canonicalEcosystemType(ecosystem);
+  return `${type}:${normalizePackageName(type, name)}`;
 }
 
 function encodePurlName(ecosystem, name) {
@@ -268,15 +274,15 @@ function encodePurlName(ecosystem, name) {
     const [scope, pkg] = normalized.slice(1).split('/', 2);
     return `${encodeURIComponent(`@${scope}`)}/${encodeURIComponent(pkg)}`;
   }
-  if (eco === 'go') return normalized.split('/').map((part) => encodeURIComponent(part)).join('/');
+  if (eco === 'go' || eco === 'golang') return normalized.split('/').map((part) => encodeURIComponent(part)).join('/');
   return encodeURIComponent(normalized);
 }
 
 export function buildPurl(ecosystem, name, version = null) {
   const eco = String(ecosystem || '').toLowerCase();
-  const type = eco === 'go' ? 'golang' : eco;
+  const type = canonicalEcosystemType(eco);
   const suffix = version ? `@${encodeURIComponent(String(version).trim())}` : '';
-  return `pkg:${type}/${encodePurlName(eco, name)}${suffix}`;
+  return `pkg:${type}/${encodePurlName(type, name)}${suffix}`;
 }
 
 async function fetchText(url, headers = {}) {
@@ -562,7 +568,8 @@ async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
     : await fetchText(`${config.sources.go.indexUrl}?since=${encodeURIComponent(since)}`).then(parseGoIndexLines);
   const previousBoundary = new Set(previousQueue?.feed_cursors?.go?.boundary_keys || []);
   const leads = [];
-  for (const row of rows.slice(0, config.maxPerSource)) {
+  const recentRows = rows.slice().reverse().slice(0, config.maxPerSource);
+  for (const row of recentRows) {
     if (!row || !row.Path || !row.Version || !row.Timestamp) continue;
     const key = goBoundaryKey(row);
     if (previousBoundary.has(key)) continue;
@@ -813,18 +820,28 @@ function proposedArchetype(lead, subjectType) {
 function isSupplyChainRelevant(lead, corpusIndex) {
   const text = `${lead.title || ''}\n${lead.summary || ''}\n${lead.packageName || ''}\n${lead.purl || ''}`;
   if (SUPPLY_CHAIN_TERMS.some((regex) => regex.test(text))) return true;
-  if (lead.affected?.some((item) => item.package?.ecosystem && ['npm', 'PyPI', 'pypi', 'Go', 'go'].includes(item.package.ecosystem))) return true;
+  if (lead.affected?.some((item) => item.package?.ecosystem && ['npm', 'pypi', 'golang'].includes(canonicalEcosystemType(item.package.ecosystem)))) return true;
   if (lead.ecosystem && lead.packageName && corpusIndex.packages.has(corpusPackageKey(lead.ecosystem, lead.packageName))) return true;
   return false;
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+function textContainsAlias(text, alias) {
+  const normalized = String(alias || '').trim();
+  if (!normalized) return false;
+  return new RegExp(`\\b${escapeRegExp(normalized)}\\b`, 'i').test(text);
+}
+
 function connectivityHints(lead, corpusIndex) {
-  const text = `${lead.title || ''}\n${lead.summary || ''}\n${lead.packageName || ''}`.toLowerCase();
+  const text = `${lead.title || ''}\n${lead.summary || ''}\n${lead.packageName || ''}`;
   const actors = corpusIndex.actors
-    .filter((actor) => actor.aliases.some((alias) => alias && text.includes(alias.toLowerCase())))
+    .filter((actor) => actor.aliases.some((alias) => textContainsAlias(text, alias)))
     .map((actor) => ({ id: actor.id, name: actor.name }));
   const campaigns = corpusIndex.campaigns
-    .filter((campaign) => campaign.aliases.some((alias) => alias && text.includes(alias.toLowerCase())))
+    .filter((campaign) => campaign.aliases.some((alias) => textContainsAlias(text, alias)))
     .map((campaign) => ({ id: campaign.id, name: campaign.name }));
   const packages = [];
   if (lead.ecosystem && lead.packageName) {
@@ -837,7 +854,7 @@ function connectivityHints(lead, corpusIndex) {
       : String(affected?.package?.ecosystem || '').toLowerCase();
     const name = affected?.package?.name;
     if (!ecosystem || !name) continue;
-    const existing = corpusIndex.packages.get(`${ecosystem}:${normalizePackageName(ecosystem, name)}`);
+    const existing = corpusIndex.packages.get(corpusPackageKey(ecosystem, name));
     if (existing && !packages.some((pkg) => pkg.id === existing.id)) {
       packages.push({ id: existing.id, name: existing.name, ecosystem: existing.ecosystem });
     }
@@ -991,12 +1008,12 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueu
   const rejected = [];
   for (const [canonicalSubjectId, leads] of grouped.entries()) {
     const primary = leads.sort((a, b) => String(b.lastMaterialActivityAt || '').localeCompare(String(a.lastMaterialActivityAt || '')))[0];
-    if (!isSupplyChainRelevant(primary, corpusIndex)) {
+    const duplicate = corpusIndex.subjectIds.has(canonicalSubjectId);
+    if (!duplicate && !isSupplyChainRelevant(primary, corpusIndex)) {
       rejected.push({ canonicalSubjectId, reason: 'not_supply_chain_relevant', mergedLeadRefs: leads.map((lead) => lead.leadRef) });
       continue;
     }
     const subjectType = subjectTypeFor(canonicalSubjectId);
-    const duplicate = corpusIndex.subjectIds.has(canonicalSubjectId);
     const hints = connectivityHints(primary, corpusIndex);
     const entityMatch = duplicate || hints.packages.length > 0 ? 'matched' : 'new';
     const previousManualOverride = previousBySubject.get(canonicalSubjectId)?.manualOverride || null;
