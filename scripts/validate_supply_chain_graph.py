@@ -529,7 +529,7 @@ def validate_malware_families(
     malware_families: Any,
     *,
     raw_incident_ids: set[str],
-    entity_ids: set[str],
+    actor_ids: set[str],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(malware_families, list):
@@ -571,16 +571,16 @@ def validate_malware_families(
                         errors.append(f"{family_id}.aliases[{alias_index}]: expected non-empty string")
         root_actor_id = family.get("root_actor_id")
         if root_actor_id is not None:
-            if not isinstance(root_actor_id, str) or root_actor_id not in entity_ids:
-                errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
+            if not isinstance(root_actor_id, str) or root_actor_id not in actor_ids:
+                errors.append(f"{family_id}.root_actor_id: unknown actor id {root_actor_id!r}")
         associated_actor_ids = family.get("associated_actor_ids")
         if associated_actor_ids is not None:
             if not isinstance(associated_actor_ids, list):
                 errors.append(f"{family_id}.associated_actor_ids: expected list")
             else:
                 for actor_index, actor_id in enumerate(associated_actor_ids):
-                    if not isinstance(actor_id, str) or actor_id not in entity_ids:
-                        errors.append(f"{family_id}.associated_actor_ids[{actor_index}]: unknown actor/entity id {actor_id!r}")
+                    if not isinstance(actor_id, str) or actor_id not in actor_ids:
+                        errors.append(f"{family_id}.associated_actor_ids[{actor_index}]: unknown actor id {actor_id!r}")
 
         sources = family.get("sources")
         source_ids: set[str] = set()
@@ -684,8 +684,8 @@ def validate_malware_families(
             else:
                 actor_id = attribution.get("actor_id")
                 if actor_id is not None:
-                    if not isinstance(actor_id, str) or actor_id not in entity_ids:
-                        errors.append(f"{strain_id}.attribution.actor_id: unknown actor/entity id {actor_id!r}")
+                    if not isinstance(actor_id, str) or actor_id not in actor_ids:
+                        errors.append(f"{strain_id}.attribution.actor_id: unknown actor id {actor_id!r}")
                 if not isinstance(attribution.get("label"), str) or not attribution["label"].strip():
                     errors.append(f"{strain_id}.attribution.label: expected non-empty string")
                 if attribution.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
@@ -906,8 +906,10 @@ def validate_graph(
     references_by_incident = collect_reference_ids_by_incident(corpus)
     incident_ids = collect_incident_ids(corpus)
     all_entity_ids: set[str] = set()
+    entity_ids_by_type: dict[str, set[str]] = {}
     for entity_type, entities in entities_by_type.items():
         entity_ids = validate_entity_file(errors, entity_type, entities, raw_incident_ids)
+        entity_ids_by_type[entity_type] = entity_ids
         duplicates = all_entity_ids & entity_ids
         for entity_id in sorted(duplicates):
             errors.append(f"{entity_id}: duplicate id across entity files")
@@ -928,7 +930,7 @@ def validate_graph(
             validate_malware_families(
                 malware_families,
                 raw_incident_ids=raw_incident_ids,
-                entity_ids=all_entity_ids,
+                actor_ids=entity_ids_by_type.get("actors", set()),
             )
         )
     return errors
