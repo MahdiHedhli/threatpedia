@@ -206,6 +206,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         {graphHero.nodeCount !== undefined && <span>{compactNumber(graphHero.nodeCount)} nodes</span>}
         {graphHero.relationshipCount !== undefined && <span>{compactNumber(graphHero.relationshipCount)} edges</span>}
         {page.kind === 'index' && graphHero.latestIncident && <span>Latest: {graphHero.latestIncident.sortDate}</span>}
+        {page.kind === 'index' && graphHero.pendingCandidateCount > 0 && <span>{compactNumber(graphHero.pendingCandidateCount)} pending discovery candidates</span>}
+        {page.kind === 'index' && graphHero.latestDiscoverySignalAt && <span>Discovery: {graphHero.latestDiscoverySignalAt.slice(0, 10)}</span>}
         {page.kind !== 'index' && <span>Cold links hydrate here</span>}
       </div>
     </div>

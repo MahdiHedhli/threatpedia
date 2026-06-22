@@ -1,0 +1,17 @@
+{
+  "info": {
+    "name": "demo_supply_chain_pkg",
+    "summary": "Malicious package supply-chain fixture for classifier coverage."
+  },
+  "releases": {
+    "9.9.9": [
+      {
+        "filename": "demo_supply_chain_pkg-9.9.9-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-06-20T13:00:00.000Z",
+        "digests": {
+          "sha256": "abc"
+        }
+      }
+    ]
+  }
+}
