@@ -4,6 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
+  buildPurl,
   buildCandidateQueue,
   classifyLeads,
   loadCorpusIndex,
@@ -11,6 +12,12 @@ import {
 } from './supply-chain-live-discovery.mjs';
 
 const fixtureDir = 'tests/fixtures/supply_chain_live_discovery';
+
+function testMixedCaseEcosystemPurlsAreCanonical() {
+  assert.equal(buildPurl('Go', 'github.com/boltdb/bolt', 'v1.3.9'), 'pkg:golang/github.com/boltdb/bolt@v1.3.9');
+  assert.equal(buildPurl('PyPI', 'Demo_Package.Name', '1.0.0'), 'pkg:pypi/demo-package-name@1.0.0');
+  assert.equal(buildPurl('NPM', '@Scope/Package', '2.0.0'), 'pkg:npm/%40scope/package@2.0.0');
+}
 
 async function testFixtureDiscoveryBuildsSafeQueue() {
   const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-'));
@@ -261,6 +268,7 @@ function testComputedKevUsesEffectiveActiveStatus() {
   assert.equal(candidates[0].classification.leadClass, 'historical');
 }
 
+testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();

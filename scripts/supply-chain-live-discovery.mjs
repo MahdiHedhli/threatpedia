@@ -245,25 +245,28 @@ function normalizeNpmName(name) {
 }
 
 function normalizePackageName(ecosystem, name) {
-  if (ecosystem === 'pypi') return normalizePypiName(name);
-  if (ecosystem === 'npm') return normalizeNpmName(name);
+  const eco = String(ecosystem || '').toLowerCase();
+  if (eco === 'pypi') return normalizePypiName(name);
+  if (eco === 'npm') return normalizeNpmName(name);
   return String(name || '').trim();
 }
 
 function encodePurlName(ecosystem, name) {
-  const normalized = normalizePackageName(ecosystem, name);
-  if (ecosystem === 'npm' && normalized.startsWith('@') && normalized.includes('/')) {
+  const eco = String(ecosystem || '').toLowerCase();
+  const normalized = normalizePackageName(eco, name);
+  if (eco === 'npm' && normalized.startsWith('@') && normalized.includes('/')) {
     const [scope, pkg] = normalized.slice(1).split('/', 2);
     return `${encodeURIComponent(`@${scope}`)}/${encodeURIComponent(pkg)}`;
   }
-  if (ecosystem === 'go') return normalized.split('/').map((part) => encodeURIComponent(part)).join('/');
+  if (eco === 'go') return normalized.split('/').map((part) => encodeURIComponent(part)).join('/');
   return encodeURIComponent(normalized);
 }
 
-function buildPurl(ecosystem, name, version = null) {
-  const type = ecosystem === 'go' ? 'golang' : ecosystem;
+export function buildPurl(ecosystem, name, version = null) {
+  const eco = String(ecosystem || '').toLowerCase();
+  const type = eco === 'go' ? 'golang' : eco;
   const suffix = version ? `@${encodeURIComponent(String(version).trim())}` : '';
-  return `pkg:${type}/${encodePurlName(ecosystem, name)}${suffix}`;
+  return `pkg:${type}/${encodePurlName(eco, name)}${suffix}`;
 }
 
 async function fetchText(url, headers = {}) {
@@ -338,6 +341,7 @@ function loadB1Config(args) {
       },
       vulncheck: {
         enabled: pipelineConfig.discovery_sources?.vulncheck_kev?.enabled === true,
+        candidateIndexPath: pipelineConfig.discovery_sources?.vulncheck_kev?.candidate_index_path || '.github/pipeline/source-packets/vulncheck-kev/latest.json',
       },
     },
   };
@@ -1052,7 +1056,7 @@ async function collectRawLeads(config, args, previousQueue, asOfDate) {
     ['go', () => config.sources.go.enabled ? collectGoLeads(config, fixturesDir, previousQueue, asOfDate) : []],
     ['osv', () => config.sources.osv.enabled ? collectOsvLeads(config, fixturesDir, asOfDate) : []],
     ['ghsa', () => config.sources.ghsa.enabled ? collectGhsaLeads(config, fixturesDir) : []],
-    ['vulncheck-kev', () => config.sources.vulncheck.enabled ? collectVulncheckLeads(args.vulncheckIndex) : []],
+    ['vulncheck-kev', () => config.sources.vulncheck.enabled ? collectVulncheckLeads(args.vulncheckIndex || config.sources.vulncheck.candidateIndexPath) : []],
   ];
   for (const [name, collector] of collectors) {
     try {
