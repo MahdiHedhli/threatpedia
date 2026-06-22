@@ -656,14 +656,16 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
     if (targetEntity) addIncidentAlias(sourceIncidentId, entityBaseAliases(targetEntity));
   });
 
-  const addEntry = ({ id, type, displayName, aliases }) => {
+  const addEntry = ({ id, type, displayName, aliases, href }) => {
     if (!id || !type || !displayName) return;
-    entriesById.set(id, {
+    const entry = {
       id,
       type,
       displayName,
       aliases: uniqueStrings(aliases).filter((alias) => alias.toLowerCase() !== String(displayName).toLowerCase()),
-    });
+    };
+    if (href) entry.href = href;
+    entriesById.set(id, entry);
   };
 
   incidents.forEach((incident) => {
@@ -704,6 +706,7 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
       id: family.id,
       type: 'malware_family',
       displayName: family.name || family.id,
+      href: malwareFamilyHref(family.id),
       aliases: [
         family.id,
         family.aliases || [],
@@ -716,6 +719,7 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
         id: strain.id,
         type: 'malware_strain',
         displayName: strain.name || strain.id,
+        href: strainHref(family.id, strain.id),
         aliases: [
           strain.id,
           strain.aliases || [],

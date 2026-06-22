@@ -149,7 +149,15 @@ def parse_date(value: Any) -> date | None:
 def is_date_or_month(value: Any) -> bool:
     if not isinstance(value, str):
         return False
-    return bool(DATE_PATTERN.fullmatch(value) or MONTH_PATTERN.fullmatch(value))
+    if DATE_PATTERN.fullmatch(value):
+        return parse_date(value) is not None
+    if MONTH_PATTERN.fullmatch(value):
+        try:
+            date.fromisoformat(f"{value}-01")
+            return True
+        except ValueError:
+            return False
+    return False
 
 
 def incident_node_id(incident_id: str) -> str:
@@ -525,17 +533,45 @@ def validate_malware_families(
         root_actor_id = family.get("root_actor_id")
         if root_actor_id is not None and root_actor_id not in entity_ids:
             errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
-        for actor_index, actor_id in enumerate(family.get("associated_actor_ids") or []):
-            if not isinstance(actor_id, str) or actor_id not in entity_ids:
-                errors.append(f"{family_id}.associated_actor_ids[{actor_index}]: unknown actor/entity id {actor_id!r}")
+        associated_actor_ids = family.get("associated_actor_ids")
+        if associated_actor_ids is not None:
+            if not isinstance(associated_actor_ids, list):
+                errors.append(f"{family_id}.associated_actor_ids: expected list")
+            else:
+                for actor_index, actor_id in enumerate(associated_actor_ids):
+                    if not isinstance(actor_id, str) or actor_id not in entity_ids:
+                        errors.append(f"{family_id}.associated_actor_ids[{actor_index}]: unknown actor/entity id {actor_id!r}")
 
-        source_ids = {
-            source.get("id")
-            for source in family.get("sources") or []
-            if isinstance(source, dict) and isinstance(source.get("id"), str)
-        }
+        sources = family.get("sources")
+        source_ids: set[str] = set()
+        if not isinstance(sources, list) or not sources:
+            errors.append(f"{family_id}.sources: expected non-empty list")
+            sources = []
+        for source_index, source in enumerate(sources):
+            if not isinstance(source, dict):
+                errors.append(f"{family_id}.sources[{source_index}]: expected object")
+                continue
+            source_id = source.get("id")
+            if not isinstance(source_id, str) or not source_id.strip():
+                errors.append(f"{family_id}.sources[{source_index}].id: expected non-empty string")
+                continue
+            source_ids.add(source_id)
         if not source_ids:
             errors.append(f"{family_id}.sources: expected at least one source")
+
+        timeline_ticks = family.get("timeline_ticks")
+        if timeline_ticks is not None:
+            if not isinstance(timeline_ticks, list):
+                errors.append(f"{family_id}.timeline_ticks: expected list")
+            else:
+                for tick_index, tick in enumerate(timeline_ticks):
+                    if not isinstance(tick, dict):
+                        errors.append(f"{family_id}.timeline_ticks[{tick_index}]: expected object")
+                        continue
+                    if not isinstance(tick.get("label"), str) or not tick["label"].strip():
+                        errors.append(f"{family_id}.timeline_ticks[{tick_index}].label: expected non-empty string")
+                    if not isinstance(tick.get("x"), (int, float)):
+                        errors.append(f"{family_id}.timeline_ticks[{tick_index}].x: expected number")
 
         strain_ids: set[str] = set()
         strains = family.get("strains")
@@ -565,33 +601,52 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
             if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
                 errors.append(f"{strain_id}.ecosystems: expected non-empty list")
-            for incident_index, incident_id in enumerate(strain.get("incident_ids") or []):
-                if not isinstance(incident_id, str) or incident_id not in raw_incident_ids:
-                    errors.append(f"{strain_id}.incident_ids[{incident_index}]: unknown incident id {incident_id!r}")
+            incident_ids = strain.get("incident_ids")
+            if incident_ids is not None:
+                if not isinstance(incident_ids, list):
+                    errors.append(f"{strain_id}.incident_ids: expected list")
+                else:
+                    for incident_index, incident_id in enumerate(incident_ids):
+                        if not isinstance(incident_id, str) or incident_id not in raw_incident_ids:
+                            errors.append(f"{strain_id}.incident_ids[{incident_index}]: unknown incident id {incident_id!r}")
 
         fork_event_ids: set[str] = set()
-        for event_index, event in enumerate(family.get("fork_events") or []):
-            event_path = f"{family_id}.fork_events[{event_index}]"
-            if not isinstance(event, dict):
-                errors.append(f"{event_path}: expected object")
-                continue
-            event_id = event.get("id")
-            if not isinstance(event_id, str) or not event_id.startswith("fork-"):
-                errors.append(f"{event_path}.id: expected fork-* id")
-                continue
-            if event_id in fork_event_ids or event_id in all_fork_event_ids:
-                errors.append(f"{event_id}: duplicate fork event id")
-            fork_event_ids.add(event_id)
-            all_fork_event_ids.add(event_id)
-            if not is_date_or_month(event.get("date")):
-                errors.append(f"{event_id}.date: expected YYYY-MM-DD or YYYY-MM")
-            if not isinstance(event.get("summary"), str) or len(event["summary"].strip()) < 20:
-                errors.append(f"{event_id}.summary: expected descriptive summary")
-            for ref_index, source_ref in enumerate(event.get("source_refs") or []):
-                if source_ref not in source_ids:
-                    errors.append(f"{event_id}.source_refs[{ref_index}]: unknown family source ref {source_ref!r}")
+        fork_events = family.get("fork_events")
+        if fork_events is not None:
+            if not isinstance(fork_events, list):
+                errors.append(f"{family_id}.fork_events: expected list")
+            else:
+                for event_index, event in enumerate(fork_events):
+                    event_path = f"{family_id}.fork_events[{event_index}]"
+                    if not isinstance(event, dict):
+                        errors.append(f"{event_path}: expected object")
+                        continue
+                    event_id = event.get("id")
+                    if not isinstance(event_id, str) or not event_id.startswith("fork-"):
+                        errors.append(f"{event_path}.id: expected fork-* id")
+                        continue
+                    if event_id in fork_event_ids or event_id in all_fork_event_ids:
+                        errors.append(f"{event_id}: duplicate fork event id")
+                    fork_event_ids.add(event_id)
+                    all_fork_event_ids.add(event_id)
+                    if not is_date_or_month(event.get("date")):
+                        errors.append(f"{event_id}.date: expected YYYY-MM-DD or YYYY-MM")
+                    if not isinstance(event.get("summary"), str) or len(event["summary"].strip()) < 20:
+                        errors.append(f"{event_id}.summary: expected descriptive summary")
+                    source_refs = event.get("source_refs")
+                    if source_refs is not None:
+                        if not isinstance(source_refs, list):
+                            errors.append(f"{event_id}.source_refs: expected list")
+                        else:
+                            for ref_index, source_ref in enumerate(source_refs):
+                                if source_ref not in source_ids:
+                                    errors.append(f"{event_id}.source_refs[{ref_index}]: unknown family source ref {source_ref!r}")
 
-        for edge_index, edge in enumerate(family.get("lineage_edges") or []):
+        lineage_edge_items = family.get("lineage_edges")
+        if not isinstance(lineage_edge_items, list) or not lineage_edge_items:
+            errors.append(f"{family_id}.lineage_edges: expected non-empty list")
+            lineage_edge_items = []
+        for edge_index, edge in enumerate(lineage_edge_items):
             edge_path = f"{family_id}.lineage_edges[{edge_index}]"
             if not isinstance(edge, dict):
                 errors.append(f"{edge_path}: expected object")
@@ -626,7 +681,10 @@ def validate_malware_families(
                     source_ref = ref.get("source_ref") if isinstance(ref, dict) else None
                     if source_ref not in source_ids:
                         errors.append(f"{edge_path}.external_refs[{ref_index}].source_ref: unknown family source ref {source_ref!r}")
-            if edge.get("confidence") == "suspected" and not isinstance(edge.get("suspected_reason"), str):
+            suspected_reason = edge.get("suspected_reason")
+            if edge.get("confidence") == "suspected" and (
+                not isinstance(suspected_reason, str) or not suspected_reason.strip()
+            ):
                 errors.append(f"{edge_path}.suspected_reason: suspected edges must explain uncertainty")
             fork_event_id = edge.get("fork_event_id")
             if fork_event_id is not None and fork_event_id not in fork_event_ids:

@@ -4241,7 +4241,8 @@
       "strain-ironworm",
       "IronWorm",
       "Iron Worm"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/"
   },
   {
     "id": "strain-hades-shai-hulud",
@@ -4257,7 +4258,8 @@
       "Shai Hulud",
       "Shai-Hulud worm family",
       "Mini Shai-Hulud"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-hades-shai-hulud"
   },
   {
     "id": "strain-ironworm",
@@ -4273,7 +4275,8 @@
       "Shai Hulud",
       "Shai-Hulud worm family",
       "Mini Shai-Hulud"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-ironworm"
   },
   {
     "id": "strain-miasma",
@@ -4289,7 +4292,8 @@
       "Shai Hulud",
       "Shai-Hulud worm family",
       "Mini Shai-Hulud"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-miasma"
   },
   {
     "id": "strain-mini-shai-hulud",
@@ -4307,7 +4311,8 @@
       "Shai-Hulud",
       "Shai Hulud",
       "Shai-Hulud worm family"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-mini-shai-hulud"
   },
   {
     "id": "strain-shai-hulud",
@@ -4322,7 +4327,8 @@
       "SC-2025-NPM-SHAI-HULUD",
       "Shai-Hulud worm family",
       "Mini Shai-Hulud"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud"
   },
   {
     "id": "strain-shai-hulud-2",
@@ -4339,7 +4345,8 @@
       "Shai Hulud",
       "Shai-Hulud worm family",
       "Mini Shai-Hulud"
-    ]
+    ],
+    "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud-2"
   },
   {
     "id": "org-3cx",

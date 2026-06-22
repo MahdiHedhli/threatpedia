@@ -888,7 +888,7 @@ function buildFamilyPhylogenyModel(data, family) {
     forks,
     edges,
     parentByChild,
-    ticks: [
+    ticks: Array.isArray(family.timeline_ticks) && family.timeline_ticks.length > 0 ? family.timeline_ticks : [
       { label: 'Sep 2025', x: 90 },
       { label: 'Dec 2025', x: 330 },
       { label: 'May 2026', x: 565 },

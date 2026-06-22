@@ -865,6 +865,20 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     const nodes = Array.from(stage.querySelectorAll('[data-lineage-node]'));
     const edges = Array.from(stage.querySelectorAll('[data-lineage-edge]'));
     const labels = Array.from(stage.querySelectorAll('[data-lineage-edge-label]'));
+    const renderDetail = (title, meta, body) => {
+      if (!detail) return;
+      const titleEl = document.createElement('strong');
+      titleEl.textContent = title;
+      const metaEl = document.createElement('span');
+      metaEl.textContent = meta;
+      if (body) {
+        const bodyEl = document.createElement('p');
+        bodyEl.textContent = body;
+        detail.replaceChildren(titleEl, metaEl, bodyEl);
+      } else {
+        detail.replaceChildren(titleEl, metaEl);
+      }
+    };
 
     const ancestry = (id) => {
       const chain = [];
@@ -880,9 +894,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       nodes.forEach((node) => node.classList.remove('is-lit', 'is-dim'));
       edges.forEach((edge) => edge.classList.remove('is-lit', 'is-dim'));
       labels.forEach((label) => label.classList.remove('is-lit'));
-      if (detail) {
-        detail.innerHTML = '<strong>Hover a strain</strong><span>Targets and incidents live one layer down; this page traces family genealogy.</span>';
-      }
+      renderDetail('Hover a strain', 'Targets and incidents live one layer down; this page traces family genealogy.');
     };
 
     const focusLineage = (button) => {
@@ -903,9 +915,11 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         edge.classList.toggle('is-dim', !active);
       });
       labels.forEach((label) => label.classList.toggle('is-lit', activeEdges.has(label.dataset.lineageEdgeLabel)));
-      if (detail) {
-        detail.innerHTML = `<strong>${button.dataset.lineageName}</strong><span>${button.dataset.lineageMeta} · ${button.dataset.lineageConfidence}</span><p>${button.dataset.lineageDetail}</p>`;
-      }
+      renderDetail(
+        button.dataset.lineageName || 'Unknown strain',
+        `${button.dataset.lineageMeta || 'unknown'} · ${button.dataset.lineageConfidence || 'unknown'}`,
+        button.dataset.lineageDetail || ''
+      );
     };
 
     nodes.forEach((node) => {

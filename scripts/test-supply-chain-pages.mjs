@@ -70,6 +70,11 @@ assert.ok(
     shaiHuludFamily.phylogeny.forks.some((event) => event.id === 'fork-mini-shai-source-release'),
   'malware-family page should model confirmed genealogy, suspected forks, and fork events'
 );
+assert.deepEqual(
+  shaiHuludFamily.phylogeny.ticks,
+  data.malwareFamilies[0].timeline_ticks,
+  'malware-family timeline ticks should come from the family object'
+);
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
@@ -161,6 +166,12 @@ assert.ok(
   'malware-family pages should render phylogeny, strain table, changelog, and genealogy/infection distinction'
 );
 assert.ok(
+  supplyChainRouteSource.includes('detail.replaceChildren') &&
+    supplyChainRouteSource.includes('textContent') &&
+    !supplyChainRouteSource.includes('detail.innerHTML'),
+  'lineage detail script should render dataset-backed content as text, not HTML'
+);
+assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
     supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
@@ -190,6 +201,16 @@ assert.ok(
   supplyChainSearchIndexPayload.some((entry) => entry.id === 'family-shai-hulud' && entry.type === 'malware_family') &&
     supplyChainSearchIndexPayload.some((entry) => entry.id === 'strain-ironworm' && entry.type === 'malware_strain'),
   'search index should include malware-family and strain jump targets'
+);
+assert.equal(
+  supplyChainSearchIndexPayload.find((entry) => entry.id === 'strain-ironworm')?.href,
+  '/supply-chain/malware-families/family-shai-hulud/#strain-ironworm',
+  'malware strain search targets should navigate to the family anchor'
+);
+assert.ok(
+  supplyChainGraphSource.includes('if (entry.href)') &&
+    supplyChainGraphSource.includes('window.location.href = entry.href'),
+  'graph search should navigate entries with explicit hrefs before graph-selection fallback'
 );
 const generatedStixBundle = buildMalwareFamilyStixBundle(data);
 assert.deepEqual(malwareFamilyStixPayload, generatedStixBundle, 'malware-family STIX bundle should be generated from the same data object');

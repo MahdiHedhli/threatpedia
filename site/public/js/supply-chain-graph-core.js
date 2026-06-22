@@ -1203,6 +1203,10 @@ class SupplyChainGraph {
 
   selectSearchResult(entry) {
     this.closeSearchPalette();
+    if (entry.href) {
+      window.location.href = entry.href;
+      return;
+    }
     if (!this.selectByEntityId(entry.type, entry.id)) {
       this.selectEntityContext(entry.type, entry.id);
     }

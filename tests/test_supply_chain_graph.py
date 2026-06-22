@@ -93,6 +93,36 @@ class SupplyChainGraphTests(unittest.TestCase):
             )
         )
 
+    def test_malware_family_validator_rejects_invalid_dates_and_non_list_fields(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+        malformed = copy.deepcopy(malware_families)
+        malformed[0]["timeline_ticks"] = "not-a-list"
+        malformed[0]["associated_actor_ids"] = "actor-teampcp"
+        malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
+        malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
+        malformed[0]["fork_events"] = {"id": "fork-not-a-list"}
+        malformed[0]["lineage_edges"][2]["suspected_reason"] = "   "
+
+        errors = validator.validate_malware_families(
+            malformed,
+            raw_incident_ids=raw_incident_ids,
+            entity_ids=entity_ids,
+        )
+
+        self.assertIn("family-shai-hulud.timeline_ticks: expected list", errors)
+        self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
+        self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
+        self.assertIn("family-shai-hulud.fork_events: expected list", errors)
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[2].suspected_reason: suspected edges must explain uncertainty",
+            errors,
+        )
+
     def test_builder_extracts_expected_entities(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))
 
