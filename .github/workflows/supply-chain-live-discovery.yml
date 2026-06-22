@@ -1,0 +1,203 @@
+name: "Supply Chain: Live Discovery"
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: "Write candidate queue artifacts (true) or dry-run only (false)"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      max_candidates:
+        description: "Maximum queued candidates"
+        required: false
+        default: "40"
+
+env:
+  DISCOVERY_BRANCH: pipeline/supply-chain-live-discovery
+  DISCOVERY_LABEL: pipeline/supply-chain-discovery
+  QUEUE_PATH: .github/pipeline/supply-chain-candidates/latest.json
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install script dependencies
+        run: |
+          set -euo pipefail
+          cd scripts
+          npm ci --no-audit --no-fund
+
+      - name: Configure git
+        if: ${{ inputs.execute != 'false' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout candidate queue branch
+        if: ${{ inputs.execute != 'false' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          BRANCH="${DISCOVERY_BRANCH}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+            if [ "$OPEN_PRS" = "0" ]; then
+              git fetch origin main
+              git checkout -B "$BRANCH" origin/main
+              git push --force-with-lease origin "$BRANCH"
+            else
+              git fetch origin "$BRANCH"
+              git checkout -B "$BRANCH" "origin/$BRANCH"
+              git merge --no-edit origin/main
+            fi
+          else
+            git checkout -b "$BRANCH"
+          fi
+
+      - name: Run VulnCheck KEV source-packet intake
+        if: ${{ inputs.execute != 'false' }}
+        env:
+          VULNCHECKAPI: ${{ secrets.VULNCHECKAPI }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VULNCHECKAPI:-}" ]; then
+            echo "::warning::VULNCHECKAPI secret is not configured; continuing without fresh VulnCheck lead contribution."
+          else
+            node scripts/vulncheck-kev-intake.mjs \
+              --execute \
+              --max-candidates 30 \
+              --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
+              --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
+          fi
+
+      - name: Run Supply Chain live discovery
+        env:
+          EXECUTE: ${{ inputs.execute || 'true' }}
+          MAX_CANDIDATES: ${{ inputs.max_candidates || '40' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ARGS="--max-candidates ${MAX_CANDIDATES} --out $RUNNER_TEMP/supply-chain-candidate-queue.json --vulncheck-index .github/pipeline/source-packets/vulncheck-kev/latest.json"
+          if [ "${EXECUTE}" = "true" ]; then
+            ARGS="${ARGS} --execute"
+          fi
+          node scripts/supply-chain-live-discovery.mjs ${ARGS}
+
+      - name: Validate candidate queue
+        run: |
+          set -euo pipefail
+          node scripts/supply-chain-live-discovery.mjs --check --queue-path "$QUEUE_PATH"
+
+      - name: Commit candidate queue to branch
+        id: commit
+        if: ${{ inputs.execute != 'false' }}
+        run: |
+          set -euo pipefail
+          git add .github/pipeline/supply-chain-candidates/ .github/pipeline/source-packets/vulncheck-kev/
+          if git diff --cached --quiet; then
+            echo "No candidate queue changes this run."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore(pipeline): update supply chain candidate queue $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push --force-with-lease origin "${DISCOVERY_BRANCH}"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update candidate queue PR
+        if: ${{ inputs.execute != 'false' && steps.commit.outputs.has_changes == 'true' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const { owner, repo } = context.repo;
+            const branch = process.env.DISCOVERY_BRANCH;
+            const label = process.env.DISCOVERY_LABEL;
+            const reviewers = ['MahdiHedhli', 'dangermouse-bot', 'ernestpenfold-bot'];
+            const queue = JSON.parse(fs.readFileSync(process.env.QUEUE_PATH, 'utf8'));
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch (e) {
+              if (e.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: label,
+                  color: 'e8a020',
+                  description: 'Supply Chain B1 discovery/classification candidate queue',
+                });
+              }
+            }
+
+            const top = (queue.candidates || []).slice(0, 10);
+            let body = '## Supply Chain B1 candidate queue\n\n';
+            body += 'This PR updates the live Supply Chain discovery/classification queue. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\\n\\n';
+            body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\\n\\n`;
+            body += `Summary: ${queue.summary.candidates_emitted} emitted candidates, ${queue.summary.current_candidates} current, ${queue.summary.matched_existing} matched existing corpus subjects.\\n`;
+            body += `Currency: latest corpus ${queue.currency.latest_corpus_incident_at || 'unknown'}, latest discovery ${queue.currency.latest_discovery_signal_at || 'none'}, pending ${queue.currency.pending_candidate_count}.\\n\\n`;
+            body += '| Rank | Class | Intent | Subject | Title | Sources |\\n';
+            body += '|---:|---|---|---|---|---|\\n';
+            for (const candidate of top) {
+              const title = String(candidate.title || '').replace(/\\|/g, '\\\\|').slice(0, 100);
+              body += `| ${candidate.rank} | ${candidate.classification.leadClass} | ${candidate.classification.workIntent} | \\`${candidate.canonicalSubjectId}\\` | ${title} | ${candidate.sources.join(', ')} |\\n`;
+            }
+            body += '\\n### Guardrails\\n\\n';
+            body += '- `drafting_enabled=false` and `auto_drafting_allowed=false` are validated.\\n';
+            body += '- `kevStatusDerived` is dispatch-cycle output, not authored truth.\\n';
+            body += '- B2 grounded drafting remains the first sprint that may consume approved candidates for generation.\\n';
+            body += '\\n@codex review\\n/gemini review\\n';
+
+            const existing = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${branch}`,
+              per_page: 5,
+            });
+            let pr;
+            if (existing.data.length > 0) {
+              pr = existing.data[0];
+              await github.rest.pulls.update({ owner, repo, pull_number: pr.number, title: `Supply Chain B1 candidates — ${queue.summary.candidates_emitted} pending`, body });
+            } else {
+              pr = (await github.rest.pulls.create({
+                owner,
+                repo,
+                title: `Supply Chain B1 candidates — ${queue.summary.candidates_emitted} pending`,
+                head: branch,
+                base: 'main',
+                body,
+              })).data;
+              await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [label] });
+            }
+            try {
+              await github.rest.pulls.requestReviewers({ owner, repo, pull_number: pr.number, reviewers });
+            } catch (e) {
+              console.log(`Reviewer request failed: ${e.message}`);
+            }

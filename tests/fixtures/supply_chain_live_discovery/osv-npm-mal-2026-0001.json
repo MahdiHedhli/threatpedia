@@ -1,0 +1,20 @@
+{
+  "id": "MAL-2026-0001",
+  "summary": "Malicious package fixture in event-stream",
+  "details": "A malicious package-publish supply-chain fixture for event-stream credential theft testing.",
+  "aliases": ["GHSA-1111-2222-3333", "CVE-2026-99999"],
+  "published": "2026-06-20T15:00:00Z",
+  "modified": "2026-06-20T15:30:00Z",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "npm",
+        "name": "event-stream"
+      },
+      "versions": ["3.3.7"]
+    }
+  ],
+  "database_specific": {
+    "malware_family": "fixture-stealer"
+  }
+}

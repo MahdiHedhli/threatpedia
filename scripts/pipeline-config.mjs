@@ -49,6 +49,7 @@ export const DEFAULTS = Object.freeze({
     },
     discovery: { max_candidates: 400 },
     draft_ready: { max_pending: 60 },
+    supply_chain_candidates: { max_pending: 40 },
   },
   scheduling: {
     discovery_cron: '0 */3 * * *',
@@ -115,6 +116,49 @@ export const DEFAULTS = Object.freeze({
       label: 'Microsoft Security Blog',
       limit_per_run: 4,
     },
+    supply_chain_live: {
+      enabled: true,
+      queue_path: '.github/pipeline/supply-chain-candidates/latest.json',
+      since_hours: 6,
+      max_per_source: 25,
+      max_candidates: 40,
+      min_rank: 25,
+      npm: {
+        enabled: true,
+        changes_url: 'https://replicate.npmjs.com/registry/_changes',
+        metadata_base_url: 'https://registry.npmjs.org',
+      },
+      pypi: {
+        enabled: true,
+        rss_url: 'https://pypi.org/rss/updates.xml',
+        json_base_url: 'https://pypi.org/pypi',
+      },
+      go: { enabled: true, index_url: 'https://index.golang.org/index' },
+      osv: {
+        enabled: true,
+        modified_csv_url: 'https://osv-vulnerabilities.storage.googleapis.com/modified_id.csv',
+        record_base_url: 'https://osv-vulnerabilities.storage.googleapis.com',
+        ecosystems: ['npm', 'PyPI', 'Go'],
+      },
+      ghsa: {
+        enabled: true,
+        url: 'https://api.github.com/advisories',
+        ecosystems: ['npm', 'pip', 'go'],
+        types: ['malware', 'reviewed'],
+      },
+    },
+  },
+  lead_intake: {
+    current_window_days: 180,
+    kev: {
+      recently_added_days: 30,
+      overdue_grace_days: 30,
+      aged_days: 180,
+      status_is_computed: true,
+    },
+    active_status: { default_expiry_days: 30 },
+    historical_throughput: { enabled: true, target_per_day: 0, alert_if_zero_for_days: 3 },
+    manual_override: { max_days: 30, requires_reason: true },
   },
 });
 
