@@ -26,13 +26,25 @@ def load_json(path: Path):
 
 class SupplyChainBacktestTests(unittest.TestCase):
     def test_default_backtest_supports_required_incidents(self) -> None:
-        report = backtest.build_backtest(load_json(CORPUS_PATH))
+        report = backtest.build_backtest(load_json(CORPUS_PATH), backtest.DEFAULT_INCIDENT_IDS)
 
         self.assertEqual(report["status"], "PASS")
         self.assertEqual(
             {timeline["incident_id"] for timeline in report["timelines"]},
             {"SC-2024-XZ-UTILS", "SC-2018-NPM-EVENT-STREAM", "SC-2025-GO-BOLTDB-TYPOSQUAT"},
         )
+
+    def test_default_cli_backtest_covers_full_corpus_with_prior_signal_aggregate(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
+        entities = backtest.load_entities(REPO_ROOT / "data" / "supply-chain-entities")
+
+        report = backtest.build_backtest(corpus, relationships=relationships, entities_by_id=entities)
+
+        self.assertEqual(report["status"], "PASS")
+        self.assertEqual(report["aggregate"]["incident_count"], len(corpus))
+        self.assertGreater(report["aggregate"]["prior_signal_count"], 0)
+        self.assertIn("prior_signal_results", report)
 
     def test_event_stream_replay_uses_release_publish_date(self) -> None:
         corpus = load_json(CORPUS_PATH)
@@ -168,6 +180,39 @@ class SupplyChainBacktestTests(unittest.TestCase):
 
         self.assertEqual(report["status"], "FAIL")
         self.assertEqual(report["missing_incident_ids"], ["SC-2024-XZ-UTILS"])
+
+    def test_litellm_has_prior_actor_campaign_and_seeded_package_signal(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
+        entities = backtest.load_entities(REPO_ROOT / "data" / "supply-chain-entities")
+
+        report = backtest.build_backtest(
+            corpus,
+            ("SC-2026-LITELLM",),
+            relationships=relationships,
+            entities_by_id=entities,
+        )
+        result = report["prior_signal_results"][0]
+
+        self.assertTrue(result["prior_signal"])
+        signal_types = {signal["signal_type"] for signal in result["signals"]}
+        self.assertIn("actor", signal_types)
+        self.assertIn("campaign", signal_types)
+        self.assertIn("seeded_by_seed_source", signal_types)
+
+    def test_xz_utils_reports_negative_prior_signal(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
+        entities = backtest.load_entities(REPO_ROOT / "data" / "supply-chain-entities")
+
+        report = backtest.build_backtest(
+            corpus,
+            ("SC-2024-XZ-UTILS",),
+            relationships=relationships,
+            entities_by_id=entities,
+        )
+
+        self.assertFalse(report["prior_signal_results"][0]["prior_signal"])
 
 
 if __name__ == "__main__":

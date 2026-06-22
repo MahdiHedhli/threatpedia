@@ -1,0 +1,1801 @@
+{
+  "aggregate": {
+    "average_discovery_latency_days": 52.4,
+    "evaluated_incident_count": 35,
+    "incident_count": 35,
+    "missing_disclosure_count": 0,
+    "no_prior_signal_count": 25,
+    "prior_signal_count": 10,
+    "prior_signal_rate": 0.286,
+    "signal_type_counts": {
+      "account": 2,
+      "actor": 6,
+      "campaign": 4,
+      "maintainer": 1,
+      "release": 4,
+      "seeded_by_seed_source": 2
+    }
+  },
+  "generated_at": "2026-06-22T23:08:58Z",
+  "incident_ids": [
+    "SC-2016-LINUX-MINT-ISO",
+    "SC-2017-CCLEANER",
+    "SC-2017-NOTPETYA-MEDOC",
+    "SC-2018-ESLINT-SCOPE",
+    "SC-2018-NPM-EVENT-STREAM",
+    "SC-2019-ASUS-SHADOWHAMMER",
+    "SC-2020-OCTOPUS-SCANNER",
+    "SC-2020-SOLARWINDS-ORION",
+    "SC-2021-CODECOV-BASH-UPLOADER",
+    "SC-2021-DEPENDENCY-CONFUSION",
+    "SC-2021-KASEYA-VSA",
+    "SC-2021-NPM-RC",
+    "SC-2021-PHP-GIT-SERVER",
+    "SC-2021-UA-PARSER-JS",
+    "SC-2022-COLORS-FAKER",
+    "SC-2022-NODE-IPC",
+    "SC-2022-PYPI-CTX",
+    "SC-2022-PYTORCH-NIGHTLY",
+    "SC-2023-LEDGER-CONNECT-KIT",
+    "SC-2023-THREE-CX-DESKTOP",
+    "SC-2024-LOTTIE-PLAYER",
+    "SC-2024-POLYFILL-IO",
+    "SC-2024-ULTRALYTICS-PYPI",
+    "SC-2024-XZ-UTILS",
+    "SC-2025-GO-BOLTDB-TYPOSQUAT",
+    "SC-2025-NPM-SHAI-HULUD",
+    "SC-2025-SHAI-HULUD-2",
+    "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+    "SC-2026-AXIOS",
+    "SC-2026-CHECKMARX-JENKINS",
+    "SC-2026-LITELLM",
+    "SC-2026-MEGALODON",
+    "SC-2026-MINI-SHAI-HULUD",
+    "SC-2026-NX-CONSOLE",
+    "SC-2026-TRIVY-CI"
+  ],
+  "input_errors": [],
+  "missing_incident_ids": [],
+  "model": "stored-fields-only",
+  "non_goals": [
+    "scoring",
+    "risk_engine",
+    "automated_attribution",
+    "ai_inference"
+  ],
+  "prior_signal_results": [
+    {
+      "disclosed_at": "2016-02-21",
+      "incident_id": "SC-2016-LINUX-MINT-ISO",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2016-02-20",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Linux Mint ISO distribution site compromise"
+    },
+    {
+      "disclosed_at": "2017-09-18",
+      "incident_id": "SC-2017-CCLEANER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2017-09-17",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "CCleaner signed installer compromise"
+    },
+    {
+      "disclosed_at": "2017-07-01",
+      "incident_id": "SC-2017-NOTPETYA-MEDOC",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2017-06-30",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "NotPetya distributed through M.E.Doc update channel"
+    },
+    {
+      "disclosed_at": "2018-07-12",
+      "incident_id": "SC-2018-ESLINT-SCOPE",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2018-07-11",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "eslint-scope npm package credential-stealing release"
+    },
+    {
+      "disclosed_at": "2018-11-26",
+      "incident_id": "SC-2018-NPM-EVENT-STREAM",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2018-11-25",
+      "signals": [
+        {
+          "basis": "relationship.AFFECTED_MAINTAINER.first_publish_date",
+          "entity_id": "maintainer-right9ctrl",
+          "entity_label": "right9ctrl",
+          "lead_time_days": 78,
+          "prior_incident_ids": [],
+          "signal_date": "2018-09-09",
+          "signal_type": "maintainer"
+        },
+        {
+          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
+          "entity_id": "release-npm-flatmap-stream-0-1-1",
+          "entity_label": "flatmap-stream@0.1.1",
+          "lead_time_days": 78,
+          "prior_incident_ids": [],
+          "signal_date": "2018-09-09",
+          "signal_type": "release"
+        }
+      ],
+      "strongest_lead_time_days": 78,
+      "title": "event-stream malicious dependency insertion"
+    },
+    {
+      "disclosed_at": "2019-03-25",
+      "incident_id": "SC-2019-ASUS-SHADOWHAMMER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2019-03-24",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "ASUS Live Update Operation ShadowHammer"
+    },
+    {
+      "disclosed_at": "2020-03-09",
+      "incident_id": "SC-2020-OCTOPUS-SCANNER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2020-03-08",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Octopus Scanner malicious NetBeans project campaign"
+    },
+    {
+      "disclosed_at": "2020-12-13",
+      "incident_id": "SC-2020-SOLARWINDS-ORION",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2020-12-12",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "SolarWinds Orion software build compromise"
+    },
+    {
+      "disclosed_at": "2021-04-15",
+      "incident_id": "SC-2021-CODECOV-BASH-UPLOADER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-04-14",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Codecov Bash Uploader credential exfiltration"
+    },
+    {
+      "disclosed_at": "2021-02-09",
+      "incident_id": "SC-2021-DEPENDENCY-CONFUSION",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-02-08",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Dependency confusion proof-of-concept campaign"
+    },
+    {
+      "disclosed_at": "2021-07-02",
+      "incident_id": "SC-2021-KASEYA-VSA",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-07-01",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Kaseya VSA ransomware supply-chain attack"
+    },
+    {
+      "disclosed_at": "2021-11-04",
+      "incident_id": "SC-2021-NPM-RC",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-11-03",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "rc npm package malicious release"
+    },
+    {
+      "disclosed_at": "2021-03-28",
+      "incident_id": "SC-2021-PHP-GIT-SERVER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-03-27",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "PHP source repository backdoor attempt"
+    },
+    {
+      "disclosed_at": "2021-10-22",
+      "incident_id": "SC-2021-UA-PARSER-JS",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2021-10-21",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "ua-parser-js npm package account compromise"
+    },
+    {
+      "disclosed_at": "2022-01-09",
+      "incident_id": "SC-2022-COLORS-FAKER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2022-01-08",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "colors and faker npm protestware releases"
+    },
+    {
+      "disclosed_at": "2022-03-16",
+      "incident_id": "SC-2022-NODE-IPC",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2022-03-15",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "node-ipc peacenotwar protestware release"
+    },
+    {
+      "disclosed_at": "2022-05-24",
+      "incident_id": "SC-2022-PYPI-CTX",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2022-05-23",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "ctx PyPI project account takeover"
+    },
+    {
+      "disclosed_at": "2022-12-31",
+      "incident_id": "SC-2022-PYTORCH-NIGHTLY",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2022-12-30",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "PyTorch nightly dependency confusion compromise"
+    },
+    {
+      "disclosed_at": "2023-12-14",
+      "incident_id": "SC-2023-LEDGER-CONNECT-KIT",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2023-12-13",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Ledger Connect Kit npm package compromise"
+    },
+    {
+      "disclosed_at": "2023-03-29",
+      "incident_id": "SC-2023-THREE-CX-DESKTOP",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2023-03-28",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "3CX desktop application software supply-chain compromise"
+    },
+    {
+      "disclosed_at": "2024-10-31",
+      "incident_id": "SC-2024-LOTTIE-PLAYER",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2024-10-30",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "LottieFiles lottie-player npm package compromise"
+    },
+    {
+      "disclosed_at": "2024-06-25",
+      "incident_id": "SC-2024-POLYFILL-IO",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2024-06-24",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Polyfill.io CDN script supply-chain compromise"
+    },
+    {
+      "disclosed_at": "2024-12-11",
+      "incident_id": "SC-2024-ULTRALYTICS-PYPI",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2024-12-10",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Ultralytics PyPI package compromise"
+    },
+    {
+      "disclosed_at": "2024-03-29",
+      "incident_id": "SC-2024-XZ-UTILS",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2024-03-28",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "XZ Utils backdoor attempt"
+    },
+    {
+      "disclosed_at": "2025-02-04",
+      "incident_id": "SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2025-02-03",
+      "signals": [
+        {
+          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
+          "entity_id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
+          "entity_label": "github.com/boltdb-go/bolt@v1.3.1",
+          "lead_time_days": 1191,
+          "prior_incident_ids": [],
+          "signal_date": "2021-11-01",
+          "signal_type": "release"
+        }
+      ],
+      "strongest_lead_time_days": 1191,
+      "title": "Go BoltDB typosquat module proxy backdoor"
+    },
+    {
+      "disclosed_at": "2025-09-16",
+      "incident_id": "SC-2025-NPM-SHAI-HULUD",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2025-09-15",
+      "signals": [
+        {
+          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
+          "entity_id": "release-npm-ctrl-tinycolor-4-1-1",
+          "entity_label": "@ctrl/tinycolor@4.1.1",
+          "lead_time_days": 1,
+          "prior_incident_ids": [],
+          "signal_date": "2025-09-15",
+          "signal_type": "release"
+        },
+        {
+          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
+          "entity_id": "release-npm-ctrl-tinycolor-4-1-2",
+          "entity_label": "@ctrl/tinycolor@4.1.2",
+          "lead_time_days": 1,
+          "prior_incident_ids": [],
+          "signal_date": "2025-09-15",
+          "signal_type": "release"
+        }
+      ],
+      "strongest_lead_time_days": 1,
+      "title": "Shai-Hulud npm self-propagating package compromise"
+    },
+    {
+      "disclosed_at": "2025-12-09",
+      "incident_id": "SC-2025-SHAI-HULUD-2",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2025-12-08",
+      "signals": [
+        {
+          "basis": "relationship.COMPROMISED_ACCOUNT.prior_incident.first_public_warning_at",
+          "entity_id": "account-github-victim-github-tokens",
+          "entity_label": "victim GitHub tokens",
+          "lead_time_days": 85,
+          "prior_incident_ids": [
+            "SC-2025-NPM-SHAI-HULUD"
+          ],
+          "signal_date": "2025-09-15",
+          "signal_type": "account"
+        },
+        {
+          "basis": "relationship.COMPROMISED_ACCOUNT.prior_incident.first_public_warning_at",
+          "entity_id": "account-npm-compromised-npm-maintainer-tokens",
+          "entity_label": "compromised npm maintainer tokens",
+          "lead_time_days": 85,
+          "prior_incident_ids": [
+            "SC-2025-NPM-SHAI-HULUD"
+          ],
+          "signal_date": "2025-09-15",
+          "signal_type": "account"
+        }
+      ],
+      "strongest_lead_time_days": 85,
+      "title": "Shai-Hulud 2.0 npm supply-chain worm wave"
+    },
+    {
+      "disclosed_at": "2025-03-15",
+      "incident_id": "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2025-03-14",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "tj-actions changed-files GitHub Action compromise"
+    },
+    {
+      "disclosed_at": "2026-03-31",
+      "incident_id": "SC-2026-AXIOS",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-03-30",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 127,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-LITELLM",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        }
+      ],
+      "strongest_lead_time_days": 127,
+      "title": "Axios npm maintainer account compromise"
+    },
+    {
+      "disclosed_at": "2026-05-11",
+      "incident_id": "SC-2026-CHECKMARX-JENKINS",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-05-10",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 168,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-AXIOS",
+            "SC-2026-LITELLM",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        },
+        {
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "entity_id": "campaign-tp-camp-2026-0003",
+          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "lead_time_days": 168,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-LITELLM",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "campaign"
+        },
+        {
+          "basis": "relationship.SEEDED_BY.source.prior_incident.first_public_warning_at",
+          "entity_id": "pkg-generic-aquasecurity-trivy-action",
+          "entity_label": "aquasecurity/trivy-action",
+          "evidence_refs": [
+            "ref-checkmarx-update"
+          ],
+          "lead_time_days": 52,
+          "prior_incident_ids": [
+            "SC-2026-TRIVY-CI"
+          ],
+          "propagation_tier": "causal",
+          "signal_date": "2026-03-20",
+          "signal_type": "seeded_by_seed_source"
+        }
+      ],
+      "strongest_lead_time_days": 168,
+      "title": "Checkmarx Jenkins AST plugin supply-chain compromise"
+    },
+    {
+      "disclosed_at": "2026-03-24",
+      "incident_id": "SC-2026-LITELLM",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-03-23",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 120,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        },
+        {
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "entity_id": "campaign-tp-camp-2026-0003",
+          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "lead_time_days": 120,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "campaign"
+        },
+        {
+          "basis": "relationship.SEEDED_BY.source.prior_incident.first_public_warning_at",
+          "entity_id": "pkg-generic-aquasecurity-trivy-action",
+          "entity_label": "aquasecurity/trivy-action",
+          "evidence_refs": [
+            "ref-snyk-litellm"
+          ],
+          "lead_time_days": 4,
+          "prior_incident_ids": [
+            "SC-2026-TRIVY-CI"
+          ],
+          "propagation_tier": "causal",
+          "signal_date": "2026-03-20",
+          "signal_type": "seeded_by_seed_source"
+        }
+      ],
+      "strongest_lead_time_days": 120,
+      "title": "LiteLLM PyPI package compromise through stolen CI/CD credentials"
+    },
+    {
+      "disclosed_at": "2026-05-28",
+      "incident_id": "SC-2026-MEGALODON",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-05-27",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 185,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-AXIOS",
+            "SC-2026-CHECKMARX-JENKINS",
+            "SC-2026-LITELLM",
+            "SC-2026-MINI-SHAI-HULUD",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        }
+      ],
+      "strongest_lead_time_days": 185,
+      "title": "Megalodon GitHub Actions repository workflow poisoning campaign"
+    },
+    {
+      "disclosed_at": "2026-05-13",
+      "incident_id": "SC-2026-MINI-SHAI-HULUD",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-05-12",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 170,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-AXIOS",
+            "SC-2026-CHECKMARX-JENKINS",
+            "SC-2026-LITELLM",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        },
+        {
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "entity_id": "campaign-tp-camp-2026-0003",
+          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "lead_time_days": 170,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2",
+            "SC-2026-CHECKMARX-JENKINS",
+            "SC-2026-LITELLM",
+            "SC-2026-TRIVY-CI"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "campaign"
+        }
+      ],
+      "strongest_lead_time_days": 170,
+      "title": "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave"
+    },
+    {
+      "disclosed_at": "2026-05-28",
+      "incident_id": "SC-2026-NX-CONSOLE",
+      "notes": [],
+      "prior_signal": false,
+      "replay_cutoff": "2026-05-27",
+      "signals": [],
+      "strongest_lead_time_days": null,
+      "title": "Nx Console VS Code extension compromise"
+    },
+    {
+      "disclosed_at": "2026-03-24",
+      "incident_id": "SC-2026-TRIVY-CI",
+      "notes": [],
+      "prior_signal": true,
+      "replay_cutoff": "2026-03-23",
+      "signals": [
+        {
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "entity_id": "actor-teampcp",
+          "entity_label": "TeamPCP",
+          "lead_time_days": 120,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "actor"
+        },
+        {
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "entity_id": "campaign-tp-camp-2026-0003",
+          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
+          "lead_time_days": 120,
+          "prior_incident_ids": [
+            "SC-2025-SHAI-HULUD-2"
+          ],
+          "signal_date": "2025-11-24",
+          "signal_type": "campaign"
+        }
+      ],
+      "strongest_lead_time_days": 120,
+      "title": "Aqua Trivy CI/CD supply-chain compromise"
+    }
+  ],
+  "status": "PASS",
+  "timelines": [
+    {
+      "available_at_the_time": {
+        "as_of": "2016-02-21",
+        "reference_ids": [
+          "https://blog.linuxmint.com/?p=2994"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 1,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2016-LINUX-MINT-ISO",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2016-02-21",
+      "publish_date": "2016-02-20",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Linux Mint ISO distribution site compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2017-09-18",
+        "reference_ids": [
+          "https://blog.talosintelligence.com/ccleaner-c2-concern/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 34,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2017-CCLEANER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2017-09-18",
+      "publish_date": "2017-08-15",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "CCleaner signed installer compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2017-07-01",
+        "reference_ids": [
+          "ref-cisa-notpetya"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 4,
+      "first_warning_signal_at": "2017-07-01",
+      "incident_id": "SC-2017-NOTPETYA-MEDOC",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-doj-sandworm-notpetya"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2017-07-01",
+      "publish_date": "2017-06-27",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "NotPetya distributed through M.E.Doc update channel",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2018-07-12",
+        "reference_ids": [
+          "https://eslint.org/blog/2018/07/postmortem-for-malicious-package-publishes/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2018-ESLINT-SCOPE",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2018-07-12",
+      "publish_date": "2018-07-12",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "eslint-scope npm package credential-stealing release",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2018-11-26",
+        "reference_ids": [
+          "ref-github-event-stream-116"
+        ],
+        "release_purls": [
+          "pkg:npm/flatmap-stream@0.1.1"
+        ]
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 78,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2018-NPM-EVENT-STREAM",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2018-11-26",
+      "publish_date": "2018-09-09",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "0.1.1",
+          "published_at": "2018-09-09",
+          "purl": "pkg:npm/flatmap-stream@0.1.1",
+          "version": "0.1.1"
+        }
+      ],
+      "title": "event-stream malicious dependency insertion",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2019-03-25",
+        "reference_ids": [
+          "https://securelist.com/operation-shadowhammer/89992/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 83,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2019-ASUS-SHADOWHAMMER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2019-03-25",
+      "publish_date": "2019-01-01",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "ASUS Live Update Operation ShadowHammer",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2020-03-09",
+        "reference_ids": [
+          "https://github.blog/security/vulnerability-research/octopus-scanner-malware-open-source-supply-chain/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 8,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2020-OCTOPUS-SCANNER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2020-03-09",
+      "publish_date": "2020-03-01",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Octopus Scanner malicious NetBeans project campaign",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2020-12-13",
+        "reference_ids": [
+          "ref-cisa-ed-21-01"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 287,
+      "first_warning_signal_at": "2020-12-13",
+      "incident_id": "SC-2020-SOLARWINDS-ORION",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-cisa-aa20-352a",
+          "ref-whitehouse-solarwinds-svr"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2020-12-13",
+      "publish_date": "2020-03-01",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "SolarWinds Orion software build compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-04-15",
+        "reference_ids": [
+          "https://about.codecov.io/security-update/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 74,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-CODECOV-BASH-UPLOADER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2021-04-15",
+      "publish_date": "2021-01-31",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Codecov Bash Uploader credential exfiltration",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-02-09",
+        "reference_ids": [
+          "https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-DEPENDENCY-CONFUSION",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2021-02-09",
+      "publish_date": "2021-02-09",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Dependency confusion proof-of-concept campaign",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-07-02",
+        "reference_ids": [
+          "https://www.cisa.gov/news-events/alerts/2021/07/02/kaseya-vsa-supply-chain-ransomware-attack"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-KASEYA-VSA",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2021-07-02",
+      "publish_date": "2021-07-02",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Kaseya VSA ransomware supply-chain attack",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-11-04",
+        "reference_ids": [
+          "https://github.com/advisories/GHSA-g2q5-5433-rhrf"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-NPM-RC",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2021-11-04",
+      "publish_date": "2021-11-04",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "rc npm package malicious release",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-03-28",
+        "reference_ids": [
+          "https://www.php.net/archive/2021.php#2021-03-28-1"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-PHP-GIT-SERVER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2021-03-28",
+      "publish_date": "2021-03-28",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "PHP source repository backdoor attempt",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2021-10-22",
+        "reference_ids": [
+          "ref-github-advisory-ua-parser-js"
+        ],
+        "release_purls": [
+          "pkg:npm/ua-parser-js@0.7.29",
+          "pkg:npm/ua-parser-js@0.8.0",
+          "pkg:npm/ua-parser-js@1.0.0"
+        ]
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2021-UA-PARSER-JS",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2021-10-22",
+      "publish_date": "2021-10-22",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "0.7.29",
+          "published_at": "2021-10-22",
+          "purl": "pkg:npm/ua-parser-js@0.7.29",
+          "version": "0.7.29"
+        },
+        {
+          "malicious_range": "0.8.0",
+          "published_at": "2021-10-22",
+          "purl": "pkg:npm/ua-parser-js@0.8.0",
+          "version": "0.8.0"
+        },
+        {
+          "malicious_range": "1.0.0",
+          "published_at": "2021-10-22",
+          "purl": "pkg:npm/ua-parser-js@1.0.0",
+          "version": "1.0.0"
+        }
+      ],
+      "title": "ua-parser-js npm package account compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2022-01-09",
+        "reference_ids": [
+          "https://github.com/Marak/colors.js/issues/285"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 1,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2022-COLORS-FAKER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2022-01-09",
+      "publish_date": "2022-01-08",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "colors and faker npm protestware releases",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2022-03-16",
+        "reference_ids": [
+          "https://snyk.io/blog/peacenotwar-malicious-npm-node-ipc-package-vulnerability/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 8,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2022-NODE-IPC",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2022-03-16",
+      "publish_date": "2022-03-08",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "node-ipc peacenotwar protestware release",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2022-05-24",
+        "reference_ids": [
+          "https://python-security.readthedocs.io/pypi-vuln/index-2022-05-24-ctx-domain-takeover.html"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 3,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2022-PYPI-CTX",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2022-05-24",
+      "publish_date": "2022-05-21",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "ctx PyPI project account takeover",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2022-12-31",
+        "reference_ids": [
+          "https://pytorch.org/blog/compromised-nightly-dependency/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 6,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2022-PYTORCH-NIGHTLY",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2022-12-31",
+      "publish_date": "2022-12-25",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "PyTorch nightly dependency confusion compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2023-12-14",
+        "reference_ids": [
+          "https://www.ledger.com/blog/security-incident-report"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2023-LEDGER-CONNECT-KIT",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2023-12-14",
+      "publish_date": "2023-12-14",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Ledger Connect Kit npm package compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2023-03-29",
+        "reference_ids": [
+          "ref-sentinelone-3cx"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 7,
+      "first_warning_signal_at": "2023-03-29",
+      "incident_id": "SC-2023-THREE-CX-DESKTOP",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-mandiant-3cx"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2023-03-29",
+      "publish_date": "2023-03-22",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "3CX desktop application software supply-chain compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2024-10-31",
+        "reference_ids": [
+          "https://lottiefiles.com/blog/inside-lottiefiles/resolution-of-security-incident-with-lottiefiles-lottie-player-package"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 1,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2024-LOTTIE-PLAYER",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2024-10-31",
+      "publish_date": "2024-10-30",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "LottieFiles lottie-player npm package compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2024-06-25",
+        "reference_ids": [
+          "https://sansec.io/research/polyfill-supply-chain-attack"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2024-POLYFILL-IO",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2024-06-25",
+      "publish_date": "2024-06-25",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Polyfill.io CDN script supply-chain compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2024-12-11",
+        "reference_ids": [
+          "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 7,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2024-ULTRALYTICS-PYPI",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2024-12-11",
+      "publish_date": "2024-12-04",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Ultralytics PyPI package compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2024-03-29",
+        "reference_ids": [
+          "ref-openwall-xz"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 34,
+      "first_warning_signal_at": "2024-03-29",
+      "incident_id": "SC-2024-XZ-UTILS",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2024-03-29",
+      "publish_date": "2024-02-24",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "XZ Utils backdoor attempt",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2025-02-04",
+        "reference_ids": [
+          "ref-go-sum-boltdb-go",
+          "ref-socket-boltdb-go"
+        ],
+        "release_purls": [
+          "pkg:golang/github.com/boltdb-go/bolt@v1.3.1"
+        ]
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 1191,
+      "first_warning_signal_at": "2025-02-04",
+      "incident_id": "SC-2025-GO-BOLTDB-TYPOSQUAT",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2025-02-04",
+      "publish_date": "2021-11-01",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "v1.3.1",
+          "published_at": "2021-11-01",
+          "purl": "pkg:golang/github.com/boltdb-go/bolt@v1.3.1",
+          "version": "v1.3.1"
+        }
+      ],
+      "title": "Go BoltDB typosquat module proxy backdoor",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2025-09-15",
+        "reference_ids": [
+          "ref-npm-tinycolor-registry",
+          "ref-stepsecurity-shai-hulud"
+        ],
+        "release_purls": [
+          "pkg:npm/%40ctrl/tinycolor@4.1.1",
+          "pkg:npm/%40ctrl/tinycolor@4.1.2"
+        ]
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2025-09-15",
+      "incident_id": "SC-2025-NPM-SHAI-HULUD",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-wiz-shai-hulud"
+        ],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2025-09-16",
+      "publish_date": "2025-09-15",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "4.1.1",
+          "published_at": "2025-09-15",
+          "purl": "pkg:npm/%40ctrl/tinycolor@4.1.1",
+          "version": "4.1.1"
+        },
+        {
+          "malicious_range": "4.1.2",
+          "published_at": "2025-09-15",
+          "purl": "pkg:npm/%40ctrl/tinycolor@4.1.2",
+          "version": "4.1.2"
+        }
+      ],
+      "title": "Shai-Hulud npm self-propagating package compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2025-11-24",
+        "reference_ids": [
+          "ref-esentire-shai-hulud-2"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2025-11-24",
+      "incident_id": "SC-2025-SHAI-HULUD-2",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-microsoft-shai-hulud-2",
+          "ref-wiz-shai-hulud-2"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2025-12-09",
+      "publish_date": "2025-11-24",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Shai-Hulud 2.0 npm supply-chain worm wave",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2025-03-15",
+        "reference_ids": [
+          "https://www.stepsecurity.io/blog/harden-runner-detection-tj-actions-changed-files-action-is-compromised"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "disclosed_at",
+      "discovery_latency_days": 1,
+      "first_warning_signal_at": null,
+      "incident_id": "SC-2025-TJ-ACTIONS-CHANGED-FILES",
+      "later_discovered_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2025-03-15",
+      "publish_date": "2025-03-14",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "tj-actions changed-files GitHub Action compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-03-31",
+        "reference_ids": [
+          "ref-axios-postmortem",
+          "ref-trendmicro-axios"
+        ],
+        "release_purls": [
+          "pkg:npm/axios@1.14.1",
+          "pkg:npm/axios@0.30.4",
+          "pkg:npm/plain-crypto-js@4.2.1"
+        ]
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2026-03-31",
+      "incident_id": "SC-2026-AXIOS",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-cisa-axios",
+          "ref-datadog-axios",
+          "ref-google-axios"
+        ],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2026-03-31",
+      "publish_date": "2026-03-31",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "1.14.1",
+          "published_at": "2026-03-31",
+          "purl": "pkg:npm/axios@1.14.1",
+          "version": "1.14.1"
+        },
+        {
+          "malicious_range": "0.30.4",
+          "published_at": "2026-03-31",
+          "purl": "pkg:npm/axios@0.30.4",
+          "version": "0.30.4"
+        },
+        {
+          "malicious_range": "4.2.1",
+          "published_at": "2026-03-31",
+          "purl": "pkg:npm/plain-crypto-js@4.2.1",
+          "version": "4.2.1"
+        }
+      ],
+      "title": "Axios npm maintainer account compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-05-11",
+        "reference_ids": [
+          "ref-sysdig-checkmarx",
+          "ref-thn-checkmarx-jenkins"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 2,
+      "first_warning_signal_at": "2026-05-11",
+      "incident_id": "SC-2026-CHECKMARX-JENKINS",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-checkmarx-update"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2026-05-11",
+      "publish_date": "2026-05-09",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Checkmarx Jenkins AST plugin supply-chain compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-03-24",
+        "reference_ids": [
+          "ref-endor-litellm",
+          "ref-litellm-security-update"
+        ],
+        "release_purls": [
+          "pkg:pypi/litellm@1.82.7",
+          "pkg:pypi/litellm@1.82.8"
+        ]
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2026-03-24",
+      "incident_id": "SC-2026-LITELLM",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-snyk-litellm",
+          "ref-trendmicro-litellm"
+        ],
+        "release_purls": []
+      },
+      "notes": [],
+      "public_disclosure_at": "2026-03-24",
+      "publish_date": "2026-03-24",
+      "publish_date_source": "release.published_at",
+      "releases": [
+        {
+          "malicious_range": "1.82.7",
+          "published_at": "2026-03-24",
+          "purl": "pkg:pypi/litellm@1.82.7",
+          "version": "1.82.7"
+        },
+        {
+          "malicious_range": "1.82.8",
+          "published_at": "2026-03-24",
+          "purl": "pkg:pypi/litellm@1.82.8",
+          "version": "1.82.8"
+        }
+      ],
+      "title": "LiteLLM PyPI package compromise through stolen CI/CD credentials",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-05-22",
+        "reference_ids": [
+          "ref-stepsecurity-megalodon"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 4,
+      "first_warning_signal_at": "2026-05-22",
+      "incident_id": "SC-2026-MEGALODON",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-cisa-megalodon",
+          "ref-csa-megalodon",
+          "ref-securityweek-megalodon"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2026-05-28",
+      "publish_date": "2026-05-18",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Megalodon GitHub Actions repository workflow poisoning campaign",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-05-11",
+        "reference_ids": [
+          "ref-socket-tanstack-mini-shai",
+          "ref-stepsecurity-mini-shai",
+          "ref-tanstack-postmortem"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2026-05-11",
+      "incident_id": "SC-2026-MINI-SHAI-HULUD",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-openai-tanstack-response",
+          "ref-snyk-tanstack-mini-shai"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2026-05-13",
+      "publish_date": "2026-05-11",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-05-18",
+        "reference_ids": [
+          "ref-nx-console-advisory",
+          "ref-stepsecurity-nx-console"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 0,
+      "first_warning_signal_at": "2026-05-18",
+      "incident_id": "SC-2026-NX-CONSOLE",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-cisa-nx-github",
+          "ref-nx-console-postmortem"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2026-05-28",
+      "publish_date": "2026-05-18",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Nx Console VS Code extension compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    },
+    {
+      "available_at_the_time": {
+        "as_of": "2026-03-20",
+        "reference_ids": [
+          "ref-aqua-trivy-discussion"
+        ],
+        "release_purls": []
+      },
+      "discovery_latency_basis": "first_public_warning_at",
+      "discovery_latency_days": 1,
+      "first_warning_signal_at": "2026-03-20",
+      "incident_id": "SC-2026-TRIVY-CI",
+      "later_discovered_evidence": {
+        "reference_ids": [
+          "ref-cve-trivy-33634",
+          "ref-github-trivy-advisory",
+          "ref-microsoft-trivy"
+        ],
+        "release_purls": []
+      },
+      "notes": [
+        "No release entity is modeled; using stored first_observed_at as the artifact availability anchor."
+      ],
+      "public_disclosure_at": "2026-03-24",
+      "publish_date": "2026-03-19",
+      "publish_date_source": "incident.first_observed_at",
+      "releases": [],
+      "title": "Aqua Trivy CI/CD supply-chain compromise",
+      "undated_evidence": {
+        "reference_ids": [],
+        "release_purls": []
+      }
+    }
+  ]
+}
