@@ -650,8 +650,13 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.severity: expected low, medium, high, or critical")
             if not isinstance(strain.get("mutation_summary"), str) or len(strain["mutation_summary"].strip()) < 20:
                 errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
-            if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
+            ecosystems = strain.get("ecosystems")
+            if not isinstance(ecosystems, list) or not ecosystems:
                 errors.append(f"{strain_id}.ecosystems: expected non-empty list")
+            else:
+                for ecosystem_index, ecosystem in enumerate(ecosystems):
+                    if not isinstance(ecosystem, str) or not ecosystem.strip():
+                        errors.append(f"{strain_id}.ecosystems[{ecosystem_index}]: expected non-empty string")
             if not isinstance(strain.get("key_mutation"), str) or not strain["key_mutation"].strip():
                 errors.append(f"{strain_id}.key_mutation: expected non-empty string")
             if not isinstance(strain.get("provenance_abuse"), str) or not strain["provenance_abuse"].strip():

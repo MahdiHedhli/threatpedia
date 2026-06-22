@@ -111,6 +111,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         malformed[0]["sources"][0]["url"] = "ftp://example.test/report"
         malformed[0]["sources"][0]["published_at"] = "2025-13"
         malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
+        malformed[0]["strains"][0]["ecosystems"].append(" ")
         malformed[0]["strains"][0]["aliases"].append("")
         malformed[0]["strains"][0]["key_mutation"] = ""
         malformed[0]["strains"][0]["provenance_abuse"] = ""
@@ -141,6 +142,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("family-shai-hulud.aliases[3]: expected non-empty string", errors)
         self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
+        self.assertIn("strain-shai-hulud.ecosystems[1]: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.aliases[1]: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.key_mutation: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.provenance_abuse: expected non-empty string", errors)

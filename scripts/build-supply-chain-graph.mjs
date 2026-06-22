@@ -829,10 +829,13 @@ export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
         source_ref: sourceRef,
         target_ref: targetRef,
         description: edge.summary,
-        external_references: (edge.external_refs || []).map((ref) => ({
-          source_name: 'Threatpedia',
-          external_id: ref.source_ref,
-        })),
+        external_references: (Array.isArray(edge.external_refs) ? edge.external_refs : [])
+          .map((ref) => ref?.source_ref)
+          .filter(Boolean)
+          .map((sourceRef) => ({
+            source_name: 'Threatpedia',
+            external_id: sourceRef,
+          })),
         'x_threatpedia_relation_kind': edge.relation_kind,
         'x_threatpedia_confidence': edge.confidence,
         'x_threatpedia_mutation_delta': edge.mutation_delta || [],
