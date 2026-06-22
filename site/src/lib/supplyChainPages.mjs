@@ -1124,7 +1124,7 @@ export function getSupplyChainMalwareFamilyPage(id, data = loadSupplyChainData()
     phylogeny,
     strainComparisonRows,
     changelogRows,
-    relatedIncidents: familyIncidentLinks(data, phylogeny.strains.flatMap((strain) => strain.incident_ids || [])),
+    relatedIncidents: familyIncidentLinks(data, Array.from(new Set(phylogeny.strains.flatMap((strain) => strain.incident_ids || [])))),
     seo: {
       title: `Supply Chain Malware Family: ${family.name}`,
       description,

@@ -106,6 +106,8 @@ class SupplyChainGraphTests(unittest.TestCase):
         malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
         malformed[0]["fork_events"] = {"id": "fork-not-a-list"}
         malformed[0]["lineage_edges"][2]["suspected_reason"] = "   "
+        malformed[0]["lineage_edges"][2]["external_refs"][0] = "not-an-object"
+        malformed[0]["sources"].append(copy.deepcopy(malformed[0]["sources"][0]))
 
         errors = validator.validate_malware_families(
             malformed,
@@ -118,10 +120,35 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
         self.assertIn("family-shai-hulud.fork_events: expected list", errors)
+        self.assertIn("family-shai-hulud.sources[4].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[2].external_refs[0]: expected object",
+            errors,
+        )
         self.assertIn(
             "family-shai-hulud.lineage_edges[2].suspected_reason: suspected edges must explain uncertainty",
             errors,
         )
+
+    def test_malware_family_validator_allows_single_strain_without_lineage_edges(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+        single_strain = copy.deepcopy(malware_families)
+        single_strain[0]["strains"] = single_strain[0]["strains"][:1]
+        single_strain[0]["fork_events"] = []
+        single_strain[0].pop("lineage_edges", None)
+
+        errors = validator.validate_malware_families(
+            single_strain,
+            raw_incident_ids=raw_incident_ids,
+            entity_ids=entity_ids,
+        )
+
+        self.assertNotIn("family-shai-hulud.lineage_edges: expected non-empty list", errors)
+        self.assertEqual(errors, [])
 
     def test_builder_extracts_expected_entities(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))

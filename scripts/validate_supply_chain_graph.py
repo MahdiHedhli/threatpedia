@@ -555,6 +555,8 @@ def validate_malware_families(
             if not isinstance(source_id, str) or not source_id.strip():
                 errors.append(f"{family_id}.sources[{source_index}].id: expected non-empty string")
                 continue
+            if source_id in source_ids:
+                errors.append(f"{family_id}.sources[{source_index}].id: duplicate source id {source_id!r}")
             source_ids.add(source_id)
         if not source_ids:
             errors.append(f"{family_id}.sources: expected at least one source")
@@ -643,8 +645,10 @@ def validate_malware_families(
                                     errors.append(f"{event_id}.source_refs[{ref_index}]: unknown family source ref {source_ref!r}")
 
         lineage_edge_items = family.get("lineage_edges")
-        if not isinstance(lineage_edge_items, list) or not lineage_edge_items:
-            errors.append(f"{family_id}.lineage_edges: expected non-empty list")
+        if lineage_edge_items is None:
+            lineage_edge_items = []
+        elif not isinstance(lineage_edge_items, list):
+            errors.append(f"{family_id}.lineage_edges: expected list")
             lineage_edge_items = []
         for edge_index, edge in enumerate(lineage_edge_items):
             edge_path = f"{family_id}.lineage_edges[{edge_index}]"
@@ -678,7 +682,10 @@ def validate_malware_families(
                 errors.append(f"{edge_path}.external_refs: expected non-empty list")
             else:
                 for ref_index, ref in enumerate(external_refs):
-                    source_ref = ref.get("source_ref") if isinstance(ref, dict) else None
+                    if not isinstance(ref, dict):
+                        errors.append(f"{edge_path}.external_refs[{ref_index}]: expected object")
+                        continue
+                    source_ref = ref.get("source_ref")
                     if source_ref not in source_ids:
                         errors.append(f"{edge_path}.external_refs[{ref_index}].source_ref: unknown family source ref {source_ref!r}")
             suspected_reason = edge.get("suspected_reason")
