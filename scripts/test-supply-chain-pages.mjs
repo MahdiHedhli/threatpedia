@@ -75,6 +75,16 @@ assert.deepEqual(
   data.malwareFamilies[0].timeline_ticks,
   'malware-family timeline ticks should come from the family object'
 );
+assert.deepEqual(
+  shaiHuludFamily.phylogeny.parentByChild['strain-miasma'],
+  ['strain-mini-shai-hulud'],
+  'malware-family parent map should retain parent arrays for DAG lineage'
+);
+assert.equal(
+  shaiHuludFamily.phylogeny.edges.find((edge) => edge.id === 'strain-ironworm->strain-mini-shai-hulud')?.labelY,
+  306,
+  'fork-linked lineage labels should align from the fork marker layout'
+);
 assert.ok(
   supplyChainRouteSource.includes('transition:persist="supply-chain-graph-hero"'),
   'route should persist graph hero across Supply Chain navigation'
@@ -172,6 +182,12 @@ assert.ok(
   'lineage detail script should render dataset-backed content as text, not HTML'
 );
 assert.ok(
+  supplyChainRouteSource.includes('const stack = [id]') &&
+    supplyChainRouteSource.includes('Array.isArray(parents[child])') &&
+    supplyChainRouteSource.includes('activeEdges.add(`${child}->${parent}`)'),
+  'lineage detail script should trace all parent edges in a DAG lineage'
+);
+assert.ok(
   supplyChainRouteSource.includes('data-supply-chain-graph-root') &&
     supplyChainRouteSource.includes('data-sc-graph-canvas') &&
     supplyChainRouteSource.includes('data-sc-graph-focus-reflow') &&
@@ -219,6 +235,10 @@ assert.ok(
   malwareFamilyStixPayload.objects.some((object) => object.type === 'malware' && object.name === 'Mini Shai-Hulud') &&
     malwareFamilyStixPayload.objects.some((object) => object.type === 'relationship' && object.relationship_type === 'variant-of'),
   'malware-family STIX bundle should include malware strain objects and variant relationships'
+);
+assert.ok(
+  malwareFamilyStixPayload.objects.every((object) => /^[a-z-]+--[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(object.id)),
+  'malware-family STIX object identifiers should use deterministic UUIDv5 shape'
 );
 const monthOnlyStixFixture = structuredClone(data);
 monthOnlyStixFixture.malwareFamilies[0].strains[0].first_seen = '2025-09';

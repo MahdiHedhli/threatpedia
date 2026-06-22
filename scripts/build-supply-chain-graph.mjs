@@ -11,6 +11,7 @@ const outputPath = path.join(repoRoot, 'site/public/supply-chain-graph.json');
 const searchIndexOutputPath = path.join(repoRoot, 'site/public/supply-chain-search-index.json');
 const supplyChainCandidateQueuePath = path.join(repoRoot, '.github/pipeline/supply-chain-candidates/latest.json');
 const malwareFamilyStixOutputPath = path.join(repoRoot, 'site/public/supply-chain-malware-families-stix.json');
+const stixUuidNamespace = '0a7b40c2-47b4-5506-81fd-3dfb15155024';
 
 const entityFiles = {
   accounts: 'accounts.json',
@@ -737,9 +738,23 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
   return Array.from(entriesById.values()).sort((a, b) => a.type.localeCompare(b.type) || a.displayName.localeCompare(b.displayName) || a.id.localeCompare(b.id));
 }
 
+function uuidBytes(uuid) {
+  return Buffer.from(uuid.replaceAll('-', ''), 'hex');
+}
+
+function formatUuid(bytes) {
+  const hex = Buffer.from(bytes).toString('hex');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+}
+
 function stixUuid(seed) {
-  const hex = createHash('sha256').update(seed).digest('hex').slice(0, 32);
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(12, 15)}-${((parseInt(hex.slice(15, 16), 16) & 0x3) | 0x8).toString(16)}${hex.slice(16, 19)}-${hex.slice(19, 31)}`;
+  const digest = createHash('sha1')
+    .update(Buffer.concat([uuidBytes(stixUuidNamespace), Buffer.from(seed, 'utf8')]))
+    .digest()
+    .subarray(0, 16);
+  digest[6] = (digest[6] & 0x0f) | 0x50;
+  digest[8] = (digest[8] & 0x3f) | 0x80;
+  return formatUuid(digest);
 }
 
 function stixId(type, seed) {

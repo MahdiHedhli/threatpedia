@@ -168,7 +168,8 @@ def validate_layout(errors: list[str], path: str, layout: Any) -> None:
         errors.append(f"{path}.layout: expected object with numeric x/y")
         return
     for axis in ("x", "y"):
-        if not isinstance(layout.get(axis), (int, float)):
+        value = layout.get(axis)
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
             errors.append(f"{path}.layout.{axis}: expected number")
 
 

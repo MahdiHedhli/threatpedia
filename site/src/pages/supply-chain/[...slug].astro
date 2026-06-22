@@ -882,10 +882,15 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
     const ancestry = (id) => {
       const chain = [];
-      let current = id;
-      while (current) {
+      const stack = [id];
+      const seen = new Set();
+      while (stack.length > 0) {
+        const current = stack.pop();
+        if (!current || seen.has(current)) continue;
+        seen.add(current);
         chain.push(current);
-        current = parents[current];
+        const lineageParents = Array.isArray(parents[current]) ? parents[current] : [parents[current]].filter(Boolean);
+        stack.push(...lineageParents);
       }
       return chain;
     };
@@ -901,9 +906,10 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       const chain = ancestry(button.dataset.lineageNode);
       const activeNodes = new Set(chain);
       const activeEdges = new Set();
-      for (let index = 0; index < chain.length - 1; index += 1) {
-        activeEdges.add(`${chain[index + 1]}->${chain[index]}`);
-      }
+      chain.forEach((child) => {
+        const lineageParents = Array.isArray(parents[child]) ? parents[child] : [parents[child]].filter(Boolean);
+        lineageParents.forEach((parent) => activeEdges.add(`${child}->${parent}`));
+      });
       nodes.forEach((node) => {
         const active = activeNodes.has(node.dataset.lineageNode);
         node.classList.toggle('is-lit', active);

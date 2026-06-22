@@ -841,12 +841,12 @@ function lineageEdgePath(edge, nodeById, forkById) {
   const fork = edge.fork_event_id ? forkById.get(edge.fork_event_id) : null;
   const startOffset = from.kind === 'fork' ? 14 : 86;
   const endOffset = to.kind === 'fork' ? 14 : 86;
-  const x1 = Number(from.layout?.x || 0) + startOffset;
-  const y1 = Number(from.layout?.y || 0);
-  const x2 = Number(to.layout?.x || 0) - endOffset;
-  const y2 = Number(to.layout?.y || 0);
+  const x1 = Number(from.layout?.x ?? 0) + startOffset;
+  const y1 = Number(from.layout?.y ?? 0);
+  const x2 = Number(to.layout?.x ?? 0) - endOffset;
+  const y2 = Number(to.layout?.y ?? 0);
   const mx = fork ? Number(fork.layout?.x ?? (x1 + x2) / 2) : (x1 + x2) / 2;
-  const labelY = fork ? ((y1 + y2) / 2) + 56 : (y1 + y2) / 2 - (Math.abs(y2 - y1) > 40 ? 0 : 14);
+  const labelY = fork ? Number(fork.layout?.y ?? 0) + 56 : (y1 + y2) / 2 - (Math.abs(y2 - y1) > 40 ? 0 : 14);
   return {
     ...edge,
     id: `${edge.source}->${edge.target}`,
@@ -872,8 +872,11 @@ function buildFamilyPhylogenyModel(data, family) {
     kind: 'fork',
     references: (event.source_refs || []).map((sourceId) => sourceById.get(sourceId)).filter(Boolean),
   }));
-  const nodeById = new Map(strains.map((strain) => [strain.id, strain]));
   const forkById = new Map(forks.map((event) => [event.id, event]));
+  const nodeById = new Map([
+    ...strains.map((strain) => [strain.id, strain]),
+    ...forks.map((event) => [event.id, event]),
+  ]);
   const edgeInputs = (family.lineage_edges || []).map((edge) => ({
     ...edge,
     external_refs: (edge.external_refs || []).map((ref) => ({
@@ -882,7 +885,11 @@ function buildFamilyPhylogenyModel(data, family) {
     })),
   }));
   const edges = edgeInputs.map((edge) => lineageEdgePath(edge, nodeById, forkById)).filter(Boolean);
-  const parentByChild = Object.fromEntries(edgeInputs.map((edge) => [edge.source, edge.target]));
+  const parentByChild = {};
+  edgeInputs.forEach((edge) => {
+    if (!parentByChild[edge.source]) parentByChild[edge.source] = [];
+    parentByChild[edge.source].push(edge.target);
+  });
   return {
     strains,
     forks,
