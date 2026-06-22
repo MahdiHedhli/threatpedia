@@ -11,6 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
 ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+MALWARE_FAMILY_PATH = REPO_ROOT / "data" / "supply-chain-malware-families" / "families.json"
 
 
 def load_module(name: str, path: Path):
@@ -46,8 +47,51 @@ class SupplyChainGraphTests(unittest.TestCase):
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
         relationships = load_json(RELATIONSHIP_PATH)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
 
-        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships), [])
+        self.assertEqual(validator.validate_graph(corpus, entities_by_type, relationships, malware_families), [])
+
+    def test_malware_family_lineage_validates_and_rejects_cycles(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        entities_by_type = validator.load_entities(ENTITY_DIR)
+        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        raw_incident_ids = validator.collect_raw_incident_ids(corpus)
+        malware_families = load_json(MALWARE_FAMILY_PATH)
+
+        self.assertEqual(
+            validator.validate_malware_families(
+                malware_families,
+                raw_incident_ids=raw_incident_ids,
+                entity_ids=entity_ids,
+            ),
+            [],
+        )
+
+        cyclic = copy.deepcopy(malware_families)
+        cyclic[0]["lineage_edges"].append(
+            {
+                "source": "strain-shai-hulud",
+                "target": "strain-hades-shai-hulud",
+                "type": "EVOLVED_FROM",
+                "evidence_class": "confirmed",
+                "confidence": "confirmed",
+                "relation_kind": "evolution",
+                "mutation_delta": ["cycle fixture"],
+                "external_refs": [{"source_ref": "ref-wiz-shai-hulud"}],
+                "summary": "Fixture edge that creates a lineage cycle.",
+            }
+        )
+
+        self.assertTrue(
+            any(
+                "EVOLVED_FROM cycle detected" in error
+                for error in validator.validate_malware_families(
+                    cyclic,
+                    raw_incident_ids=raw_incident_ids,
+                    entity_ids=entity_ids,
+                )
+            )
+        )
 
     def test_builder_extracts_expected_entities(self) -> None:
         graph = builder.build_graph(load_json(CORPUS_PATH))

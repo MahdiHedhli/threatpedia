@@ -34,6 +34,7 @@
       "release"
     ],
     "seeded_by_edges": "causal-solid-temporal-dashed",
+    "evolved_from_edges": "confirmed-solid-suspected-dashed",
     "layout": "time-anchored-actor-lanes"
   },
   "counts": {
@@ -48,7 +49,10 @@
     "organization": 27,
     "package": 31,
     "release": 12,
-    "repository": 17
+    "repository": 17,
+    "malware_family": 1,
+    "malware_strain": 6,
+    "fork_event": 1
   },
   "attack_stages": [
     {
@@ -1336,6 +1340,47 @@
       "source_incident_ids": [
         "SC-2024-POLYFILL-IO"
       ]
+    },
+    {
+      "id": "family-shai-hulud",
+      "entity_id": "family-shai-hulud",
+      "type": "malware_family",
+      "label": "Shai-Hulud",
+      "short_label": "Shai-Hulud",
+      "tier": "malware_family",
+      "sev": null,
+      "time": "2025-09-16",
+      "parent": "actor-shai-hulud-operator",
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/",
+      "aliases": [
+        "Shai Hulud",
+        "Shai-Hulud worm family",
+        "Mini Shai-Hulud"
+      ],
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD",
+        "SC-2025-SHAI-HULUD-2",
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "fork-mini-shai-source-release",
+      "entity_id": "fork-mini-shai-source-release",
+      "type": "fork_event",
+      "label": "Mini Shai-Hulud source open-sourced",
+      "short_label": "Mini Shai-Hulud source open-sou...",
+      "tier": "fork_event",
+      "sev": null,
+      "time": "2026-05-12",
+      "parent": "family-shai-hulud",
+      "techniques": [],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#fork-mini-shai-source-release",
+      "aliases": [],
+      "family_id": "family-shai-hulud",
+      "source_incident_ids": []
     },
     {
       "id": "incident-SC-2016-LINUX-MINT-ISO",
@@ -4209,6 +4254,146 @@
       ]
     },
     {
+      "id": "strain-hades-shai-hulud",
+      "entity_id": "strain-hades-shai-hulud",
+      "type": "malware_strain",
+      "label": "Hades",
+      "short_label": "Hades",
+      "tier": "malware_strain",
+      "sev": "critical",
+      "time": "2026-06-06",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "PyPI"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-hades-shai-hulud",
+      "aliases": [
+        "Hades Shai-Hulud lineage strain"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "confirmed",
+      "source_incident_ids": []
+    },
+    {
+      "id": "strain-ironworm",
+      "entity_id": "strain-ironworm",
+      "type": "malware_strain",
+      "label": "IronWorm",
+      "short_label": "IronWorm",
+      "tier": "malware_strain",
+      "sev": "high",
+      "time": "2026-06-06",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "npm"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-ironworm",
+      "aliases": [
+        "Iron Worm"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "suspected",
+      "source_incident_ids": []
+    },
+    {
+      "id": "strain-miasma",
+      "entity_id": "strain-miasma",
+      "type": "malware_strain",
+      "label": "Miasma",
+      "short_label": "Miasma",
+      "tier": "malware_strain",
+      "sev": "critical",
+      "time": "2026-06-01",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "npm"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-miasma",
+      "aliases": [
+        "The Spreading Blight"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "suspected",
+      "source_incident_ids": []
+    },
+    {
+      "id": "strain-mini-shai-hulud",
+      "entity_id": "strain-mini-shai-hulud",
+      "type": "malware_strain",
+      "label": "Mini Shai-Hulud",
+      "short_label": "Mini Shai-Hulud",
+      "tier": "malware_strain",
+      "sev": "high",
+      "time": "2026-05-11",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "npm",
+        "PyPI",
+        "RubyGems"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-mini-shai-hulud",
+      "aliases": [
+        "Mini Shai Hulud"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "confirmed",
+      "source_incident_ids": [
+        "SC-2026-MINI-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "strain-shai-hulud",
+      "entity_id": "strain-shai-hulud",
+      "type": "malware_strain",
+      "label": "Shai-Hulud",
+      "short_label": "Shai-Hulud",
+      "tier": "malware_strain",
+      "sev": "medium",
+      "time": "2025-09-16",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "npm"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud",
+      "aliases": [
+        "Shai Hulud"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "origin",
+      "source_incident_ids": [
+        "SC-2025-NPM-SHAI-HULUD"
+      ]
+    },
+    {
+      "id": "strain-shai-hulud-2",
+      "entity_id": "strain-shai-hulud-2",
+      "type": "malware_strain",
+      "label": "Shai-Hulud 2.0",
+      "short_label": "Shai-Hulud 2.0",
+      "tier": "malware_strain",
+      "sev": "medium",
+      "time": "2025-11-24",
+      "parent": "family-shai-hulud",
+      "techniques": [
+        "npm"
+      ],
+      "purl": null,
+      "href": "/supply-chain/malware-families/family-shai-hulud/#strain-shai-hulud-2",
+      "aliases": [
+        "Shai Hulud 2.0"
+      ],
+      "family_id": "family-shai-hulud",
+      "lineage_confidence": "confirmed",
+      "source_incident_ids": [
+        "SC-2025-SHAI-HULUD-2"
+      ]
+    },
+    {
       "id": "technique-account-compromise",
       "entity_id": "account-compromise",
       "type": "technique",
@@ -6741,6 +6926,63 @@
       "source_refs": []
     },
     {
+      "id": "EVOLVED_FROM:strain-hades-shai-hulud->strain-miasma",
+      "source": "strain-hades-shai-hulud",
+      "target": "strain-miasma",
+      "type": "EVOLVED_FROM",
+      "evidence_class": "confirmed",
+      "confidence": "confirmed",
+      "relation_kind": "evolution",
+      "mutation_delta": [
+        "moved to PyPI",
+        "Artifactory reconnaissance",
+        "broader propagation"
+      ],
+      "source_refs": [
+        "ref-stepsecurity-mini-shai"
+      ],
+      "fork_event_id": null,
+      "summary": "Hades is modeled as an evolution of Miasma in the worked example."
+    },
+    {
+      "id": "EVOLVED_FROM:strain-mini-shai-hulud->strain-shai-hulud-2",
+      "source": "strain-mini-shai-hulud",
+      "target": "strain-shai-hulud-2",
+      "type": "EVOLVED_FROM",
+      "evidence_class": "confirmed",
+      "confidence": "confirmed",
+      "relation_kind": "evolution",
+      "mutation_delta": [
+        "added PyPI",
+        "added trusted publishing",
+        "OIDC token theft"
+      ],
+      "source_refs": [
+        "ref-socket-tanstack-mini-shai",
+        "ref-stepsecurity-mini-shai"
+      ],
+      "fork_event_id": null,
+      "summary": "Mini Shai-Hulud is modeled as the industrialized cross-ecosystem evolution of the Shai-Hulud worm pattern."
+    },
+    {
+      "id": "EVOLVED_FROM:strain-shai-hulud-2->strain-shai-hulud",
+      "source": "strain-shai-hulud-2",
+      "target": "strain-shai-hulud",
+      "type": "EVOLVED_FROM",
+      "evidence_class": "confirmed",
+      "confidence": "confirmed",
+      "relation_kind": "descendant",
+      "mutation_delta": [
+        "scale",
+        "faster propagation"
+      ],
+      "source_refs": [
+        "ref-microsoft-shai-hulud-2"
+      ],
+      "fork_event_id": null,
+      "summary": "The second wave retained the Shai-Hulud worm playbook while increasing scale and propagation speed."
+    },
+    {
       "id": "INCIDENT_AFFECTED_RELEASE:incident-SC-2018-NPM-EVENT-STREAM->release-npm-flatmap-stream-0-1-1",
       "source": "incident-SC-2018-NPM-EVENT-STREAM",
       "target": "release-npm-flatmap-stream-0-1-1",
@@ -8445,6 +8687,62 @@
       "source_refs": []
     },
     {
+      "id": "MALWARE_FAMILY_ACTOR:actor-teampcp->family-shai-hulud",
+      "source": "actor-teampcp",
+      "target": "family-shai-hulud",
+      "type": "ATTRIBUTED_TO_ACTOR",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_FORK_EVENT:family-shai-hulud->fork-mini-shai-source-release",
+      "source": "family-shai-hulud",
+      "target": "fork-mini-shai-source-release",
+      "type": "FORK_EVENT",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-hades-shai-hulud",
+      "source": "family-shai-hulud",
+      "target": "strain-hades-shai-hulud",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-ironworm",
+      "source": "family-shai-hulud",
+      "target": "strain-ironworm",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-miasma",
+      "source": "family-shai-hulud",
+      "target": "strain-miasma",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-mini-shai-hulud",
+      "source": "family-shai-hulud",
+      "target": "strain-mini-shai-hulud",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-shai-hulud",
+      "source": "family-shai-hulud",
+      "target": "strain-shai-hulud",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
+      "id": "MALWARE_FAMILY_STRAIN:family-shai-hulud->strain-shai-hulud-2",
+      "source": "family-shai-hulud",
+      "target": "strain-shai-hulud-2",
+      "type": "HAS_STRAIN",
+      "derived": true
+    },
+    {
       "id": "PACKAGE_RELEASE:pkg-golang-github-com-boltdb-go-bolt->release-golang-github-com-boltdb-go-bolt-v1-3-1",
       "source": "pkg-golang-github-com-boltdb-go-bolt",
       "target": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
@@ -8783,6 +9081,27 @@
       "type": "SOURCE_ARTIFACT_DIVERGENCE",
       "evidence_tier": null,
       "source_refs": []
+    },
+    {
+      "id": "STRAIN_INCIDENT:strain-mini-shai-hulud->incident-SC-2026-MINI-SHAI-HULUD",
+      "source": "strain-mini-shai-hulud",
+      "target": "incident-SC-2026-MINI-SHAI-HULUD",
+      "type": "STRAIN_INCIDENT",
+      "derived": true
+    },
+    {
+      "id": "STRAIN_INCIDENT:strain-shai-hulud->incident-SC-2025-NPM-SHAI-HULUD",
+      "source": "strain-shai-hulud",
+      "target": "incident-SC-2025-NPM-SHAI-HULUD",
+      "type": "STRAIN_INCIDENT",
+      "derived": true
+    },
+    {
+      "id": "STRAIN_INCIDENT:strain-shai-hulud-2->incident-SC-2025-SHAI-HULUD-2",
+      "source": "strain-shai-hulud-2",
+      "target": "incident-SC-2025-SHAI-HULUD-2",
+      "type": "STRAIN_INCIDENT",
+      "derived": true
     },
     {
       "id": "USED_BUILD_SYSTEM:incident-SC-2020-OCTOPUS-SCANNER->build-netbeans-netbeans-project-build-process",
@@ -9255,6 +9574,44 @@
       "type": "USES_ACCOUNT",
       "evidence_tier": null,
       "source_refs": []
+    },
+    {
+      "id": "VARIANT_OF:strain-ironworm->strain-mini-shai-hulud",
+      "source": "strain-ironworm",
+      "target": "strain-mini-shai-hulud",
+      "type": "VARIANT_OF",
+      "evidence_class": "suspected",
+      "confidence": "suspected",
+      "relation_kind": "cosmetic_clone",
+      "mutation_delta": [
+        "Rust ELF payload",
+        "preinstall hook",
+        "cosmetic fork"
+      ],
+      "source_refs": [
+        "ref-stepsecurity-mini-shai"
+      ],
+      "fork_event_id": "fork-mini-shai-source-release",
+      "summary": "IronWorm is a suspected sibling clone over the released base rather than a confirmed descendant."
+    },
+    {
+      "id": "VARIANT_OF:strain-miasma->strain-mini-shai-hulud",
+      "source": "strain-miasma",
+      "target": "strain-mini-shai-hulud",
+      "type": "VARIANT_OF",
+      "evidence_class": "suspected",
+      "confidence": "suspected",
+      "relation_kind": "playbook_adoption",
+      "mutation_delta": [
+        "binding.gyp install evasion",
+        "per-infection encryption",
+        "AI coding-agent prompt injection"
+      ],
+      "source_refs": [
+        "ref-stepsecurity-mini-shai"
+      ],
+      "fork_event_id": "fork-mini-shai-source-release",
+      "summary": "Miasma is treated as a suspected fork from the released framework unless stronger code-overlap or researcher-attestation evidence lands."
     }
   ]
 }

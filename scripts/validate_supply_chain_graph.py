@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CORPUS_PATH = REPO_ROOT / "data" / "supply-chain-incidents" / "incidents.json"
 DEFAULT_ENTITY_DIR = REPO_ROOT / "data" / "supply-chain-entities"
 DEFAULT_RELATIONSHIP_PATH = REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json"
+DEFAULT_MALWARE_FAMILY_PATH = REPO_ROOT / "data" / "supply-chain-malware-families" / "families.json"
 
 ENTITY_FILES = {
     "accounts": "accounts.json",
@@ -86,6 +87,11 @@ ENTITY_TYPE_REQUIRED_FIELDS = {
     "repositories": ["host", "url", "owner"],
 }
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+MONTH_PATTERN = re.compile(r"^\d{4}-\d{2}$")
+VALID_LINEAGE_EDGE_TYPES = {"EVOLVED_FROM", "VARIANT_OF"}
+VALID_LINEAGE_CONFIDENCE = {"confirmed", "suspected"}
+VALID_RELATION_KIND = {"descendant", "evolution", "cosmetic_clone", "playbook_adoption", "sibling_fork"}
+VALID_STRAIN_CONFIDENCE = {"origin", "confirmed", "suspected"}
 
 
 def load_json(path: Path) -> Any:
@@ -138,6 +144,12 @@ def parse_date(value: Any) -> date | None:
         return date.fromisoformat(value)
     except ValueError:
         return None
+
+
+def is_date_or_month(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    return bool(DATE_PATTERN.fullmatch(value) or MONTH_PATTERN.fullmatch(value))
 
 
 def incident_node_id(incident_id: str) -> str:
@@ -451,6 +463,181 @@ def validate_seeded_by_acyclic(edges: list[tuple[str, str, str]]) -> list[str]:
     return errors
 
 
+def validate_directed_acyclic_edges(edges: list[tuple[str, str, str]], label: str) -> list[str]:
+    graph: dict[str, list[str]] = {}
+    for source, target, _path in edges:
+        graph.setdefault(source, []).append(target)
+
+    errors: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def visit(node: str) -> None:
+        if node in visited:
+            return
+        if node in visiting:
+            cycle = " -> ".join(stack[stack.index(node) :] + [node]) if node in stack else node
+            errors.append(f"{label} cycle detected: {cycle}")
+            return
+        visiting.add(node)
+        stack.append(node)
+        for target in graph.get(node, []):
+            visit(target)
+        stack.pop()
+        visiting.remove(node)
+        visited.add(node)
+
+    for source in graph:
+        visit(source)
+    return errors
+
+
+def validate_malware_families(
+    malware_families: Any,
+    *,
+    raw_incident_ids: set[str],
+    entity_ids: set[str],
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(malware_families, list):
+        return ["malware_families: expected list"]
+
+    family_ids: set[str] = set()
+    all_strain_ids: set[str] = set()
+    all_fork_event_ids: set[str] = set()
+    lineage_edges: list[tuple[str, str, str]] = []
+
+    for family_index, family in enumerate(malware_families):
+        path = f"malware_families[{family_index}]"
+        if not isinstance(family, dict):
+            errors.append(f"{path}: expected object")
+            continue
+        family_id = family.get("id")
+        if not isinstance(family_id, str) or not family_id.startswith("family-"):
+            errors.append(f"{path}.id: expected family-* id")
+            continue
+        if family_id in family_ids:
+            errors.append(f"{family_id}: duplicate malware family id")
+        family_ids.add(family_id)
+        if not isinstance(family.get("name"), str) or not family["name"].strip():
+            errors.append(f"{family_id}.name: expected non-empty string")
+        root_actor_id = family.get("root_actor_id")
+        if root_actor_id is not None and root_actor_id not in entity_ids:
+            errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
+        for actor_index, actor_id in enumerate(family.get("associated_actor_ids") or []):
+            if not isinstance(actor_id, str) or actor_id not in entity_ids:
+                errors.append(f"{family_id}.associated_actor_ids[{actor_index}]: unknown actor/entity id {actor_id!r}")
+
+        source_ids = {
+            source.get("id")
+            for source in family.get("sources") or []
+            if isinstance(source, dict) and isinstance(source.get("id"), str)
+        }
+        if not source_ids:
+            errors.append(f"{family_id}.sources: expected at least one source")
+
+        strain_ids: set[str] = set()
+        strains = family.get("strains")
+        if not isinstance(strains, list) or not strains:
+            errors.append(f"{family_id}.strains: expected non-empty list")
+            strains = []
+        for strain_index, strain in enumerate(strains):
+            strain_path = f"{family_id}.strains[{strain_index}]"
+            if not isinstance(strain, dict):
+                errors.append(f"{strain_path}: expected object")
+                continue
+            strain_id = strain.get("id")
+            if not isinstance(strain_id, str) or not strain_id.startswith("strain-"):
+                errors.append(f"{strain_path}.id: expected strain-* id")
+                continue
+            if strain_id in strain_ids or strain_id in all_strain_ids:
+                errors.append(f"{strain_id}: duplicate malware strain id")
+            strain_ids.add(strain_id)
+            all_strain_ids.add(strain_id)
+            if not isinstance(strain.get("name"), str) or not strain["name"].strip():
+                errors.append(f"{strain_id}.name: expected non-empty string")
+            if not is_date_or_month(strain.get("first_seen")):
+                errors.append(f"{strain_id}.first_seen: expected YYYY-MM-DD or YYYY-MM")
+            if strain.get("lineage_confidence") not in VALID_STRAIN_CONFIDENCE:
+                errors.append(f"{strain_id}.lineage_confidence: expected one of {sorted(VALID_STRAIN_CONFIDENCE)}")
+            if not isinstance(strain.get("mutation_summary"), str) or len(strain["mutation_summary"].strip()) < 20:
+                errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
+            if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
+                errors.append(f"{strain_id}.ecosystems: expected non-empty list")
+            for incident_index, incident_id in enumerate(strain.get("incident_ids") or []):
+                if not isinstance(incident_id, str) or incident_id not in raw_incident_ids:
+                    errors.append(f"{strain_id}.incident_ids[{incident_index}]: unknown incident id {incident_id!r}")
+
+        fork_event_ids: set[str] = set()
+        for event_index, event in enumerate(family.get("fork_events") or []):
+            event_path = f"{family_id}.fork_events[{event_index}]"
+            if not isinstance(event, dict):
+                errors.append(f"{event_path}: expected object")
+                continue
+            event_id = event.get("id")
+            if not isinstance(event_id, str) or not event_id.startswith("fork-"):
+                errors.append(f"{event_path}.id: expected fork-* id")
+                continue
+            if event_id in fork_event_ids or event_id in all_fork_event_ids:
+                errors.append(f"{event_id}: duplicate fork event id")
+            fork_event_ids.add(event_id)
+            all_fork_event_ids.add(event_id)
+            if not is_date_or_month(event.get("date")):
+                errors.append(f"{event_id}.date: expected YYYY-MM-DD or YYYY-MM")
+            if not isinstance(event.get("summary"), str) or len(event["summary"].strip()) < 20:
+                errors.append(f"{event_id}.summary: expected descriptive summary")
+            for ref_index, source_ref in enumerate(event.get("source_refs") or []):
+                if source_ref not in source_ids:
+                    errors.append(f"{event_id}.source_refs[{ref_index}]: unknown family source ref {source_ref!r}")
+
+        for edge_index, edge in enumerate(family.get("lineage_edges") or []):
+            edge_path = f"{family_id}.lineage_edges[{edge_index}]"
+            if not isinstance(edge, dict):
+                errors.append(f"{edge_path}: expected object")
+                continue
+            edge_type = edge.get("type")
+            source = edge.get("source")
+            target = edge.get("target")
+            if edge_type not in VALID_LINEAGE_EDGE_TYPES:
+                errors.append(f"{edge_path}.type: expected EVOLVED_FROM or VARIANT_OF")
+            if source not in strain_ids:
+                errors.append(f"{edge_path}.source: unknown strain id {source!r}")
+            if target not in strain_ids:
+                errors.append(f"{edge_path}.target: unknown strain id {target!r}")
+            if source == target:
+                errors.append(f"{edge_path}: source and target cannot be the same")
+            if edge.get("confidence") not in VALID_LINEAGE_CONFIDENCE:
+                errors.append(f"{edge_path}.confidence: expected confirmed or suspected")
+            if edge.get("evidence_class") not in VALID_LINEAGE_CONFIDENCE:
+                errors.append(f"{edge_path}.evidence_class: expected confirmed or suspected")
+            if edge.get("relation_kind") not in VALID_RELATION_KIND:
+                errors.append(f"{edge_path}.relation_kind: expected one of {sorted(VALID_RELATION_KIND)}")
+            mutation_delta = edge.get("mutation_delta")
+            if not isinstance(mutation_delta, list) or not mutation_delta:
+                errors.append(f"{edge_path}.mutation_delta: expected non-empty list")
+            elif not all(isinstance(item, str) and item.strip() for item in mutation_delta):
+                errors.append(f"{edge_path}.mutation_delta: expected non-empty string entries")
+            external_refs = edge.get("external_refs")
+            if not isinstance(external_refs, list) or not external_refs:
+                errors.append(f"{edge_path}.external_refs: expected non-empty list")
+            else:
+                for ref_index, ref in enumerate(external_refs):
+                    source_ref = ref.get("source_ref") if isinstance(ref, dict) else None
+                    if source_ref not in source_ids:
+                        errors.append(f"{edge_path}.external_refs[{ref_index}].source_ref: unknown family source ref {source_ref!r}")
+            if edge.get("confidence") == "suspected" and not isinstance(edge.get("suspected_reason"), str):
+                errors.append(f"{edge_path}.suspected_reason: suspected edges must explain uncertainty")
+            fork_event_id = edge.get("fork_event_id")
+            if fork_event_id is not None and fork_event_id not in fork_event_ids:
+                errors.append(f"{edge_path}.fork_event_id: unknown fork event {fork_event_id!r}")
+            if isinstance(source, str) and isinstance(target, str):
+                lineage_edges.append((source, target, edge_path))
+
+    errors.extend(validate_directed_acyclic_edges(lineage_edges, "EVOLVED_FROM"))
+    return errors
+
+
 def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relationships: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(relationships, list):
@@ -548,7 +735,12 @@ def validate_corpus_implied_relationships(corpus: list[dict[str, Any]], relation
     return errors
 
 
-def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships: Any) -> list[str]:
+def validate_graph(
+    corpus: Any,
+    entities_by_type: dict[str, Any],
+    relationships: Any,
+    malware_families: Any | None = None,
+) -> list[str]:
     errors: list[str] = []
     if not isinstance(corpus, list):
         errors.append("corpus: expected list")
@@ -575,6 +767,14 @@ def validate_graph(corpus: Any, entities_by_type: dict[str, Any], relationships:
         )
     )
     errors.extend(validate_corpus_implied_relationships(corpus, relationships))
+    if malware_families is not None:
+        errors.extend(
+            validate_malware_families(
+                malware_families,
+                raw_incident_ids=raw_incident_ids,
+                entity_ids=all_entity_ids,
+            )
+        )
     return errors
 
 
@@ -583,17 +783,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS_PATH)
     parser.add_argument("--entity-dir", type=Path, default=DEFAULT_ENTITY_DIR)
     parser.add_argument("--relationships", type=Path, default=DEFAULT_RELATIONSHIP_PATH)
+    parser.add_argument("--malware-families", type=Path, default=DEFAULT_MALWARE_FAMILY_PATH)
     args = parser.parse_args(argv)
 
     try:
         corpus = load_json(args.corpus)
         entities_by_type = load_entities(args.entity_dir)
         relationships = load_json(args.relationships)
+        malware_families = load_json(args.malware_families)
     except (OSError, json.JSONDecodeError) as exc:
         print(f"failed to load supply-chain graph inputs: {exc}", file=sys.stderr)
         return 2
 
-    errors = validate_graph(corpus, entities_by_type, relationships)
+    errors = validate_graph(corpus, entities_by_type, relationships, malware_families)
     if errors:
         print("Supply-chain graph validation failed:", file=sys.stderr)
         for error in errors:

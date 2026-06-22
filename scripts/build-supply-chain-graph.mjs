@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -9,6 +10,7 @@ const dataRoot = path.join(repoRoot, 'data');
 const outputPath = path.join(repoRoot, 'site/public/supply-chain-graph.json');
 const searchIndexOutputPath = path.join(repoRoot, 'site/public/supply-chain-search-index.json');
 const supplyChainCandidateQueuePath = path.join(repoRoot, '.github/pipeline/supply-chain-candidates/latest.json');
+const malwareFamilyStixOutputPath = path.join(repoRoot, 'site/public/supply-chain-malware-families-stix.json');
 
 const entityFiles = {
   accounts: 'accounts.json',
@@ -43,6 +45,9 @@ const tierByType = {
   campaign: 'campaign',
   distribution_channel: 'supporting',
   incident: 'incident',
+  malware_family: 'malware_family',
+  malware_strain: 'malware_strain',
+  fork_event: 'fork_event',
   maintainer: 'maintainer',
   organization: 'organization',
   package: 'package',
@@ -208,6 +213,7 @@ function incidentTechniques(incident) {
 function loadCorpus() {
   const incidents = readJson(path.join(dataRoot, 'supply-chain-incidents/incidents.json'));
   const relationships = readJson(path.join(dataRoot, 'supply-chain-relationships/relationships.json'));
+  const malwareFamilies = readJson(path.join(dataRoot, 'supply-chain-malware-families/families.json'));
   const entities = Object.fromEntries(
     Object.entries(entityFiles).map(([key, filename]) => [
       key,
@@ -215,7 +221,7 @@ function loadCorpus() {
     ])
   );
   const candidateQueue = readOptionalJson(supplyChainCandidateQueuePath);
-  return { incidents, relationships, entities, candidateQueue };
+  return { incidents, relationships, entities, candidateQueue, malwareFamilies };
 }
 
 function uniqueEdges(edges) {
@@ -259,6 +265,144 @@ function normalizeRelationshipEdge(relationship, nodeIds) {
   return edge;
 }
 
+function malwareFamilyHref(familyId) {
+  return `/supply-chain/malware-families/${familyId}/`;
+}
+
+function strainHref(familyId, strainId) {
+  return `${malwareFamilyHref(familyId)}#${strainId}`;
+}
+
+function malwareFamilyNodes(malwareFamilies = []) {
+  return malwareFamilies.flatMap((family) => {
+    if (!family?.id) return [];
+    const familyNode = {
+      id: family.id,
+      entity_id: family.id,
+      type: 'malware_family',
+      label: family.name || family.id,
+      short_label: shortDisplayLabel(family.name || family.id),
+      tier: tierByType.malware_family,
+      sev: null,
+      time: family.first_seen || null,
+      parent: family.root_actor_id || null,
+      techniques: [],
+      purl: null,
+      href: malwareFamilyHref(family.id),
+      aliases: Array.isArray(family.aliases) ? family.aliases : [],
+      source_incident_ids: Array.from(
+        new Set((family.strains || []).flatMap((strain) => Array.isArray(strain.incident_ids) ? strain.incident_ids : []))
+      ).sort(),
+    };
+    const strainNodes = (family.strains || []).map((strain) => ({
+      id: strain.id,
+      entity_id: strain.id,
+      type: 'malware_strain',
+      label: strain.name || strain.id,
+      short_label: shortDisplayLabel(strain.name || strain.id),
+      tier: tierByType.malware_strain,
+      sev: strain.severity || null,
+      time: strain.first_seen || null,
+      parent: family.id,
+      techniques: Array.isArray(strain.ecosystems) ? strain.ecosystems : [],
+      purl: null,
+      href: strainHref(family.id, strain.id),
+      aliases: Array.isArray(strain.aliases) ? strain.aliases : [],
+      family_id: family.id,
+      lineage_confidence: strain.lineage_confidence || null,
+      source_incident_ids: Array.isArray(strain.incident_ids) ? strain.incident_ids : [],
+    }));
+    const forkNodes = (family.fork_events || []).map((event) => ({
+      id: event.id,
+      entity_id: event.id,
+      type: 'fork_event',
+      label: event.name || event.id,
+      short_label: shortDisplayLabel(event.name || event.id),
+      tier: tierByType.fork_event,
+      sev: null,
+      time: event.date || null,
+      parent: family.id,
+      techniques: [],
+      purl: null,
+      href: `${malwareFamilyHref(family.id)}#${event.id}`,
+      aliases: [],
+      family_id: family.id,
+      source_incident_ids: [],
+    }));
+    return [familyNode, ...strainNodes, ...forkNodes];
+  });
+}
+
+function malwareFamilyEdges(malwareFamilies = [], nodeIds) {
+  const edges = [];
+  malwareFamilies.forEach((family) => {
+    if (!family?.id || !nodeIds.has(family.id)) return;
+    (family.associated_actor_ids || []).forEach((actorId) => {
+      if (nodeIds.has(actorId)) {
+        edges.push({
+          id: `MALWARE_FAMILY_ACTOR:${actorId}->${family.id}`,
+          source: actorId,
+          target: family.id,
+          type: 'ATTRIBUTED_TO_ACTOR',
+          derived: true,
+        });
+      }
+    });
+    (family.strains || []).forEach((strain) => {
+      if (!nodeIds.has(strain.id)) return;
+      edges.push({
+        id: `MALWARE_FAMILY_STRAIN:${family.id}->${strain.id}`,
+        source: family.id,
+        target: strain.id,
+        type: 'HAS_STRAIN',
+        derived: true,
+      });
+      (strain.incident_ids || []).forEach((incidentId) => {
+        const incidentNode = `incident-${incidentId}`;
+        if (nodeIds.has(incidentNode)) {
+          edges.push({
+            id: `STRAIN_INCIDENT:${strain.id}->${incidentNode}`,
+            source: strain.id,
+            target: incidentNode,
+            type: 'STRAIN_INCIDENT',
+            derived: true,
+          });
+        }
+      });
+    });
+    (family.fork_events || []).forEach((event) => {
+      if (nodeIds.has(event.id)) {
+        edges.push({
+          id: `MALWARE_FAMILY_FORK_EVENT:${family.id}->${event.id}`,
+          source: family.id,
+          target: event.id,
+          type: 'FORK_EVENT',
+          derived: true,
+        });
+      }
+    });
+    (family.lineage_edges || []).forEach((edge) => {
+      if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) return;
+      edges.push({
+        id: `${edge.type}:${edge.source}->${edge.target}`,
+        source: edge.source,
+        target: edge.target,
+        type: edge.type,
+        evidence_class: edge.evidence_class || edge.confidence || null,
+        confidence: edge.confidence || null,
+        relation_kind: edge.relation_kind || null,
+        mutation_delta: Array.isArray(edge.mutation_delta) ? edge.mutation_delta : [],
+        source_refs: Array.isArray(edge.external_refs)
+          ? edge.external_refs.map((ref) => ref.source_ref).filter(Boolean)
+          : [],
+        fork_event_id: edge.fork_event_id || null,
+        summary: edge.summary || '',
+      });
+    });
+  });
+  return edges;
+}
+
 function deriveIncidentContextEdges(nodes, incidents, entities) {
   const edges = [];
   const actorIds = new Set((entities.actors || []).map((actor) => actor.id));
@@ -295,7 +439,7 @@ function deriveIncidentContextEdges(nodes, incidents, entities) {
 }
 
 export function buildSupplyChainGraphData(corpus = loadCorpus()) {
-  const { incidents, relationships, entities, candidateQueue = null } = corpus;
+  const { incidents, relationships, entities, candidateQueue = null, malwareFamilies = [] } = corpus;
   const nodes = [];
 
   incidents.forEach((incident) => {
@@ -373,12 +517,14 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       });
     });
   });
+  nodes.push(...malwareFamilyNodes(malwareFamilies));
 
   const nodeIds = new Set(nodes.map((node) => node.id));
   const corpusEdges = relationships
     .map((relationship) => normalizeRelationshipEdge(relationship, nodeIds))
     .filter(Boolean);
   const derivedEdges = deriveIncidentContextEdges(nodes, incidents, entities);
+  const lineageEdges = malwareFamilyEdges(malwareFamilies, nodeIds);
   const techniqueEdges = incidents.flatMap((incident) =>
     incidentTechniques(incident).map((technique) => {
       const source = `technique-${slugify(technique)}`;
@@ -392,7 +538,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       };
     })
   );
-  const edges = uniqueEdges([...corpusEdges, ...derivedEdges, ...techniqueEdges]);
+  const edges = uniqueEdges([...corpusEdges, ...derivedEdges, ...lineageEdges, ...techniqueEdges]);
 
   const parentByIncident = new Map();
   edges.forEach((edge) => {
@@ -442,6 +588,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       package_release_lod: 'g4-dive-and-bloom',
       bloom_tiers: ['organization', 'package', 'release'],
       seeded_by_edges: 'causal-solid-temporal-dashed',
+      evolved_from_edges: 'confirmed-solid-suspected-dashed',
       layout: 'time-anchored-actor-lanes',
     },
     counts,
@@ -452,7 +599,7 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
 }
 
 export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
-  const { incidents, relationships, entities } = corpus;
+  const { incidents, relationships, entities, malwareFamilies = [] } = corpus;
   const entriesById = new Map();
   const incidentById = new Map(incidents.map((incident) => [incident.id, incident]));
   const entityById = new Map();
@@ -552,7 +699,108 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
     });
   });
 
+  malwareFamilies.forEach((family) => {
+    addEntry({
+      id: family.id,
+      type: 'malware_family',
+      displayName: family.name || family.id,
+      aliases: [
+        family.id,
+        family.aliases || [],
+        family.summary,
+        (family.strains || []).flatMap((strain) => [strain.id, strain.name, strain.aliases || []]),
+      ],
+    });
+    (family.strains || []).forEach((strain) => {
+      addEntry({
+        id: strain.id,
+        type: 'malware_strain',
+        displayName: strain.name || strain.id,
+        aliases: [
+          strain.id,
+          strain.aliases || [],
+          strain.key_mutation,
+          strain.mutation_summary,
+          strain.ecosystems || [],
+          strain.incident_ids || [],
+          family.name,
+          family.aliases || [],
+        ],
+      });
+    });
+  });
+
   return Array.from(entriesById.values()).sort((a, b) => a.type.localeCompare(b.type) || a.displayName.localeCompare(b.displayName) || a.id.localeCompare(b.id));
+}
+
+function stixUuid(seed) {
+  const hex = createHash('sha256').update(seed).digest('hex').slice(0, 32);
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-${(parseInt(hex.slice(16, 17), 16) & 0x3 | 0x8).toString(16)}${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
+}
+
+function stixId(type, seed) {
+  return `${type}--${stixUuid(seed)}`;
+}
+
+export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
+  const objects = [];
+  (corpus.malwareFamilies || []).forEach((family) => {
+    const malwareIds = new Map();
+    (family.strains || []).forEach((strain) => {
+      const malwareId = stixId('malware', `threatpedia:${strain.id}`);
+      malwareIds.set(strain.id, malwareId);
+      objects.push({
+        type: 'malware',
+        spec_version: '2.1',
+        id: malwareId,
+        created: '2026-06-22T00:00:00.000Z',
+        modified: '2026-06-22T00:00:00.000Z',
+        name: strain.name || strain.id,
+        is_family: false,
+        malware_types: ['trojan'],
+        aliases: strain.aliases || [],
+        first_seen: strain.first_seen ? `${strain.first_seen}T00:00:00.000Z` : undefined,
+        description: strain.mutation_summary || strain.key_mutation || family.summary,
+        external_references: [
+          {
+            source_name: 'Threatpedia',
+            external_id: strain.id,
+            url: `https://threatpedia.wiki/supply-chain/malware-families/${family.id}/#${strain.id}`,
+          },
+        ],
+        'x_threatpedia_family_id': family.id,
+        'x_threatpedia_lineage_confidence': strain.lineage_confidence || null,
+      });
+    });
+    (family.lineage_edges || []).forEach((edge) => {
+      const sourceRef = malwareIds.get(edge.source);
+      const targetRef = malwareIds.get(edge.target);
+      if (!sourceRef || !targetRef) return;
+      objects.push({
+        type: 'relationship',
+        spec_version: '2.1',
+        id: stixId('relationship', `threatpedia:${edge.source}:${edge.type}:${edge.target}`),
+        created: '2026-06-22T00:00:00.000Z',
+        modified: '2026-06-22T00:00:00.000Z',
+        relationship_type: edge.type === 'VARIANT_OF' ? 'variant-of' : 'derived-from',
+        source_ref: sourceRef,
+        target_ref: targetRef,
+        description: edge.summary,
+        external_references: (edge.external_refs || []).map((ref) => ({
+          source_name: 'Threatpedia',
+          external_id: ref.source_ref,
+        })),
+        'x_threatpedia_relation_kind': edge.relation_kind,
+        'x_threatpedia_confidence': edge.confidence,
+        'x_threatpedia_mutation_delta': edge.mutation_delta || [],
+      });
+    });
+  });
+  return {
+    type: 'bundle',
+    id: stixId('bundle', 'threatpedia:supply-chain-malware-families'),
+    objects,
+  };
 }
 
 function stableStringify(value) {
@@ -562,8 +810,10 @@ function stableStringify(value) {
 export function writeSupplyChainGraphData(options = {}) {
   const graph = buildSupplyChainGraphData();
   const searchIndex = buildSupplyChainSearchIndex();
+  const malwareFamilyStix = buildMalwareFamilyStixBundle();
   const current = existsSync(outputPath) ? readFileSync(outputPath, 'utf8') : '';
   const currentSearchIndex = existsSync(searchIndexOutputPath) ? readFileSync(searchIndexOutputPath, 'utf8') : '';
+  const currentStix = existsSync(malwareFamilyStixOutputPath) ? readFileSync(malwareFamilyStixOutputPath, 'utf8') : '';
   if (current) {
     try {
       const currentGraph = JSON.parse(current);
@@ -574,6 +824,7 @@ export function writeSupplyChainGraphData(options = {}) {
   }
   const serialized = stableStringify(graph);
   const serializedSearchIndex = stableStringify(searchIndex);
+  const serializedStix = stableStringify(malwareFamilyStix);
   if (options.check) {
     if (current !== serialized) {
       throw new Error(`${path.relative(repoRoot, outputPath)} is out of date; run node scripts/build-supply-chain-graph.mjs`);
@@ -581,12 +832,16 @@ export function writeSupplyChainGraphData(options = {}) {
     if (currentSearchIndex !== serializedSearchIndex) {
       throw new Error(`${path.relative(repoRoot, searchIndexOutputPath)} is out of date; run node scripts/build-supply-chain-graph.mjs`);
     }
-    return { graph, searchIndex, outputPath, searchIndexOutputPath, changed: false };
+    if (currentStix !== serializedStix) {
+      throw new Error(`${path.relative(repoRoot, malwareFamilyStixOutputPath)} is out of date; run node scripts/build-supply-chain-graph.mjs`);
+    }
+    return { graph, searchIndex, malwareFamilyStix, outputPath, searchIndexOutputPath, malwareFamilyStixOutputPath, changed: false };
   }
   mkdirSync(path.dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, serialized);
   writeFileSync(searchIndexOutputPath, serializedSearchIndex);
-  return { graph, searchIndex, outputPath, searchIndexOutputPath, changed: true };
+  writeFileSync(malwareFamilyStixOutputPath, serializedStix);
+  return { graph, searchIndex, malwareFamilyStix, outputPath, searchIndexOutputPath, malwareFamilyStixOutputPath, changed: true };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
