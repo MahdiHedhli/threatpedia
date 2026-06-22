@@ -194,6 +194,49 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("fork-mini-shai-source-release.layout.x: expected number", event_errors)
         self.assertIn("fork-mini-shai-source-release.layout.y: expected number", event_errors)
 
+        unhashable_refs = copy.deepcopy(malware_families)
+        unhashable_refs[0]["root_actor_id"] = ["actor-shai-hulud-operator"]
+        unhashable_refs[0]["strains"][0]["attribution"]["actor_id"] = {"id": "actor-teampcp"}
+        unhashable_refs[0]["fork_events"][0]["source_refs"] = [{"id": "ref-stepsecurity-mini-shai"}]
+        unhashable_refs[0]["lineage_edges"][0]["source"] = ["strain-shai-hulud-2"]
+        unhashable_refs[0]["lineage_edges"][0]["target"] = {"id": "strain-shai-hulud"}
+        unhashable_refs[0]["lineage_edges"][0]["external_refs"][0]["source_ref"] = ["ref-wiz-shai-hulud"]
+        unhashable_refs[0]["lineage_edges"][0]["fork_event_id"] = {"id": "fork-mini-shai-source-release"}
+        unhashable_errors = validator.validate_malware_families(
+            unhashable_refs,
+            raw_incident_ids=raw_incident_ids,
+            entity_ids=entity_ids,
+        )
+
+        self.assertIn(
+            "family-shai-hulud.root_actor_id: unknown actor/entity id ['actor-shai-hulud-operator']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "strain-shai-hulud.attribution.actor_id: unknown actor/entity id {'id': 'actor-teampcp'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "fork-mini-shai-source-release.source_refs[0]: unknown family source ref {'id': 'ref-stepsecurity-mini-shai'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].source: unknown strain id ['strain-shai-hulud-2']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].target: unknown strain id {'id': 'strain-shai-hulud'}",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].external_refs[0].source_ref: unknown family source ref ['ref-wiz-shai-hulud']",
+            unhashable_errors,
+        )
+        self.assertIn(
+            "family-shai-hulud.lineage_edges[0].fork_event_id: unknown fork event {'id': 'fork-mini-shai-source-release'}",
+            unhashable_errors,
+        )
+
     def test_malware_family_validator_allows_single_strain_without_lineage_edges(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)

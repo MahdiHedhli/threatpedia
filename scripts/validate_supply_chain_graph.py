@@ -570,8 +570,9 @@ def validate_malware_families(
                     if not isinstance(alias, str) or not alias.strip():
                         errors.append(f"{family_id}.aliases[{alias_index}]: expected non-empty string")
         root_actor_id = family.get("root_actor_id")
-        if root_actor_id is not None and root_actor_id not in entity_ids:
-            errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
+        if root_actor_id is not None:
+            if not isinstance(root_actor_id, str) or root_actor_id not in entity_ids:
+                errors.append(f"{family_id}.root_actor_id: unknown actor/entity id {root_actor_id!r}")
         associated_actor_ids = family.get("associated_actor_ids")
         if associated_actor_ids is not None:
             if not isinstance(associated_actor_ids, list):
@@ -677,8 +678,9 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.attribution: expected object")
             else:
                 actor_id = attribution.get("actor_id")
-                if actor_id is not None and actor_id not in entity_ids:
-                    errors.append(f"{strain_id}.attribution.actor_id: unknown actor/entity id {actor_id!r}")
+                if actor_id is not None:
+                    if not isinstance(actor_id, str) or actor_id not in entity_ids:
+                        errors.append(f"{strain_id}.attribution.actor_id: unknown actor/entity id {actor_id!r}")
                 if not isinstance(attribution.get("label"), str) or not attribution["label"].strip():
                     errors.append(f"{strain_id}.attribution.label: expected non-empty string")
                 if attribution.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
@@ -724,7 +726,7 @@ def validate_malware_families(
                             errors.append(f"{event_id}.source_refs: expected list")
                         else:
                             for ref_index, source_ref in enumerate(source_refs):
-                                if source_ref not in source_ids:
+                                if not isinstance(source_ref, str) or source_ref not in source_ids:
                                     errors.append(f"{event_id}.source_refs[{ref_index}]: unknown family source ref {source_ref!r}")
 
         lineage_edge_items = family.get("lineage_edges")
@@ -743,9 +745,9 @@ def validate_malware_families(
             target = edge.get("target")
             if edge_type not in VALID_LINEAGE_EDGE_TYPES:
                 errors.append(f"{edge_path}.type: expected EVOLVED_FROM or VARIANT_OF")
-            if source not in strain_ids:
+            if not isinstance(source, str) or source not in strain_ids:
                 errors.append(f"{edge_path}.source: unknown strain id {source!r}")
-            if target not in strain_ids:
+            if not isinstance(target, str) or target not in strain_ids:
                 errors.append(f"{edge_path}.target: unknown strain id {target!r}")
             if source == target:
                 errors.append(f"{edge_path}: source and target cannot be the same")
@@ -769,7 +771,7 @@ def validate_malware_families(
                         errors.append(f"{edge_path}.external_refs[{ref_index}]: expected object")
                         continue
                     source_ref = ref.get("source_ref")
-                    if source_ref not in source_ids:
+                    if not isinstance(source_ref, str) or source_ref not in source_ids:
                         errors.append(f"{edge_path}.external_refs[{ref_index}].source_ref: unknown family source ref {source_ref!r}")
             suspected_reason = edge.get("suspected_reason")
             if (edge.get("confidence") == "suspected" or edge.get("evidence_class") == "suspected") and (
@@ -777,8 +779,9 @@ def validate_malware_families(
             ):
                 errors.append(f"{edge_path}.suspected_reason: suspected edges must explain uncertainty")
             fork_event_id = edge.get("fork_event_id")
-            if fork_event_id is not None and fork_event_id not in fork_event_ids:
-                errors.append(f"{edge_path}.fork_event_id: unknown fork event {fork_event_id!r}")
+            if fork_event_id is not None:
+                if not isinstance(fork_event_id, str) or fork_event_id not in fork_event_ids:
+                    errors.append(f"{edge_path}.fork_event_id: unknown fork event {fork_event_id!r}")
             if isinstance(source, str) and isinstance(target, str):
                 lineage_edges.append((source, target, edge_path))
 
