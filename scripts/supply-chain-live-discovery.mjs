@@ -398,7 +398,7 @@ function releaseLead({ source, ecosystem, name, version, publishedAt, url, feedC
   };
 }
 
-function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, publishedAt, url, affected, severity, databaseSpecific, raw }) {
+function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, publishedAt, url, affected, severity, databaseSpecific, kev, raw }) {
   const text = `${id} ${aliases?.join(' ') || ''} ${title || ''} ${summary || ''}`;
   const ids = extractIds(text);
   return {
@@ -419,6 +419,7 @@ function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, pu
     affected: Array.isArray(affected) ? affected : [],
     severity,
     databaseSpecific: databaseSpecific || null,
+    kev: kev || null,
     raw,
   };
 }
@@ -489,7 +490,7 @@ async function collectNpmLeads(config, fixturesDir) {
   const changes = fixtureChanges || await fetchJson(`${config.sources.npm.changesUrl}?descending=true&limit=${config.maxPerSource}`);
   const rows = Array.isArray(changes?.results) ? changes.results : [];
   const leads = await Promise.all(rows.slice(0, config.maxPerSource).map(async (row) => {
-    const packageName = row.id;
+    const packageName = row?.id;
     if (!packageName) return null;
     const fixtureName = `npm-${slugPart(packageName)}.json`;
     let metadata = readFixtureJson(fixturesDir, fixtureName, null);
@@ -511,7 +512,7 @@ async function collectNpmLeads(config, fixturesDir) {
       version,
       publishedAt,
       url: packageMetadataUrl(config.sources.npm.metadataBaseUrl, metadata.name || packageName),
-      feedCursor: row.seq ? `seq:${row.seq}` : row.id,
+      feedCursor: row?.seq ? `seq:${row.seq}` : row?.id,
       summary: versionData.description || metadata.description || '',
       raw: { change: row, version: versionData },
     });
@@ -535,7 +536,7 @@ async function collectPypiLeads(config, fixturesDir) {
     if (!projectJson) return null;
     const info = projectJson?.info || {};
     const files = projectJson?.releases?.[update.version] || [];
-    const publishedAt = files.map((file) => iso(file.upload_time_iso_8601)).filter(Boolean).sort()[0] || update.publishedAt;
+    const publishedAt = files.map((file) => iso(file?.upload_time_iso_8601)).filter(Boolean).sort()[0] || update.publishedAt;
     if (!info.name || !update.version || !publishedAt) return null;
     return releaseLead({
       source: 'pypi-rss',
@@ -561,7 +562,7 @@ async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
   const previousBoundary = new Set(previousQueue?.feed_cursors?.go?.boundary_keys || []);
   const leads = [];
   for (const row of rows.slice(0, config.maxPerSource)) {
-    if (!row.Path || !row.Version || !row.Timestamp) continue;
+    if (!row || !row.Path || !row.Version || !row.Timestamp) continue;
     const key = goBoundaryKey(row);
     if (previousBoundary.has(key)) continue;
     leads.push(releaseLead({
@@ -588,7 +589,7 @@ function parseOsvModifiedCsv(text, ecosystems, cutoff) {
     .map((line) => {
       const [modifiedAt, recordPath] = line.split(',', 2);
       const modified = parseDate(modifiedAt);
-      return modified ? { line, modified } : null;
+      return modified && recordPath ? { line, modified } : null;
     })
     .filter(Boolean);
   const first = datedRows[0]?.modified?.getTime() || 0;
@@ -642,8 +643,9 @@ async function collectOsvLeads(config, fixturesDir, asOfDate) {
 }
 
 function ghsaPackageEcosystem(ecosystem) {
-  if (ecosystem === 'pip') return 'pypi';
-  return ecosystem === 'go' ? 'go' : ecosystem;
+  const eco = String(ecosystem || '').toLowerCase();
+  if (eco === 'pip') return 'pypi';
+  return eco === 'go' ? 'go' : eco;
 }
 
 async function collectGhsaLeads(config, fixturesDir) {
@@ -665,56 +667,73 @@ async function collectGhsaLeads(config, fixturesDir) {
     )));
     advisories.push(...responses.flat());
   }
-  return advisories.slice(0, config.maxPerSource * 2).map((advisory) => {
-    const affected = (advisory.vulnerabilities || []).map((vuln) => ({
-      package: {
-        ecosystem: ghsaPackageEcosystem(vuln.package?.ecosystem),
-        name: vuln.package?.name,
-      },
-      ranges: [],
-      versions: [],
-    }));
-    return vulnerabilityLead({
-      source: 'github-advisory',
-      id: advisory.ghsa_id,
-      aliases: [advisory.cve_id, advisory.ghsa_id].filter(Boolean),
-      title: advisory.summary || advisory.ghsa_id,
-      summary: advisory.description || advisory.summary || '',
-      modifiedAt: advisory.updated_at || advisory.published_at,
-      publishedAt: advisory.published_at,
-      url: advisory.html_url || `https://github.com/advisories/${advisory.ghsa_id}`,
-      affected,
-      severity: advisory.severity,
-      databaseSpecific: { type: advisory.type },
-      raw: advisory,
+  return advisories
+    .slice(0, config.maxPerSource * 2)
+    .filter((advisory) => advisory && typeof advisory === 'object' && !Array.isArray(advisory) && advisory.ghsa_id)
+    .map((advisory) => {
+      const affected = (advisory.vulnerabilities || []).map((vuln) => ({
+        package: {
+          ecosystem: ghsaPackageEcosystem(vuln.package?.ecosystem),
+          name: vuln.package?.name,
+        },
+        ranges: [],
+        versions: [],
+      }));
+      return vulnerabilityLead({
+        source: 'github-advisory',
+        id: advisory.ghsa_id,
+        aliases: [advisory.cve_id, advisory.ghsa_id].filter(Boolean),
+        title: advisory.summary || advisory.ghsa_id,
+        summary: advisory.description || advisory.summary || '',
+        modifiedAt: advisory.updated_at || advisory.published_at,
+        publishedAt: advisory.published_at,
+        url: advisory.html_url || `https://github.com/advisories/${advisory.ghsa_id}`,
+        affected,
+        severity: advisory.severity,
+        databaseSpecific: { type: advisory.type },
+        raw: advisory,
+      });
     });
-  });
 }
 
 function collectVulncheckLeads(indexPath) {
   if (!indexPath || !existsSync(path.resolve(repoRoot, indexPath))) return [];
   const index = readJson(indexPath);
-  const candidates = Array.isArray(index.candidates) ? index.candidates : [];
-  return candidates.map((candidate) => vulnerabilityLead({
-    source: 'vulncheck-kev',
-    id: candidate.cves?.[0] || candidate.candidate_key,
-    aliases: candidate.cves || [],
-    title: candidate.vulnerabilityName || candidate.shortDescription || candidate.candidate_key,
-    summary: candidate.shortDescription || '',
-    modifiedAt: candidate.vulncheck_date_added,
-    publishedAt: candidate.vulncheck_date_added,
-    url: candidate.vulncheck_exploitation_signal?.evidence_urls?.[0] || 'https://vulncheck.com/',
-    affected: (candidate.cves || []).map((cve) => ({
-      package: { ecosystem: 'cve', name: cve },
-      versions: [],
-    })),
-    databaseSpecific: {
-      non_authoritative: true,
-      cisaDatePresent: Boolean(candidate.official_cisa_kev?.date_added),
-      reportedExploitedByCanaries: Boolean(candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries),
-    },
-    raw: candidate,
-  }));
+  const candidates = Array.isArray(index.candidates)
+    ? index.candidates.filter((candidate) => candidate && typeof candidate === 'object' && !Array.isArray(candidate))
+    : [];
+  return candidates.map((candidate) => {
+    const cves = Array.isArray(candidate.cves) ? candidate.cves : [];
+    const officialKev = candidate.official_cisa_kev && typeof candidate.official_cisa_kev === 'object'
+      ? candidate.official_cisa_kev
+      : null;
+    return vulnerabilityLead({
+      source: 'vulncheck-kev',
+      id: cves[0] || candidate.candidate_key,
+      aliases: cves,
+      title: candidate.vulnerabilityName || candidate.shortDescription || candidate.candidate_key,
+      summary: candidate.shortDescription || '',
+      modifiedAt: candidate.vulncheck_date_added,
+      publishedAt: candidate.vulncheck_date_added,
+      url: candidate.vulncheck_exploitation_signal?.evidence_urls?.[0] || 'https://vulncheck.com/',
+      affected: cves.map((cve) => ({
+        package: { ecosystem: 'cve', name: cve },
+        versions: [],
+      })),
+      databaseSpecific: {
+        non_authoritative: true,
+        cisaDatePresent: Boolean(officialKev?.date_added),
+        reportedExploitedByCanaries: Boolean(candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries),
+      },
+      kev: officialKev ? {
+        isKev: true,
+        kevAddedAt: officialKev.date_added,
+        kevUpdatedAt: officialKev.date_added,
+        kevDueAt: officialKev.dueDate,
+      } : null,
+      raw: candidate,
+    });
+  });
 }
 
 export function loadCorpusIndex() {

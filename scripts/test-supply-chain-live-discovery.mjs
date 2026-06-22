@@ -311,6 +311,62 @@ function testQueueValidatorRejectsInvalidRootShapes() {
   assert.deepEqual(validateCandidateQueue([]), ['Queue must be a valid object']);
 }
 
+async function testVulncheckKevFeedsDerivedKevStatus() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-vulncheck-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), '');
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    const vulncheckIndex = path.join(tempDir, 'vulncheck-kev.json');
+    writeFileSync(vulncheckIndex, JSON.stringify({
+      candidates: [
+        null,
+        [],
+        {
+          candidate_key: 'CVE-2026-12345',
+          cves: ['CVE-2026-12345'],
+          vulnerabilityName: 'Supply-chain exploitation fixture',
+          shortDescription: 'A supply-chain exploited package fixture for KEV derivation.',
+          vulncheck_date_added: '2026-06-20',
+          official_cisa_kev: {
+            date_added: '2026-06-20',
+            dueDate: '2026-07-10',
+          },
+          vulncheck_exploitation_signal: {
+            evidence_urls: ['https://example.invalid/vulncheck'],
+            reported_exploited_by_vulncheck_canaries: true,
+          },
+        },
+      ],
+    }));
+
+    const out = path.join(tempDir, 'queue.json');
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out,
+      queuePath: out,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex,
+      check: false,
+      includeLowSignal: true,
+    });
+
+    assert.equal(validateCandidateQueue(queue).length, 0);
+    const candidate = queue.candidates.find((item) => item.canonicalSubjectId === 'CVE-2026-12345');
+    assert.ok(candidate, 'VulnCheck KEV fixture should be emitted as a candidate');
+    assert.equal(candidate.classification.kevStatusDerived, 'recently_added');
+    assert.equal(candidate.classification.kevStatusIsAuthoredTruth, false);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
@@ -320,4 +376,5 @@ testManualOverrideCarriesForwardFromPreviousQueue();
 testComputedKevUsesEffectiveActiveStatus();
 testMixedCaseEcosystemMatchesExistingPackage();
 testQueueValidatorRejectsInvalidRootShapes();
+await testVulncheckKevFeedsDerivedKevStatus();
 console.log('Supply Chain live discovery tests PASS');
