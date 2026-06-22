@@ -1,116 +1,33 @@
-# Gemini Code Assist — Review Protocol for Bot Tasks
+# Automated Review Triage Protocol
 
-All Threatpedia bot tasks that create PRs must handle Gemini Code Assist review
-comments. This protocol ensures comments are triaged, fixed, replied to, and
-resolved consistently across all automated tasks.
+Automated bot reviews are advisory and severity-gated. They help surface bugs,
+security issues, data or evidence integrity problems, and semantic consistency
+gaps, but they do not block merge on their own.
 
-## Shared Utility
+Blocking authority remains with the independent non-author lanes
+(`ernestpenfold-bot` / EP-Grok and `dangermouse-bot`) and with any confirmed
+bug, security defect, data-corruption risk, evidence-grading defect, or
+semantic-consistency issue regardless of which reviewer surfaced it.
 
-Use `scrapers/gemini_review.py` — a reusable handler that encapsulates the full
-pre-check / post-check / reply workflow.
-
-```python
-from gemini_review import GeminiReviewHandler
-
-handler = GeminiReviewHandler(token_path="~/Documents/Coding/Threatpedia/.envbot")
-```
-
-## Phase 0: Pre-Check (Before Main Work)
-
-Scan all open PRs for unresolved Gemini comments before starting today's work.
-
-```python
-results = handler.precheck_all_open_prs()
-for pr_num, result in results.items():
-    for comment in result.actionable:  # critical + high only
-        # Fix the issue on the PR branch, commit, push
-        # Then reply:
-        handler.reply_to_comment(
-            pr_number=pr_num,
-            comment_id=comment.comment_id,
-            fix_description="Brief description of what was fixed",
-            commit_hash="abc1234",
-            comment_type=comment.comment_type,
-        )
-```
-
-### Severity Triage
+## Severity Handling
 
 | Severity | Action |
-|----------|--------|
-| Critical | Fix immediately — clone, checkout branch, fix, commit, push, reply |
-| High | Fix immediately — same as critical |
-| Medium | Fix if straightforward (< 5 min). Otherwise acknowledge with reply |
-| Low | Acknowledge with reply, defer to next run |
+|---|---|
+| CRITICAL / HIGH | Fix in the current cycle. Treat bugs, security defects, data corruption, evidence-grading issues, and semantic-consistency violations as blockers. |
+| MEDIUM / LOW | Batch into one final hardening pass or a follow-up issue unless the finding exposes a confirmed blocker. This includes defensive hardening on internal validators, cosmetic simplifications, "consider..." suggestions, and PR restatements. |
 
-## Phase 7: Post-Check (After PR Creation)
+## Disposition
 
-After creating a PR, monitor for Gemini comments at timed intervals.
+- Write one disposition note per head, not one reply per comment.
+- Resolve advisory threads in batches after the disposition is recorded.
+- Do not retrigger `/gemini review` repeatedly. One automated pass per
+  meaningful head is enough; the blocking signal comes from EP/Grok, DM, and
+  confirmed current-head defects.
 
-```python
-result = handler.postcheck_pr(pr_number=26, wait_minutes=10)
+## Gemini Code Assist Scope
 
-# Fix actionable comments
-for comment in result.actionable:
-    # Apply fix...
-    handler.reply_to_comment(
-        pr_number=26,
-        comment_id=comment.comment_id,
-        fix_description="...",
-        commit_hash="...",
-    )
-
-# Acknowledge medium/low comments
-for comment in result.medium + result.low:
-    handler.reply_to_comment(
-        pr_number=26,
-        comment_id=comment.comment_id,
-        fix_description="Acknowledged — will address in next iteration",
-        commit_hash="N/A",
-    )
-```
-
-### Timing
-
-| Check | When | Action |
-|-------|------|--------|
-| 1st | 2 min after PR | Fix critical/high, acknowledge medium |
-| 2nd | 5 min after PR | Fix any new critical/high |
-| 3rd | 10 min after PR | Final check, acknowledge remaining |
-
-## Reply Format
-
-All replies to Gemini comments should follow this format:
-
-```
-Fixed in {short_commit_hash} — {brief description of what was changed}
-```
-
-For acknowledged-but-deferred comments:
-
-```
-Acknowledged — will address in next iteration. {optional brief note}
-```
-
-## Reactions
-
-Add an `eyes` reaction to each Gemini comment to signal it has been reviewed:
-
-```python
-comment.create_reaction("eyes")
-```
-
-## Tasks Using This Protocol
-
-All tasks that create PRs should implement this protocol:
-
-- `threatpedia-build-scrapers` — Connector/scraper PRs
-- `threatpedia-source-deep-dive` — Spec PRs
-- `new-threat-intel-*` — Incident report PRs
-- `daily-incident-updater` — Enrichment PRs
-- `incident-crosslink-gapfill` — Gap-fill PRs
-- `glossary-term-updater` — Glossary PRs
-- `threat-actor-updater` — Actor page PRs
-- `zero-day-tracker` — Zero-day PRs
-- `zero-day-enricher` — Enrichment PRs
-- `tp-roadmap-updater` — Roadmap PRs
+Threatpedia keeps `ernestpenfold-bot` unchanged as the independent EP/Grok
+review lane. The GitHub `gemini-code-assist[bot]` app is configured only as a
+near-silent, HIGH-severity third opinion until its scheduled sunset. It should
+not repost PR summaries, produce comment churn, or drive repeated remediation
+cycles for medium/low advisory feedback.
