@@ -34,6 +34,7 @@ const repoRoot = findRepoRoot([moduleDir, process.cwd()]);
 const incidentPath = path.join(repoRoot, 'data/supply-chain-incidents/incidents.json');
 const relationshipPath = path.join(repoRoot, 'data/supply-chain-relationships/relationships.json');
 const entityDir = path.join(repoRoot, 'data/supply-chain-entities');
+const candidateQueuePath = path.join(repoRoot, '.github/pipeline/supply-chain-candidates/latest.json');
 let cachedData = null;
 
 export const SUPPLY_CHAIN_ENTITY_TYPES = [
@@ -176,6 +177,15 @@ function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, 'utf-8'));
 }
 
+function readOptionalJson(filePath) {
+  if (!existsSync(filePath)) return null;
+  try {
+    return readJson(filePath);
+  } catch {
+    return null;
+  }
+}
+
 export function loadSupplyChainData() {
   if (cachedData) return cachedData;
   const incidents = readJson(incidentPath);
@@ -183,6 +193,7 @@ export function loadSupplyChainData() {
   const entities = Object.fromEntries(
     Object.entries(allEntityFiles).map(([key, filename]) => [key, readJson(path.join(entityDir, filename))])
   );
+  const candidateQueue = readOptionalJson(candidateQueuePath);
   const entityById = new Map();
   Object.entries(entities).forEach(([type, items]) => {
     items.forEach((entity) => {
@@ -190,7 +201,7 @@ export function loadSupplyChainData() {
     });
   });
   const incidentByNodeId = new Map(incidents.map((incident) => [`incident-${incident.id}`, incident]));
-  cachedData = { incidents, relationships, entities, entityById, incidentByNodeId };
+  cachedData = { incidents, relationships, entities, entityById, incidentByNodeId, candidateQueue };
   return cachedData;
 }
 
@@ -599,6 +610,8 @@ function buildEmptyGraphHeroModel() {
     nodeCount: 0,
     relationshipCount: 0,
     latestIncident: null,
+    pendingCandidateCount: 0,
+    latestDiscoverySignalAt: null,
   };
 }
 
@@ -641,6 +654,8 @@ function buildGraphHeroModel(data) {
     nodeCount,
     relationshipCount: edgeCount,
     latestIncident,
+    pendingCandidateCount: data.candidateQueue?.currency?.pending_candidate_count || 0,
+    latestDiscoverySignalAt: data.candidateQueue?.currency?.latest_discovery_signal_at || null,
   };
   graphHeroModelCache.set(data, graphHeroModel);
   return graphHeroModel;

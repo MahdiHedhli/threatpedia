@@ -1,0 +1,23 @@
+[
+  {
+    "ghsa_id": "GHSA-1111-2222-3333",
+    "cve_id": "CVE-2026-99999",
+    "url": "https://api.github.com/advisories/GHSA-1111-2222-3333",
+    "html_url": "https://github.com/advisories/GHSA-1111-2222-3333",
+    "summary": "Malicious package fixture in event-stream",
+    "description": "GitHub Advisory fixture for a malicious package-publish supply-chain event.",
+    "type": "malware",
+    "severity": "high",
+    "published_at": "2026-06-20T15:05:00Z",
+    "updated_at": "2026-06-20T15:35:00Z",
+    "vulnerabilities": [
+      {
+        "package": {
+          "ecosystem": "npm",
+          "name": "event-stream"
+        },
+        "vulnerable_version_range": "3.3.7"
+      }
+    ]
+  }
+]

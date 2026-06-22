@@ -9,13 +9,17 @@ on:
       - "data/supply-chain-incidents/**"
       - "data/supply-chain-relationships/**"
       - "docs/supply-chain*.md"
+      - ".github/pipeline/supply-chain-candidates/**"
       - "scripts/build_supply_chain_entities.py"
+      - "scripts/supply-chain-live-discovery.mjs"
       - "scripts/supply_chain_purl.py"
       - "scripts/validate_supply_chain_graph.py"
       - "scripts/validate_supply_chain_incidents.py"
       - "scripts/test-supply-chain-pages.mjs"
+      - "scripts/test-supply-chain-live-discovery.mjs"
       - "site/src/lib/supplyChainPages.mjs"
       - "tests/test_supply_chain*.py"
+      - "tests/fixtures/supply_chain_live_discovery/**"
   workflow_dispatch:
 
 jobs:
@@ -51,6 +55,12 @@ jobs:
 
       - name: Run supply-chain unit tests
         run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py
+
+      - name: Run live discovery candidate queue test
+        run: |
+          cd scripts
+          npm ci --no-audit --no-fund
+          node test-supply-chain-live-discovery.mjs
 
       - name: Run page model test
         run: node scripts/test-supply-chain-pages.mjs

@@ -8,6 +8,7 @@ const repoRoot = path.resolve(moduleDir, '..');
 const dataRoot = path.join(repoRoot, 'data');
 const outputPath = path.join(repoRoot, 'site/public/supply-chain-graph.json');
 const searchIndexOutputPath = path.join(repoRoot, 'site/public/supply-chain-search-index.json');
+const supplyChainCandidateQueuePath = path.join(repoRoot, '.github/pipeline/supply-chain-candidates/latest.json');
 
 const entityFiles = {
   accounts: 'accounts.json',
@@ -62,6 +63,15 @@ const severityByAttackStage = {
 
 function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, 'utf8'));
+}
+
+function readOptionalJson(filePath) {
+  if (!existsSync(filePath)) return null;
+  try {
+    return readJson(filePath);
+  } catch {
+    return null;
+  }
 }
 
 function displayLabel(value) {
@@ -204,7 +214,8 @@ function loadCorpus() {
       readJson(path.join(dataRoot, 'supply-chain-entities', filename)),
     ])
   );
-  return { incidents, relationships, entities };
+  const candidateQueue = readOptionalJson(supplyChainCandidateQueuePath);
+  return { incidents, relationships, entities, candidateQueue };
 }
 
 function uniqueEdges(edges) {
@@ -284,7 +295,7 @@ function deriveIncidentContextEdges(nodes, incidents, entities) {
 }
 
 export function buildSupplyChainGraphData(corpus = loadCorpus()) {
-  const { incidents, relationships, entities } = corpus;
+  const { incidents, relationships, entities, candidateQueue = null } = corpus;
   const nodes = [];
 
   incidents.forEach((incident) => {
@@ -415,6 +426,14 @@ export function buildSupplyChainGraphData(corpus = loadCorpus()) {
       incidents: 'data/supply-chain-incidents/incidents.json',
       relationships: 'data/supply-chain-relationships/relationships.json',
       entities: 'data/supply-chain-entities/*.json',
+      candidate_queue: '.github/pipeline/supply-chain-candidates/latest.json',
+    },
+    discovery_currency: candidateQueue?.currency || {
+      latest_corpus_incident_at: null,
+      latest_discovery_signal_at: null,
+      pending_candidate_count: 0,
+      pending_current_count: 0,
+      graph_latest_reflects: 'corpus',
     },
     renderer_contract: {
       g2_drawable_tiers: ['actor', 'campaign', 'incident'],

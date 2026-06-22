@@ -83,7 +83,7 @@ discovery queues are open, validated, and stable.
    - Script loads `.github/pipeline/config.yml`, installs lane-specific
      headroom limits, then runs the currently supported discovery lanes:
      - **zero-day:** CISA KEV + NVD CVSS enrichment
-      - **VulnCheck KEV recent intake (ROAD-014):** live source-packet/candidate
+     - **VulnCheck KEV recent intake (ROAD-014):** live source-packet/candidate
         prefill only. `node scripts/vulncheck-kev-intake.mjs --execute`
         requests the VulnCheck KEV backup descriptor, follows the published
         backup payload URL, selects records by top-level `date_added`
@@ -97,6 +97,17 @@ discovery queues are open, validated, and stable.
      - **incident:** CISA alerts/advisories RSS + NCSC News RSS + Microsoft Security Blog RSS
      - **threat-actor promotion:** scans the recent incident corpus within the requested lookback window, skips actors already present in the corpus or pending threat-actor tasks (including known aliases), and promotes only evidence-backed names into new threat-actor tasks
      - **campaign promotion:** scans the recent incident corpus for named campaign-shaped incidents and strong same-actor clusters, then promotes only conservative, non-duplicate campaign candidates into new campaign tasks
+   - **Supply Chain live discovery (B1):** runs separately in
+     `.github/workflows/supply-chain-live-discovery.yml` every 30 minutes.
+     It reads npm registry changes, PyPI updates RSS, OSV.dev, the Go module
+     index, GitHub Security Advisories, and the existing VulnCheck KEV prefill
+     index into a single deduplicated candidate stream. The output is
+     `.github/pipeline/supply-chain-candidates/latest.json` on the
+     `pipeline/supply-chain-live-discovery` branch. It is a candidate-review
+     queue only: no `.github/pipeline/tasks/**` files, article drafts, or
+     corpus records are created by this lane. The Supply Chain graph/page may
+     display pending candidate count and latest discovery timestamp as a
+     currency signal, but candidates are not treated as curated incidents.
    - Discovery builds dedup indexes against the live corpus and existing tasks
      using CVEs, source URLs, normalized titles, output slugs, and rejected
      candidate keys; allocates a
@@ -323,6 +334,7 @@ same queue/validation path as discovery-generated tasks.
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 20 tasks | Workflow input |
 | Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| Supply Chain B1 live queue | `.github/workflows/supply-chain-live-discovery.yml` → `scripts/supply-chain-live-discovery.mjs` | 30-minute cron; writes `.github/pipeline/supply-chain-candidates/latest.json`; no task or draft emission | Workflow + script |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
