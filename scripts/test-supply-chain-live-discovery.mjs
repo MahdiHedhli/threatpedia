@@ -112,7 +112,7 @@ async function testOsvDescendingCsvCollectsRecentRows() {
   try {
     writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
     writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
-    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), 'not-json\n');
     writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
     writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), [
       '2026-06-21T12:00:00Z,npm/MAL-2026-DESCENDING',
@@ -309,6 +309,12 @@ function testMixedCaseEcosystemMatchesExistingPackage() {
 function testQueueValidatorRejectsInvalidRootShapes() {
   assert.deepEqual(validateCandidateQueue(null), ['Queue must be a valid object']);
   assert.deepEqual(validateCandidateQueue([]), ['Queue must be a valid object']);
+  assert.ok(validateCandidateQueue({
+    schema_version: 'threatpedia-supply-chain-candidate-queue/1',
+    drafting_enabled: false,
+    auto_drafting_allowed: false,
+    candidates: [null],
+  }).includes('candidates[0] must be a valid object'));
 }
 
 async function testVulncheckKevFeedsDerivedKevStatus() {
@@ -316,8 +322,8 @@ async function testVulncheckKevFeedsDerivedKevStatus() {
   try {
     writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
     writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
-    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '');
-    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), '');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), 'not-json\n');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
     writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
     const vulncheckIndex = path.join(tempDir, 'vulncheck-kev.json');
     writeFileSync(vulncheckIndex, JSON.stringify({
@@ -367,6 +373,115 @@ async function testVulncheckKevFeedsDerivedKevStatus() {
   }
 }
 
+async function testPendingCandidatesCarryForwardWhenNotRediscovered() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-carry-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), 'not-json\n');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
+    const queuePath = path.join(tempDir, 'queue.json');
+    writeFileSync(queuePath, JSON.stringify({
+      schema_version: 'threatpedia-supply-chain-candidate-queue/1',
+      drafting_enabled: false,
+      auto_drafting_allowed: false,
+      candidates: [{
+        candidateId: 'SC-CAND-previous123',
+        canonicalSubjectId: 'MAL-2026-PREVIOUS',
+        subjectType: 'incident',
+        proposedArchetype: 'incident',
+        title: 'Previous pending candidate',
+        summary: 'Pending supply-chain candidate awaiting review.',
+        sources: ['osv'],
+        sourceRefs: ['https://example.invalid/previous'],
+        mergedLeadRefs: ['osv:MAL-2026-PREVIOUS'],
+        firstSeenAt: '2026-06-20T00:00:00.000Z',
+        lastMaterialActivityAt: '2026-06-20T00:00:00.000Z',
+        activityBasis: ['advisory_updated'],
+        entityMatch: 'new',
+        matchedEntityHints: { actors: [], campaigns: [], packages: [], malwareFamilies: [] },
+        classification: {
+          leadClass: 'current',
+          leadClassReason: 'material activity within 180 days',
+          workIntent: 'create_article',
+          routingPriority: 'p2',
+          effectiveActiveStatus: 'none',
+          activeStatus: 'none',
+          activeStatusExpiresAt: null,
+          needsReverify: false,
+          kevStatusDerived: null,
+          kevStatusIsAuthoredTruth: false,
+          manualOverrideValid: false,
+          manualOverrideErrors: [],
+        },
+        rank: 32,
+        rankReasons: ['current lead'],
+        queueAction: 'candidate_review',
+        draftingAllowed: false,
+        autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; grounded drafting is not implemented in this sprint.',
+      }],
+    }));
+
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out: queuePath,
+      queuePath,
+      fixturesDir: tempDir,
+      asOf: '2026-06-22T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex: path.join(tempDir, 'missing-vulncheck.json'),
+      check: false,
+      includeLowSignal: false,
+    });
+
+    assert.equal(validateCandidateQueue(queue).length, 0);
+    assert.equal(queue.candidates.length, 1);
+    assert.equal(queue.candidates[0].canonicalSubjectId, 'MAL-2026-PREVIOUS');
+    assert.equal(queue.candidates[0].staleCarryForward, true);
+    assert.equal(queue.summary.candidates_carried_forward, 1);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+function testSupplyChainCveRoutesAsIncidentWithoutKev() {
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'ghsa:cve-alias',
+      source: 'github-advisory',
+      kind: 'advisory',
+      advisoryId: 'GHSA-1111-2222-3333',
+      title: 'Supply-chain package CVE fixture',
+      summary: 'Malicious package supply-chain fixture with a CVE alias.',
+      cves: ['CVE-2026-99999'],
+      ghsas: ['GHSA-1111-2222-3333'],
+      publishedAt: '2026-06-20T00:00:00Z',
+      modifiedAt: '2026-06-20T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-20T00:00:00Z',
+      url: 'https://example.invalid/ghsa',
+      affected: [{ package: { ecosystem: 'npm', name: 'event-stream' } }],
+    },
+  ], {
+    config,
+    corpusIndex: { subjectIds: new Set(), packages: new Map(), actors: [], campaigns: [] },
+    now,
+  });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].canonicalSubjectId, 'CVE-2026-99999');
+  assert.equal(candidates[0].proposedArchetype, 'incident');
+}
+
 testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
@@ -377,4 +492,6 @@ testComputedKevUsesEffectiveActiveStatus();
 testMixedCaseEcosystemMatchesExistingPackage();
 testQueueValidatorRejectsInvalidRootShapes();
 await testVulncheckKevFeedsDerivedKevStatus();
+await testPendingCandidatesCarryForwardWhenNotRediscovered();
+testSupplyChainCveRoutesAsIncidentWithoutKev();
 console.log('Supply Chain live discovery tests PASS');

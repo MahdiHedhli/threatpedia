@@ -310,6 +310,7 @@ function loadB1Config(args) {
   const supply = pipelineConfig.discovery_sources?.supply_chain_live || {};
   const intake = pipelineConfig.lead_intake || {};
   return {
+    enabled: supply.enabled !== false,
     queuePath: args.queuePath || supply.queue_path || DEFAULT_QUEUE_PATH,
     maxCandidates: args.maxCandidates || supply.max_candidates || DEFAULT_MAX_CANDIDATES,
     maxPerSource: args.maxPerSource || supply.max_per_source || DEFAULT_MAX_PER_SOURCE,
@@ -659,7 +660,8 @@ async function collectGhsaLeads(config, fixturesDir) {
       config.sources.ghsa.ecosystems.map(async (ecosystem) => {
         const url = `${config.sources.ghsa.url}?type=${encodeURIComponent(type)}&ecosystem=${encodeURIComponent(ecosystem)}&sort=updated&direction=desc&per_page=${config.maxPerSource}`;
         try {
-          return await fetchJson(url, { 'X-GitHub-Api-Version': '2022-11-28', ...authHeaders });
+          const response = await fetchJson(url, { 'X-GitHub-Api-Version': '2022-11-28', ...authHeaders });
+          return Array.isArray(response) ? response.slice(0, config.maxPerSource) : [];
         } catch {
           return [];
         }
@@ -668,7 +670,6 @@ async function collectGhsaLeads(config, fixturesDir) {
     advisories.push(...responses.flat());
   }
   return advisories
-    .slice(0, config.maxPerSource * 2)
     .filter((advisory) => advisory && typeof advisory === 'object' && !Array.isArray(advisory) && advisory.ghsa_id)
     .map((advisory) => {
       const affected = (advisory.vulnerabilities || []).map((vuln) => ({
@@ -803,7 +804,7 @@ function subjectTypeFor(subject) {
 }
 
 function proposedArchetype(lead, subjectType) {
-  if (subjectType === 'cve') return 'zero-day';
+  if (subjectType === 'cve') return lead.kev?.isKev ? 'zero-day' : 'incident';
   if (lead.kind === 'release') return 'incident';
   if (lead.databaseSpecific?.type === 'malware' || /^MAL-/.test(lead.advisoryId || '')) return 'incident';
   return 'incident';
@@ -883,8 +884,11 @@ function computeManualOverrideValidity(lead, now) {
   const errors = [];
   if (override.by !== 'KernelK') errors.push('manualOverride.by must be KernelK');
   if (!override.reason) errors.push('manualOverride.reason is required');
-  if (!override.expiresAt) errors.push('manualOverride.expiresAt is required');
-  const expires = parseDate(override.expiresAt);
+  if (override.expiresAt === undefined) errors.push('manualOverride.expiresAt is required');
+  if (override.expiresAt !== null && override.expiresAt !== undefined && !parseDate(override.expiresAt)) {
+    errors.push('manualOverride.expiresAt must be a valid date string or null');
+  }
+  const expires = override.expiresAt ? parseDate(override.expiresAt) : null;
   return { valid: errors.length === 0 && expires && expires >= now && override.value === true, errors };
 }
 
@@ -1058,6 +1062,21 @@ function candidateSort(a, b) {
   return String(b.lastMaterialActivityAt || '').localeCompare(String(a.lastMaterialActivityAt || ''));
 }
 
+function carryForwardPendingCandidates(previousQueue, freshCandidates, now) {
+  const freshSubjects = new Set(freshCandidates.map((candidate) => candidate.canonicalSubjectId));
+  return (previousQueue?.candidates || [])
+    .filter((candidate) => candidate && typeof candidate === 'object' && !Array.isArray(candidate))
+    .filter((candidate) => candidate.queueAction === 'candidate_review' && candidate.draftingAllowed === false)
+    .filter((candidate) => candidate.canonicalSubjectId && !freshSubjects.has(candidate.canonicalSubjectId))
+    .filter((candidate) => candidate.classification?.workIntent && ['current', 'historical'].includes(candidate.classification?.leadClass))
+    .map((candidate) => ({
+      ...candidate,
+      staleCarryForward: true,
+      carriedForwardAt: now.toISOString(),
+      rankReasons: uniqueStrings([candidate.rankReasons || [], 'carried forward pending review']),
+    }));
+}
+
 export function validateCandidateQueue(queue) {
   const errors = [];
   if (!queue || typeof queue !== 'object' || Array.isArray(queue)) {
@@ -1069,19 +1088,36 @@ export function validateCandidateQueue(queue) {
   if (queue?.auto_drafting_allowed !== false) errors.push('auto_drafting_allowed must be false');
   const ids = new Set();
   for (const [index, candidate] of (queue?.candidates || []).entries()) {
+    if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) {
+      errors.push(`candidates[${index}] must be a valid object`);
+      continue;
+    }
     if (!candidate.canonicalSubjectId) errors.push(`candidates[${index}].canonicalSubjectId is required`);
     if (!candidate.classification?.workIntent) errors.push(`candidates[${index}].classification.workIntent is required`);
     if (!['current', 'historical'].includes(candidate.classification?.leadClass)) errors.push(`candidates[${index}].classification.leadClass invalid`);
     if (!candidate.classification?.leadClassReason) errors.push(`candidates[${index}].classification.leadClassReason is required`);
     if (candidate.draftingAllowed !== false) errors.push(`candidates[${index}].draftingAllowed must be false`);
     if (candidate.classification?.kevStatusIsAuthoredTruth !== false) errors.push(`candidates[${index}].classification.kevStatusIsAuthoredTruth must be false`);
-    if (ids.has(candidate.candidateId)) errors.push(`duplicate candidateId ${candidate.candidateId}`);
-    ids.add(candidate.candidateId);
+    const candidateId = candidate.candidateId;
+    if (!candidateId) {
+      errors.push(`candidates[${index}].candidateId is required`);
+      continue;
+    }
+    if (!candidateId.startsWith('SC-CAND-')) {
+      errors.push(`candidates[${index}].candidateId must start with SC-CAND-`);
+      continue;
+    }
+    if (ids.has(candidateId)) {
+      errors.push(`duplicate candidateId ${candidateId}`);
+      continue;
+    }
+    ids.add(candidateId);
   }
   return errors;
 }
 
 async function collectRawLeads(config, args, previousQueue, asOfDate) {
+  if (!config.enabled) return { leads: [], errors: [] };
   const fixturesDir = args.fixturesDir;
   const results = [];
   const errors = [];
@@ -1126,8 +1162,11 @@ export async function buildCandidateQueue(args = parseArgs()) {
   const corpusIndex = loadCorpusIndex();
   const { leads, errors } = await collectRawLeads(config, args, previousQueue, asOfDate);
   const { candidates, rejected } = classifyLeads(leads, { config, corpusIndex, now: asOfDate, previousQueue });
-  const emitted = candidates
+  const freshEmitted = candidates
     .filter((candidate) => candidate.rank >= config.minRank)
+    .sort(candidateSort);
+  const carriedForward = carryForwardPendingCandidates(previousQueue, freshEmitted, asOfDate);
+  const emitted = [...freshEmitted, ...carriedForward]
     .sort(candidateSort)
     .slice(0, config.maxCandidates);
   const latestDiscoverySignalAt = emitted
@@ -1155,6 +1194,7 @@ export async function buildCandidateQueue(args = parseArgs()) {
       max_per_source: config.maxPerSource,
       max_candidates: config.maxCandidates,
       min_rank: config.minRank,
+      enabled: config.enabled,
       queue_path: config.queuePath,
     },
     summary: {
@@ -1163,6 +1203,7 @@ export async function buildCandidateQueue(args = parseArgs()) {
       rejected_low_relevance: rejected.length,
       classifier_candidates: candidates.length,
       candidates_emitted: emitted.length,
+      candidates_carried_forward: emitted.filter((candidate) => candidate.staleCarryForward === true).length,
       current_candidates: emitted.filter((candidate) => candidate.classification.leadClass === 'current').length,
       matched_existing: emitted.filter((candidate) => candidate.entityMatch === 'matched').length,
       collector_errors: errors.length,
