@@ -331,6 +331,9 @@ function loadB1Config(args) {
     activeStatus: {
       defaultExpiryDays: intake.active_status?.default_expiry_days || DEFAULT_ACTIVE_EXPIRY_DAYS,
     },
+    manualOverride: {
+      maxDays: intake.manual_override?.max_days || 30,
+    },
     sources: {
       npm: {
         enabled: supply.npm?.enabled !== false,
@@ -568,11 +571,11 @@ async function collectGoLeads(config, fixturesDir, previousQueue, asOfDate) {
     : await fetchText(`${config.sources.go.indexUrl}?since=${encodeURIComponent(since)}`).then(parseGoIndexLines);
   const previousBoundary = new Set(previousQueue?.feed_cursors?.go?.boundary_keys || []);
   const leads = [];
-  const recentRows = rows.slice(0, config.maxPerSource);
+  const recentRows = rows
+    .filter((row) => row && row.Path && row.Version && row.Timestamp && !previousBoundary.has(goBoundaryKey(row)))
+    .slice(0, config.maxPerSource);
   for (const row of recentRows) {
-    if (!row || !row.Path || !row.Version || !row.Timestamp) continue;
     const key = goBoundaryKey(row);
-    if (previousBoundary.has(key)) continue;
     leads.push(releaseLead({
       source: 'go-index',
       ecosystem: 'go',
@@ -897,17 +900,21 @@ function computeActiveStatus(lead, config, now) {
   };
 }
 
-function computeManualOverrideValidity(lead, now) {
+function computeManualOverrideValidity(lead, now, config) {
   const override = lead.manualOverride;
   if (!override) return { valid: false, errors: [] };
   const errors = [];
+  const maxDays = config.manualOverride?.maxDays || 0;
   if (override.by !== 'KernelK') errors.push('manualOverride.by must be KernelK');
   if (!override.reason) errors.push('manualOverride.reason is required');
   if (override.expiresAt === undefined) errors.push('manualOverride.expiresAt is required');
+  if (override.expiresAt === null && maxDays > 0) errors.push('manualOverride.expiresAt is required when manual_override.max_days is configured');
   if (override.expiresAt !== null && override.expiresAt !== undefined && !parseDate(override.expiresAt)) {
     errors.push('manualOverride.expiresAt must be a valid date string or null');
   }
   const expires = override.expiresAt ? parseDate(override.expiresAt) : null;
+  const maxExpiresAt = maxDays > 0 ? new Date(now.getTime() + maxDays * 86400000) : null;
+  if (expires && maxExpiresAt && expires > maxExpiresAt) errors.push(`manualOverride.expiresAt must be within ${maxDays} days`);
   const isExpired = expires ? expires < now : false;
   return { valid: errors.length === 0 && !isExpired && override.value === true, errors };
 }
@@ -1022,7 +1029,7 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueu
     const previousManualOverride = previousBySubject.get(canonicalSubjectId)?.manualOverride || null;
     const classifiedLead = previousManualOverride ? { ...primary, manualOverride: previousManualOverride } : primary;
     const active = computeActiveStatus(classifiedLead, config, now);
-    const manual = computeManualOverrideValidity(classifiedLead, now);
+    const manual = computeManualOverrideValidity(classifiedLead, now, config);
     const kevStatus = computeKevStatus(classifiedLead, active, config, now);
     const freshness = classifyFreshness(classifiedLead, active, manual, kevStatus, config, now);
     const workIntent = chooseWorkIntent(entityMatch, freshness.leadClass);

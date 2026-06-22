@@ -221,7 +221,7 @@ async function testGoBoundaryKeysMergeWhenCursorUnchanged() {
       fixturesDir: tempDir,
       asOf: '2026-06-22T00:00:00Z',
       maxCandidates: 20,
-      maxPerSource: 5,
+      maxPerSource: 1,
       sinceHours: 72,
       vulncheckIndex: path.join(tempDir, 'missing-vulncheck.json'),
       check: false,
@@ -313,6 +313,44 @@ function testManualOverrideCarriesForwardFromPreviousQueue() {
   assert.equal(candidates[0].classification.manualOverrideValid, true);
   assert.equal(candidates[0].classification.leadClass, 'current');
   assert.deepEqual(candidates[0].manualOverride, previousQueue.candidates[0].manualOverride);
+}
+
+function testManualOverrideMaxWindowIsEnforced() {
+  const corpusIndex = loadCorpusIndex();
+  const now = new Date('2026-06-22T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    manualOverride: { maxDays: 30 },
+    minRank: 0,
+  };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'manual-max:test',
+      source: 'fixture',
+      kind: 'advisory',
+      advisoryId: 'MAL-2026-MANUAL-MAX',
+      title: 'Old malicious package supply-chain fixture',
+      summary: 'Manual override max window fixture.',
+      publishedAt: '2025-01-01T00:00:00Z',
+      modifiedAt: '2025-01-01T00:00:00Z',
+      lastMaterialActivityAt: '2025-01-01T00:00:00Z',
+      url: 'https://example.invalid/manual-max',
+      affected: [{ package: { ecosystem: 'npm', name: 'event-stream' } }],
+      manualOverride: {
+        value: true,
+        by: 'KernelK',
+        reason: 'Oversized bounded review window should not remain current.',
+        expiresAt: '2026-08-30T00:00:00Z',
+      },
+    },
+  ], { config, corpusIndex, now });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].classification.manualOverrideValid, false);
+  assert.ok(candidates[0].classification.manualOverrideErrors.includes('manualOverride.expiresAt must be within 30 days'));
+  assert.equal(candidates[0].classification.leadClass, 'historical');
 }
 
 function testComputedKevUsesEffectiveActiveStatus() {
@@ -643,6 +681,7 @@ await testGoIndexAdvancesSequentiallyWithoutSkippingRows();
 await testGoBoundaryKeysMergeWhenCursorUnchanged();
 testManualOverrideIsKernelKOnly();
 testManualOverrideCarriesForwardFromPreviousQueue();
+testManualOverrideMaxWindowIsEnforced();
 testComputedKevUsesEffectiveActiveStatus();
 testMixedCaseEcosystemMatchesExistingPackage();
 testGoEcosystemMatchesExistingPackage();
