@@ -54,7 +54,7 @@ class SupplyChainGraphTests(unittest.TestCase):
     def test_malware_family_lineage_validates_and_rejects_cycles(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
-        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
         raw_incident_ids = validator.collect_raw_incident_ids(corpus)
         malware_families = load_json(MALWARE_FAMILY_PATH)
 
@@ -62,7 +62,7 @@ class SupplyChainGraphTests(unittest.TestCase):
             validator.validate_malware_families(
                 malware_families,
                 raw_incident_ids=raw_incident_ids,
-                entity_ids=entity_ids,
+                actor_ids=actor_ids,
             ),
             [],
         )
@@ -88,7 +88,7 @@ class SupplyChainGraphTests(unittest.TestCase):
                 for error in validator.validate_malware_families(
                     cyclic,
                     raw_incident_ids=raw_incident_ids,
-                    entity_ids=entity_ids,
+                    actor_ids=actor_ids,
                 )
             )
         )
@@ -96,7 +96,7 @@ class SupplyChainGraphTests(unittest.TestCase):
     def test_malware_family_validator_rejects_invalid_dates_and_non_list_fields(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
-        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
         raw_incident_ids = validator.collect_raw_incident_ids(corpus)
         malware_families = load_json(MALWARE_FAMILY_PATH)
         malformed = copy.deepcopy(malware_families)
@@ -132,7 +132,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_malware_families(
             malformed,
             raw_incident_ids=raw_incident_ids,
-            entity_ids=entity_ids,
+            actor_ids=actor_ids,
         )
 
         self.assertIn("family-shai-hulud.timeline_ticks: expected non-empty list", errors)
@@ -141,6 +141,18 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("family-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("family-shai-hulud.aliases[3]: expected non-empty string", errors)
         self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
+        non_actor_family = copy.deepcopy(malware_families)
+        non_actor_family[0]["root_actor_id"] = "org-npm"
+        non_actor_family[0]["associated_actor_ids"] = ["org-npm"]
+        non_actor_family[0]["strains"][0]["attribution"]["actor_id"] = "org-npm"
+        non_actor_errors = validator.validate_malware_families(
+            non_actor_family,
+            raw_incident_ids=raw_incident_ids,
+            actor_ids=actor_ids,
+        )
+        self.assertIn("family-shai-hulud.root_actor_id: unknown actor id 'org-npm'", non_actor_errors)
+        self.assertIn("family-shai-hulud.associated_actor_ids[0]: unknown actor id 'org-npm'", non_actor_errors)
+        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor id 'org-npm'", non_actor_errors)
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("strain-shai-hulud.ecosystems[1]: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.aliases[1]: expected non-empty string", errors)
@@ -151,7 +163,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("strain-shai-hulud.layout.x: expected number", errors)
         self.assertIn("strain-shai-hulud.layout.y: expected number", errors)
         self.assertIn("strain-shai-hulud.severity: expected low, medium, high, or critical", errors)
-        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor/entity id 'actor-does-not-exist'", errors)
+        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor id 'actor-does-not-exist'", errors)
         self.assertIn("strain-shai-hulud.attribution.label: expected non-empty string", errors)
         self.assertIn("strain-shai-hulud.attribution.confidence: expected unknown, suspected, likely, or confirmed", errors)
         self.assertIn("family-shai-hulud.fork_events: expected list", errors)
@@ -176,7 +188,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         evidence_errors = validator.validate_malware_families(
             suspected_evidence_only,
             raw_incident_ids=raw_incident_ids,
-            entity_ids=entity_ids,
+            actor_ids=actor_ids,
         )
         self.assertIn(
             "family-shai-hulud.lineage_edges[0].suspected_reason: suspected edges must explain uncertainty",
@@ -189,7 +201,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         event_errors = validator.validate_malware_families(
             malformed_event,
             raw_incident_ids=raw_incident_ids,
-            entity_ids=entity_ids,
+            actor_ids=actor_ids,
         )
 
         self.assertIn("fork-mini-shai-source-release.name: expected non-empty string", event_errors)
@@ -207,15 +219,15 @@ class SupplyChainGraphTests(unittest.TestCase):
         unhashable_errors = validator.validate_malware_families(
             unhashable_refs,
             raw_incident_ids=raw_incident_ids,
-            entity_ids=entity_ids,
+            actor_ids=actor_ids,
         )
 
         self.assertIn(
-            "family-shai-hulud.root_actor_id: unknown actor/entity id ['actor-shai-hulud-operator']",
+            "family-shai-hulud.root_actor_id: unknown actor id ['actor-shai-hulud-operator']",
             unhashable_errors,
         )
         self.assertIn(
-            "strain-shai-hulud.attribution.actor_id: unknown actor/entity id {'id': 'actor-teampcp'}",
+            "strain-shai-hulud.attribution.actor_id: unknown actor id {'id': 'actor-teampcp'}",
             unhashable_errors,
         )
         self.assertIn(
@@ -242,7 +254,7 @@ class SupplyChainGraphTests(unittest.TestCase):
     def test_malware_family_validator_allows_single_strain_without_lineage_edges(self) -> None:
         corpus = load_json(CORPUS_PATH)
         entities_by_type = validator.load_entities(ENTITY_DIR)
-        entity_ids = {entity["id"] for entities in entities_by_type.values() for entity in entities}
+        actor_ids = {entity["id"] for entity in entities_by_type["actors"]}
         raw_incident_ids = validator.collect_raw_incident_ids(corpus)
         malware_families = load_json(MALWARE_FAMILY_PATH)
         single_strain = copy.deepcopy(malware_families)
@@ -253,7 +265,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         errors = validator.validate_malware_families(
             single_strain,
             raw_incident_ids=raw_incident_ids,
-            entity_ids=entity_ids,
+            actor_ids=actor_ids,
         )
 
         self.assertNotIn("family-shai-hulud.lineage_edges: expected non-empty list", errors)
