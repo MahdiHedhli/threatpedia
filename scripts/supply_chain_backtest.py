@@ -560,6 +560,8 @@ def build_backtest(
         if isinstance(incident, dict) and isinstance(incident.get("id"), str)
     }
     selected_incident_ids = tuple(incident_ids) if incident_ids is not None else tuple(sorted(incidents_by_id))
+    if not selected_incident_ids:
+        input_errors.append("backtest: expected at least one incident")
     missing_ids = [incident_id for incident_id in selected_incident_ids if incident_id not in incidents_by_id]
     timelines = [
         build_timeline(incidents_by_id[incident_id])

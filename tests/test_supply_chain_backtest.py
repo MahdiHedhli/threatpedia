@@ -181,6 +181,13 @@ class SupplyChainBacktestTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertEqual(report["missing_incident_ids"], ["SC-2024-XZ-UTILS"])
 
+    def test_empty_full_corpus_backtest_fails(self) -> None:
+        report = backtest.build_backtest([])
+
+        self.assertEqual(report["status"], "FAIL")
+        self.assertEqual(report["input_errors"], ["backtest: expected at least one incident"])
+        self.assertEqual(report["aggregate"]["incident_count"], 0)
+
     def test_litellm_does_not_count_same_day_relationship_evidence_as_prior_signal(self) -> None:
         corpus = load_json(CORPUS_PATH)
         relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
