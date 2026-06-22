@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import sys
 from typing import Any
+from urllib.parse import urlparse
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
@@ -92,6 +93,8 @@ VALID_LINEAGE_EDGE_TYPES = {"EVOLVED_FROM", "VARIANT_OF"}
 VALID_LINEAGE_CONFIDENCE = {"confirmed", "suspected"}
 VALID_RELATION_KIND = {"descendant", "evolution", "cosmetic_clone", "playbook_adoption", "sibling_fork"}
 VALID_STRAIN_CONFIDENCE = {"origin", "confirmed", "suspected"}
+VALID_STRAIN_SEVERITY = {"low", "medium", "high", "critical"}
+VALID_ATTRIBUTION_CONFIDENCE = {"unknown", "suspected", "likely", "confirmed"}
 
 
 def load_json(path: Path) -> Any:
@@ -167,6 +170,17 @@ def validate_layout(errors: list[str], path: str, layout: Any) -> None:
     for axis in ("x", "y"):
         if not isinstance(layout.get(axis), (int, float)):
             errors.append(f"{path}.layout.{axis}: expected number")
+
+
+def is_http_url(value: Any) -> bool:
+    if not isinstance(value, str) or not value.strip():
+        return False
+    try:
+        parsed = urlparse(value)
+        _ = parsed.port
+    except ValueError:
+        return False
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
 def incident_node_id(incident_id: str) -> str:
@@ -567,6 +581,13 @@ def validate_malware_families(
             if source_id in source_ids:
                 errors.append(f"{family_id}.sources[{source_index}].id: duplicate source id {source_id!r}")
             source_ids.add(source_id)
+            for field in ("title", "publisher"):
+                if not isinstance(source.get(field), str) or not source[field].strip():
+                    errors.append(f"{family_id}.sources[{source_index}].{field}: expected non-empty string")
+            if not is_http_url(source.get("url")):
+                errors.append(f"{family_id}.sources[{source_index}].url: expected valid HTTP/HTTPS URL")
+            if not is_date_or_month(source.get("published_at")):
+                errors.append(f"{family_id}.sources[{source_index}].published_at: expected YYYY-MM-DD or YYYY-MM")
         if not source_ids:
             errors.append(f"{family_id}.sources: expected at least one source")
 
@@ -608,11 +629,24 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.first_seen: expected YYYY-MM-DD or YYYY-MM")
             if strain.get("lineage_confidence") not in VALID_STRAIN_CONFIDENCE:
                 errors.append(f"{strain_id}.lineage_confidence: expected one of {sorted(VALID_STRAIN_CONFIDENCE)}")
+            if strain.get("severity") not in VALID_STRAIN_SEVERITY:
+                errors.append(f"{strain_id}.severity: expected low, medium, high, or critical")
             if not isinstance(strain.get("mutation_summary"), str) or len(strain["mutation_summary"].strip()) < 20:
                 errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
             if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
                 errors.append(f"{strain_id}.ecosystems: expected non-empty list")
             validate_layout(errors, strain_id, strain.get("layout"))
+            attribution = strain.get("attribution")
+            if not isinstance(attribution, dict):
+                errors.append(f"{strain_id}.attribution: expected object")
+            else:
+                actor_id = attribution.get("actor_id")
+                if actor_id is not None and actor_id not in entity_ids:
+                    errors.append(f"{strain_id}.attribution.actor_id: unknown actor/entity id {actor_id!r}")
+                if not isinstance(attribution.get("label"), str) or not attribution["label"].strip():
+                    errors.append(f"{strain_id}.attribution.label: expected non-empty string")
+                if attribution.get("confidence") not in VALID_ATTRIBUTION_CONFIDENCE:
+                    errors.append(f"{strain_id}.attribution.confidence: expected unknown, suspected, likely, or confirmed")
             incident_ids = strain.get("incident_ids")
             if incident_ids is not None:
                 if not isinstance(incident_ids, list):
@@ -641,6 +675,8 @@ def validate_malware_families(
                         errors.append(f"{event_id}: duplicate fork event id")
                     fork_event_ids.add(event_id)
                     all_fork_event_ids.add(event_id)
+                    if not isinstance(event.get("name"), str) or not event["name"].strip():
+                        errors.append(f"{event_id}.name: expected non-empty string")
                     if not is_date_or_month(event.get("date")):
                         errors.append(f"{event_id}.date: expected YYYY-MM-DD or YYYY-MM")
                     if not isinstance(event.get("summary"), str) or len(event["summary"].strip()) < 20:

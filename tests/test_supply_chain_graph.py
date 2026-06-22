@@ -102,9 +102,19 @@ class SupplyChainGraphTests(unittest.TestCase):
         malformed = copy.deepcopy(malware_families)
         malformed[0]["timeline_ticks"] = "not-a-list"
         malformed[0]["associated_actor_ids"] = "actor-teampcp"
+        malformed[0]["sources"][0]["title"] = ""
+        malformed[0]["sources"][0]["publisher"] = ""
+        malformed[0]["sources"][0]["url"] = "ftp://example.test/report"
+        malformed[0]["sources"][0]["published_at"] = "2025-13"
         malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
         malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
         malformed[0]["strains"][0]["layout"] = {"x": "left"}
+        malformed[0]["strains"][0]["severity"] = "severe"
+        malformed[0]["strains"][0]["attribution"] = {
+            "actor_id": "actor-does-not-exist",
+            "label": "",
+            "confidence": "high",
+        }
         malformed[0]["fork_events"] = {"id": "fork-not-a-list"}
         malformed[0]["lineage_edges"][2]["suspected_reason"] = "   "
         malformed[0]["lineage_edges"][2]["external_refs"][0] = "not-an-object"
@@ -122,7 +132,15 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.layout.x: expected number", errors)
         self.assertIn("strain-shai-hulud.layout.y: expected number", errors)
+        self.assertIn("strain-shai-hulud.severity: expected low, medium, high, or critical", errors)
+        self.assertIn("strain-shai-hulud.attribution.actor_id: unknown actor/entity id 'actor-does-not-exist'", errors)
+        self.assertIn("strain-shai-hulud.attribution.label: expected non-empty string", errors)
+        self.assertIn("strain-shai-hulud.attribution.confidence: expected unknown, suspected, likely, or confirmed", errors)
         self.assertIn("family-shai-hulud.fork_events: expected list", errors)
+        self.assertIn("family-shai-hulud.sources[0].title: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.sources[0].publisher: expected non-empty string", errors)
+        self.assertIn("family-shai-hulud.sources[0].url: expected valid HTTP/HTTPS URL", errors)
+        self.assertIn("family-shai-hulud.sources[0].published_at: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("family-shai-hulud.sources[4].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
         self.assertIn(
             "family-shai-hulud.lineage_edges[2].external_refs[0]: expected object",
@@ -134,6 +152,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         )
 
         malformed_event = copy.deepcopy(malware_families)
+        malformed_event[0]["fork_events"][0]["name"] = ""
         malformed_event[0]["fork_events"][0]["layout"] = {"y": "middle"}
         event_errors = validator.validate_malware_families(
             malformed_event,
@@ -141,6 +160,7 @@ class SupplyChainGraphTests(unittest.TestCase):
             entity_ids=entity_ids,
         )
 
+        self.assertIn("fork-mini-shai-source-release.name: expected non-empty string", event_errors)
         self.assertIn("fork-mini-shai-source-release.layout.x: expected number", event_errors)
         self.assertIn("fork-mini-shai-source-release.layout.y: expected number", event_errors)
 
