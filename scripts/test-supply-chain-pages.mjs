@@ -220,6 +220,13 @@ assert.ok(
     malwareFamilyStixPayload.objects.some((object) => object.type === 'relationship' && object.relationship_type === 'variant-of'),
   'malware-family STIX bundle should include malware strain objects and variant relationships'
 );
+const monthOnlyStixFixture = structuredClone(data);
+monthOnlyStixFixture.malwareFamilies[0].strains[0].first_seen = '2025-09';
+assert.equal(
+  buildMalwareFamilyStixBundle(monthOnlyStixFixture).objects.find((object) => object.type === 'malware' && object.name === 'Shai-Hulud')?.first_seen,
+  '2025-09-01T00:00:00.000Z',
+  'month-only malware strain dates should emit valid full STIX timestamps'
+);
 assert.ok(
   supplyChainGraphSource.includes('REST_NODE_BUDGET = 40') &&
     supplyChainGraphSource.includes('RECENT_WINDOW_DAYS = 183') &&

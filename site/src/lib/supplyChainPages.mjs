@@ -1110,7 +1110,7 @@ export function getSupplyChainMalwareFamilyPage(id, data = loadSupplyChainData()
     when: [
       strain.first_seen,
       (strain.ecosystems || []).join(' + '),
-      strain.lineage_confidence === 'origin' ? 'origin' : strain.lineage_confidence,
+      strain.lineage_confidence,
     ].filter(Boolean).join(' · '),
     kept: strain.retained_features || [],
     mutation: strain.mutation_summary,

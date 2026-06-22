@@ -739,11 +739,17 @@ export function buildSupplyChainSearchIndex(corpus = loadCorpus()) {
 
 function stixUuid(seed) {
   const hex = createHash('sha256').update(seed).digest('hex').slice(0, 32);
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-${(parseInt(hex.slice(16, 17), 16) & 0x3 | 0x8).toString(16)}${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(12, 15)}-${((parseInt(hex.slice(15, 16), 16) & 0x3) | 0x8).toString(16)}${hex.slice(16, 19)}-${hex.slice(19, 31)}`;
 }
 
 function stixId(type, seed) {
   return `${type}--${stixUuid(seed)}`;
+}
+
+function stixTimestamp(value) {
+  if (!value) return undefined;
+  const dateValue = value.length === 7 ? `${value}-01` : value;
+  return `${dateValue}T00:00:00.000Z`;
 }
 
 export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
@@ -763,7 +769,7 @@ export function buildMalwareFamilyStixBundle(corpus = loadCorpus()) {
         is_family: false,
         malware_types: ['trojan'],
         aliases: strain.aliases || [],
-        first_seen: strain.first_seen ? `${strain.first_seen}T00:00:00.000Z` : undefined,
+        first_seen: stixTimestamp(strain.first_seen),
         description: strain.mutation_summary || strain.key_mutation || family.summary,
         external_references: [
           {
