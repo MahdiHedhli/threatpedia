@@ -267,8 +267,62 @@ def entity_label(entity_id: str, entities_by_id: dict[str, dict[str, Any]]) -> s
     return entity_id
 
 
+def reference_dates_by_id(incident: dict[str, Any]) -> dict[str, date]:
+    dates = {}
+    references = incident.get("references")
+    if not isinstance(references, list):
+        return dates
+    for reference in references:
+        if not isinstance(reference, dict):
+            continue
+        reference_id = reference.get("id")
+        published_at = parse_date(reference.get("published_at"))
+        if isinstance(reference_id, str) and published_at:
+            dates[reference_id] = published_at
+    return dates
+
+
+def source_refs_for_entity_in_incident(entity_id: str, incident: dict[str, Any]) -> list[str]:
+    refs = []
+    for field in ("threat_actors", "campaigns"):
+        values = incident.get(field)
+        if not isinstance(values, list):
+            continue
+        for value in values:
+            if not isinstance(value, dict) or value.get("id") != entity_id:
+                continue
+            source_refs = value.get("source_refs")
+            if isinstance(source_refs, list):
+                refs.extend(ref for ref in source_refs if isinstance(ref, str) and ref.strip())
+    return refs
+
+
+def evidence_date_for_refs(incident: dict[str, Any], reference_ids: list[str]) -> date | None:
+    reference_dates = reference_dates_by_id(incident)
+    dates = [reference_dates[reference_id] for reference_id in reference_ids if reference_id in reference_dates]
+    return min(dates) if dates else None
+
+
+def current_relationship_is_public(
+    incident: dict[str, Any],
+    relationship: dict[str, Any],
+    target: str,
+    cutoff: date,
+) -> bool:
+    evidence_refs = []
+    raw_evidence_refs = relationship.get("evidence_refs")
+    if isinstance(raw_evidence_refs, list):
+        evidence_refs.extend(ref for ref in raw_evidence_refs if isinstance(ref, str) and ref.strip())
+    evidence_refs.extend(source_refs_for_entity_in_incident(target, incident))
+    if not evidence_refs:
+        return False
+    evidence_date = evidence_date_for_refs(incident, evidence_refs)
+    return bool(evidence_date and evidence_date <= cutoff)
+
+
 def prior_public_incidents_for_entity(
     entity: dict[str, Any],
+    entity_id: str,
     current_incident_id: str,
     cutoff: date,
     incidents_by_id: dict[str, dict[str, Any]],
@@ -286,7 +340,12 @@ def prior_public_incidents_for_entity(
         incident = incidents_by_id.get(source_incident_id)
         if not incident:
             continue
-        availability_date, basis = incident_availability_date(incident)
+        evidence_date = evidence_date_for_refs(incident, source_refs_for_entity_in_incident(entity_id, incident))
+        if evidence_date:
+            availability_date = evidence_date
+            basis = "entity_source_refs.published_at"
+        else:
+            availability_date, basis = incident_availability_date(incident)
         if availability_date and availability_date <= cutoff:
             prior_incident_ids.append(source_incident_id)
             if signal_date is None or availability_date < signal_date:
@@ -329,6 +388,7 @@ def entity_prior_signal(
 
     signal_date, signal_basis, prior_incident_ids = prior_public_incidents_for_entity(
         entity,
+        entity_id,
         current_incident_id,
         cutoff,
         incidents_by_id,
@@ -375,6 +435,8 @@ def collect_prior_signals(
         target = relationship.get("target")
         if relationship_type not in SIGNAL_RELATIONSHIP_TYPES or not isinstance(target, str):
             continue
+        if not current_relationship_is_public(incident, relationship, target, cutoff):
+            continue
         category = SIGNAL_RELATIONSHIP_TYPES[relationship_type]
         signal = entity_prior_signal(
             entity_id=target,
@@ -397,6 +459,8 @@ def collect_prior_signals(
         for endpoint_field, role in (("source", "seed_source"), ("target", "seed_target")):
             endpoint = relationship.get(endpoint_field)
             if not isinstance(endpoint, str) or endpoint.startswith("incident-"):
+                continue
+            if not current_relationship_is_public(incident, relationship, endpoint, cutoff):
                 continue
             signal = entity_prior_signal(
                 entity_id=endpoint,

@@ -17,34 +17,32 @@ python3 scripts/supply_chain_backtest.py > docs/supply-chain-backtest-results-20
 ## Aggregate
 
 - Incidents evaluated: 35
-- Incidents with prior graph signal: 10
-- Incidents without prior graph signal: 25
-- Prior-signal rate: 0.286
+- Incidents with prior graph signal: 3
+- Incidents without prior graph signal: 32
+- Prior-signal rate: 0.086
 - Missing disclosure dates: 0
 - Average discovery latency: 52.4 days
 
 Signal type counts:
 
-- account: 2
-- actor: 6
-- campaign: 4
-- maintainer: 1
-- release: 4
-- seeded_by_seed_source: 2
+- actor: 3
+- campaign: 2
 
 ## Interpretation
 
-The current graph carries meaningful prior signal for the TeamPCP/Shai-Hulud
-lineage and for a small number of release or maintainer anchored package
-incidents. It does not yet carry broad predictive signal across most historical
-supply-chain incidents: 25 of 35 evaluated incidents had no prior graph signal
+The current graph carries narrow prior signal for the TeamPCP/Shai-Hulud
+lineage. It does not yet carry broad predictive signal across most historical
+supply-chain incidents: 32 of 35 evaluated incidents had no prior graph signal
 under the conservative stored-fields-only model.
 
-The strongest useful current result is the 2026 TeamPCP cluster. Before several
-2026 disclosures, the graph already had actor, campaign, and in two cases
-`SEEDED_BY` source-package signal. That supports continuing the grounded
-discovery and drafting work, but it also argues against overstating the graph as
-a general predictive engine before broader enrichment and backtesting.
+The strongest useful current result is the 2026 TeamPCP cluster. Before three
+later 2026 disclosures, the graph already had actor or campaign evidence with
+supporting public references dated before the replay cutoff. Same-day or
+post-disclosure relationship evidence is deliberately excluded, so the result is
+more conservative than a simple relationship-presence query. That supports
+continuing grounded discovery and drafting work, but it argues against
+overstating the graph as a general predictive engine before broader enrichment
+and backtesting.
 
 ## Per-Incident Results
 
@@ -54,7 +52,7 @@ a general predictive engine before broader enrichment and backtesting.
 | `SC-2017-CCLEANER` | 2017-09-18 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2017-NOTPETYA-MEDOC` | 2017-07-01 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2018-ESLINT-SCOPE` | 2018-07-12 | no |  | No prior graph signal detected from stored relationships. |
-| `SC-2018-NPM-EVENT-STREAM` | 2018-11-26 | yes | 78 | maintainer=right9ctrl (78d); release=flatmap-stream@0.1.1 (78d) |
+| `SC-2018-NPM-EVENT-STREAM` | 2018-11-26 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2019-ASUS-SHADOWHAMMER` | 2019-03-25 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2020-OCTOPUS-SCANNER` | 2020-03-09 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2020-SOLARWINDS-ORION` | 2020-12-13 | no |  | No prior graph signal detected from stored relationships. |
@@ -74,14 +72,14 @@ a general predictive engine before broader enrichment and backtesting.
 | `SC-2024-POLYFILL-IO` | 2024-06-25 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2024-ULTRALYTICS-PYPI` | 2024-12-11 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2024-XZ-UTILS` | 2024-03-29 | no |  | No prior graph signal detected from stored relationships. |
-| `SC-2025-GO-BOLTDB-TYPOSQUAT` | 2025-02-04 | yes | 1191 | release=github.com/boltdb-go/bolt@v1.3.1 (1191d) |
-| `SC-2025-NPM-SHAI-HULUD` | 2025-09-16 | yes | 1 | release=@ctrl/tinycolor@4.1.1 (1d); release=@ctrl/tinycolor@4.1.2 (1d) |
-| `SC-2025-SHAI-HULUD-2` | 2025-12-09 | yes | 85 | account=victim GitHub tokens (85d); account=compromised npm maintainer tokens (85d) |
+| `SC-2025-GO-BOLTDB-TYPOSQUAT` | 2025-02-04 | no |  | No prior graph signal detected from stored relationships. |
+| `SC-2025-NPM-SHAI-HULUD` | 2025-09-16 | no |  | No prior graph signal detected from stored relationships. |
+| `SC-2025-SHAI-HULUD-2` | 2025-12-09 | no |  | No prior graph signal detected from stored relationships. |
 | `SC-2025-TJ-ACTIONS-CHANGED-FILES` | 2025-03-15 | no |  | No prior graph signal detected from stored relationships. |
-| `SC-2026-AXIOS` | 2026-03-31 | yes | 127 | actor=TeamPCP (127d) |
-| `SC-2026-CHECKMARX-JENKINS` | 2026-05-11 | yes | 168 | actor=TeamPCP (168d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (168d); seeded_by_seed_source=aquasecurity/trivy-action (52d) |
-| `SC-2026-LITELLM` | 2026-03-24 | yes | 120 | actor=TeamPCP (120d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (120d); seeded_by_seed_source=aquasecurity/trivy-action (4d) |
-| `SC-2026-MEGALODON` | 2026-05-28 | yes | 185 | actor=TeamPCP (185d) |
-| `SC-2026-MINI-SHAI-HULUD` | 2026-05-13 | yes | 170 | actor=TeamPCP (170d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (170d) |
+| `SC-2026-AXIOS` | 2026-03-31 | no |  | No prior graph signal detected from stored relationships. |
+| `SC-2026-CHECKMARX-JENKINS` | 2026-05-11 | yes | 153 | actor=TeamPCP (153d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (153d) |
+| `SC-2026-LITELLM` | 2026-03-24 | no |  | No prior graph signal detected from stored relationships. |
+| `SC-2026-MEGALODON` | 2026-05-28 | yes | 170 | actor=TeamPCP (170d) |
+| `SC-2026-MINI-SHAI-HULUD` | 2026-05-13 | yes | 155 | actor=TeamPCP (155d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (155d) |
 | `SC-2026-NX-CONSOLE` | 2026-05-28 | no |  | No prior graph signal detected from stored relationships. |
-| `SC-2026-TRIVY-CI` | 2026-03-24 | yes | 120 | actor=TeamPCP (120d); campaign=TeamPCP Multi-Ecosystem Supply Chain Campaign (120d) |
+| `SC-2026-TRIVY-CI` | 2026-03-24 | no |  | No prior graph signal detected from stored relationships. |

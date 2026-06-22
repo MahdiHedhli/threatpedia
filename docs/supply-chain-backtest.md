@@ -74,9 +74,15 @@ already carried a public signal in stored data:
 - `SEEDED_BY` source package or release already present before the current incident
 
 The prior-signal pass uses existing relationship files and entity
-`source_incident_ids`. It does not infer actors, guess missing relationships, or
-research outside sources. Negative rows are kept in the output because absence
-of prior signal is part of the result.
+`source_incident_ids`. Current-incident relationships are counted only when the
+relationship evidence references were public by the replay cutoff. Actor and
+campaign prior signals use the dates of the supporting entity `source_refs`
+where those references are modeled, instead of blindly inheriting the parent
+incident's warning date.
+
+The replay does not infer actors, guess missing relationships, or research
+outside sources. Negative rows are kept in the output because absence of prior
+signal is part of the result.
 
 ## Evidence Split
 

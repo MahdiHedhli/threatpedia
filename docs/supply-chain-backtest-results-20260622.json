@@ -4,19 +4,15 @@
     "evaluated_incident_count": 35,
     "incident_count": 35,
     "missing_disclosure_count": 0,
-    "no_prior_signal_count": 25,
-    "prior_signal_count": 10,
-    "prior_signal_rate": 0.286,
+    "no_prior_signal_count": 32,
+    "prior_signal_count": 3,
+    "prior_signal_rate": 0.086,
     "signal_type_counts": {
-      "account": 2,
-      "actor": 6,
-      "campaign": 4,
-      "maintainer": 1,
-      "release": 4,
-      "seeded_by_seed_source": 2
+      "actor": 3,
+      "campaign": 2
     }
   },
-  "generated_at": "2026-06-22T23:08:58Z",
+  "generated_at": "2026-06-22T23:16:31Z",
   "incident_ids": [
     "SC-2016-LINUX-MINT-ISO",
     "SC-2017-CCLEANER",
@@ -108,29 +104,10 @@
       "disclosed_at": "2018-11-26",
       "incident_id": "SC-2018-NPM-EVENT-STREAM",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2018-11-25",
-      "signals": [
-        {
-          "basis": "relationship.AFFECTED_MAINTAINER.first_publish_date",
-          "entity_id": "maintainer-right9ctrl",
-          "entity_label": "right9ctrl",
-          "lead_time_days": 78,
-          "prior_incident_ids": [],
-          "signal_date": "2018-09-09",
-          "signal_type": "maintainer"
-        },
-        {
-          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
-          "entity_id": "release-npm-flatmap-stream-0-1-1",
-          "entity_label": "flatmap-stream@0.1.1",
-          "lead_time_days": 78,
-          "prior_incident_ids": [],
-          "signal_date": "2018-09-09",
-          "signal_type": "release"
-        }
-      ],
-      "strongest_lead_time_days": 78,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "event-stream malicious dependency insertion"
     },
     {
@@ -327,82 +304,30 @@
       "disclosed_at": "2025-02-04",
       "incident_id": "SC-2025-GO-BOLTDB-TYPOSQUAT",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2025-02-03",
-      "signals": [
-        {
-          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
-          "entity_id": "release-golang-github-com-boltdb-go-bolt-v1-3-1",
-          "entity_label": "github.com/boltdb-go/bolt@v1.3.1",
-          "lead_time_days": 1191,
-          "prior_incident_ids": [],
-          "signal_date": "2021-11-01",
-          "signal_type": "release"
-        }
-      ],
-      "strongest_lead_time_days": 1191,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "Go BoltDB typosquat module proxy backdoor"
     },
     {
       "disclosed_at": "2025-09-16",
       "incident_id": "SC-2025-NPM-SHAI-HULUD",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2025-09-15",
-      "signals": [
-        {
-          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
-          "entity_id": "release-npm-ctrl-tinycolor-4-1-1",
-          "entity_label": "@ctrl/tinycolor@4.1.1",
-          "lead_time_days": 1,
-          "prior_incident_ids": [],
-          "signal_date": "2025-09-15",
-          "signal_type": "release"
-        },
-        {
-          "basis": "relationship.INCIDENT_AFFECTED_RELEASE.release.published_at",
-          "entity_id": "release-npm-ctrl-tinycolor-4-1-2",
-          "entity_label": "@ctrl/tinycolor@4.1.2",
-          "lead_time_days": 1,
-          "prior_incident_ids": [],
-          "signal_date": "2025-09-15",
-          "signal_type": "release"
-        }
-      ],
-      "strongest_lead_time_days": 1,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "Shai-Hulud npm self-propagating package compromise"
     },
     {
       "disclosed_at": "2025-12-09",
       "incident_id": "SC-2025-SHAI-HULUD-2",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2025-12-08",
-      "signals": [
-        {
-          "basis": "relationship.COMPROMISED_ACCOUNT.prior_incident.first_public_warning_at",
-          "entity_id": "account-github-victim-github-tokens",
-          "entity_label": "victim GitHub tokens",
-          "lead_time_days": 85,
-          "prior_incident_ids": [
-            "SC-2025-NPM-SHAI-HULUD"
-          ],
-          "signal_date": "2025-09-15",
-          "signal_type": "account"
-        },
-        {
-          "basis": "relationship.COMPROMISED_ACCOUNT.prior_incident.first_public_warning_at",
-          "entity_id": "account-npm-compromised-npm-maintainer-tokens",
-          "entity_label": "compromised npm maintainer tokens",
-          "lead_time_days": 85,
-          "prior_incident_ids": [
-            "SC-2025-NPM-SHAI-HULUD"
-          ],
-          "signal_date": "2025-09-15",
-          "signal_type": "account"
-        }
-      ],
-      "strongest_lead_time_days": 85,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "Shai-Hulud 2.0 npm supply-chain worm wave"
     },
     {
@@ -419,24 +344,10 @@
       "disclosed_at": "2026-03-31",
       "incident_id": "SC-2026-AXIOS",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2026-03-30",
-      "signals": [
-        {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
-          "entity_id": "actor-teampcp",
-          "entity_label": "TeamPCP",
-          "lead_time_days": 127,
-          "prior_incident_ids": [
-            "SC-2025-SHAI-HULUD-2",
-            "SC-2026-LITELLM",
-            "SC-2026-TRIVY-CI"
-          ],
-          "signal_date": "2025-11-24",
-          "signal_type": "actor"
-        }
-      ],
-      "strongest_lead_time_days": 127,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "Axios npm maintainer account compromise"
     },
     {
@@ -447,99 +358,44 @@
       "replay_cutoff": "2026-05-10",
       "signals": [
         {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.entity_source_refs.published_at",
           "entity_id": "actor-teampcp",
           "entity_label": "TeamPCP",
-          "lead_time_days": 168,
+          "lead_time_days": 153,
           "prior_incident_ids": [
             "SC-2025-SHAI-HULUD-2",
             "SC-2026-AXIOS",
             "SC-2026-LITELLM",
             "SC-2026-TRIVY-CI"
           ],
-          "signal_date": "2025-11-24",
+          "signal_date": "2025-12-09",
           "signal_type": "actor"
         },
         {
-          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.entity_source_refs.published_at",
           "entity_id": "campaign-tp-camp-2026-0003",
           "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
-          "lead_time_days": 168,
+          "lead_time_days": 153,
           "prior_incident_ids": [
             "SC-2025-SHAI-HULUD-2",
             "SC-2026-LITELLM",
             "SC-2026-TRIVY-CI"
           ],
-          "signal_date": "2025-11-24",
+          "signal_date": "2025-12-09",
           "signal_type": "campaign"
-        },
-        {
-          "basis": "relationship.SEEDED_BY.source.prior_incident.first_public_warning_at",
-          "entity_id": "pkg-generic-aquasecurity-trivy-action",
-          "entity_label": "aquasecurity/trivy-action",
-          "evidence_refs": [
-            "ref-checkmarx-update"
-          ],
-          "lead_time_days": 52,
-          "prior_incident_ids": [
-            "SC-2026-TRIVY-CI"
-          ],
-          "propagation_tier": "causal",
-          "signal_date": "2026-03-20",
-          "signal_type": "seeded_by_seed_source"
         }
       ],
-      "strongest_lead_time_days": 168,
+      "strongest_lead_time_days": 153,
       "title": "Checkmarx Jenkins AST plugin supply-chain compromise"
     },
     {
       "disclosed_at": "2026-03-24",
       "incident_id": "SC-2026-LITELLM",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2026-03-23",
-      "signals": [
-        {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
-          "entity_id": "actor-teampcp",
-          "entity_label": "TeamPCP",
-          "lead_time_days": 120,
-          "prior_incident_ids": [
-            "SC-2025-SHAI-HULUD-2",
-            "SC-2026-TRIVY-CI"
-          ],
-          "signal_date": "2025-11-24",
-          "signal_type": "actor"
-        },
-        {
-          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
-          "entity_id": "campaign-tp-camp-2026-0003",
-          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
-          "lead_time_days": 120,
-          "prior_incident_ids": [
-            "SC-2025-SHAI-HULUD-2",
-            "SC-2026-TRIVY-CI"
-          ],
-          "signal_date": "2025-11-24",
-          "signal_type": "campaign"
-        },
-        {
-          "basis": "relationship.SEEDED_BY.source.prior_incident.first_public_warning_at",
-          "entity_id": "pkg-generic-aquasecurity-trivy-action",
-          "entity_label": "aquasecurity/trivy-action",
-          "evidence_refs": [
-            "ref-snyk-litellm"
-          ],
-          "lead_time_days": 4,
-          "prior_incident_ids": [
-            "SC-2026-TRIVY-CI"
-          ],
-          "propagation_tier": "causal",
-          "signal_date": "2026-03-20",
-          "signal_type": "seeded_by_seed_source"
-        }
-      ],
-      "strongest_lead_time_days": 120,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "LiteLLM PyPI package compromise through stolen CI/CD credentials"
     },
     {
@@ -550,10 +406,10 @@
       "replay_cutoff": "2026-05-27",
       "signals": [
         {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.entity_source_refs.published_at",
           "entity_id": "actor-teampcp",
           "entity_label": "TeamPCP",
-          "lead_time_days": 185,
+          "lead_time_days": 170,
           "prior_incident_ids": [
             "SC-2025-SHAI-HULUD-2",
             "SC-2026-AXIOS",
@@ -562,11 +418,11 @@
             "SC-2026-MINI-SHAI-HULUD",
             "SC-2026-TRIVY-CI"
           ],
-          "signal_date": "2025-11-24",
+          "signal_date": "2025-12-09",
           "signal_type": "actor"
         }
       ],
-      "strongest_lead_time_days": 185,
+      "strongest_lead_time_days": 170,
       "title": "Megalodon GitHub Actions repository workflow poisoning campaign"
     },
     {
@@ -577,10 +433,10 @@
       "replay_cutoff": "2026-05-12",
       "signals": [
         {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
+          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.entity_source_refs.published_at",
           "entity_id": "actor-teampcp",
           "entity_label": "TeamPCP",
-          "lead_time_days": 170,
+          "lead_time_days": 155,
           "prior_incident_ids": [
             "SC-2025-SHAI-HULUD-2",
             "SC-2026-AXIOS",
@@ -588,25 +444,25 @@
             "SC-2026-LITELLM",
             "SC-2026-TRIVY-CI"
           ],
-          "signal_date": "2025-11-24",
+          "signal_date": "2025-12-09",
           "signal_type": "actor"
         },
         {
-          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
+          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.entity_source_refs.published_at",
           "entity_id": "campaign-tp-camp-2026-0003",
           "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
-          "lead_time_days": 170,
+          "lead_time_days": 155,
           "prior_incident_ids": [
             "SC-2025-SHAI-HULUD-2",
             "SC-2026-CHECKMARX-JENKINS",
             "SC-2026-LITELLM",
             "SC-2026-TRIVY-CI"
           ],
-          "signal_date": "2025-11-24",
+          "signal_date": "2025-12-09",
           "signal_type": "campaign"
         }
       ],
-      "strongest_lead_time_days": 170,
+      "strongest_lead_time_days": 155,
       "title": "Mini Shai-Hulud TanStack npm and PyPI supply-chain wave"
     },
     {
@@ -623,33 +479,10 @@
       "disclosed_at": "2026-03-24",
       "incident_id": "SC-2026-TRIVY-CI",
       "notes": [],
-      "prior_signal": true,
+      "prior_signal": false,
       "replay_cutoff": "2026-03-23",
-      "signals": [
-        {
-          "basis": "relationship.ATTRIBUTED_TO_ACTOR.prior_incident.first_public_warning_at",
-          "entity_id": "actor-teampcp",
-          "entity_label": "TeamPCP",
-          "lead_time_days": 120,
-          "prior_incident_ids": [
-            "SC-2025-SHAI-HULUD-2"
-          ],
-          "signal_date": "2025-11-24",
-          "signal_type": "actor"
-        },
-        {
-          "basis": "relationship.RELATED_CAMPAIGN.prior_incident.first_public_warning_at",
-          "entity_id": "campaign-tp-camp-2026-0003",
-          "entity_label": "TeamPCP Multi-Ecosystem Supply Chain Campaign",
-          "lead_time_days": 120,
-          "prior_incident_ids": [
-            "SC-2025-SHAI-HULUD-2"
-          ],
-          "signal_date": "2025-11-24",
-          "signal_type": "campaign"
-        }
-      ],
-      "strongest_lead_time_days": 120,
+      "signals": [],
+      "strongest_lead_time_days": null,
       "title": "Aqua Trivy CI/CD supply-chain compromise"
     }
   ],

@@ -181,7 +181,7 @@ class SupplyChainBacktestTests(unittest.TestCase):
         self.assertEqual(report["status"], "FAIL")
         self.assertEqual(report["missing_incident_ids"], ["SC-2024-XZ-UTILS"])
 
-    def test_litellm_has_prior_actor_campaign_and_seeded_package_signal(self) -> None:
+    def test_litellm_does_not_count_same_day_relationship_evidence_as_prior_signal(self) -> None:
         corpus = load_json(CORPUS_PATH)
         relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
         entities = backtest.load_entities(REPO_ROOT / "data" / "supply-chain-entities")
@@ -194,11 +194,26 @@ class SupplyChainBacktestTests(unittest.TestCase):
         )
         result = report["prior_signal_results"][0]
 
+        self.assertFalse(result["prior_signal"])
+
+    def test_checkmarx_has_prior_actor_and_campaign_signal_from_public_entity_evidence(self) -> None:
+        corpus = load_json(CORPUS_PATH)
+        relationships = load_json(REPO_ROOT / "data" / "supply-chain-relationships" / "relationships.json")
+        entities = backtest.load_entities(REPO_ROOT / "data" / "supply-chain-entities")
+
+        report = backtest.build_backtest(
+            corpus,
+            ("SC-2026-CHECKMARX-JENKINS",),
+            relationships=relationships,
+            entities_by_id=entities,
+        )
+        result = report["prior_signal_results"][0]
+
         self.assertTrue(result["prior_signal"])
         signal_types = {signal["signal_type"] for signal in result["signals"]}
         self.assertIn("actor", signal_types)
         self.assertIn("campaign", signal_types)
-        self.assertIn("seeded_by_seed_source", signal_types)
+        self.assertTrue(all(signal["signal_date"] == "2025-12-09" for signal in result["signals"]))
 
     def test_xz_utils_reports_negative_prior_signal(self) -> None:
         corpus = load_json(CORPUS_PATH)
