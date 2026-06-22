@@ -712,7 +712,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
               {page.phylogeny.edges.map((edge) => (
                 <path
                   d={edge.path}
-                  data-lineage-edge={`${edge.target}->${edge.source}`}
+                  data-lineage-edge={`${edge.source}->${edge.target}`}
                   class={`lineage-edge lineage-${edge.confidence}`}
                 />
               ))}
@@ -724,7 +724,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
             {page.phylogeny.edges.map((edge) => (
               <div
                 class="lineage-edge-label"
-                data-lineage-edge-label={`${edge.target}->${edge.source}`}
+                data-lineage-edge-label={`${edge.source}->${edge.target}`}
                 style={`left:${edge.labelX}px;top:${edge.labelY}px`}
               >
                 {edge.label}

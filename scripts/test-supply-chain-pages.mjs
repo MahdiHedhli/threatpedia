@@ -188,7 +188,9 @@ assert.ok(
 assert.ok(
   supplyChainRouteSource.includes('const stack = [id]') &&
     supplyChainRouteSource.includes('Array.isArray(parents[child])') &&
-    supplyChainRouteSource.includes('activeEdges.add(`${child}->${parent}`)'),
+    supplyChainRouteSource.includes('activeEdges.add(`${child}->${parent}`)') &&
+    supplyChainRouteSource.includes('data-lineage-edge={`${edge.source}->${edge.target}`}') &&
+    supplyChainRouteSource.includes('data-lineage-edge-label={`${edge.source}->${edge.target}`}'),
   'lineage detail script should trace all parent edges in a DAG lineage'
 );
 assert.ok(
