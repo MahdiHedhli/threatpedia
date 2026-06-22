@@ -160,6 +160,15 @@ def is_date_or_month(value: Any) -> bool:
     return False
 
 
+def validate_layout(errors: list[str], path: str, layout: Any) -> None:
+    if not isinstance(layout, dict):
+        errors.append(f"{path}.layout: expected object with numeric x/y")
+        return
+    for axis in ("x", "y"):
+        if not isinstance(layout.get(axis), (int, float)):
+            errors.append(f"{path}.layout.{axis}: expected number")
+
+
 def incident_node_id(incident_id: str) -> str:
     return f"incident-{incident_id}"
 
@@ -603,6 +612,7 @@ def validate_malware_families(
                 errors.append(f"{strain_id}.mutation_summary: expected descriptive mutation summary")
             if not isinstance(strain.get("ecosystems"), list) or not strain["ecosystems"]:
                 errors.append(f"{strain_id}.ecosystems: expected non-empty list")
+            validate_layout(errors, strain_id, strain.get("layout"))
             incident_ids = strain.get("incident_ids")
             if incident_ids is not None:
                 if not isinstance(incident_ids, list):
@@ -635,6 +645,7 @@ def validate_malware_families(
                         errors.append(f"{event_id}.date: expected YYYY-MM-DD or YYYY-MM")
                     if not isinstance(event.get("summary"), str) or len(event["summary"].strip()) < 20:
                         errors.append(f"{event_id}.summary: expected descriptive summary")
+                    validate_layout(errors, event_id, event.get("layout"))
                     source_refs = event.get("source_refs")
                     if source_refs is not None:
                         if not isinstance(source_refs, list):

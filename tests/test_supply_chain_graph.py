@@ -104,6 +104,7 @@ class SupplyChainGraphTests(unittest.TestCase):
         malformed[0]["associated_actor_ids"] = "actor-teampcp"
         malformed[0]["strains"][0]["first_seen"] = "2025-99-99"
         malformed[0]["strains"][0]["incident_ids"] = "SC-2025-NPM-SHAI-HULUD"
+        malformed[0]["strains"][0]["layout"] = {"x": "left"}
         malformed[0]["fork_events"] = {"id": "fork-not-a-list"}
         malformed[0]["lineage_edges"][2]["suspected_reason"] = "   "
         malformed[0]["lineage_edges"][2]["external_refs"][0] = "not-an-object"
@@ -119,6 +120,8 @@ class SupplyChainGraphTests(unittest.TestCase):
         self.assertIn("family-shai-hulud.associated_actor_ids: expected list", errors)
         self.assertIn("strain-shai-hulud.first_seen: expected YYYY-MM-DD or YYYY-MM", errors)
         self.assertIn("strain-shai-hulud.incident_ids: expected list", errors)
+        self.assertIn("strain-shai-hulud.layout.x: expected number", errors)
+        self.assertIn("strain-shai-hulud.layout.y: expected number", errors)
         self.assertIn("family-shai-hulud.fork_events: expected list", errors)
         self.assertIn("family-shai-hulud.sources[4].id: duplicate source id 'ref-wiz-shai-hulud'", errors)
         self.assertIn(
@@ -129,6 +132,17 @@ class SupplyChainGraphTests(unittest.TestCase):
             "family-shai-hulud.lineage_edges[2].suspected_reason: suspected edges must explain uncertainty",
             errors,
         )
+
+        malformed_event = copy.deepcopy(malware_families)
+        malformed_event[0]["fork_events"][0]["layout"] = {"y": "middle"}
+        event_errors = validator.validate_malware_families(
+            malformed_event,
+            raw_incident_ids=raw_incident_ids,
+            entity_ids=entity_ids,
+        )
+
+        self.assertIn("fork-mini-shai-source-release.layout.x: expected number", event_errors)
+        self.assertIn("fork-mini-shai-source-release.layout.y: expected number", event_errors)
 
     def test_malware_family_validator_allows_single_strain_without_lineage_edges(self) -> None:
         corpus = load_json(CORPUS_PATH)
