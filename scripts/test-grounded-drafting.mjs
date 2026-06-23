@@ -128,8 +128,59 @@ async function testOutputTargetsUseCollectionNames() {
   }
 }
 
+async function testDraftFrontmatterMatchesLiveSchema() {
+  const baseQueue = readJson(repoRoot, queuePath);
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-frontmatter-'));
+  try {
+    const campaignQueue = structuredClone(baseQueue);
+    campaignQueue.candidates[0].proposedArchetype = 'campaign';
+    const campaignQueueFile = path.join(tempDir, 'campaign.json');
+    writeJson(repoRoot, campaignQueueFile, campaignQueue);
+    const campaignPacket = await buildGroundedPacket({
+      queue: campaignQueueFile,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'campaign-packet.json'),
+      fixturesDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    const campaignDraft = draftFromPacket(campaignPacket, { createdAt: '2026-06-22' });
+    assert.match(campaignDraft, /\nongoing: true\n/);
+    assert.doesNotMatch(campaignDraft, /\nendDate:/);
+
+    const zeroDayQueue = structuredClone(baseQueue);
+    zeroDayQueue.candidates[0].proposedArchetype = 'zero-day';
+    zeroDayQueue.candidates[0].canonicalSubjectId = 'CVE-2026-12345';
+    zeroDayQueue.candidates[0].summary = `${zeroDayQueue.candidates[0].summary} CVE-2026-12345 affects Fixture Platform.`;
+    const zeroDayQueueFile = path.join(tempDir, 'zero-day.json');
+    writeJson(repoRoot, zeroDayQueueFile, zeroDayQueue);
+    const zeroDayPacket = await buildGroundedPacket({
+      queue: zeroDayQueueFile,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'zero-day-packet.json'),
+      fixturesDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    zeroDayPacket.affected_products[0].product = 'Fixture Platform';
+    const zeroDayDraft = draftFromPacket(zeroDayPacket, { createdAt: '2026-06-22' });
+    assert.match(zeroDayDraft, /\ncve: "CVE-2026-12345"\n/);
+    assert.match(zeroDayDraft, /\ntype: "Vulnerability"\n/);
+    assert.match(zeroDayDraft, /\nplatform: "Fixture Platform"\n/);
+    assert.doesNotMatch(zeroDayDraft, /\ncveId:/);
+    assert.doesNotMatch(zeroDayDraft, /\npublishedDate:/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 await testGroundedPacketDraftAndFidelityPass();
 await testOutputTargetsUseCollectionNames();
+await testDraftFrontmatterMatchesLiveSchema();
 testCliRequiresExplicitApproval();
 await testFidelityRejectsInventedUrl();
 await testFidelityRejectsUnmarkedClaimLine();

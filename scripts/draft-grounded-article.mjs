@@ -84,6 +84,11 @@ function sourceFrontmatter(source) {
   ].join('\n');
 }
 
+function firstAffectedProduct(packet) {
+  const product = Array.isArray(packet.affected_products) ? packet.affected_products[0] : null;
+  return product?.product || product?.vendor || 'Unknown';
+}
+
 function frontmatter(packet, createdAt) {
   const title = safeTitle(packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
@@ -98,7 +103,7 @@ function frontmatter(packet, createdAt) {
       `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
       `startDate: ${yamlString(date)}`,
-      'ongoing: false',
+      'ongoing: true',
       'attackType: "Supply Chain"',
       'severity: medium',
       'sector: "Technology"',
@@ -133,15 +138,16 @@ function frontmatter(packet, createdAt) {
     );
   } else if (packet.lane === 'zero-day') {
     base.push(
-      `cveId: ${yamlString(packet.cves?.[0]?.id || packet.candidate?.canonical_subject_id || 'CVE-0000-0000')}`,
       `title: ${yamlString(title)}`,
-      `discoveredDate: ${yamlString(date)}`,
-      'publishedDate: null',
-      'vendor: "Unknown"',
-      'product: "Unknown"',
+      `cve: ${yamlString(packet.cves?.[0]?.id || packet.candidate?.canonical_subject_id || 'CVE-0000-0000')}`,
+      'type: "Vulnerability"',
+      `platform: ${yamlString(firstAffectedProduct(packet))}`,
       'severity: medium',
+      'status: unknown',
+      'isZeroDay: true',
+      `disclosedDate: ${yamlString(date)}`,
+      `cisaKev: ${packet.kev_status?.in_kev ? 'true' : 'false'}`,
       'reviewStatus: "draft_ai"',
-      'confidenceGrade: C',
       'generatedBy: "ai_ingestion"',
       `generatedDate: ${createdAt}`,
       'tags:',
