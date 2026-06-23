@@ -26,6 +26,7 @@ import { XMLParser } from 'fast-xml-parser';
 import yaml from 'js-yaml';
 import { loadPipelineConfig } from './pipeline-config.mjs';
 import { PIPELINE_TASK_FILE_NAME_PATTERN, PIPELINE_TASK_FILE_PATH_RE } from './pipeline-task-patterns.mjs';
+import { SCHEMA_REQUIRED_H2_BY_TYPE } from './pipeline-schema.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -1168,7 +1169,7 @@ function buildZeroDayTask(candidate, taskId, exploitId) {
     acceptance_criteria: {
       frontmatter_valid: true,
       min_sources: 3,
-      min_h2_sections: 5,
+      min_h2_sections: SCHEMA_REQUIRED_H2_BY_TYPE['zero-day'].length,
       min_mitre_mappings: 1,
       review_status: 'draft_ai',
       schema_validation: 'pass',
