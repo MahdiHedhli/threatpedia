@@ -268,6 +268,16 @@
       ],
       "confidence": "medium",
       "article_section": "technical-analysis"
+    },
+    {
+      "claim_id": "claim-12",
+      "claim": "The Hacker News reported that Checkmarx released version 2.0.13-848.v76e89de8a_053 on GitHub and the Jenkins Marketplace, and that a Checkmarx spokesperson said the new version addressed the incident concerns.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-2"
+      ],
+      "confidence": "medium",
+      "article_section": "mitigation"
     }
   ],
   "uncertainties": [

@@ -73,6 +73,7 @@ mitreMappings:
 ## Remediation & Mitigation
 
 <!-- claims: claim-10 --> "If you are using Checkmarx Jenkins AST plugin, you need to ensure that you are using the version 2.0.13-829.vc72453fa_1c16 that was published on December 17, 2025 or previously," the cybersecurity company said in a statement over the weekend.
+<!-- claims: claim-12 --> The Hacker News reported that Checkmarx released version 2.0.13-848.v76e89de8a_053 on GitHub and the Jenkins Marketplace, and that a Checkmarx spokesperson said the new version addressed the incident concerns.
 
 ## Sources & References
 
