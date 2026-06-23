@@ -110,7 +110,27 @@ function isAiReviewError(body) {
 function hasNoFeedbackBody(body) {
   return /\bno feedback\b/i.test(body || '')
     || /\bno findings\b/i.test(body || '')
-    || /\bnothing to add\b/i.test(body || '');
+    || /\bnothing to add\b/i.test(body || '')
+    || /\bno major issues\b/i.test(body || '')
+    || /did(?: not|n't) find any major issues/i.test(body || '');
+}
+
+function reviewedCommitFromBody(body) {
+  const match = String(body || '').match(/Reviewed commit:\*{0,2}\s*`?([0-9a-f]{7,40})`?/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
+function matchesHeadSha(candidateSha, headSha) {
+  const candidate = String(candidateSha || '').toLowerCase();
+  const head = String(headSha || '').toLowerCase();
+  return candidate.length >= 7 && (candidate === head || head.startsWith(candidate) || candidate.startsWith(head));
+}
+
+function isCurrentHeadNoFeedbackAiComment(comment, headSha, aiLogins) {
+  if (!isAiLogin(comment.user?.login, aiLogins)) return false;
+  if (isAiReviewError(comment.body)) return false;
+  if (!hasNoFeedbackBody(comment.body)) return false;
+  return matchesHeadSha(reviewedCommitFromBody(comment.body), headSha);
 }
 
 async function githubFetch(path, token, options = {}) {
@@ -368,6 +388,9 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
     && review.state !== 'DISMISSED'
     && !isAiReviewError(review.body)
   );
+  const currentHeadNoFeedbackAiComments = issueComments.filter((comment) =>
+    isCurrentHeadNoFeedbackAiComment(comment, pr.head.sha, aiLogins)
+  );
 
   const latestAiErrorAt = latestDate(
     [
@@ -380,9 +403,15 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
     ],
     (item) => item.createdAt,
   );
-  const latestCurrentHeadAiReviewAt = latestDate(currentHeadAiReviews, (review) => review.submitted_at);
+  const latestCurrentHeadAiReviewAt = latestDate(
+    [
+      ...currentHeadAiReviews.map((review) => ({ createdAt: review.submitted_at })),
+      ...currentHeadNoFeedbackAiComments.map((comment) => ({ createdAt: comment.created_at })),
+    ],
+    (item) => item.createdAt,
+  );
 
-  if (!currentHeadAiReviews.length) {
+  if (!currentHeadAiReviews.length && !currentHeadNoFeedbackAiComments.length) {
     failures.push('No AI second review exists on the current head SHA.');
   }
 
@@ -401,9 +430,12 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
   }
 
   const currentHeadAiReviewBodies = currentHeadAiReviews.map((review) => review.body || '').filter(Boolean);
-  const currentHeadNoFeedback = currentHeadAiReviewBodies.some(hasNoFeedbackBody);
-  if (currentHeadAiReviews.length && !currentHeadNoFeedback && unresolvedAiThreads.length === 0) {
+  const currentHeadNoFeedback = currentHeadAiReviewBodies.some(hasNoFeedbackBody) || currentHeadNoFeedbackAiComments.length > 0;
+  if ((currentHeadAiReviews.length || currentHeadNoFeedbackAiComments.length) && !currentHeadNoFeedback && unresolvedAiThreads.length === 0) {
     notes.push('Current-head AI review exists and no unresolved AI threads remain; review body was not a no-feedback summary, so top-level disposition should still be checked by the reviewer.');
+  }
+  if (!currentHeadAiReviews.length && currentHeadNoFeedbackAiComments.length) {
+    notes.push('Current-head AI no-feedback issue comment accepted as review signal.');
   }
 
   const staleMergeReadyComments = issueComments.filter((comment) =>
@@ -447,6 +479,10 @@ async function evaluate({ repo: repoSlug, pr: prNumber, validateWaitSeconds = 0 
         author: review.user?.login || 'unknown',
         state: review.state,
         submittedAt: review.submitted_at,
+      })),
+      aiReviewCommentsOnHead: currentHeadNoFeedbackAiComments.map((comment) => ({
+        author: comment.user?.login || 'unknown',
+        createdAt: comment.created_at,
       })),
       latestAiErrorAt,
       unresolvedAiThreadCount: unresolvedAiThreads.length,
