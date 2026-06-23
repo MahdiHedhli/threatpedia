@@ -71,6 +71,30 @@ function testCliRequiresExplicitApproval() {
   assert.match(result.stderr, /approved-by is required/);
 }
 
+async function testPreflightRequiresGroundedSourceExtracts() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-preflight-'));
+  try {
+    const packetPath = path.join(tempDir, 'packet-without-extracts.json');
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: packetPath,
+      fixturesDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    delete packet.source_extracts;
+    writeJson(repoRoot, packetPath, packet);
+    const result = spawnSync(process.execPath, ['scripts/preflight-source-packet.mjs', packetPath], { cwd: repoRoot, encoding: 'utf8' });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stdout, /grounded drafting packets need at least one successful source extract/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 async function testFidelityRejectsInventedUrl() {
   const packet = await buildGroundedPacket({
     queue: queuePath,
@@ -242,6 +266,7 @@ await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();
 testCliRequiresExplicitApproval();
+await testPreflightRequiresGroundedSourceExtracts();
 await testFidelityRejectsInventedUrl();
 await testFidelityRejectsUnmarkedClaimLine();
 testFidelityHandlesCrlfFrontmatter();
