@@ -49,7 +49,6 @@ mitreMappings:
 ## Technical Analysis
 
 <!-- claims: claim-9 --> This access enabled the publication of malicious code to a number of externally distributed artifacts, including VS Code extensions, GitHub Actions workflows, and a Jenkins plugin.
-<!-- claims: claim-10 --> "If you are using Checkmarx Jenkins AST plugin, you need to ensure that you are using the version 2.0.13-829.vc72453fa_1c16 that was published on December 17, 2025 or previously," the cybersecurity company said in a statement over the weekend.
 <!-- claims: claim-11 --> What has not yet been publicly reported is that the same attack pattern subsequently appeared in a second, unrelated GitHub Action for Checkmarx&#x27;s AST .
 
 ## Attack Chain
@@ -71,7 +70,7 @@ mitreMappings:
 
 ## Remediation & Mitigation
 
-<!-- claims: claim-1 --> Available sources do not establish additional facts for this section.
+<!-- claims: claim-10 --> "If you are using Checkmarx Jenkins AST plugin, you need to ensure that you are using the version 2.0.13-829.vc72453fa_1c16 that was published on December 17, 2025 or previously," the cybersecurity company said in a statement over the weekend.
 
 ## Sources & References
 

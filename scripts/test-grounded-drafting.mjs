@@ -90,6 +90,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     assert.match(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
     assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
+    assert.doesNotMatch(h2Section(draft, 'Remediation & Mitigation'), /do not establish additional remediation facts/);
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);

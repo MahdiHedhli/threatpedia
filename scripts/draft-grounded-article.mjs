@@ -300,7 +300,10 @@ function sectionContent(packet, heading, claimSets) {
   if (/attribution|campaign/i.test(heading)) {
     return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'Available sources do not establish additional attribution beyond the current classification.')];
   }
-  if (/remediation|impact|detection|indicators|open questions/i.test(heading)) {
+  if (/remediation/i.test(heading)) {
+    return claimSets.remediation.length ? claimLines(claimSets.remediation) : [fallbackLine(packet, 'Available sources do not establish additional remediation facts for this section.')];
+  }
+  if (/impact|detection|indicators|open questions/i.test(heading)) {
     return [fallbackLine(packet, 'Available sources do not establish additional facts for this section.')];
   }
   return claimLines(claimSets.reader);
@@ -313,15 +316,18 @@ function body(packet) {
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
   const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
+  const remediationClaims = groups.get('mitigation') || groups.get('remediation') || [];
   const summaryClaimIds = new Set(summaryClaims.map((claim) => claim.claim_id));
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));
   const attributionClaimIds = new Set(attributionClaims.map((claim) => claim.claim_id));
+  const remediationClaimIds = new Set(remediationClaims.map((claim) => claim.claim_id));
   const supportingClaims = readerClaims.filter((claim) =>
     !summaryClaimIds.has(claim.claim_id)
     && !technicalClaimIds.has(claim.claim_id)
     && !timelineClaimIds.has(claim.claim_id)
     && !attributionClaimIds.has(claim.claim_id)
+    && !remediationClaimIds.has(claim.claim_id)
   );
   const findingClaims = [...technicalClaims, ...supportingClaims];
   const headings = SCHEMA_REQUIRED_H2_BY_TYPE[packet.lane] || [
@@ -336,6 +342,7 @@ function body(packet) {
     findings: findingClaims,
     timeline: timelineClaims,
     attribution: attributionClaims,
+    remediation: remediationClaims,
     reader: readerClaims,
   };
   const lines = [];

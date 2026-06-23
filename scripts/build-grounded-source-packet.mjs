@@ -192,6 +192,13 @@ function sourceSentenceForCandidate(text, candidate) {
   return best?.score > 0 ? best.sentence : sentences[0];
 }
 
+function articleSectionForSourceSentence(sentence) {
+  if (/\b(?:ensure that you are using|update|upgrade|patch|patched|released|rotate|rotated|remove|removed|mitigat|remediat|addresses the concerns)\b/i.test(sentence)) {
+    return 'mitigation';
+  }
+  return 'technical-analysis';
+}
+
 function mitreCandidates(candidate, sources) {
   const text = [
     candidate.title,
@@ -243,7 +250,7 @@ function candidateClaims(candidate, sources, extracts) {
   }
   for (const extract of extracts.filter((item) => item.status === 'ok')) {
     const sourceSentence = sourceSentenceForCandidate(extract.extracted_text, candidate);
-    if (sourceSentence) claim(claims, sourceSentence, 'other', [extract.source_id], 'technical-analysis', 'medium');
+    if (sourceSentence) claim(claims, sourceSentence, 'other', [extract.source_id], articleSectionForSourceSentence(sourceSentence), 'medium');
   }
   return claims;
 }

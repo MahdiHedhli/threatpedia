@@ -172,14 +172,13 @@ function monthDateToIso(month, day, year) {
 }
 
 function extractPublicationDate(rawText) {
-  const text = normalizeWhitespace(stripHtml(rawText));
   const patterns = [
     /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
     /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
     /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
   ];
   for (const pattern of patterns) {
-    const match = text.match(pattern);
+    const match = String(rawText || '').match(pattern);
     const iso = match ? monthDateToIso(match[1], match[2], match[3]) : null;
     if (iso) return iso;
   }
@@ -207,8 +206,9 @@ export async function extractSource(url, sourceId, options = {}) {
   const classification = classifySource(url);
   try {
     const raw = await fetchSourceText(url, options);
-    const extractedText = normalizeWhitespace(stripHtml(raw)).slice(0, 5000);
-    const publishedAt = extractPublicationDate(raw);
+    const normalized = normalizeWhitespace(stripHtml(raw));
+    const extractedText = normalized.slice(0, 5000);
+    const publishedAt = extractPublicationDate(normalized);
     return {
       source: {
         id: sourceId,
