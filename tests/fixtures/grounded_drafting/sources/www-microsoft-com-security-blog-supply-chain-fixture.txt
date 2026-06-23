@@ -1,0 +1,1 @@
+Vendor Advisory: The vendor confirmed that the malicious package release was removed from the registry on 2026-06-21. The advisory advised users to rotate exposed registry and source-control credentials after installing the package.

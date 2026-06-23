@@ -108,3 +108,27 @@ node scripts/supply-chain-live-discovery.mjs --check --queue-path .github/pipeli
 ```
 
 The queue check fails if any candidate permits drafting, omits required classifier fields, stores KEV status as authored truth, or duplicates candidate IDs.
+
+## B2 Consumption
+
+B1 queue entries can feed drafting only after an explicit approval is recorded
+in a grounded source packet. Do not flip `draftingAllowed` in the queue.
+
+```bash
+node scripts/build-grounded-source-packet.mjs \
+  --queue .github/pipeline/supply-chain-candidates/latest.json \
+  --candidate-id <SC-CAND-...> \
+  --approved-by <operator-or-reviewer> \
+  --approval-ref <issue-pr-or-review-ref> \
+  --out /tmp/grounded-packet.json
+
+node scripts/preflight-source-packet.mjs /tmp/grounded-packet.json
+node scripts/draft-grounded-article.mjs --packet /tmp/grounded-packet.json --out /tmp/grounded-draft.md
+node scripts/check-grounded-draft.mjs --packet /tmp/grounded-packet.json --draft /tmp/grounded-draft.md
+```
+
+The grounded packet builder fetches and extracts the cited candidate sources
+before drafting. It fails closed on fetch failures by default. The draft checker
+rejects placeholder URLs, URLs not present in the packet, and substantive draft
+sentences without packet claim markers. These checks are the B2 safety boundary;
+the B1 queue by itself never authorizes article generation.

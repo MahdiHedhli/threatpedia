@@ -1,9 +1,9 @@
-# Zero-Day Source Packet Pilot
+# Source Packets and Grounded Drafting
 
-This pilot adds a deterministic source packet stage before zero-day drafting:
+Source packets are Threatpedia's evidence contract before drafting:
 
 ```
-task JSON -> source packet -> deterministic preflight -> article draft -> validator -> PR -> review gate
+task/candidate approval -> source packet -> deterministic preflight -> grounded draft -> fidelity check -> validator -> PR -> review gate
 ```
 
 The source packet is an evidence contract. A drafter should not add factual
@@ -14,12 +14,55 @@ claims beyond `claims[]` unless the packet is updated and preflight is rerun.
 - `schema/source-packet-1.schema.json` defines the versioned packet shape.
 - `scripts/build-source-packet.mjs` builds a conservative packet from one
   zero-day task JSON.
+- `scripts/build-grounded-source-packet.mjs` builds a B2 grounded packet from
+  an explicitly approved B1 supply-chain candidate.
 - `scripts/preflight-source-packet.mjs` validates one packet and returns
   pass/fail, errors, warnings, and a normalized summary.
+- `scripts/draft-grounded-article.mjs` generates a conservative draft from
+  packet claims only.
+- `scripts/check-grounded-draft.mjs` verifies claim-marker and source-URL
+  fidelity for a grounded draft.
 - `scripts/vulncheck-kev-intake.mjs` emits recent-first VulnCheck KEV
   prioritization/source-packet-prefill artifacts in dry-run or live mode.
 - `fixtures/zero-day-valid-packet.json` is a passing fixture.
 - `fixtures/zero-day-invalid-packet.json` is an intentionally failing fixture.
+
+## B2 Grounded Candidate Drafting
+
+B2 consumes B1 candidate-queue entries only after explicit human or EP approval.
+The candidate queue remains non-drafting state (`draftingAllowed: false`); the
+approval is recorded in the grounded packet.
+
+Sample fixture-backed flow:
+
+```bash
+node scripts/build-grounded-source-packet.mjs \
+  --queue tests/fixtures/grounded_drafting/candidate_queue.json \
+  --candidate-id SC-CAND-1234abcd5678ef90 \
+  --approved-by KernelK \
+  --approval-ref fixture-approval \
+  --fixtures-dir tests/fixtures/grounded_drafting/sources \
+  --out /tmp/grounded-packet.json
+
+node scripts/preflight-source-packet.mjs /tmp/grounded-packet.json
+node scripts/draft-grounded-article.mjs --packet /tmp/grounded-packet.json --out /tmp/grounded-draft.md
+node scripts/check-grounded-draft.mjs --packet /tmp/grounded-packet.json --draft /tmp/grounded-draft.md
+```
+
+The grounded path supports the approved archetype lanes:
+`incident`, `zero-day`, `campaign`, `threat-actor`, and `malware-family`.
+Drafting is packet-only:
+
+- source fetch/extraction failures fail closed unless an operator deliberately
+  uses `--allow-fetch-failures`;
+- every substantive draft sentence must carry a packet claim marker;
+- every draft URL must come from packet sources;
+- placeholder or source-recovery URLs are hard failures;
+- facts absent from `claims[]` are omitted or left as packet uncertainties.
+
+This path does not make every B1 candidate draftable. Candidate approval,
+source sufficiency, packet preflight, and grounded-draft fidelity must all pass
+before an article PR is opened.
 
 ## VulnCheck KEV Prefill
 
@@ -64,7 +107,7 @@ article tasks by themselves and do not satisfy drafting source sufficiency.
 
 ## Preflight Coverage
 
-The pilot preflight checks:
+Preflight checks:
 
 - source sufficiency, URL dedupe, and source refs
 - date shape and source-backed date claims
@@ -78,7 +121,7 @@ The pilot preflight checks:
 
 ## Pilot Metrics
 
-Record these per zero-day PR during the pilot:
+Record these per source-packet-backed PR:
 
 - preflight errors caught before drafting
 - validator failures after drafting
@@ -91,8 +134,9 @@ Record these per zero-day PR during the pilot:
 
 ## Limitations
 
-- The builder does not fetch source URLs.
-- The builder does not call a model.
+- `scripts/build-source-packet.mjs` remains the legacy zero-day task packet
+  builder and does not fetch source URLs.
+- The B2 grounded builder fetches/extracts sources but does not call a model.
 - Publisher and source-type classification is URL-derived and conservative.
 - A passing packet does not mean the future article is merge-ready; it only
   means the drafter has a bounded evidence contract to draft from.
