@@ -25,6 +25,15 @@ function bodyH2s(markdown) {
     .map((line) => line.replace(/^##\s+/, '').trim());
 }
 
+function h2Section(markdown, heading) {
+  const lines = markdown.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.trim() === `## ${heading}`);
+  if (start < 0) return '';
+  const endOffset = lines.slice(start + 1).findIndex((line) => /^##\s+/.test(line));
+  const end = endOffset < 0 ? lines.length : start + 1 + endOffset;
+  return lines.slice(start + 1, end).join('\n').trim();
+}
+
 function addCampaignGovernmentSource(packet) {
   packet.supporting_sources.push({
     source_id: 'src-cisa',
@@ -64,6 +73,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.equal(packet.candidate.summary, 'A malicious npm package release attempted credential theft through a package install script.');
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('date')));
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('exploit')));
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
 
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
@@ -78,6 +88,8 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.match(draft, /\n- \[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-20\n/);
     assert.match(draft, /\ndate: 2026-06-21\n/);
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
+    assert.match(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
+    assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
@@ -110,6 +122,34 @@ async function testRawExtractedIdsDoNotPollutePacketCves() {
       allowFetchFailures: false,
     });
     assert.deepEqual(packet.cves, []);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testInvalidCalendarPublicationDateIsIgnored() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-invalid-date-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? original.replace('Published: June 20, 2026', 'Published: February 31, 2026')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, null);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
@@ -339,6 +379,7 @@ async function testNewsSourceMapsToMediaPublisherType() {
 
 await testGroundedPacketDraftAndFidelityPass();
 await testRawExtractedIdsDoNotPollutePacketCves();
+await testInvalidCalendarPublicationDateIsIgnored();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();

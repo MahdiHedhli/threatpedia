@@ -291,8 +291,11 @@ function sectionContent(packet, heading, claimSets) {
   if (/summary|severity/i.test(heading)) {
     return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'Available sources establish the incident subject but not additional summary detail.')];
   }
-  if (/technical|attack chain|exploit chain|mitre|capabilities/i.test(heading)) {
+  if (/technical|mitre|capabilities/i.test(heading)) {
     return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'Available sources do not establish additional technical findings.')];
+  }
+  if (/attack chain|exploit chain/i.test(heading)) {
+    return [fallbackLine(packet, 'Available sources do not establish a detailed attack chain.')];
   }
   if (/attribution|campaign/i.test(heading)) {
     return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'Available sources do not establish additional attribution beyond the current classification.')];

@@ -159,6 +159,15 @@ function monthDateToIso(month, day, year) {
   const parsedDay = Number.parseInt(day, 10);
   const parsedYear = Number.parseInt(year, 10);
   if (!monthNumber || !Number.isInteger(parsedDay) || parsedDay < 1 || parsedDay > 31 || !Number.isInteger(parsedYear)) return null;
+  const monthIndex = Number.parseInt(monthNumber, 10) - 1;
+  const date = new Date(Date.UTC(parsedYear, monthIndex, parsedDay));
+  if (
+    date.getUTCFullYear() !== parsedYear
+    || date.getUTCMonth() !== monthIndex
+    || date.getUTCDate() !== parsedDay
+  ) {
+    return null;
+  }
   return `${String(parsedYear).padStart(4, '0')}-${monthNumber}-${String(parsedDay).padStart(2, '0')}`;
 }
 
