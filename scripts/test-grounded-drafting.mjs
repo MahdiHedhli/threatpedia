@@ -72,8 +72,10 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.doesNotMatch(draft, /^title: "Fixture npm supply-chain compromise is the candidate subject approved for grounded drafting\."$/m);
     assert.doesNotMatch(draft, /candidate subject approved for grounded drafting/);
     assert.doesNotMatch(draft, /classifier work intent/);
+    assert.doesNotMatch(draft, /\bsource packet\b/i);
+    assert.doesNotMatch(draft, /\bpacket-backed\b/i);
     assert.match(draft, /techniqueId: "T1195\.002"/);
-    assert.match(draft, /\n- \[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, \d{4}-\d{2}-\d{2}\n/);
+    assert.match(draft, /\n- \[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-20\n/);
     assert.match(draft, /\ndate: 2026-06-21\n/);
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     const fidelity = checkGroundedDraft(packet, draft);

@@ -236,10 +236,10 @@ function candidateClaims(candidate, sources, extracts) {
     claim(claims, `The classifier effective active status is ${candidate.classification.effectiveActiveStatus}.`, 'exploitation', primaryRefs, 'frontmatter', 'medium');
   }
   for (const actor of candidate.matchedEntityHints?.actors || []) {
-    claim(claims, `The source packet links this candidate to existing actor ${actor.name || actor.id}.`, 'attribution', allRefs, 'other', 'low');
+    claim(claims, `Available source evidence connects this incident to actor ${actor.name || actor.id}.`, 'attribution', allRefs, 'other', 'low');
   }
   for (const campaign of candidate.matchedEntityHints?.campaigns || []) {
-    claim(claims, `The source packet links this candidate to existing campaign ${campaign.name || campaign.id}.`, 'attribution', allRefs, 'other', 'low');
+    claim(claims, `Available source evidence connects this incident to campaign ${campaign.name || campaign.id}.`, 'attribution', allRefs, 'other', 'low');
   }
   for (const extract of extracts.filter((item) => item.status === 'ok')) {
     const sourceSentence = sourceSentenceForCandidate(extract.extracted_text, candidate);

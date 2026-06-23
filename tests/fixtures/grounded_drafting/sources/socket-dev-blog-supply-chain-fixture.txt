@@ -1,1 +1,4 @@
-Fixture Research Report: Researchers observed a malicious npm package release that attempted credential theft during installation. The package used an install script to collect environment tokens from developer workstations. The report identified event-stream as a related ecosystem package for graph correlation.
+Fixture Research Report
+Published: June 20, 2026
+
+Researchers observed a malicious npm package release that attempted credential theft during installation. The package used an install script to collect environment tokens from developer workstations. The report identified event-stream as a related ecosystem package for graph correlation.

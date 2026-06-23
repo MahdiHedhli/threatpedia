@@ -139,6 +139,44 @@ function extractTitle(rawText) {
   return titleMatch ? normalizeWhitespace(stripHtml(titleMatch[1])) : null;
 }
 
+const MONTHS = new Map([
+  ['january', '01'],
+  ['february', '02'],
+  ['march', '03'],
+  ['april', '04'],
+  ['may', '05'],
+  ['june', '06'],
+  ['july', '07'],
+  ['august', '08'],
+  ['september', '09'],
+  ['october', '10'],
+  ['november', '11'],
+  ['december', '12'],
+]);
+
+function monthDateToIso(month, day, year) {
+  const monthNumber = MONTHS.get(String(month || '').toLowerCase());
+  const parsedDay = Number.parseInt(day, 10);
+  const parsedYear = Number.parseInt(year, 10);
+  if (!monthNumber || !Number.isInteger(parsedDay) || parsedDay < 1 || parsedDay > 31 || !Number.isInteger(parsedYear)) return null;
+  return `${String(parsedYear).padStart(4, '0')}-${monthNumber}-${String(parsedDay).padStart(2, '0')}`;
+}
+
+function extractPublicationDate(rawText) {
+  const text = normalizeWhitespace(stripHtml(rawText));
+  const patterns = [
+    /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
+    /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
+    /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    const iso = match ? monthDateToIso(match[1], match[2], match[3]) : null;
+    if (iso) return iso;
+  }
+  return null;
+}
+
 export async function fetchSourceText(url, { fixturesDir = null, root = process.cwd() } = {}) {
   if (fixturesDir) {
     const fixturePath = repoPath(root, path.join(fixturesDir, sourceFixtureName(url)));
@@ -161,12 +199,13 @@ export async function extractSource(url, sourceId, options = {}) {
   try {
     const raw = await fetchSourceText(url, options);
     const extractedText = normalizeWhitespace(stripHtml(raw)).slice(0, 5000);
+    const publishedAt = extractPublicationDate(raw);
     return {
       source: {
         id: sourceId,
         publisher: classification.publisher,
         url,
-        published_at: null,
+        published_at: publishedAt,
         source_type: classification.source_type,
         role: PRIMARY_SOURCE_TYPES.has(classification.source_type) ? 'primary' : 'supporting',
         notes: 'Fetched and extracted by the grounded source-packet builder.',

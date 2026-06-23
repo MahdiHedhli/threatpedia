@@ -21,26 +21,26 @@ sources:
     publisher: "Checkmarx"
     publisherType: vendor
     reliability: R1
-    publicationDate: "2026-06-23"
+    publicationDate: "2026-06-04"
     archived: false
   - url: "https://www.sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions"
     publisher: "Sysdig"
     publisherType: research
     reliability: R1
-    publicationDate: "2026-06-23"
+    publicationDate: "2026-03-23"
     archived: false
   - url: "https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html"
     publisher: "The Hacker News"
     publisherType: media
     reliability: R2
-    publicationDate: "2026-06-23"
+    publicationDate: "2026-05-11"
     archived: false
 mitreMappings:
   - techniqueId: "T1195.002"
     techniqueName: "Compromise Software Supply Chain"
     tactic: "Initial Access"
     confidence: probable
-    evidence: "Included from grounded source packet MITRE candidates."
+    evidence: "Mapped from cited source claims."
 ---
 ## Summary
 
@@ -60,23 +60,23 @@ mitreMappings:
 
 ## Impact Assessment
 
-<!-- claims: claim-1 --> The source packet does not establish additional packet-backed facts for this section.
+<!-- claims: claim-1 --> Available sources do not establish additional facts for this section.
 
 ## Attribution
 
-<!-- claims: claim-7 --> The source packet links this candidate to existing actor TeamPCP.
-<!-- claims: claim-8 --> The source packet links this candidate to existing campaign TeamPCP Multi-Ecosystem Supply Chain Campaign.
+<!-- claims: claim-7 --> Available source evidence connects this incident to actor TeamPCP.
+<!-- claims: claim-8 --> Available source evidence connects this incident to campaign TeamPCP Multi-Ecosystem Supply Chain Campaign.
 
 ## Timeline
 
-<!-- claims: claim-1 --> The source packet does not establish a complete public timeline.
+<!-- claims: claim-1 --> Available sources do not establish a complete public timeline.
 
 ## Remediation & Mitigation
 
-<!-- claims: claim-1 --> The source packet does not establish additional packet-backed facts for this section.
+<!-- claims: claim-1 --> Available sources do not establish additional facts for this section.
 
 ## Sources & References
 
-- [Checkmarx: Update: Ongoing Checkmarx Supply Chain Security Incident](https://checkmarx.com/blog/ongoing-security-updates/) — Checkmarx, 2026-06-23
-- [Sysdig: TeamPCP expands: Supply chain compromise spreads from Trivy to Checkmarx GitHub Actions \| Sysdig](https://www.sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions) — Sysdig, 2026-06-23
-- [The Hacker News: TeamPCP Compromises Checkmarx Jenkins AST Plugin Weeks After KICS Supply Chain Attack](https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html) — The Hacker News, 2026-06-23
+- [Checkmarx: Update: Ongoing Checkmarx Supply Chain Security Incident](https://checkmarx.com/blog/ongoing-security-updates/) — Checkmarx, 2026-06-04
+- [Sysdig: TeamPCP expands: Supply chain compromise spreads from Trivy to Checkmarx GitHub Actions \| Sysdig](https://www.sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions) — Sysdig, 2026-03-23
+- [The Hacker News: TeamPCP Compromises Checkmarx Jenkins AST Plugin Weeks After KICS Supply Chain Attack](https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html) — The Hacker News, 2026-05-11

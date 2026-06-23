@@ -135,7 +135,7 @@ function includedMitreMappings(packet) {
 function mitreFrontmatter(packet, { required = false } = {}) {
   const mappings = includedMitreMappings(packet);
   if (required && mappings.length === 0) {
-    throw new Error('Campaign grounded drafts require at least one packet-backed MITRE mapping marked include_in_article=true');
+    throw new Error('Campaign grounded drafts require at least one cited-source MITRE mapping marked include_in_article=true');
   }
   if (mappings.length === 0) return ['mitreMappings: []'];
   return [
@@ -145,7 +145,7 @@ function mitreFrontmatter(packet, { required = false } = {}) {
       `    techniqueName: ${yamlString(mapping.techniqueName)}`,
       `    tactic: ${yamlString(mapping.tactic)}`,
       `    confidence: ${mapping.confidence}`,
-      '    evidence: "Included from grounded source packet MITRE candidates."',
+      '    evidence: "Mapped from cited source claims."',
     ]),
   ];
 }
@@ -283,22 +283,22 @@ function sectionContent(packet, heading, claimSets) {
         const title = markdownEscape(extractTitles.get(source.id) || source.publisher);
         return `- [${markdownEscape(source.publisher)}: ${title}](${source.url}) — ${markdownEscape(source.publisher)}, ${sourcePublicationDate(source)}`;
       });
-    return sourceRows.length ? sourceRows : [fallbackLine(packet, 'The source packet did not include source rows for this draft.')];
+    return sourceRows.length ? sourceRows : [fallbackLine(packet, 'No cited source rows are available for this draft.')];
   }
   if (/timeline/i.test(heading)) {
-    return claimSets.timeline.length ? claimLines(claimSets.timeline) : [fallbackLine(packet, 'The source packet does not establish a complete public timeline.')];
+    return claimSets.timeline.length ? claimLines(claimSets.timeline) : [fallbackLine(packet, 'Available sources do not establish a complete public timeline.')];
   }
   if (/summary|severity/i.test(heading)) {
-    return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'The source packet establishes only the approved candidate subject.')];
+    return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'Available sources establish the incident subject but not additional summary detail.')];
   }
   if (/technical|attack chain|exploit chain|mitre|capabilities/i.test(heading)) {
-    return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'The source packet does not establish additional packet-backed technical findings.')];
+    return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'Available sources do not establish additional technical findings.')];
   }
   if (/attribution|campaign/i.test(heading)) {
-    return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'The packet does not establish additional attribution beyond the candidate classification.')];
+    return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'Available sources do not establish additional attribution beyond the current classification.')];
   }
   if (/remediation|impact|detection|indicators|open questions/i.test(heading)) {
-    return [fallbackLine(packet, 'The source packet does not establish additional packet-backed facts for this section.')];
+    return [fallbackLine(packet, 'Available sources do not establish additional facts for this section.')];
   }
   return claimLines(claimSets.reader);
 }
