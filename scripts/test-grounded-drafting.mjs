@@ -167,6 +167,34 @@ async function testInvalidCalendarPublicationDateIsIgnored() {
   }
 }
 
+async function testPublicationDateFallsThroughInvalidMatches() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-date-fallthrough-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? original.replace('Published: June 20, 2026', 'Published: February 31, 2026 Published: June 20, 2026')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 async function testSourceRelativeWordingIsContextualized() {
   const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-source-context-'));
   try {
@@ -505,6 +533,7 @@ async function testNewsSourceMapsToMediaPublisherType() {
 await testGroundedPacketDraftAndFidelityPass();
 await testRawExtractedIdsDoNotPollutePacketCves();
 await testInvalidCalendarPublicationDateIsIgnored();
+await testPublicationDateFallsThroughInvalidMatches();
 await testSourceRelativeWordingIsContextualized();
 await testCandidateTermMatchingUsesBoundaries();
 await testSourceDateFallbackUsesPacketCreationDate();

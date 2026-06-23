@@ -154,6 +154,12 @@ const MONTHS = new Map([
   ['december', '12'],
 ]);
 
+const DATE_PATTERNS = [
+  /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+  /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+];
+
 function monthDateToIso(month, day, year) {
   const monthNumber = MONTHS.get(String(month || '').toLowerCase());
   const parsedDay = Number.parseInt(day, 10);
@@ -172,15 +178,13 @@ function monthDateToIso(month, day, year) {
 }
 
 function extractPublicationDate(rawText) {
-  const patterns = [
-    /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
-    /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
-    /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/i,
-  ];
-  for (const pattern of patterns) {
-    const match = String(rawText || '').match(pattern);
-    const iso = match ? monthDateToIso(match[1], match[2], match[3]) : null;
-    if (iso) return iso;
+  const text = String(rawText || '');
+  for (const pattern of DATE_PATTERNS) {
+    pattern.lastIndex = 0;
+    for (const match of text.matchAll(pattern)) {
+      const iso = monthDateToIso(match[1], match[2], match[3]);
+      if (iso) return iso;
+    }
   }
   return null;
 }
