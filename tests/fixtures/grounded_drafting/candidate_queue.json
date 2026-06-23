@@ -1,0 +1,59 @@
+{
+  "schema_version": "threatpedia-supply-chain-candidate-queue/1",
+  "generated_at": "2026-06-22T00:00:00Z",
+  "mode": "dry-run",
+  "drafting_enabled": false,
+  "auto_drafting_allowed": false,
+  "queue_action": "candidate_review_only",
+  "candidates": [
+    {
+      "candidateId": "SC-CAND-1234abcd5678ef90",
+      "canonicalSubjectId": "MAL-2026-GROUNDED-FIXTURE",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Fixture npm supply-chain compromise",
+      "summary": "A malicious npm package release attempted credential theft through a package install script.",
+      "sources": ["osv", "vendor-report"],
+      "sourceRefs": [
+        "https://socket.dev/blog/supply-chain-fixture",
+        "https://www.microsoft.com/security/blog/supply-chain-fixture"
+      ],
+      "mergedLeadRefs": ["osv:MAL-2026-GROUNDED-FIXTURE"],
+      "firstSeenAt": "2026-06-21T00:00:00Z",
+      "lastMaterialActivityAt": "2026-06-21T00:00:00Z",
+      "activityBasis": ["advisory_updated"],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [
+          {
+            "id": "pkg-npm-event-stream",
+            "name": "event-stream",
+            "ecosystem": "npm"
+          }
+        ],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-21T00:00:00Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 74,
+      "rankReasons": ["current lead", "active exploitation or malware signal"],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; grounded drafting is required."
+    }
+  ]
+}

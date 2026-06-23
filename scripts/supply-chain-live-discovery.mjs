@@ -1072,7 +1072,7 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueu
       rankReasons: ranking.rankReasons,
       queueAction: 'candidate_review',
       draftingAllowed: false,
-      autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; grounded drafting is not implemented in this sprint.',
+      autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.',
       ...(previousManualOverride ? { manualOverride: previousManualOverride } : {}),
     });
   }

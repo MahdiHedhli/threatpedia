@@ -187,6 +187,18 @@ discovery queues are open, validated, and stable.
      before drafting. The packet is a source-backed evidence contract; the
      draft should use packet `claims[]` and avoid `not_supported[]` items unless
      the packet is updated and preflight is rerun.
+   - **B2 grounded candidate drafting:** approved B1 supply-chain candidates
+     may be consumed only through
+     `node scripts/build-grounded-source-packet.mjs --queue <queue.json> --candidate-id <id> --approved-by <operator> --approval-ref <ref> --out <packet.json>`,
+     followed by `node scripts/preflight-source-packet.mjs <packet.json>`,
+     `node scripts/draft-grounded-article.mjs --packet <packet.json> --out <draft.md>`,
+     and `node scripts/check-grounded-draft.mjs --packet <packet.json> --draft <draft.md>`.
+     The B1 queue remains `draftingAllowed: false`; approval is recorded in
+     the B2 packet. The grounded drafter must write only from packet claims and
+     packet source URLs. Placeholder URLs, unmarked factual sentences, and URLs
+     absent from the packet are fidelity failures. Supported archetype lanes are
+     `incident`, `zero-day`, `campaign`, `threat-actor`, and `malware-family`.
+     B2 does not authorize B3-scale backfill until a sample passes fidelity QA.
    - **VulnCheck KEV prefill:** operators may run
      `node scripts/vulncheck-kev-intake.mjs --dry-run --out <artifact.json>`
      to inspect VulnCheck KEV candidates before selecting or enriching zero-day
