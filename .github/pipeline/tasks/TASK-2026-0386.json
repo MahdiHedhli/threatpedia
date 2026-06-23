@@ -23,7 +23,7 @@
         "CVE-2026-34908"
       ],
       "exploitId": "TP-EXP-2026-0328",
-      "type": "Unclassified",
+      "type": "Improper Access Control",
       "platform": "Ubiquiti UniFi OS",
       "severity": "critical",
       "cisaKev": true,
