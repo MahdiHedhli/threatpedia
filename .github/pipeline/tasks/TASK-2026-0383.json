@@ -29,7 +29,6 @@
       "cisaKev": true,
       "disclosedDate": "2026-06-23",
       "cwes": [
-        "CWE-78",
         "CWE-94"
       ],
       "knownRansomwareUse": false
