@@ -51,6 +51,7 @@ const disabledRoutes = getSupplyChainRoutes({ enabled: false, data });
 assert.equal(disabledRoutes.length, 0, 'feature flag disabled should generate no routes');
 
 const routes = getSupplyChainRoutes({ enabled: true, data });
+const indexModel = getSupplyChainIndexModel(data);
 const routeUrls = new Set(routes.map(routeUrl));
 assert.ok(routeUrls.has('/supply-chain/'), 'index route should be generated');
 assert.ok(routeUrls.has('/supply-chain/explore/'), 'explore route should be generated');
@@ -62,6 +63,15 @@ assert.ok(routeUrls.has('/supply-chain/repositories/repo-github-com-codecov-code
 assert.ok(routeUrls.has('/supply-chain/organizations/org-codecov/'), 'organization route should be generated');
 assert.ok(routeUrls.has('/supply-chain/maintainers/maintainer-jia-tan/'), 'maintainer route should be generated');
 assert.ok(routeUrls.has('/supply-chain/malware-families/family-shai-hulud/'), 'malware-family lineage route should be generated');
+assert.ok(
+  indexModel.lineageViews.some((view) =>
+    view.id === 'family-shai-hulud' &&
+    view.href === '/supply-chain/malware-families/family-shai-hulud/' &&
+    view.command.graphType === 'malware_family' &&
+    view.strainCount > 0
+  ),
+  'index model should expose malware-family lineage views with graph commands'
+);
 const shaiHuludFamily = getSupplyChainMalwareFamilyPage('family-shai-hulud', data);
 assert.equal(shaiHuludFamily.kind, 'malware-family', 'malware-family page model should use dedicated kind');
 assert.ok(
@@ -101,11 +111,24 @@ assert.ok(
     supplyChainRouteSource.includes('data-sc-explore-exit') &&
     supplyChainRouteSource.includes('class="sc-explore-rail"') &&
     supplyChainRouteSource.includes('class="graph-search-pill"') &&
+    supplyChainRouteSource.includes('data-sc-graph-zoom="in"') &&
+    supplyChainRouteSource.includes('data-sc-graph-zoom="out"') &&
+    supplyChainRouteSource.includes('aria-label="Zoom graph in"') &&
+    supplyChainRouteSource.includes('aria-label="Zoom graph out"') &&
     supplyChainRouteSource.includes('aria-label="Search graph"') &&
     supplyChainRouteSource.includes('title="Full screen"') &&
     supplyChainRouteSource.includes('aria-label="Toggle full screen"') &&
     supplyChainRouteSource.includes('title="Exit full screen"'),
   'route should expose full-screen explore controls on the persisted graph island'
+);
+assert.ok(
+  supplyChainRouteSource.includes('Lineage Views') &&
+    supplyChainRouteSource.includes('Malware Families') &&
+    supplyChainRouteSource.includes('class="lineage-view-card"') &&
+    supplyChainRouteSource.includes('data-graph-type={family.command.graphType}') &&
+    supplyChainRouteSource.includes('.lineage-view-grid') &&
+    supplyChainRouteSource.includes('.lineage-view-card'),
+  'index route should expose malware-family lineage cards from the standard Supply Chain page'
 );
 assert.ok(
   supplyChainRouteSource.includes(':global(body.sc-explore-active)') &&
@@ -239,6 +262,17 @@ assert.ok(
   supplyChainGraphSource.includes('if (entry.href)') &&
     supplyChainGraphSource.includes('window.location.href = entry.href'),
   'graph search should navigate entries with explicit hrefs before graph-selection fallback'
+);
+assert.ok(
+  supplyChainGraphSource.includes('const CAMERA_Z_MIN = 0.22') &&
+    supplyChainGraphSource.includes('const CAMERA_Z_MAX = 3.4') &&
+    supplyChainGraphSource.includes('data-sc-graph-zoom') &&
+    supplyChainGraphSource.includes('zoomAt(event.clientX, event.clientY, zoomFactor)') &&
+    supplyChainGraphSource.includes('startPinchGesture()') &&
+    supplyChainGraphSource.includes('updatePinchGesture()') &&
+    supplyChainGraphSource.includes('screenToWorldAtCamera') &&
+    supplyChainGraphSource.includes('cameraForAnchoredZoom'),
+  'graph runtime should support visible zoom controls, cursor-anchored wheel zoom, and pinch zoom'
 );
 const generatedStixBundle = buildMalwareFamilyStixBundle(data);
 assert.deepEqual(malwareFamilyStixPayload, generatedStixBundle, 'malware-family STIX bundle should be generated from the same data object');
