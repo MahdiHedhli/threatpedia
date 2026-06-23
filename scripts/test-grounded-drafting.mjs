@@ -83,6 +83,14 @@ async function testGroundedPacketDraftAndFidelityPass() {
       article_section: 'remediation',
       confidence: 'medium',
     });
+    packet.claims.push({
+      claim_id: 'claim-10',
+      claim: 'The malicious package release used an install script before attempting credential theft.',
+      claim_type: 'other',
+      source_refs: ['src-1'],
+      article_section: 'attack-chain',
+      confidence: 'medium',
+    });
     writeJson(repoRoot, packetPath, packet);
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
@@ -98,7 +106,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.match(draft, /\ndate: 2026-06-21\n/);
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     assert.doesNotMatch(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
-    assert.match(h2Section(draft, 'Attack Chain'), /credential theft through a package install script/);
+    assert.match(h2Section(draft, 'Attack Chain'), /The malicious package release used an install script before attempting credential theft/);
     assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
     assert.doesNotMatch(h2Section(draft, 'Remediation & Mitigation'), /do not establish additional remediation facts/);
     assert.match(h2Section(draft, 'Remediation & Mitigation'), /removed from the registry/);
