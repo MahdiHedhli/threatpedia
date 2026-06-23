@@ -107,6 +107,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     assert.doesNotMatch(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
     assert.match(h2Section(draft, 'Attack Chain'), /The malicious package release used an install script before attempting credential theft/);
+    assert.doesNotMatch(h2Section(draft, 'Technical Analysis'), /The malicious package release used an install script before attempting credential theft/);
     assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
     assert.doesNotMatch(h2Section(draft, 'Remediation & Mitigation'), /do not establish additional remediation facts/);
     assert.match(h2Section(draft, 'Remediation & Mitigation'), /removed from the registry/);

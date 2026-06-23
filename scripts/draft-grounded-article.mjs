@@ -340,6 +340,10 @@ function body(packet, createdAt) {
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
   const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
+  const explicitChainClaims = [
+    ...(groups.get('attack-chain') || []),
+    ...(groups.get('exploit-chain') || []),
+  ];
   const remediationClaims = [
     ...(groups.get('mitigation') || []),
     ...(groups.get('remediation') || []),
@@ -348,12 +352,14 @@ function body(packet, createdAt) {
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));
   const attributionClaimIds = new Set(attributionClaims.map((claim) => claim.claim_id));
+  const chainClaimIds = new Set(explicitChainClaims.map((claim) => claim.claim_id));
   const remediationClaimIds = new Set(remediationClaims.map((claim) => claim.claim_id));
   const supportingClaims = readerClaims.filter((claim) =>
     !summaryClaimIds.has(claim.claim_id)
     && !technicalClaimIds.has(claim.claim_id)
     && !timelineClaimIds.has(claim.claim_id)
     && !attributionClaimIds.has(claim.claim_id)
+    && !chainClaimIds.has(claim.claim_id)
     && !remediationClaimIds.has(claim.claim_id)
   );
   const findingClaims = [...technicalClaims, ...supportingClaims];
