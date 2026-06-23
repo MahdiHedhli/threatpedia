@@ -80,7 +80,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -172,9 +172,9 @@
         "CVE-2025-12352"
       ],
       "cwes": [],
-      "vendorProject": null,
-      "product": null,
-      "vulnerabilityName": "  Unrestricted Upload of File with Dangerous Type",
+      "vendorProject": "rocketgenius",
+      "product": "gravityforms",
+      "vulnerabilityName": "Unrestricted Upload of File with Dangerous Type",
       "shortDescription": "The Gravity Forms plugin for WordPress is vulnerable to arbitrary file uploads due to missing file type validation in the copy_post_image() function in all versions up to, and including, 2.9.20. This makes it possible for unauthenticated attackers to upload arbitrary files on the affected site's server which may make remote code execution possible. This only impacts sites that have allow_url_fopen set to `On`, the post creation form enabled along with a file upload field for the post",
       "vulncheck_date_added": "2026-06-23",
       "recency_bucket": "recent",
@@ -209,7 +209,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -237,8 +237,8 @@
         },
         "affected_products": [
           {
-            "vendor": "Unknown",
-            "product": "Unknown",
+            "vendor": "rocketgenius",
+            "product": "gravityforms",
             "versions": "unknown",
             "source_refs": [
               "src-vulncheck-kev"
@@ -255,9 +255,9 @@
         ],
         "cwes": [],
         "preserved_vulncheck_fields": {
-          "vendorProject": null,
-          "product": null,
-          "vulnerabilityName": "  Unrestricted Upload of File with Dangerous Type",
+          "vendorProject": "rocketgenius",
+          "product": "gravityforms",
+          "vulnerabilityName": "Unrestricted Upload of File with Dangerous Type",
           "shortDescription": "The Gravity Forms plugin for WordPress is vulnerable to arbitrary file uploads due to missing file type validation in the copy_post_image() function in all versions up to, and including, 2.9.20. This makes it possible for unauthenticated attackers to upload arbitrary files on the affected site's server which may make remote code execution possible. This only impacts sites that have allow_url_fopen set to `On`, the post creation form enabled along with a file upload field for the post",
           "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
           "knownRansomwareCampaignUse": "Unknown",
@@ -293,9 +293,9 @@
         "CVE-2026-6433"
       ],
       "cwes": [],
-      "vendorProject": null,
-      "product": null,
-      "vulnerabilityName": "  Improper Control of Generation of Code ('Code Injection')",
+      "vendorProject": "custom_css_js_php_project",
+      "product": "custom_css_js_php",
+      "vulnerabilityName": "Improper Control of Generation of Code ('Code Injection')",
       "shortDescription": "The Custom css-js-php WordPress plugin through 2.0.7 does not properly sanitize user input before using it in a SQL query, and the result is passed to eval(), allowing unauthenticated users to execute arbitrary PHP code on the server.",
       "vulncheck_date_added": "2026-06-23",
       "recency_bucket": "recent",
@@ -334,7 +334,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -362,8 +362,8 @@
         },
         "affected_products": [
           {
-            "vendor": "Unknown",
-            "product": "Unknown",
+            "vendor": "custom_css_js_php_project",
+            "product": "custom_css_js_php",
             "versions": "unknown",
             "source_refs": [
               "src-vulncheck-kev"
@@ -380,9 +380,9 @@
         ],
         "cwes": [],
         "preserved_vulncheck_fields": {
-          "vendorProject": null,
-          "product": null,
-          "vulnerabilityName": "  Improper Control of Generation of Code ('Code Injection')",
+          "vendorProject": "custom_css_js_php_project",
+          "product": "custom_css_js_php",
+          "vulnerabilityName": "Improper Control of Generation of Code ('Code Injection')",
           "shortDescription": "The Custom css-js-php WordPress plugin through 2.0.7 does not properly sanitize user input before using it in a SQL query, and the result is passed to eval(), allowing unauthenticated users to execute arbitrary PHP code on the server.",
           "required_action": "Apply remediations or mitigations per vendor instructions or discontinue use of the product if remediation or mitigations are unavailable.",
           "knownRansomwareCampaignUse": "Unknown",
@@ -468,7 +468,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -604,7 +604,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -725,7 +725,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -928,7 +928,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -1400,7 +1400,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -1526,7 +1526,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -1652,7 +1652,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -1778,7 +1778,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -1904,7 +1904,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2030,7 +2030,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2156,7 +2156,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2294,7 +2294,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2455,7 +2455,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2576,7 +2576,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2698,7 +2698,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2824,7 +2824,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -2950,7 +2950,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -3075,7 +3075,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -3501,7 +3501,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -4842,7 +4842,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -5735,7 +5735,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9000,7 +9000,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9145,7 +9145,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9275,7 +9275,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9400,7 +9400,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9539,7 +9539,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },
@@ -9728,7 +9728,7 @@
         "drafting_allowed": false,
         "authority_boundary": {
           "cve_identity_authority": "CVE.org / MITRE CVE Program",
-          "official_cisa_kev_authority": "CISA",
+          "official_cisa_kev_authority": "Cybersecurity and Infrastructure Security Agency",
           "vulncheck_role": "non-authoritative exploitation signal and supporting source",
           "instruction": "Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication."
         },

@@ -117,4 +117,34 @@ const includeSeen = buildRecentIntake(fixture, {
 assert.deepEqual(includeSeen.candidates.map(candidate => candidate.cves[0]), ['CVE-2026-0003', 'CVE-2026-0002']);
 assert.equal(includeSeen.candidates[1].already_seen, true);
 
+const productNormalized = buildRecentIntake({
+  data: [
+    {
+      vendorProject: null,
+      product: null,
+      vulnerabilityName: ' Unrestricted Upload of File with Dangerous Type',
+      shortDescription: 'The Gravity Forms plugin for WordPress is vulnerable to arbitrary file uploads.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-12352'],
+      cwes: [],
+      vulncheck_xdb: [],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+const normalizedPrefill = productNormalized.candidates[0].source_packet_prefill;
+assert.equal(normalizedPrefill.affected_products[0].vendor, 'rocketgenius');
+assert.equal(normalizedPrefill.affected_products[0].product, 'gravityforms');
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, 'rocketgenius');
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, 'gravityforms');
+
 console.log('vulncheck-kev-intake tests passed');

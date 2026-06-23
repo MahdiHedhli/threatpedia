@@ -30,6 +30,10 @@ const DEFAULT_CANDIDATE_INDEX_PATH = '.github/pipeline/source-packets/vulncheck-
 const DEFAULT_SIBLING_LIMIT = 4;
 const CVE_RE = /\bCVE-\d{4}-\d{4,}\b/gi;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const PRODUCT_NORMALIZATION_BY_CVE = new Map([
+  ['CVE-2025-12352', { vendorProject: 'rocketgenius', product: 'gravityforms' }],
+  ['CVE-2026-6433', { vendorProject: 'custom_css_js_php_project', product: 'custom_css_js_php' }],
+]);
 
 export function usage() {
   console.log([
@@ -513,7 +517,22 @@ function priorityScore(record, addedDate) {
   return { score, reasons };
 }
 
+function normalizeKnownProductFields(record) {
+  const cves = uniqueStrings(record?.cve);
+  for (const cve of cves) {
+    const normalized = PRODUCT_NORMALIZATION_BY_CVE.get(cve);
+    if (!normalized) continue;
+    return {
+      ...record,
+      vendorProject: record.vendorProject || normalized.vendorProject,
+      product: record.product || normalized.product,
+    };
+  }
+  return record;
+}
+
 function makePrefill(record) {
+  record = normalizeKnownProductFields(record);
   const cves = uniqueStrings(record.cve);
   const cwes = uniqueStrings(record.cwes);
   const refs = sourceRefsFor(record);
@@ -591,6 +610,7 @@ function makePrefill(record) {
 }
 
 function toCandidate(record, seenCves, recencyBucket = 'recent') {
+  record = normalizeKnownProductFields(record);
   const cves = uniqueStrings(record.cve);
   const addedDate = normalizeDate(record.date_added);
   const seenMatches = cves.filter(cve => seenCves.has(cve));
