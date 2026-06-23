@@ -143,6 +143,106 @@ function affectedProducts(candidate, sources) {
   return products;
 }
 
+const BOILERPLATE_SENTENCE_RE = /\b(?:secure \.gov websites|a lock \( lock|flipboard|whatsapp|reddit|email more|cookie|enable javascript|privacy policy|terms of use|subscribe|learn more)\b/i;
+const LOW_SIGNAL_TERMS = new Set([
+  'candidate',
+  'classified',
+  'current',
+  'create',
+  'article',
+  'grounded',
+  'drafting',
+  'supply',
+  'chain',
+  'security',
+  'compromise',
+  'incident',
+  'campaign',
+  'package',
+]);
+
+function candidateTerms(candidate) {
+  const values = [
+    candidate.title,
+    candidate.summary,
+    candidate.canonicalSubjectId,
+    candidate.matchedEntityHints?.actors?.map((item) => item.name || item.id),
+    candidate.matchedEntityHints?.campaigns?.map((item) => item.name || item.id),
+    candidate.matchedEntityHints?.packages?.map((item) => item.name || item.id),
+  ].flat(Infinity);
+  const words = uniqueStrings(values.join(' ').toLowerCase().match(/[a-z0-9][a-z0-9._-]{2,}/g) || []);
+  return words.filter((word) => !LOW_SIGNAL_TERMS.has(word));
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function candidateTermRegex(term) {
+  const escaped = escapeRegExp(term);
+  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[.!?](?=\\s|$)|[^a-z0-9._-])`, 'i');
+}
+
+function sourceSentenceForCandidate(text, candidate) {
+  const termRegexes = candidateTerms(candidate).map((term) => candidateTermRegex(term));
+  const sentences = String(text || '')
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence.length >= 40 && sentence.length <= 320)
+    .filter((sentence) => !BOILERPLATE_SENTENCE_RE.test(sentence));
+  if (sentences.length === 0) return null;
+
+  let best = null;
+  for (const sentence of sentences) {
+    const lower = sentence.toLowerCase();
+    const score = termRegexes.reduce((total, regex) => total + (regex.test(lower) ? 1 : 0), 0);
+    if (score > (best?.score || 0)) best = { sentence, score };
+  }
+  return best?.score > 0 ? best.sentence : sentences[0];
+}
+
+function articleSectionForSourceSentence(sentence) {
+  if (/\b(?:ensure that you are using|update|upgrade|patch|patched|released|rotate|rotated|remove|removed|mitigat|remediat|addresses the concerns)\b/i.test(sentence)) {
+    return 'mitigation';
+  }
+  return 'technical-analysis';
+}
+
+function contextualizeSourceRelativeSentence(sentence, source) {
+  const text = String(sentence || '').trim();
+  const phraseIndex = text.toLowerCase().indexOf('what has not yet been publicly reported is that');
+  const relevantText = phraseIndex >= 0 ? text.slice(phraseIndex) : text;
+  const match = relevantText.match(/^What has not yet been publicly reported is that\s+(.+)$/i);
+  if (!match) return text;
+  const detail = match[1].trim().replace(/\s+([.,;:!?])/g, '$1');
+  const prefix = source?.publisher && source?.published_at
+    ? `${source.publisher} reported on ${source.published_at} that`
+    : 'A cited source reported that';
+  return `${prefix} ${detail}`;
+}
+
+function mitreCandidates(candidate, sources) {
+  const text = [
+    candidate.title,
+    candidate.summary,
+    candidate.proposedArchetype,
+    candidate.classification?.workIntent,
+    candidate.classification?.effectiveActiveStatus,
+    candidate.matchedEntityHints?.packages?.map((item) => `${item.name || ''} ${item.ecosystem || ''}`),
+  ].flat(Infinity).join(' ');
+  if (!/\b(?:supply[- ]chain|ci\/cd|github actions|jenkins|npm|pypi|package|registry|workflow)\b/i.test(text)) {
+    return [];
+  }
+  return [{
+    technique_id: 'T1195.002',
+    technique_name: 'Compromise Software Supply Chain',
+    tactic: 'Initial Access',
+    source_refs: sourceRefsByRole(sources, ['primary', 'database', 'vendor', 'research']),
+    confidence: 'medium',
+    include_in_article: true,
+  }];
+}
+
 function outputPatternForLane(lane, candidateId) {
   const section = SECTION_MAP[lane];
   if (!section) throw new Error(`Unsupported grounded drafting lane: ${lane}`);
@@ -156,24 +256,27 @@ function candidateClaims(candidate, sources, extracts) {
   const claims = [];
   const primaryRefs = sourceRefsByRole(sources, ['primary', 'database', 'vendor', 'research']);
   const allRefs = sourceRefsForAll(sources);
-  claim(claims, `${safeTitle(candidate.title)} is the candidate subject approved for grounded drafting.`, 'other', primaryRefs, 'summary');
+  claim(claims, `${safeTitle(candidate.title)} is the candidate subject approved for grounded drafting.`, 'other', primaryRefs, 'frontmatter');
   if (candidate.summary) claim(claims, candidate.summary, 'other', primaryRefs, 'summary', 'medium');
   if (candidate.canonicalSubjectId) claim(claims, `The canonical subject identifier is ${candidate.canonicalSubjectId}.`, 'other', primaryRefs, 'frontmatter');
-  if (candidate.classification?.leadClass) claim(claims, `The candidate is classified as ${candidate.classification.leadClass}.`, 'other', allRefs, 'summary', 'medium');
-  if (candidate.classification?.workIntent) claim(claims, `The classifier work intent is ${candidate.classification.workIntent}.`, 'other', allRefs, 'summary', 'medium');
+  if (candidate.classification?.leadClass) claim(claims, `The candidate is classified as ${candidate.classification.leadClass}.`, 'other', allRefs, 'frontmatter', 'medium');
+  if (candidate.classification?.workIntent) claim(claims, `The classifier work intent is ${candidate.classification.workIntent}.`, 'other', allRefs, 'frontmatter', 'medium');
   if (candidate.classification?.effectiveActiveStatus && candidate.classification.effectiveActiveStatus !== 'none') {
-    claim(claims, `The classifier effective active status is ${candidate.classification.effectiveActiveStatus}.`, 'exploitation', primaryRefs, 'summary', 'medium');
+    claim(claims, `The classifier effective active status is ${candidate.classification.effectiveActiveStatus}.`, 'exploitation', primaryRefs, 'frontmatter', 'medium');
   }
   for (const actor of candidate.matchedEntityHints?.actors || []) {
-    claim(claims, `The candidate text connects to existing actor ${actor.name || actor.id}.`, 'attribution', allRefs, 'summary', 'low');
+    claim(claims, `Available source evidence connects this incident to actor ${actor.name || actor.id}.`, 'attribution', allRefs, 'other', 'low');
   }
   for (const campaign of candidate.matchedEntityHints?.campaigns || []) {
-    claim(claims, `The candidate text connects to existing campaign ${campaign.name || campaign.id}.`, 'attribution', allRefs, 'summary', 'low');
+    claim(claims, `Available source evidence connects this incident to campaign ${campaign.name || campaign.id}.`, 'attribution', allRefs, 'other', 'low');
   }
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
   for (const extract of extracts.filter((item) => item.status === 'ok')) {
-    const text = extract.extracted_text;
-    const firstSentence = text.split(/(?<=[.!?])\s+/).find((sentence) => sentence.length >= 40 && sentence.length <= 280);
-    if (firstSentence) claim(claims, firstSentence, 'other', [extract.source_id], 'technical-analysis', 'medium');
+    const sourceSentence = contextualizeSourceRelativeSentence(
+      sourceSentenceForCandidate(extract.extracted_text, candidate),
+      sourceById.get(extract.source_id),
+    );
+    if (sourceSentence) claim(claims, sourceSentence, 'other', [extract.source_id], articleSectionForSourceSentence(sourceSentence), 'medium');
   }
   return claims;
 }
@@ -200,12 +303,12 @@ export async function buildGroundedPacket(args) {
   }
 
   const lane = laneForCandidate(candidate);
-  const allText = [candidate.title, candidate.summary, candidate.canonicalSubjectId, extracts.map((item) => item.extracted_text)].flat().join('\n');
-  const ids = extractIds(allText);
   const primarySources = sources.filter((source) => source.role === 'primary');
   const supportingSources = sources.filter((source) => source.role !== 'primary');
   const successfulExtractRefs = extracts.filter((extract) => extract.status === 'ok').map((extract) => extract.source_id);
   const claims = candidateClaims(candidate, sources, extracts);
+  const idText = [candidate.title, candidate.summary, candidate.canonicalSubjectId, claims.map((item) => item.claim)].flat().join('\n');
+  const ids = extractIds(idText);
   const createdAt = args.createdAt || new Date().toISOString();
 
   return {
@@ -219,6 +322,8 @@ export async function buildGroundedPacket(args) {
       candidate_id: candidate.candidateId,
       canonical_subject_id: candidate.canonicalSubjectId,
       proposed_archetype: candidate.proposedArchetype,
+      title: candidate.title || null,
+      summary: candidate.summary || null,
       classification: candidate.classification,
       rank: candidate.rank,
       rank_reasons: candidate.rankReasons || [],
@@ -297,7 +402,7 @@ export async function buildGroundedPacket(args) {
         reason: 'B2 grounded drafting forbids model-memory additions and placeholder source recovery.',
       },
     ],
-    mitre_candidates: [],
+    mitre_candidates: mitreCandidates(candidate, sources),
     drafting_notes: [
       'Draft strictly from claims[] and source_extracts[].',
       'Every substantive article sentence must carry a claim marker.',

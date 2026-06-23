@@ -1,0 +1,76 @@
+{
+  "schema_version": "threatpedia-supply-chain-candidate-queue/1",
+  "generated_at": "2026-06-23T00:00:00Z",
+  "mode": "b3-production-backfill",
+  "drafting_enabled": false,
+  "auto_drafting_allowed": false,
+  "queue_action": "candidate_review_only",
+  "batch": {
+    "id": "b3-2026-batch-001",
+    "description": "First bounded B3 production backfill batch using the grounded B2 source-packet drafting path.",
+    "approval_ref": "Kernel K user request: Start B3",
+    "curation_note": "Batch excludes 2026 supply-chain candidates that already have public incident pages on main."
+  },
+  "candidates": [
+    {
+      "candidateId": "SC-CAND-b32026c0ffee0001",
+      "canonicalSubjectId": "SC-2026-CHECKMARX-JENKINS",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Checkmarx Jenkins AST plugin supply-chain compromise",
+      "summary": "Checkmarx reported that attackers used access traced to the Trivy supply-chain attack to publish malicious developer-tooling artifacts, including a modified Jenkins AST plugin.",
+      "sources": ["vendor-report", "research-report", "news-report"],
+      "sourceRefs": [
+        "https://checkmarx.com/blog/ongoing-security-updates/",
+        "https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html",
+        "https://www.sysdig.com/blog/teampcp-expands-supply-chain-compromise-spreads-from-trivy-to-checkmarx-github-actions"
+      ],
+      "mergedLeadRefs": ["corpus:SC-2026-CHECKMARX-JENKINS"],
+      "firstSeenAt": "2026-05-09T00:00:00Z",
+      "lastMaterialActivityAt": "2026-06-01T00:00:00Z",
+      "activityBasis": ["vendor_update", "research_update", "corpus_backfill"],
+      "entityMatch": "corpus_match",
+      "matchedEntityHints": {
+        "actors": [
+          {
+            "id": "actor-teampcp",
+            "name": "TeamPCP"
+          }
+        ],
+        "campaigns": [
+          {
+            "id": "campaign-tp-camp-2026-0003",
+            "name": "TeamPCP Multi-Ecosystem Supply Chain Campaign"
+          }
+        ],
+        "packages": [
+          {
+            "id": "pkg-generic-checkmarx-ast-scanner",
+            "name": "checkmarx-ast-scanner",
+            "ecosystem": "generic"
+          }
+        ],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "curated 2026 supply-chain backfill with material activity inside the recent window",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "malware_confirmed",
+        "activeStatus": "malware_confirmed",
+        "activeStatusExpiresAt": "2026-07-23T00:00:00Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 88,
+      "rankReasons": ["curated B3 backfill", "cascade relationship to Trivy root", "CI/CD compromise"],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B3 uses explicit approval plus grounded B2 source packets; queue entries remain non-drafting by default."
+    }
+  ]
+}

@@ -101,9 +101,14 @@ export function classifySource(url) {
   if (host === 'google.com' || host.endsWith('.google.com')) return { publisher: 'Google', source_type: 'vendor' };
   if (host === 'socket.dev' || host.endsWith('.socket.dev')) return { publisher: 'Socket', source_type: 'research' };
   if (host === 'snyk.io' || host.endsWith('.snyk.io')) return { publisher: 'Snyk', source_type: 'research' };
+  if (host === 'stepsecurity.io' || host.endsWith('.stepsecurity.io')) return { publisher: 'StepSecurity', source_type: 'research' };
+  if (host === 'sysdig.com' || host.endsWith('.sysdig.com')) return { publisher: 'Sysdig', source_type: 'research' };
+  if (host === 'cloudsecurityalliance.org' || host.endsWith('.cloudsecurityalliance.org')) return { publisher: 'Cloud Security Alliance', source_type: 'research' };
   if (host === 'wiz.io' || host.endsWith('.wiz.io')) return { publisher: 'Wiz', source_type: 'research' };
   if (host === 'trendmicro.com' || host.endsWith('.trendmicro.com')) return { publisher: 'Trend Micro', source_type: 'vendor' };
+  if (host === 'checkmarx.com' || host.endsWith('.checkmarx.com')) return { publisher: 'Checkmarx', source_type: 'vendor' };
   if (host === 'thehackernews.com' || host.endsWith('.thehackernews.com')) return { publisher: 'The Hacker News', source_type: 'news' };
+  if (host === 'securityweek.com' || host.endsWith('.securityweek.com')) return { publisher: 'SecurityWeek', source_type: 'news' };
   return { publisher: parsed.hostname, source_type: 'other' };
 }
 
@@ -134,6 +139,69 @@ function extractTitle(rawText) {
   return titleMatch ? normalizeWhitespace(stripHtml(titleMatch[1])) : null;
 }
 
+const MONTHS = new Map([
+  ['january', '01'],
+  ['february', '02'],
+  ['march', '03'],
+  ['april', '04'],
+  ['may', '05'],
+  ['june', '06'],
+  ['july', '07'],
+  ['august', '08'],
+  ['september', '09'],
+  ['october', '10'],
+  ['november', '11'],
+  ['december', '12'],
+]);
+
+const LABELED_DATE_PATTERNS = [
+  /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+  /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+];
+
+const HACKER_NEWS_DATE_PATTERNS = [
+  /\b[A-Z][A-Za-z.'-]+\s+[A-Z][A-Za-z.'-]+\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/g,
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\s+(?:Supply Chain Attack|Cyber Attack|Vulnerabilities|Malware|DevSecOps)\b/gi,
+];
+
+function monthDateToIso(month, day, year) {
+  const monthNumber = MONTHS.get(String(month || '').toLowerCase());
+  const parsedDay = Number.parseInt(day, 10);
+  const parsedYear = Number.parseInt(year, 10);
+  if (!monthNumber || !Number.isInteger(parsedDay) || parsedDay < 1 || parsedDay > 31 || !Number.isInteger(parsedYear)) return null;
+  const monthIndex = Number.parseInt(monthNumber, 10) - 1;
+  const date = new Date(Date.UTC(parsedYear, monthIndex, parsedDay));
+  if (
+    date.getUTCFullYear() !== parsedYear
+    || date.getUTCMonth() !== monthIndex
+    || date.getUTCDate() !== parsedDay
+  ) {
+    return null;
+  }
+  return `${String(parsedYear).padStart(4, '0')}-${monthNumber}-${String(parsedDay).padStart(2, '0')}`;
+}
+
+function firstValidDate(text, patterns) {
+  for (const pattern of patterns) {
+    pattern.lastIndex = 0;
+    for (const match of String(text || '').matchAll(pattern)) {
+      const iso = monthDateToIso(match[1], match[2], match[3]);
+      if (iso) return iso;
+    }
+  }
+  return null;
+}
+
+function extractPublicationDate(rawText, publisher = null) {
+  const text = String(rawText || '');
+  const labeledDate = firstValidDate(text, LABELED_DATE_PATTERNS);
+  if (labeledDate) return labeledDate;
+  if (publisher === 'The Hacker News') {
+    return firstValidDate(text.slice(0, 1000), HACKER_NEWS_DATE_PATTERNS);
+  }
+  return null;
+}
+
 export async function fetchSourceText(url, { fixturesDir = null, root = process.cwd() } = {}) {
   if (fixturesDir) {
     const fixturePath = repoPath(root, path.join(fixturesDir, sourceFixtureName(url)));
@@ -155,13 +223,15 @@ export async function extractSource(url, sourceId, options = {}) {
   const classification = classifySource(url);
   try {
     const raw = await fetchSourceText(url, options);
-    const extractedText = normalizeWhitespace(stripHtml(raw)).slice(0, 5000);
+    const normalized = normalizeWhitespace(stripHtml(raw));
+    const extractedText = normalized.slice(0, 5000);
+    const publishedAt = extractPublicationDate(normalized, classification.publisher);
     return {
       source: {
         id: sourceId,
         publisher: classification.publisher,
         url,
-        published_at: null,
+        published_at: publishedAt,
         source_type: classification.source_type,
         role: PRIMARY_SOURCE_TYPES.has(classification.source_type) ? 'primary' : 'supporting',
         notes: 'Fetched and extracted by the grounded source-packet builder.',
