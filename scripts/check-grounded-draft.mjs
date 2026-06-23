@@ -91,6 +91,14 @@ function isSubstantiveLine(line, inSources) {
   return /[A-Za-z0-9]/.test(trimmed);
 }
 
+function sentenceCount(text) {
+  return String(text || '')
+    .trim()
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean).length;
+}
+
 export function checkGroundedDraft(packet, draftText) {
   const errors = [];
   const warnings = [];
@@ -114,8 +122,15 @@ export function checkGroundedDraft(packet, draftText) {
       referencedClaimIds.add(claimId);
       if (!packetClaimIds.has(claimId)) errors.push({ path: `$.draft.lines[${index + 1}]`, message: `unknown packet claim marker ${claimId}` });
     }
-    if (isSubstantiveLine(line, inSources) && lineClaimIds.length === 0) {
-      errors.push({ path: `$.draft.lines[${index + 1}]`, message: 'substantive draft line is missing packet claim marker' });
+    if (isSubstantiveLine(line, inSources)) {
+      if (lineClaimIds.length === 0) {
+        errors.push({ path: `$.draft.lines[${index + 1}]`, message: 'substantive draft line is missing packet claim marker' });
+      } else {
+        const unmarkedText = line.replace(CLAIM_MARKER_RE, '').trim();
+        if (sentenceCount(unmarkedText) > lineClaimIds.length) {
+          errors.push({ path: `$.draft.lines[${index + 1}]`, message: 'substantive draft sentence is missing packet claim marker' });
+        }
+      }
     }
   }
 

@@ -18,6 +18,7 @@ import {
   writeText,
   yamlString,
 } from './grounded-drafting-lib.mjs';
+import { SCHEMA_REQUIRED_H2_BY_TYPE } from './pipeline-schema.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -72,14 +73,18 @@ function allSources(packet) {
   ];
 }
 
+function publisherTypeForSource(source) {
+  const publisher = String(source.publisher || '').toLowerCase();
+  const url = String(source.url || '').toLowerCase();
+  if (publisher.includes('cybersecurity and infrastructure security agency') || url.includes('cisa.gov')) return 'government';
+  if (source.source_type === 'database') return 'research';
+  if (source.source_type === 'news') return 'media';
+  if (source.source_type === 'other') return 'community';
+  return source.source_type;
+}
+
 function sourceFrontmatter(source) {
-  const publisherType = source.source_type === 'database'
-    ? 'research'
-    : source.source_type === 'news'
-      ? 'media'
-      : source.source_type === 'other'
-        ? 'community'
-        : source.source_type;
+  const publisherType = publisherTypeForSource(source);
   return [
     '  - url: ' + yamlString(source.url),
     '    publisher: ' + yamlString(source.publisher),
@@ -88,6 +93,17 @@ function sourceFrontmatter(source) {
     '    publicationDate: ' + yamlString(source.published_at || new Date().toISOString().slice(0, 10)),
     '    archived: false',
   ].join('\n');
+}
+
+function assertCampaignSourceReadiness(packet) {
+  const sources = allSources(packet);
+  const governmentSources = sources.filter((source) => publisherTypeForSource(source) === 'government');
+  if (sources.length < 3) {
+    throw new Error('Campaign grounded drafts require at least three packet sources for the live campaign schema');
+  }
+  if (governmentSources.length === 0) {
+    throw new Error('Campaign grounded drafts require at least one government source for the live campaign schema');
+  }
 }
 
 function firstAffectedProduct(packet) {
@@ -140,6 +156,7 @@ function frontmatter(packet, createdAt) {
   ];
 
   if (packet.lane === 'campaign') {
+    assertCampaignSourceReadiness(packet);
     base.push(
       `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
@@ -224,8 +241,16 @@ function frontmatter(packet, createdAt) {
   return base.join('\n');
 }
 
+function splitSentences(text) {
+  const cleaned = String(text || '').trim();
+  if (!cleaned) return [];
+  return cleaned.split(/(?<=[.!?])\s+/).map((sentence) => sentence.trim()).filter(Boolean);
+}
+
 function claimLine(claim) {
-  return `<!-- claims: ${claim.claim_id} --> ${claim.claim}`;
+  const sentences = splitSentences(claim.claim);
+  if (sentences.length === 0) return `<!-- claims: ${claim.claim_id} -->`;
+  return sentences.map((sentence) => `<!-- claims: ${claim.claim_id} --> ${sentence}`).join('\n');
 }
 
 function groupedClaims(packet) {
@@ -238,46 +263,73 @@ function groupedClaims(packet) {
   return groups;
 }
 
+function claimLines(claims) {
+  return claims.flatMap((claim) => claimLine(claim).split('\n'));
+}
+
+function fallbackLine(packet, text) {
+  return `<!-- claims: ${packet.claims?.[0]?.claim_id || 'claim-1'} --> ${text}`;
+}
+
+function sectionContent(packet, heading, claimSets) {
+  if (heading === 'Sources & References') {
+    const sourceRows = allSources(packet)
+      .map((source, index) => `${index + 1}. [${markdownEscape(source.publisher)}](${source.url}) — ${markdownEscape(source.publisher)}, ${source.published_at || 'accessed during packet assembly'}`);
+    return sourceRows.length ? sourceRows : [fallbackLine(packet, 'The source packet did not include source rows for this draft.')];
+  }
+  if (/timeline/i.test(heading)) {
+    return claimSets.timeline.length ? claimLines(claimSets.timeline) : [fallbackLine(packet, 'The source packet does not establish a complete public timeline.')];
+  }
+  if (/summary|severity/i.test(heading)) {
+    return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'The source packet establishes only the approved candidate subject.')];
+  }
+  if (/technical|attack chain|exploit chain|mitre|capabilities/i.test(heading)) {
+    return claimSets.findings.length ? claimLines(claimSets.findings) : claimLines(packet.claims || []);
+  }
+  if (/attribution|campaign/i.test(heading)) {
+    return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'The packet does not establish additional attribution beyond the candidate classification.')];
+  }
+  if (/remediation|impact|detection|indicators|open questions/i.test(heading)) {
+    const uncertaintyLines = (packet.uncertainties || []).map((item) => fallbackLine(packet, item.drafting_instruction));
+    return uncertaintyLines.length ? uncertaintyLines : [fallbackLine(packet, 'The packet does not establish additional guidance for this section.')];
+  }
+  return claimLines(packet.claims || []);
+}
+
 function body(packet) {
   const groups = groupedClaims(packet);
   const summaryClaims = groups.get('summary') || packet.claims?.slice(0, 2) || [];
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
+  const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
   const summaryClaimIds = new Set(summaryClaims.map((claim) => claim.claim_id));
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));
+  const attributionClaimIds = new Set(attributionClaims.map((claim) => claim.claim_id));
   const supportingClaims = (packet.claims || []).filter((claim) =>
     !summaryClaimIds.has(claim.claim_id)
     && !technicalClaimIds.has(claim.claim_id)
     && !timelineClaimIds.has(claim.claim_id)
+    && !attributionClaimIds.has(claim.claim_id)
   );
   const findingClaims = [...technicalClaims, ...supportingClaims];
-  const sourceRows = allSources(packet)
-    .map((source, index) => `${index + 1}. [${markdownEscape(source.publisher)}](${source.url}) — ${markdownEscape(source.publisher)}, ${source.published_at || 'accessed during packet assembly'}`)
-    .join('\n');
-
-  const lines = [
-    '## Executive Summary',
-    '',
-    ...(summaryClaims.length ? summaryClaims.map(claimLine) : ['<!-- claims: claim-1 --> This draft has no additional executive-summary facts beyond the packet subject.']),
-    '',
-    '## Source-Grounded Findings',
-    '',
-    ...(findingClaims.length ? findingClaims.map(claimLine) : (packet.claims || []).map(claimLine)),
-    '',
-    '## Timeline',
-    '',
-    ...(timelineClaims.length ? timelineClaims.map(claimLine) : ['<!-- claims: claim-1 --> The source packet does not establish a complete public timeline.']),
-    '',
-    '## Open Questions',
-    '',
-    ...((packet.uncertainties || []).map((item) => `<!-- claims: ${packet.claims?.[0]?.claim_id || 'claim-1'} --> ${item.drafting_instruction}`)),
-    '',
-    '## Sources & References',
-    '',
-    sourceRows,
-    '',
+  const headings = SCHEMA_REQUIRED_H2_BY_TYPE[packet.lane] || [
+    'Executive Summary',
+    'Source-Grounded Findings',
+    'Timeline',
+    'Open Questions',
+    'Sources & References',
   ];
+  const claimSets = {
+    summary: summaryClaims,
+    findings: findingClaims,
+    timeline: timelineClaims,
+    attribution: attributionClaims,
+  };
+  const lines = [];
+  for (const heading of headings) {
+    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets), '');
+  }
   return lines.join('\n');
 }
 

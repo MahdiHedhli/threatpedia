@@ -9,6 +9,7 @@ import { buildGroundedPacket } from './build-grounded-source-packet.mjs';
 import { draftFromPacket } from './draft-grounded-article.mjs';
 import { checkGroundedDraft } from './check-grounded-draft.mjs';
 import { classifySource, readJson, writeJson } from './grounded-drafting-lib.mjs';
+import { SCHEMA_REQUIRED_H2_BY_TYPE } from './pipeline-schema.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const queuePath = 'tests/fixtures/grounded_drafting/candidate_queue.json';
@@ -16,6 +17,23 @@ const fixturesDir = 'tests/fixtures/grounded_drafting/sources';
 
 function runNode(args) {
   return execFileSync(process.execPath, args, { cwd: repoRoot, encoding: 'utf8' });
+}
+
+function bodyH2s(markdown) {
+  return markdown.split(/\r?\n/)
+    .filter((line) => /^##\s+/.test(line))
+    .map((line) => line.replace(/^##\s+/, '').trim());
+}
+
+function addCampaignGovernmentSource(packet) {
+  packet.supporting_sources.push({
+    source_id: 'src-cisa',
+    url: 'https://www.cisa.gov/news-events/alerts/2026/06/21/fixture-alert',
+    publisher: 'Cybersecurity and Infrastructure Security Agency',
+    source_type: 'database',
+    role: 'supporting',
+    published_at: '2026-06-21',
+  });
 }
 
 async function testGroundedPacketDraftAndFidelityPass() {
@@ -49,6 +67,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
     assert.match(draft, /\ndate: 2026-06-21\n/);
+    assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
@@ -119,6 +138,13 @@ async function testFidelityRejectsUnmarkedClaimLine() {
   assert.equal(fidelity.pass, false);
   assert.ok(fidelity.errors.some((error) => error.message.includes('missing packet claim marker')));
   assert.ok(packet.candidates.length > 0);
+}
+
+function testFidelityRejectsUnmarkedSentence() {
+  const draft = '---\ntitle: "bad"\n---\n\n## Executive Summary\n<!-- claims: claim-1 --> This sentence is grounded. This sentence is not marked.\n';
+  const fidelity = checkGroundedDraft({ claims: [{ claim_id: 'claim-1' }], primary_sources: [], supporting_sources: [] }, draft);
+  assert.equal(fidelity.pass, false);
+  assert.ok(fidelity.errors.some((error) => error.message.includes('missing packet claim marker')));
 }
 
 function testFidelityHandlesCrlfFrontmatter() {
@@ -201,6 +227,8 @@ async function testDraftFrontmatterMatchesLiveSchema() {
       createdAt: '2026-06-22T00:00:00Z',
       allowFetchFailures: false,
     });
+    assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least three packet sources/);
+    addCampaignGovernmentSource(campaignPacket);
     assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least one packet-backed MITRE mapping/);
     campaignPacket.mitre_candidates = [{
       technique_id: 'T1195',
@@ -215,6 +243,8 @@ async function testDraftFrontmatterMatchesLiveSchema() {
     assert.doesNotMatch(campaignDraft, /\nendDate:/);
     assert.match(campaignDraft, /\nmitreMappings:\n/);
     assert.match(campaignDraft, /techniqueId: "T1195"/);
+    assert.match(campaignDraft, /\n\s+publisherType: government\n/);
+    assert.deepEqual(bodyH2s(campaignDraft), SCHEMA_REQUIRED_H2_BY_TYPE.campaign);
 
     const zeroDayQueue = structuredClone(baseQueue);
     zeroDayQueue.candidates[0].proposedArchetype = 'zero-day';
@@ -239,6 +269,7 @@ async function testDraftFrontmatterMatchesLiveSchema() {
     assert.match(zeroDayDraft, /\nplatform: "Fixture Platform"\n/);
     assert.doesNotMatch(zeroDayDraft, /\ncveId:/);
     assert.doesNotMatch(zeroDayDraft, /\npublishedDate:/);
+    assert.deepEqual(bodyH2s(zeroDayDraft), SCHEMA_REQUIRED_H2_BY_TYPE['zero-day']);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
@@ -269,6 +300,7 @@ testCliRequiresExplicitApproval();
 await testPreflightRequiresGroundedSourceExtracts();
 await testFidelityRejectsInventedUrl();
 await testFidelityRejectsUnmarkedClaimLine();
+testFidelityRejectsUnmarkedSentence();
 testFidelityHandlesCrlfFrontmatter();
 testOfficialAdvisorySourceClassification();
 console.log('Grounded drafting tests passed');
