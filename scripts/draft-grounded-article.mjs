@@ -96,7 +96,14 @@ function sourceFrontmatter(source, fallbackDate) {
 }
 
 function sourcePublicationDate(source, fallbackDate) {
-  return source.published_at || fallbackDate;
+  return source.published_at || fallbackDate || 'accessed during packet assembly';
+}
+
+function packetFallbackDate(packet, createdAt) {
+  const packetDate = typeof packet?.created_at === 'string' && /^\d{4}-\d{2}-\d{2}/.test(packet.created_at)
+    ? packet.created_at.slice(0, 10)
+    : null;
+  return packetDate || createdAt || null;
 }
 
 function assertCampaignSourceReadiness(packet) {
@@ -153,9 +160,11 @@ function mitreFrontmatter(packet, { required = false } = {}) {
 function frontmatter(packet, createdAt) {
   const title = safeTitle(packet.candidate?.title || packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
-  const fallbackDate = packet.created_at ? packet.created_at.slice(0, 10) : createdAt;
+  const fallbackDate = packetFallbackDate(packet, createdAt);
+  const generatedDate = createdAt || fallbackDate || 'unknown';
+  const generatedYear = Number(/^\d{4}/.test(fallbackDate || '') ? fallbackDate.slice(0, 4) : '1970');
   const sources = allSources(packet).map((source) => sourceFrontmatter(source, fallbackDate)).join('\n');
-  const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || createdAt;
+  const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || fallbackDate || generatedDate;
   const base = [
     '---',
   ];
@@ -163,7 +172,7 @@ function frontmatter(packet, createdAt) {
   if (packet.lane === 'campaign') {
     assertCampaignSourceReadiness(packet);
     base.push(
-      `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
+      `campaignId: ${yamlString(`TP-CAMP-${generatedYear}-${numericId(packet.source_packet_id, generatedYear).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
       `startDate: ${yamlString(date)}`,
       'ongoing: true',
@@ -174,7 +183,7 @@ function frontmatter(packet, createdAt) {
       'reviewStatus: "draft_ai"',
       'confidenceGrade: C',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -192,7 +201,7 @@ function frontmatter(packet, createdAt) {
       'attributionConfidence: A6',
       'reviewStatus: "draft_ai"',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -212,7 +221,7 @@ function frontmatter(packet, createdAt) {
       `cisaKev: ${packet.kev_status?.in_kev ? 'true' : 'false'}`,
       'reviewStatus: "draft_ai"',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -221,7 +230,7 @@ function frontmatter(packet, createdAt) {
     );
   } else {
     base.push(
-      `eventId: ${yamlString(numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))))}`,
+      `eventId: ${yamlString(numericId(packet.source_packet_id, generatedYear))}`,
       `title: ${yamlString(title)}`,
       `date: ${date}`,
       'attackType: "Supply Chain"',
@@ -233,7 +242,7 @@ function frontmatter(packet, createdAt) {
       'reviewStatus: "draft_ai"',
       'confidenceGrade: C',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -276,10 +285,9 @@ function fallbackLine(packet, text) {
   return `<!-- claims: ${packet.claims?.[0]?.claim_id || 'claim-1'} --> ${text}`;
 }
 
-function sectionContent(packet, heading, claimSets) {
+function sectionContent(packet, heading, claimSets, fallbackDate) {
   if (heading === 'Sources & References') {
     const extractTitles = new Map((packet.source_extracts || []).map((extract) => [extract.source_id, extract.title]));
-    const fallbackDate = packet.created_at ? packet.created_at.slice(0, 10) : null;
     const sourceRows = allSources(packet)
       .map((source) => {
         const title = markdownEscape(extractTitles.get(source.id) || source.publisher);
@@ -311,8 +319,9 @@ function sectionContent(packet, heading, claimSets) {
   return claimLines(claimSets.reader);
 }
 
-function body(packet) {
+function body(packet, createdAt) {
   const groups = groupedClaims(packet);
+  const fallbackDate = packetFallbackDate(packet, createdAt);
   const readerClaims = (packet.claims || []).filter((claim) => !['frontmatter', 'internal'].includes(claim.article_section));
   const summaryClaims = groups.get('summary') || [];
   const technicalClaims = groups.get('technical-analysis') || [];
@@ -352,7 +361,7 @@ function body(packet) {
   };
   const lines = [];
   for (const heading of headings) {
-    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets), '');
+    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets, fallbackDate), '');
   }
   return lines.join('\n');
 }
@@ -364,7 +373,7 @@ export function draftFromPacket(packet, { createdAt = new Date().toISOString().s
   if (!Array.isArray(packet.claims) || packet.claims.length === 0) {
     throw new Error('Packet has no claims to draft from');
   }
-  return frontmatter(packet, createdAt) + body(packet);
+  return frontmatter(packet, createdAt) + body(packet, createdAt);
 }
 
 async function run() {

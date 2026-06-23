@@ -24,7 +24,7 @@ const LANES = new Set(['zero-day', 'incident', 'campaign', 'threat-actor', 'malw
 const PREFLIGHT_STATUSES = new Set(['not_run', 'pass', 'fail']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const CLAIM_TYPES = new Set(['date', 'product', 'vulnerability', 'exploitation', 'impact', 'mitigation', 'attribution', 'other']);
-const ARTICLE_SECTIONS = new Set(['frontmatter', 'summary', 'technical-analysis', 'timeline', 'mitigation', 'other']);
+const ARTICLE_SECTIONS = new Set(['frontmatter', 'summary', 'technical-analysis', 'timeline', 'mitigation', 'remediation', 'other']);
 const SECRET_LIKE_RE = /(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|-----BEGIN [A-Z ]+PRIVATE KEY-----|\.env(?:\.|$)|\/Users\/|[A-Z]:\\|(?:api[_-]?key|access[_-]?token|client[_-]?secret|secret[_-]?key|password)\s*[:=]\s*['"]?[A-Za-z0-9_./+=-]{24,})/i;
 const NON_ASCII_RE = /[^\x09\x0A\x0D\x20-\x7E]/;
 

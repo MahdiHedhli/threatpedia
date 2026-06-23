@@ -75,9 +75,8 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('exploit')));
     assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
 
-    runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     packet.claims.push({
-      claim_id: 'claim-remediation-extra',
+      claim_id: 'claim-9',
       claim: 'Operators should review registry tokens after the malicious package release.',
       claim_type: 'other',
       source_refs: ['src-2'],
@@ -85,6 +84,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
       confidence: 'medium',
     });
     writeJson(repoRoot, packetPath, packet);
+    runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
     assert.match(draft, /^title: "Fixture npm supply-chain compromise"$/m);
@@ -202,6 +202,48 @@ async function testSourceRelativeWordingIsContextualized() {
   }
 }
 
+async function testCandidateTermMatchingUsesBoundaries() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-term-boundary-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    queue.candidates[0].title = 'AST';
+    queue.candidates[0].summary = 'AST';
+    queue.candidates[0].canonicalSubjectId = 'AST';
+    queue.candidates[0].matchedEntityHints.packages = [];
+    const queueFile = path.join(tempDir, 'queue.json');
+    writeJson(repoRoot, queueFile, queue);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? [
+            'Fixture Research Report',
+            'Published: June 20, 2026',
+            '',
+            'A fantastic but unrelated sentence describes background activity without the selected acronym.',
+            'The AST operation changed a source control workflow and exposed developer credentials.',
+          ].join('\n')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queueFile,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    const renderedClaims = packet.claims.map((claim) => claim.claim).join('\n');
+    assert.match(renderedClaims, /The AST operation changed a source control workflow/);
+    assert.doesNotMatch(renderedClaims, /fantastic but unrelated/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 async function testSourceDateFallbackUsesPacketCreationDate() {
   const packet = await buildGroundedPacket({
     queue: queuePath,
@@ -218,6 +260,24 @@ async function testSourceDateFallbackUsesPacketCreationDate() {
   assert.match(draft, /publisher: "Socket"[\s\S]*?publicationDate: "2026-06-19"/);
   assert.match(draft, /\[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-19/);
   assert.doesNotMatch(draft, /Socket, 2026-06-22/);
+}
+
+async function testSourceDateFallbackNeverRendersNullishValues() {
+  const packet = await buildGroundedPacket({
+    queue: queuePath,
+    candidateId: 'SC-CAND-1234abcd5678ef90',
+    approvedBy: 'KernelK',
+    approvalRef: 'fixture-approval',
+    out: path.join(tmpdir(), 'unused.json'),
+    fixturesDir,
+    createdAt: '2026-06-19T00:00:00Z',
+    allowFetchFailures: false,
+  });
+  packet.created_at = 'invalid-date';
+  packet.primary_sources[0].published_at = null;
+  const draft = draftFromPacket(packet, { createdAt: null });
+  assert.match(draft, /\[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, accessed during packet assembly/);
+  assert.doesNotMatch(draft, /Socket, (?:null|undefined)/);
 }
 
 function testCliRequiresExplicitApproval() {
@@ -446,7 +506,9 @@ await testGroundedPacketDraftAndFidelityPass();
 await testRawExtractedIdsDoNotPollutePacketCves();
 await testInvalidCalendarPublicationDateIsIgnored();
 await testSourceRelativeWordingIsContextualized();
+await testCandidateTermMatchingUsesBoundaries();
 await testSourceDateFallbackUsesPacketCreationDate();
+await testSourceDateFallbackNeverRendersNullishValues();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();

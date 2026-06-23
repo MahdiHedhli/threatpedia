@@ -170,8 +170,17 @@ function candidateTerms(candidate) {
     candidate.matchedEntityHints?.campaigns?.map((item) => item.name || item.id),
     candidate.matchedEntityHints?.packages?.map((item) => item.name || item.id),
   ].flat(Infinity);
-  const words = uniqueStrings(values.join(' ').toLowerCase().match(/[a-z0-9][a-z0-9._-]{3,}/g) || []);
+  const words = uniqueStrings(values.join(' ').toLowerCase().match(/[a-z0-9][a-z0-9._-]{2,}/g) || []);
   return words.filter((word) => !LOW_SIGNAL_TERMS.has(word));
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function sentenceContainsTerm(sentence, term) {
+  const escaped = escapeRegExp(term);
+  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[^a-z0-9._-])`, 'i').test(sentence);
 }
 
 function sourceSentenceForCandidate(text, candidate) {
@@ -186,7 +195,7 @@ function sourceSentenceForCandidate(text, candidate) {
   let best = null;
   for (const sentence of sentences) {
     const lower = sentence.toLowerCase();
-    const score = terms.reduce((total, term) => total + (lower.includes(term) ? 1 : 0), 0);
+    const score = terms.reduce((total, term) => total + (sentenceContainsTerm(lower, term) ? 1 : 0), 0);
     if (score > (best?.score || 0)) best = { sentence, score };
   }
   return best?.score > 0 ? best.sentence : sentences[0];
