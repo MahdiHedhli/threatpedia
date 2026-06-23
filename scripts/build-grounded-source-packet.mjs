@@ -199,6 +199,19 @@ function articleSectionForSourceSentence(sentence) {
   return 'technical-analysis';
 }
 
+function contextualizeSourceRelativeSentence(sentence, source) {
+  const text = String(sentence || '').trim();
+  const phraseIndex = text.toLowerCase().indexOf('what has not yet been publicly reported is that');
+  const relevantText = phraseIndex >= 0 ? text.slice(phraseIndex) : text;
+  const match = relevantText.match(/^What has not yet been publicly reported is that\s+(.+)$/i);
+  if (!match) return text;
+  const detail = match[1].trim().replace(/\s+([.,;:!?])/g, '$1');
+  const prefix = source?.publisher && source?.published_at
+    ? `${source.publisher} reported on ${source.published_at} that`
+    : 'A cited source reported that';
+  return `${prefix} ${detail}`;
+}
+
 function mitreCandidates(candidate, sources) {
   const text = [
     candidate.title,
@@ -248,8 +261,12 @@ function candidateClaims(candidate, sources, extracts) {
   for (const campaign of candidate.matchedEntityHints?.campaigns || []) {
     claim(claims, `Available source evidence connects this incident to campaign ${campaign.name || campaign.id}.`, 'attribution', allRefs, 'other', 'low');
   }
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
   for (const extract of extracts.filter((item) => item.status === 'ok')) {
-    const sourceSentence = sourceSentenceForCandidate(extract.extracted_text, candidate);
+    const sourceSentence = contextualizeSourceRelativeSentence(
+      sourceSentenceForCandidate(extract.extracted_text, candidate),
+      sourceById.get(extract.source_id),
+    );
     if (sourceSentence) claim(claims, sourceSentence, 'other', [extract.source_id], articleSectionForSourceSentence(sourceSentence), 'medium');
   }
   return claims;

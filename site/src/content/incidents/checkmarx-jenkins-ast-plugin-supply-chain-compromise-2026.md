@@ -49,7 +49,7 @@ mitreMappings:
 ## Technical Analysis
 
 <!-- claims: claim-9 --> This access enabled the publication of malicious code to a number of externally distributed artifacts, including VS Code extensions, GitHub Actions workflows, and a Jenkins plugin.
-<!-- claims: claim-11 --> What has not yet been publicly reported is that the same attack pattern subsequently appeared in a second, unrelated GitHub Action for Checkmarx&#x27;s AST .
+<!-- claims: claim-11 --> Sysdig reported on 2026-03-23 that the same attack pattern subsequently appeared in a second, unrelated GitHub Action for Checkmarx&#x27;s AST.
 
 ## Attack Chain
 

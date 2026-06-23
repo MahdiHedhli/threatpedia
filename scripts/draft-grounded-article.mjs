@@ -83,20 +83,20 @@ function publisherTypeForSource(source) {
   return source.source_type;
 }
 
-function sourceFrontmatter(source) {
+function sourceFrontmatter(source, fallbackDate) {
   const publisherType = publisherTypeForSource(source);
   return [
     '  - url: ' + yamlString(source.url),
     '    publisher: ' + yamlString(source.publisher),
     '    publisherType: ' + publisherType,
     '    reliability: ' + (source.role === 'primary' ? 'R1' : 'R2'),
-    '    publicationDate: ' + yamlString(sourcePublicationDate(source)),
+    '    publicationDate: ' + yamlString(sourcePublicationDate(source, fallbackDate)),
     '    archived: false',
   ].join('\n');
 }
 
-function sourcePublicationDate(source) {
-  return source.published_at || new Date().toISOString().slice(0, 10);
+function sourcePublicationDate(source, fallbackDate) {
+  return source.published_at || fallbackDate;
 }
 
 function assertCampaignSourceReadiness(packet) {
@@ -153,7 +153,8 @@ function mitreFrontmatter(packet, { required = false } = {}) {
 function frontmatter(packet, createdAt) {
   const title = safeTitle(packet.candidate?.title || packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
-  const sources = allSources(packet).map(sourceFrontmatter).join('\n');
+  const fallbackDate = packet.created_at ? packet.created_at.slice(0, 10) : createdAt;
+  const sources = allSources(packet).map((source) => sourceFrontmatter(source, fallbackDate)).join('\n');
   const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || createdAt;
   const base = [
     '---',
@@ -278,10 +279,11 @@ function fallbackLine(packet, text) {
 function sectionContent(packet, heading, claimSets) {
   if (heading === 'Sources & References') {
     const extractTitles = new Map((packet.source_extracts || []).map((extract) => [extract.source_id, extract.title]));
+    const fallbackDate = packet.created_at ? packet.created_at.slice(0, 10) : null;
     const sourceRows = allSources(packet)
       .map((source) => {
         const title = markdownEscape(extractTitles.get(source.id) || source.publisher);
-        return `- [${markdownEscape(source.publisher)}: ${title}](${source.url}) — ${markdownEscape(source.publisher)}, ${sourcePublicationDate(source)}`;
+        return `- [${markdownEscape(source.publisher)}: ${title}](${source.url}) — ${markdownEscape(source.publisher)}, ${sourcePublicationDate(source, fallbackDate)}`;
       });
     return sourceRows.length ? sourceRows : [fallbackLine(packet, 'No cited source rows are available for this draft.')];
   }
@@ -316,7 +318,10 @@ function body(packet) {
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
   const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
-  const remediationClaims = groups.get('mitigation') || groups.get('remediation') || [];
+  const remediationClaims = [
+    ...(groups.get('mitigation') || []),
+    ...(groups.get('remediation') || []),
+  ];
   const summaryClaimIds = new Set(summaryClaims.map((claim) => claim.claim_id));
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));

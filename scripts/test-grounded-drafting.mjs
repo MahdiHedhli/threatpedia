@@ -76,6 +76,15 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
 
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
+    packet.claims.push({
+      claim_id: 'claim-remediation-extra',
+      claim: 'Operators should review registry tokens after the malicious package release.',
+      claim_type: 'other',
+      source_refs: ['src-2'],
+      article_section: 'remediation',
+      confidence: 'medium',
+    });
+    writeJson(repoRoot, packetPath, packet);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
     assert.match(draft, /^title: "Fixture npm supply-chain compromise"$/m);
@@ -91,6 +100,8 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.match(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
     assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
     assert.doesNotMatch(h2Section(draft, 'Remediation & Mitigation'), /do not establish additional remediation facts/);
+    assert.match(h2Section(draft, 'Remediation & Mitigation'), /removed from the registry/);
+    assert.match(h2Section(draft, 'Remediation & Mitigation'), /review registry tokens/);
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
@@ -154,6 +165,59 @@ async function testInvalidCalendarPublicationDateIsIgnored() {
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
+}
+
+async function testSourceRelativeWordingIsContextualized() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-source-context-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? [
+            'Fixture Research Report',
+            'Published: June 20, 2026',
+            '',
+            'What has not yet been publicly reported is that the Fixture npm supply-chain compromise used an install script to collect tokens.',
+          ].join('\n')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    const renderedClaims = packet.claims.map((claim) => claim.claim).join('\n');
+    assert.doesNotMatch(renderedClaims, /not yet been publicly reported/i);
+    assert.match(renderedClaims, /Socket reported on 2026-06-20 that the Fixture npm supply-chain compromise used an install script to collect tokens\./);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testSourceDateFallbackUsesPacketCreationDate() {
+  const packet = await buildGroundedPacket({
+    queue: queuePath,
+    candidateId: 'SC-CAND-1234abcd5678ef90',
+    approvedBy: 'KernelK',
+    approvalRef: 'fixture-approval',
+    out: path.join(tmpdir(), 'unused.json'),
+    fixturesDir,
+    createdAt: '2026-06-19T00:00:00Z',
+    allowFetchFailures: false,
+  });
+  packet.primary_sources[0].published_at = null;
+  const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
+  assert.match(draft, /publisher: "Socket"[\s\S]*?publicationDate: "2026-06-19"/);
+  assert.match(draft, /\[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-19/);
+  assert.doesNotMatch(draft, /Socket, 2026-06-22/);
 }
 
 function testCliRequiresExplicitApproval() {
@@ -381,6 +445,8 @@ async function testNewsSourceMapsToMediaPublisherType() {
 await testGroundedPacketDraftAndFidelityPass();
 await testRawExtractedIdsDoNotPollutePacketCves();
 await testInvalidCalendarPublicationDateIsIgnored();
+await testSourceRelativeWordingIsContextualized();
+await testSourceDateFallbackUsesPacketCreationDate();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();
