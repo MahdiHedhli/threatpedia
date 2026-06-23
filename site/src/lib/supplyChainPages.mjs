@@ -924,6 +924,25 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
       summary: incident.summary,
     }))
     .sort(compareTitle);
+  const lineageViews = (Array.isArray(data.malwareFamilies) ? data.malwareFamilies : [])
+    .filter((family) => family && typeof family.id === 'string')
+    .map((family) => {
+      const strains = Array.isArray(family.strains) ? family.strains : [];
+      const ecosystems = Array.from(
+        new Set(strains.flatMap((strain) => (Array.isArray(strain.ecosystems) ? strain.ecosystems : [])))
+      ).sort((a, b) => String(a).localeCompare(String(b)));
+      return {
+        id: family.id,
+        title: family.name || family.id,
+        summary: family.summary || '',
+        href: `/supply-chain/malware-families/${family.id}/`,
+        strainCount: strains.length,
+        edgeCount: Array.isArray(family.lineage_edges) ? family.lineage_edges.length : 0,
+        ecosystems,
+        command: { type: 'select-entity', value: family.id, graphType: 'malware_family' },
+      };
+    })
+    .sort(compareTitle);
 
   return {
     kind: 'index',
@@ -934,6 +953,7 @@ export function getSupplyChainIndexModel(data = loadSupplyChainData()) {
     attackVectorBars: buildAttackVectorBars(data),
     attributionRows: buildAttributionRows(data),
     dwellTimeline: buildDwellTimeline(data),
+    lineageViews,
     featuredIncidents,
     entitySummaries: entitySummaryDefinitions.map((summary) => ({
       ...summary,
