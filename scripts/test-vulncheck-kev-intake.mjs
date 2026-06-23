@@ -268,6 +268,40 @@ const fullRangeXdb = buildRecentIntake({
 
 assert.equal(fullRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
 
+const chainedMultiCveXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'appliance',
+      vulnerabilityName: 'Chained multi-CVE proof-of-concept repository',
+      shortDescription: 'Repository name lists several CVEs in one hyphenated chain.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-32395'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'chained-range',
+          xdb_url: 'https://vulncheck.com/xdb/chained-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-30208-31125-31486-32395.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(chainedMultiCveXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
 const versionSuffixXdb = buildRecentIntake({
   data: [
     {
