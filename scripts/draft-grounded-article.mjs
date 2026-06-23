@@ -73,7 +73,13 @@ function allSources(packet) {
 }
 
 function sourceFrontmatter(source) {
-  const publisherType = source.source_type === 'database' ? 'research' : source.source_type === 'other' ? 'community' : source.source_type;
+  const publisherType = source.source_type === 'database'
+    ? 'research'
+    : source.source_type === 'news'
+      ? 'media'
+      : source.source_type === 'other'
+        ? 'community'
+        : source.source_type;
   return [
     '  - url: ' + yamlString(source.url),
     '    publisher: ' + yamlString(source.publisher),
@@ -89,6 +95,20 @@ function firstAffectedProduct(packet) {
   return product?.product || product?.vendor || 'Unknown';
 }
 
+function mitreFrontmatter(packet) {
+  const included = (Array.isArray(packet.mitre_candidates) ? packet.mitre_candidates : [])
+    .filter((candidate) => candidate.include_in_article && candidate.technique_id);
+  if (included.length === 0) return [];
+  return [
+    'mitreMappings:',
+    ...included.flatMap((candidate) => [
+      `  - techniqueId: ${yamlString(candidate.technique_id)}`,
+      `    techniqueName: ${yamlString(candidate.technique_name)}`,
+      ...(candidate.tactic ? [`    tactic: ${yamlString(candidate.tactic)}`] : []),
+    ]),
+  ];
+}
+
 function frontmatter(packet, createdAt) {
   const title = safeTitle(packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
@@ -99,6 +119,10 @@ function frontmatter(packet, createdAt) {
   ];
 
   if (packet.lane === 'campaign') {
+    const mitreMappings = mitreFrontmatter(packet);
+    if (mitreMappings.length === 0) {
+      throw new Error('campaign packets require at least one included MITRE mapping to generate schema-valid frontmatter');
+    }
     base.push(
       `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
@@ -116,7 +140,7 @@ function frontmatter(packet, createdAt) {
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
       sources,
-      'mitreMappings: []',
+      ...mitreMappings,
     );
   } else if (packet.lane === 'threat-actor') {
     base.push(
@@ -160,7 +184,7 @@ function frontmatter(packet, createdAt) {
     base.push(
       `eventId: ${yamlString(numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))))}`,
       `title: ${yamlString(title)}`,
-      `date: ${createdAt}`,
+      `date: ${yamlString(date)}`,
       'attackType: "Supply Chain"',
       'severity: medium',
       'sector: "Technology"',
