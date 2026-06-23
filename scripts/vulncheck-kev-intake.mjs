@@ -531,8 +531,8 @@ function normalizeKnownProductFields(record) {
   return record;
 }
 
-function makePrefill(record) {
-  record = normalizeKnownProductFields(record);
+function makePrefill(rawRecord) {
+  const record = normalizeKnownProductFields(rawRecord);
   const cves = uniqueStrings(record.cve);
   const cwes = uniqueStrings(record.cwes);
   const refs = sourceRefsFor(record);
@@ -583,18 +583,18 @@ function makePrefill(record) {
     cves: cves.map(id => ({ id, source_refs: [vulncheckSourceId] })),
     cwes: cwes.map(id => ({ id, name: 'Unknown', source_refs: [vulncheckSourceId] })),
     preserved_vulncheck_fields: {
-      vendorProject: record.vendorProject || null,
-      product: record.product || null,
-      vulnerabilityName: record.vulnerabilityName || null,
-      shortDescription: record.shortDescription || null,
-      required_action: record.required_action || null,
-      knownRansomwareCampaignUse: record.knownRansomwareCampaignUse || null,
-      reported_exploited_by_vulncheck_canaries: record.reported_exploited_by_vulncheck_canaries === true,
-      vulncheck_reported_exploitation: Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : [],
-      vulncheck_xdb: Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : [],
-      date_added: record.date_added || null,
-      cisa_date_added: record.cisa_date_added || null,
-      dueDate: record.dueDate || null,
+      vendorProject: rawRecord.vendorProject || null,
+      product: rawRecord.product || null,
+      vulnerabilityName: rawRecord.vulnerabilityName || null,
+      shortDescription: rawRecord.shortDescription || null,
+      required_action: rawRecord.required_action || null,
+      knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
+      reported_exploited_by_vulncheck_canaries: rawRecord.reported_exploited_by_vulncheck_canaries === true,
+      vulncheck_reported_exploitation: Array.isArray(rawRecord.vulncheck_reported_exploitation) ? rawRecord.vulncheck_reported_exploitation : [],
+      vulncheck_xdb: Array.isArray(rawRecord.vulncheck_xdb) ? rawRecord.vulncheck_xdb : [],
+      date_added: rawRecord.date_added || null,
+      cisa_date_added: rawRecord.cisa_date_added || null,
+      dueDate: rawRecord.dueDate || null,
     },
     not_supported: [
       {
@@ -610,6 +610,7 @@ function makePrefill(record) {
 }
 
 function toCandidate(record, seenCves, recencyBucket = 'recent') {
+  const rawRecord = record;
   record = normalizeKnownProductFields(record);
   const cves = uniqueStrings(record.cve);
   const addedDate = normalizeDate(record.date_added);
@@ -647,7 +648,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
       xdb_exploit_types: exploitTypes(record),
       evidence_urls: sourceRefsFor(record),
     },
-    source_packet_prefill: makePrefill(record),
+    source_packet_prefill: makePrefill(rawRecord),
     drafting_allowed: false,
   };
 }

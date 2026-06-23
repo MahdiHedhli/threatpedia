@@ -144,7 +144,7 @@ const productNormalized = buildRecentIntake({
 const normalizedPrefill = productNormalized.candidates[0].source_packet_prefill;
 assert.equal(normalizedPrefill.affected_products[0].vendor, 'rocketgenius');
 assert.equal(normalizedPrefill.affected_products[0].product, 'gravityforms');
-assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, 'rocketgenius');
-assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, 'gravityforms');
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, null);
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, null);
 
 console.log('vulncheck-kev-intake tests passed');
