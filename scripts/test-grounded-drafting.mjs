@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { buildGroundedPacket } from './build-grounded-source-packet.mjs';
 import { draftFromPacket } from './draft-grounded-article.mjs';
 import { checkGroundedDraft } from './check-grounded-draft.mjs';
-import { classifySource, readJson, writeJson } from './grounded-drafting-lib.mjs';
+import { classifySource, readJson, sourceFixtureName, writeJson } from './grounded-drafting-lib.mjs';
 import { SCHEMA_REQUIRED_H2_BY_TYPE } from './pipeline-schema.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,6 +23,15 @@ function bodyH2s(markdown) {
   return markdown.split(/\r?\n/)
     .filter((line) => /^##\s+/.test(line))
     .map((line) => line.replace(/^##\s+/, '').trim());
+}
+
+function h2Section(markdown, heading) {
+  const lines = markdown.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.trim() === `## ${heading}`);
+  if (start < 0) return '';
+  const endOffset = lines.slice(start + 1).findIndex((line) => /^##\s+/.test(line));
+  const end = endOffset < 0 ? lines.length : start + 1 + endOffset;
+  return lines.slice(start + 1, end).join('\n').trim();
 }
 
 function addCampaignGovernmentSource(packet) {
@@ -60,14 +69,67 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.ok(packet.source_extracts.every((extract) => extract.status === 'ok'));
     assert.ok(packet.claims.length >= 5);
     assert.equal(packet.output_target.file_pattern, 'site/src/content/incidents/SC-CAND-1234abcd5678ef90.md');
+    assert.equal(packet.candidate.title, 'Fixture npm supply-chain compromise');
+    assert.equal(packet.candidate.summary, 'A malicious npm package release attempted credential theft through a package install script.');
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('date')));
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('exploit')));
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
 
+    packet.claims.push({
+      claim_id: 'claim-9',
+      claim: 'Operators should review registry tokens after the malicious package release.',
+      claim_type: 'other',
+      source_refs: ['src-2'],
+      article_section: 'remediation',
+      confidence: 'medium',
+    });
+    packet.claims.push({
+      claim_id: 'claim-10',
+      claim: 'The malicious package release used an install script before attempting credential theft.',
+      claim_type: 'other',
+      source_refs: ['src-1'],
+      article_section: 'attack-chain',
+      confidence: 'medium',
+    });
+    packet.claims.push({
+      claim_id: 'claim-11',
+      claim: 'Available source evidence connects this incident to campaign Fixture Campaign.',
+      claim_type: 'attribution',
+      source_refs: ['src-1'],
+      article_section: 'other',
+      confidence: 'low',
+    });
+    packet.claims.push({
+      claim_id: 'claim-12',
+      claim: 'Available source evidence connects this incident to actor Fixture Actor.',
+      claim_type: 'attribution',
+      source_refs: ['src-1'],
+      article_section: 'other',
+      confidence: 'low',
+    });
+    writeJson(repoRoot, packetPath, packet);
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
+    assert.match(draft, /^title: "Fixture npm supply-chain compromise"$/m);
+    assert.match(draft, /^threatActor: "Fixture Actor"$/m);
+    assert.doesNotMatch(draft, /^threatActor: "Fixture Campaign"$/m);
+    assert.doesNotMatch(draft, /^title: "Fixture npm supply-chain compromise is the candidate subject approved for grounded drafting\."$/m);
+    assert.doesNotMatch(draft, /candidate subject approved for grounded drafting/);
+    assert.doesNotMatch(draft, /classifier work intent/);
+    assert.doesNotMatch(draft, /\bsource packet\b/i);
+    assert.doesNotMatch(draft, /\bpacket-backed\b/i);
+    assert.match(draft, /techniqueId: "T1195\.002"/);
+    assert.match(draft, /\n- \[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-20\n/);
     assert.match(draft, /\ndate: 2026-06-21\n/);
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
+    assert.doesNotMatch(h2Section(draft, 'Attack Chain'), /Available sources do not establish a detailed attack chain/);
+    assert.match(h2Section(draft, 'Attack Chain'), /The malicious package release used an install script before attempting credential theft/);
+    assert.doesNotMatch(h2Section(draft, 'Technical Analysis'), /The malicious package release used an install script before attempting credential theft/);
+    assert.notEqual(h2Section(draft, 'Technical Analysis'), h2Section(draft, 'Attack Chain'));
+    assert.doesNotMatch(h2Section(draft, 'Remediation & Mitigation'), /do not establish additional remediation facts/);
+    assert.match(h2Section(draft, 'Remediation & Mitigation'), /removed from the registry/);
+    assert.match(h2Section(draft, 'Remediation & Mitigation'), /review registry tokens/);
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
@@ -75,6 +137,231 @@ async function testGroundedPacketDraftAndFidelityPass() {
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
+}
+
+async function testRawExtractedIdsDoNotPollutePacketCves() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-sidebar-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const sidebar = url.includes('socket.dev')
+        ? '\nTop Stories This Week: Chrome V8 Zero-Day CVE-2026-11645 Exploited in the Wild.\n'
+        : '';
+      writeFileSync(path.join(tempDir, fixtureName), `${original}${sidebar}`);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.deepEqual(packet.cves, []);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testInvalidCalendarPublicationDateIsIgnored() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-invalid-date-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? original.replace('Published: June 20, 2026', 'Published: February 31, 2026')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, null);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testPublicationDateFallsThroughInvalidMatches() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-date-fallthrough-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? original.replace('Published: June 20, 2026', 'Published: February 31, 2026 Published: June 20, 2026')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, '2026-06-20');
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testBodyOnlyUnlabeledDatesAreNotPublicationDates() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-unlabeled-date-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? original.replace('Published: June 20, 2026', 'Researchers first observed related activity on March 19, 2026')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.equal(packet.primary_sources.find((source) => source.publisher === 'Socket')?.published_at, null);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testSourceRelativeWordingIsContextualized() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-source-context-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? [
+            'Fixture Research Report',
+            'Published: June 20, 2026',
+            '',
+            'What has not yet been publicly reported is that the Fixture npm supply-chain compromise used an install script to collect tokens.',
+          ].join('\n')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    const renderedClaims = packet.claims.map((claim) => claim.claim).join('\n');
+    assert.doesNotMatch(renderedClaims, /not yet been publicly reported/i);
+    assert.match(renderedClaims, /Socket reported on 2026-06-20 that the Fixture npm supply-chain compromise used an install script to collect tokens\./);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testCandidateTermMatchingUsesBoundaries() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-term-boundary-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    queue.candidates[0].title = 'AST';
+    queue.candidates[0].summary = 'AST';
+    queue.candidates[0].canonicalSubjectId = 'AST';
+    queue.candidates[0].matchedEntityHints.packages = [];
+    const queueFile = path.join(tempDir, 'queue.json');
+    writeJson(repoRoot, queueFile, queue);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const content = url.includes('socket.dev')
+        ? [
+            'Fixture Research Report',
+            'Published: June 20, 2026',
+            '',
+            'A fantastic but unrelated sentence describes background activity without the selected acronym.',
+            'The source control workflow was changed by AST.',
+          ].join('\n')
+        : original;
+      writeFileSync(path.join(tempDir, fixtureName), content);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queueFile,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    const renderedClaims = packet.claims.map((claim) => claim.claim).join('\n');
+    assert.match(renderedClaims, /The source control workflow was changed by AST\./);
+    assert.doesNotMatch(renderedClaims, /fantastic but unrelated/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testSourceDateFallbackUsesPacketCreationDate() {
+  const packet = await buildGroundedPacket({
+    queue: queuePath,
+    candidateId: 'SC-CAND-1234abcd5678ef90',
+    approvedBy: 'KernelK',
+    approvalRef: 'fixture-approval',
+    out: path.join(tmpdir(), 'unused.json'),
+    fixturesDir,
+    createdAt: '2026-06-19T00:00:00Z',
+    allowFetchFailures: false,
+  });
+  packet.primary_sources[0].published_at = null;
+  const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
+  assert.match(draft, /publisher: "Socket"[\s\S]*?publicationDate: "2026-06-19"/);
+  assert.match(draft, /\[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, 2026-06-19/);
+  assert.doesNotMatch(draft, /Socket, 2026-06-22/);
+}
+
+async function testSourceDateFallbackNeverRendersNullishValues() {
+  const packet = await buildGroundedPacket({
+    queue: queuePath,
+    candidateId: 'SC-CAND-1234abcd5678ef90',
+    approvedBy: 'KernelK',
+    approvalRef: 'fixture-approval',
+    out: path.join(tmpdir(), 'unused.json'),
+    fixturesDir,
+    createdAt: '2026-06-19T00:00:00Z',
+    allowFetchFailures: false,
+  });
+  packet.created_at = 'invalid-date';
+  packet.primary_sources[0].published_at = null;
+  const draft = draftFromPacket(packet, { createdAt: null });
+  assert.match(draft, /\[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, accessed during packet assembly/);
+  assert.doesNotMatch(draft, /Socket, (?:null|undefined)/);
 }
 
 function testCliRequiresExplicitApproval() {
@@ -175,6 +462,22 @@ function testOfficialAdvisorySourceClassification() {
     publisher: 'CVE Program',
     source_type: 'database',
   });
+  assert.deepEqual(classifySource('https://checkmarx.com/blog/ongoing-security-updates/'), {
+    publisher: 'Checkmarx',
+    source_type: 'vendor',
+  });
+  assert.deepEqual(classifySource('https://www.stepsecurity.io/blog/megalodon'), {
+    publisher: 'StepSecurity',
+    source_type: 'research',
+  });
+  assert.deepEqual(classifySource('https://labs.cloudsecurityalliance.org/research/megalodon'), {
+    publisher: 'Cloud Security Alliance',
+    source_type: 'research',
+  });
+  assert.deepEqual(classifySource('https://www.securityweek.com/over-5500-github-repositories-infected-in-megalodon-supply-chain-attack/'), {
+    publisher: 'SecurityWeek',
+    source_type: 'news',
+  });
 }
 
 async function testOutputTargetsUseCollectionNames() {
@@ -229,20 +532,11 @@ async function testDraftFrontmatterMatchesLiveSchema() {
     });
     assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least three packet sources/);
     addCampaignGovernmentSource(campaignPacket);
-    assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least one packet-backed MITRE mapping/);
-    campaignPacket.mitre_candidates = [{
-      technique_id: 'T1195',
-      technique_name: 'Supply Chain Compromise',
-      tactic: 'Initial Access',
-      source_refs: ['src-1'],
-      confidence: 'medium',
-      include_in_article: true,
-    }];
     const campaignDraft = draftFromPacket(campaignPacket, { createdAt: '2026-06-22' });
     assert.match(campaignDraft, /\nongoing: true\n/);
     assert.doesNotMatch(campaignDraft, /\nendDate:/);
     assert.match(campaignDraft, /\nmitreMappings:\n/);
-    assert.match(campaignDraft, /techniqueId: "T1195"/);
+    assert.match(campaignDraft, /techniqueId: "T1195\.002"/);
     assert.match(campaignDraft, /\n\s+publisherType: government\n/);
     assert.deepEqual(bodyH2s(campaignDraft), SCHEMA_REQUIRED_H2_BY_TYPE.campaign);
 
@@ -293,6 +587,14 @@ async function testNewsSourceMapsToMediaPublisherType() {
 }
 
 await testGroundedPacketDraftAndFidelityPass();
+await testRawExtractedIdsDoNotPollutePacketCves();
+await testInvalidCalendarPublicationDateIsIgnored();
+await testPublicationDateFallsThroughInvalidMatches();
+await testBodyOnlyUnlabeledDatesAreNotPublicationDates();
+await testSourceRelativeWordingIsContextualized();
+await testCandidateTermMatchingUsesBoundaries();
+await testSourceDateFallbackUsesPacketCreationDate();
+await testSourceDateFallbackNeverRendersNullishValues();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();

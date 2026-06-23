@@ -197,7 +197,7 @@
           "confidence": { "$ref": "#/$defs/confidence" },
           "article_section": {
             "type": "string",
-            "enum": ["frontmatter", "summary", "technical-analysis", "timeline", "mitigation", "other"]
+            "enum": ["frontmatter", "summary", "technical-analysis", "attack-chain", "exploit-chain", "timeline", "mitigation", "remediation", "other"]
           }
         }
       }

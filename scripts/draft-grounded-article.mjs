@@ -83,16 +83,27 @@ function publisherTypeForSource(source) {
   return source.source_type;
 }
 
-function sourceFrontmatter(source) {
+function sourceFrontmatter(source, fallbackDate) {
   const publisherType = publisherTypeForSource(source);
   return [
     '  - url: ' + yamlString(source.url),
     '    publisher: ' + yamlString(source.publisher),
     '    publisherType: ' + publisherType,
     '    reliability: ' + (source.role === 'primary' ? 'R1' : 'R2'),
-    '    publicationDate: ' + yamlString(source.published_at || new Date().toISOString().slice(0, 10)),
+    '    publicationDate: ' + yamlString(sourcePublicationDate(source, fallbackDate)),
     '    archived: false',
   ].join('\n');
+}
+
+function sourcePublicationDate(source, fallbackDate) {
+  return source.published_at || fallbackDate || 'accessed during packet assembly';
+}
+
+function packetFallbackDate(packet, createdAt) {
+  const packetDate = typeof packet?.created_at === 'string' && /^\d{4}-\d{2}-\d{2}/.test(packet.created_at)
+    ? packet.created_at.slice(0, 10)
+    : null;
+  return packetDate || createdAt || null;
 }
 
 function assertCampaignSourceReadiness(packet) {
@@ -131,7 +142,7 @@ function includedMitreMappings(packet) {
 function mitreFrontmatter(packet, { required = false } = {}) {
   const mappings = includedMitreMappings(packet);
   if (required && mappings.length === 0) {
-    throw new Error('Campaign grounded drafts require at least one packet-backed MITRE mapping marked include_in_article=true');
+    throw new Error('Campaign grounded drafts require at least one cited-source MITRE mapping marked include_in_article=true');
   }
   if (mappings.length === 0) return ['mitreMappings: []'];
   return [
@@ -141,16 +152,31 @@ function mitreFrontmatter(packet, { required = false } = {}) {
       `    techniqueName: ${yamlString(mapping.techniqueName)}`,
       `    tactic: ${yamlString(mapping.tactic)}`,
       `    confidence: ${mapping.confidence}`,
-      '    evidence: "Included from grounded source packet MITRE candidates."',
+      '    evidence: "Mapped from cited source claims."',
     ]),
   ];
 }
 
+function threatActorFromPacket(packet) {
+  const attributionClaims = (packet.claims || [])
+    .filter((claim) => claim?.claim_type === 'attribution' || claim?.article_section === 'attribution');
+  for (const claim of attributionClaims) {
+    const text = String(claim.claim || '');
+    const actorMatch = text.match(/\bconnects this incident to actor\s+(.+?)(?:[.;]|$)/i)
+      || text.match(/\battributed(?:\s+the incident)?\s+to\s+actor\s+(.+?)(?:[.;]|$)/i);
+    if (actorMatch?.[1]) return actorMatch[1].trim();
+  }
+  return 'Unknown';
+}
+
 function frontmatter(packet, createdAt) {
-  const title = safeTitle(packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
+  const title = safeTitle(packet.candidate?.title || packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
-  const sources = allSources(packet).map(sourceFrontmatter).join('\n');
-  const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || createdAt;
+  const fallbackDate = packetFallbackDate(packet, createdAt);
+  const generatedDate = createdAt || fallbackDate || 'unknown';
+  const generatedYear = Number(/^\d{4}/.test(fallbackDate || '') ? fallbackDate.slice(0, 4) : '1970');
+  const sources = allSources(packet).map((source) => sourceFrontmatter(source, fallbackDate)).join('\n');
+  const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || fallbackDate || generatedDate;
   const base = [
     '---',
   ];
@@ -158,7 +184,7 @@ function frontmatter(packet, createdAt) {
   if (packet.lane === 'campaign') {
     assertCampaignSourceReadiness(packet);
     base.push(
-      `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
+      `campaignId: ${yamlString(`TP-CAMP-${generatedYear}-${numericId(packet.source_packet_id, generatedYear).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
       `startDate: ${yamlString(date)}`,
       'ongoing: true',
@@ -169,7 +195,7 @@ function frontmatter(packet, createdAt) {
       'reviewStatus: "draft_ai"',
       'confidenceGrade: C',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -187,7 +213,7 @@ function frontmatter(packet, createdAt) {
       'attributionConfidence: A6',
       'reviewStatus: "draft_ai"',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -207,7 +233,7 @@ function frontmatter(packet, createdAt) {
       `cisaKev: ${packet.kev_status?.in_kev ? 'true' : 'false'}`,
       'reviewStatus: "draft_ai"',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -216,19 +242,19 @@ function frontmatter(packet, createdAt) {
     );
   } else {
     base.push(
-      `eventId: ${yamlString(numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))))}`,
+      `eventId: ${yamlString(numericId(packet.source_packet_id, generatedYear))}`,
       `title: ${yamlString(title)}`,
       `date: ${date}`,
       'attackType: "Supply Chain"',
       'severity: medium',
       'sector: "Technology"',
       'geography: "Global"',
-      'threatActor: "Unknown"',
+      `threatActor: ${yamlString(threatActorFromPacket(packet))}`,
       'attributionConfidence: A6',
       'reviewStatus: "draft_ai"',
       'confidenceGrade: C',
       'generatedBy: "ai_ingestion"',
-      `generatedDate: ${createdAt}`,
+      `generatedDate: ${generatedDate}`,
       'tags:',
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
@@ -267,50 +293,86 @@ function claimLines(claims) {
   return claims.flatMap((claim) => claimLine(claim).split('\n'));
 }
 
+const ATTACK_CHAIN_CLAIM_RE = /\b(?:attack pattern|attack chain|exploit chain|access enabled|enabled the publication|used|using|through|via|injected|published|poisoned|compromised|stolen credentials?|payload|malicious code|install script|credential theft)\b/i;
+
+function attackChainClaims(groups, claimSets) {
+  const explicitClaims = [
+    ...(groups.get('attack-chain') || []),
+    ...(groups.get('exploit-chain') || []),
+  ];
+  if (explicitClaims.length) return explicitClaims;
+  return [...claimSets.summary, ...claimSets.findings]
+    .filter((claim) => ATTACK_CHAIN_CLAIM_RE.test(claim.claim || ''));
+}
+
 function fallbackLine(packet, text) {
   return `<!-- claims: ${packet.claims?.[0]?.claim_id || 'claim-1'} --> ${text}`;
 }
 
-function sectionContent(packet, heading, claimSets) {
+function sectionContent(packet, heading, claimSets, fallbackDate, groups) {
   if (heading === 'Sources & References') {
+    const extractTitles = new Map((packet.source_extracts || []).map((extract) => [extract.source_id, extract.title]));
     const sourceRows = allSources(packet)
-      .map((source, index) => `${index + 1}. [${markdownEscape(source.publisher)}](${source.url}) — ${markdownEscape(source.publisher)}, ${source.published_at || 'accessed during packet assembly'}`);
-    return sourceRows.length ? sourceRows : [fallbackLine(packet, 'The source packet did not include source rows for this draft.')];
+      .map((source) => {
+        const title = markdownEscape(extractTitles.get(source.id) || source.publisher);
+        return `- [${markdownEscape(source.publisher)}: ${title}](${source.url}) — ${markdownEscape(source.publisher)}, ${sourcePublicationDate(source, fallbackDate)}`;
+      });
+    return sourceRows.length ? sourceRows : [fallbackLine(packet, 'No cited source rows are available for this draft.')];
   }
   if (/timeline/i.test(heading)) {
-    return claimSets.timeline.length ? claimLines(claimSets.timeline) : [fallbackLine(packet, 'The source packet does not establish a complete public timeline.')];
+    return claimSets.timeline.length ? claimLines(claimSets.timeline) : [fallbackLine(packet, 'Available sources do not establish a complete public timeline.')];
   }
   if (/summary|severity/i.test(heading)) {
-    return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'The source packet establishes only the approved candidate subject.')];
+    return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'Available sources establish the incident subject but not additional summary detail.')];
   }
-  if (/technical|attack chain|exploit chain|mitre|capabilities/i.test(heading)) {
-    return claimSets.findings.length ? claimLines(claimSets.findings) : claimLines(packet.claims || []);
+  if (/technical|mitre|capabilities/i.test(heading)) {
+    return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'Available sources do not establish additional technical findings.')];
+  }
+  if (/attack chain|exploit chain/i.test(heading)) {
+    const claims = attackChainClaims(groups, claimSets);
+    return claims.length ? claimLines(claims) : [fallbackLine(packet, 'Available sources do not establish a detailed attack chain.')];
   }
   if (/attribution|campaign/i.test(heading)) {
-    return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'The packet does not establish additional attribution beyond the candidate classification.')];
+    return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'Available sources do not establish additional attribution beyond the current classification.')];
   }
-  if (/remediation|impact|detection|indicators|open questions/i.test(heading)) {
-    const uncertaintyLines = (packet.uncertainties || []).map((item) => fallbackLine(packet, item.drafting_instruction));
-    return uncertaintyLines.length ? uncertaintyLines : [fallbackLine(packet, 'The packet does not establish additional guidance for this section.')];
+  if (/remediation/i.test(heading)) {
+    return claimSets.remediation.length ? claimLines(claimSets.remediation) : [fallbackLine(packet, 'Available sources do not establish additional remediation facts for this section.')];
   }
-  return claimLines(packet.claims || []);
+  if (/impact|detection|indicators|open questions/i.test(heading)) {
+    return [fallbackLine(packet, 'Available sources do not establish additional facts for this section.')];
+  }
+  return claimLines(claimSets.reader);
 }
 
-function body(packet) {
+function body(packet, createdAt) {
   const groups = groupedClaims(packet);
-  const summaryClaims = groups.get('summary') || packet.claims?.slice(0, 2) || [];
+  const fallbackDate = packetFallbackDate(packet, createdAt);
+  const readerClaims = (packet.claims || []).filter((claim) => !['frontmatter', 'internal'].includes(claim.article_section));
+  const summaryClaims = groups.get('summary') || [];
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
   const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
+  const explicitChainClaims = [
+    ...(groups.get('attack-chain') || []),
+    ...(groups.get('exploit-chain') || []),
+  ];
+  const remediationClaims = [
+    ...(groups.get('mitigation') || []),
+    ...(groups.get('remediation') || []),
+  ];
   const summaryClaimIds = new Set(summaryClaims.map((claim) => claim.claim_id));
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));
   const attributionClaimIds = new Set(attributionClaims.map((claim) => claim.claim_id));
-  const supportingClaims = (packet.claims || []).filter((claim) =>
+  const chainClaimIds = new Set(explicitChainClaims.map((claim) => claim.claim_id));
+  const remediationClaimIds = new Set(remediationClaims.map((claim) => claim.claim_id));
+  const supportingClaims = readerClaims.filter((claim) =>
     !summaryClaimIds.has(claim.claim_id)
     && !technicalClaimIds.has(claim.claim_id)
     && !timelineClaimIds.has(claim.claim_id)
     && !attributionClaimIds.has(claim.claim_id)
+    && !chainClaimIds.has(claim.claim_id)
+    && !remediationClaimIds.has(claim.claim_id)
   );
   const findingClaims = [...technicalClaims, ...supportingClaims];
   const headings = SCHEMA_REQUIRED_H2_BY_TYPE[packet.lane] || [
@@ -325,10 +387,12 @@ function body(packet) {
     findings: findingClaims,
     timeline: timelineClaims,
     attribution: attributionClaims,
+    remediation: remediationClaims,
+    reader: readerClaims,
   };
   const lines = [];
   for (const heading of headings) {
-    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets), '');
+    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets, fallbackDate, groups), '');
   }
   return lines.join('\n');
 }
@@ -340,7 +404,7 @@ export function draftFromPacket(packet, { createdAt = new Date().toISOString().s
   if (!Array.isArray(packet.claims) || packet.claims.length === 0) {
     throw new Error('Packet has no claims to draft from');
   }
-  return frontmatter(packet, createdAt) + body(packet);
+  return frontmatter(packet, createdAt) + body(packet, createdAt);
 }
 
 async function run() {
@@ -353,7 +417,7 @@ async function run() {
     output: path.resolve(repoRoot, args.out),
     lane: packet.lane,
     claims: packet.claims.length,
-    slug: slugPart(packet.claims[0]?.claim || packet.source_packet_id),
+    slug: slugPart(packet.candidate?.title || packet.claims[0]?.claim || packet.source_packet_id),
   }, null, 2)}\n`);
 }
 
