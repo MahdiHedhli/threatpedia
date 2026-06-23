@@ -154,10 +154,14 @@ const MONTHS = new Map([
   ['december', '12'],
 ]);
 
-const DATE_PATTERNS = [
+const LABELED_DATE_PATTERNS = [
   /\bUpdated:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
   /\bPublished:\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
-  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/gi,
+];
+
+const HACKER_NEWS_DATE_PATTERNS = [
+  /\b[A-Z][A-Za-z.'-]+\s+[A-Z][A-Za-z.'-]+\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\b/g,
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2}),\s+([0-9]{4})\s+(?:Supply Chain Attack|Cyber Attack|Vulnerabilities|Malware|DevSecOps)\b/gi,
 ];
 
 function monthDateToIso(month, day, year) {
@@ -177,14 +181,23 @@ function monthDateToIso(month, day, year) {
   return `${String(parsedYear).padStart(4, '0')}-${monthNumber}-${String(parsedDay).padStart(2, '0')}`;
 }
 
-function extractPublicationDate(rawText) {
-  const text = String(rawText || '');
-  for (const pattern of DATE_PATTERNS) {
+function firstValidDate(text, patterns) {
+  for (const pattern of patterns) {
     pattern.lastIndex = 0;
-    for (const match of text.matchAll(pattern)) {
+    for (const match of String(text || '').matchAll(pattern)) {
       const iso = monthDateToIso(match[1], match[2], match[3]);
       if (iso) return iso;
     }
+  }
+  return null;
+}
+
+function extractPublicationDate(rawText, publisher = null) {
+  const text = String(rawText || '');
+  const labeledDate = firstValidDate(text, LABELED_DATE_PATTERNS);
+  if (labeledDate) return labeledDate;
+  if (publisher === 'The Hacker News') {
+    return firstValidDate(text.slice(0, 1000), HACKER_NEWS_DATE_PATTERNS);
   }
   return null;
 }
@@ -212,7 +225,7 @@ export async function extractSource(url, sourceId, options = {}) {
     const raw = await fetchSourceText(url, options);
     const normalized = normalizeWhitespace(stripHtml(raw));
     const extractedText = normalized.slice(0, 5000);
-    const publishedAt = extractPublicationDate(normalized);
+    const publishedAt = extractPublicationDate(normalized, classification.publisher);
     return {
       source: {
         id: sourceId,
