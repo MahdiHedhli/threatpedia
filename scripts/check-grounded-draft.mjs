@@ -16,6 +16,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const URL_RE = /https?:\/\/[^\s\])"'<>]+/g;
 const CLAIM_MARKER_RE = /<!--\s*claims?:\s*([a-zA-Z0-9\-\s]+)\s*-->/g;
 const PLACEHOLDER_RE = /(FIXME|VERIFY URL|SOURCE RECOVERY|placeholder URL|example\.com\/placeholder|TBD source)/i;
+const FRONTMATTER_RE = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
 
 function usage() {
   console.log([
@@ -67,9 +68,8 @@ function allSources(packet) {
 }
 
 function bodyWithoutFrontmatter(text) {
-  if (!text.startsWith('---\n')) return text;
-  const end = text.indexOf('\n---', 4);
-  return end === -1 ? text : text.slice(end + 4);
+  const match = String(text).match(FRONTMATTER_RE);
+  return match ? text.slice(match[0].length) : text;
 }
 
 function claimIdsFromMarker(line) {
