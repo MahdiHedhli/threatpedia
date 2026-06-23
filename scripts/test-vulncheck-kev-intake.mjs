@@ -147,4 +147,53 @@ assert.equal(normalizedPrefill.affected_products[0].product, 'gravityforms');
 assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, null);
 assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, null);
 
+const filteredXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'simplefilelist',
+      product: 'simple_file_list',
+      vulnerabilityName: 'simplefilelist simple_file_list Unrestricted Upload of File with Dangerous Type',
+      shortDescription: 'Simple File List WordPress plugin remote code execution.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2020-36847'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'ec52bbb216f8',
+          xdb_url: 'https://vulncheck.com/xdb/ec52bbb216f8',
+          date_added: '2025-08-23T02:22:58Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:137f/PoC-CVE-2020-36847-WordPress-Plugin-4.2.2-RCE.git',
+        },
+        {
+          xdb_id: 'ee72a50e36ee',
+          xdb_url: 'https://vulncheck.com/xdb/ee72a50e36ee',
+          date_added: '2026-02-10T10:46:55Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:0xGunrunner/CVE-2025-34085.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(filteredXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+assert.deepEqual(
+  filteredXdb.candidates[0].vulncheck_exploitation_signal.evidence_urls,
+  ['https://vulncheck.com/xdb/ec52bbb216f8'],
+);
+assert.deepEqual(
+  filteredXdb.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vulncheck_xdb.map(item => item.xdb_id),
+  ['ec52bbb216f8'],
+);
+
 console.log('vulncheck-kev-intake tests passed');

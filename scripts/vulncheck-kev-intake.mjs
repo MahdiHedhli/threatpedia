@@ -472,22 +472,30 @@ function sourceRefsFor(record) {
   for (const item of Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : []) {
     if (typeof item?.url === 'string' && item.url.startsWith('http')) urls.push(item.url);
   }
-  for (const item of Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : []) {
+  for (const item of xdbEntriesFor(record)) {
     if (typeof item?.xdb_url === 'string' && item.xdb_url.startsWith('http')) urls.push(item.xdb_url);
   }
   return uniqueStrings(urls);
 }
 
+function xdbEntriesFor(record) {
+  const cves = new Set(uniqueStrings(record?.cve));
+  return (Array.isArray(record?.vulncheck_xdb) ? record.vulncheck_xdb : []).filter((item) => {
+    const cloneCves = extractCvesFromText(item?.clone_ssh_url || '');
+    if (!cloneCves.length) return true;
+    return cloneCves.some((cve) => cves.has(cve));
+  });
+}
+
 function exploitTypes(record) {
-  return uniqueStrings((Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : [])
-    .map(item => item?.exploit_type));
+  return uniqueStrings(xdbEntriesFor(record).map(item => item?.exploit_type));
 }
 
 function priorityScore(record, addedDate) {
   let score = 0;
   const reasons = [];
   const reported = Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0;
-  const xdb = Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb.length : 0;
+  const xdb = xdbEntriesFor(record).length;
 
   if (addedDate) {
     score += 30;
@@ -591,7 +599,7 @@ function makePrefill(rawRecord) {
       knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
       reported_exploited_by_vulncheck_canaries: rawRecord.reported_exploited_by_vulncheck_canaries === true,
       vulncheck_reported_exploitation: Array.isArray(rawRecord.vulncheck_reported_exploitation) ? rawRecord.vulncheck_reported_exploitation : [],
-      vulncheck_xdb: Array.isArray(rawRecord.vulncheck_xdb) ? rawRecord.vulncheck_xdb : [],
+      vulncheck_xdb: xdbEntriesFor(rawRecord),
       date_added: rawRecord.date_added || null,
       cisa_date_added: rawRecord.cisa_date_added || null,
       dueDate: rawRecord.dueDate || null,
@@ -644,7 +652,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
       known_ransomware_campaign_use: record.knownRansomwareCampaignUse || 'Unknown',
       reported_exploited_by_vulncheck_canaries: record.reported_exploited_by_vulncheck_canaries === true,
       reported_exploitation_count: Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0,
-      xdb_count: Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb.length : 0,
+      xdb_count: xdbEntriesFor(record).length,
       xdb_exploit_types: exploitTypes(record),
       evidence_urls: sourceRefsFor(record),
     },
