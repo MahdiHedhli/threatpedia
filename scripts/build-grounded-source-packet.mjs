@@ -270,12 +270,12 @@ export async function buildGroundedPacket(args) {
   }
 
   const lane = laneForCandidate(candidate);
-  const allText = [candidate.title, candidate.summary, candidate.canonicalSubjectId, extracts.map((item) => item.extracted_text)].flat().join('\n');
-  const ids = extractIds(allText);
   const primarySources = sources.filter((source) => source.role === 'primary');
   const supportingSources = sources.filter((source) => source.role !== 'primary');
   const successfulExtractRefs = extracts.filter((extract) => extract.status === 'ok').map((extract) => extract.source_id);
   const claims = candidateClaims(candidate, sources, extracts);
+  const idText = [candidate.title, candidate.summary, candidate.canonicalSubjectId, claims.map((item) => item.claim)].flat().join('\n');
+  const ids = extractIds(idText);
   const createdAt = args.createdAt || new Date().toISOString();
 
   return {

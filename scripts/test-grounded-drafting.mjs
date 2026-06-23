@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { buildGroundedPacket } from './build-grounded-source-packet.mjs';
 import { draftFromPacket } from './draft-grounded-article.mjs';
 import { checkGroundedDraft } from './check-grounded-draft.mjs';
-import { classifySource, readJson, writeJson } from './grounded-drafting-lib.mjs';
+import { classifySource, readJson, sourceFixtureName, writeJson } from './grounded-drafting-lib.mjs';
 import { SCHEMA_REQUIRED_H2_BY_TYPE } from './pipeline-schema.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -80,6 +80,34 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
     runNode(['scripts/check-grounded-draft.mjs', '--packet', packetPath, '--draft', draftPath]);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
+async function testRawExtractedIdsDoNotPollutePacketCves() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b2-sidebar-'));
+  try {
+    const queue = readJson(repoRoot, queuePath);
+    for (const url of queue.candidates[0].sourceRefs) {
+      const fixtureName = sourceFixtureName(url);
+      const original = readFileSync(path.resolve(repoRoot, fixturesDir, fixtureName), 'utf8');
+      const sidebar = url.includes('socket.dev')
+        ? '\nTop Stories This Week: Chrome V8 Zero-Day CVE-2026-11645 Exploited in the Wild.\n'
+        : '';
+      writeFileSync(path.join(tempDir, fixtureName), `${original}${sidebar}`);
+    }
+    const packet = await buildGroundedPacket({
+      queue: queuePath,
+      candidateId: 'SC-CAND-1234abcd5678ef90',
+      approvedBy: 'KernelK',
+      approvalRef: 'fixture-approval',
+      out: path.join(tempDir, 'packet.json'),
+      fixturesDir: tempDir,
+      createdAt: '2026-06-22T00:00:00Z',
+      allowFetchFailures: false,
+    });
+    assert.deepEqual(packet.cves, []);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
@@ -308,6 +336,7 @@ async function testNewsSourceMapsToMediaPublisherType() {
 }
 
 await testGroundedPacketDraftAndFidelityPass();
+await testRawExtractedIdsDoNotPollutePacketCves();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
 await testNewsSourceMapsToMediaPublisherType();

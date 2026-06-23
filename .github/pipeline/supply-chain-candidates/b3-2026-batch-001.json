@@ -71,61 +71,6 @@
       "queueAction": "candidate_review",
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B3 uses explicit approval plus grounded B2 source packets; queue entries remain non-drafting by default."
-    },
-    {
-      "candidateId": "SC-CAND-b32026c0ffee0002",
-      "canonicalSubjectId": "SC-2026-MEGALODON",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Megalodon GitHub Actions repository workflow poisoning campaign",
-      "summary": "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
-      "sources": ["research-report", "government-alert", "media-report"],
-      "sourceRefs": [
-        "https://www.stepsecurity.io/blog/megalodon-mass-github-actions-secret-exfiltration-across-5-500-public-repositories",
-        "https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories",
-        "https://labs.cloudsecurityalliance.org/research/csa-research-note-megalodon-github-actions-cicd-supply-chain/",
-        "https://www.securityweek.com/over-5500-github-repositories-infected-in-megalodon-supply-chain-attack/"
-      ],
-      "mergedLeadRefs": ["corpus:SC-2026-MEGALODON"],
-      "firstSeenAt": "2026-05-18T00:00:00Z",
-      "lastMaterialActivityAt": "2026-05-28T00:00:00Z",
-      "activityBasis": ["research_update", "government_alert", "corpus_backfill"],
-      "entityMatch": "corpus_match",
-      "matchedEntityHints": {
-        "actors": [
-          {
-            "id": "actor-teampcp",
-            "name": "TeamPCP"
-          }
-        ],
-        "campaigns": [
-          {
-            "id": "campaign-tp-camp-2026-0010",
-            "name": "Megalodon Supply-Chain Intrusion Campaign in GitHub and npm"
-          }
-        ],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "curated 2026 supply-chain backfill with public reporting inside the recent window",
-        "workIntent": "create_article",
-        "routingPriority": "p1",
-        "effectiveActiveStatus": "malware_confirmed",
-        "activeStatus": "malware_confirmed",
-        "activeStatusExpiresAt": "2026-07-23T00:00:00Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 85,
-      "rankReasons": ["curated B3 backfill", "large-scale GitHub Actions workflow poisoning", "government alert present"],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B3 uses explicit approval plus grounded B2 source packets; queue entries remain non-drafting by default."
     }
   ]
 }
