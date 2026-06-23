@@ -116,7 +116,7 @@ function hasNoFeedbackBody(body) {
 }
 
 function reviewedCommitFromBody(body) {
-  const match = String(body || '').match(/Reviewed commit:\*{0,2}\s*`?([0-9a-f]{7,40})`?/i);
+  const match = String(body || '').match(/Reviewed commit:\s*\*{0,2}\s*`?([0-9a-f]{7,40})`?/i);
   return match ? match[1].toLowerCase() : null;
 }
 
