@@ -242,6 +242,9 @@ function validatePreflight(packet) {
     if (packet.source_quality.source_sufficiency !== 'sufficient') add(errors, 'source_sufficiency must be sufficient for drafting readiness', '$.source_quality.source_sufficiency');
   }
 
+  if (packet.grounding_contract?.drafting_mode === 'packet_claims_only' && packet.source_extracts === undefined) {
+    add(errors, 'grounded drafting packets need at least one successful source extract', '$.source_extracts');
+  }
   if (packet.source_extracts !== undefined) {
     if (!Array.isArray(packet.source_extracts)) {
       add(errors, 'source_extracts must be an array when present', '$.source_extracts');
