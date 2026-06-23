@@ -157,6 +157,18 @@ function mitreFrontmatter(packet, { required = false } = {}) {
   ];
 }
 
+function threatActorFromPacket(packet) {
+  const attributionClaims = (packet.claims || [])
+    .filter((claim) => claim?.claim_type === 'attribution' || claim?.article_section === 'attribution');
+  for (const claim of attributionClaims) {
+    const text = String(claim.claim || '');
+    const actorMatch = text.match(/\bconnects this incident to actor\s+(.+?)(?:[.;]|$)/i)
+      || text.match(/\battributed(?:\s+the incident)?\s+to\s+actor\s+(.+?)(?:[.;]|$)/i);
+    if (actorMatch?.[1]) return actorMatch[1].trim();
+  }
+  return 'Unknown';
+}
+
 function frontmatter(packet, createdAt) {
   const title = safeTitle(packet.candidate?.title || packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
@@ -237,7 +249,7 @@ function frontmatter(packet, createdAt) {
       'severity: medium',
       'sector: "Technology"',
       'geography: "Global"',
-      'threatActor: "Unknown"',
+      `threatActor: ${yamlString(threatActorFromPacket(packet))}`,
       'attributionConfidence: A6',
       'reviewStatus: "draft_ai"',
       'confidenceGrade: C',

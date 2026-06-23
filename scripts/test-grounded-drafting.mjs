@@ -91,11 +91,29 @@ async function testGroundedPacketDraftAndFidelityPass() {
       article_section: 'attack-chain',
       confidence: 'medium',
     });
+    packet.claims.push({
+      claim_id: 'claim-11',
+      claim: 'Available source evidence connects this incident to campaign Fixture Campaign.',
+      claim_type: 'attribution',
+      source_refs: ['src-1'],
+      article_section: 'other',
+      confidence: 'low',
+    });
+    packet.claims.push({
+      claim_id: 'claim-12',
+      claim: 'Available source evidence connects this incident to actor Fixture Actor.',
+      claim_type: 'attribution',
+      source_refs: ['src-1'],
+      article_section: 'other',
+      confidence: 'low',
+    });
     writeJson(repoRoot, packetPath, packet);
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
     assert.match(draft, /^title: "Fixture npm supply-chain compromise"$/m);
+    assert.match(draft, /^threatActor: "Fixture Actor"$/m);
+    assert.doesNotMatch(draft, /^threatActor: "Fixture Campaign"$/m);
     assert.doesNotMatch(draft, /^title: "Fixture npm supply-chain compromise is the candidate subject approved for grounded drafting\."$/m);
     assert.doesNotMatch(draft, /candidate subject approved for grounded drafting/);
     assert.doesNotMatch(draft, /classifier work intent/);
